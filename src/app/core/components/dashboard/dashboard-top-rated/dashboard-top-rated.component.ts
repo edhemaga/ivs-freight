@@ -3,11 +3,14 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
-// services
-import { DashboardService } from '../state/services/dashboard.service';
-
 // bootstrap
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+// moment
+import moment from 'moment';
+
+// services
+import { DashboardService } from '../state/services/dashboard.service';
 
 // constants
 import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
@@ -230,82 +233,39 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         action: string
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
-            this.selectedMainPeriod = dropdownListItem;
-
             if (this.isDisplayingCustomPeriodRange) {
                 this.isDisplayingCustomPeriodRange = false;
             }
 
+            this.selectedMainPeriod = dropdownListItem;
+
+            let matchingIdList: number[];
+
             switch (dropdownListItem.name) {
                 case ConstantStringEnum.TODAY:
-                    const TODAY_SUB_PERIOD_ID = [1, 2, 3];
+                    matchingIdList = [1, 2, 3];
+                    this.setSubPeriodList(matchingIdList);
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 1) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return TODAY_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.WEEK_TO_DATE:
-                    const WTD_SUB_PERIOD_ID = [3, 4, 5];
+                    matchingIdList = [3, 4, 5];
+                    this.setSubPeriodList(matchingIdList);
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 3) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return WTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.MONTH_TO_DATE:
-                    const MTD_SUB_PERIOD_ID = [5, 6, 7];
+                    matchingIdList = [5, 6, 7];
+                    this.setSubPeriodList(matchingIdList);
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 5) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return MTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.QUARTAL_TO_DATE:
-                    const QTD_SUB_PERIOD_ID = [5, 6, 8];
+                    matchingIdList = [5, 6, 8];
+                    this.setSubPeriodList(matchingIdList);
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 5) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return QTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.YEAR_TO_DATE:
-                    const YTD_SUB_PERIOD_ID = [6, 8, 9];
+                    matchingIdList = [6, 8, 9];
+                    this.setSubPeriodList(matchingIdList);
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 6) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return YTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.ALL_TIME:
                     break;
@@ -387,8 +347,19 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public handleSetCustomPeriodRangeClick(
         customPeriodRange: CustomPeriodRange
     ): void {
+        const fromDate = moment(new Date(customPeriodRange.fromDate));
+        const toDate = moment(new Date(customPeriodRange.toDate));
+
+        const selectedDaysRange =
+            toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+
+        if (selectedDaysRange < 0) {
+            return;
+        }
+
         this.isDisplayingCustomPeriodRange = false;
-        console.log(customPeriodRange);
+
+        this.setCustomSubPeriodList(selectedDaysRange);
     }
 
     public handleOutsideCustomPeriodRangeClick() {
@@ -622,6 +593,53 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.setDoughnutChartData(this.topRatedList);
                 this.setBarChartConfigAndAxes(this.barChartValues);
             });
+    }
+
+    private setSubPeriodList(subPeriodIdList: number[]): void {
+        this.subPeriodDropdownList =
+            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
+                (period) => {
+                    if (period.id === subPeriodIdList[0]) {
+                        this.selectedSubPeriod = period;
+                    }
+
+                    return subPeriodIdList.includes(period.id);
+                }
+            );
+    }
+
+    private setCustomSubPeriodList(selectedDaysRange: number): void {
+        let matchingIdList: number[];
+
+        if (selectedDaysRange >= 1 && selectedDaysRange <= 2) {
+            matchingIdList = [1, 2, 3];
+            this.setSubPeriodList(matchingIdList);
+        }
+
+        if (selectedDaysRange > 2 && selectedDaysRange <= 14) {
+            matchingIdList = [3, 4, 5, 6];
+            this.setSubPeriodList(matchingIdList);
+        }
+
+        if (selectedDaysRange > 14 && selectedDaysRange <= 60) {
+            matchingIdList = [5, 6, 7];
+            this.setSubPeriodList(matchingIdList);
+        }
+
+        if (selectedDaysRange > 60 && selectedDaysRange <= 365) {
+            matchingIdList = [6, 8, 9, 10];
+            this.setSubPeriodList(matchingIdList);
+        }
+
+        if (selectedDaysRange > 365 && selectedDaysRange <= 730) {
+            matchingIdList = [8, 9, 10, 11];
+            this.setSubPeriodList(matchingIdList);
+        }
+
+        if (selectedDaysRange > 730) {
+            matchingIdList = [9, 10, 11];
+            this.setSubPeriodList(matchingIdList);
+        }
     }
 
     private setDoughnutChartCenterStats(

@@ -38,4 +38,6 @@ export enum ConstantStringEnum {
 
     CLICK = 'click',
     CLASS_DROPDOWN_OPTION = 'dropdown-option',
+
+    DAYS = 'days',
 }
