@@ -231,7 +231,7 @@
                                 class="d-flex align-items-center justify-content-center top-rated-item-number-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ topRatedListItem.id }}
+                                    {{ i + 1 }}
                                 </p>
 
                                 <svg-icon
@@ -283,8 +283,11 @@
                             >
                                 <p class="m-0">
                                     {{
-                                        topRatedTitle === 'Repair Shop' &&
-                                        currentActiveTab.name === 'Cost'
+                                        (topRatedTitle === 'Broker' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
+                                        (topRatedTitle === 'Repair Shop' &&
+                                            currentActiveTab.name === 'Cost')
                                             ? '$'
                                             : ''
                                     }}
@@ -294,8 +297,11 @@
                                 </p>
                                 <p class="m-0">
                                     {{
-                                        topRatedTitle === 'Repair Shop' &&
-                                        currentActiveTab.name === 'Cost'
+                                        (topRatedTitle === 'Broker' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
+                                        (topRatedTitle === 'Repair Shop' &&
+                                            currentActiveTab.name === 'Cost')
                                             ? 'K'
                                             : ''
                                     }}

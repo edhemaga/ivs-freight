@@ -6,6 +6,8 @@ export enum ConstantStringEnum {
 
     VISIT = 'Visit',
     COST = 'Cost',
+    LOAD = 'Load',
+    REVENUE = 'Revenue',
 
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',

@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+// models
 import {
     DashboardService as DashboardBackendService,
     DashboardTopReportType,
     SubintervalType,
     TimeInterval,
+    TopBrokersListResponse,
     TopRepairShopListResponse,
+    TopShipperListResponse,
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +27,7 @@ export class DashboardService {
         startDate: string,
         endDate: string,
         subintervalType: SubintervalType
-    ): Observable<TopRepairShopListResponse> {
+    ): Observable<TopBrokersListResponse> {
         return this.dashboardService.apiDashboardTopbrokersGet(
             reportType,
             searchTerms,
@@ -45,7 +48,7 @@ export class DashboardService {
         startDate: string,
         endDate: string,
         subintervalType: SubintervalType
-    ): Observable<TopRepairShopListResponse> {
+    ): Observable<TopShipperListResponse> {
         return this.dashboardService.apiDashboardTopshippersGet(
             /* reportType, */
             searchTerms,
