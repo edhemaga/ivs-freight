@@ -304,6 +304,7 @@ model/dispatchStatusResponse.ts
 model/dispatcherFilterListResponse.ts
 model/dispatcherFilterResponse.ts
 model/dispatcherFilterResponsePagination.ts
+model/dispatcherIntervalResponse.ts
 model/driverAccidentResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
@@ -488,6 +489,7 @@ model/notificationEntity.ts
 model/offDutyLocationResponse.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
+model/ownerIntervalResponse.ts
 model/ownerModalResponse.ts
 model/ownerResponse.ts
 model/ownerShortResponse.ts
@@ -684,6 +686,12 @@ model/todoUserResponse.ts
 model/topBrokersListResponse.ts
 model/topBrokersResponse.ts
 model/topBrokersResponsePagination.ts
+model/topDispatchersListResponse.ts
+model/topDispatchersResponse.ts
+model/topDispatchersResponsePagination.ts
+model/topOwnerListResponse.ts
+model/topOwnerResponse.ts
+model/topOwnerResponsePagination.ts
 model/topRepairShopListResponse.ts
 model/topRepairShopResponse.ts
 model/topRepairShopResponsePagination.ts
