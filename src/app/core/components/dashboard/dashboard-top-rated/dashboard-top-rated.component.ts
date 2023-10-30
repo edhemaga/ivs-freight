@@ -168,6 +168,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public selectedSubPeriod: DropdownListItem;
 
     public isDisplayingCustomPeriodRange: boolean = false;
+    private selectedCustomPeriodRange: CustomPeriodRange;
 
     // colors
     public mainColorsPallete: MainColorsPallete[] = [];
@@ -274,6 +275,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 case ConstantStringEnum.CUSTOM:
                     this.isDisplayingCustomPeriodRange = true;
 
+                    this.subPeriodDropdownList = [];
+
                     break;
                 default:
                     break;
@@ -291,7 +294,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
             this.selectedSubPeriod = dropdownListItem;
 
-            this.getTopRatedListData();
+            this.getTopRatedListData(this.selectedCustomPeriodRange);
         }
     }
 
@@ -367,7 +370,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.isDisplayingCustomPeriodRange = false;
 
+        this.selectedCustomPeriodRange = customPeriodRange;
+
         this.setCustomSubPeriodList(selectedDaysRange);
+        this.getTopRatedListData(customPeriodRange);
     }
 
     public handleOutsideCustomPeriodRangeClick() {
@@ -465,7 +471,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getTopRatedListData(): void {
+    private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {
         const selectedTab: DashboardTopReportType = this.currentActiveTab
             .name as DashboardTopReportType;
 
@@ -490,26 +496,33 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         console.log('selectedTab', selectedTab);
         console.log('selectedMainPeriod', selectedMainPeriod);
         console.log('selectedSubPeriod', selectedSubPeriod);
+        console.log('customPeriodRange', customPeriodRange);
 
         switch (this.topRatedTitle) {
             case ConstantStringEnum.BROKER:
                 this.getTopRatedBrokerListData(
                     selectedTab,
                     selectedMainPeriod,
-                    selectedSubPeriod
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
                 );
                 break;
             case ConstantStringEnum.SHIPPER:
                 this.getTopRatedShipperListData(
                     selectedMainPeriod,
-                    selectedSubPeriod
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
                 );
                 break;
             case ConstantStringEnum.REPAIR_SHOP:
                 this.getTopRatedRepairShopListData(
                     selectedTab,
                     selectedMainPeriod,
-                    selectedSubPeriod
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
                 );
                 break;
             default:
@@ -520,7 +533,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private getTopRatedBrokerListData(
         selectedTab: DashboardTopReportType,
         selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
     ): void {
         const topRatedArgumentsData = [
             selectedTab,
@@ -528,8 +542,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             null,
             null,
             selectedMainPeriod,
-            null,
-            null,
+            customPeriodRange.fromDate ?? null,
+            customPeriodRange.toDate ?? null,
             selectedSubPeriod,
         ] as const;
 
@@ -568,14 +582,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     };
                 });
 
-                for (let i = 0; i < brokerData.topTenBrokers.length; i++) {
+                for (let i = 0; i < brokerData.topBrokers.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
                         selectedTab === ConstantStringEnum.LOAD
-                            ? brokerData.topTenBrokers[i].brokerLoadCount
-                            : brokerData.topTenBrokers[i].brokerRevenue,
+                            ? brokerData.topBrokers[i].brokerLoadCount
+                            : brokerData.topBrokers[i].brokerRevenue,
                     ];
 
                     // other intervals
@@ -593,15 +607,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopRatedShipperListData(
         selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
     ): void {
         const topRatedArgumentsData = [
             null,
             null,
             null,
             selectedMainPeriod,
-            null,
-            null,
+            customPeriodRange.fromDate ?? null,
+            customPeriodRange.toDate ?? null,
             selectedSubPeriod,
         ] as const;
 
@@ -634,12 +649,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     }
                 );
 
-                for (let i = 0; i < shipperData.topTenShippers.length; i++) {
+                for (let i = 0; i < shipperData.topShippers.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        shipperData.topTenShippers[i].shipperLoadCount,
+                        shipperData.topShippers[i].shipperLoadCount,
                     ];
 
                     // other intervals
@@ -656,7 +671,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private getTopRatedRepairShopListData(
         selectedTab: DashboardTopReportType,
         selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
     ): void {
         const topRatedArgumentsData = [
             selectedTab,
@@ -664,8 +680,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             null,
             null,
             selectedMainPeriod,
-            null,
-            null,
+            customPeriodRange.fromDate ?? null,
+            customPeriodRange.toDate ?? null,
             selectedSubPeriod,
         ] as const;
 
@@ -706,18 +722,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     }
                 );
 
-                for (
-                    let i = 0;
-                    i < repairShopData.topTenRepairShops.length;
-                    i++
-                ) {
+                for (let i = 0; i < repairShopData.topRepairShops.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
                         selectedTab === ConstantStringEnum.VISIT
-                            ? repairShopData.topTenRepairShops[i].count
-                            : repairShopData.topTenRepairShops[i].cost,
+                            ? repairShopData.topRepairShops[i].count
+                            : repairShopData.topRepairShops[i].cost,
                     ];
 
                     // other intervals
@@ -1157,6 +1169,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
         console.log('barChartValues', barChartValues);
+
         this.barChartConfig = {
             dataProperties: [
                 {
