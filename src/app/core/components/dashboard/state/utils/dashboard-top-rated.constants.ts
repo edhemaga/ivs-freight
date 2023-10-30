@@ -31,8 +31,8 @@ export class DashboardTopRatedConstants {
         {
             name: 'Shipper',
             isActive: false,
-            tab1: 'Load',
-            tab2: 'Revenue',
+            tab1: null,
+            tab2: null,
         },
         {
             name: 'Owner',

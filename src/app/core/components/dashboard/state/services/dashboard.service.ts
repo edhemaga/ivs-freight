@@ -50,7 +50,6 @@ export class DashboardService {
         subintervalType: SubintervalType
     ): Observable<TopShipperListResponse> {
         return this.dashboardService.apiDashboardTopshippersGet(
-            /* reportType, */
             searchTerms,
             pageIndex,
             pageSize,

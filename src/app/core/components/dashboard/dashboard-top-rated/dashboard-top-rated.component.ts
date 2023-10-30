@@ -246,7 +246,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
             this.selectedMainPeriod = dropdownListItem;
 
-            let matchingIdList: number[];
+            let matchingIdList: number[] = [];
 
             switch (dropdownListItem.name) {
                 case ConstantStringEnum.TODAY:
@@ -498,17 +498,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     selectedMainPeriod,
                     selectedSubPeriod
                 );
-
                 break;
             case ConstantStringEnum.SHIPPER:
-                /*   this.dashboardService
-                    .getTopRatedShipper(
-                        ...topRatedArgumentsData
-                    )
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((shipperData) => {
-                        console.log('shipperData', shipperData);
-                    }); */
+                this.getTopRatedShipperListData(
+                    selectedMainPeriod,
+                    selectedSubPeriod
+                );
                 break;
             case ConstantStringEnum.REPAIR_SHOP:
                 this.getTopRatedRepairShopListData(
@@ -516,7 +511,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     selectedMainPeriod,
                     selectedSubPeriod
                 );
-
                 break;
             default:
                 break;
@@ -593,10 +587,69 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
-                this.setDoughnutChartData(this.topRatedList);
-                this.setBarChartConfigAndAxes(this.barChartValues);
+                this.setChartsData();
+            });
+    }
 
-                this.changeDetectorRef.detectChanges();
+    private getTopRatedShipperListData(
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType
+    ): void {
+        const topRatedArgumentsData = [
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            null,
+            null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedShipper(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((shipperData) => {
+                console.log('shipperData', shipperData);
+                // top rated list and single selection data
+                this.topRatedList = shipperData.pagination.data.map(
+                    (shipper) => {
+                        const filteredIntervals = shipper.intervals.map(
+                            (interval) => {
+                                return interval.shipperLoadCount;
+                            }
+                        );
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervals,
+                        ];
+
+                        return {
+                            id: shipper.id,
+                            name: shipper.name,
+                            value: shipper.loadsCount.toString(),
+                            percent: shipper.loadPercentage.toString(),
+                            isSelected: false,
+                        };
+                    }
+                );
+
+                for (let i = 0; i < shipperData.topTenShippers.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        shipperData.topTenShippers[i].shipperLoadCount,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        shipperData.allOthers[i].shipperLoadCount,
+                    ];
+                }
+
+                this.setChartsData();
             });
     }
 
@@ -676,10 +729,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
-                this.setDoughnutChartData(this.topRatedList);
-                this.setBarChartConfigAndAxes(this.barChartValues);
-
-                this.changeDetectorRef.detectChanges();
+                this.setChartsData();
             });
     }
 
@@ -697,7 +747,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {
-        let matchingIdList: number[];
+        let matchingIdList: number[] = [];
 
         if (selectedDaysRange >= 1 && selectedDaysRange <= 2) {
             matchingIdList = [1, 2, 3];
@@ -727,7 +777,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setDoughnutChartCenterStats(
-        topRatedListItemSelected: boolean,
+        isTopRatedListItemSelected: boolean,
         topRatedList: TopRatedListItem[],
         topTenValue: number,
         otherValue?: number,
@@ -736,14 +786,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): ChartInitProperties[] {
         let chartCenterStats: ChartInitProperties[] = [];
 
-        if (topRatedListItemSelected) {
+        if (isTopRatedListItemSelected) {
             const topTenCenterStatsName =
                 this.selectedTopRatedList.length === 1
                     ? topRatedList[0].name
                     : topRatedList.length + ConstantChartStringEnum.SELECTED;
 
             const { filteredTopTenValue } = this.setDoughnutChartValueSigns(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topTenValue
             );
 
@@ -773,7 +823,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 filteredOtherPercentage,
                 filteredOtherValue,
             } = this.setDoughnutChartValueSigns(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topTenValue,
                 topTenPercentage,
                 otherPercentage,
@@ -798,7 +848,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setDoughnutChartValueSigns(
-        topRatedListItemSelected: boolean,
+        isTopRatedListItemSelected: boolean,
         topTenValue: number,
         topTenPercentage?: number,
         otherPercentage?: number,
@@ -809,7 +859,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         const filteredOtherPercentage =
             otherPercentage + ConstantChartStringEnum.PERCENTAGE_SIGN;
 
-        if (topRatedListItemSelected) {
+        if (isTopRatedListItemSelected) {
             switch (this.topRatedTitle) {
                 case ConstantStringEnum.DRIVER:
                     return {
@@ -832,7 +882,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                   ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 default:
-                    break;
+                    return {
+                        filteredTopTenValue: topTenValue.toString(),
+                    };
             }
         } else {
             switch (this.topRatedTitle) {
@@ -870,7 +922,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                   ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 default:
-                    break;
+                    return {
+                        filteredTopTenPercentage,
+                        filteredTopTenValue: topTenValue.toString(),
+                        filteredOtherPercentage,
+                        filteredOtherValue: otherValue.toString(),
+                    };
             }
         }
     }
@@ -913,7 +970,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private setDoughnutChartPercentage(
         topRatedList: TopRatedListItem[],
-        topRatedListItemSelected: boolean
+        isTopRatedListItemSelected: boolean
     ): DoughnutChartPercentage {
         let topTenPercentage = 0;
         let otherPercentage = 0;
@@ -922,7 +979,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         let otherValue = 0;
 
         const filterdDataValues = topRatedList.map((topRatedItem, index) => {
-            if (!topRatedListItemSelected) {
+            if (!isTopRatedListItemSelected) {
                 if (this.topRatedList.length <= 10) {
                     if (index <= 2) {
                         topTenPercentage += +topRatedItem.percent;
@@ -1041,7 +1098,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private setDoughnutChartData(
         topRatedList: TopRatedListItem[],
-        topRatedListItemSelected?: boolean
+        isTopRatedListItemSelected?: boolean
     ): void {
         let dataValues: number[] = [];
         let dataColors: string[] = this.mainColorsPallete.map(
@@ -1058,20 +1115,20 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             otherValue,
         } = this.setDoughnutChartPercentage(
             topRatedList,
-            topRatedListItemSelected
+            isTopRatedListItemSelected
         );
 
         dataValues = [...filterdDataValues];
 
-        if (topRatedListItemSelected) {
+        if (isTopRatedListItemSelected) {
             chartCenterStats = this.setDoughnutChartCenterStats(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topRatedList,
                 topTenValue
             );
         } else {
             chartCenterStats = this.setDoughnutChartCenterStats(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topRatedList,
                 topTenValue,
                 otherValue,
@@ -1251,6 +1308,13 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 displayChartDefaultValue
             );
         }
+    }
+
+    private setChartsData(): void {
+        this.setDoughnutChartData(this.topRatedList);
+        this.setBarChartConfigAndAxes(this.barChartValues);
+
+        this.changeDetectorRef.detectChanges();
     }
 
     ngOnDestroy(): void {

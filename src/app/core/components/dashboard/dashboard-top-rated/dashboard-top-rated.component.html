@@ -59,16 +59,18 @@
 
             <!-- Tabs -->
 
-            <div
-                class="d-flex align-items-center dashboard-top-rated-header-tabs"
-            >
-                <app-ta-tab-switch
-                    [tabs]="topRatedTabs"
-                    [dashboardHeight]="true"
-                    (switchClicked)="handleSwitchTabClick($event)"
+            <ng-container *ngIf="topRatedTitle !== 'Shipper'">
+                <div
+                    class="d-flex align-items-center dashboard-top-rated-header-tabs"
                 >
-                </app-ta-tab-switch>
-            </div>
+                    <app-ta-tab-switch
+                        [tabs]="topRatedTabs"
+                        [dashboardHeight]="true"
+                        (switchClicked)="handleSwitchTabClick($event)"
+                    >
+                    </app-ta-tab-switch>
+                </div>
+            </ng-container>
 
             <div class="dashboard-top-rated-header-border"></div>
         </div>
@@ -423,7 +425,16 @@
                                 }"
                             ></svg-icon>
 
-                            <p class="m-0 ta-font-semi-bold">Top 10</p>
+                            <p class="m-0 ta-font-semi-bold">
+                                {{
+                                    topRatedList.length <= 10
+                                        ? 'Top 3'
+                                        : topRatedList.length > 10 &&
+                                          topRatedList.length <= 30
+                                        ? 'Top 5'
+                                        : 'Top 10'
+                                }}
+                            </p>
                         </div>
 
                         <div class="d-flex align-items-center">
