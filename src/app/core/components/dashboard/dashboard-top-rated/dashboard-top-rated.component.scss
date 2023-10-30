@@ -71,6 +71,23 @@
 
         &-tabs {
             margin-right: 4px;
+
+            .shipper-tab-container {
+                padding: 6px 8px;
+                border-radius: 2px;
+                background: $bw2;
+
+                p {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $ta-black;
+
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
+                }
+            }
         }
 
         &-border {

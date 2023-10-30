@@ -40,9 +40,6 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
         DashboardMapComponent,
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
-
-        // directives
-        ClickOutsideCustomRangeDirective,
     ],
     imports: [
         // modules
@@ -52,6 +49,9 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
         NgbModule,
         AgmCoreModule,
         AngularSvgIconModule,
+
+        // directives
+        ClickOutsideCustomRangeDirective,
 
         // components
         TaTabSwitchComponent,

@@ -9,6 +9,8 @@ import {
     SubintervalType,
     TimeInterval,
     TopBrokersListResponse,
+    TopDispatchersListResponse,
+    TopOwnerListResponse,
     TopRepairShopListResponse,
     TopShipperListResponse,
 } from 'appcoretruckassist';
@@ -18,6 +20,28 @@ export class DashboardService {
     constructor(private dashboardService: DashboardBackendService) {}
 
     // Dashboard - Top Rated
+    public getTopRatedDispatcher(
+        reportType: DashboardTopReportType,
+        searchTerms: string[],
+        pageIndex: number,
+        pageSize: number,
+        timeInterval: TimeInterval,
+        startDate: string,
+        endDate: string,
+        subintervalType: SubintervalType
+    ): Observable<TopDispatchersListResponse> {
+        return this.dashboardService.apiDashboardTopdispatchersGet(
+            reportType,
+            searchTerms,
+            pageIndex,
+            pageSize,
+            timeInterval,
+            startDate,
+            endDate,
+            subintervalType
+        );
+    }
+
     public getTopRatedBroker(
         reportType: DashboardTopReportType,
         searchTerms: string[],
@@ -50,6 +74,28 @@ export class DashboardService {
         subintervalType: SubintervalType
     ): Observable<TopShipperListResponse> {
         return this.dashboardService.apiDashboardTopshippersGet(
+            searchTerms,
+            pageIndex,
+            pageSize,
+            timeInterval,
+            startDate,
+            endDate,
+            subintervalType
+        );
+    }
+
+    public getTopRatedOwner(
+        reportType: DashboardTopReportType,
+        searchTerms: string[],
+        pageIndex: number,
+        pageSize: number,
+        timeInterval: TimeInterval,
+        startDate: string,
+        endDate: string,
+        subintervalType: SubintervalType
+    ): Observable<TopOwnerListResponse> {
+        return this.dashboardService.apiDashboardTopownersGet(
+            reportType,
             searchTerms,
             pageIndex,
             pageSize,

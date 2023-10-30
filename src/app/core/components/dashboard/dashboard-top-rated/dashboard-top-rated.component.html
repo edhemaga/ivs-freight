@@ -59,18 +59,24 @@
 
             <!-- Tabs -->
 
-            <ng-container *ngIf="topRatedTitle !== 'Shipper'">
-                <div
-                    class="d-flex align-items-center dashboard-top-rated-header-tabs"
-                >
+            <div
+                class="d-flex align-items-center dashboard-top-rated-header-tabs"
+            >
+                <ng-container *ngIf="topRatedTitle !== 'Shipper'">
                     <app-ta-tab-switch
                         [tabs]="topRatedTabs"
                         [dashboardHeight]="true"
                         (switchClicked)="handleSwitchTabClick($event)"
                     >
-                    </app-ta-tab-switch>
-                </div>
-            </ng-container>
+                    </app-ta-tab-switch
+                ></ng-container>
+
+                <ng-container *ngIf="topRatedTitle === 'Shipper'">
+                    <div class="shipper-tab-container">
+                        <p class="m-0 ta-font-extra-bold">Load</p>
+                    </div>
+                </ng-container>
+            </div>
 
             <div class="dashboard-top-rated-header-border"></div>
         </div>
@@ -288,6 +294,9 @@
                                         (topRatedTitle === 'Broker' &&
                                             currentActiveTab.name ===
                                                 'Revenue') ||
+                                        (topRatedTitle === 'Owner' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
                                         (topRatedTitle === 'Repair Shop' &&
                                             currentActiveTab.name === 'Cost')
                                             ? '$'
@@ -300,6 +309,9 @@
                                 <p class="m-0">
                                     {{
                                         (topRatedTitle === 'Broker' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
+                                        (topRatedTitle === 'Owner' &&
                                             currentActiveTab.name ===
                                                 'Revenue') ||
                                         (topRatedTitle === 'Repair Shop' &&

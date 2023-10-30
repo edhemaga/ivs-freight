@@ -14,6 +14,7 @@ import { ConstantStringEnum } from '../enum/constant-string.enum';
 
 @Directive({
     selector: '[clickOutsideElement]',
+    standalone: true,
 })
 export class ClickOutsideCustomRangeDirective
     implements AfterViewInit, OnDestroy
@@ -45,6 +46,9 @@ export class ClickOutsideCustomRangeDirective
     }
 
     private checkIfInsideClick(elementToCheck: HTMLElement): boolean {
+        console.log('elementToCheck', elementToCheck);
+        console.log('this.element', this.element);
+
         return (
             elementToCheck.classList.contains(
                 ConstantStringEnum.CLASS_DROPDOWN_OPTION
