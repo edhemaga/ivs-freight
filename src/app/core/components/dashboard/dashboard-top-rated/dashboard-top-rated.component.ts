@@ -171,6 +171,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public isDisplayingCustomPeriodRange: boolean = false;
     private selectedCustomPeriodRange: CustomPeriodRange;
 
+    private overallCompanyDuration: number;
+
     // colors
     public mainColorsPallete: MainColorsPallete[] = [];
     private secondaryColorsPallete: SecondaryColorsPallete[] = [];
@@ -198,6 +200,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.createForm();
 
         this.getConstantData();
+
+        this.getOverallCompanyDuration();
 
         this.setDoughnutChartData(this.topRatedList);
 
@@ -272,6 +276,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                     break;
                 case ConstantStringEnum.ALL_TIME:
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
+
                     break;
                 case ConstantStringEnum.CUSTOM:
                     this.isDisplayingCustomPeriodRange = true;
@@ -478,6 +484,18 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             this.doughnutChart.hoverDoughnut(null);
             this.barChart.hoverBarChart(null);
         }
+    }
+
+    private getOverallCompanyDuration(): void {
+        this.dashboardService
+            .getOverallCompanyDuration()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((companyDuration) => {
+                this.overallCompanyDuration =
+                    companyDuration.companyDurationInDays;
+
+                this.setCustomSubPeriodList(this.overallCompanyDuration);
+            });
     }
 
     private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {

@@ -13,11 +13,17 @@ import {
     TopOwnerListResponse,
     TopRepairShopListResponse,
     TopShipperListResponse,
+    CompanyDurationResponse,
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
     constructor(private dashboardService: DashboardBackendService) {}
+
+    // Dashboard
+    public getOverallCompanyDuration(): Observable<CompanyDurationResponse> {
+        return this.dashboardService.apiDashboardCompanydurationGet();
+    }
 
     // Dashboard - Top Rated
     public getTopRatedDispatcher(
