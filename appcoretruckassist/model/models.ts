@@ -106,6 +106,7 @@ export * from './companyContactModalResponse';
 export * from './companyContactResponse';
 export * from './companyContactResponsePagination';
 export * from './companyDocumentsStatisticResponse';
+export * from './companyDurationResponse';
 export * from './companyIntegrationProviderListResponse';
 export * from './companyIntegrationResponse';
 export * from './companyIntegrationResponsePagination';
