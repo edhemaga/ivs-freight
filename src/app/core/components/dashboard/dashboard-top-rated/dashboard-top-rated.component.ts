@@ -598,6 +598,59 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .subscribe((dispatcherData) => {
                 console.log('dispatcherData', dispatcherData);
                 // top rated list and single selection data
+                this.topRatedList = dispatcherData.pagination.data.map(
+                    (dispatcher) => {
+                        const filteredIntervals = dispatcher.intervals.map(
+                            (interval) => {
+                                return selectedTab === ConstantStringEnum.LOAD
+                                    ? interval.dispatcherLoadCount
+                                    : interval.dispatcherRevenue;
+                            }
+                        );
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervals,
+                        ];
+
+                        return {
+                            id: dispatcher.id,
+                            name: dispatcher.name,
+                            value:
+                                selectedTab === ConstantStringEnum.LOAD
+                                    ? dispatcher.loadsCount.toString()
+                                    : dispatcher.revenue.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.LOAD
+                                    ? dispatcher.loadPercentage.toString()
+                                    : dispatcher.revenuePercentage.toString(),
+                            isSelected: false,
+                        };
+                    }
+                );
+
+                for (let i = 0; i < dispatcherData.topDispatchers.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? dispatcherData.topDispatchers[i]
+                                  .dispatcherLoadCount
+                            : dispatcherData.topDispatchers[i]
+                                  .dispatcherRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? dispatcherData.allOthers[i].dispatcherLoadCount
+                            : dispatcherData.allOthers[i].dispatcherRevenue,
+                    ];
+                }
+
+                this.setChartsData();
             });
     }
 
@@ -1032,6 +1085,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             topTenValue +
                             ConstantChartStringEnum.THOUSAND_SIGN,
                     };
+                case ConstantStringEnum.REPAIR_SHOP:
                 case ConstantStringEnum.BROKER:
                 case ConstantStringEnum.OWNER:
                 case ConstantStringEnum.REPAIR_SHOP:
@@ -1062,6 +1116,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         filteredOtherValue:
                             otherValue + ConstantChartStringEnum.THOUSAND_SIGN,
                     };
+                case ConstantStringEnum.DISPATCHER:
                 case ConstantStringEnum.BROKER:
                 case ConstantStringEnum.OWNER:
                 case ConstantStringEnum.REPAIR_SHOP:
@@ -1201,7 +1256,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     this.topRatedTitle === ConstantStringEnum.DRIVER
                         ? topRatedListItem.value +
                           ConstantChartStringEnum.THOUSAND_SIGN
-                        : (this.topRatedTitle === ConstantStringEnum.BROKER &&
+                        : (this.topRatedTitle ===
+                              ConstantStringEnum.DISPATCHER &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.REVENUE) ||
+                          (this.topRatedTitle === ConstantStringEnum.BROKER &&
                               this.currentActiveTab.name ===
                                   ConstantStringEnum.REVENUE) ||
                           (this.topRatedTitle ===

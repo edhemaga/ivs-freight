@@ -5,11 +5,17 @@ import {
     OnInit,
 } from '@angular/core';
 
+// services
 import { SharedService } from '../../../services/shared/shared.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
+// components
 import { SettingsBasicModalComponent } from '../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
 
+// enums
+import { ConstantStringEnum } from '../state/enum/constant-string.enum';
+
+// models
 import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
 
 @Component({
@@ -34,17 +40,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     private checkIfUserSettingsAreUpdated(): void {
         const loggedUser: SignInResponse = JSON.parse(
-            localStorage.getItem('user')
+            localStorage.getItem(ConstantStringEnum.USER)
         );
 
         if (!loggedUser.areSettingsUpdated) {
             this.modalService.openModal(
                 SettingsBasicModalComponent,
                 {
-                    size: 'medium',
+                    size: ConstantStringEnum.MEDIUM,
                 },
                 {
-                    type: 'edit-company-first-login',
+                    type: ConstantStringEnum.MODAL_TYPE,
                 },
                 null,
                 false

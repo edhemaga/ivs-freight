@@ -1,4 +1,8 @@
 export enum ConstantStringEnum {
+    USER = 'user',
+    MEDIUM = 'medium',
+    MODAL_TYPE = 'edit-company-first-login',
+
     DISPATCHER = 'Dispatcher',
     DRIVER = 'Driver',
     BROKER = 'Broker',
