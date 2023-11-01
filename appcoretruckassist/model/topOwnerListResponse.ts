@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BrokerIntervalResponse } from './brokerIntervalResponse';
-import { TopBrokersResponsePagination } from './topBrokersResponsePagination';
+import { TopOwnerResponsePagination } from './topOwnerResponsePagination';
+import { OwnerIntervalResponse } from './ownerIntervalResponse';
 
 
-export interface TopBrokersListResponse { 
-    pagination?: TopBrokersResponsePagination;
-    topBrokers?: Array<BrokerIntervalResponse> | null;
-    allOthers?: Array<BrokerIntervalResponse> | null;
+export interface TopOwnerListResponse { 
+    pagination?: TopOwnerResponsePagination;
+    topOwners?: Array<OwnerIntervalResponse> | null;
+    allOthers?: Array<OwnerIntervalResponse> | null;
     totalRevenue?: number | null;
     totalLoadCount?: number | null;
 }

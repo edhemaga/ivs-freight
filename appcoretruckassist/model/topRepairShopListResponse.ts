@@ -15,7 +15,7 @@ import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
 
 export interface TopRepairShopListResponse { 
     pagination?: TopRepairShopResponsePagination;
-    topTenRepairShops?: Array<RepairShopIntervalResponse> | null;
+    topRepairShops?: Array<RepairShopIntervalResponse> | null;
     allOther?: Array<RepairShopIntervalResponse> | null;
     totalCost?: number | null;
     totalVisit?: number | null;

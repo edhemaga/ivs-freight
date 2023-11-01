@@ -647,7 +647,8 @@
                 (touchedInput || getSuperControl.touched) &&
                 _inputConfig.multipleLabel?.labels.length &&
                 !_inputConfig.multipleInputValues?.options.length &&
-                !_inputConfig.isDisabled
+                !_inputConfig.isDisabled,
+            dark: _inputConfig.customClass === 'datetimeclass dark'
         }"
     >
         <span

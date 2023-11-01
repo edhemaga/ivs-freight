@@ -15,7 +15,7 @@ import { TopShipperResponsePagination } from './topShipperResponsePagination';
 
 export interface TopShipperListResponse { 
     pagination?: TopShipperResponsePagination;
-    topTenShippers?: Array<ShipperIntervalResponse> | null;
+    topShippers?: Array<ShipperIntervalResponse> | null;
     allOthers?: Array<ShipperIntervalResponse> | null;
     totalLoadCount?: number | null;
 }

@@ -7,8 +7,6 @@ import { PayrollState, PayrollStore } from './payroll.store';
     providedIn: 'root',
 })
 export class PayrollQuery extends QueryEntity<PayrollState> {
-    //selectDashboardStatistic$ = this.select('statistic');
-
     payrolldata$ = this.selectAll();
 
     constructor(protected store: PayrollStore) {

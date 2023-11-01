@@ -1,5 +1,5 @@
 import {
-    AfterViewInit,
+    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
@@ -9,15 +9,19 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
-// services
-import { DashboardService } from '../state/services/dashboard.service';
-
 // bootstrap
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+// moment
+import moment from 'moment';
+
+// services
+import { DashboardService } from '../state/services/dashboard.service';
 
 // constants
 import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
 import { DashboardColors } from '../state/utils/dashboard-colors.constants';
+import { DashboardSubperiodConstants } from '../state/utils/dashboard-subperiod.constants';
 
 // helpers
 import { DashboardArrayHelper } from '../state/utils/dashboard-array-helper';
@@ -32,6 +36,7 @@ import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.mo
 import { DashboardTab } from '../state/models/dashboard-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
+import { CustomPeriodRange } from '../state/models/custom-period-range.model';
 import {
     TopRatedMainColorsPallete,
     TopRatedSecondaryColorsPallete,
@@ -60,9 +65,7 @@ import {
     templateUrl: './dashboard-top-rated.component.html',
     styleUrls: ['./dashboard-top-rated.component.scss'],
 })
-export class DashboardTopRatedComponent
-    implements OnInit, OnDestroy, AfterViewInit
-{
+export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     @ViewChild('popover') public popover: NgbPopover;
     @ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
     @ViewChild('barChart') public barChart: BarChart;
@@ -165,6 +168,11 @@ export class DashboardTopRatedComponent
     public selectedMainPeriod: DropdownListItem;
     public selectedSubPeriod: DropdownListItem;
 
+    public isDisplayingCustomPeriodRange: boolean = false;
+    private selectedCustomPeriodRange: CustomPeriodRange;
+
+    private overallCompanyDuration: number;
+
     // colors
     public mainColorsPallete: TopRatedMainColorsPallete[] = [];
     public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
@@ -182,13 +190,9 @@ export class DashboardTopRatedComponent
         selectedBarValues: [],
     };
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // tabs
-    private currentSwitchTab: string = 'All Time';
-
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private changeDetectorRef: ChangeDetectorRef,
         private dashboardService: DashboardService
     ) {}
 
@@ -196,6 +200,8 @@ export class DashboardTopRatedComponent
         this.createForm();
 
         this.getConstantData();
+
+        this.getOverallCompanyDuration();
 
         this.setDoughnutChartData(this.topRatedList);
 
@@ -241,93 +247,67 @@ export class DashboardTopRatedComponent
         action: string
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
+            if (this.isDisplayingCustomPeriodRange) {
+                this.isDisplayingCustomPeriodRange = false;
+            }
+
             this.selectedMainPeriod = dropdownListItem;
+
+            let matchingIdList: number[] = [];
 
             switch (dropdownListItem.name) {
                 case ConstantStringEnum.TODAY:
-                    const TODAY_SUB_PERIOD_ID = [1, 2, 3];
+                    matchingIdList = DashboardSubperiodConstants.TODAY_ID_LIST;
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 1) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return TODAY_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.WEEK_TO_DATE:
-                    const WTD_SUB_PERIOD_ID = [3, 4, 5];
+                    matchingIdList = DashboardSubperiodConstants.WTD_ID_LIST;
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 3) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return WTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.MONTH_TO_DATE:
-                    const MTD_SUB_PERIOD_ID = [5, 6, 7];
+                    matchingIdList = DashboardSubperiodConstants.MTD_ID_LIST;
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 5) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return MTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.QUARTAL_TO_DATE:
-                    const QTD_SUB_PERIOD_ID = [5, 6, 8];
+                    matchingIdList = DashboardSubperiodConstants.QTD_ID_LIST;
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 5) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return QTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.YEAR_TO_DATE:
-                    const YTD_SUB_PERIOD_ID = [6, 8, 9];
+                    matchingIdList = DashboardSubperiodConstants.YTD_ID_LIST;
 
-                    this.subPeriodDropdownList =
-                        DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                            (period) => {
-                                if (period.id === 6) {
-                                    this.selectedSubPeriod = period;
-                                }
-
-                                return YTD_SUB_PERIOD_ID.includes(period.id);
-                            }
-                        );
                     break;
                 case ConstantStringEnum.ALL_TIME:
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
+
                     break;
                 case ConstantStringEnum.CUSTOM:
+                    this.isDisplayingCustomPeriodRange = true;
+
+                    this.subPeriodDropdownList = [];
+
                     break;
                 default:
                     break;
+            }
+
+            if (
+                dropdownListItem.name !== ConstantStringEnum.ALL_TIME &&
+                dropdownListItem.name !== ConstantStringEnum.CUSTOM
+            ) {
+                this.setSubPeriodList(matchingIdList);
+                this.getTopRatedListData();
             }
         }
 
         if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
             this.selectedSubPeriod = dropdownListItem;
-        }
 
-        this.getTopRatedListData();
+            if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+                this.getTopRatedListData(this.selectedCustomPeriodRange);
+            } else {
+                this.getTopRatedListData();
+            }
+        }
     }
 
     public handleSwitchTopRatedClick(
@@ -346,6 +326,10 @@ export class DashboardTopRatedComponent
 
         this.topRatedTabs = topRatedTabsToDisplay;
         this.currentActiveTab = topRatedTabsToDisplay[0];
+
+        this.selectedMainPeriod =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
+
         this.topRatedTitle = topRatedDropdownItem.name;
 
         this.topRatedDropdownList.find(
@@ -359,9 +343,7 @@ export class DashboardTopRatedComponent
         this.popover.close();
     }
 
-    public handleSwitchTabClick(
-        activeTab: DashboardTab /* , useLast? */
-    ): void {
+    public handleSwitchTabClick(activeTab: DashboardTab): void {
         if (this.currentActiveTab?.name === activeTab.name) {
             return;
         }
@@ -369,14 +351,6 @@ export class DashboardTopRatedComponent
         this.currentActiveTab = activeTab;
 
         this.getTopRatedListData();
-
-        /*   const switchData = useLast ? this.currentSwitchTab : event['name']; //currently no data for milage/revnue so insert last chosen
-        this.timePeriod.changeTimePeriod(switchData);
-        this.currentSwitchTab = switchData;
-        if (switchData == 'Custom') {
-            return false;
-        }
-        this.barChart.updateTime(switchData); */
     }
 
     public handleShowMoreClick(): void {
@@ -395,6 +369,31 @@ export class DashboardTopRatedComponent
 
             return;
         }
+    }
+
+    public handleSetCustomPeriodRangeClick(
+        customPeriodRange: CustomPeriodRange
+    ): void {
+        const fromDate = moment(new Date(customPeriodRange.fromDate));
+        const toDate = moment(new Date(customPeriodRange.toDate));
+
+        const selectedDaysRange =
+            toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+
+        if (selectedDaysRange < 0) {
+            return;
+        }
+
+        this.isDisplayingCustomPeriodRange = false;
+        this.selectedCustomPeriodRange = customPeriodRange;
+
+        this.setCustomSubPeriodList(selectedDaysRange);
+
+        this.getTopRatedListData(customPeriodRange);
+    }
+
+    public handleOutsideCustomPeriodRangeClick() {
+        this.isDisplayingCustomPeriodRange = false;
     }
 
     public handleAddSelectedClick(
@@ -488,7 +487,19 @@ export class DashboardTopRatedComponent
         }
     }
 
-    private getTopRatedListData(): void {
+    private getOverallCompanyDuration(): void {
+        this.dashboardService
+            .getOverallCompanyDuration()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((companyDuration) => {
+                this.overallCompanyDuration =
+                    companyDuration.companyDurationInDays;
+
+                this.setCustomSubPeriodList(this.overallCompanyDuration);
+            });
+    }
+
+    private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {
         const selectedTab: DashboardTopReportType = this.currentActiveTab
             .name as DashboardTopReportType;
 
@@ -513,31 +524,51 @@ export class DashboardTopRatedComponent
         console.log('selectedTab', selectedTab);
         console.log('selectedMainPeriod', selectedMainPeriod);
         console.log('selectedSubPeriod', selectedSubPeriod);
+        console.log('customPeriodRange', customPeriodRange);
 
         switch (this.topRatedTitle) {
+            case ConstantStringEnum.DISPATCHER:
+                this.getTopRatedDispatcherListData(
+                    selectedTab,
+                    selectedMainPeriod,
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
+                );
+                break;
+            case ConstantStringEnum.OWNER:
+                this.getTopRatedOwnerListData(
+                    selectedTab,
+                    selectedMainPeriod,
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
+                );
+                break;
             case ConstantStringEnum.BROKER:
-                /*   this.dashboardService
-                    .getTopRatedBroker(...topRatedArgumentsData)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((brokerData) => {
-                        console.log('brokerData', brokerData);
-                    }); */
+                this.getTopRatedBrokerListData(
+                    selectedTab,
+                    selectedMainPeriod,
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
+                );
                 break;
             case ConstantStringEnum.SHIPPER:
-                /*   this.dashboardService
-                    .getTopRatedShipper(
-                        ...topRatedArgumentsData
-                    )
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((shipperData) => {
-                        console.log('shipperData', shipperData);
-                    }); */
+                this.getTopRatedShipperListData(
+                    selectedMainPeriod,
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
+                );
                 break;
             case ConstantStringEnum.REPAIR_SHOP:
                 this.getTopRatedRepairShopListData(
                     selectedTab,
                     selectedMainPeriod,
-                    selectedSubPeriod
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
                 );
                 break;
             default:
@@ -545,10 +576,11 @@ export class DashboardTopRatedComponent
         }
     }
 
-    private getTopRatedRepairShopListData(
+    private getTopRatedDispatcherListData(
         selectedTab: DashboardTopReportType,
         selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
     ): void {
         const topRatedArgumentsData = [
             selectedTab,
@@ -556,8 +588,300 @@ export class DashboardTopRatedComponent
             null,
             null,
             selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedDispatcher(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((dispatcherData) => {
+                console.log('dispatcherData', dispatcherData);
+                // top rated list and single selection data
+                this.topRatedList = dispatcherData.pagination.data.map(
+                    (dispatcher) => {
+                        const filteredIntervals = dispatcher.intervals.map(
+                            (interval) => {
+                                return selectedTab === ConstantStringEnum.LOAD
+                                    ? interval.dispatcherLoadCount
+                                    : interval.dispatcherRevenue;
+                            }
+                        );
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervals,
+                        ];
+
+                        return {
+                            id: dispatcher.id,
+                            name: dispatcher.name,
+                            value:
+                                selectedTab === ConstantStringEnum.LOAD
+                                    ? dispatcher.loadsCount.toString()
+                                    : dispatcher.revenue.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.LOAD
+                                    ? dispatcher.loadPercentage.toString()
+                                    : dispatcher.revenuePercentage.toString(),
+                            isSelected: false,
+                        };
+                    }
+                );
+
+                for (let i = 0; i < dispatcherData.topDispatchers.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? dispatcherData.topDispatchers[i]
+                                  .dispatcherLoadCount
+                            : dispatcherData.topDispatchers[i]
+                                  .dispatcherRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? dispatcherData.allOthers[i].dispatcherLoadCount
+                            : dispatcherData.allOthers[i].dispatcherRevenue,
+                    ];
+                }
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedBrokerListData(
+        selectedTab: DashboardTopReportType,
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
+    ): void {
+        const topRatedArgumentsData = [
+            selectedTab,
             null,
             null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedBroker(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((brokerData) => {
+                console.log('brokerData', brokerData);
+                // top rated list and single selection data
+                this.topRatedList = brokerData.pagination.data.map((broker) => {
+                    const filteredIntervals = broker.intervals.map(
+                        (interval) => {
+                            return selectedTab === ConstantStringEnum.LOAD
+                                ? interval.brokerLoadCount
+                                : interval.brokerRevenue;
+                        }
+                    );
+
+                    this.barChartValues.selectedBarValues = [
+                        ...this.barChartValues.selectedBarValues,
+                        filteredIntervals,
+                    ];
+
+                    return {
+                        id: broker.id,
+                        name: broker.name,
+                        value:
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? broker.loadsCount.toString()
+                                : broker.revenue.toString(),
+                        percent:
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? broker.loadPercentage.toString()
+                                : broker.revenuePercentage.toString(),
+                        isSelected: false,
+                    };
+                });
+
+                for (let i = 0; i < brokerData.topBrokers.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? brokerData.topBrokers[i].brokerLoadCount
+                            : brokerData.topBrokers[i].brokerRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? brokerData.allOthers[i].brokerLoadCount
+                            : brokerData.allOthers[i].brokerRevenue,
+                    ];
+                }
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedShipperListData(
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
+    ): void {
+        const topRatedArgumentsData = [
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedShipper(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((shipperData) => {
+                console.log('shipperData', shipperData);
+                // top rated list and single selection data
+                this.topRatedList = shipperData.pagination.data.map(
+                    (shipper) => {
+                        const filteredIntervals = shipper.intervals.map(
+                            (interval) => {
+                                return interval.shipperLoadCount;
+                            }
+                        );
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervals,
+                        ];
+
+                        return {
+                            id: shipper.id,
+                            name: shipper.name,
+                            value: shipper.loadsCount.toString(),
+                            percent: shipper.loadPercentage.toString(),
+                            isSelected: false,
+                        };
+                    }
+                );
+
+                for (let i = 0; i < shipperData.topShippers.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        shipperData.topShippers[i].shipperLoadCount,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        shipperData.allOthers[i].shipperLoadCount,
+                    ];
+                }
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedOwnerListData(
+        selectedTab: DashboardTopReportType,
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
+    ): void {
+        const topRatedArgumentsData = [
+            selectedTab,
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedOwner(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((ownerData) => {
+                console.log('ownerData', ownerData);
+                // top rated list and single selection data
+                this.topRatedList = ownerData.pagination.data.map((owner) => {
+                    const filteredIntervals = owner.intervals.map(
+                        (interval) => {
+                            return selectedTab === ConstantStringEnum.LOAD
+                                ? interval.ownerLoadCount
+                                : interval.ownerRevenue;
+                        }
+                    );
+
+                    this.barChartValues.selectedBarValues = [
+                        ...this.barChartValues.selectedBarValues,
+                        filteredIntervals,
+                    ];
+
+                    return {
+                        id: owner.id,
+                        name: owner.name,
+                        value:
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? owner.loadCount.toString()
+                                : owner.revenue.toString(),
+                        percent:
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? owner.loadPercentage.toString()
+                                : owner.revenuePercentage.toString(),
+                        isSelected: false,
+                    };
+                });
+
+                for (let i = 0; i < ownerData.topOwners.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? ownerData.topOwners[i].ownerLoadCount
+                            : ownerData.topOwners[i].ownerRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.LOAD
+                            ? ownerData.allOthers[i].ownerLoadCount
+                            : ownerData.allOthers[i].ownerRevenue,
+                    ];
+                }
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedRepairShopListData(
+        selectedTab: DashboardTopReportType,
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
+    ): void {
+        const topRatedArgumentsData = [
+            selectedTab,
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ] as const;
 
@@ -598,18 +922,14 @@ export class DashboardTopRatedComponent
                     }
                 );
 
-                for (
-                    let i = 0;
-                    i < repairShopData.topTenRepairShops.length;
-                    i++
-                ) {
+                for (let i = 0; i < repairShopData.topRepairShops.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
                         selectedTab === ConstantStringEnum.VISIT
-                            ? repairShopData.topTenRepairShops[i].count
-                            : repairShopData.topTenRepairShops[i].cost,
+                            ? repairShopData.topRepairShops[i].count
+                            : repairShopData.topRepairShops[i].cost,
                     ];
 
                     // other intervals
@@ -621,13 +941,61 @@ export class DashboardTopRatedComponent
                     ];
                 }
 
-                this.setDoughnutChartData(this.topRatedList);
-                this.setBarChartConfigAndAxes(this.barChartValues);
+                this.setChartsData();
             });
     }
 
+    private setSubPeriodList(subPeriodIdList: number[]): void {
+        this.subPeriodDropdownList =
+            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
+                (period) => {
+                    if (period.id === subPeriodIdList[0]) {
+                        this.selectedSubPeriod = period;
+                    }
+
+                    return subPeriodIdList.includes(period.id);
+                }
+            );
+    }
+
+    private setCustomSubPeriodList(selectedDaysRange: number): void {
+        let matchingIdList: number[] = [];
+
+        if (selectedDaysRange >= 1 && selectedDaysRange <= 2) {
+            matchingIdList =
+                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_1;
+        }
+
+        if (selectedDaysRange > 2 && selectedDaysRange <= 14) {
+            matchingIdList =
+                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_2;
+        }
+
+        if (selectedDaysRange > 14 && selectedDaysRange <= 60) {
+            matchingIdList =
+                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_3;
+        }
+
+        if (selectedDaysRange > 60 && selectedDaysRange <= 365) {
+            matchingIdList =
+                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_4;
+        }
+
+        if (selectedDaysRange > 365 && selectedDaysRange <= 730) {
+            matchingIdList =
+                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_5;
+        }
+
+        if (selectedDaysRange > 730) {
+            matchingIdList =
+                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_6;
+        }
+
+        this.setSubPeriodList(matchingIdList);
+    }
+
     private setDoughnutChartCenterStats(
-        topRatedListItemSelected: boolean,
+        isTopRatedListItemSelected: boolean,
         topRatedList: TopRatedListItem[],
         topTenValue: number,
         otherValue?: number,
@@ -636,14 +1004,14 @@ export class DashboardTopRatedComponent
     ): ChartInitProperties[] {
         let chartCenterStats: ChartInitProperties[] = [];
 
-        if (topRatedListItemSelected) {
+        if (isTopRatedListItemSelected) {
             const topTenCenterStatsName =
                 this.selectedTopRatedList.length === 1
                     ? topRatedList[0].name
                     : topRatedList.length + ConstantChartStringEnum.SELECTED;
 
             const { filteredTopTenValue } = this.setDoughnutChartValueSigns(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topTenValue
             );
 
@@ -673,7 +1041,7 @@ export class DashboardTopRatedComponent
                 filteredOtherPercentage,
                 filteredOtherValue,
             } = this.setDoughnutChartValueSigns(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topTenValue,
                 topTenPercentage,
                 otherPercentage,
@@ -698,7 +1066,7 @@ export class DashboardTopRatedComponent
     }
 
     private setDoughnutChartValueSigns(
-        topRatedListItemSelected: boolean,
+        isTopRatedListItemSelected: boolean,
         topTenValue: number,
         topTenPercentage?: number,
         otherPercentage?: number,
@@ -709,7 +1077,7 @@ export class DashboardTopRatedComponent
         const filteredOtherPercentage =
             otherPercentage + ConstantChartStringEnum.PERCENTAGE_SIGN;
 
-        if (topRatedListItemSelected) {
+        if (isTopRatedListItemSelected) {
             switch (this.topRatedTitle) {
                 case ConstantStringEnum.DRIVER:
                     return {
@@ -719,17 +1087,24 @@ export class DashboardTopRatedComponent
                             ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 case ConstantStringEnum.REPAIR_SHOP:
+                case ConstantStringEnum.BROKER:
+                case ConstantStringEnum.OWNER:
+                case ConstantStringEnum.REPAIR_SHOP:
                     return {
                         filteredTopTenValue:
                             this.currentActiveTab.name ===
-                            ConstantStringEnum.VISIT
+                                ConstantStringEnum.LOAD ||
+                            this.currentActiveTab.name ===
+                                ConstantStringEnum.VISIT
                                 ? topTenValue.toString()
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
                                   topTenValue +
                                   ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 default:
-                    break;
+                    return {
+                        filteredTopTenValue: topTenValue.toString(),
+                    };
             }
         } else {
             switch (this.topRatedTitle) {
@@ -742,12 +1117,17 @@ export class DashboardTopRatedComponent
                         filteredOtherValue:
                             otherValue + ConstantChartStringEnum.THOUSAND_SIGN,
                     };
+                case ConstantStringEnum.DISPATCHER:
+                case ConstantStringEnum.BROKER:
+                case ConstantStringEnum.OWNER:
                 case ConstantStringEnum.REPAIR_SHOP:
                     return {
                         filteredTopTenPercentage,
                         filteredTopTenValue:
                             this.currentActiveTab.name ===
-                            ConstantStringEnum.VISIT
+                                ConstantStringEnum.LOAD ||
+                            this.currentActiveTab.name ===
+                                ConstantStringEnum.VISIT
                                 ? topTenValue.toString()
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
                                   topTenValue +
@@ -755,14 +1135,21 @@ export class DashboardTopRatedComponent
                         filteredOtherPercentage,
                         filteredOtherValue:
                             this.currentActiveTab.name ===
-                            ConstantStringEnum.VISIT
+                                ConstantStringEnum.VISIT ||
+                            this.currentActiveTab.name ===
+                                ConstantStringEnum.LOAD
                                 ? otherValue.toString()
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
                                   otherValue +
                                   ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 default:
-                    break;
+                    return {
+                        filteredTopTenPercentage,
+                        filteredTopTenValue: topTenValue.toString(),
+                        filteredOtherPercentage,
+                        filteredOtherValue: otherValue.toString(),
+                    };
             }
         }
     }
@@ -805,7 +1192,7 @@ export class DashboardTopRatedComponent
 
     private setDoughnutChartPercentage(
         topRatedList: TopRatedListItem[],
-        topRatedListItemSelected: boolean
+        isTopRatedListItemSelected: boolean
     ): DoughnutChartPercentage {
         let topTenPercentage = 0;
         let otherPercentage = 0;
@@ -814,7 +1201,7 @@ export class DashboardTopRatedComponent
         let otherValue = 0;
 
         const filterdDataValues = topRatedList.map((topRatedItem, index) => {
-            if (!topRatedListItemSelected) {
+            if (!isTopRatedListItemSelected) {
                 if (this.topRatedList.length <= 10) {
                     if (index <= 2) {
                         topTenPercentage += +topRatedItem.percent;
@@ -870,9 +1257,20 @@ export class DashboardTopRatedComponent
                     this.topRatedTitle === ConstantStringEnum.DRIVER
                         ? topRatedListItem.value +
                           ConstantChartStringEnum.THOUSAND_SIGN
-                        : this.topRatedTitle ===
+                        : (this.topRatedTitle ===
+                              ConstantStringEnum.DISPATCHER &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.REVENUE) ||
+                          (this.topRatedTitle === ConstantStringEnum.BROKER &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.REVENUE) ||
+                          (this.topRatedTitle ===
                               ConstantStringEnum.REPAIR_SHOP &&
-                          this.currentActiveTab.name === ConstantStringEnum.COST
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.COST) ||
+                          (this.topRatedTitle === ConstantStringEnum.OWNER &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.REVENUE)
                         ? ConstantChartStringEnum.DOLLAR_SIGN +
                           topRatedListItem.value +
                           ConstantChartStringEnum.THOUSAND_SIGN
@@ -929,7 +1327,7 @@ export class DashboardTopRatedComponent
 
     private setDoughnutChartData(
         topRatedList: TopRatedListItem[],
-        topRatedListItemSelected?: boolean
+        isTopRatedListItemSelected?: boolean
     ): void {
         let dataValues: number[] = [];
         let dataColors: string[] = this.mainColorsPallete.map(
@@ -946,20 +1344,20 @@ export class DashboardTopRatedComponent
             otherValue,
         } = this.setDoughnutChartPercentage(
             topRatedList,
-            topRatedListItemSelected
+            isTopRatedListItemSelected
         );
 
         dataValues = [...filterdDataValues];
 
-        if (topRatedListItemSelected) {
+        if (isTopRatedListItemSelected) {
             chartCenterStats = this.setDoughnutChartCenterStats(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topRatedList,
                 topTenValue
             );
         } else {
             chartCenterStats = this.setDoughnutChartCenterStats(
-                topRatedListItemSelected,
+                isTopRatedListItemSelected,
                 topRatedList,
                 topTenValue,
                 otherValue,
@@ -988,6 +1386,7 @@ export class DashboardTopRatedComponent
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
         console.log('barChartValues', barChartValues);
+
         this.barChartConfig = {
             dataProperties: [
                 {
@@ -1141,33 +1540,15 @@ export class DashboardTopRatedComponent
         }
     }
 
+    private setChartsData(): void {
+        this.setDoughnutChartData(this.topRatedList);
+        this.setBarChartConfigAndAxes(this.barChartValues);
+
+        this.changeDetectorRef.detectChanges();
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-    }
-
-    ///////////////////////////////////////////////////////
-
-    selectTimePeriod(period) {
-        this.barChart.updateTime(this.currentSwitchTab, period);
-    }
-
-    saveCustomRange(ev) {
-        this.timePeriod.changeCustomTime(ev);
-        this.barChart.updateTime('Custom Set', ev);
-    }
-
-    /* <app-ta-time-period
-                    #timePeriod
-                    (selectTimePeriod)="selectTimePeriod($event)"
-                >
-                </app-ta-time-period> */
-    @ViewChild('timePeriod', { static: false }) public timePeriod: any;
-    @ViewChild('tabSwitch', { static: false }) public tabSwitch: any;
-
-    ngAfterViewInit(): void {
-        if (this.timePeriod && this.timePeriod.changeTimePeriod) {
-            this.timePeriod?.changeTimePeriod('All Time');
-        }
     }
 }

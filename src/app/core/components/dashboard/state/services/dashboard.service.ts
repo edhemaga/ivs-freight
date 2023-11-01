@@ -1,32 +1,53 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../../../../environments/environment';
-
-import { DashboardStore } from '../store/dashboard.store';
-
-import { SharedService } from '../../../../services/shared/shared.service';
-
+// models
 import {
     DashboardService as DashboardBackendService,
     DashboardTopReportType,
     SubintervalType,
     TimeInterval,
+    TopBrokersListResponse,
+    TopDispatchersListResponse,
+    TopOwnerListResponse,
     TopRepairShopListResponse,
+    TopShipperListResponse,
+    CompanyDurationResponse,
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    constructor(
-        private dashboardStore: DashboardStore,
-        private http: HttpClient,
-        private sharedService: SharedService,
-        private dashboardService: DashboardBackendService
-    ) {}
+    constructor(private dashboardService: DashboardBackendService) {}
+
+    // Dashboard
+    public getOverallCompanyDuration(): Observable<CompanyDurationResponse> {
+        return this.dashboardService.apiDashboardCompanydurationGet();
+    }
 
     // Dashboard - Top Rated
+    public getTopRatedDispatcher(
+        reportType: DashboardTopReportType,
+        searchTerms: string[],
+        pageIndex: number,
+        pageSize: number,
+        timeInterval: TimeInterval,
+        startDate: string,
+        endDate: string,
+        subintervalType: SubintervalType
+    ): Observable<TopDispatchersListResponse> {
+        return this.dashboardService.apiDashboardTopdispatchersGet(
+            reportType,
+            searchTerms,
+            pageIndex,
+            pageSize,
+            timeInterval,
+            startDate,
+            endDate,
+            subintervalType
+        );
+    }
+
     public getTopRatedBroker(
         reportType: DashboardTopReportType,
         searchTerms: string[],
@@ -36,7 +57,7 @@ export class DashboardService {
         startDate: string,
         endDate: string,
         subintervalType: SubintervalType
-    ): Observable<TopRepairShopListResponse> {
+    ): Observable<TopBrokersListResponse> {
         return this.dashboardService.apiDashboardTopbrokersGet(
             reportType,
             searchTerms,
@@ -57,9 +78,30 @@ export class DashboardService {
         startDate: string,
         endDate: string,
         subintervalType: SubintervalType
-    ): Observable<TopRepairShopListResponse> {
+    ): Observable<TopShipperListResponse> {
         return this.dashboardService.apiDashboardTopshippersGet(
-            /* reportType, */
+            searchTerms,
+            pageIndex,
+            pageSize,
+            timeInterval,
+            startDate,
+            endDate,
+            subintervalType
+        );
+    }
+
+    public getTopRatedOwner(
+        reportType: DashboardTopReportType,
+        searchTerms: string[],
+        pageIndex: number,
+        pageSize: number,
+        timeInterval: TimeInterval,
+        startDate: string,
+        endDate: string,
+        subintervalType: SubintervalType
+    ): Observable<TopOwnerListResponse> {
+        return this.dashboardService.apiDashboardTopownersGet(
+            reportType,
             searchTerms,
             pageIndex,
             pageSize,
@@ -90,32 +132,5 @@ export class DashboardService {
             endDate,
             subintervalType
         );
-    }
-
-    ////////////////////////////////////////////////////////////////////
-
-    addStats() {
-        this.http.get(environment.API_ENDPOINT + 'dashboard/totals').subscribe(
-            (response: any) => {
-                this.dashboardStore.update((store) => ({
-                    ...store,
-                    statistic: response,
-                }));
-            },
-            () => {
-                this.sharedService.handleServerError();
-            }
-        );
-    }
-
-    getDashboardStats() {
-        return this.http.get(environment.API_ENDPOINT + 'dashboard/totals');
-    }
-
-    set dashStats(response) {
-        this.dashboardStore.update((store) => ({
-            ...store,
-            statistic: response,
-        }));
     }
 }
