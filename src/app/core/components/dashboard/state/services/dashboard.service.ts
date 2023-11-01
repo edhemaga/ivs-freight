@@ -143,7 +143,7 @@ export class DashboardService {
         startDate: string,
         endDate: string,
         subintervalType: SubintervalType
-    ): Observable<TopDispatchersListResponse> {
+    ): Observable<any /* TopDispatchersListResponse */> {
         return this.dashboardService.apiDashboardTopfuelstopsGet(
             reportType,
             searchTerms,

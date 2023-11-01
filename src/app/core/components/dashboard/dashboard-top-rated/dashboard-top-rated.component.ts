@@ -971,7 +971,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .subscribe((fuelStopData) => {
                 console.log('fuelStopData', fuelStopData);
                 // top rated list and single selection data
-                /*  this.topRatedList = fuelStopData.pagination.data.map(
+                this.topRatedList = fuelStopData.pagination.data.map(
                     (fuelStop) => {
                         const filteredIntervals = fuelStop.intervals.map(
                             (interval) => {
@@ -1000,18 +1000,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             isSelected: false,
                         };
                     }
-                ); */
+                );
 
-                /*  for (let i = 0; i < fuelStopData.topFuelStops.length; i++) {
+                for (let i = 0; i < fuelStopData.topFuelStops.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
                         selectedTab === ConstantStringEnum.VISIT
-                            ? fuelStopData.topFuelStops[i]
-                                  .visitCount
-                            : fuelStopData.topFuelStops[i]
-                                  .cost,
+                            ? fuelStopData.topFuelStops[i].visitCount
+                            : fuelStopData.topFuelStops[i].cost,
                     ];
 
                     // other intervals
@@ -1022,7 +1020,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : fuelStopData.allOthers[i].cost,
                     ];
                 }
- */
+
                 this.setChartsData();
             });
     }
@@ -1172,6 +1170,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 case ConstantStringEnum.BROKER:
                 case ConstantStringEnum.OWNER:
                 case ConstantStringEnum.REPAIR_SHOP:
+                case ConstantStringEnum.FUEL_STOP:
                     return {
                         filteredTopTenValue:
                             this.currentActiveTab.name ===
@@ -1203,6 +1202,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 case ConstantStringEnum.BROKER:
                 case ConstantStringEnum.OWNER:
                 case ConstantStringEnum.REPAIR_SHOP:
+                case ConstantStringEnum.FUEL_STOP:
                     return {
                         filteredTopTenPercentage,
                         filteredTopTenValue:
@@ -1352,7 +1352,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                   ConstantStringEnum.COST) ||
                           (this.topRatedTitle === ConstantStringEnum.OWNER &&
                               this.currentActiveTab.name ===
-                                  ConstantStringEnum.REVENUE)
+                                  ConstantStringEnum.REVENUE) ||
+                          (this.topRatedTitle ===
+                              ConstantStringEnum.FUEL_STOP &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.COST)
                         ? ConstantChartStringEnum.DOLLAR_SIGN +
                           topRatedListItem.value +
                           ConstantChartStringEnum.THOUSAND_SIGN
