@@ -17,6 +17,8 @@ import { DashboardTab } from '../state/models/dashboard-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { PerformanceDataItem } from '../state/models/performance-data-item.model';
 import { PerformanceColorsPallete } from '../state/models/colors-pallete.model';
+import { CustomPeriodRange } from '../state/models/custom-period-range.model';
+import moment from 'moment';
 
 @Titles()
 @Component({
@@ -247,6 +249,8 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
     // dropdown
     public subPeriodDropdownList: DropdownListItem[] = [];
     public selectedSubPeriod: DropdownListItem;
+
+    private selectedCustomPeriodRange: CustomPeriodRange;
 
     // colors
     public performanceDataColors: PerformanceColorsPallete[] = [];
@@ -837,6 +841,22 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
 
     public handleInputSelect(dropdownListItem: DropdownListItem): void {
         this.selectedSubPeriod = dropdownListItem;
+    }
+
+    public handleSetCustomPeriodRangeClick(
+        customPeriodRange: CustomPeriodRange
+    ): void {
+        const fromDate = moment(new Date(customPeriodRange.fromDate));
+        const toDate = moment(new Date(customPeriodRange.toDate));
+
+        const selectedDaysRange =
+            toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+
+        if (selectedDaysRange < 0) {
+            return;
+        }
+
+        this.selectedCustomPeriodRange = customPeriodRange;
     }
 
     public handlePerformanceDataHover(

@@ -22,6 +22,9 @@
                     [tabs]="performanceTabs"
                     [disableHeight]="true"
                     (switchClicked)="handleSwitchTabClick($event)"
+                    (customPeriodRangeEmitter)="
+                        handleSetCustomPeriodRangeClick($event)
+                    "
                 >
                 </app-ta-tab-switch>
             </div>
