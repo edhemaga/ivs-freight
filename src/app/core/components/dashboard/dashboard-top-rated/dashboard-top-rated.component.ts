@@ -18,6 +18,9 @@ import moment from 'moment';
 // services
 import { DashboardService } from '../state/services/dashboard.service';
 
+// store
+import { DashboardQuery } from '../state/store/dashboard.query';
+
 // constants
 import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
 import { DashboardColors } from '../state/utils/dashboard-colors.constants';
@@ -193,7 +196,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private changeDetectorRef: ChangeDetectorRef,
-        private dashboardService: DashboardService
+        private dashboardService: DashboardService,
+        private dashboardQuery: DashboardQuery
     ) {}
 
     ngOnInit(): void {
@@ -294,7 +298,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 dropdownListItem.name !== ConstantStringEnum.ALL_TIME &&
                 dropdownListItem.name !== ConstantStringEnum.CUSTOM
             ) {
-                this.setSubPeriodList(matchingIdList);
+                const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+                    DashboardUtils.setSubPeriodList(matchingIdList);
+
+                this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+                this.selectedSubPeriod = selectedSubPeriod;
+
                 this.getTopRatedListData();
             }
         }
@@ -488,15 +497,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getOverallCompanyDuration(): void {
-        this.dashboardService
-            .getOverallCompanyDuration()
+        this.dashboardQuery.companyDuration$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((companyDuration) => {
-                this.overallCompanyDuration =
-                    companyDuration.companyDurationInDays;
-
-                this.setCustomSubPeriodList(this.overallCompanyDuration);
+            .subscribe((companyDuration: number) => {
+                if (companyDuration) {
+                    this.overallCompanyDuration = companyDuration;
+                }
             });
+
+        this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
 
     private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {
@@ -945,53 +954,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setSubPeriodList(subPeriodIdList: number[]): void {
-        this.subPeriodDropdownList =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                (period) => {
-                    if (period.id === subPeriodIdList[0]) {
-                        this.selectedSubPeriod = period;
-                    }
-
-                    return subPeriodIdList.includes(period.id);
-                }
-            );
-    }
-
     private setCustomSubPeriodList(selectedDaysRange: number): void {
-        let matchingIdList: number[] = [];
+        const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+            DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
 
-        if (selectedDaysRange >= 1 && selectedDaysRange <= 2) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_1;
-        }
-
-        if (selectedDaysRange > 2 && selectedDaysRange <= 14) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_2;
-        }
-
-        if (selectedDaysRange > 14 && selectedDaysRange <= 60) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_3;
-        }
-
-        if (selectedDaysRange > 60 && selectedDaysRange <= 365) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_4;
-        }
-
-        if (selectedDaysRange > 365 && selectedDaysRange <= 730) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_5;
-        }
-
-        if (selectedDaysRange > 730) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_6;
-        }
-
-        this.setSubPeriodList(matchingIdList);
+        this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+        this.selectedSubPeriod = selectedSubPeriod;
     }
 
     private setDoughnutChartCenterStats(

@@ -1,13 +1,31 @@
-import { Component, OnInit, ViewChild, OnChanges } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    OnChanges,
+    OnDestroy,
+} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+
+import { Subject, takeUntil } from 'rxjs';
 
 // decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
 
+// moment
+import moment from 'moment';
+
+// store
+import { DashboardQuery } from '../state/store/dashboard.query';
+
 // constants
 import { DashboardPerformanceConstants } from '../state/utils/dashboard-performance.constants';
 import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
+import { DashboardSubperiodConstants } from '../state/utils/dashboard-subperiod.constants';
 import { DashboardColors } from '../state/utils/dashboard-colors.constants';
+
+// helpers
+import { DashboardUtils } from '../state/utils/dashboard-utils';
 
 // enums
 import { ConstantStringEnum } from '../state/enum/constant-string.enum';
@@ -18,7 +36,6 @@ import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { PerformanceDataItem } from '../state/models/performance-data-item.model';
 import { PerformanceColorsPallete } from '../state/models/colors-pallete.model';
 import { CustomPeriodRange } from '../state/models/custom-period-range.model';
-import moment from 'moment';
 
 @Titles()
 @Component({
@@ -26,12 +43,16 @@ import moment from 'moment';
     templateUrl: './dashboard-performance.component.html',
     styleUrls: ['./dashboard-performance.component.scss'],
 })
-export class DashboardPerformanceComponent implements OnInit, OnChanges {
+export class DashboardPerformanceComponent
+    implements OnInit, OnChanges, OnDestroy
+{
+    private destroy$: Subject<void> = new Subject<void>();
+
     public performanceForm: UntypedFormGroup;
     public performanceData: PerformanceDataItem[] = [
         {
             title: 'NET INCOME',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -42,7 +63,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'REVENUE',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -53,7 +74,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'LOAD',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -64,7 +85,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'MILES',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -75,7 +96,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'FUEL GALLON',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -86,7 +107,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'FUEL COST',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -97,7 +118,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'REPAIR COST',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -109,7 +130,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         {
             title: 'ROADSIDE INSP.',
             isSelected: false,
-            isHover: false,
+            isHovered: false,
             selectedColor: null,
             selectedHoverColor: null,
             lastMonthValue: 47,
@@ -119,7 +140,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'VIOLATION',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -130,7 +151,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'ACCIDENT',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -141,7 +162,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'EXPENSES',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -152,7 +173,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'DRIVER',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -163,7 +184,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'TRUCK',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -174,7 +195,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'TRAILER',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -185,7 +206,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'OWNER',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -196,7 +217,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'USER',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -207,7 +228,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'REPAIR SHOP',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -218,7 +239,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'BROKER',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -229,7 +250,7 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         },
         {
             title: 'SHIPPER',
-            isHover: false,
+            isHovered: false,
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
@@ -251,6 +272,8 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
     public selectedSubPeriod: DropdownListItem;
 
     private selectedCustomPeriodRange: CustomPeriodRange;
+
+    private overallCompanyDuration: number;
 
     // colors
     public performanceDataColors: PerformanceColorsPallete[] = [];
@@ -783,12 +806,17 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
 
     currentSwitchTab: string = 'MTD';
 
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private dashboardQuery: DashboardQuery
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
 
         this.getConstantData();
+
+        this.getOverallCompanyDuration();
     }
 
     private createForm(): void {
@@ -819,23 +847,46 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
 
         this.currentActiveTab = activeTab;
 
+        let matchingIdList: number[] = [];
+
         switch (activeTab.name) {
             case ConstantStringEnum.TODAY:
+                matchingIdList = DashboardSubperiodConstants.TODAY_ID_LIST;
+
                 break;
             case ConstantStringEnum.WTD:
+                matchingIdList = DashboardSubperiodConstants.WTD_ID_LIST;
+
                 break;
             case ConstantStringEnum.MTD:
+                matchingIdList = DashboardSubperiodConstants.MTD_ID_LIST;
+
                 break;
             case ConstantStringEnum.QTD:
+                matchingIdList = DashboardSubperiodConstants.QTD_ID_LIST;
+
                 break;
             case ConstantStringEnum.YTD:
+                matchingIdList = DashboardSubperiodConstants.YTD_ID_LIST;
+
                 break;
             case ConstantStringEnum.ALL:
-                break;
-            case ConstantStringEnum.CUSTOM:
+                this.setCustomSubPeriodList(this.overallCompanyDuration);
+
                 break;
             default:
                 break;
+        }
+
+        if (
+            activeTab.name !== ConstantStringEnum.ALL &&
+            activeTab.name !== ConstantStringEnum.CUSTOM
+        ) {
+            const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+                DashboardUtils.setSubPeriodList(matchingIdList);
+
+            this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+            this.selectedSubPeriod = selectedSubPeriod;
         }
     }
 
@@ -857,6 +908,8 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         }
 
         this.selectedCustomPeriodRange = customPeriodRange;
+
+        this.setCustomSubPeriodList(selectedDaysRange);
     }
 
     public handlePerformanceDataHover(
@@ -864,9 +917,9 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         removeHover: boolean = false
     ): void {
         if (!removeHover) {
-            this.performanceData[index].isHover = true;
+            this.performanceData[index].isHovered = true;
         } else {
-            this.performanceData[index].isHover = false;
+            this.performanceData[index].isHovered = false;
         }
     }
 
@@ -911,6 +964,31 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
         }
     }
 
+    private getOverallCompanyDuration(): void {
+        this.dashboardQuery.companyDuration$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((companyDuration: number) => {
+                if (companyDuration) {
+                    this.overallCompanyDuration = companyDuration;
+                }
+            });
+
+        this.setCustomSubPeriodList(this.overallCompanyDuration);
+    }
+
+    private setCustomSubPeriodList(selectedDaysRange: number): void {
+        const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+            DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
+
+        this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+        this.selectedSubPeriod = selectedSubPeriod;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     ////////////////////////////////////////////
     ngOnChanges(): void {}
 
@@ -938,10 +1016,6 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
 
     hoverFocusCard(type: string, color: any) {
         this.topChart.changeChartFillProperty(type, color);
-    }
-
-    selectTimePeriod(period) {
-        this.topChart.updateTime(this.currentSwitchTab, period);
     }
 
     hoverLineChart(value) {

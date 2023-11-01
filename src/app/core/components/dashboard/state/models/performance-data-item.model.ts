@@ -1,6 +1,6 @@
 export interface PerformanceDataItem {
     title: string;
-    isHover: boolean;
+    isHovered: boolean;
     isSelected: boolean;
     selectedColor: string;
     selectedHoverColor: string;

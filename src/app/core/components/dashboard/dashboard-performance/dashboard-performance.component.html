@@ -89,7 +89,7 @@
                 ngbTooltip="Show on Chart"
                 placement="bottom"
                 [ngStyle]="{
-                    background: performanceData[0].isHover
+                    background: performanceData[0].isHovered
                         ? performanceData[0].selectedHoverColor
                         : performanceData[0].isSelected
                         ? performanceData[0].selectedColor
@@ -222,7 +222,7 @@
                         ngbTooltip="Show on Chart"
                         placement="bottom"
                         [ngStyle]="{
-                            background: performanceDataItem.isHover
+                            background: performanceDataItem.isHovered
                                 ? performanceDataItem.selectedHoverColor
                                 : performanceDataItem.isSelected
                                 ? performanceDataItem.selectedColor
@@ -269,7 +269,7 @@
                             </p>
                             <p class="m-0 ta-font-bold">
                                 {{
-                                    performanceDataItem.isHover
+                                    performanceDataItem.isHovered
                                         ? performanceDataItem.monthlyAverageValue
                                         : performanceDataItem.lastMonthValue
                                 }}
@@ -321,7 +321,7 @@
                                 </p>
                                 <p class="m-0 ta-font-bold">
                                     {{
-                                        performanceDataItem.isHover
+                                        performanceDataItem.isHovered
                                             ? performanceDataItem.monthlyAverageTrend
                                             : performanceDataItem.lastMonthTrend
                                     }}
