@@ -29,12 +29,12 @@ import { ConstantChartStringEnum } from '../state/enum/constant-chart-string.enu
 
 // models
 import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.model';
-import { TopRatedTab } from '../state/models/top-rated-tab.model';
+import { DashboardTab } from '../state/models/dashboard-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
 import {
-    MainColorsPallete,
-    SecondaryColorsPallete,
+    TopRatedMainColorsPallete,
+    TopRatedSecondaryColorsPallete,
 } from '../state/models/colors-pallete.model';
 import {
     ChartInitProperties,
@@ -153,8 +153,8 @@ export class DashboardTopRatedComponent
     public isShowingMore: boolean = false;
 
     // tabs
-    public topRatedTabs: TopRatedTab[] = [];
-    private currentActiveTab: TopRatedTab;
+    public topRatedTabs: DashboardTab[] = [];
+    private currentActiveTab: DashboardTab;
 
     // dropdowns
     public topRatedDropdownList: TopRatedDropdownItem[] = [];
@@ -166,8 +166,8 @@ export class DashboardTopRatedComponent
     public selectedSubPeriod: DropdownListItem;
 
     // colors
-    public mainColorsPallete: MainColorsPallete[] = [];
-    public secondaryColorsPallete: SecondaryColorsPallete[] = [];
+    public mainColorsPallete: TopRatedMainColorsPallete[] = [];
+    public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
     public doughnutChartConfig: DoughnutChartConfig;
@@ -227,8 +227,9 @@ export class DashboardTopRatedComponent
         this.selectedSubPeriod =
             DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
 
-        this.mainColorsPallete = DashboardColors.MAIN_COLORS_PALLETE;
-        this.secondaryColorsPallete = DashboardColors.SECONDARY_COLORS_PALLETE;
+        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
+        this.secondaryColorsPallete =
+            DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE;
     }
 
     public handleSearchValue(searchValue: string): void {
@@ -358,7 +359,9 @@ export class DashboardTopRatedComponent
         this.popover.close();
     }
 
-    public handleSwitchTabClick(activeTab: TopRatedTab /* , useLast? */): void {
+    public handleSwitchTabClick(
+        activeTab: DashboardTab /* , useLast? */
+    ): void {
         if (this.currentActiveTab?.name === activeTab.name) {
             return;
         }

@@ -1,11 +1,22 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    OnChanges,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, OnChanges } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+
+// decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
+
+// constants
+import { DashboardPerformanceConstants } from '../state/utils/dashboard-performance.constants';
+import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
+import { DashboardColors } from '../state/utils/dashboard-colors.constants';
+
+// enums
+import { ConstantStringEnum } from '../state/enum/constant-string.enum';
+
+// models
+import { DashboardTab } from '../state/models/dashboard-tab.model';
+import { DropdownListItem } from '../state/models/dropdown-list-item.model';
+import { PerformanceDataItem } from '../state/models/performance-data-item.model';
+import { PerformanceColorsPallete } from '../state/models/colors-pallete.model';
 
 @Titles()
 @Component({
@@ -14,12 +25,235 @@ import { Titles } from 'src/app/core/utils/application.decorators';
     styleUrls: ['./dashboard-performance.component.scss'],
 })
 export class DashboardPerformanceComponent implements OnInit, OnChanges {
+    public performanceForm: UntypedFormGroup;
+    public performanceData: PerformanceDataItem[] = [
+        {
+            title: 'NET INCOME',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 462.57,
+            lastMonthTrend: 138.01,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'REVENUE',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 642.3,
+            lastMonthTrend: 5.37,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'LOAD',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 37,
+            lastMonthTrend: 3,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'MILES',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 15.35,
+            lastMonthTrend: 2.06,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'FUEL GALLON',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 2.35,
+            lastMonthTrend: 237.5,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'FUEL COST',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 19.3,
+            lastMonthTrend: 2.37,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'REPAIR COST',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 8.34,
+            lastMonthTrend: 768.3,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'ROADSIDE INSP.',
+            isSelected: false,
+            isHover: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 47,
+            lastMonthTrend: 5,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'VIOLATION',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 5,
+            lastMonthTrend: 1,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'ACCIDENT',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 0,
+            lastMonthTrend: 'SAME AS',
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'EXPENSES',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 322.25,
+            lastMonthTrend: 8.37,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'DRIVER',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 3,
+            lastMonthTrend: 'SAME AS',
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'TRUCK',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 5,
+            lastMonthTrend: 2,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'TRAILER',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 2,
+            lastMonthTrend: 2,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'OWNER',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 1,
+            lastMonthTrend: 1,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'USER',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 0,
+            lastMonthTrend: 6,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'REPAIR SHOP',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 12,
+            lastMonthTrend: 4,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'BROKER',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 7,
+            lastMonthTrend: 1,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+        {
+            title: 'SHIPPER',
+            isHover: false,
+            isSelected: false,
+            selectedColor: null,
+            selectedHoverColor: null,
+            lastMonthValue: 35,
+            lastMonthTrend: 12,
+            monthlyAverageValue: 283.32,
+            monthlyAverageTrend: 37.24,
+        },
+    ];
+
+    private selectedPerformanceDataCount: number = 0;
+
+    // tabs
+    public performanceTabs: DashboardTab[] = [];
+    private currentActiveTab: DashboardTab;
+
+    // dropdown
+    public subPeriodDropdownList: DropdownListItem[] = [];
+    public selectedSubPeriod: DropdownListItem;
+
+    // colors
+    public performanceDataColors: PerformanceColorsPallete[] = [];
+
+    //////////////////////////////////////////////////////////////////////////////////
     @ViewChild('topChart', { static: false }) public topChart: any;
     @ViewChild('bottomChart', { static: false }) public bottomChart: any;
-    @ViewChild('timePeriod', { static: false }) public timePeriod: any;
-    @ViewChild('t2') t2: any;
-
-    dashboardSwitchTabs: any[] = [];
 
     backgroundCards: any[] = ['73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F'];
     selectedColors: any = {
@@ -545,49 +779,120 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
 
     currentSwitchTab: string = 'MTD';
 
-    constructor() {}
+    constructor(private formBuilder: UntypedFormBuilder) {}
 
     ngOnInit(): void {
-        this.dashboardSwitchTabs = [
-            {
-                id: 1,
-                name: 'Today',
-            },
-            {
-                id: 2,
-                name: 'WTD',
-            },
-            {
-                id: 3,
-                name: 'MTD',
-                checked: true,
-            },
-            {
-                id: 4,
-                name: 'YTD',
-            },
-            {
-                id: 5,
-                name: 'All Time',
-            },
-            {
-                id: 6,
-                name: 'Custom',
-                custom: true,
-            },
-        ];
+        this.createForm();
+
+        this.getConstantData();
     }
 
-    ngAfterViewInit(): void {
-        if (this.timePeriod && this.timePeriod.changeTimePeriod) {
-            this.timePeriod?.changeTimePeriod('MTD');
+    private createForm(): void {
+        this.performanceForm = this.formBuilder.group({
+            subPeriod: [null],
+        });
+    }
+
+    public trackByIdentity = (_: number, item: PerformanceDataItem): string =>
+        item.title;
+
+    private getConstantData(): void {
+        this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
+
+        this.subPeriodDropdownList =
+            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
+
+        this.selectedSubPeriod =
+            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
+
+        this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
+    }
+
+    public handleSwitchTabClick(activeTab: DashboardTab): void {
+        if (this.currentActiveTab?.name === activeTab.name) {
+            return;
+        }
+
+        this.currentActiveTab = activeTab;
+
+        switch (activeTab.name) {
+            case ConstantStringEnum.TODAY:
+                break;
+            case ConstantStringEnum.WTD:
+                break;
+            case ConstantStringEnum.MTD:
+                break;
+            case ConstantStringEnum.QTD:
+                break;
+            case ConstantStringEnum.YTD:
+                break;
+            case ConstantStringEnum.ALL:
+                break;
+            case ConstantStringEnum.CUSTOM:
+                break;
+            default:
+                break;
         }
     }
 
-    changeDashboardTabs(ev) {
-        this.currentSwitchTab = ev['name'];
-        this.timePeriod.changeTimePeriod(ev['name']);
+    public handleInputSelect(dropdownListItem: DropdownListItem): void {
+        this.selectedSubPeriod = dropdownListItem;
     }
+
+    public handlePerformanceDataHover(
+        index: number,
+        removeHover: boolean = false
+    ): void {
+        if (!removeHover) {
+            this.performanceData[index].isHover = true;
+        } else {
+            this.performanceData[index].isHover = false;
+        }
+    }
+
+    public handlePerformanceDataClick(
+        index: number,
+        selectedColor: string
+    ): void {
+        const performanceDataItem = this.performanceData[index];
+        const maxPerformanceDataItemsSelected = 10;
+
+        if (
+            this.selectedPerformanceDataCount ===
+                maxPerformanceDataItemsSelected &&
+            !performanceDataItem.isSelected
+        ) {
+            return;
+        }
+
+        performanceDataItem.isSelected = !performanceDataItem.isSelected;
+
+        if (performanceDataItem.isSelected) {
+            const firstAvailableColor = this.performanceDataColors.find(
+                (color) => !color.isSelected
+            );
+
+            firstAvailableColor.isSelected = true;
+
+            performanceDataItem.selectedColor = firstAvailableColor.code;
+            performanceDataItem.selectedHoverColor =
+                firstAvailableColor.hoverCode;
+
+            this.selectedPerformanceDataCount++;
+        } else {
+            performanceDataItem.selectedColor = null;
+            performanceDataItem.selectedHoverColor = null;
+
+            this.performanceDataColors.find(
+                (color) => color.code === selectedColor
+            ).isSelected = false;
+
+            this.selectedPerformanceDataCount--;
+        }
+    }
+
+    ////////////////////////////////////////////
+    ngOnChanges(): void {}
 
     setColor(type: string) {
         // Provera da li se u objektu nalazi vec ovaj tip sa vrednoscu boje
@@ -626,6 +931,4 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
     removeOtherChartHover() {
         this.topChart.chartHoverOut();
     }
-
-    ngOnChanges(changes: SimpleChanges): void {}
 }

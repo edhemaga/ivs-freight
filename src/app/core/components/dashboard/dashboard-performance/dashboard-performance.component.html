@@ -1,23 +1,405 @@
-<div class="dashboard-performance-holder">
-    <div class="dashboard-performance-header">
-        <div class="dashboard-performance-title">Performance</div>
-        <div class="dashboard-performance-toolbar">
-            <div class="dashboard-performance-switch-holder">
+<div class="d-flex flex-column justify-content-center dashboard-performance">
+    <!-- Header -->
+
+    <div
+        class="d-flex align-items-center justify-content-between dashboard-performance-header"
+    >
+        <!-- Title -->
+
+        <div
+            class="d-flex align-items-center dashboard-performance-header-title"
+        >
+            <p class="m-0 ta-font-black">Performance</p>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <!-- Tabs -->
+
+            <div
+                class="d-flex align-items-center dashboard-performance-header-tabs"
+            >
                 <app-ta-tab-switch
-                    [tabs]="dashboardSwitchTabs"
-                    (switchClicked)="changeDashboardTabs($event)"
-                    [type]="'performance-switch'"
+                    [tabs]="performanceTabs"
+                    [disableHeight]="true"
+                    (switchClicked)="handleSwitchTabClick($event)"
                 >
                 </app-ta-tab-switch>
             </div>
-            <div class="dashboard-performance-border"></div>
-            <app-ta-time-period
-                #timePeriod
-                (selectTimePeriod)="selectTimePeriod($event)"
+
+            <div class="dashboard-performance-header-border"></div>
+
+            <!-- Dropdown -->
+
+            <div
+                class="d-flex align-items-center dashboard-performance-header-dropdown"
+                [formGroup]="performanceForm"
+                [ngClass]="{
+                    'dropdown-right-w-1': selectedSubPeriod.name === 'Hourly',
+                    'dropdown-right-w-2':
+                        selectedSubPeriod.name === '3 Hours' ||
+                        selectedSubPeriod.name === '6 Hours',
+                    'dropdown-right-w-3':
+                        selectedSubPeriod.name === 'Semi-Daily',
+                    'dropdown-right-w-4': selectedSubPeriod.name === 'Daily',
+                    'dropdown-right-w-5': selectedSubPeriod.name === 'Weekly',
+                    'dropdown-right-w-6':
+                        selectedSubPeriod.name === 'Bi-Weekly',
+                    'dropdown-right-w-7':
+                        selectedSubPeriod.name === 'Semi-Monthly',
+                    'dropdown-right-w-8': selectedSubPeriod.name === 'Monthly',
+                    'dropdown-right-w-9':
+                        selectedSubPeriod.name === 'Quarterly',
+                    'dropdown-right-w-10': selectedSubPeriod.name === 'Yearly'
+                }"
             >
-            </app-ta-time-period>
+                <app-ta-input-dropdown
+                    formControlName="subPeriod"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        isDropdown: true,
+                        hideClear: true,
+                        hideColorValidations: true,
+                        removeInputBackground: true,
+                        dropdownWidthClass: 'w-col-157'
+                    }"
+                    [options]="subPeriodDropdownList"
+                    [activeItem]="selectedSubPeriod"
+                    (selectedItem)="handleInputSelect($event)"
+                ></app-ta-input-dropdown>
+            </div>
         </div>
     </div>
+
+    <!-- Body -->
+
+    <div
+        class="d-flex flex-column justify-content-center dashboard-performance-body"
+    >
+        <!-- Boxes -->
+
+        <div
+            class="d-flex align-items-center dashboard-performance-body-boxes-container"
+        >
+            <div
+                class="d-flex flex-column justify-content-center boxes-double-box"
+                ngbTooltip="Show on Chart"
+                placement="bottom"
+                [ngStyle]="{
+                    background: performanceData[0].isHover
+                        ? performanceData[0].selectedHoverColor
+                        : performanceData[0].isSelected
+                        ? performanceData[0].selectedColor
+                        : '#f7f7f780'
+                }"
+                [ngClass]="{ selected: performanceData[0].isSelected }"
+                (mouseenter)="handlePerformanceDataHover(0)"
+                (mouseleave)="handlePerformanceDataHover(0, true)"
+                (click)="
+                    handlePerformanceDataClick(
+                        0,
+                        performanceData[0].selectedColor
+                    )
+                "
+            >
+                <div
+                    class="d-flex flex-column justify-content-center boxes-double-box-header"
+                >
+                    <div
+                        class="d-flex flex-column justify-content-center boxes-double-box-header-income"
+                    >
+                        <div
+                            class="d-flex align-items-center boxes-double-box-header-income-up"
+                        >
+                            <svg-icon
+                                class="circle-icon"
+                                [src]="
+                                    'assets/svg/common/load/ic_circle-default-load.svg'
+                                "
+                                [svgStyle]="{
+                                    'width.px': 10,
+                                    'height.px': 10
+                                }"
+                            ></svg-icon>
+
+                            <p class="m-0 ta-font-bold">NET INCOME</p>
+                        </div>
+
+                        <div
+                            class="d-flex align-items-center boxes-double-box-header-income-down"
+                        >
+                            <p class="m-0 ta-font-bold">$320.56K</p>
+                        </div>
+                    </div>
+
+                    <!-- Status Bar -->
+
+                    <div class="status-bar">
+                        <div class="status-bar-inner"></div>
+                    </div>
+                </div>
+
+                <div
+                    class="d-flex flex-column justify-content-center boxes-double-box-body"
+                >
+                    <div
+                        class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
+                    >
+                        <p class="m-0 ta-font-bold">
+                            ${{ performanceData[0].lastMonthValue }}K
+                        </p>
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 ta-font-bold">
+                                -${{ performanceData[0].lastMonthTrend }}K
+                            </p>
+
+                            <div
+                                class="d-flex align-items-center justify-content-center trend-icon-box"
+                            >
+                                <svg-icon
+                                    class="d-flex align-items-center justify-content-center trend-icon"
+                                    [src]="
+                                        'assets/svg/common/dashboard/trend-down-with-frame.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </div>
+
+                        <p class="m-0 ta-font-bold">LAST MONTH</p>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
+                    >
+                        <p class="m-0 ta-font-bold">
+                            ${{ performanceData[0].monthlyAverageValue }}K
+                        </p>
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 ta-font-bold">
+                                +${{ performanceData[0].monthlyAverageTrend }}K
+                            </p>
+
+                            <div
+                                class="d-flex align-items-center justify-content-center trend-icon-box"
+                            >
+                                <svg-icon
+                                    class="d-flex align-items-center justify-content-center trend-icon"
+                                    [src]="
+                                        'assets/svg/common/dashboard/trend-up-with-frame.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </div>
+
+                        <p class="m-0 ta-font-bold">MONTHLY AVERAGE</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boxes-single-box-container">
+                <ng-container
+                    *ngFor="
+                        let performanceDataItem of performanceData | slice : 1;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex flex-column box"
+                        ngbTooltip="Show on Chart"
+                        placement="bottom"
+                        [ngStyle]="{
+                            background: performanceDataItem.isHover
+                                ? performanceDataItem.selectedHoverColor
+                                : performanceDataItem.isSelected
+                                ? performanceDataItem.selectedColor
+                                : '#f7f7f780'
+                        }"
+                        [ngClass]="{ selected: performanceDataItem.isSelected }"
+                        (mouseenter)="handlePerformanceDataHover(i + 1)"
+                        (mouseleave)="handlePerformanceDataHover(i + 1, true)"
+                        (click)="
+                            handlePerformanceDataClick(
+                                i + 1,
+                                performanceDataItem.selectedColor
+                            )
+                        "
+                    >
+                        <div class="d-flex align-items-center box-header">
+                            <svg-icon
+                                class="circle-icon"
+                                [src]="
+                                    'assets/svg/common/load/ic_circle-default-load.svg'
+                                "
+                                [svgStyle]="{
+                                    'width.px': 10,
+                                    'height.px': 10
+                                }"
+                            ></svg-icon>
+
+                            <p class="m-0 ta-font-bold">
+                                {{ performanceDataItem.title }}
+                            </p>
+                        </div>
+
+                        <div class="d-flex align-items-center box-value">
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    performanceDataItem.title === 'REVENUE' ||
+                                    performanceDataItem.title === 'FUEL COST' ||
+                                    performanceDataItem.title ===
+                                        'REPAIR COST' ||
+                                    performanceDataItem.title === 'EXPENSES'
+                                        ? '$'
+                                        : ''
+                                }}
+                            </p>
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    performanceDataItem.isHover
+                                        ? performanceDataItem.monthlyAverageValue
+                                        : performanceDataItem.lastMonthValue
+                                }}
+                            </p>
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    performanceDataItem.title === 'REVENUE' ||
+                                    performanceDataItem.title === 'MILES' ||
+                                    performanceDataItem.title ===
+                                        'FUEL GALLON' ||
+                                    performanceDataItem.title === 'FUEL COST' ||
+                                    performanceDataItem.title ===
+                                        'REPAIR COST' ||
+                                    performanceDataItem.title === 'EXPENSES'
+                                        ? 'K'
+                                        : ''
+                                }}
+                            </p>
+                        </div>
+
+                        <div class="d-flex flex-column box-last-month-average">
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        performanceDataItem.title ===
+                                            'REVENUE' ||
+                                        performanceDataItem.title === 'LOAD' ||
+                                        performanceDataItem.title === 'MILES' ||
+                                        performanceDataItem.title ===
+                                            'FUEL GALLON' ||
+                                        performanceDataItem.title ===
+                                            'FUEL COST' ||
+                                        performanceDataItem.title ===
+                                            'ROADSIDE INSP.' ||
+                                        performanceDataItem.title ===
+                                            'VIOLATION' ||
+                                        performanceDataItem.title ===
+                                            'EXPENSES' ||
+                                        performanceDataItem.title === 'OWNER' ||
+                                        performanceDataItem.title ===
+                                            'REPAIR SHOP' ||
+                                        performanceDataItem.title === 'SHIPPER'
+                                            ? '+'
+                                            : performanceDataItem.lastMonthTrend ===
+                                              'SAME AS'
+                                            ? ''
+                                            : '-'
+                                    }}
+                                </p>
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        performanceDataItem.isHover
+                                            ? performanceDataItem.monthlyAverageTrend
+                                            : performanceDataItem.lastMonthTrend
+                                    }}
+                                </p>
+
+                                <ng-container
+                                    *ngIf="
+                                        performanceDataItem.title ===
+                                            'REVENUE' ||
+                                        performanceDataItem.title === 'LOAD' ||
+                                        performanceDataItem.title === 'MILES' ||
+                                        performanceDataItem.title ===
+                                            'ROADSIDE INSP.' ||
+                                        performanceDataItem.title === 'OWNER' ||
+                                        performanceDataItem.title ===
+                                            'REPAIR SHOP' ||
+                                        performanceDataItem.title === 'SHIPPER'
+                                    "
+                                >
+                                    <div
+                                        class="d-flex align-items-center justify-content-center trend-icon-box"
+                                    >
+                                        <svg-icon
+                                            class="d-flex align-items-center justify-content-center trend-icon"
+                                            [src]="
+                                                'assets/svg/common/dashboard/trend-up-with-frame.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="
+                                        performanceDataItem.title !==
+                                            'REVENUE' &&
+                                        performanceDataItem.title !== 'LOAD' &&
+                                        performanceDataItem.title !== 'MILES' &&
+                                        performanceDataItem.title !==
+                                            'ROADSIDE INSP.' &&
+                                        performanceDataItem.title !== 'OWNER' &&
+                                        performanceDataItem.title !==
+                                            'REPAIR SHOP' &&
+                                        performanceDataItem.title !==
+                                            'SHIPPER' &&
+                                        performanceDataItem.lastMonthTrend !==
+                                            'SAME AS'
+                                    "
+                                >
+                                    <div
+                                        class="d-flex align-items-center justify-content-center trend-icon-box"
+                                    >
+                                        <svg-icon
+                                            class="d-flex align-items-center justify-content-center trend-icon"
+                                            [src]="
+                                                'assets/svg/common/dashboard/trend-down-with-frame.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center box-bottom-title">
+                            <p class="m-0 ta-font-bold">LAST MONTH</p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="dashboard-performance-holder">
     <div class="dashboard-performance-body">
         <div
             class="dashboard-performance-body-left-holder dashboard-performance-{{
@@ -135,13 +517,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+5.37K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -196,13 +571,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+3</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -257,13 +625,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.06K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -320,13 +681,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+237.5K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -385,13 +739,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.37K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -446,13 +793,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+768.3K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -509,13 +849,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+5</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -574,13 +907,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+1</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -622,13 +948,6 @@
             <div class="dashboard-performance-body-right-cards-price-holder">
                 0
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.37K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div
                 class="dashboard-performance-body-right-cards-text-holder different-width"
             >
@@ -689,13 +1008,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+8.37K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -735,13 +1047,6 @@
             <div class="dashboard-performance-body-right-cards-price-holder">
                 3
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.37K</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div
                 class="dashboard-performance-body-right-cards-text-holder different-width"
             >
@@ -800,13 +1105,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">-2</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -863,13 +1161,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">4</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -924,13 +1215,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+1</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -987,13 +1271,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">-6</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -1050,13 +1327,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+4</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -1113,13 +1383,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">-1</div>
-                <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -1174,13 +1437,6 @@
                     -50%
                 </div>
             </div>
-            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
-                <div class="dashboard-performance-body-right-cards-trend-number different-padding">+12</div>
-                <div class="dashboard-performance-body-right-cards-trend-up">
-                    <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
-                </div>
-                <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
-            </div> -->
             <div class="dashboard-performance-body-right-cards-text-holder">
                 LAST MONTH
             </div>
@@ -1189,8 +1445,9 @@
             </div>
         </div>
     </div>
-</div>
-<div class="dahsboard_chart_container">
+</div> -->
+
+<!-- <div class="dahsboard_chart_container">
     <div class="dahsboard_charts_holder">
         <div class="line_chart_title_hold">
             <div class="dashboard_chart_title">March, 2023</div>
@@ -1258,3 +1515,4 @@
         </div>
     </div>
 </div>
+ -->
