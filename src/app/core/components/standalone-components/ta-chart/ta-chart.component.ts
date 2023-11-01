@@ -136,6 +136,8 @@ export class TaChartComponent implements OnInit, OnChanges {
             this.lineChartLabels = changes.chartConfig.currentValue.dataLabels;
 
             this.setChartOptions();
+
+            this.ref.detectChanges();
         }
     }
 

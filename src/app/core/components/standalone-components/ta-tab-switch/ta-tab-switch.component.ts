@@ -44,7 +44,7 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     autoCloseComponent: QueryList<AutoclosePopoverComponent>;
     @Input() tabs: any[];
     @Input() type: string = '';
-    @Input() disableHeight?: boolean = false;
+    @Input() dashboardHeight?: boolean = false;
     @Output() switchClicked = new EventEmitter<any>();
     @Output() saveCustomRange = new EventEmitter<any>();
     @ViewChild('t2') t2: any;

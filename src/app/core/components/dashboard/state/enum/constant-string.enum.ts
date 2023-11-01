@@ -1,11 +1,19 @@
 export enum ConstantStringEnum {
+    USER = 'user',
+    MEDIUM = 'medium',
+    MODAL_TYPE = 'edit-company-first-login',
+
+    DISPATCHER = 'Dispatcher',
     DRIVER = 'Driver',
     BROKER = 'Broker',
     SHIPPER = 'Shipper',
+    OWNER = 'Owner',
     REPAIR_SHOP = 'Repair Shop',
 
     VISIT = 'Visit',
     COST = 'Cost',
+    LOAD = 'Load',
+    REVENUE = 'Revenue',
 
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',
@@ -35,4 +43,9 @@ export enum ConstantStringEnum {
     SMD = 'SemiDaily',
     SML = 'SemiMonthly',
     BWL = 'BiWeekly',
+
+    CLICK = 'click',
+    CLASS_DROPDOWN_OPTION = 'dropdown-option',
+
+    DAYS = 'days',
 }
