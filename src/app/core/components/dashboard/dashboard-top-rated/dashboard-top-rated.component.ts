@@ -204,7 +204,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.setDoughnutChartData(this.topRatedList);
-
         this.setBarChartConfigAndAxes();
     }
 
@@ -225,13 +224,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.mainPeriodDropdownList =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
-        this.subPeriodDropdownList =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
 
         this.selectedMainPeriod =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-        this.selectedSubPeriod =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
 
         this.mainColorsPallete = DashboardColors.MAIN_COLORS_PALLETE;
         this.secondaryColorsPallete = DashboardColors.SECONDARY_COLORS_PALLETE;
@@ -563,6 +558,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 break;
             case ConstantStringEnum.REPAIR_SHOP:
                 this.getTopRatedRepairShopListData(
+                    selectedTab,
+                    selectedMainPeriod,
+                    selectedSubPeriod,
+                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
+                        customPeriodRange
+                );
+                break;
+            case ConstantStringEnum.FUEL_STOP:
+                this.getTopRatedFuelStopListData(
                     selectedTab,
                     selectedMainPeriod,
                     selectedSubPeriod,
@@ -940,6 +944,85 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedFuelStopListData(
+        selectedTab: DashboardTopReportType,
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType,
+        customPeriodRange?: CustomPeriodRange
+    ): void {
+        const topRatedArgumentsData = [
+            selectedTab,
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedFuelStop(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((fuelStopData) => {
+                console.log('fuelStopData', fuelStopData);
+                // top rated list and single selection data
+                /*  this.topRatedList = fuelStopData.pagination.data.map(
+                    (fuelStop) => {
+                        const filteredIntervals = fuelStop.intervals.map(
+                            (interval) => {
+                                return selectedTab === ConstantStringEnum.VISIT
+                                    ? interval.visitCount
+                                    : interval.cost;
+                            }
+                        );
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervals,
+                        ];
+
+                        return {
+                            id: fuelStop.id,
+                            name: fuelStop.name,
+                            value:
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? fuelStop.visitCount.toString()
+                                    : fuelStop.cost.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? fuelStop.visitPercentage.toString()
+                                    : fuelStop.costPercentage.toString(),
+                            isSelected: false,
+                        };
+                    }
+                ); */
+
+                /*  for (let i = 0; i < fuelStopData.topFuelStops.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.VISIT
+                            ? fuelStopData.topFuelStops[i]
+                                  .visitCount
+                            : fuelStopData.topFuelStops[i]
+                                  .cost,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.VISIT
+                            ? fuelStopData.allOthers[i].visitCount
+                            : fuelStopData.allOthers[i].cost,
+                    ];
+                }
+ */
                 this.setChartsData();
             });
     }

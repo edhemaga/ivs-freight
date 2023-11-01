@@ -133,4 +133,26 @@ export class DashboardService {
             subintervalType
         );
     }
+
+    public getTopRatedFuelStop(
+        reportType: DashboardTopReportType,
+        searchTerms: string[],
+        pageIndex: number,
+        pageSize: number,
+        timeInterval: TimeInterval,
+        startDate: string,
+        endDate: string,
+        subintervalType: SubintervalType
+    ): Observable<TopDispatchersListResponse> {
+        return this.dashboardService.apiDashboardTopfuelstopsGet(
+            reportType,
+            searchTerms,
+            pageIndex,
+            pageSize,
+            timeInterval,
+            startDate,
+            endDate,
+            subintervalType
+        );
+    }
 }

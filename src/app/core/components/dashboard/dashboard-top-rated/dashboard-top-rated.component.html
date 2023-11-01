@@ -104,19 +104,19 @@
                     class="dropdown-left-container"
                     [ngClass]="{
                         'dropdown-left-w-1':
-                            selectedMainPeriod.name === 'Today',
+                            selectedMainPeriod?.name === 'Today',
                         'dropdown-left-w-2':
-                            selectedMainPeriod.name === 'Week-to-Date',
+                            selectedMainPeriod?.name === 'Week-to-Date',
                         'dropdown-left-w-3':
-                            selectedMainPeriod.name === 'Month-to-Date',
+                            selectedMainPeriod?.name === 'Month-to-Date',
                         'dropdown-left-w-4':
-                            selectedMainPeriod.name === 'Year-to-Date',
+                            selectedMainPeriod?.name === 'Year-to-Date',
                         'dropdown-left-w-5':
-                            selectedMainPeriod.name === 'All Time',
+                            selectedMainPeriod?.name === 'All Time',
                         'dropdown-left-w-6':
-                            selectedMainPeriod.name === 'Custom',
+                            selectedMainPeriod?.name === 'Custom',
                         'dropdown-left-w-7':
-                            selectedMainPeriod.name === 'Quartal-to-Date'
+                            selectedMainPeriod?.name === 'Quartal-to-Date'
                     }"
                 >
                     <app-ta-input-dropdown
@@ -144,26 +144,26 @@
                     class="dropdown-right-container"
                     [ngClass]="{
                         'dropdown-right-w-1':
-                            selectedSubPeriod.name === 'Hourly',
+                            selectedSubPeriod?.name === 'Hourly',
                         'dropdown-right-w-2':
-                            selectedSubPeriod.name === '3 Hours' ||
-                            selectedSubPeriod.name === '6 Hours',
+                            selectedSubPeriod?.name === '3 Hours' ||
+                            selectedSubPeriod?.name === '6 Hours',
                         'dropdown-right-w-3':
-                            selectedSubPeriod.name === 'Semi-Daily',
+                            selectedSubPeriod?.name === 'Semi-Daily',
                         'dropdown-right-w-4':
-                            selectedSubPeriod.name === 'Daily',
+                            selectedSubPeriod?.name === 'Daily',
                         'dropdown-right-w-5':
-                            selectedSubPeriod.name === 'Weekly',
+                            selectedSubPeriod?.name === 'Weekly',
                         'dropdown-right-w-6':
-                            selectedSubPeriod.name === 'Bi-Weekly',
+                            selectedSubPeriod?.name === 'Bi-Weekly',
                         'dropdown-right-w-7':
-                            selectedSubPeriod.name === 'Semi-Monthly',
+                            selectedSubPeriod?.name === 'Semi-Monthly',
                         'dropdown-right-w-8':
-                            selectedSubPeriod.name === 'Monthly',
+                            selectedSubPeriod?.name === 'Monthly',
                         'dropdown-right-w-9':
-                            selectedSubPeriod.name === 'Quarterly',
+                            selectedSubPeriod?.name === 'Quarterly',
                         'dropdown-right-w-10':
-                            selectedSubPeriod.name === 'Yearly'
+                            selectedSubPeriod?.name === 'Yearly'
                     }"
                 >
                     <app-ta-input-dropdown
