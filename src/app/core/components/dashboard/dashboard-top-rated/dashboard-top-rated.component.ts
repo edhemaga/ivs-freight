@@ -222,26 +222,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public trackByIdentity = (_: number, item: TopRatedDropdownItem): string =>
         item.name;
 
-    private getConstantData(): void {
-        this.topRatedDropdownList =
-            DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA;
-        this.topRatedTabs = DashboardTopRatedConstants.TOP_RATED_TABS;
-
-        this.mainPeriodDropdownList =
-            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
-        this.subPeriodDropdownList =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
-
-        this.selectedMainPeriod =
-            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-        this.selectedSubPeriod =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
-
-        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
-        this.secondaryColorsPallete =
-            DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE;
-    }
-
     public handleSearchValue(searchValue: string): void {
         console.log(searchValue);
     }
@@ -494,6 +474,26 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             this.doughnutChart.hoverDoughnut(null);
             this.barChart.hoverBarChart(null);
         }
+    }
+
+    private getConstantData(): void {
+        this.topRatedDropdownList =
+            DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA;
+        this.topRatedTabs = DashboardTopRatedConstants.TOP_RATED_TABS;
+
+        this.mainPeriodDropdownList =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
+        this.subPeriodDropdownList =
+            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
+
+        this.selectedMainPeriod =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
+        this.selectedSubPeriod =
+            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
+
+        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
+        this.secondaryColorsPallete =
+            DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE;
     }
 
     private getOverallCompanyDuration(): void {
@@ -1369,7 +1369,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ConstantChartStringEnum.CHART_COLOR_GREY,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                            ConstantChartStringEnum.CHART_COLOR_GREY_5,
                         hoverBorderColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY,
                         label: ConstantChartStringEnum.BAR_LABEL_TOP,
@@ -1389,7 +1389,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ConstantChartStringEnum.CHART_COLOR_GREY_2,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
+                            ConstantChartStringEnum.CHART_COLOR_GREY,
                         hoverBorderColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY_2,
                         label: ConstantChartStringEnum.BAR_LABEL_OTHER,

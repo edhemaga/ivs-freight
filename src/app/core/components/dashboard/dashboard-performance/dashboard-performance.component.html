@@ -446,7 +446,7 @@
                             }"
                         ></svg-icon>
 
-                        <p class="m-0 ta-font-semi-bold">Load per Mile</p>
+                        <p class="m-0 ta-font-semi-bold">Load Rate per Mile</p>
                     </div>
                 </div>
             </div>
@@ -460,6 +460,19 @@
                 >
                 </app-ta-chart>
             </div>
+        </div>
+
+        <!-- Bar Chart -->
+
+        <div class="bar-chart-container">
+            <app-ta-chart
+                #barChart
+                [chartConfig]="barChartConfig"
+                [axesProperties]="barChartAxes"
+                [legendAttributes]="{}"
+                (hoverOtherChart)="hoverLineChart($event)"
+            >
+            </app-ta-chart>
         </div>
     </div>
 </div>

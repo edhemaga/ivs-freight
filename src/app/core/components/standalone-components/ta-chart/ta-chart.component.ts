@@ -680,17 +680,15 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
 
         let averageAnnotation = 0;
-        let averageLenght = 0;
 
         this.chart.chart.config.data.datasets.map((item, i) => {
             if (item['id'] == type && color && color != '') {
                 item['fill'] = true;
                 item['colors'] = [startcolorRGBA, endColorRGBA];
                 updateChart = true;
-                let colorProp = item['borderColor'].toString();
-                item['borderColor'] = colorProp.slice(0, 7);
+                let colorProp = item['borderColor']?.toString();
+                item['borderColor'] = colorProp?.slice(0, 7);
                 lineHovered = item['borderColor'];
-                averageLenght = item['data'].length;
                 item['data'].map((val, l) => {
                     averageAnnotation = averageAnnotation + val;
                 });
@@ -702,7 +700,7 @@ export class TaChartComponent implements OnInit, OnChanges {
             } else if (item['id'] != type && color && color != '') {
                 item['fill'] = false;
                 let colorProp = item['borderColor'] + '33';
-                item['borderColor'] = colorProp.slice(0, 9);
+                item['borderColor'] = colorProp?.slice(0, 9);
                 updateChart = true;
             }
             if (color == '') {

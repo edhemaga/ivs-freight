@@ -42,6 +42,12 @@ import {
     LineChartAxes,
     LineChartConfig,
 } from '../state/models/line-chart.model';
+import {
+    BarChart,
+    BarChartAxes,
+    BarChartConfig,
+    BarChartValues,
+} from '../state/models/bar-chart.model';
 
 @Titles()
 @Component({
@@ -53,6 +59,7 @@ export class DashboardPerformanceComponent
     implements OnInit, OnChanges, OnDestroy
 {
     @ViewChild('lineChart') public lineChart: LineChart;
+    @ViewChild('barChart') public barChart: BarChart;
 
     private destroy$: Subject<void> = new Subject<void>();
 
@@ -366,110 +373,8 @@ export class DashboardPerformanceComponent
         ],
     ];
 
-    //////////////////////////////////////////////////////////////////////////////////
-
-    @ViewChild('bottomChart', { static: false }) public bottomChart: any;
-
-    backgroundCards: any[] = ['73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F'];
-    selectedColors: any = {
-        income: '8A9AEF',
-        miles: 'FDB46B',
-        roadside: 'F27B8E',
-        driver: '6DC089',
-        accident: 'A574C3',
-    };
-
-    public barChartConfig: object = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [
-                        12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28,
-                        24, 12, 21, 27, 37, 28, 25, 21, 10, 20,
-                    ],
-                    yAxisID: 'y-axis-0',
-                    backgroundColor: '#919191',
-                    borderColor: '#707070',
-                    hoverBackgroundColor: '#6C6C6C',
-                    hoverBorderColor: '#707070',
-                    label: 'Price per Gallon',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [
-                        10, 14, 30, 7, 28, 11, 20, 39, 46, 10, 12, 46, 10, 14,
-                        30, 7, 28, 11, 20, 39, 46, 10, 12, 10,
-                    ],
-                    yAxisID: 'y-axis-0',
-                    backgroundColor: '#CCCCCC',
-                    borderColor: '#707070',
-                    hoverBackgroundColor: '#AAAAAA',
-                    hoverBorderColor: '#707070',
-                    label: 'Load Rate per Mile',
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [2, 2],
-        defaultType: 'bar',
-        offset: true,
-        chartWidth: '1800',
-        chartHeight: '40',
-        removeChartMargin: true,
-        gridHoverBackground: true,
-        hasHoverData: true,
-        allowAnimation: true,
-        hoverOtherChart: true,
-        tooltipOffset: { min: 134, max: 206 },
-        dataLabels: [
-            ['01', 'WED'],
-            ['02', 'THU'],
-            ['03', 'FRI'],
-            ['04', 'SAT'],
-            ['05', 'SUN'],
-            ['06', 'MON'],
-            ['07', 'TUE'],
-            ['08', 'WED'],
-            ['09', 'THU'],
-            ['10', 'FRI'],
-            ['11', 'SAT'],
-            ['12', 'SUN'],
-            ['13', 'MON'],
-            ['14', 'TUE'],
-            ['15', 'WED'],
-            ['16', 'THU'],
-            ['17', 'FRI'],
-            ['18', 'SAT'],
-            ['19', 'SUN'],
-            ['20', 'MON'],
-            ['21', 'TUE'],
-            ['22', 'WED'],
-            ['23', 'THU'],
-            ['24', 'FRI'],
-        ],
-        noChartImage: 'assets/svg/common/no_data_pay.svg',
-    };
-
-    public barAxes: object = {
-        verticalLeftAxes: {
-            visible: false,
-            minValue: 0,
-            maxValue: 52,
-            stepSize: 13,
-            showGridLines: true,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: 'bottom',
-            showGridLines: true,
-            removeColor: true,
-        },
-    };
-
-    currentSwitchTab: string = 'MTD';
+    public barChartConfig: BarChartConfig;
+    public barChartAxes: BarChartAxes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -484,6 +389,7 @@ export class DashboardPerformanceComponent
         this.getOverallCompanyDuration();
 
         this.setLineChartConfigAndAxes();
+        this.setBarChartConfigAndAxes();
 
         this.setPerformanceDefaultStateData(0);
     }
@@ -496,12 +402,6 @@ export class DashboardPerformanceComponent
 
     public trackByIdentity = (_: number, item: PerformanceDataItem): string =>
         item.title;
-
-    private getConstantData(): void {
-        this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
-
-        this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
-    }
 
     public handleSwitchTabClick(activeTab: DashboardTab): void {
         if (this.currentActiveTab?.name === activeTab.name) {
@@ -593,7 +493,7 @@ export class DashboardPerformanceComponent
 
             this.lineChart.changeChartFillProperty(
                 this.performanceData[index].title,
-                ''
+                ConstantChartStringEnum.EMPTY_STRING
             );
         }
     }
@@ -653,6 +553,12 @@ export class DashboardPerformanceComponent
                 performanceDataItem.title
             );
         }
+    }
+
+    private getConstantData(): void {
+        this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
+
+        this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
     }
 
     private getOverallCompanyDuration(): void {
@@ -763,6 +669,97 @@ export class DashboardPerformanceComponent
         };
     }
 
+    private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
+        this.barChartConfig = {
+            dataProperties: [
+                {
+                    defaultConfig: {
+                        type: ConstantChartStringEnum.BAR,
+                        data: [
+                            52, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41,
+                            28, 24, 12, 21, 27, 37, 28,
+                        ],
+                        backgroundColor:
+                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                        borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
+                        hoverBackgroundColor:
+                            ConstantChartStringEnum.CHART_COLOR_GREY_5,
+                        hoverBorderColor:
+                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                        label: ConstantChartStringEnum.BAR_LABEL_PER_GALLON,
+                    },
+                },
+                {
+                    defaultConfig: {
+                        type: ConstantChartStringEnum.BAR,
+                        data: [
+                            52, 14, 30, 7, 28, 11, 20, 39, 46, 10, 12, 46, 10,
+                            14, 30, 7, 28, 11, 20, 39,
+                        ],
+                        backgroundColor:
+                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
+                        borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
+                        hoverBackgroundColor:
+                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                        hoverBorderColor:
+                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
+                        label: ConstantChartStringEnum.BAR_LABEL_LOAD_PER_MILE,
+                    },
+                },
+            ],
+            showLegend: false,
+            chartValues: [2, 2],
+            defaultType: ConstantChartStringEnum.BAR,
+            offset: true,
+            chartWidth: ConstantChartStringEnum.BAR_1800_WIDTH_2,
+            chartHeight: ConstantChartStringEnum.BAR_1800_HEIGHT_2,
+            removeChartMargin: true,
+            gridHoverBackground: true,
+            hasHoverData: true,
+            allowAnimation: true,
+            hoverOtherChart: true,
+            tooltipOffset: { min: 134, max: 206 },
+            dataLabels: [
+                ['01', 'WED'],
+                ['02', 'THU'],
+                ['03', 'FRI'],
+                ['04', 'SAT'],
+                ['05', 'SUN'],
+                ['06', 'MON'],
+                ['07', 'TUE'],
+                ['08', 'WED'],
+                ['09', 'THU'],
+                ['10', 'FRI'],
+                ['11', 'SAT'],
+                ['12', 'SUN'],
+                ['13', 'MON'],
+                ['14', 'TUE'],
+                ['15', 'WED'],
+                ['16', 'THU'],
+                ['17', 'FRI'],
+                ['18', 'SAT'],
+                ['19', 'SUN'],
+                ['20', 'MON'],
+            ],
+            noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
+        };
+
+        this.barChartAxes = {
+            verticalLeftAxes: {
+                visible: false,
+                minValue: 0,
+                maxValue: 52,
+                stepSize: 10,
+                showGridLines: false,
+            },
+            horizontalAxes: {
+                visible: true,
+                position: ConstantChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+                showGridLines: false,
+            },
+        };
+    }
+
     private createLineChartData(
         performanceDataItem: PerformanceDataItem,
         performanceDataItemIndex: number
@@ -801,9 +798,9 @@ export class DashboardPerformanceComponent
     ////////////////////////////////////////////
     ngOnChanges(): void {}
 
-    /* hoverLineChart(value) {
-        this.lineChart.showChartTooltip(value);
-    } */
+    hoverLineChart(value) {
+        /*  this.lineChart.showChartTooltip(value); */
+    }
 
     removeOtherChartHover() {
         this.lineChart.chartHoverOut();
