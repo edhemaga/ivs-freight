@@ -20,7 +20,6 @@ import { DashboardQuery } from '../state/store/dashboard.query';
 
 // constants
 import { DashboardPerformanceConstants } from '../state/utils/dashboard-performance.constants';
-import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
 import { DashboardSubperiodConstants } from '../state/utils/dashboard-subperiod.constants';
 import { DashboardColors } from '../state/utils/dashboard-colors.constants';
 
@@ -29,6 +28,7 @@ import { DashboardUtils } from '../state/utils/dashboard-utils';
 
 // enums
 import { ConstantStringEnum } from '../state/enum/constant-string.enum';
+import { ConstantChartStringEnum } from '../state/enum/constant-chart-string.enum';
 
 // models
 import { DashboardTab } from '../state/models/dashboard-tab.model';
@@ -36,6 +36,12 @@ import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { PerformanceDataItem } from '../state/models/performance-data-item.model';
 import { PerformanceColorsPallete } from '../state/models/colors-pallete.model';
 import { CustomPeriodRange } from '../state/models/custom-period-range.model';
+import {
+    ChartDefaultConfig,
+    LineChart,
+    LineChartAxes,
+    LineChartConfig,
+} from '../state/models/line-chart.model';
 
 @Titles()
 @Component({
@@ -46,6 +52,8 @@ import { CustomPeriodRange } from '../state/models/custom-period-range.model';
 export class DashboardPerformanceComponent
     implements OnInit, OnChanges, OnDestroy
 {
+    @ViewChild('lineChart') public lineChart: LineChart;
+
     private destroy$: Subject<void> = new Subject<void>();
 
     public performanceForm: UntypedFormGroup;
@@ -262,24 +270,104 @@ export class DashboardPerformanceComponent
     ];
 
     private selectedPerformanceDataCount: number = 0;
+    private lastSelectedPerformanceDataItem: PerformanceDataItem;
 
     // tabs
     public performanceTabs: DashboardTab[] = [];
     private currentActiveTab: DashboardTab;
 
+    private selectedCustomPeriodRange: CustomPeriodRange;
+
     // dropdown
     public subPeriodDropdownList: DropdownListItem[] = [];
     public selectedSubPeriod: DropdownListItem;
-
-    private selectedCustomPeriodRange: CustomPeriodRange;
 
     private overallCompanyDuration: number;
 
     // colors
     public performanceDataColors: PerformanceColorsPallete[] = [];
 
+    // charts
+    public lineChartConfig: LineChartConfig;
+    public lineChartAxes: LineChartAxes;
+    private lineChartDataValues: number[][] = [
+        [
+            8, 50, 14, 1, 29, 42, 21, 45, 26, 36, 13, 23, 21, 48, 20, 21, 18,
+            46, 32, 10,
+        ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [
+            37, 32, 2, 39, 18, 34, 26, 9, 24, 51, 49, 21, 42, 44, 27, 43, 32,
+            15, 0, 16,
+        ],
+        [
+            0, 31, 11, 36, 14, 4, 24, 4, 5, 6, 25, 24, 35, 2, 27, 27, 17, 20,
+            52, 11,
+        ],
+        [
+            13, 45, 39, 0, 18, 5, 51, 18, 24, 49, 30, 18, 22, 31, 18, 14, 18,
+            37, 31, 11,
+        ],
+        [
+            28, 8, 19, 25, 17, 6, 32, 35, 32, 9, 51, 27, 52, 9, 25, 37, 47, 47,
+            3, 29,
+        ],
+        [
+            48, 50, 37, 49, 40, 43, 34, 44, 24, 30, 22, 32, 27, 30, 3, 31, 8,
+            36, 13, 13,
+        ],
+        [
+            32, 45, 35, 26, 36, 18, 35, 49, 40, 46, 23, 13, 41, 45, 49, 9, 0,
+            33, 50, 31,
+        ],
+        [
+            44, 14, 19, 27, 28, 21, 33, 2, 18, 28, 43, 34, 36, 36, 42, 40, 38,
+            5, 30, 11,
+        ],
+        [
+            34, 15, 40, 44, 52, 3, 4, 11, 32, 1, 27, 2, 42, 3, 41, 49, 37, 9,
+            32, 16,
+        ],
+        [
+            30, 42, 52, 25, 49, 26, 35, 48, 27, 44, 32, 9, 25, 21, 25, 9, 32,
+            37, 23, 8,
+        ],
+        [
+            25, 41, 29, 35, 0, 24, 52, 36, 46, 32, 21, 52, 13, 43, 14, 52, 33,
+            14, 22, 27,
+        ],
+        [
+            47, 33, 7, 6, 30, 21, 42, 41, 1, 47, 7, 39, 47, 17, 8, 32, 43, 43,
+            44, 9,
+        ],
+        [
+            47, 1, 17, 25, 24, 33, 21, 27, 4, 51, 16, 36, 25, 47, 29, 37, 42,
+            45, 38, 7,
+        ],
+        [
+            50, 28, 52, 25, 1, 38, 41, 35, 39, 11, 14, 34, 42, 7, 18, 44, 5, 1,
+            41, 15,
+        ],
+        [
+            46, 46, 28, 48, 13, 27, 49, 2, 25, 48, 46, 21, 20, 26, 17, 10, 51,
+            15, 19, 31,
+        ],
+        [
+            36, 27, 26, 31, 35, 2, 40, 43, 13, 42, 5, 13, 52, 1, 33, 34, 40, 19,
+            42, 38,
+        ],
+        [
+            4, 42, 21, 16, 49, 18, 27, 50, 39, 21, 41, 43, 47, 29, 22, 5, 23, 4,
+            33, 46,
+        ],
+        [
+            33, 49, 5, 20, 52, 5, 34, 30, 2, 40, 27, 47, 6, 48, 51, 19, 2, 13,
+            0, 46,
+        ],
+    ];
+
     //////////////////////////////////////////////////////////////////////////////////
-    @ViewChild('topChart', { static: false }) public topChart: any;
+
     @ViewChild('bottomChart', { static: false }) public bottomChart: any;
 
     backgroundCards: any[] = ['73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F'];
@@ -289,414 +377,6 @@ export class DashboardPerformanceComponent
         roadside: 'F27B8E',
         driver: '6DC089',
         accident: 'A574C3',
-    };
-
-    public lineChartConfig: object = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28,
-                        24, 12, 21, 27, 37, 28, 25, 21, 10, 20,
-                    ],
-                    borderColor: '#8A9AEF',
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverBorderColor: '#8A9AEF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: false,
-                    hasGradiendBackground: true,
-                    colors: [
-                        'rgba(189, 202, 235, 0.4)',
-                        'rgba(189, 202, 235, 0)',
-                    ],
-                    id: 'income',
-                    hidden: false,
-                    label: 'Net Gross',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        10, 14, 30, 7, 28, 11, 20, 39, 46, 10, 12, 46, 10, 14,
-                        30, 7, 28, 11, 20, 39, 46, 10, 12, 10,
-                    ],
-                    borderColor: '#FDB46B',
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverBorderColor: '#FDB46B',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: false,
-                    hasGradiendBackground: true,
-                    colors: [
-                        'rgba(165, 116, 195, 0.4)',
-                        'rgba(165, 116, 195, 0)',
-                    ],
-                    id: 'miles',
-                    hidden: false,
-                    label: 'Miles',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        10, 12, 46, 10, 14, 30, 7, 28, 11, 20, 10, 12, 46, 10,
-                        14, 30, 29, 11, 19, 20, 39, 46, 10, 15,
-                    ],
-                    borderColor: '#F27B8E',
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverBorderColor: '#F27B8E',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: false,
-                    hasGradiendBackground: true,
-                    colors: [
-                        'rgba(165, 116, 195, 0.4)',
-                        'rgba(165, 116, 195, 0)',
-                    ],
-                    id: 'roadside',
-                    hidden: false,
-                    label: 'Roadside Insp.',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                    ],
-                    borderColor: '#A574C3',
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverBorderColor: '#A574C3',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: false,
-                    hasGradiendBackground: true,
-                    colors: [
-                        'rgba(165, 116, 195, 0.4)',
-                        'rgba(165, 116, 195, 0)',
-                    ],
-                    id: 'accident',
-                    hidden: false,
-                    label: 'Accident',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 50, 0, 0, 0,
-                    ],
-                    borderColor: '#6DC089',
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverBorderColor: '#6DC089',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: false,
-                    hasGradiendBackground: true,
-                    colors: [
-                        'rgba(165, 116, 195, 0.4)',
-                        'rgba(165, 116, 195, 0)',
-                    ],
-                    id: 'driver',
-                    hidden: false,
-                    label: 'Driver',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        20, 50, 40, 10, 0, 20, 35, 40, 20, 50, 40, 10, 0, 20,
-                        35, 40, 20, 50, 40, 10, 0, 20, 35, 40,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'revenue',
-                    hidden: true,
-                    label: 'Revenue',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        30, 20, 11, 15, 22, 0, 35, 50, 30, 20, 11, 15, 22, 0,
-                        35, 50, 30, 20, 11, 15, 22, 0, 35, 50,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'load',
-                    hidden: true,
-                    label: 'Load',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        0, 11, 0, 30, 40, 50, 16, 30, 0, 11, 0, 30, 40, 50, 16,
-                        30, 30, 11, 0, 30, 40, 50, 16, 30,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'fuel',
-                    hidden: true,
-                    label: 'Fuel Gallon',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        10, 32, 10, 0, 52, 11, 15, 30, 10, 32, 10, 0, 50, 11,
-                        15, 30, 10, 32, 10, 0, 50, 11, 15, 30,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'fuel-cost',
-                    hidden: true,
-                    label: 'Fuel Cost',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        50, 30, 45, 20, 22, 25, 16, 40, 50, 30, 45, 20, 22, 25,
-                        16, 40, 50, 30, 45, 20, 22, 25, 16, 40,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'repair',
-                    hidden: true,
-                    label: 'Repair',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        8, 15, 30, 12, 22, 16, 18, 50, 8, 15, 30, 12, 22, 16,
-                        18, 50, 8, 15, 30, 12, 22, 16, 18, 50,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'violation',
-                    hidden: true,
-                    label: 'Violation',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        18, 22, 40, 45, 30, 12, 42, 12, 18, 22, 40, 45, 30, 12,
-                        42, 12, 18, 22, 40, 45, 30, 12, 42, 12,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'expences',
-                    hidden: true,
-                    label: 'Expences',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        15, 20, 25, 30, 45, 40, 50, 12, 15, 20, 25, 30, 45, 40,
-                        50, 12, 15, 20, 25, 30, 45, 40, 50, 12,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'truck',
-                    hidden: true,
-                    label: 'Truck',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        0, 5, 10, 15, 20, 25, 30, 35, 0, 5, 10, 15, 20, 25, 30,
-                        35, 0, 5, 10, 15, 20, 25, 30, 35,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'trailer',
-                    hidden: true,
-                    label: 'Trailer',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        40, 35, 35, 35, 30, 21, 20, 35, 40, 35, 35, 35, 30, 21,
-                        20, 35, 40, 35, 35, 35, 30, 21, 20, 35,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'owner',
-                    hidden: true,
-                    label: 'Owner',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        12, 50, 20, 5, 30, 18, 40, 50, 12, 50, 20, 5, 30, 18,
-                        40, 50, 12, 50, 20, 5, 30, 18, 40, 50,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'user',
-                    hidden: true,
-                    label: 'User',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        10, 5, 10, 15, 20, 25, 30, 50, 0, 5, 10, 15, 20, 11, 30,
-                        35, 0, 5, 10, 15, 20, 25, 30, 35,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'repair-shop',
-                    hidden: true,
-                    label: 'Repair Shop',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        18, 15, 10, 12, 22, 19, 18, 2, 8, 15, 30, 12, 22, 16,
-                        18, 50, 40, 15, 30, 12, 22, 16, 18, 30,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'broker',
-                    hidden: true,
-                    label: 'Broker',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'line',
-                    data: [
-                        20, 30, 40, 10, 10, 20, 35, 40, 20, 50, 40, 10, 10, 20,
-                        35, 40, 20, 50, 40, 10, 20, 20, 35, 40,
-                    ],
-                    pointBorderColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointHoverBackgroundColor: '#FFFFFF',
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    id: 'shipper',
-                    hidden: true,
-                    label: 'Shipper',
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [2, 2],
-        defaultType: 'bar',
-        chartWidth: '1800',
-        chartHeight: '222',
-        removeChartMargin: true,
-        gridHoverBackground: true,
-        allowAnimation: true,
-        hasHoverData: true,
-        offset: true,
-        multiHoverData: true,
-        multiChartHover: true,
-        tooltipOffset: { min: 134, max: 206 },
-        dataLabels: [
-            ['01', 'WED'],
-            ['02', 'THU'],
-            ['03', 'FRI'],
-            ['04', 'SAT'],
-            ['05', 'SUN'],
-            ['06', 'MON'],
-            ['07', 'TUE'],
-            ['08', 'WED'],
-            ['09', 'THU'],
-            ['10', 'FRI'],
-            ['11', 'SAT'],
-            ['12', 'SUN'],
-            ['13', 'MON'],
-            ['14', 'TUE'],
-            ['15', 'WED'],
-            ['16', 'THU'],
-            ['17', 'FRI'],
-            ['18', 'SAT'],
-            ['19', 'SUN'],
-            ['20', 'MON'],
-            ['21', 'TUE'],
-            ['22', 'WED'],
-            ['23', 'THU'],
-            ['24', 'FRI'],
-        ],
-        noChartImage: 'assets/svg/common/no_data_pay.svg',
     };
 
     public barChartConfig: object = {
@@ -773,21 +453,6 @@ export class DashboardPerformanceComponent
         noChartImage: 'assets/svg/common/no_data_pay.svg',
     };
 
-    public lineAxes: object = {
-        verticalLeftAxes: {
-            visible: false,
-            minValue: 0,
-            maxValue: 52,
-            stepSize: 13,
-            showGridLines: true,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: 'bottom',
-            showGridLines: true,
-        },
-    };
-
     public barAxes: object = {
         verticalLeftAxes: {
             visible: false,
@@ -817,6 +482,10 @@ export class DashboardPerformanceComponent
         this.getConstantData();
 
         this.getOverallCompanyDuration();
+
+        this.setLineChartConfigAndAxes();
+
+        this.setPerformanceDefaultStateData(0);
     }
 
     private createForm(): void {
@@ -830,12 +499,6 @@ export class DashboardPerformanceComponent
 
     private getConstantData(): void {
         this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
-
-        this.subPeriodDropdownList =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
-
-        this.selectedSubPeriod =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
 
         this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
     }
@@ -918,8 +581,20 @@ export class DashboardPerformanceComponent
     ): void {
         if (!removeHover) {
             this.performanceData[index].isHovered = true;
+
+            if (this.performanceData[index].selectedColor) {
+                this.lineChart.changeChartFillProperty(
+                    this.performanceData[index].title,
+                    this.performanceData[index].selectedColor.slice(1)
+                );
+            }
         } else {
             this.performanceData[index].isHovered = false;
+
+            this.lineChart.changeChartFillProperty(
+                this.performanceData[index].title,
+                ''
+            );
         }
     }
 
@@ -941,6 +616,7 @@ export class DashboardPerformanceComponent
         performanceDataItem.isSelected = !performanceDataItem.isSelected;
 
         if (performanceDataItem.isSelected) {
+            // data boxes
             const firstAvailableColor = this.performanceDataColors.find(
                 (color) => !color.isSelected
             );
@@ -951,8 +627,17 @@ export class DashboardPerformanceComponent
             performanceDataItem.selectedHoverColor =
                 firstAvailableColor.hoverCode;
 
+            this.lastSelectedPerformanceDataItem = performanceDataItem;
             this.selectedPerformanceDataCount++;
+
+            // line chart
+            this.lineChart.insertNewChartData(
+                ConstantChartStringEnum.ADD,
+                performanceDataItem.title,
+                performanceDataItem.selectedColor.slice(1)
+            );
         } else {
+            // data boxes
             performanceDataItem.selectedColor = null;
             performanceDataItem.selectedHoverColor = null;
 
@@ -961,6 +646,12 @@ export class DashboardPerformanceComponent
             ).isSelected = false;
 
             this.selectedPerformanceDataCount--;
+
+            // line chart
+            this.lineChart.insertNewChartData(
+                ConstantChartStringEnum.REMOVE,
+                performanceDataItem.title
+            );
         }
     }
 
@@ -984,6 +675,124 @@ export class DashboardPerformanceComponent
         this.selectedSubPeriod = selectedSubPeriod;
     }
 
+    private setPerformanceDefaultStateData(
+        performanceDataItemIndex: number
+    ): void {
+        this.performanceData[performanceDataItemIndex].isSelected = true;
+        this.performanceData[performanceDataItemIndex].selectedColor =
+            this.performanceDataColors[performanceDataItemIndex].code;
+        this.performanceData[performanceDataItemIndex].selectedHoverColor =
+            this.performanceDataColors[performanceDataItemIndex].hoverCode;
+
+        this.performanceDataColors[performanceDataItemIndex].isSelected = true;
+
+        this.selectedPerformanceDataCount++;
+
+        setTimeout(() => {
+            this.lineChart?.insertNewChartData(
+                ConstantChartStringEnum.ADD,
+                this.performanceData[performanceDataItemIndex].title,
+                this.performanceData[
+                    performanceDataItemIndex
+                ].selectedColor.slice(1)
+            );
+        }, 100);
+    }
+
+    private setLineChartConfigAndAxes(): void {
+        this.lineChartConfig = {
+            dataProperties: [],
+            showLegend: false,
+            chartValues: [2, 2],
+            defaultType: ConstantChartStringEnum.LINE,
+            chartWidth: ConstantChartStringEnum.LINE_1800_WIDTH,
+            chartHeight: ConstantChartStringEnum.LINE_1800_HEIGHT,
+            removeChartMargin: true,
+            gridHoverBackground: true,
+            allowAnimation: true,
+            hasHoverData: true,
+            offset: true,
+            multiHoverData: true,
+            multiChartHover: true,
+            tooltipOffset: { min: 134, max: 206 },
+            dataLabels: [
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+                ['', ''],
+            ],
+            noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
+        };
+
+        this.lineChartConfig.dataProperties = this.performanceData.map(
+            (performanceDataItem, index) => {
+                return this.createLineChartData(performanceDataItem, index);
+            }
+        );
+
+        // line axes
+        this.lineChartAxes = {
+            verticalLeftAxes: {
+                visible: false,
+                minValue: 0,
+                maxValue: 52,
+                stepSize: 10,
+                showGridLines: false,
+            },
+            horizontalAxes: {
+                visible: true,
+                position: ConstantChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+                showGridLines: false,
+            },
+        };
+    }
+
+    private createLineChartData(
+        performanceDataItem: PerformanceDataItem,
+        performanceDataItemIndex: number
+    ): { defaultConfig: ChartDefaultConfig } {
+        const selectedLineChartDataValue =
+            this.lineChartDataValues[performanceDataItemIndex];
+        const selectedLineChartDataTitle = performanceDataItem.title;
+
+        return {
+            defaultConfig: {
+                type: ConstantChartStringEnum.LINE,
+                data: selectedLineChartDataValue,
+                borderColor: null,
+                pointBorderColor: ConstantChartStringEnum.CHART_COLOR_NONE,
+                pointBackgroundColor: ConstantChartStringEnum.CHART_COLOR_NONE,
+                pointHoverBackgroundColor:
+                    ConstantChartStringEnum.CHART_COLOR_WHITE,
+                pointHoverBorderColor: null,
+                pointHoverRadius: 3,
+                pointBorderWidth: 3,
+                fill: false,
+                hasGradiendBackground: true,
+                colors: null,
+                id: selectedLineChartDataTitle,
+                hidden: true,
+                label: selectedLineChartDataTitle,
+            },
+        };
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
@@ -992,37 +801,11 @@ export class DashboardPerformanceComponent
     ////////////////////////////////////////////
     ngOnChanges(): void {}
 
-    setColor(type: string) {
-        // Provera da li se u objektu nalazi vec ovaj tip sa vrednoscu boje
-        if (type in this.selectedColors) {
-            if (this.backgroundCards?.length < 9) {
-                // Iz glavnog niza boja vratiti zauzetu boju na pocetak niza
-                this.backgroundCards.unshift(this.selectedColors[type]);
-                // Obrisati iz objekta tu vrednost
-                delete this.selectedColors[type];
-                this.topChart.insertNewChartData('remove', type);
-            }
-        } else {
-            // Proveriti da li se u nizu nalazi bar jedna boja da bi mogli da dajemo novoj kocki sledecu boju
-            if (this.backgroundCards.length > 0) {
-                // Uzeti prvu vrednost iz niza i ujedno iz glavnog niza boja sklonuti prvu boju
-                const firstInArray = this.backgroundCards.shift();
-                // Dodati novu vrednost u objekat sa bojom koju smo pokupili iz niza
-                this.selectedColors[type] = firstInArray;
-                this.topChart.insertNewChartData('add', type, firstInArray);
-            }
-        }
-    }
-
-    hoverFocusCard(type: string, color: any) {
-        this.topChart.changeChartFillProperty(type, color);
-    }
-
-    hoverLineChart(value) {
-        this.topChart.showChartTooltip(value);
-    }
+    /* hoverLineChart(value) {
+        this.lineChart.showChartTooltip(value);
+    } */
 
     removeOtherChartHover() {
-        this.topChart.chartHoverOut();
+        this.lineChart.chartHoverOut();
     }
 }

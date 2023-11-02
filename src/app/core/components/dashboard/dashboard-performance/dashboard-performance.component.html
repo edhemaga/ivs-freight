@@ -37,22 +37,22 @@
                 class="d-flex align-items-center dashboard-performance-header-dropdown"
                 [formGroup]="performanceForm"
                 [ngClass]="{
-                    'dropdown-right-w-1': selectedSubPeriod.name === 'Hourly',
+                    'dropdown-right-w-1': selectedSubPeriod?.name === 'Hourly',
                     'dropdown-right-w-2':
-                        selectedSubPeriod.name === '3 Hours' ||
-                        selectedSubPeriod.name === '6 Hours',
+                        selectedSubPeriod?.name === '3 Hours' ||
+                        selectedSubPeriod?.name === '6 Hours',
                     'dropdown-right-w-3':
-                        selectedSubPeriod.name === 'Semi-Daily',
-                    'dropdown-right-w-4': selectedSubPeriod.name === 'Daily',
-                    'dropdown-right-w-5': selectedSubPeriod.name === 'Weekly',
+                        selectedSubPeriod?.name === 'Semi-Daily',
+                    'dropdown-right-w-4': selectedSubPeriod?.name === 'Daily',
+                    'dropdown-right-w-5': selectedSubPeriod?.name === 'Weekly',
                     'dropdown-right-w-6':
-                        selectedSubPeriod.name === 'Bi-Weekly',
+                        selectedSubPeriod?.name === 'Bi-Weekly',
                     'dropdown-right-w-7':
-                        selectedSubPeriod.name === 'Semi-Monthly',
-                    'dropdown-right-w-8': selectedSubPeriod.name === 'Monthly',
+                        selectedSubPeriod?.name === 'Semi-Monthly',
+                    'dropdown-right-w-8': selectedSubPeriod?.name === 'Monthly',
                     'dropdown-right-w-9':
-                        selectedSubPeriod.name === 'Quarterly',
-                    'dropdown-right-w-10': selectedSubPeriod.name === 'Yearly'
+                        selectedSubPeriod?.name === 'Quarterly',
+                    'dropdown-right-w-10': selectedSubPeriod?.name === 'Yearly'
                 }"
             >
                 <app-ta-input-dropdown
@@ -86,8 +86,12 @@
         >
             <div
                 class="d-flex flex-column justify-content-center boxes-double-box"
-                ngbTooltip="Show on Chart"
                 placement="bottom"
+                [ngbTooltip]="
+                    performanceData[0].isSelected
+                        ? 'Hide from Chart'
+                        : 'Show on Chart'
+                "
                 [ngStyle]="{
                     background: performanceData[0].isHovered
                         ? performanceData[0].selectedHoverColor
@@ -219,8 +223,12 @@
                 >
                     <div
                         class="d-flex flex-column box"
-                        ngbTooltip="Show on Chart"
                         placement="bottom"
+                        [ngbTooltip]="
+                            performanceDataItem.isSelected
+                                ? 'Hide from Chart'
+                                : 'Show on Chart'
+                        "
                         [ngStyle]="{
                             background: performanceDataItem.isHovered
                                 ? performanceDataItem.selectedHoverColor
@@ -399,8 +407,132 @@
                 </ng-container>
             </div>
         </div>
+
+        <!-- Line Chart -->
+
+        <div
+            class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
+        >
+            <div
+                class="d-flex align-items-center justify-content-between line-chart-header"
+            >
+                <p class="m-0 ta-font-bold">Mar 01 - Mar 24, 2023</p>
+
+                <div class="d-flex align-items-center line-chart-header-right">
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="circle-icon circle-icon-price"
+                            [src]="
+                                'assets/svg/common/load/ic_circle-default-load.svg'
+                            "
+                            [svgStyle]="{
+                                'width.px': 10,
+                                'height.px': 10
+                            }"
+                        ></svg-icon>
+
+                        <p class="m-0 ta-font-semi-bold">Price per Gallon</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="circle-icon circle-icon-rate"
+                            [src]="
+                                'assets/svg/common/load/ic_circle-default-load.svg'
+                            "
+                            [svgStyle]="{
+                                'width.px': 10,
+                                'height.px': 10
+                            }"
+                        ></svg-icon>
+
+                        <p class="m-0 ta-font-semi-bold">Load per Mile</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="line-chart-container">
+                <app-ta-chart
+                    #lineChart
+                    [chartConfig]="lineChartConfig"
+                    [axesProperties]="lineChartAxes"
+                    [legendAttributes]="{}"
+                >
+                </app-ta-chart>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- <div class="dahsboard_chart_container">
+    <div class="dahsboard_charts_holder">
+        <div class="line_chart_title_hold">
+            <div class="dashboard_chart_title">March, 2023</div>
+            <div
+                class="dashboard_chart_average_hold"
+                *ngIf="topChart.focusCardHovered"
+            >
+                <div class="chart_average_icon">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="3"
+                        viewBox="0 0 22 3"
+                    >
+                        <path
+                            id="Path_38850"
+                            data-name="Path 38850"
+                            d="M-20422-21150h22"
+                            transform="translate(20422 21151.5)"
+                            fill="none"
+                            [attr.stroke]="topChart.averageLineCover"
+                            stroke-width="3"
+                            stroke-dasharray="3 3"
+                        />
+                    </svg>
+                </div>
+                <div class="chart_average_title">
+                    Daily avg. <span>$67.42K</span>
+                </div>
+            </div>
+        </div>
+        <div
+            class="dashboard_performance_charts"
+            (mouseleave)="removeOtherChartHover()"
+        >
+            <app-ta-chart
+                #topChart
+                [chartConfig]="lineChartConfig"
+                [axesProperties]="lineAxes"
+                [legendAttributes]="{}"
+            >
+            </app-ta-chart>
+            <app-ta-chart
+                #bottomChart
+                [chartConfig]="barChartConfig"
+                [axesProperties]="barAxes"
+                [legendAttributes]="{}"
+                (hoverOtherChart)="hoverLineChart($event)"
+            >
+            </app-ta-chart>
+        </div>
+        <div class="dashboard_chart_data">
+            <div class="chart_data_inner separate_inner">
+                <div class="chart_data_icon round_dark_grey">
+                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_data_text">Price per Gallon</div>
+            </div>
+            <div class="chart_data_inner">
+                <div class="chart_data_icon round_light_grey">
+                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_data_text">Load Rate per Mile</div>
+            </div>
+        </div>
+    </div>
+</div>
+ -->
 
 <!-- <div class="dashboard-performance-holder">
     <div class="dashboard-performance-body">
@@ -1449,73 +1581,3 @@
         </div>
     </div>
 </div> -->
-
-<!-- <div class="dahsboard_chart_container">
-    <div class="dahsboard_charts_holder">
-        <div class="line_chart_title_hold">
-            <div class="dashboard_chart_title">March, 2023</div>
-            <div
-                class="dashboard_chart_average_hold"
-                *ngIf="topChart.focusCardHovered"
-            >
-                <div class="chart_average_icon">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="22"
-                        height="3"
-                        viewBox="0 0 22 3"
-                    >
-                        <path
-                            id="Path_38850"
-                            data-name="Path 38850"
-                            d="M-20422-21150h22"
-                            transform="translate(20422 21151.5)"
-                            fill="none"
-                            [attr.stroke]="topChart.averageLineCover"
-                            stroke-width="3"
-                            stroke-dasharray="3 3"
-                        />
-                    </svg>
-                </div>
-                <div class="chart_average_title">
-                    Daily avg. <span>$67.42K</span>
-                </div>
-            </div>
-        </div>
-        <div
-            class="dashboard_performance_charts"
-            (mouseleave)="removeOtherChartHover()"
-        >
-            <app-ta-chart
-                #topChart
-                [chartConfig]="lineChartConfig"
-                [axesProperties]="lineAxes"
-                [legendAttributes]="{}"
-            >
-            </app-ta-chart>
-            <app-ta-chart
-                #bottomChart
-                [chartConfig]="barChartConfig"
-                [axesProperties]="barAxes"
-                [legendAttributes]="{}"
-                (hoverOtherChart)="hoverLineChart($event)"
-            >
-            </app-ta-chart>
-        </div>
-        <div class="dashboard_chart_data">
-            <div class="chart_data_inner separate_inner">
-                <div class="chart_data_icon round_dark_grey">
-                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                </div>
-                <div class="chart_data_text">Price per Gallon</div>
-            </div>
-            <div class="chart_data_inner">
-                <div class="chart_data_icon round_light_grey">
-                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                </div>
-                <div class="chart_data_text">Load Rate per Mile</div>
-            </div>
-        </div>
-    </div>
-</div>
- -->

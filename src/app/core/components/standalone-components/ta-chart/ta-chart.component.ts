@@ -141,24 +141,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
     }
 
-    setHoverAnnotation(value: any, config?: any) {
-        if (this.lineChartType == 'doughnut') {
-            return false;
-        }
-        let sameValue = false;
-        this.annotationConfig = config;
-        this.lineChartOptions['annotation']['annotations'].map((item, i) => {
-            if (item['id'] == 'a-line-2' && item['value'] == value) {
-                sameValue = true;
-            }
-        });
-
-        if (!sameValue) {
-            this.annotationHovered = value;
-            this.setChartOptions();
-        }
-    }
-
     setChartOptions() {
         this.lineChartOptions = {
             responsive: this.chartConfig['dontUseResponsive'] ? false : true,
@@ -181,9 +163,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     if (this.legendAttributes?.length) {
                         this.setChartLegendData(elements);
                     }
-                    if (this.chartConfig['onHoverAnnotation']) {
-                        this.setHoverAnnotation(elements[0]['_index']);
-                    }
+
                     if (
                         this.lineChartType == 'doughnut' &&
                         this.driversList?.length
@@ -194,9 +174,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     if (!this.chartConfig['animationOnlyOnLoad']) {
                         this.animationDuration = 1000;
                     }
-                    if (this.chartConfig['onHoverAnnotation']) {
-                        this.setHoverAnnotation(null);
-                    }
+
                     if (
                         this.lineChartType == 'doughnut' &&
                         this.driversList?.length
@@ -719,8 +697,8 @@ export class TaChartComponent implements OnInit, OnChanges {
             } else if (item['id'] == type && color == '') {
                 item['fill'] = false;
                 updateChart = true;
-                let colorProp = item['borderColor'].toString();
-                item['borderColor'] = colorProp.slice(0, 7);
+                let colorProp = item['borderColor']?.toString();
+                item['borderColor'] = colorProp?.slice(0, 7);
             } else if (item['id'] != type && color && color != '') {
                 item['fill'] = false;
                 let colorProp = item['borderColor'] + '33';
@@ -728,12 +706,10 @@ export class TaChartComponent implements OnInit, OnChanges {
                 updateChart = true;
             }
             if (color == '') {
-                let colorProp = item['borderColor'].toString();
-                item['borderColor'] = colorProp.slice(0, 7);
+                let colorProp = item['borderColor']?.toString();
+                item['borderColor'] = colorProp?.slice(0, 7);
             }
         });
-
-        const annotationValue = averageAnnotation / averageLenght;
 
         if (updateChart) {
             this.animationDuration = 0;
@@ -744,16 +720,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         if (lineHovered) {
             this.focusCardHovered = true;
             this.averageLineCover = lineHovered;
-            let config = {
-                type: 'horizontal',
-                color: lineHovered,
-                axis: 'y-axis-0',
-                dash: [3, 4],
-            };
-            this.setHoverAnnotation(annotationValue, config);
         } else {
             this.focusCardHovered = false;
-            this.setHoverAnnotation(null);
         }
     }
 
@@ -764,11 +732,9 @@ export class TaChartComponent implements OnInit, OnChanges {
                     item['hidden'] = false;
                     item['borderColor'] = '#' + color;
                     item['pointHoverBorderColor'] = '#' + color;
-                    this.changeChartFillProperty(type, color);
                 }
                 if (mod == 'remove') {
                     item['hidden'] = true;
-                    this.changeChartFillProperty(type, '');
                 }
             }
         });
