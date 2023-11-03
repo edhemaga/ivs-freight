@@ -347,8 +347,7 @@
 
         /* Line Chart */
         &-line-chart-container {
-            border-bottom: 1px solid $bw-9;
-            margin-bottom: 12px;
+            margin-bottom: -35px;
 
             .line-chart-header {
                 margin-bottom: 12px;
@@ -390,6 +389,11 @@
                     }
                 }
             }
+        }
+
+        .bar-chart-container {
+            border-top: 1px solid $bw-9;
+            padding-top: 10px;
         }
     }
 }
