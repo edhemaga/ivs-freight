@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+
+// store
+import { DashboardStore } from '../store/dashboard.store';
 
 // models
 import {
@@ -18,11 +21,23 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    constructor(private dashboardService: DashboardBackendService) {}
+    constructor(
+        private dashboardService: DashboardBackendService,
+        private dashboardStore: DashboardStore
+    ) {}
 
     // Dashboard
     public getOverallCompanyDuration(): Observable<CompanyDurationResponse> {
-        return this.dashboardService.apiDashboardCompanydurationGet();
+        return this.dashboardService.apiDashboardCompanydurationGet().pipe(
+            tap((companyDuration) => {
+                this.dashboardStore.update((store) => {
+                    return {
+                        ...store,
+                        companyDuration: companyDuration.companyDurationInDays,
+                    };
+                });
+            })
+        );
     }
 
     // Dashboard - Top Rated

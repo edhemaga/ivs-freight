@@ -44,7 +44,7 @@ export interface DoughnutChartConfig extends ChartConfiguration {
     chartWidth: string;
     chartHeight: string;
     removeChartMargin: boolean;
-    dataLabels: string[];
+    dataLabels: string[] | string[][];
     driversList?: TopRatedListItem[];
     allowAnimation: boolean;
     noChartImage: string;

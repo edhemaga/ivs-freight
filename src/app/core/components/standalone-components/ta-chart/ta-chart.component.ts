@@ -141,23 +141,7 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
     }
 
-    setHoverAnnotation(value: any, config?: any) {
-        if (this.lineChartType == 'doughnut') {
-            return false;
-        }
-        let sameValue = false;
-        this.annotationConfig = config;
-        this.lineChartOptions['annotation']['annotations'].map((item, i) => {
-            if (item['id'] == 'a-line-2' && item['value'] == value) {
-                sameValue = true;
-            }
-        });
-
-        if (!sameValue) {
-            this.annotationHovered = value;
-            this.setChartOptions();
-        }
-    }
+    public trackByIdentity = (index: number): number => index;
 
     setChartOptions() {
         this.lineChartOptions = {
@@ -181,9 +165,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     if (this.legendAttributes?.length) {
                         this.setChartLegendData(elements);
                     }
-                    if (this.chartConfig['onHoverAnnotation']) {
-                        this.setHoverAnnotation(elements[0]['_index']);
-                    }
+
                     if (
                         this.lineChartType == 'doughnut' &&
                         this.driversList?.length
@@ -194,9 +176,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     if (!this.chartConfig['animationOnlyOnLoad']) {
                         this.animationDuration = 1000;
                     }
-                    if (this.chartConfig['onHoverAnnotation']) {
-                        this.setHoverAnnotation(null);
-                    }
+
                     if (
                         this.lineChartType == 'doughnut' &&
                         this.driversList?.length
@@ -702,38 +682,34 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
 
         let averageAnnotation = 0;
-        let averageLenght = 0;
 
         this.chart.chart.config.data.datasets.map((item, i) => {
             if (item['id'] == type && color && color != '') {
                 item['fill'] = true;
                 item['colors'] = [startcolorRGBA, endColorRGBA];
                 updateChart = true;
-                let colorProp = item['borderColor'].toString();
-                item['borderColor'] = colorProp.slice(0, 7);
+                let colorProp = item['borderColor']?.toString();
+                item['borderColor'] = colorProp?.slice(0, 7);
                 lineHovered = item['borderColor'];
-                averageLenght = item['data'].length;
                 item['data'].map((val, l) => {
                     averageAnnotation = averageAnnotation + val;
                 });
             } else if (item['id'] == type && color == '') {
                 item['fill'] = false;
                 updateChart = true;
-                let colorProp = item['borderColor'].toString();
-                item['borderColor'] = colorProp.slice(0, 7);
+                let colorProp = item['borderColor']?.toString();
+                item['borderColor'] = colorProp?.slice(0, 7);
             } else if (item['id'] != type && color && color != '') {
                 item['fill'] = false;
                 let colorProp = item['borderColor'] + '33';
-                item['borderColor'] = colorProp.slice(0, 9);
+                item['borderColor'] = colorProp?.slice(0, 9);
                 updateChart = true;
             }
             if (color == '') {
-                let colorProp = item['borderColor'].toString();
-                item['borderColor'] = colorProp.slice(0, 7);
+                let colorProp = item['borderColor']?.toString();
+                item['borderColor'] = colorProp?.slice(0, 7);
             }
         });
-
-        const annotationValue = averageAnnotation / averageLenght;
 
         if (updateChart) {
             this.animationDuration = 0;
@@ -744,16 +720,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         if (lineHovered) {
             this.focusCardHovered = true;
             this.averageLineCover = lineHovered;
-            let config = {
-                type: 'horizontal',
-                color: lineHovered,
-                axis: 'y-axis-0',
-                dash: [3, 4],
-            };
-            this.setHoverAnnotation(annotationValue, config);
         } else {
             this.focusCardHovered = false;
-            this.setHoverAnnotation(null);
         }
     }
 
@@ -764,11 +732,9 @@ export class TaChartComponent implements OnInit, OnChanges {
                     item['hidden'] = false;
                     item['borderColor'] = '#' + color;
                     item['pointHoverBorderColor'] = '#' + color;
-                    this.changeChartFillProperty(type, color);
                 }
                 if (mod == 'remove') {
                     item['hidden'] = true;
-                    this.changeChartFillProperty(type, '');
                 }
             }
         });
@@ -872,13 +838,13 @@ export class TaChartComponent implements OnInit, OnChanges {
                     name: 'Price per Gallon',
                     value: 23,
                     percent: null,
-                    color: '#919191',
+                    color: '#AAAAAA',
                 },
                 {
                     name: 'Load Rate per Mile',
                     value: 23,
                     percent: null,
-                    color: '#CCCCCC',
+                    color: '#DADADA',
                 },
             ];
 
@@ -1126,7 +1092,7 @@ export class TaChartComponent implements OnInit, OnChanges {
         this.setChartOptions();
     }
 
-    showChartTooltip(value) {
+    showChartTooltip(value: number) {
         if (this.toolTipData?.length) {
             this.setToolTipTitle(value);
             this.setChartLegendData(this.chart.chart['tooltip']._active);
@@ -1143,78 +1109,72 @@ export class TaChartComponent implements OnInit, OnChanges {
         let xPoint1 = 0;
         let xPoint2 = 0;
 
-        setTimeout(() => {
-            const xAxis = this.chart.chart['scales']['x-axis-0'];
-            const yAxis = this.chart.chart['scales']['y-axis-0'];
+        const xAxis = this.chart.chart['scales']['x-axis-0'];
+        const yAxis = this.chart.chart['scales']['y-axis-0'];
 
-            if (xAxis['_gridLineItems']) {
-                xPoint1 = xAxis['_gridLineItems'][1]['x1'];
-                xPoint2 = xAxis['_gridLineItems'][0]['x2'];
-                const elWidth = xPoint1 - xPoint2;
+        if (xAxis['_gridLineItems']) {
+            xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+            xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+            const elWidth = xPoint1 - xPoint2;
 
-                if (this.axesProperties?.horizontalAxes?.showGridLines) {
-                    xAxis['_gridLineItems'].map((item, i) => {
-                        if (i && i != xAxis['_gridLineItems'].length - 1) {
-                            xAxis['_gridLineItems'][i].color = '#DADADA';
-                        }
-                        if (
-                            i == value ||
-                            i == value + 1 ||
-                            i == xAxis['_gridLineItems'].length - 1
-                        ) {
-                            xAxis['_gridLineItems'][i].color = 'transparent';
-                        }
-                    });
+            if (this.axesProperties?.horizontalAxes?.showGridLines) {
+                xAxis['_gridLineItems'].map((item, i) => {
+                    if (i && i != xAxis['_gridLineItems'].length - 1) {
+                        xAxis['_gridLineItems'][i].color = '#DADADA';
+                    }
+                    if (
+                        i == value ||
+                        i == value + 1 ||
+                        i == xAxis['_gridLineItems'].length - 1
+                    ) {
+                        xAxis['_gridLineItems'][i].color = 'transparent';
+                    }
+                });
+            }
+
+            if (
+                xAxis['_gridLineItems'][value] &&
+                this.chartConfig['hasHoverData']
+            ) {
+                this.updateHoverData(value);
+                let oversizedHover = false;
+                this.hoverColumnWidth = elWidth + 1;
+                this.hoverChartLeft = xAxis['_gridLineItems'][value]['x2'] - 1;
+
+                let clientWidth = this.hoverDataHolder
+                    ? this.hoverDataHolder.nativeElement.offsetWidth + 16
+                    : 0;
+
+                if (!clientWidth && this.chartConfig['tooltipOffset']) {
+                    if (this.selectedDataRows.length > this.dataMaxRows) {
+                        clientWidth = this.chartConfig['tooltipOffset']['max'];
+                    } else {
+                        clientWidth = this.chartConfig['tooltipOffset']['min'];
+                    }
                 }
 
-                if (
-                    xAxis['_gridLineItems'][value] &&
-                    this.chartConfig['hasHoverData']
-                ) {
-                    this.updateHoverData(value);
-                    let oversizedHover = false;
-                    this.hoverColumnWidth = elWidth + 1;
-                    this.hoverChartLeft =
-                        xAxis['_gridLineItems'][value]['x2'] - 1;
+                this.hoverColumnHeight = this.chartConfig[
+                    'startGridBackgroundFromZero'
+                ]
+                    ? yAxis.height
+                    : this.chartConfig['multiChartHover']
+                    ? yAxis.height + xAxis.height + 40
+                    : yAxis.height + xAxis.height;
 
-                    let clientWidth = this.hoverDataHolder
-                        ? this.hoverDataHolder.nativeElement.offsetWidth + 16
-                        : 0;
+                let xPos = this.chartConfig['offset']
+                    ? xAxis['_gridLineItems'][value]['x2'] + elWidth
+                    : xAxis['_gridLineItems'][value]['x2'];
 
-                    if (!clientWidth && this.chartConfig['tooltipOffset']) {
-                        if (this.selectedDataRows.length > this.dataMaxRows) {
-                            clientWidth =
-                                this.chartConfig['tooltipOffset']['max'];
-                        } else {
-                            clientWidth =
-                                this.chartConfig['tooltipOffset']['min'];
-                        }
-                    }
-
-                    this.hoverColumnHeight = this.chartConfig[
-                        'startGridBackgroundFromZero'
-                    ]
-                        ? yAxis.height
-                        : this.chartConfig['multiChartHover']
-                        ? yAxis.height + xAxis.height + 40
-                        : yAxis.height + xAxis.height;
-
-                    let xPos = this.chartConfig['offset']
-                        ? xAxis['_gridLineItems'][value]['x2'] + elWidth
-                        : xAxis['_gridLineItems'][value]['x2'];
-
-                    if (xPos + clientWidth > canvas.width) {
-                        oversizedHover = true;
-                    }
-                    if (oversizedHover) {
-                        this.hoverDataPosition =
-                            xPos - clientWidth - elWidth - 4;
-                    } else {
-                        this.hoverDataPosition = xPos + 4;
-                    }
+                if (xPos + clientWidth > canvas.width) {
+                    oversizedHover = true;
+                }
+                if (oversizedHover) {
+                    this.hoverDataPosition = xPos - clientWidth - elWidth - 4;
+                } else {
+                    this.hoverDataPosition = xPos + 4;
                 }
             }
-        });
+        }
 
         this.showHoverData = true;
     }

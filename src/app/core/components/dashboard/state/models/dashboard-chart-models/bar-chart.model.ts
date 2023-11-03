@@ -3,12 +3,13 @@ import { TopRatedListItem } from '../dashboard-top-rated-models/top-rated-list-i
 
 export interface BarChartConfig extends DoughnutChartConfig {
     gridHoverBackground: boolean;
-    startGridBackgroundFromZero: boolean;
-    dataMaxRows: number;
+    startGridBackgroundFromZero?: boolean;
+    dataMaxRows?: number;
     hasHoverData: boolean;
-    hassecondTabValueage: boolean;
+    hassecondTabValueage?: boolean;
     offset: boolean;
     tooltipOffset: { min: number; max: number };
+    hoverOtherChart?: boolean;
 }
 
 export interface BarChartAxes {

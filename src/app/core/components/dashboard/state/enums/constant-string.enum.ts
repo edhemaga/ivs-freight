@@ -37,6 +37,7 @@ export enum ConstantStringEnum {
     MTD = 'MTD',
     QTD = 'QTD',
     YTD = 'YTD',
+    ALL = 'ALL',
     ALT = 'AllTime',
 
     THS = 'ThreeHours',

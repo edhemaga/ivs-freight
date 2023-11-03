@@ -18,6 +18,9 @@ import moment from 'moment';
 // services
 import { DashboardService } from '../../state/services/dashboard.service';
 
+// store
+import { DashboardQuery } from '../../state/store/dashboard.query';
+
 // constants
 import { DashboardTopRatedConstants } from '../../state/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '../../state/utils/constants/dashboard-colors.constants';
@@ -33,13 +36,13 @@ import { ConstantChartStringEnum } from '../../state/enums/constant-chart-string
 
 // models
 import { TopRatedDropdownItem } from '../../state/models/dashboard-top-rated-models/top-rated-dropdown-item.model';
-import { TopRatedTab } from '../../state/models/dashboard-top-rated-models/top-rated-tab.model';
+import { DashboardTab } from '../../state/models/dashboard-tab.model';
 import { DropdownListItem } from '../../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../../state/models/dashboard-top-rated-models/top-rated-list-item.model';
 import { CustomPeriodRange } from '../../state/models/custom-period-range.model';
 import {
-    MainColorsPallete,
-    SecondaryColorsPallete,
+    TopRatedMainColorsPallete,
+    TopRatedSecondaryColorsPallete,
 } from '../../state/models/dashboard-color-models/colors-pallete.model';
 import {
     ChartInitProperties,
@@ -156,8 +159,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public isShowingMore: boolean = false;
 
     // tabs
-    public topRatedTabs: TopRatedTab[] = [];
-    private currentActiveTab: TopRatedTab;
+    public topRatedTabs: DashboardTab[] = [];
+    private currentActiveTab: DashboardTab;
 
     // dropdowns
     public topRatedDropdownList: TopRatedDropdownItem[] = [];
@@ -174,8 +177,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private overallCompanyDuration: number;
 
     // colors
-    public mainColorsPallete: MainColorsPallete[] = [];
-    private secondaryColorsPallete: SecondaryColorsPallete[] = [];
+    public mainColorsPallete: TopRatedMainColorsPallete[] = [];
+    public secondaryColorsPallete: TopRatedSecondaryColorsPallete[] = [];
 
     // charts
     public doughnutChartConfig: DoughnutChartConfig;
@@ -193,7 +196,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private changeDetectorRef: ChangeDetectorRef,
-        private dashboardService: DashboardService
+        private dashboardService: DashboardService,
+        private dashboardQuery: DashboardQuery
     ) {}
 
     ngOnInit(): void {
@@ -216,21 +220,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public trackByIdentity = (_: number, item: TopRatedDropdownItem): string =>
         item.name;
-
-    private getConstantData(): void {
-        this.topRatedDropdownList =
-            DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA;
-        this.topRatedTabs = DashboardTopRatedConstants.TOP_RATED_TABS;
-
-        this.mainPeriodDropdownList =
-            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
-
-        this.selectedMainPeriod =
-            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-
-        this.mainColorsPallete = DashboardColors.MAIN_COLORS_PALLETE;
-        this.secondaryColorsPallete = DashboardColors.SECONDARY_COLORS_PALLETE;
-    }
 
     public handleSearchValue(searchValue: string): void {
         console.log(searchValue);
@@ -273,6 +262,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 case ConstantStringEnum.ALL_TIME:
                     this.setCustomSubPeriodList(this.overallCompanyDuration);
 
+                    this.getTopRatedListData();
+
                     break;
                 case ConstantStringEnum.CUSTOM:
                     this.isDisplayingCustomPeriodRange = true;
@@ -288,7 +279,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 dropdownListItem.name !== ConstantStringEnum.ALL_TIME &&
                 dropdownListItem.name !== ConstantStringEnum.CUSTOM
             ) {
-                this.setSubPeriodList(matchingIdList);
+                const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+                    DashboardUtils.setSubPeriodList(matchingIdList);
+
+                this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+                this.selectedSubPeriod = selectedSubPeriod;
+
                 this.getTopRatedListData();
             }
         }
@@ -337,7 +333,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.popover.close();
     }
 
-    public handleSwitchTabClick(activeTab: TopRatedTab): void {
+    public handleSwitchTabClick(activeTab: DashboardTab): void {
         if (this.currentActiveTab?.name === activeTab.name) {
             return;
         }
@@ -481,16 +477,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getOverallCompanyDuration(): void {
-        this.dashboardService
-            .getOverallCompanyDuration()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((companyDuration) => {
-                this.overallCompanyDuration =
-                    companyDuration.companyDurationInDays;
+    private getConstantData(): void {
+        this.topRatedDropdownList =
+            DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA;
+        this.topRatedTabs = DashboardTopRatedConstants.TOP_RATED_TABS;
 
-                this.setCustomSubPeriodList(this.overallCompanyDuration);
+        this.mainPeriodDropdownList =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
+
+        this.selectedMainPeriod =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
+
+        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
+        this.secondaryColorsPallete =
+            DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE;
+    }
+
+    private getOverallCompanyDuration(): void {
+        this.dashboardQuery.companyDuration$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((companyDuration: number) => {
+                if (companyDuration) {
+                    this.overallCompanyDuration = companyDuration;
+                }
             });
+
+        this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
 
     private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {
@@ -1025,53 +1037,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setSubPeriodList(subPeriodIdList: number[]): void {
-        this.subPeriodDropdownList =
-            DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
-                (period) => {
-                    if (period.id === subPeriodIdList[0]) {
-                        this.selectedSubPeriod = period;
-                    }
-
-                    return subPeriodIdList.includes(period.id);
-                }
-            );
-    }
-
     private setCustomSubPeriodList(selectedDaysRange: number): void {
-        let matchingIdList: number[] = [];
+        const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+            DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
 
-        if (selectedDaysRange >= 1 && selectedDaysRange <= 2) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_1;
-        }
-
-        if (selectedDaysRange > 2 && selectedDaysRange <= 14) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_2;
-        }
-
-        if (selectedDaysRange > 14 && selectedDaysRange <= 60) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_3;
-        }
-
-        if (selectedDaysRange > 60 && selectedDaysRange <= 365) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_4;
-        }
-
-        if (selectedDaysRange > 365 && selectedDaysRange <= 730) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_5;
-        }
-
-        if (selectedDaysRange > 730) {
-            matchingIdList =
-                DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_6;
-        }
-
-        this.setSubPeriodList(matchingIdList);
+        this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+        this.selectedSubPeriod = selectedSubPeriod;
     }
 
     private setDoughnutChartCenterStats(
@@ -1487,7 +1458,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ConstantChartStringEnum.CHART_COLOR_GREY,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                            ConstantChartStringEnum.CHART_COLOR_GREY_5,
                         hoverBorderColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY,
                         label: ConstantChartStringEnum.BAR_LABEL_TOP,
@@ -1507,7 +1478,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ConstantChartStringEnum.CHART_COLOR_GREY_2,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
+                            ConstantChartStringEnum.CHART_COLOR_GREY,
                         hoverBorderColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY_2,
                         label: ConstantChartStringEnum.BAR_LABEL_OTHER,

@@ -2,12 +2,16 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
+    OnDestroy,
     OnInit,
 } from '@angular/core';
+
+import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { SharedService } from '../../../../services/shared/shared.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { DashboardService } from '../../state/services/dashboard.service';
 
 // components
 import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
@@ -24,14 +28,19 @@ import { SignInResponse } from '../../../../../../../appcoretruckassist/model/si
     styleUrls: ['./dashboard.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+    private destroy$: Subject<void> = new Subject<void>();
+
     constructor(
         private sharedService: SharedService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private dashboardService: DashboardService
     ) {}
 
     ngOnInit(): void {
         this.checkIfUserSettingsAreUpdated();
+
+        this.getOverallCompanyDuration();
     }
 
     ngAfterViewInit(): void {
@@ -62,5 +71,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.sharedService.emitUpdateScrollHeight.emit(true);
         }, 200);
+    }
+
+    private getOverallCompanyDuration(): void {
+        this.dashboardService
+            .getOverallCompanyDuration()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

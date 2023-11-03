@@ -1,6 +1,6 @@
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
 import { TopRatedDropdownItem } from '../../models/dashboard-top-rated-models/top-rated-dropdown-item.model';
-import { TopRatedTab } from '../../models/dashboard-top-rated-models/top-rated-tab.model';
+import { DashboardTab } from '../../models/dashboard-tab.model';
 
 export class DashboardTopRatedConstants {
     static TOP_RATED_DROPDOWN_DATA: TopRatedDropdownItem[] = [
@@ -54,7 +54,7 @@ export class DashboardTopRatedConstants {
         },
     ];
 
-    static TOP_RATED_TABS: TopRatedTab[] = [
+    static TOP_RATED_TABS: DashboardTab[] = [
         {
             name: 'Mileage',
             checked: true,
