@@ -1,28 +1,26 @@
 import {
-    FormsModule,
-    UntypedFormControl,
-    ReactiveFormsModule,
-} from '@angular/forms';
-import {
     Component,
     Input,
-    OnInit,
     EventEmitter,
     Output,
     ElementRef,
-    AfterViewInit,
-    ViewChild,
     OnChanges,
     SimpleChanges,
     ChangeDetectorRef,
     ViewChildren,
     QueryList,
 } from '@angular/core';
-import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+
+// modules
 import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+
+// components
+import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+import { TaCustomPeriodRangeComponent } from '../ta-custom-period-range/ta-custom-period-range.component';
+
+// models
+import { CustomPeriodRange } from '../../dashboard/state/models/custom-period-range.model';
 
 @Component({
     selector: 'app-ta-tab-switch',
@@ -31,45 +29,21 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
     standalone: true,
     imports: [
         CommonModule,
-        FormsModule,
-        AngularSvgIconModule,
-        AutoclosePopoverComponent,
-        ReactiveFormsModule,
         NgbModule,
-        TaInputComponent,
+        AutoclosePopoverComponent,
+        TaCustomPeriodRangeComponent,
     ],
 })
-export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
+export class TaTabSwitchComponent implements OnChanges {
     @ViewChildren('popoverHolder')
     autoCloseComponent: QueryList<AutoclosePopoverComponent>;
+
     @Input() tabs: any[];
     @Input() type: string = '';
     @Input() dashboardHeight?: boolean = false;
+
     @Output() switchClicked = new EventEmitter<any>();
-    @Output() saveCustomRange = new EventEmitter<any>();
-    @ViewChild('t2') t2: any;
-
-    public date1: UntypedFormControl = new UntypedFormControl();
-    public date2: UntypedFormControl = new UntypedFormControl();
-    tooltip: any;
-
-    switchItems: any[] = [
-        {
-            name: 'Day',
-        },
-        {
-            name: 'Week',
-        },
-        {
-            name: 'Month',
-        },
-        {
-            name: 'Year',
-        },
-        {
-            name: 'Schedule',
-        },
-    ];
+    @Output() customPeriodRangeEmitter = new EventEmitter<any>();
 
     hoverStyle: any = {
         width: '0px',
@@ -77,36 +51,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     };
 
     indexSwitch: number = -1;
-    data1Valid: boolean;
-    data2Valid: boolean;
 
     constructor(public elem: ElementRef, public det: ChangeDetectorRef) {}
-
-    ngOnInit(): void {
-        this.date1.valueChanges.subscribe((data) => {
-            this.data1Valid = data!!;
-        });
-
-        this.date2.valueChanges.subscribe((data) => {
-            this.data2Valid = data!!;
-        });
-    }
-
-    clearFields() {
-        this.date1.reset();
-        this.date1.updateValueAndValidity();
-        this.date2.reset();
-        this.date2.updateValueAndValidity();
-    }
-
-    setCustomRange(e) {
-        if (this.data1Valid && this.data2Valid) {
-            let rangeData = [];
-            rangeData.push(this.data1Valid, this.data2Valid);
-            this.saveCustomRange.emit(rangeData);
-            this.closeCustomPopover(e);
-        }
-    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.tabs) {
@@ -115,8 +61,6 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
             }, 550);
         }
     }
-
-    ngAfterViewInit() {}
 
     public setSwitchActive(tabs) {
         const selectedIndex = tabs?.findIndex(
@@ -163,9 +107,13 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
         };
     }
 
-    closeCustomPopover = (e) => {
-        e.stopPropagation();
+    public handleSetCustomPeriodRangeClick(
+        customPeriodRange: CustomPeriodRange
+    ): void {
+        this.customPeriodRangeEmitter.emit(customPeriodRange);
+
         const closeComponentArray = this.autoCloseComponent.toArray().reverse();
+
         closeComponentArray[0].tooltip.close();
-    };
+    }
 }
