@@ -854,8 +854,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
 
         this.selectedDataRows = dataValues;
-
-        console.log('this.selectedDataRows', this.selectedDataRows);
     }
 
     chartUpdated(data: any[]) {

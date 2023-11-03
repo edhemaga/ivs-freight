@@ -90,6 +90,7 @@
             <div class="chart-tooltip-border"></div>
 
             <div
+                #hoverDataHolder
                 class="d-flex flex-column justify-content-center chart-tooltip-items-container"
             >
                 <ng-container
@@ -139,68 +140,6 @@
                 </ng-container>
             </div>
         </div>
-
-        <!-- <div
-            class="hover_data_holder"
-            [ngStyle]="{
-                left: hoverDataPosition + 'px',
-                width:
-                    selectedDrivers?.length > dataMaxRows
-                        ? '279px'
-                        : selectedDataRows?.length > dataMaxRows
-                        ? '206px'
-                        : 'auto'
-            }"
-        >
-            <div
-                class="hover_data_title"
-                [ngStyle]="{
-                    'text-align':
-                        selectedDrivers?.length ||
-                        selectedDataRows?.length > dataMaxRows
-                            ? 'left'
-                            : 'center'
-                }"
-            >
-                JANUARY, 2024 asdasdas
-            </div>
-            <div class="hover_data_border_line"></div>
-
-            <div
-                class="hover_data_innit"
-                *ngIf="selectedDataRows.length <= dataMaxRows"
-            >
-                <div
-                    class="hover_data_info_holder"
-                    #hoverDataHolder
-                    *ngFor="let item of selectedDataRows; let indx = index"
-                    [ngStyle]="{ 'margin-top': indx > 0 ? '12px' : '0px' }"
-                >
-                    <div class="hover_data_info_top_line">
-                        <div class="hover_data_icon">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="10"
-                                height="10"
-                                viewBox="0 0 10 10"
-                            >
-                                <rect
-                                    width="10"
-                                    height="10"
-                                    rx="5.5"
-                                    [attr.fill]="item.color"
-                                />
-                            </svg>
-                        </div>
-                        <div class="hover_data_info_title">{{ item.name }}</div>
-                    </div>
-                    <div class="hover_data_price">
-                        ${{ item.value | nFormatter }}
-                    </div>
-                    <div class="hover_data_percent">{{ item.percent }}</div>
-                </div>
-            </div>
-        </div> -->
     </ng-container>
 
     <!-- Chart Canvas -->
