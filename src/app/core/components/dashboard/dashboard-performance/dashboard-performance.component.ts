@@ -1,16 +1,7 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    OnChanges,
-    OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
-
-// decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
 
 // moment
 import moment from 'moment';
@@ -49,15 +40,12 @@ import {
     BarChartValues,
 } from '../state/models/bar-chart.model';
 
-@Titles()
 @Component({
     selector: 'app-dashboard-performance',
     templateUrl: './dashboard-performance.component.html',
     styleUrls: ['./dashboard-performance.component.scss'],
 })
-export class DashboardPerformanceComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     @ViewChild('lineChart') public lineChart: LineChart;
     @ViewChild('barChart') public barChart: BarChart;
 
@@ -676,6 +664,7 @@ export class DashboardPerformanceComponent
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
+        console.log('barChartValues', barChartValues);
         this.barChartConfig = {
             dataProperties: [
                 {
@@ -800,7 +789,4 @@ export class DashboardPerformanceComponent
         this.destroy$.next();
         this.destroy$.complete();
     }
-
-    ////////////////////////////////////////////
-    ngOnChanges(): void {}
 }

@@ -1158,7 +1158,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 ]
                     ? yAxis.height
                     : this.chartConfig['multiChartHover']
-                    ? yAxis.height + xAxis.height + 40
+                    ? yAxis.height + xAxis.height + 18
                     : yAxis.height + xAxis.height;
 
                 let xPos = this.chartConfig['offset']
