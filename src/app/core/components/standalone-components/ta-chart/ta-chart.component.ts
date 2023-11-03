@@ -141,6 +141,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
     }
 
+    public trackByIdentity = (index: number): number => index;
+
     setChartOptions() {
         this.lineChartOptions = {
             responsive: this.chartConfig['dontUseResponsive'] ? false : true,
@@ -836,13 +838,13 @@ export class TaChartComponent implements OnInit, OnChanges {
                     name: 'Price per Gallon',
                     value: 23,
                     percent: null,
-                    color: '#919191',
+                    color: '#AAAAAA',
                 },
                 {
                     name: 'Load Rate per Mile',
                     value: 23,
                     percent: null,
-                    color: '#CCCCCC',
+                    color: '#DADADA',
                 },
             ];
 
@@ -852,6 +854,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
 
         this.selectedDataRows = dataValues;
+
+        console.log('this.selectedDataRows', this.selectedDataRows);
     }
 
     chartUpdated(data: any[]) {

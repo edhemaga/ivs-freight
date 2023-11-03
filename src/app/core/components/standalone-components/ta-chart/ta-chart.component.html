@@ -31,6 +31,7 @@
         </div>
     </div>
 </div>
+
 <div
     class="main_chart_container"
     (mouseleave)="chartHoverOut()"
@@ -72,69 +73,137 @@
         </div>
     </div>
 
-    <div
-        class="hover_data_holder"
-        (mouseenter)="showHoverData = false"
-        *ngIf="showHoverData && selectedDataRows?.length"
-        [ngStyle]="{
-            left: hoverDataPosition + 'px',
-            width:
-                selectedDrivers?.length > dataMaxRows
-                    ? '279px'
-                    : selectedDataRows?.length > dataMaxRows
-                    ? '206px'
-                    : 'auto'
-        }"
-    >
+    <!-- Hover Container -->
+
+    <ng-container *ngIf="showHoverData && selectedDataRows.length">
         <div
-            class="hover_data_title"
+            class="d-flex flex-column justify-content-center chart-tooltip"
             [ngStyle]="{
-                'text-align':
-                    selectedDrivers?.length ||
-                    selectedDataRows?.length > dataMaxRows
-                        ? 'left'
-                        : 'center'
+                left: hoverDataPosition + 'px',
+                'max-width': selectedDataRows.length === 3 ? '145px' : '191px'
             }"
         >
-            JANUARY, 2024 asdasdas
-        </div>
-        <div class="hover_data_border_line"></div>
+            <div class="chart-tooltip-title">
+                <p class="m-0 ta-font-extra-bold">JANUARY, 2024</p>
+            </div>
 
-        <div
-            class="hover_data_innit"
-            *ngIf="selectedDataRows.length <= dataMaxRows"
-        >
+            <div class="chart-tooltip-border"></div>
+
             <div
-                class="hover_data_info_holder"
-                #hoverDataHolder
-                *ngFor="let item of selectedDataRows; let indx = index"
-                [ngStyle]="{ 'margin-top': indx > 0 ? '12px' : '0px' }"
+                class="d-flex flex-column justify-content-center chart-tooltip-items-container"
             >
-                <div class="hover_data_info_top_line">
-                    <div class="hover_data_icon">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="10"
-                            height="10"
-                            viewBox="0 0 10 10"
+                <ng-container
+                    *ngFor="
+                        let item of selectedDataRows;
+                        let i = index;
+                        let last = last;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex chart-tooltip-item"
+                        [ngClass]="{
+                            'flex-row align-items-center justify-content-between':
+                                selectedDataRows.length > 3,
+                            'flex-column justify-content-center':
+                                selectedDataRows.length === 3
+                        }"
+                    >
+                        <div
+                            class="d-flex align-items-center chart-tooltip-item-left"
                         >
-                            <rect
-                                width="10"
-                                height="10"
-                                rx="5.5"
-                                [attr.fill]="item.color"
-                            />
-                        </svg>
+                            <div
+                                class="d-flex align-items-center justify-content-center chart-tooltip-item-left-color-box"
+                                [ngStyle]="{
+                                    background: item.color,
+                                    'margin-right':
+                                        selectedDataRows.length === 1
+                                            ? '4px'
+                                            : '6px'
+                                }"
+                            ></div>
+
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    i < selectedDataRows.length - 2
+                                        ? (item.name | titlecase)
+                                        : item.name
+                                }}
+                            </p>
+                        </div>
+
+                        <div class="chart-tooltip-item-right">
+                            <p class="m-0 ta-font-bold">${{ item.value }}K</p>
+                        </div>
                     </div>
-                    <div class="hover_data_info_title">{{ item.name }}</div>
-                </div>
-                <div class="hover_data_price">
-                    ${{ item.value | nFormatter }}
-                </div>
-                <div class="hover_data_percent">{{ item.percent }}</div>
+                </ng-container>
             </div>
         </div>
-    </div>
+
+        <!-- <div
+            class="hover_data_holder"
+            [ngStyle]="{
+                left: hoverDataPosition + 'px',
+                width:
+                    selectedDrivers?.length > dataMaxRows
+                        ? '279px'
+                        : selectedDataRows?.length > dataMaxRows
+                        ? '206px'
+                        : 'auto'
+            }"
+        >
+            <div
+                class="hover_data_title"
+                [ngStyle]="{
+                    'text-align':
+                        selectedDrivers?.length ||
+                        selectedDataRows?.length > dataMaxRows
+                            ? 'left'
+                            : 'center'
+                }"
+            >
+                JANUARY, 2024 asdasdas
+            </div>
+            <div class="hover_data_border_line"></div>
+
+            <div
+                class="hover_data_innit"
+                *ngIf="selectedDataRows.length <= dataMaxRows"
+            >
+                <div
+                    class="hover_data_info_holder"
+                    #hoverDataHolder
+                    *ngFor="let item of selectedDataRows; let indx = index"
+                    [ngStyle]="{ 'margin-top': indx > 0 ? '12px' : '0px' }"
+                >
+                    <div class="hover_data_info_top_line">
+                        <div class="hover_data_icon">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="10"
+                                height="10"
+                                viewBox="0 0 10 10"
+                            >
+                                <rect
+                                    width="10"
+                                    height="10"
+                                    rx="5.5"
+                                    [attr.fill]="item.color"
+                                />
+                            </svg>
+                        </div>
+                        <div class="hover_data_info_title">{{ item.name }}</div>
+                    </div>
+                    <div class="hover_data_price">
+                        ${{ item.value | nFormatter }}
+                    </div>
+                    <div class="hover_data_percent">{{ item.percent }}</div>
+                </div>
+            </div>
+        </div> -->
+    </ng-container>
+
+    <!-- Chart Canvas -->
 
     <canvas
         *ngIf="!noChartData"
