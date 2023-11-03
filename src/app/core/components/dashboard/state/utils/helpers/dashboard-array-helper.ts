@@ -1,4 +1,4 @@
-import { TopRatedListItem } from '../models/top-rated-list-item.model';
+import { TopRatedListItem } from '../../models/dashboard-top-rated-models/top-rated-list-item.model';
 
 export class DashboardArrayHelper {
     static sorPartOfArray(arr: TopRatedListItem[]) {

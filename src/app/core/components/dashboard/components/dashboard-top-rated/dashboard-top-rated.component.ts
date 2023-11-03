@@ -16,44 +16,44 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 
 // services
-import { DashboardService } from '../state/services/dashboard.service';
+import { DashboardService } from '../../state/services/dashboard.service';
 
 // constants
-import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
-import { DashboardColors } from '../state/utils/dashboard-colors.constants';
-import { DashboardSubperiodConstants } from '../state/utils/dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from '../../state/utils/constants/dashboard-top-rated.constants';
+import { DashboardColors } from '../../state/utils/constants/dashboard-colors.constants';
+import { DashboardSubperiodConstants } from '../../state/utils/constants/dashboard-subperiod.constants';
 
 // helpers
-import { DashboardArrayHelper } from '../state/utils/dashboard-array-helper';
-import { DashboardUtils } from '../state/utils/dashboard-utils';
+import { DashboardArrayHelper } from '../../state/utils/helpers/dashboard-array-helper';
+import { DashboardUtils } from '../../state/utils/dashboard-utils';
 
 // enum
-import { ConstantStringEnum } from '../state/enum/constant-string.enum';
-import { ConstantChartStringEnum } from '../state/enum/constant-chart-string.enum';
+import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
+import { ConstantChartStringEnum } from '../../state/enums/constant-chart-string.enum';
 
 // models
-import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.model';
-import { TopRatedTab } from '../state/models/top-rated-tab.model';
-import { DropdownListItem } from '../state/models/dropdown-list-item.model';
-import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
-import { CustomPeriodRange } from '../state/models/custom-period-range.model';
+import { TopRatedDropdownItem } from '../../state/models/dashboard-top-rated-models/top-rated-dropdown-item.model';
+import { TopRatedTab } from '../../state/models/dashboard-top-rated-models/top-rated-tab.model';
+import { DropdownListItem } from '../../state/models/dropdown-list-item.model';
+import { TopRatedListItem } from '../../state/models/dashboard-top-rated-models/top-rated-list-item.model';
+import { CustomPeriodRange } from '../../state/models/custom-period-range.model';
 import {
     MainColorsPallete,
     SecondaryColorsPallete,
-} from '../state/models/colors-pallete.model';
+} from '../../state/models/dashboard-color-models/colors-pallete.model';
 import {
     ChartInitProperties,
     DoughnutChart,
     DoughnutChartConfig,
     DoughnutChartPercentage,
     DoughnutChartSigns,
-} from '../state/models/doughnut-chart.model';
+} from '../../state/models/dashboard-chart-models/doughnut-chart.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
-} from '../state/models/bar-chart.model';
+} from '../../state/models/dashboard-chart-models/bar-chart.model';
 import {
     DashboardTopReportType,
     SubintervalType,

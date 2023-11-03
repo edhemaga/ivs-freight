@@ -1,6 +1,6 @@
 import { ChartConfiguration } from 'chart.js';
 
-import { TopRatedListItem } from './top-rated-list-item.model';
+import { TopRatedListItem } from '../dashboard-top-rated-models/top-rated-list-item.model';
 
 interface ChartDefaultConfig {
     type: string;

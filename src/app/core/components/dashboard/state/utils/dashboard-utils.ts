@@ -1,4 +1,4 @@
-import { ConstantStringEnum } from '../enum/constant-string.enum';
+import { ConstantStringEnum } from '../enums/constant-string.enum';
 
 export class DashboardUtils {
     static ConvertMainPeriod(mainPeriod: string) {

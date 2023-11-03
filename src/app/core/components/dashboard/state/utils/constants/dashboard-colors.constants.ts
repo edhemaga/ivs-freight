@@ -1,7 +1,7 @@
 import {
     MainColorsPallete,
     SecondaryColorsPallete,
-} from '../models/colors-pallete.model';
+} from '../../models/dashboard-color-models/colors-pallete.model';
 
 export class DashboardColors {
     static MAIN_COLORS_PALLETE: MainColorsPallete[] = [
