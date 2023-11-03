@@ -8,9 +8,6 @@ import { DashboardStore } from '../store/dashboard.store';
 // models
 import {
     DashboardService as DashboardBackendService,
-    DashboardTopReportType,
-    SubintervalType,
-    TimeInterval,
     TopBrokersListResponse,
     TopDispatchersListResponse,
     TopOwnerListResponse,
@@ -18,6 +15,10 @@ import {
     TopShipperListResponse,
     CompanyDurationResponse,
 } from 'appcoretruckassist';
+import {
+    TopRatedApiArguments,
+    TopRatedWithoutTabApiArguments,
+} from '../models/dashboard-top-rated-models/top-rated-api-arguments.model';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -42,132 +43,38 @@ export class DashboardService {
 
     // Dashboard - Top Rated
     public getTopRatedDispatcher(
-        reportType: DashboardTopReportType,
-        searchTerms: string[],
-        pageIndex: number,
-        pageSize: number,
-        timeInterval: TimeInterval,
-        startDate: string,
-        endDate: string,
-        subintervalType: SubintervalType
+        data: TopRatedApiArguments
     ): Observable<TopDispatchersListResponse> {
-        return this.dashboardService.apiDashboardTopdispatchersGet(
-            reportType,
-            searchTerms,
-            pageIndex,
-            pageSize,
-            timeInterval,
-            startDate,
-            endDate,
-            subintervalType
-        );
+        return this.dashboardService.apiDashboardTopdispatchersGet(...data);
     }
 
     public getTopRatedBroker(
-        reportType: DashboardTopReportType,
-        searchTerms: string[],
-        pageIndex: number,
-        pageSize: number,
-        timeInterval: TimeInterval,
-        startDate: string,
-        endDate: string,
-        subintervalType: SubintervalType
+        data: TopRatedApiArguments
     ): Observable<TopBrokersListResponse> {
-        return this.dashboardService.apiDashboardTopbrokersGet(
-            reportType,
-            searchTerms,
-            pageIndex,
-            pageSize,
-            timeInterval,
-            startDate,
-            endDate,
-            subintervalType
-        );
+        return this.dashboardService.apiDashboardTopbrokersGet(...data);
     }
 
     public getTopRatedShipper(
-        searchTerms: string[],
-        pageIndex: number,
-        pageSize: number,
-        timeInterval: TimeInterval,
-        startDate: string,
-        endDate: string,
-        subintervalType: SubintervalType
+        data: TopRatedWithoutTabApiArguments
     ): Observable<TopShipperListResponse> {
-        return this.dashboardService.apiDashboardTopshippersGet(
-            searchTerms,
-            pageIndex,
-            pageSize,
-            timeInterval,
-            startDate,
-            endDate,
-            subintervalType
-        );
+        return this.dashboardService.apiDashboardTopshippersGet(...data);
     }
 
     public getTopRatedOwner(
-        reportType: DashboardTopReportType,
-        searchTerms: string[],
-        pageIndex: number,
-        pageSize: number,
-        timeInterval: TimeInterval,
-        startDate: string,
-        endDate: string,
-        subintervalType: SubintervalType
+        data: TopRatedApiArguments
     ): Observable<TopOwnerListResponse> {
-        return this.dashboardService.apiDashboardTopownersGet(
-            reportType,
-            searchTerms,
-            pageIndex,
-            pageSize,
-            timeInterval,
-            startDate,
-            endDate,
-            subintervalType
-        );
+        return this.dashboardService.apiDashboardTopownersGet(...data);
     }
 
     public getTopRatedRepairShop(
-        reportType: DashboardTopReportType,
-        searchTerms: string[],
-        pageIndex: number,
-        pageSize: number,
-        timeInterval: TimeInterval,
-        startDate: string,
-        endDate: string,
-        subintervalType: SubintervalType
+        data: TopRatedApiArguments
     ): Observable<TopRepairShopListResponse> {
-        return this.dashboardService.apiDashboardToprepairshopGet(
-            reportType,
-            searchTerms,
-            pageIndex,
-            pageSize,
-            timeInterval,
-            startDate,
-            endDate,
-            subintervalType
-        );
+        return this.dashboardService.apiDashboardToprepairshopGet(...data);
     }
 
     public getTopRatedFuelStop(
-        reportType: DashboardTopReportType,
-        searchTerms: string[],
-        pageIndex: number,
-        pageSize: number,
-        timeInterval: TimeInterval,
-        startDate: string,
-        endDate: string,
-        subintervalType: SubintervalType
+        data: TopRatedApiArguments
     ): Observable<any /* TopDispatchersListResponse */> {
-        return this.dashboardService.apiDashboardTopfuelstopsGet(
-            reportType,
-            searchTerms,
-            pageIndex,
-            pageSize,
-            timeInterval,
-            startDate,
-            endDate,
-            subintervalType
-        );
+        return this.dashboardService.apiDashboardTopfuelstopsGet(...data);
     }
 }

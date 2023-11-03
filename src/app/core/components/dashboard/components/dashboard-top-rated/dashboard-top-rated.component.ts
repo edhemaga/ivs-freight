@@ -62,6 +62,10 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
+import {
+    TopRatedApiArguments,
+    TopRatedWithoutTabApiArguments,
+} from '../../state/models/dashboard-top-rated-models/top-rated-api-arguments.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -527,6 +531,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             selectedBarValues: [],
         };
 
+        const topRatedArgumentsData: TopRatedApiArguments = [
+            selectedTab,
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ];
+
         console.log('selectedTab', selectedTab);
         console.log('selectedMainPeriod', selectedMainPeriod);
         console.log('selectedSubPeriod', selectedSubPeriod);
@@ -536,54 +551,37 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             case ConstantStringEnum.DISPATCHER:
                 this.getTopRatedDispatcherListData(
                     selectedTab,
-                    selectedMainPeriod,
-                    selectedSubPeriod,
-                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
-                        customPeriodRange
+                    topRatedArgumentsData
                 );
                 break;
             case ConstantStringEnum.OWNER:
                 this.getTopRatedOwnerListData(
                     selectedTab,
-                    selectedMainPeriod,
-                    selectedSubPeriod,
-                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
-                        customPeriodRange
+                    topRatedArgumentsData
                 );
                 break;
             case ConstantStringEnum.BROKER:
                 this.getTopRatedBrokerListData(
                     selectedTab,
-                    selectedMainPeriod,
-                    selectedSubPeriod,
-                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
-                        customPeriodRange
+                    topRatedArgumentsData
                 );
                 break;
             case ConstantStringEnum.SHIPPER:
                 this.getTopRatedShipperListData(
-                    selectedMainPeriod,
-                    selectedSubPeriod,
-                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
-                        customPeriodRange
+                    selectedTab,
+                    topRatedArgumentsData
                 );
                 break;
             case ConstantStringEnum.REPAIR_SHOP:
                 this.getTopRatedRepairShopListData(
                     selectedTab,
-                    selectedMainPeriod,
-                    selectedSubPeriod,
-                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
-                        customPeriodRange
+                    topRatedArgumentsData
                 );
                 break;
             case ConstantStringEnum.FUEL_STOP:
                 this.getTopRatedFuelStopListData(
                     selectedTab,
-                    selectedMainPeriod,
-                    selectedSubPeriod,
-                    selectedMainPeriod === ConstantStringEnum.CUSTOM &&
-                        customPeriodRange
+                    topRatedArgumentsData
                 );
                 break;
             default:
@@ -593,23 +591,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopRatedDispatcherListData(
         selectedTab: DashboardTopReportType,
-        selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType,
-        customPeriodRange?: CustomPeriodRange
+        topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        const topRatedArgumentsData = [
-            selectedTab,
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ] as const;
-
         this.dashboardService
-            .getTopRatedDispatcher(...topRatedArgumentsData)
+            .getTopRatedDispatcher(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((dispatcherData) => {
                 console.log('dispatcherData', dispatcherData);
@@ -672,23 +657,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopRatedBrokerListData(
         selectedTab: DashboardTopReportType,
-        selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType,
-        customPeriodRange?: CustomPeriodRange
+        topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        const topRatedArgumentsData = [
-            selectedTab,
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ] as const;
-
         this.dashboardService
-            .getTopRatedBroker(...topRatedArgumentsData)
+            .getTopRatedBroker(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((brokerData) => {
                 console.log('brokerData', brokerData);
@@ -746,22 +718,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getTopRatedShipperListData(
-        selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType,
-        customPeriodRange?: CustomPeriodRange
+        selectedTab: DashboardTopReportType,
+        topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        const topRatedArgumentsData = [
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ] as const;
+        const filteredTopRatedArgumentsData = topRatedArgumentsData.splice(
+            1
+        ) as TopRatedWithoutTabApiArguments;
 
         this.dashboardService
-            .getTopRatedShipper(...topRatedArgumentsData)
+            .getTopRatedShipper(filteredTopRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((shipperData) => {
                 console.log('shipperData', shipperData);
@@ -810,23 +775,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopRatedOwnerListData(
         selectedTab: DashboardTopReportType,
-        selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType,
-        customPeriodRange?: CustomPeriodRange
+        topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        const topRatedArgumentsData = [
-            selectedTab,
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ] as const;
-
         this.dashboardService
-            .getTopRatedOwner(...topRatedArgumentsData)
+            .getTopRatedOwner(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((ownerData) => {
                 console.log('ownerData', ownerData);
@@ -885,23 +837,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopRatedRepairShopListData(
         selectedTab: DashboardTopReportType,
-        selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType,
-        customPeriodRange?: CustomPeriodRange
+        topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        const topRatedArgumentsData = [
-            selectedTab,
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ] as const;
-
         this.dashboardService
-            .getTopRatedRepairShop(...topRatedArgumentsData)
+            .getTopRatedRepairShop(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((repairShopData) => {
                 console.log('repairShopData', repairShopData);
@@ -962,23 +901,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopRatedFuelStopListData(
         selectedTab: DashboardTopReportType,
-        selectedMainPeriod: TimeInterval,
-        selectedSubPeriod: SubintervalType,
-        customPeriodRange?: CustomPeriodRange
+        topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        const topRatedArgumentsData = [
-            selectedTab,
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            customPeriodRange?.fromDate ?? null,
-            customPeriodRange?.toDate ?? null,
-            selectedSubPeriod,
-        ] as const;
-
         this.dashboardService
-            .getTopRatedFuelStop(...topRatedArgumentsData)
+            .getTopRatedFuelStop(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((fuelStopData) => {
                 console.log('fuelStopData', fuelStopData);
