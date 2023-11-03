@@ -1092,7 +1092,7 @@ export class TaChartComponent implements OnInit, OnChanges {
         this.setChartOptions();
     }
 
-    showChartTooltip(value) {
+    showChartTooltip(value: number) {
         if (this.toolTipData?.length) {
             this.setToolTipTitle(value);
             this.setChartLegendData(this.chart.chart['tooltip']._active);
@@ -1109,78 +1109,72 @@ export class TaChartComponent implements OnInit, OnChanges {
         let xPoint1 = 0;
         let xPoint2 = 0;
 
-        setTimeout(() => {
-            const xAxis = this.chart.chart['scales']['x-axis-0'];
-            const yAxis = this.chart.chart['scales']['y-axis-0'];
+        const xAxis = this.chart.chart['scales']['x-axis-0'];
+        const yAxis = this.chart.chart['scales']['y-axis-0'];
 
-            if (xAxis['_gridLineItems']) {
-                xPoint1 = xAxis['_gridLineItems'][1]['x1'];
-                xPoint2 = xAxis['_gridLineItems'][0]['x2'];
-                const elWidth = xPoint1 - xPoint2;
+        if (xAxis['_gridLineItems']) {
+            xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+            xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+            const elWidth = xPoint1 - xPoint2;
 
-                if (this.axesProperties?.horizontalAxes?.showGridLines) {
-                    xAxis['_gridLineItems'].map((item, i) => {
-                        if (i && i != xAxis['_gridLineItems'].length - 1) {
-                            xAxis['_gridLineItems'][i].color = '#DADADA';
-                        }
-                        if (
-                            i == value ||
-                            i == value + 1 ||
-                            i == xAxis['_gridLineItems'].length - 1
-                        ) {
-                            xAxis['_gridLineItems'][i].color = 'transparent';
-                        }
-                    });
+            if (this.axesProperties?.horizontalAxes?.showGridLines) {
+                xAxis['_gridLineItems'].map((item, i) => {
+                    if (i && i != xAxis['_gridLineItems'].length - 1) {
+                        xAxis['_gridLineItems'][i].color = '#DADADA';
+                    }
+                    if (
+                        i == value ||
+                        i == value + 1 ||
+                        i == xAxis['_gridLineItems'].length - 1
+                    ) {
+                        xAxis['_gridLineItems'][i].color = 'transparent';
+                    }
+                });
+            }
+
+            if (
+                xAxis['_gridLineItems'][value] &&
+                this.chartConfig['hasHoverData']
+            ) {
+                this.updateHoverData(value);
+                let oversizedHover = false;
+                this.hoverColumnWidth = elWidth + 1;
+                this.hoverChartLeft = xAxis['_gridLineItems'][value]['x2'] - 1;
+
+                let clientWidth = this.hoverDataHolder
+                    ? this.hoverDataHolder.nativeElement.offsetWidth + 16
+                    : 0;
+
+                if (!clientWidth && this.chartConfig['tooltipOffset']) {
+                    if (this.selectedDataRows.length > this.dataMaxRows) {
+                        clientWidth = this.chartConfig['tooltipOffset']['max'];
+                    } else {
+                        clientWidth = this.chartConfig['tooltipOffset']['min'];
+                    }
                 }
 
-                if (
-                    xAxis['_gridLineItems'][value] &&
-                    this.chartConfig['hasHoverData']
-                ) {
-                    this.updateHoverData(value);
-                    let oversizedHover = false;
-                    this.hoverColumnWidth = elWidth + 1;
-                    this.hoverChartLeft =
-                        xAxis['_gridLineItems'][value]['x2'] - 1;
+                this.hoverColumnHeight = this.chartConfig[
+                    'startGridBackgroundFromZero'
+                ]
+                    ? yAxis.height
+                    : this.chartConfig['multiChartHover']
+                    ? yAxis.height + xAxis.height + 40
+                    : yAxis.height + xAxis.height;
 
-                    let clientWidth = this.hoverDataHolder
-                        ? this.hoverDataHolder.nativeElement.offsetWidth + 16
-                        : 0;
+                let xPos = this.chartConfig['offset']
+                    ? xAxis['_gridLineItems'][value]['x2'] + elWidth
+                    : xAxis['_gridLineItems'][value]['x2'];
 
-                    if (!clientWidth && this.chartConfig['tooltipOffset']) {
-                        if (this.selectedDataRows.length > this.dataMaxRows) {
-                            clientWidth =
-                                this.chartConfig['tooltipOffset']['max'];
-                        } else {
-                            clientWidth =
-                                this.chartConfig['tooltipOffset']['min'];
-                        }
-                    }
-
-                    this.hoverColumnHeight = this.chartConfig[
-                        'startGridBackgroundFromZero'
-                    ]
-                        ? yAxis.height
-                        : this.chartConfig['multiChartHover']
-                        ? yAxis.height + xAxis.height + 40
-                        : yAxis.height + xAxis.height;
-
-                    let xPos = this.chartConfig['offset']
-                        ? xAxis['_gridLineItems'][value]['x2'] + elWidth
-                        : xAxis['_gridLineItems'][value]['x2'];
-
-                    if (xPos + clientWidth > canvas.width) {
-                        oversizedHover = true;
-                    }
-                    if (oversizedHover) {
-                        this.hoverDataPosition =
-                            xPos - clientWidth - elWidth - 4;
-                    } else {
-                        this.hoverDataPosition = xPos + 4;
-                    }
+                if (xPos + clientWidth > canvas.width) {
+                    oversizedHover = true;
+                }
+                if (oversizedHover) {
+                    this.hoverDataPosition = xPos - clientWidth - elWidth - 4;
+                } else {
+                    this.hoverDataPosition = xPos + 4;
                 }
             }
-        });
+        }
 
         this.showHoverData = true;
     }

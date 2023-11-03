@@ -277,7 +277,6 @@ export class DashboardPerformanceComponent
     ];
 
     private selectedPerformanceDataCount: number = 0;
-    private lastSelectedPerformanceDataItem: PerformanceDataItem;
 
     // tabs
     public performanceTabs: DashboardTab[] = [];
@@ -475,29 +474,6 @@ export class DashboardPerformanceComponent
         this.setCustomSubPeriodList(selectedDaysRange);
     }
 
-    public handlePerformanceDataHover(
-        index: number,
-        removeHover: boolean = false
-    ): void {
-        if (!removeHover) {
-            this.performanceData[index].isHovered = true;
-
-            if (this.performanceData[index].selectedColor) {
-                this.lineChart.changeChartFillProperty(
-                    this.performanceData[index].title,
-                    this.performanceData[index].selectedColor.slice(1)
-                );
-            }
-        } else {
-            this.performanceData[index].isHovered = false;
-
-            this.lineChart.changeChartFillProperty(
-                this.performanceData[index].title,
-                ConstantChartStringEnum.EMPTY_STRING
-            );
-        }
-    }
-
     public handlePerformanceDataClick(
         index: number,
         selectedColor: string
@@ -527,8 +503,7 @@ export class DashboardPerformanceComponent
             performanceDataItem.selectedHoverColor =
                 firstAvailableColor.hoverCode;
 
-            this.lastSelectedPerformanceDataItem = performanceDataItem;
-            this.selectedPerformanceDataCount++;
+            +this.selectedPerformanceDataCount++;
 
             // line chart
             this.lineChart.insertNewChartData(
@@ -553,6 +528,37 @@ export class DashboardPerformanceComponent
                 performanceDataItem.title
             );
         }
+    }
+
+    public handlePerformanceDataHover(
+        index: number,
+        removeHover: boolean = false
+    ): void {
+        if (!removeHover) {
+            this.performanceData[index].isHovered = true;
+
+            if (this.performanceData[index].selectedColor) {
+                this.lineChart.changeChartFillProperty(
+                    this.performanceData[index].title,
+                    this.performanceData[index].selectedColor.slice(1)
+                );
+            }
+        } else {
+            this.performanceData[index].isHovered = false;
+
+            this.lineChart.changeChartFillProperty(
+                this.performanceData[index].title,
+                ConstantChartStringEnum.EMPTY_STRING
+            );
+        }
+    }
+
+    public handleBarChartHover(chartDataValue: number): void {
+        this.lineChart.showChartTooltip(chartDataValue);
+    }
+
+    public handleRemoveChartsHover(): void {
+        this.lineChart.chartHoverOut();
     }
 
     private getConstantData(): void {
@@ -797,12 +803,4 @@ export class DashboardPerformanceComponent
 
     ////////////////////////////////////////////
     ngOnChanges(): void {}
-
-    hoverLineChart(value) {
-        /*  this.lineChart.showChartTooltip(value); */
-    }
-
-    removeOtherChartHover() {
-        this.lineChart.chartHoverOut();
-    }
 }

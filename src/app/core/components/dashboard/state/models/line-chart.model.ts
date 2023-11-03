@@ -53,6 +53,6 @@ export interface LineChart extends Chart {
         performanceDataTitle: string,
         selectedColor: string
     ) => void;
-    /*     showChartTooltip: (performanceDataTitle: string, selectedColor: string) => void; */
+    showChartTooltip: (chartDataValue: number) => void;
     chartHoverOut: () => void;
 }

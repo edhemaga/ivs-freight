@@ -410,69 +410,77 @@
 
         <!-- Line Chart -->
 
-        <div
-            class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
-        >
+        <div class="charts-container" (mouseleave)="handleRemoveChartsHover()">
             <div
-                class="d-flex align-items-center justify-content-between line-chart-header"
+                class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
             >
-                <p class="m-0 ta-font-bold">Mar 01 - Mar 24, 2023</p>
+                <div
+                    class="d-flex align-items-center justify-content-between line-chart-header"
+                >
+                    <p class="m-0 ta-font-bold">Mar 01 - Mar 24, 2023</p>
 
-                <div class="d-flex align-items-center line-chart-header-right">
-                    <div class="d-flex align-items-center">
-                        <svg-icon
-                            class="circle-icon circle-icon-price"
-                            [src]="
-                                'assets/svg/common/load/ic_circle-default-load.svg'
-                            "
-                            [svgStyle]="{
-                                'width.px': 10,
-                                'height.px': 10
-                            }"
-                        ></svg-icon>
+                    <div
+                        class="d-flex align-items-center line-chart-header-right"
+                    >
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="circle-icon circle-icon-price"
+                                [src]="
+                                    'assets/svg/common/load/ic_circle-default-load.svg'
+                                "
+                                [svgStyle]="{
+                                    'width.px': 10,
+                                    'height.px': 10
+                                }"
+                            ></svg-icon>
 
-                        <p class="m-0 ta-font-semi-bold">Price per Gallon</p>
+                            <p class="m-0 ta-font-semi-bold">
+                                Price per Gallon
+                            </p>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="circle-icon circle-icon-rate"
+                                [src]="
+                                    'assets/svg/common/load/ic_circle-default-load.svg'
+                                "
+                                [svgStyle]="{
+                                    'width.px': 10,
+                                    'height.px': 10
+                                }"
+                            ></svg-icon>
+
+                            <p class="m-0 ta-font-semi-bold">
+                                Load Rate per Mile
+                            </p>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="d-flex align-items-center">
-                        <svg-icon
-                            class="circle-icon circle-icon-rate"
-                            [src]="
-                                'assets/svg/common/load/ic_circle-default-load.svg'
-                            "
-                            [svgStyle]="{
-                                'width.px': 10,
-                                'height.px': 10
-                            }"
-                        ></svg-icon>
-
-                        <p class="m-0 ta-font-semi-bold">Load Rate per Mile</p>
-                    </div>
+                <div class="line-chart-container">
+                    <app-ta-chart
+                        #lineChart
+                        [chartConfig]="lineChartConfig"
+                        [axesProperties]="lineChartAxes"
+                        [legendAttributes]="{}"
+                    >
+                    </app-ta-chart>
                 </div>
             </div>
 
-            <div class="line-chart-container">
+            <!-- Bar Chart -->
+
+            <div class="bar-chart-container">
                 <app-ta-chart
-                    #lineChart
-                    [chartConfig]="lineChartConfig"
-                    [axesProperties]="lineChartAxes"
+                    #barChart
+                    [chartConfig]="barChartConfig"
+                    [axesProperties]="barChartAxes"
                     [legendAttributes]="{}"
+                    (hoverOtherChart)="handleBarChartHover($event)"
                 >
                 </app-ta-chart>
             </div>
-        </div>
-
-        <!-- Bar Chart -->
-
-        <div class="bar-chart-container">
-            <app-ta-chart
-                #barChart
-                [chartConfig]="barChartConfig"
-                [axesProperties]="barChartAxes"
-                [legendAttributes]="{}"
-                (hoverOtherChart)="hoverLineChart($event)"
-            >
-            </app-ta-chart>
         </div>
     </div>
 </div>
