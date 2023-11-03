@@ -11,9 +11,9 @@
  */
 
 
-export interface TruckPerformanceResponse { 
-    trucksCount?: number | null;
-    trucksDifference?: number | null;
-    trucksAverage?: number | null;
+export interface NetIncomePerformanceResponse { 
+    netIncomesCount?: number | null;
+    netIncomesDifference?: number | null;
+    netIncomesAverage?: number | null;
 }
 

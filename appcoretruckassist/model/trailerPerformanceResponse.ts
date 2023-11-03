@@ -11,9 +11,9 @@
  */
 
 
-export interface TruckPerformanceResponse { 
-    trucksCount?: number | null;
-    trucksDifference?: number | null;
-    trucksAverage?: number | null;
+export interface TrailerPerformanceResponse { 
+    trailersCount?: number | null;
+    trailersDifference?: number | null;
+    trailersAverage?: number | null;
 }
 

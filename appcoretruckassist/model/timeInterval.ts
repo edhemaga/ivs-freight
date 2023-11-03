@@ -11,12 +11,13 @@
  */
 
 
-export type TimeInterval = 'Today' | 'WTD' | 'MTD' | 'YTD' | 'AllTime' | 'Custom';
+export type TimeInterval = 'Today' | 'WTD' | 'MTD' | 'QTD' | 'YTD' | 'AllTime' | 'Custom';
 
 export const TimeInterval = {
     Today: 'Today' as TimeInterval,
     Wtd: 'WTD' as TimeInterval,
     Mtd: 'MTD' as TimeInterval,
+    Qtd: 'QTD' as TimeInterval,
     Ytd: 'YTD' as TimeInterval,
     AllTime: 'AllTime' as TimeInterval,
     Custom: 'Custom' as TimeInterval
