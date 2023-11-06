@@ -9,6 +9,7 @@ export enum ConstantStringEnum {
     SHIPPER = 'Shipper',
     OWNER = 'Owner',
     REPAIR_SHOP = 'Repair Shop',
+    FUEL_STOP = 'Fuel Stop',
 
     VISIT = 'Visit',
     COST = 'Cost',

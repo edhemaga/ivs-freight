@@ -1,4 +1,4 @@
-import { DashboardTab } from '../models/dashboard-tab.model';
+import { DashboardTab } from '../../models/dashboard-tab.model';
 
 export class DashboardPerformanceConstants {
     static PERFORMANCE_TABS: DashboardTab[] = [

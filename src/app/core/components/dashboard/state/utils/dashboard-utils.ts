@@ -1,9 +1,9 @@
 // constants
-import { DashboardTopRatedConstants } from './dashboard-top-rated.constants';
-import { DashboardSubperiodConstants } from './dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
+import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
 
 // enums
-import { ConstantStringEnum } from '../enum/constant-string.enum';
+import { ConstantStringEnum } from '../enums/constant-string.enum';
 
 // models
 import { DropdownListItem } from '../models/dropdown-list-item.model';

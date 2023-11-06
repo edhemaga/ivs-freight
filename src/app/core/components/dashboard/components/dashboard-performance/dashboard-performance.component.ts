@@ -16,38 +16,38 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 import moment from 'moment';
 
 // store
-import { DashboardQuery } from '../state/store/dashboard.query';
+import { DashboardQuery } from '../../state/store/dashboard.query';
 
 // constants
-import { DashboardPerformanceConstants } from '../state/utils/dashboard-performance.constants';
-import { DashboardSubperiodConstants } from '../state/utils/dashboard-subperiod.constants';
-import { DashboardColors } from '../state/utils/dashboard-colors.constants';
+import { DashboardPerformanceConstants } from '../../state/utils/constants/dashboard-performance.constants';
+import { DashboardSubperiodConstants } from '../../state/utils/constants/dashboard-subperiod.constants';
+import { DashboardColors } from '../../state/utils/constants/dashboard-colors.constants';
 
 // helpers
-import { DashboardUtils } from '../state/utils/dashboard-utils';
+import { DashboardUtils } from '../../state/utils/dashboard-utils';
 
 // enums
-import { ConstantStringEnum } from '../state/enum/constant-string.enum';
-import { ConstantChartStringEnum } from '../state/enum/constant-chart-string.enum';
+import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
+import { ConstantChartStringEnum } from '../../state/enums/constant-chart-string.enum';
 
 // models
-import { DashboardTab } from '../state/models/dashboard-tab.model';
-import { DropdownListItem } from '../state/models/dropdown-list-item.model';
-import { PerformanceDataItem } from '../state/models/performance-data-item.model';
-import { PerformanceColorsPallete } from '../state/models/colors-pallete.model';
-import { CustomPeriodRange } from '../state/models/custom-period-range.model';
+import { DashboardTab } from '../../state/models/dashboard-tab.model';
+import { DropdownListItem } from '../../state/models/dropdown-list-item.model';
+import { PerformanceDataItem } from '../../state/models/dashboard-performance-models/performance-data-item.model';
+import { PerformanceColorsPallete } from '../../state/models/dashboard-color-models/colors-pallete.model';
+import { CustomPeriodRange } from '../../state/models/custom-period-range.model';
 import {
     ChartDefaultConfig,
     LineChart,
     LineChartAxes,
     LineChartConfig,
-} from '../state/models/line-chart.model';
+} from '../../state/models/dashboard-chart-models/line-chart.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
-} from '../state/models/bar-chart.model';
+} from '../../state/models/dashboard-chart-models/bar-chart.model';
 
 @Titles()
 @Component({

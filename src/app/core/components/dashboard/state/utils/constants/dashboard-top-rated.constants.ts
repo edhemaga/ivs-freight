@@ -1,6 +1,6 @@
-import { DropdownListItem } from '../models/dropdown-list-item.model';
-import { TopRatedDropdownItem } from '../models/top-rated-dropdown-item.model';
-import { DashboardTab } from '../models/dashboard-tab.model';
+import { DropdownListItem } from '../../models/dropdown-list-item.model';
+import { TopRatedDropdownItem } from '../../models/dashboard-top-rated-models/top-rated-dropdown-item.model';
+import { DashboardTab } from '../../models/dashboard-tab.model';
 
 export class DashboardTopRatedConstants {
     static TOP_RATED_DROPDOWN_DATA: TopRatedDropdownItem[] = [

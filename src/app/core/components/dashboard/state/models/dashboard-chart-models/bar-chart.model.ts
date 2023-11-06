@@ -1,5 +1,5 @@
 import { DoughnutChartConfig } from './doughnut-chart.model';
-import { TopRatedListItem } from './top-rated-list-item.model';
+import { TopRatedListItem } from '../dashboard-top-rated-models/top-rated-list-item.model';
 
 export interface BarChartConfig extends DoughnutChartConfig {
     gridHoverBackground: boolean;

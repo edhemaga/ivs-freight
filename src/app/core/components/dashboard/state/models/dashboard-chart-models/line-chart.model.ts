@@ -1,5 +1,5 @@
 // enum
-import { ConstantChartStringEnum } from '../enum/constant-chart-string.enum';
+import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
 
 // models
 import { BarChartAxes } from './bar-chart.model';

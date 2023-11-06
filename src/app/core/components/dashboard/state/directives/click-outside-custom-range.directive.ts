@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { Subscription, filter, fromEvent } from 'rxjs';
-import { ConstantStringEnum } from '../enum/constant-string.enum';
+import { ConstantStringEnum } from '../enums/constant-string.enum';
 
 @Directive({
     selector: '[clickOutsideElement]',
