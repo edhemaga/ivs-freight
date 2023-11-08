@@ -364,6 +364,7 @@ model/fuelStopFranchiseMinimalResponse.ts
 model/fuelStopFranchiseMinimalResponsePagination.ts
 model/fuelStopFranchiseResponse.ts
 model/fuelStopFranchiseResponsePagination.ts
+model/fuelStopIntervalResponse.ts
 model/fuelStopListResponse.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
@@ -706,6 +707,9 @@ model/topBrokersResponsePagination.ts
 model/topDispatchersListResponse.ts
 model/topDispatchersResponse.ts
 model/topDispatchersResponsePagination.ts
+model/topFuelStopListResponse.ts
+model/topFuelStopResponse.ts
+model/topFuelStopResponsePagination.ts
 model/topOwnerListResponse.ts
 model/topOwnerResponse.ts
 model/topOwnerResponsePagination.ts
@@ -715,6 +719,9 @@ model/topRepairShopResponsePagination.ts
 model/topShipperListResponse.ts
 model/topShipperResponse.ts
 model/topShipperResponsePagination.ts
+model/topTruckListResponse.ts
+model/topTruckResponse.ts
+model/topTruckResponsePagination.ts
 model/trafficViolationFeedbackResponse.ts
 model/trafficViolationItemResponse.ts
 model/trafficViolationItemReviewResponse.ts
@@ -748,6 +755,7 @@ model/truckFilterResponsePagination.ts
 model/truckFuelConsumptionChartResponse.ts
 model/truckFuelConsumptionResponse.ts
 model/truckGrossWeightResponse.ts
+model/truckIntervalResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts

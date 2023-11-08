@@ -510,26 +510,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {
-        const selectedTab: DashboardTopReportType = this.currentActiveTab
+        const selectedTab = this.currentActiveTab
             .name as DashboardTopReportType;
 
-        const selectedMainPeriod: TimeInterval =
-            DashboardUtils.ConvertMainPeriod(
-                this.selectedMainPeriod.name
-            ) as TimeInterval;
+        const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
+            this.selectedMainPeriod.name
+        ) as TimeInterval;
 
-        const selectedSubPeriod: SubintervalType =
-            DashboardUtils.ConvertSubPeriod(
-                this.selectedSubPeriod.name
-            ) as SubintervalType;
-
-        this.barChartValues = {
-            defaultBarValues: {
-                topRatedBarValues: [],
-                otherBarValues: [],
-            },
-            selectedBarValues: [],
-        };
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        ) as SubintervalType;
 
         const topRatedArgumentsData: TopRatedApiArguments = [
             selectedTab,
@@ -541,6 +531,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ];
+
+        this.barChartValues = {
+            defaultBarValues: {
+                topRatedBarValues: [],
+                otherBarValues: [],
+            },
+            selectedBarValues: [],
+        };
 
         console.log('selectedTab', selectedTab);
         console.log('selectedMainPeriod', selectedMainPeriod);
