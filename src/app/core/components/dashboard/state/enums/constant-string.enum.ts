@@ -5,6 +5,7 @@ export enum ConstantStringEnum {
 
     DISPATCHER = 'Dispatcher',
     DRIVER = 'Driver',
+    TRUCK = 'Truck',
     BROKER = 'Broker',
     SHIPPER = 'Shipper',
     OWNER = 'Owner',
@@ -15,6 +16,7 @@ export enum ConstantStringEnum {
     COST = 'Cost',
     LOAD = 'Load',
     REVENUE = 'Revenue',
+    MILEAGE = 'Mileage',
 
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',

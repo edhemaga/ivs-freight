@@ -552,8 +552,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedArgumentsData
                 );
                 break;
-            case ConstantStringEnum.OWNER:
-                this.getTopRatedOwnerListData(
+            case ConstantStringEnum.TRUCK:
+                this.getTopRatedTruckListData(
                     selectedTab,
                     topRatedArgumentsData
                 );
@@ -566,6 +566,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 break;
             case ConstantStringEnum.SHIPPER:
                 this.getTopRatedShipperListData(
+                    selectedTab,
+                    topRatedArgumentsData
+                );
+                break;
+            case ConstantStringEnum.OWNER:
+                this.getTopRatedOwnerListData(
                     selectedTab,
                     topRatedArgumentsData
                 );
@@ -646,6 +652,68 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         selectedTab === ConstantStringEnum.LOAD
                             ? dispatcherData.allOthers[i].dispatcherLoadCount
                             : dispatcherData.allOthers[i].dispatcherRevenue,
+                    ];
+                }
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedTruckListData(
+        selectedTab: DashboardTopReportType,
+        topRatedArgumentsData: TopRatedApiArguments
+    ): void {
+        this.dashboardService
+            .getTopRatedTruck(topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((truckData) => {
+                console.log('truckData', truckData);
+                // top rated list and single selection data
+                this.topRatedList = truckData.pagination.data.map((truck) => {
+                    const filteredIntervals = truck.intervals.map(
+                        (interval) => {
+                            return selectedTab === ConstantStringEnum.MILEAGE
+                                ? interval.truckMileage
+                                : interval.truckRevenue;
+                        }
+                    );
+
+                    this.barChartValues.selectedBarValues = [
+                        ...this.barChartValues.selectedBarValues,
+                        filteredIntervals,
+                    ];
+
+                    return {
+                        id: truck.id,
+                        name: truck.number,
+                        value:
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truck.mileage.toString()
+                                : truck.revenue.toString(),
+                        percent:
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truck.mileagePercentage.toString()
+                                : truck.revenuePercentage.toString(),
+                        isSelected: false,
+                    };
+                });
+
+                for (let i = 0; i < truckData.topTrucks.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.MILEAGE
+                            ? truckData.topTrucks[i].truckMileage
+                            : truckData.topTrucks[i].truckRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.MILEAGE
+                            ? truckData.allOthers[i].truckMileage
+                            : truckData.allOthers[i].truckRevenue,
                     ];
                 }
 
@@ -1054,12 +1122,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         if (isTopRatedListItemSelected) {
             switch (this.topRatedTitle) {
-                case ConstantStringEnum.DRIVER:
+                /*    case ConstantStringEnum.DRIVER: */
+                case ConstantStringEnum.TRUCK:
                     return {
                         filteredTopTenValue:
-                            ConstantChartStringEnum.DOLLAR_SIGN +
-                            topTenValue +
-                            ConstantChartStringEnum.THOUSAND_SIGN,
+                            this.currentActiveTab.name ===
+                            ConstantStringEnum.MILEAGE
+                                ? topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN
+                                : ConstantChartStringEnum.DOLLAR_SIGN +
+                                  topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 case ConstantStringEnum.REPAIR_SHOP:
                 case ConstantStringEnum.BROKER:
@@ -1084,14 +1157,24 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             }
         } else {
             switch (this.topRatedTitle) {
-                case ConstantStringEnum.DRIVER:
+                /*       case ConstantStringEnum.DRIVER: */
+                case ConstantStringEnum.TRUCK:
                     return {
                         filteredTopTenPercentage,
                         filteredTopTenValue:
-                            topTenValue + ConstantChartStringEnum.THOUSAND_SIGN,
+                            this.currentActiveTab.name ===
+                            ConstantStringEnum.MILEAGE
+                                ? topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN
+                                : ConstantChartStringEnum.DOLLAR_SIGN +
+                                  topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN,
                         filteredOtherPercentage,
-                        filteredOtherValue:
-                            otherValue + ConstantChartStringEnum.THOUSAND_SIGN,
+                        filteredOtherValue: ConstantStringEnum.MILEAGE
+                            ? otherValue + ConstantChartStringEnum.THOUSAND_SIGN
+                            : ConstantChartStringEnum.DOLLAR_SIGN +
+                              otherValue +
+                              ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 case ConstantStringEnum.DISPATCHER:
                 case ConstantStringEnum.BROKER:
@@ -1231,10 +1314,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             return {
                 ...topRatedListItem,
                 value:
-                    this.topRatedTitle === ConstantStringEnum.DRIVER
+                    /* this.topRatedTitle === ConstantStringEnum.DRIVER */ this
+                        .topRatedTitle === ConstantStringEnum.TRUCK &&
+                    this.currentActiveTab.name === ConstantStringEnum.MILEAGE
                         ? topRatedListItem.value +
                           ConstantChartStringEnum.THOUSAND_SIGN
-                        : (this.topRatedTitle ===
+                        : (this.topRatedTitle === ConstantStringEnum.TRUCK &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.REVENUE) ||
+                          (this.topRatedTitle ===
                               ConstantStringEnum.DISPATCHER &&
                               this.currentActiveTab.name ===
                                   ConstantStringEnum.REVENUE) ||
