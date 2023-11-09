@@ -19,5 +19,6 @@ export interface TopBrokersListResponse {
     allOthers?: Array<BrokerIntervalResponse> | null;
     totalRevenue?: number | null;
     totalLoadCount?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 

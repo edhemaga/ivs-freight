@@ -19,5 +19,6 @@ export interface TopRepairShopListResponse {
     allOther?: Array<RepairShopIntervalResponse> | null;
     totalCost?: number | null;
     totalVisit?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 

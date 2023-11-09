@@ -19,5 +19,6 @@ export interface TopTruckListResponse {
     allOthers?: Array<TruckIntervalResponse> | null;
     totalRevenue?: number | null;
     totalMileage?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 

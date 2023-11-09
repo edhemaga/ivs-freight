@@ -19,5 +19,6 @@ export interface TopFuelStopListResponse {
     allOthers?: Array<FuelStopIntervalResponse> | null;
     totalCost?: number | null;
     totalVisitCount?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 
