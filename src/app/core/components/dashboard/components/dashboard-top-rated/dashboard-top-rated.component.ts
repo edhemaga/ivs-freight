@@ -12,9 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
 // bootstrap
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-// moment
-import moment from 'moment';
-
 // services
 import { DashboardService } from '../../state/services/dashboard.service';
 
@@ -273,6 +270,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     this.isDisplayingCustomPeriodRange = true;
 
                     this.subPeriodDropdownList = [];
+                    this.selectedSubPeriod = null;
 
                     break;
                 default:
@@ -365,25 +363,28 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
     }
 
+    public handleCustomPeriodRangeSubperiodEmit(
+        selectedDaysRange: number
+    ): void {
+        this.setCustomSubPeriodList(selectedDaysRange);
+    }
+
     public handleSetCustomPeriodRangeClick(
         customPeriodRange: CustomPeriodRange
     ): void {
-        const fromDate = moment(new Date(customPeriodRange.fromDate));
-        const toDate = moment(new Date(customPeriodRange.toDate));
+        if (!customPeriodRange) {
+            this.isDisplayingCustomPeriodRange = false;
 
-        const selectedDaysRange =
-            toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+            this.selectedMainPeriod =
+                DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
-        if (selectedDaysRange < 0) {
-            return;
+            this.setCustomSubPeriodList(this.overallCompanyDuration);
+        } else {
+            this.isDisplayingCustomPeriodRange = false;
+            this.selectedCustomPeriodRange = customPeriodRange;
+
+            this.getTopRatedListData(customPeriodRange);
         }
-
-        this.isDisplayingCustomPeriodRange = false;
-        this.selectedCustomPeriodRange = customPeriodRange;
-
-        this.setCustomSubPeriodList(selectedDaysRange);
-
-        this.getTopRatedListData(customPeriodRange);
     }
 
     public handleOutsideCustomPeriodRangeClick() {
