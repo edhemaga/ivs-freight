@@ -17,5 +17,6 @@ export interface RepairByStateListResponse {
     pagination?: RepairByStateResponsePagination;
     topTen?: Array<RepairIntervalResponse> | null;
     others?: Array<RepairIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 

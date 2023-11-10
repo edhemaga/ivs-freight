@@ -17,5 +17,6 @@ export interface ViolationByStateListResponse {
     pagination?: ViolationByStateResponsePagination;
     topTen?: Array<ViolationIntervalResponse> | null;
     others?: Array<ViolationIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 

@@ -17,5 +17,6 @@ export interface PickupDeliveryByStateListResponse {
     pagination?: PickupDeliveryByStateResponsePagination;
     topTen?: Array<PickupDeliveryIntervalResponse> | null;
     others?: Array<PickupDeliveryIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 

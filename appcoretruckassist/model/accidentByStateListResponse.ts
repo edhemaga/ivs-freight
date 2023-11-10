@@ -17,5 +17,6 @@ export interface AccidentByStateListResponse {
     pagination?: AccidentByStateResponsePagination;
     topTen?: Array<AccidentIntervalResponse> | null;
     others?: Array<AccidentIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 
