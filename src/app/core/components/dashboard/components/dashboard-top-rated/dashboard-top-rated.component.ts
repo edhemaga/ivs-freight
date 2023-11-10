@@ -1541,32 +1541,39 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartLabels(barChartLables: string[]): void {
-        console.log('barChartLables', barChartLables);
-
         const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
             this.selectedSubPeriod.name
         );
 
         const filteredLabels = barChartLables.map((label) => {
             if (
-                ((selectedSubPeriod === 'Hourly' ||
-                    selectedSubPeriod === 'ThreeHours' ||
-                    selectedSubPeriod === 'SixHours' ||
-                    selectedSubPeriod === 'SemiDaily') &&
-                    !label.includes('PM') &&
-                    !label.includes('AM')) ||
-                selectedSubPeriod === 'Daily' ||
-                selectedSubPeriod === 'Weekly' ||
-                selectedSubPeriod === 'BiWeekly' ||
-                selectedSubPeriod === 'SemiMonthly' ||
-                selectedSubPeriod === 'Quarterly'
+                ((selectedSubPeriod === ConstantStringEnum.HOURLY ||
+                    selectedSubPeriod === ConstantStringEnum.THS ||
+                    selectedSubPeriod === ConstantStringEnum.SHS ||
+                    selectedSubPeriod === ConstantStringEnum.SMD) &&
+                    !label.includes(ConstantStringEnum.PM) &&
+                    !label.includes(ConstantStringEnum.AM)) ||
+                selectedSubPeriod === ConstantStringEnum.DAILY ||
+                selectedSubPeriod === ConstantStringEnum.WEEKLY ||
+                selectedSubPeriod === ConstantStringEnum.BWL ||
+                selectedSubPeriod === ConstantStringEnum.SML ||
+                selectedSubPeriod === ConstantStringEnum.QUARTERLY
             ) {
                 const splitLabel = label.split(' ');
 
+                if (splitLabel[2]) {
+                    const concatinatedDateString =
+                        splitLabel[0] +
+                        ConstantStringEnum.EMPTY_SPACE_STRING +
+                        splitLabel[1];
+
+                    return [concatinatedDateString, splitLabel[2]];
+                }
+
                 return [splitLabel[0], splitLabel[1]];
-            } else {
-                return label;
             }
+
+            return label;
         });
 
         if (Array.isArray(filteredLabels[0])) {
@@ -1574,13 +1581,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         } else {
             this.barChartLabels = filteredLabels as string[];
         }
-
-        console.log('this.barChartLabels', this.barChartLabels);
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
-        console.log('barChartValues', barChartValues);
-
         this.barChartConfig = {
             dataProperties: [
                 {

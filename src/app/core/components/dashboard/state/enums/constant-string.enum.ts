@@ -42,6 +42,11 @@ export enum ConstantStringEnum {
     ALL = 'ALL',
     ALT = 'AllTime',
 
+    HOURLY = 'Hourly',
+    DAILY = 'Daily',
+    WEEKLY = 'Weekly',
+    QUARTERLY = 'Quarterly',
+
     THS = 'ThreeHours',
     SHS = 'SixHours',
     SMD = 'SemiDaily',
@@ -52,4 +57,9 @@ export enum ConstantStringEnum {
     CLASS_DROPDOWN_OPTION = 'dropdown-option',
 
     DAYS = 'days',
+
+    PM = 'PM',
+    AM = 'AM',
+
+    EMPTY_SPACE_STRING = ' ',
 }
