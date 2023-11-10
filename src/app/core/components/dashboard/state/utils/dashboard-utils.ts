@@ -84,12 +84,12 @@ export class DashboardUtils {
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_3;
         }
 
-        if (selectedDaysRange > 60 && selectedDaysRange <= 365) {
+        if (selectedDaysRange > 60 && selectedDaysRange <= 366) {
             matchingIdList =
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_4;
         }
 
-        if (selectedDaysRange > 365 && selectedDaysRange <= 730) {
+        if (selectedDaysRange > 366 && selectedDaysRange <= 730) {
             matchingIdList =
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_5;
         }

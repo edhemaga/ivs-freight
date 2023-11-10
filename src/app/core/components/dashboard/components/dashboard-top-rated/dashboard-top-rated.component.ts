@@ -185,7 +185,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public doughnutChartConfig: DoughnutChartConfig;
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
-    private barChartLabels: string[] = [];
+    private barChartLabels: string[] | string[][] = [];
     private barChartValues: BarChartValues = {
         defaultBarValues: {
             topRatedBarValues: [],
@@ -566,10 +566,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 );
                 break;
             case ConstantStringEnum.SHIPPER:
-                this.getTopRatedShipperListData(
-                    selectedTab,
-                    topRatedArgumentsData
-                );
+                this.getTopRatedShipperListData(topRatedArgumentsData);
                 break;
             case ConstantStringEnum.OWNER:
                 this.getTopRatedOwnerListData(
@@ -656,6 +653,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartLabels(dispatcherData.intervalLabels);
+
                 this.setChartsData();
             });
     }
@@ -717,6 +716,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : truckData.allOthers[i].truckRevenue,
                     ];
                 }
+
+                this.setBarChartLabels(truckData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -780,12 +781,13 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartLabels(brokerData.intervalLabels);
+
                 this.setChartsData();
             });
     }
 
     private getTopRatedShipperListData(
-        selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
         const filteredTopRatedArgumentsData = topRatedArgumentsData.splice(
@@ -835,6 +837,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         shipperData.allOthers[i].shipperLoadCount,
                     ];
                 }
+
+                this.setBarChartLabels(shipperData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -897,6 +901,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : ownerData.allOthers[i].ownerRevenue,
                     ];
                 }
+
+                this.setBarChartLabels(ownerData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -962,6 +968,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartLabels(repairShopData.intervalLabels);
+
                 this.setChartsData();
             });
     }
@@ -1025,6 +1033,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : fuelStopData.allOthers[i].cost,
                     ];
                 }
+
+                this.setBarChartLabels(fuelStopData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -1452,6 +1462,36 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             chartCenterStats,
             topRatedList
         );
+    }
+
+    private setBarChartLabels(barChartLables: string[]): void {
+        console.log('barChartLables', barChartLables);
+
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        );
+
+        const filteredLabels = barChartLables.map((label) => {
+            if (
+                selectedSubPeriod === 'Hourly' &&
+                !label.includes('PM') &&
+                !label.includes('AM')
+            ) {
+                const splitLabel = label.split(' ');
+
+                return [splitLabel[0], splitLabel[1]];
+            } else {
+                return label;
+            }
+        });
+
+        if (Array.isArray(filteredLabels[0])) {
+            this.barChartLabels = filteredLabels as string[][];
+        } else {
+            this.barChartLabels = filteredLabels as string[];
+        }
+
+        console.log('this.barChartLabels', this.barChartLabels);
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
