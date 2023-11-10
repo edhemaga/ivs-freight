@@ -16,6 +16,7 @@ import {
     CompanyDurationResponse,
     TopFuelStopListResponse,
     TopTruckListResponse,
+    TopDriverListResponse,
 } from 'appcoretruckassist';
 import {
     TopRatedApiArguments,
@@ -48,6 +49,12 @@ export class DashboardService {
         data: TopRatedApiArguments
     ): Observable<TopDispatchersListResponse> {
         return this.dashboardService.apiDashboardTopdispatchersGet(...data);
+    }
+
+    public getTopRatedDriver(
+        data: TopRatedApiArguments
+    ): Observable<TopDriverListResponse> {
+        return this.dashboardService.apiDashboardTopdriversGet(...data);
     }
 
     public getTopRatedTruck(
