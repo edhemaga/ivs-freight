@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PickupDeliveryIntervalResponse } from './pickupDeliveryIntervalResponse';
 import { PickupDeliveryByStateResponsePagination } from './pickupDeliveryByStateResponsePagination';
 
 
 export interface PickupDeliveryByStateListResponse { 
     pagination?: PickupDeliveryByStateResponsePagination;
+    topTen?: Array<PickupDeliveryIntervalResponse> | null;
+    others?: Array<PickupDeliveryIntervalResponse> | null;
 }
 

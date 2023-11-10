@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairIntervalResponse } from './repairIntervalResponse';
-import { RepairByStateResponsePagination } from './repairByStateResponsePagination';
+import { PerformanceGraphListResponse } from './performanceGraphListResponse';
+import { PerformanceResponse } from './performanceResponse';
 
 
-export interface RepairByStateListResponse { 
-    pagination?: RepairByStateResponsePagination;
-    topTen?: Array<RepairIntervalResponse> | null;
-    others?: Array<RepairIntervalResponse> | null;
+export interface PerformanceListResponse { 
+    performance?: PerformanceResponse;
+    performanceGraph?: PerformanceGraphListResponse;
+    intervalLabels?: Array<string> | null;
 }
 

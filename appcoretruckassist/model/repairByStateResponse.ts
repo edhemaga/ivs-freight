@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
+import { RepairIntervalResponse } from './repairIntervalResponse';
 
 
 export interface RepairByStateResponse { 
@@ -20,6 +20,6 @@ export interface RepairByStateResponse {
     cost?: number | null;
     countPercentage?: number | null;
     costPercentage?: number | null;
-    intervals?: Array<RepairShopIntervalResponse> | null;
+    intervals?: Array<RepairIntervalResponse> | null;
 }
 

@@ -314,6 +314,7 @@ model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
 model/driverFilterResponsePagination.ts
 model/driverForgotPasswordCommand.ts
+model/driverIntervalResponse.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
@@ -566,6 +567,9 @@ model/payrollPaymentType.ts
 model/payrollResponse.ts
 model/payrollResponsePagination.ts
 model/perMileEntity.ts
+model/performanceGraphListResponse.ts
+model/performanceGraphResponse.ts
+model/performanceListResponse.ts
 model/performanceResponse.ts
 model/personalInfoFeedbackResponse.ts
 model/pickupDeliveryByStateListResponse.ts
@@ -594,6 +598,7 @@ model/repairByStateResponse.ts
 model/repairByStateResponsePagination.ts
 model/repairCategoryFilterResponse.ts
 model/repairCostPerformanceResponse.ts
+model/repairIntervalResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairModalResponse.ts
@@ -707,6 +712,9 @@ model/topBrokersResponsePagination.ts
 model/topDispatchersListResponse.ts
 model/topDispatchersResponse.ts
 model/topDispatchersResponsePagination.ts
+model/topDriverListResponse.ts
+model/topDriverResponse.ts
+model/topDriverResponsePagination.ts
 model/topFuelStopListResponse.ts
 model/topFuelStopResponse.ts
 model/topFuelStopResponsePagination.ts

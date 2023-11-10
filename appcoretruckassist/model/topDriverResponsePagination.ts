@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairIntervalResponse } from './repairIntervalResponse';
-import { RepairByStateResponsePagination } from './repairByStateResponsePagination';
+import { TopDriverResponse } from './topDriverResponse';
 
 
-export interface RepairByStateListResponse { 
-    pagination?: RepairByStateResponsePagination;
-    topTen?: Array<RepairIntervalResponse> | null;
-    others?: Array<RepairIntervalResponse> | null;
+export interface TopDriverResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<TopDriverResponse> | null;
 }
 
