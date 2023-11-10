@@ -322,9 +322,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.topRatedTabs = topRatedTabsToDisplay;
         this.currentActiveTab = topRatedTabsToDisplay[0];
 
-        this.selectedMainPeriod =
-            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-
         this.topRatedTitle = topRatedDropdownItem.name;
 
         this.topRatedDropdownList.find(
