@@ -51,4 +51,7 @@ export enum ConstantChartStringEnum {
     CHART_COLOR_NONE = 'rgba(0, 0, 0, 0)',
 
     NO_CHART_IMG = 'assets/svg/common/no_data_pay.svg',
+
+    MMMM = 'MMMM',
+    YYYY = 'YYYY',
 }

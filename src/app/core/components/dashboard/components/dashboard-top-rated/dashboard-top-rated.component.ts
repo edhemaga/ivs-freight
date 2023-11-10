@@ -63,6 +63,7 @@ import {
     TopRatedApiArguments,
     TopRatedWithoutTabApiArguments,
 } from '../../state/models/dashboard-top-rated-models/top-rated-api-arguments.model';
+import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-chart-interval.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -185,6 +186,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public doughnutChartConfig: DoughnutChartConfig;
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
+    public barChartDateTitle: string;
     private barChartLabels: string[] | string[][] = [];
     private barChartValues: BarChartValues = {
         defaultBarValues: {
@@ -662,6 +664,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    dispatcherData.topDispatchers[0],
+                    dispatcherData.topDispatchers[
+                        dispatcherData.topDispatchers.length - 1
+                    ]
+                );
                 this.setBarChartLabels(dispatcherData.intervalLabels);
 
                 this.setChartsData();
@@ -726,6 +734,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    driverData.topDrivers[0],
+                    driverData.topDrivers[driverData.topDrivers.length - 1]
+                );
                 this.setBarChartLabels(driverData.intervalLabels);
 
                 this.setChartsData();
@@ -790,6 +802,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    truckData.topTrucks[0],
+                    truckData.topTrucks[truckData.topTrucks.length - 1]
+                );
                 this.setBarChartLabels(truckData.intervalLabels);
 
                 this.setChartsData();
@@ -854,6 +870,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    brokerData.topBrokers[0],
+                    brokerData.topBrokers[brokerData.topBrokers.length - 1]
+                );
                 this.setBarChartLabels(brokerData.intervalLabels);
 
                 this.setChartsData();
@@ -911,6 +931,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    shipperData.topShippers[0],
+                    shipperData.topShippers[shipperData.topShippers.length - 1]
+                );
                 this.setBarChartLabels(shipperData.intervalLabels);
 
                 this.setChartsData();
@@ -975,6 +999,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    ownerData.topOwners[0],
+                    ownerData.topOwners[ownerData.topOwners.length - 1]
+                );
                 this.setBarChartLabels(ownerData.intervalLabels);
 
                 this.setChartsData();
@@ -1041,6 +1069,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    repairShopData.topRepairShops[0],
+                    repairShopData.topRepairShops[
+                        repairShopData.topRepairShops.length - 1
+                    ]
+                );
                 this.setBarChartLabels(repairShopData.intervalLabels);
 
                 this.setChartsData();
@@ -1107,6 +1141,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    fuelStopData.topFuelStops[0],
+                    fuelStopData.topFuelStops[
+                        fuelStopData.topFuelStops.length - 1
+                    ]
+                );
                 this.setBarChartLabels(fuelStopData.intervalLabels);
 
                 this.setChartsData();
@@ -1540,47 +1580,29 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         );
     }
 
+    private setBarChartDateTitle(
+        startInterval: BarChartInterval,
+        endInterval: BarChartInterval
+    ): void {
+        const { barDateTitle } = DashboardUtils.setBarChartDateTitle(
+            startInterval,
+            endInterval
+        );
+
+        this.barChartDateTitle = barDateTitle;
+    }
+
     private setBarChartLabels(barChartLables: string[]): void {
         const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
             this.selectedSubPeriod.name
         );
 
-        const filteredLabels = barChartLables.map((label) => {
-            if (
-                ((selectedSubPeriod === ConstantStringEnum.HOURLY ||
-                    selectedSubPeriod === ConstantStringEnum.THS ||
-                    selectedSubPeriod === ConstantStringEnum.SHS ||
-                    selectedSubPeriod === ConstantStringEnum.SMD) &&
-                    !label.includes(ConstantStringEnum.PM) &&
-                    !label.includes(ConstantStringEnum.AM)) ||
-                selectedSubPeriod === ConstantStringEnum.DAILY ||
-                selectedSubPeriod === ConstantStringEnum.WEEKLY ||
-                selectedSubPeriod === ConstantStringEnum.BWL ||
-                selectedSubPeriod === ConstantStringEnum.SML ||
-                selectedSubPeriod === ConstantStringEnum.QUARTERLY
-            ) {
-                const splitLabel = label.split(' ');
+        const { filteredLabels } = DashboardUtils.setBarChartLabels(
+            barChartLables,
+            selectedSubPeriod
+        );
 
-                if (splitLabel[2]) {
-                    const concatinatedDateString =
-                        splitLabel[0] +
-                        ConstantStringEnum.EMPTY_SPACE_STRING +
-                        splitLabel[1];
-
-                    return [concatinatedDateString, splitLabel[2]];
-                }
-
-                return [splitLabel[0], splitLabel[1]];
-            }
-
-            return label;
-        });
-
-        if (Array.isArray(filteredLabels[0])) {
-            this.barChartLabels = filteredLabels as string[][];
-        } else {
-            this.barChartLabels = filteredLabels as string[];
-        }
+        this.barChartLabels = filteredLabels;
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
