@@ -5,6 +5,7 @@ export enum ConstantStringEnum {
 
     DISPATCHER = 'Dispatcher',
     DRIVER = 'Driver',
+    TRUCK = 'Truck',
     BROKER = 'Broker',
     SHIPPER = 'Shipper',
     OWNER = 'Owner',
@@ -15,6 +16,7 @@ export enum ConstantStringEnum {
     COST = 'Cost',
     LOAD = 'Load',
     REVENUE = 'Revenue',
+    MILEAGE = 'Mileage',
 
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',
@@ -40,6 +42,11 @@ export enum ConstantStringEnum {
     ALL = 'ALL',
     ALT = 'AllTime',
 
+    HOURLY = 'Hourly',
+    DAILY = 'Daily',
+    WEEKLY = 'Weekly',
+    QUARTERLY = 'Quarterly',
+
     THS = 'ThreeHours',
     SHS = 'SixHours',
     SMD = 'SemiDaily',
@@ -50,4 +57,9 @@ export enum ConstantStringEnum {
     CLASS_DROPDOWN_OPTION = 'dropdown-option',
 
     DAYS = 'days',
+
+    PM = 'PM',
+    AM = 'AM',
+
+    EMPTY_SPACE_STRING = ' ',
 }

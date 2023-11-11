@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
+import { RepairIntervalResponse } from './repairIntervalResponse';
 import { RepairByStateResponsePagination } from './repairByStateResponsePagination';
 
 
 export interface RepairByStateListResponse { 
     pagination?: RepairByStateResponsePagination;
-    topTen?: Array<RepairShopIntervalResponse> | null;
-    others?: Array<RepairShopIntervalResponse> | null;
+    topTen?: Array<RepairIntervalResponse> | null;
+    others?: Array<RepairIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 

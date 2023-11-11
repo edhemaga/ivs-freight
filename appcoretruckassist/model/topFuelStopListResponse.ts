@@ -9,16 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TopRepairShopResponsePagination } from './topRepairShopResponsePagination';
-import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
+import { FuelStopIntervalResponse } from './fuelStopIntervalResponse';
+import { TopFuelStopResponsePagination } from './topFuelStopResponsePagination';
 
 
-export interface TopRepairShopListResponse { 
-    pagination?: TopRepairShopResponsePagination;
-    topRepairShops?: Array<RepairShopIntervalResponse> | null;
-    allOther?: Array<RepairShopIntervalResponse> | null;
+export interface TopFuelStopListResponse { 
+    pagination?: TopFuelStopResponsePagination;
+    topFuelStops?: Array<FuelStopIntervalResponse> | null;
+    allOthers?: Array<FuelStopIntervalResponse> | null;
     totalCost?: number | null;
-    totalVisit?: number | null;
+    totalVisitCount?: number | null;
     intervalLabels?: Array<string> | null;
 }
 

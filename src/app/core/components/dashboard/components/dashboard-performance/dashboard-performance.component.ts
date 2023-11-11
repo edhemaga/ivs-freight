@@ -277,6 +277,7 @@ export class DashboardPerformanceComponent
     ];
 
     private selectedPerformanceDataCount: number = 0;
+    private maxPerformanceDataItemsSelected = 10;
 
     // tabs
     public performanceTabs: DashboardTab[] = [];
@@ -479,11 +480,10 @@ export class DashboardPerformanceComponent
         selectedColor: string
     ): void {
         const performanceDataItem = this.performanceData[index];
-        const maxPerformanceDataItemsSelected = 10;
 
         if (
             this.selectedPerformanceDataCount ===
-                maxPerformanceDataItemsSelected &&
+                this.maxPerformanceDataItemsSelected &&
             !performanceDataItem.isSelected
         ) {
             return;
@@ -503,7 +503,7 @@ export class DashboardPerformanceComponent
             performanceDataItem.selectedHoverColor =
                 firstAvailableColor.hoverCode;
 
-            +this.selectedPerformanceDataCount++;
+            this.selectedPerformanceDataCount++;
 
             // line chart
             this.lineChart.insertNewChartData(

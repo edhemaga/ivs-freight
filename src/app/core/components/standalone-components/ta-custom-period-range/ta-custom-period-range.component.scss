@@ -9,7 +9,7 @@
 
     &-header {
         padding: 2px 0 6px 4px;
-        margin-bottom: 22px;
+        margin-bottom: 24px;
         border-bottom: 1px solid $ta-white-4;
 
         p {
@@ -30,16 +30,23 @@
     }
 
     &-form {
-        padding-bottom: 22px;
         margin-bottom: 4px;
         border-bottom: 1px solid $ta-white-4;
 
-        &-input {
-            max-width: 144px;
+        &-date-inputs {
+            margin-bottom: 42px;
 
-            &:first-child {
-                margin-right: 4px;
+            &-input {
+                max-width: 144px;
+
+                &:first-child {
+                    margin-right: 4px;
+                }
             }
+        }
+
+        &-subperiod-input {
+            margin-bottom: 20px;
         }
     }
 

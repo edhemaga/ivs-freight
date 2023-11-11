@@ -19,5 +19,6 @@ export interface TopDispatchersListResponse {
     allOthers?: Array<DispatcherIntervalResponse> | null;
     totalRevenue?: number | null;
     totalLoadCount?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 

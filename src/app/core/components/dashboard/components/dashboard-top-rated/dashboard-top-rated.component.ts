@@ -12,9 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
 // bootstrap
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-// moment
-import moment from 'moment';
-
 // services
 import { DashboardService } from '../../state/services/dashboard.service';
 
@@ -66,6 +63,7 @@ import {
     TopRatedApiArguments,
     TopRatedWithoutTabApiArguments,
 } from '../../state/models/dashboard-top-rated-models/top-rated-api-arguments.model';
+import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-chart-interval.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -188,7 +186,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public doughnutChartConfig: DoughnutChartConfig;
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
-    private barChartLabels: string[] = [];
+    public barChartDateTitle: string;
+    private barChartLabels: string[] | string[][] = [];
     private barChartValues: BarChartValues = {
         defaultBarValues: {
             topRatedBarValues: [],
@@ -211,8 +210,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.getOverallCompanyDuration();
 
-        this.setDoughnutChartData(this.topRatedList);
-        this.setBarChartConfigAndAxes();
+        this.setChartsData();
+
+        this.getTopRatedListData();
     }
 
     private createForm(): void {
@@ -273,6 +273,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     this.isDisplayingCustomPeriodRange = true;
 
                     this.subPeriodDropdownList = [];
+                    this.selectedSubPeriod = null;
 
                     break;
                 default:
@@ -321,9 +322,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.topRatedTabs = topRatedTabsToDisplay;
         this.currentActiveTab = topRatedTabsToDisplay[0];
 
-        this.selectedMainPeriod =
-            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-
         this.topRatedTitle = topRatedDropdownItem.name;
 
         this.topRatedDropdownList.find(
@@ -365,25 +363,28 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
     }
 
+    public handleCustomPeriodRangeSubperiodEmit(
+        selectedDaysRange: number
+    ): void {
+        this.setCustomSubPeriodList(selectedDaysRange);
+    }
+
     public handleSetCustomPeriodRangeClick(
         customPeriodRange: CustomPeriodRange
     ): void {
-        const fromDate = moment(new Date(customPeriodRange.fromDate));
-        const toDate = moment(new Date(customPeriodRange.toDate));
+        if (!customPeriodRange) {
+            this.isDisplayingCustomPeriodRange = false;
 
-        const selectedDaysRange =
-            toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+            this.selectedMainPeriod =
+                DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
-        if (selectedDaysRange < 0) {
-            return;
+            this.setCustomSubPeriodList(this.overallCompanyDuration);
+        } else {
+            this.isDisplayingCustomPeriodRange = false;
+            this.selectedCustomPeriodRange = customPeriodRange;
+
+            this.getTopRatedListData(customPeriodRange);
         }
-
-        this.isDisplayingCustomPeriodRange = false;
-        this.selectedCustomPeriodRange = customPeriodRange;
-
-        this.setCustomSubPeriodList(selectedDaysRange);
-
-        this.getTopRatedListData(customPeriodRange);
     }
 
     public handleOutsideCustomPeriodRangeClick() {
@@ -484,7 +485,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private getConstantData(): void {
         this.topRatedDropdownList =
             DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA;
+
         this.topRatedTabs = DashboardTopRatedConstants.TOP_RATED_TABS;
+        this.currentActiveTab = DashboardTopRatedConstants.TOP_RATED_TABS[0];
 
         this.mainPeriodDropdownList =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
@@ -510,26 +513,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {
-        const selectedTab: DashboardTopReportType = this.currentActiveTab
+        const selectedTab = this.currentActiveTab
             .name as DashboardTopReportType;
 
-        const selectedMainPeriod: TimeInterval =
-            DashboardUtils.ConvertMainPeriod(
-                this.selectedMainPeriod.name
-            ) as TimeInterval;
+        const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
+            this.selectedMainPeriod.name
+        ) as TimeInterval;
 
-        const selectedSubPeriod: SubintervalType =
-            DashboardUtils.ConvertSubPeriod(
-                this.selectedSubPeriod.name
-            ) as SubintervalType;
-
-        this.barChartValues = {
-            defaultBarValues: {
-                topRatedBarValues: [],
-                otherBarValues: [],
-            },
-            selectedBarValues: [],
-        };
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        ) as SubintervalType;
 
         const topRatedArgumentsData: TopRatedApiArguments = [
             selectedTab,
@@ -541,6 +534,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ];
+
+        this.barChartValues = {
+            defaultBarValues: {
+                topRatedBarValues: [],
+                otherBarValues: [],
+            },
+            selectedBarValues: [],
+        };
 
         console.log('selectedTab', selectedTab);
         console.log('selectedMainPeriod', selectedMainPeriod);
@@ -554,8 +555,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     topRatedArgumentsData
                 );
                 break;
-            case ConstantStringEnum.OWNER:
-                this.getTopRatedOwnerListData(
+            case ConstantStringEnum.DRIVER:
+                this.getTopRatedDriverListData(
+                    selectedTab,
+                    topRatedArgumentsData
+                );
+                break;
+            case ConstantStringEnum.TRUCK:
+                this.getTopRatedTruckListData(
                     selectedTab,
                     topRatedArgumentsData
                 );
@@ -567,7 +574,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 );
                 break;
             case ConstantStringEnum.SHIPPER:
-                this.getTopRatedShipperListData(
+                this.getTopRatedShipperListData(topRatedArgumentsData);
+                break;
+            case ConstantStringEnum.OWNER:
+                this.getTopRatedOwnerListData(
                     selectedTab,
                     topRatedArgumentsData
                 );
@@ -651,6 +661,150 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    dispatcherData.topDispatchers[0],
+                    dispatcherData.topDispatchers[
+                        dispatcherData.topDispatchers.length - 1
+                    ]
+                );
+                this.setBarChartLabels(dispatcherData.intervalLabels);
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedDriverListData(
+        selectedTab: DashboardTopReportType,
+        topRatedArgumentsData: TopRatedApiArguments
+    ): void {
+        this.dashboardService
+            .getTopRatedDriver(topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((driverData) => {
+                console.log('driverData', driverData);
+                // top rated list and single selection data
+                this.topRatedList = driverData.pagination.data.map((driver) => {
+                    const filteredIntervals = driver.intervals.map(
+                        (interval) => {
+                            return selectedTab === ConstantStringEnum.MILEAGE
+                                ? interval.driverMileage
+                                : interval.driverRevenue;
+                        }
+                    );
+
+                    this.barChartValues.selectedBarValues = [
+                        ...this.barChartValues.selectedBarValues,
+                        filteredIntervals,
+                    ];
+
+                    return {
+                        id: driver.id,
+                        name: driver.name,
+                        value:
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? driver.mileage.toString()
+                                : driver.revenue.toString(),
+                        percent:
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? driver.mileagePercentage.toString()
+                                : driver.revenuePercentage.toString(),
+                        isSelected: false,
+                    };
+                });
+
+                for (let i = 0; i < driverData.topDrivers.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.MILEAGE
+                            ? driverData.topDrivers[i].driverMileage
+                            : driverData.topDrivers[i].driverRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.MILEAGE
+                            ? driverData.allOthers[i].driverMileage
+                            : driverData.allOthers[i].driverRevenue,
+                    ];
+                }
+
+                this.setBarChartDateTitle(
+                    driverData.topDrivers[0],
+                    driverData.topDrivers[driverData.topDrivers.length - 1]
+                );
+                this.setBarChartLabels(driverData.intervalLabels);
+
+                this.setChartsData();
+            });
+    }
+
+    private getTopRatedTruckListData(
+        selectedTab: DashboardTopReportType,
+        topRatedArgumentsData: TopRatedApiArguments
+    ): void {
+        this.dashboardService
+            .getTopRatedTruck(topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((truckData) => {
+                console.log('truckData', truckData);
+                // top rated list and single selection data
+                this.topRatedList = truckData.pagination.data.map((truck) => {
+                    const filteredIntervals = truck.intervals.map(
+                        (interval) => {
+                            return selectedTab === ConstantStringEnum.MILEAGE
+                                ? interval.truckMileage
+                                : interval.truckRevenue;
+                        }
+                    );
+
+                    this.barChartValues.selectedBarValues = [
+                        ...this.barChartValues.selectedBarValues,
+                        filteredIntervals,
+                    ];
+
+                    return {
+                        id: truck.id,
+                        name: truck.number,
+                        value:
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truck.mileage.toString()
+                                : truck.revenue.toString(),
+                        percent:
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truck.mileagePercentage.toString()
+                                : truck.revenuePercentage.toString(),
+                        isSelected: false,
+                    };
+                });
+
+                for (let i = 0; i < truckData.topTrucks.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.MILEAGE
+                            ? truckData.topTrucks[i].truckMileage
+                            : truckData.topTrucks[i].truckRevenue,
+                    ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.MILEAGE
+                            ? truckData.allOthers[i].truckMileage
+                            : truckData.allOthers[i].truckRevenue,
+                    ];
+                }
+
+                this.setBarChartDateTitle(
+                    truckData.topTrucks[0],
+                    truckData.topTrucks[truckData.topTrucks.length - 1]
+                );
+                this.setBarChartLabels(truckData.intervalLabels);
+
                 this.setChartsData();
             });
     }
@@ -713,12 +867,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    brokerData.topBrokers[0],
+                    brokerData.topBrokers[brokerData.topBrokers.length - 1]
+                );
+                this.setBarChartLabels(brokerData.intervalLabels);
+
                 this.setChartsData();
             });
     }
 
     private getTopRatedShipperListData(
-        selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
         const filteredTopRatedArgumentsData = topRatedArgumentsData.splice(
@@ -768,6 +927,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         shipperData.allOthers[i].shipperLoadCount,
                     ];
                 }
+
+                this.setBarChartDateTitle(
+                    shipperData.topShippers[0],
+                    shipperData.topShippers[shipperData.topShippers.length - 1]
+                );
+                this.setBarChartLabels(shipperData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -830,6 +995,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : ownerData.allOthers[i].ownerRevenue,
                     ];
                 }
+
+                this.setBarChartDateTitle(
+                    ownerData.topOwners[0],
+                    ownerData.topOwners[ownerData.topOwners.length - 1]
+                );
+                this.setBarChartLabels(ownerData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -895,6 +1066,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     ];
                 }
 
+                this.setBarChartDateTitle(
+                    repairShopData.topRepairShops[0],
+                    repairShopData.topRepairShops[
+                        repairShopData.topRepairShops.length - 1
+                    ]
+                );
+                this.setBarChartLabels(repairShopData.intervalLabels);
+
                 this.setChartsData();
             });
     }
@@ -958,6 +1137,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : fuelStopData.allOthers[i].cost,
                     ];
                 }
+
+                this.setBarChartDateTitle(
+                    fuelStopData.topFuelStops[0],
+                    fuelStopData.topFuelStops[
+                        fuelStopData.topFuelStops.length - 1
+                    ]
+                );
+                this.setBarChartLabels(fuelStopData.intervalLabels);
 
                 this.setChartsData();
             });
@@ -1057,11 +1244,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         if (isTopRatedListItemSelected) {
             switch (this.topRatedTitle) {
                 case ConstantStringEnum.DRIVER:
+                case ConstantStringEnum.TRUCK:
                     return {
                         filteredTopTenValue:
-                            ConstantChartStringEnum.DOLLAR_SIGN +
-                            topTenValue +
-                            ConstantChartStringEnum.THOUSAND_SIGN,
+                            this.currentActiveTab.name ===
+                            ConstantStringEnum.MILEAGE
+                                ? topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN
+                                : ConstantChartStringEnum.DOLLAR_SIGN +
+                                  topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 case ConstantStringEnum.REPAIR_SHOP:
                 case ConstantStringEnum.BROKER:
@@ -1087,13 +1279,23 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         } else {
             switch (this.topRatedTitle) {
                 case ConstantStringEnum.DRIVER:
+                case ConstantStringEnum.TRUCK:
                     return {
                         filteredTopTenPercentage,
                         filteredTopTenValue:
-                            topTenValue + ConstantChartStringEnum.THOUSAND_SIGN,
+                            this.currentActiveTab.name ===
+                            ConstantStringEnum.MILEAGE
+                                ? topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN
+                                : ConstantChartStringEnum.DOLLAR_SIGN +
+                                  topTenValue +
+                                  ConstantChartStringEnum.THOUSAND_SIGN,
                         filteredOtherPercentage,
-                        filteredOtherValue:
-                            otherValue + ConstantChartStringEnum.THOUSAND_SIGN,
+                        filteredOtherValue: ConstantStringEnum.MILEAGE
+                            ? otherValue + ConstantChartStringEnum.THOUSAND_SIGN
+                            : ConstantChartStringEnum.DOLLAR_SIGN +
+                              otherValue +
+                              ConstantChartStringEnum.THOUSAND_SIGN,
                     };
                 case ConstantStringEnum.DISPATCHER:
                 case ConstantStringEnum.BROKER:
@@ -1233,10 +1435,18 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             return {
                 ...topRatedListItem,
                 value:
-                    this.topRatedTitle === ConstantStringEnum.DRIVER
+                    (this.topRatedTitle === ConstantStringEnum.DRIVER &&
+                        this.currentActiveTab.name ===
+                            ConstantStringEnum.MILEAGE) ||
+                    (this.topRatedTitle === ConstantStringEnum.TRUCK &&
+                        this.currentActiveTab.name ===
+                            ConstantStringEnum.MILEAGE)
                         ? topRatedListItem.value +
                           ConstantChartStringEnum.THOUSAND_SIGN
-                        : (this.topRatedTitle ===
+                        : (this.topRatedTitle === ConstantStringEnum.TRUCK &&
+                              this.currentActiveTab.name ===
+                                  ConstantStringEnum.REVENUE) ||
+                          (this.topRatedTitle ===
                               ConstantStringEnum.DISPATCHER &&
                               this.currentActiveTab.name ===
                                   ConstantStringEnum.REVENUE) ||
@@ -1367,9 +1577,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         );
     }
 
-    private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
-        console.log('barChartValues', barChartValues);
+    private setBarChartDateTitle(
+        startInterval: BarChartInterval,
+        endInterval: BarChartInterval
+    ): void {
+        const { barDateTitle } = DashboardUtils.setBarChartDateTitle(
+            startInterval,
+            endInterval
+        );
 
+        this.barChartDateTitle = barDateTitle;
+    }
+
+    private setBarChartLabels(barChartLables: string[]): void {
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        );
+
+        const { filteredLabels } = DashboardUtils.setBarChartLabels(
+            barChartLables,
+            selectedSubPeriod
+        );
+
+        this.barChartLabels = filteredLabels;
+    }
+
+    private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
         this.barChartConfig = {
             dataProperties: [
                 {

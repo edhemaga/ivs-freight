@@ -9,16 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TopOwnerResponsePagination } from './topOwnerResponsePagination';
-import { OwnerIntervalResponse } from './ownerIntervalResponse';
+import { TopTruckResponsePagination } from './topTruckResponsePagination';
+import { TruckIntervalResponse } from './truckIntervalResponse';
 
 
-export interface TopOwnerListResponse { 
-    pagination?: TopOwnerResponsePagination;
-    topOwners?: Array<OwnerIntervalResponse> | null;
-    allOthers?: Array<OwnerIntervalResponse> | null;
+export interface TopTruckListResponse { 
+    pagination?: TopTruckResponsePagination;
+    topTrucks?: Array<TruckIntervalResponse> | null;
+    allOthers?: Array<TruckIntervalResponse> | null;
     totalRevenue?: number | null;
-    totalLoadCount?: number | null;
+    totalMileage?: number | null;
     intervalLabels?: Array<string> | null;
 }
 

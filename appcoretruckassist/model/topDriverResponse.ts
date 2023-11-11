@@ -9,15 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DriverIntervalResponse } from './driverIntervalResponse';
 
 
-export type ByStateReportType = 'Count' | 'Cost' | 'SeverityWeight' | 'Revenue' | 'Price';
-
-export const ByStateReportType = {
-    Count: 'Count' as ByStateReportType,
-    Cost: 'Cost' as ByStateReportType,
-    SeverityWeight: 'SeverityWeight' as ByStateReportType,
-    Revenue: 'Revenue' as ByStateReportType,
-    Price: 'Price' as ByStateReportType
-};
+export interface TopDriverResponse { 
+    id?: number;
+    name?: string | null;
+    mileage?: number | null;
+    revenue?: number | null;
+    mileagePercentage?: number | null;
+    revenuePercentage?: number | null;
+    intervals?: Array<DriverIntervalResponse> | null;
+}
 

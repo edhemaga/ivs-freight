@@ -18,5 +18,6 @@ export interface TopShipperListResponse {
     topShippers?: Array<ShipperIntervalResponse> | null;
     allOthers?: Array<ShipperIntervalResponse> | null;
     totalLoadCount?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 

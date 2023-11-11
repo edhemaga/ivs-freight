@@ -9,17 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RepairIntervalResponse } from './repairIntervalResponse';
 
 
-export interface RepairByStateResponse { 
-    stateId?: number;
-    stateName?: string | null;
-    stateShortName?: string | null;
-    count?: number | null;
+export interface FuelStopIntervalResponse { 
+    startTime?: string;
+    endTime?: string;
     cost?: number | null;
-    countPercentage?: number | null;
+    visitCount?: number | null;
     costPercentage?: number | null;
-    intervals?: Array<RepairIntervalResponse> | null;
+    visitPercentage?: number | null;
 }
 

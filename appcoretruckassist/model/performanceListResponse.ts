@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ViolationIntervalResponse } from './violationIntervalResponse';
-import { ViolationByStateResponsePagination } from './violationByStateResponsePagination';
+import { PerformanceGraphListResponse } from './performanceGraphListResponse';
+import { PerformanceResponse } from './performanceResponse';
 
 
-export interface ViolationByStateListResponse { 
-    pagination?: ViolationByStateResponsePagination;
-    topTen?: Array<ViolationIntervalResponse> | null;
-    others?: Array<ViolationIntervalResponse> | null;
+export interface PerformanceListResponse { 
+    performance?: PerformanceResponse;
+    performanceGraph?: PerformanceGraphListResponse;
     intervalLabels?: Array<string> | null;
 }
 

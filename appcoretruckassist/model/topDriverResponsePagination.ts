@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TopDriverResponse } from './topDriverResponse';
 
 
-export type ByStateReportType = 'Count' | 'Cost' | 'SeverityWeight' | 'Revenue' | 'Price';
-
-export const ByStateReportType = {
-    Count: 'Count' as ByStateReportType,
-    Cost: 'Cost' as ByStateReportType,
-    SeverityWeight: 'SeverityWeight' as ByStateReportType,
-    Revenue: 'Revenue' as ByStateReportType,
-    Price: 'Price' as ByStateReportType
-};
+export interface TopDriverResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<TopDriverResponse> | null;
+}
 

@@ -14,6 +14,9 @@ import {
     TopRepairShopListResponse,
     TopShipperListResponse,
     CompanyDurationResponse,
+    TopFuelStopListResponse,
+    TopTruckListResponse,
+    TopDriverListResponse,
 } from 'appcoretruckassist';
 import {
     TopRatedApiArguments,
@@ -48,6 +51,18 @@ export class DashboardService {
         return this.dashboardService.apiDashboardTopdispatchersGet(...data);
     }
 
+    public getTopRatedDriver(
+        data: TopRatedApiArguments
+    ): Observable<TopDriverListResponse> {
+        return this.dashboardService.apiDashboardTopdriversGet(...data);
+    }
+
+    public getTopRatedTruck(
+        data: TopRatedApiArguments
+    ): Observable<TopTruckListResponse> {
+        return this.dashboardService.apiDashboardToptrucksGet(...data);
+    }
+
     public getTopRatedBroker(
         data: TopRatedApiArguments
     ): Observable<TopBrokersListResponse> {
@@ -74,7 +89,7 @@ export class DashboardService {
 
     public getTopRatedFuelStop(
         data: TopRatedApiArguments
-    ): Observable<any /* TopDispatchersListResponse */> {
+    ): Observable<TopFuelStopListResponse> {
         return this.dashboardService.apiDashboardTopfuelstopsGet(...data);
     }
 }

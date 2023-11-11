@@ -138,52 +138,54 @@
                     ></app-ta-input-dropdown>
                 </div>
 
-                <div class="dashboard-top-rated-header-border"></div>
+                <ng-container *ngIf="!isDisplayingCustomPeriodRange">
+                    <div class="dashboard-top-rated-header-border"></div>
 
-                <div
-                    class="dropdown-right-container"
-                    [ngClass]="{
-                        'dropdown-right-w-1':
-                            selectedSubPeriod?.name === 'Hourly',
-                        'dropdown-right-w-2':
-                            selectedSubPeriod?.name === '3 Hours' ||
-                            selectedSubPeriod?.name === '6 Hours',
-                        'dropdown-right-w-3':
-                            selectedSubPeriod?.name === 'Semi-Daily',
-                        'dropdown-right-w-4':
-                            selectedSubPeriod?.name === 'Daily',
-                        'dropdown-right-w-5':
-                            selectedSubPeriod?.name === 'Weekly',
-                        'dropdown-right-w-6':
-                            selectedSubPeriod?.name === 'Bi-Weekly',
-                        'dropdown-right-w-7':
-                            selectedSubPeriod?.name === 'Semi-Monthly',
-                        'dropdown-right-w-8':
-                            selectedSubPeriod?.name === 'Monthly',
-                        'dropdown-right-w-9':
-                            selectedSubPeriod?.name === 'Quarterly',
-                        'dropdown-right-w-10':
-                            selectedSubPeriod?.name === 'Yearly'
-                    }"
-                >
-                    <app-ta-input-dropdown
-                        formControlName="subPeriod"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            isDropdown: true,
-                            hideClear: true,
-                            hideColorValidations: true,
-                            removeInputBackground: true,
-                            dropdownWidthClass: 'w-col-157'
+                    <div
+                        class="dropdown-right-container"
+                        [ngClass]="{
+                            'dropdown-right-w-1':
+                                selectedSubPeriod?.name === 'Hourly',
+                            'dropdown-right-w-2':
+                                selectedSubPeriod?.name === '3 Hours' ||
+                                selectedSubPeriod?.name === '6 Hours',
+                            'dropdown-right-w-3':
+                                selectedSubPeriod?.name === 'Semi-Daily',
+                            'dropdown-right-w-4':
+                                selectedSubPeriod?.name === 'Daily',
+                            'dropdown-right-w-5':
+                                selectedSubPeriod?.name === 'Weekly',
+                            'dropdown-right-w-6':
+                                selectedSubPeriod?.name === 'Bi-Weekly',
+                            'dropdown-right-w-7':
+                                selectedSubPeriod?.name === 'Semi-Monthly',
+                            'dropdown-right-w-8':
+                                selectedSubPeriod?.name === 'Monthly',
+                            'dropdown-right-w-9':
+                                selectedSubPeriod?.name === 'Quarterly',
+                            'dropdown-right-w-10':
+                                selectedSubPeriod?.name === 'Yearly'
                         }"
-                        [options]="subPeriodDropdownList"
-                        [activeItem]="selectedSubPeriod"
-                        (selectedItem)="
-                            handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
-                        "
-                    ></app-ta-input-dropdown>
-                </div>
+                    >
+                        <app-ta-input-dropdown
+                            formControlName="subPeriod"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                isDropdown: true,
+                                hideClear: true,
+                                hideColorValidations: true,
+                                removeInputBackground: true,
+                                dropdownWidthClass: 'w-col-157'
+                            }"
+                            [options]="subPeriodDropdownList"
+                            [activeItem]="selectedSubPeriod"
+                            (selectedItem)="
+                                handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
+                            "
+                        ></app-ta-input-dropdown>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>
@@ -291,6 +293,12 @@
                             >
                                 <p class="m-0">
                                     {{
+                                        (topRatedTitle === 'Truck' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
+                                        (topRatedTitle === 'Driver' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
                                         (topRatedTitle === 'Broker' &&
                                             currentActiveTab.name ===
                                                 'Revenue') ||
@@ -310,6 +318,12 @@
                                 </p>
                                 <p class="m-0">
                                     {{
+                                        (topRatedTitle === 'Truck' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
+                                        (topRatedTitle === 'Driver' &&
+                                            currentActiveTab.name ===
+                                                'Revenue') ||
                                         (topRatedTitle === 'Broker' &&
                                             currentActiveTab.name ===
                                                 'Revenue') ||
@@ -402,6 +416,11 @@
                 <ng-container *ngIf="isDisplayingCustomPeriodRange">
                     <div class="custom-period-range-container">
                         <app-ta-custom-period-range
+                            [subPeriodDropdownList]="subPeriodDropdownList"
+                            [selectedSubPeriod]="selectedSubPeriod"
+                            (customPeriodRangeSubperiodEmitter)="
+                                handleCustomPeriodRangeSubperiodEmit($event)
+                            "
                             (customPeriodRangeValuesEmitter)="
                                 handleSetCustomPeriodRangeClick($event)
                             "
@@ -424,7 +443,7 @@
                 <div
                     class="d-flex align-items-center dashboard-top-rated-body-down-header-left"
                 >
-                    <p class="m-0 ta-font-bold">March, 2023 - March, 2025</p>
+                    <p class="m-0 ta-font-bold">{{ barChartDateTitle }}</p>
                 </div>
 
                 <ng-container *ngIf="!selectedTopRatedList.length">

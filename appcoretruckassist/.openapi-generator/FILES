@@ -314,6 +314,7 @@ model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
 model/driverFilterResponsePagination.ts
 model/driverForgotPasswordCommand.ts
+model/driverIntervalResponse.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
@@ -364,6 +365,7 @@ model/fuelStopFranchiseMinimalResponse.ts
 model/fuelStopFranchiseMinimalResponsePagination.ts
 model/fuelStopFranchiseResponse.ts
 model/fuelStopFranchiseResponsePagination.ts
+model/fuelStopIntervalResponse.ts
 model/fuelStopListResponse.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
@@ -565,6 +567,9 @@ model/payrollPaymentType.ts
 model/payrollResponse.ts
 model/payrollResponsePagination.ts
 model/perMileEntity.ts
+model/performanceGraphListResponse.ts
+model/performanceGraphResponse.ts
+model/performanceListResponse.ts
 model/performanceResponse.ts
 model/personalInfoFeedbackResponse.ts
 model/pickupDeliveryByStateListResponse.ts
@@ -593,6 +598,7 @@ model/repairByStateResponse.ts
 model/repairByStateResponsePagination.ts
 model/repairCategoryFilterResponse.ts
 model/repairCostPerformanceResponse.ts
+model/repairIntervalResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairModalResponse.ts
@@ -706,6 +712,12 @@ model/topBrokersResponsePagination.ts
 model/topDispatchersListResponse.ts
 model/topDispatchersResponse.ts
 model/topDispatchersResponsePagination.ts
+model/topDriverListResponse.ts
+model/topDriverResponse.ts
+model/topDriverResponsePagination.ts
+model/topFuelStopListResponse.ts
+model/topFuelStopResponse.ts
+model/topFuelStopResponsePagination.ts
 model/topOwnerListResponse.ts
 model/topOwnerResponse.ts
 model/topOwnerResponsePagination.ts
@@ -715,6 +727,9 @@ model/topRepairShopResponsePagination.ts
 model/topShipperListResponse.ts
 model/topShipperResponse.ts
 model/topShipperResponsePagination.ts
+model/topTruckListResponse.ts
+model/topTruckResponse.ts
+model/topTruckResponsePagination.ts
 model/trafficViolationFeedbackResponse.ts
 model/trafficViolationItemResponse.ts
 model/trafficViolationItemReviewResponse.ts
@@ -748,6 +763,7 @@ model/truckFilterResponsePagination.ts
 model/truckFuelConsumptionChartResponse.ts
 model/truckFuelConsumptionResponse.ts
 model/truckGrossWeightResponse.ts
+model/truckIntervalResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts

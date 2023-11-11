@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TopFuelStopResponse } from './topFuelStopResponse';
 
 
-export type ByStateReportType = 'Count' | 'Cost' | 'SeverityWeight' | 'Revenue' | 'Price';
-
-export const ByStateReportType = {
-    Count: 'Count' as ByStateReportType,
-    Cost: 'Cost' as ByStateReportType,
-    SeverityWeight: 'SeverityWeight' as ByStateReportType,
-    Revenue: 'Revenue' as ByStateReportType,
-    Price: 'Price' as ByStateReportType
-};
+export interface TopFuelStopResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<TopFuelStopResponse> | null;
+}
 
