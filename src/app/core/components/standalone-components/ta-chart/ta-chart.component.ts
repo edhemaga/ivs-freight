@@ -937,6 +937,12 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
     }
 
+    displayBarChartDefaultValues():void {
+         for (let i = 0; i<  this.chart.chart.config.data.datasets.length; i++) {
+            this.chart.chart.config.data.datasets[i].hidden = true
+        }
+    }
+
     hoverBarChart(hoveredData: any) {
         this.animationDuration = 0;
 

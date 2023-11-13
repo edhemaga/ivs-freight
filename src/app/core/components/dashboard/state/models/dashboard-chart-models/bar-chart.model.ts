@@ -48,6 +48,7 @@ export interface BarChart extends Chart {
         showDefault?: boolean
     ) => void;
     hoverBarChart: (hoveredData: TopRatedListItem) => void;
+    displayBarChartDefaultValues(): () => void;
 
     selectedDrivers: TopRatedListItem[];
 }

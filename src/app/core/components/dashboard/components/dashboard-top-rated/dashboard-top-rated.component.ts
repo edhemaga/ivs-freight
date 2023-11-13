@@ -225,6 +225,20 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public trackByIdentity = (_: number, item: TopRatedDropdownItem): string =>
         item.name;
 
+    public resetSelectedValues(): void {
+        this.barChartValues = {
+            defaultBarValues: {
+                topRatedBarValues: [],
+                otherBarValues: [],
+            },
+            selectedBarValues: [],
+        };
+
+        this.selectedTopRatedList = [];
+
+        this.barChart.displayBarChartDefaultValues();
+    }
+
     public handleSearchValue(searchValue: string): void {
         console.log(searchValue);
     }
@@ -483,8 +497,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getConstantData(): void {
-        this.topRatedDropdownList =
-            DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA;
+        this.topRatedDropdownList = JSON.parse(
+            JSON.stringify(DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA)
+        );
 
         this.topRatedTabs = DashboardTopRatedConstants.TOP_RATED_TABS;
         this.currentActiveTab = DashboardTopRatedConstants.TOP_RATED_TABS[0];
@@ -535,13 +550,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             selectedSubPeriod,
         ];
 
-        this.barChartValues = {
-            defaultBarValues: {
-                topRatedBarValues: [],
-                otherBarValues: [],
-            },
-            selectedBarValues: [],
-        };
+        this.resetSelectedValues();
 
         console.log('selectedTab', selectedTab);
         console.log('selectedMainPeriod', selectedMainPeriod);
