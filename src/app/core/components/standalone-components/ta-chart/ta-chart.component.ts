@@ -840,8 +840,6 @@ export class TaChartComponent implements OnInit, OnChanges {
             this.barChartTooltipDateTitle = this.chartConfig.dataLabels[value];
         }
 
-        console.log('this.chartConfig', this.chartConfig);
-
         let dataValues = [];
         this.chart.chart.config.data.datasets.map((item, i) => {
             let dataProp = {
@@ -885,7 +883,7 @@ export class TaChartComponent implements OnInit, OnChanges {
         this.selectedDataRows = dataValues;
 
         const allItemsWithoutValue = this.selectedDataRows.every(
-            (dataRow) => !dataRow.value
+            (dataRow) => dataRow.value === '0' || dataRow.value === 0
         );
 
         if (allItemsWithoutValue) {

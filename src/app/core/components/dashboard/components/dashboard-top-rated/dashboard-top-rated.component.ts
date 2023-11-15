@@ -337,6 +337,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public handleSwitchTopRatedClick(
         topRatedDropdownItem: TopRatedDropdownItem
     ): void {
+        if (topRatedDropdownItem.name === this.topRatedTitle) {
+            return;
+        }
+
         const topRatedTabsToDisplay = [
             {
                 name: topRatedDropdownItem.tab1,
@@ -452,7 +456,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         ];
 
         this.topRatedList.splice(topRatedListItemIndex, 1);
-
         this.topRatedList.splice(
             this.selectedTopRatedList.length - 1,
             0,
@@ -464,7 +467,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         ).toFixed(2);
 
         this.setDoughnutChartData(this.selectedTopRatedList, true);
-
         this.setBarChartData(this.selectedTopRatedList, topRatedListItemIndex);
     }
 
@@ -1903,6 +1905,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
+        console.log('barChartValues', barChartValues);
+
         this.barChartConfig = {
             dataProperties: [
                 {
