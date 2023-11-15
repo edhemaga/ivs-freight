@@ -104,8 +104,10 @@ export class TaChartComponent implements OnInit, OnChanges {
         'DECEMBER',
     ];
     hoverDateTitle: string = '';
+
     public selectedColors: string[];
     public selectedHoverColors: string[];
+    public barChartTooltipDateTitle: string;
 
     constructor(private ref: ChangeDetectorRef) {}
 
@@ -819,12 +821,40 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     updateHoverData(value: number) {
+        console.log(
+            'this.chart.chart.config.data.datasets',
+            this.chart.chart.config.data.datasets
+        );
+
+        console.log('this.chartConfig', this.chartConfig);
+
+        if (Array.isArray(this.chartConfig.dataLabels[value])) {
+            this.barChartTooltipDateTitle =
+                this.chartConfig.dataLabels[value][0];
+
+            if (this.chartConfig.dataLabels[value][1]) {
+                this.barChartTooltipDateTitle += `${
+                    ', ' + this.chartConfig.dataLabels[value][1]
+                }`;
+            }
+
+            if (this.chartConfig.dataLabels[value][2]) {
+                this.barChartTooltipDateTitle += `${
+                    ', ' + this.chartConfig.dataLabels[value][2]
+                }`;
+            }
+        } else {
+            this.barChartTooltipDateTitle = this.chartConfig.dataLabels[value];
+        }
+
         let dataValues = [];
         this.chart.chart.config.data.datasets.map((item, i) => {
             let dataProp = {
                 name: item['label'],
                 value: item['data'][value],
-                percent: this.chartConfig['hasPercentage'] ? '35.45%' : null,
+                percent: item['dataPercentages']?.length
+                    ? item['dataPercentages'][value] + '%'
+                    : null,
                 color: item['borderColor'],
             };
             if (!item['hidden']) {
@@ -854,6 +884,18 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
 
         this.selectedDataRows = dataValues;
+
+        const allItemsWithoutValue = this.selectedDataRows.every(
+            (dataRow) => !dataRow.value
+        );
+
+        if (allItemsWithoutValue) {
+            this.showHoverData = false;
+        } else {
+            this.showHoverData = true;
+        }
+
+        console.log('this.selectedDataRows', this.selectedDataRows);
     }
 
     chartUpdated(data: any[]) {
@@ -864,6 +906,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     updateMuiliBar(
         selectedStates: any[],
         data: any[],
+        dataPercentages: number[],
         colors: any[],
         hoverColors: any[]
     ) {
@@ -876,6 +919,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 borderColor: colors[i],
                 hoverBackgroundColor: hoverColors[i],
                 data: data,
+                dataPercentages: dataPercentages,
                 label: item['name'],
                 type: 'bar',
                 yAxisID: 'y-axis-0',
@@ -937,9 +981,9 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
     }
 
-    displayBarChartDefaultValues():void {
-         for (let i = 0; i<  this.chart.chart.config.data.datasets.length; i++) {
-            this.chart.chart.config.data.datasets[i].hidden = true
+    displayBarChartDefaultValues(): void {
+        for (let i = 0; i < this.chart.chart.config.data.datasets.length; i++) {
+            this.chart.chart.config.data.datasets[i].hidden = true;
         }
     }
 
@@ -951,10 +995,6 @@ export class TaChartComponent implements OnInit, OnChanges {
                 let color = item.backgroundColor;
                 let colorProp = color.toString();
                 item.backgroundColor = colorProp.slice(0, 7);
-            } else {
-                let color = item.backgroundColor;
-                let colorProp = color + '33';
-                item.backgroundColor = colorProp.slice(0, 9);
             }
         });
 
@@ -1181,8 +1221,6 @@ export class TaChartComponent implements OnInit, OnChanges {
                 }
             }
         }
-
-        this.showHoverData = true;
     }
 
     chartHoverOut() {

@@ -193,7 +193,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             topRatedBarValues: [],
             otherBarValues: [],
         },
+        defaultBarPercentages: {
+            topRatedBarPercentage: [],
+            otherBarPercentage: [],
+        },
         selectedBarValues: [],
+        selectedBarPercentages: [],
     };
 
     constructor(
@@ -231,7 +236,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 topRatedBarValues: [],
                 otherBarValues: [],
             },
+            defaultBarPercentages: {
+                topRatedBarPercentage: [],
+                otherBarPercentage: [],
+            },
             selectedBarValues: [],
+            selectedBarPercentages: [],
         };
 
         this.selectedTopRatedList = [];
@@ -620,17 +630,35 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 // top rated list and single selection data
                 this.topRatedList = dispatcherData.pagination.data.map(
                     (dispatcher) => {
-                        const filteredIntervals = dispatcher.intervals.map(
-                            (interval) => {
-                                return selectedTab === ConstantStringEnum.LOAD
-                                    ? interval.dispatcherLoadCount
-                                    : interval.dispatcherRevenue;
-                            }
-                        );
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < dispatcher.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.LOAD
+                                    ? dispatcher.intervals[i]
+                                          .dispatcherLoadCount
+                                    : dispatcher.intervals[i].dispatcherRevenue,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.LOAD
+                                    ? dispatcher.intervals[i]
+                                          .dispatcherLoadPercentage
+                                    : dispatcher.intervals[i]
+                                          .dispatcherRevenuePercentage,
+                            ];
+                        }
 
                         this.barChartValues.selectedBarValues = [
                             ...this.barChartValues.selectedBarValues,
-                            filteredIntervals,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
                         ];
 
                         return {
@@ -661,6 +689,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                   .dispatcherRevenue,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? dispatcherData.topDispatchers[i]
+                                      .dispatcherLoadPercentage
+                                : dispatcherData.topDispatchers[i]
+                                      .dispatcherRevenuePercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -668,6 +707,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? dispatcherData.allOthers[i].dispatcherLoadCount
                             : dispatcherData.allOthers[i].dispatcherRevenue,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? dispatcherData.allOthers[i]
+                                      .dispatcherLoadPercentage
+                                : dispatcherData.allOthers[i]
+                                      .dispatcherRevenuePercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -693,17 +743,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 console.log('driverData', driverData);
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
-                    const filteredIntervals = driver.intervals.map(
-                        (interval) => {
-                            return selectedTab === ConstantStringEnum.MILEAGE
-                                ? interval.driverMileage
-                                : interval.driverRevenue;
-                        }
-                    );
+                    let filteredIntervalValues: number[] = [];
+                    let filteredIntervalPercentages: number[] = [];
+
+                    for (let i = 0; i < driver.intervals.length; i++) {
+                        filteredIntervalValues = [
+                            ...filteredIntervalValues,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? driver.intervals[i].driverMileage
+                                : driver.intervals[i].driverRevenue,
+                        ];
+                        filteredIntervalPercentages = [
+                            ...filteredIntervalPercentages,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? driver.intervals[i].driverMileagePercentage
+                                : driver.intervals[i].driverRevenuePercentage,
+                        ];
+                    }
 
                     this.barChartValues.selectedBarValues = [
                         ...this.barChartValues.selectedBarValues,
-                        filteredIntervals,
+                        filteredIntervalValues,
+                    ];
+
+                    this.barChartValues.selectedBarPercentages = [
+                        ...this.barChartValues.selectedBarPercentages,
+                        filteredIntervalPercentages,
                     ];
 
                     return {
@@ -731,6 +796,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : driverData.topDrivers[i].driverRevenue,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? driverData.topDrivers[i]
+                                      .driverMileagePercentage
+                                : driverData.topDrivers[i]
+                                      .driverRevenuePercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -738,6 +814,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? driverData.allOthers[i].driverMileage
                             : driverData.allOthers[i].driverRevenue,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? driverData.allOthers[i]
+                                      .driverMileagePercentage
+                                : driverData.allOthers[i]
+                                      .driverRevenuePercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -761,17 +848,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 console.log('truckData', truckData);
                 // top rated list and single selection data
                 this.topRatedList = truckData.pagination.data.map((truck) => {
-                    const filteredIntervals = truck.intervals.map(
-                        (interval) => {
-                            return selectedTab === ConstantStringEnum.MILEAGE
-                                ? interval.truckMileage
-                                : interval.truckRevenue;
-                        }
-                    );
+                    let filteredIntervalValues: number[] = [];
+                    let filteredIntervalPercentages: number[] = [];
+
+                    for (let i = 0; i < truck.intervals.length; i++) {
+                        filteredIntervalValues = [
+                            ...filteredIntervalValues,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truck.intervals[i].truckMileage
+                                : truck.intervals[i].truckRevenue,
+                        ];
+                        filteredIntervalPercentages = [
+                            ...filteredIntervalPercentages,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truck.intervals[i].truckMileagePercentage
+                                : truck.intervals[i].truckRevenuePercentage,
+                        ];
+                    }
 
                     this.barChartValues.selectedBarValues = [
                         ...this.barChartValues.selectedBarValues,
-                        filteredIntervals,
+                        filteredIntervalValues,
+                    ];
+
+                    this.barChartValues.selectedBarPercentages = [
+                        ...this.barChartValues.selectedBarPercentages,
+                        filteredIntervalPercentages,
                     ];
 
                     return {
@@ -799,6 +901,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : truckData.topTrucks[i].truckRevenue,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truckData.topTrucks[i].truckMileagePercentage
+                                : truckData.topTrucks[i].truckRevenuePercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -806,6 +917,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? truckData.allOthers[i].truckMileage
                             : truckData.allOthers[i].truckRevenue,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.MILEAGE
+                                ? truckData.allOthers[i].truckMileagePercentage
+                                : truckData.allOthers[i].truckRevenuePercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -829,17 +949,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 console.log('brokerData', brokerData);
                 // top rated list and single selection data
                 this.topRatedList = brokerData.pagination.data.map((broker) => {
-                    const filteredIntervals = broker.intervals.map(
-                        (interval) => {
-                            return selectedTab === ConstantStringEnum.LOAD
-                                ? interval.brokerLoadCount
-                                : interval.brokerRevenue;
-                        }
-                    );
+                    let filteredIntervalValues: number[] = [];
+                    let filteredIntervalPercentages: number[] = [];
+
+                    for (let i = 0; i < broker.intervals.length; i++) {
+                        filteredIntervalValues = [
+                            ...filteredIntervalValues,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? broker.intervals[i].brokerLoadCount
+                                : broker.intervals[i].brokerRevenue,
+                        ];
+                        filteredIntervalPercentages = [
+                            ...filteredIntervalPercentages,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? broker.intervals[i].brokerLoadPercentage
+                                : broker.intervals[i].brokerRevenuePercentage,
+                        ];
+                    }
 
                     this.barChartValues.selectedBarValues = [
                         ...this.barChartValues.selectedBarValues,
-                        filteredIntervals,
+                        filteredIntervalValues,
+                    ];
+
+                    this.barChartValues.selectedBarPercentages = [
+                        ...this.barChartValues.selectedBarPercentages,
+                        filteredIntervalPercentages,
                     ];
 
                     return {
@@ -867,6 +1002,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : brokerData.topBrokers[i].brokerRevenue,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? brokerData.topBrokers[i].brokerLoadPercentage
+                                : brokerData.topBrokers[i]
+                                      .brokerRevenuePercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -874,6 +1019,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? brokerData.allOthers[i].brokerLoadCount
                             : brokerData.allOthers[i].brokerRevenue,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? brokerData.allOthers[i].brokerLoadPercentage
+                                : brokerData.allOthers[i]
+                                      .brokerRevenuePercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -901,15 +1056,28 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 // top rated list and single selection data
                 this.topRatedList = shipperData.pagination.data.map(
                     (shipper) => {
-                        const filteredIntervals = shipper.intervals.map(
-                            (interval) => {
-                                return interval.shipperLoadCount;
-                            }
-                        );
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < shipper.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                shipper.intervals[i].shipperLoadCount,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                shipper.intervals[i].shipperLoadPercentage,
+                            ];
+                        }
 
                         this.barChartValues.selectedBarValues = [
                             ...this.barChartValues.selectedBarValues,
-                            filteredIntervals,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
                         ];
 
                         return {
@@ -930,11 +1098,25 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         shipperData.topShippers[i].shipperLoadCount,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            shipperData.topShippers[i].shipperLoadPercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
                         shipperData.allOthers[i].shipperLoadCount,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            shipperData.allOthers[i].shipperLoadPercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -958,17 +1140,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 console.log('ownerData', ownerData);
                 // top rated list and single selection data
                 this.topRatedList = ownerData.pagination.data.map((owner) => {
-                    const filteredIntervals = owner.intervals.map(
-                        (interval) => {
-                            return selectedTab === ConstantStringEnum.LOAD
-                                ? interval.ownerLoadCount
-                                : interval.ownerRevenue;
-                        }
-                    );
+                    let filteredIntervalValues: number[] = [];
+                    let filteredIntervalPercentages: number[] = [];
+
+                    for (let i = 0; i < owner.intervals.length; i++) {
+                        filteredIntervalValues = [
+                            ...filteredIntervalValues,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? owner.intervals[i].ownerLoadCount
+                                : owner.intervals[i].ownerRevenue,
+                        ];
+                        filteredIntervalPercentages = [
+                            ...filteredIntervalPercentages,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? owner.intervals[i].ownerLoadPercentage
+                                : owner.intervals[i].ownerRevenuePercentage,
+                        ];
+                    }
 
                     this.barChartValues.selectedBarValues = [
                         ...this.barChartValues.selectedBarValues,
-                        filteredIntervals,
+                        filteredIntervalValues,
+                    ];
+
+                    this.barChartValues.selectedBarPercentages = [
+                        ...this.barChartValues.selectedBarPercentages,
+                        filteredIntervalPercentages,
                     ];
 
                     return {
@@ -996,6 +1193,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : ownerData.topOwners[i].ownerRevenue,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? ownerData.topOwners[i].ownerLoadPercentage
+                                : ownerData.topOwners[i].ownerRevenuePercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -1003,6 +1209,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? ownerData.allOthers[i].ownerLoadCount
                             : ownerData.allOthers[i].ownerRevenue,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.LOAD
+                                ? ownerData.allOthers[i].ownerLoadPercentage
+                                : ownerData.allOthers[i].ownerRevenuePercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -1027,17 +1242,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
                     (repairShop) => {
-                        const filteredIntervals = repairShop.intervals.map(
-                            (interval) => {
-                                return selectedTab === ConstantStringEnum.VISIT
-                                    ? interval.count
-                                    : interval.cost;
-                            }
-                        );
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < repairShop.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? repairShop.intervals[i].count
+                                    : repairShop.intervals[i].cost,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? repairShop.intervals[i].countPercentage
+                                    : repairShop.intervals[i].costPercentage,
+                            ];
+                        }
 
                         this.barChartValues.selectedBarValues = [
                             ...this.barChartValues.selectedBarValues,
-                            filteredIntervals,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
                         ];
 
                         return {
@@ -1066,6 +1296,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : repairShopData.topRepairShops[i].cost,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.VISIT
+                                ? repairShopData.topRepairShops[i]
+                                      .countPercentage
+                                : repairShopData.topRepairShops[i]
+                                      .costPercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -1073,6 +1314,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? repairShopData.allOther[i].count
                             : repairShopData.allOther[i].cost,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.VISIT
+                                ? repairShopData.allOther[i].countPercentage
+                                : repairShopData.allOther[i].costPercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -1099,17 +1349,32 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 // top rated list and single selection data
                 this.topRatedList = fuelStopData.pagination.data.map(
                     (fuelStop) => {
-                        const filteredIntervals = fuelStop.intervals.map(
-                            (interval) => {
-                                return selectedTab === ConstantStringEnum.VISIT
-                                    ? interval.visitCount
-                                    : interval.cost;
-                            }
-                        );
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < fuelStop.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? fuelStop.intervals[i].visitCount
+                                    : fuelStop.intervals[i].cost,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? fuelStop.intervals[i].visitPercentage
+                                    : fuelStop.intervals[i].costPercentage,
+                            ];
+                        }
 
                         this.barChartValues.selectedBarValues = [
                             ...this.barChartValues.selectedBarValues,
-                            filteredIntervals,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
                         ];
 
                         return {
@@ -1138,6 +1403,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             : fuelStopData.topFuelStops[i].cost,
                     ];
 
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.VISIT
+                                ? fuelStopData.topFuelStops[i].visitPercentage
+                                : fuelStopData.topFuelStops[i].costPercentage,
+                        ];
+
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
@@ -1145,6 +1419,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ? fuelStopData.allOthers[i].visitCount
                             : fuelStopData.allOthers[i].cost,
                     ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.VISIT
+                                ? fuelStopData.allOthers[i].visitPercentage
+                                : fuelStopData.allOthers[i].costPercentage,
+                        ];
                 }
 
                 this.setBarChartDateTitle(
@@ -1618,10 +1901,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     defaultConfig: {
                         type: ConstantChartStringEnum.BAR,
                         data: barChartValues?.defaultBarValues
-                            ?.topRatedBarValues ?? [
-                            90, 70, 25, 13, 28, 80, 12, 70, 40, 50, 25, 13, 28,
-                            80, 120, 70, 40, 50, 25, 13, 28, 80, 120, 70, 50,
-                        ],
+                            ?.topRatedBarValues,
+                        dataPercentages:
+                            barChartValues?.defaultBarPercentages
+                                ?.topRatedBarPercentage,
                         backgroundColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
@@ -1629,19 +1912,23 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             ConstantChartStringEnum.CHART_COLOR_GREY_5,
                         hoverBorderColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY,
-                        label: ConstantChartStringEnum.BAR_LABEL_TOP,
+                        label:
+                            this.topRatedList.length <= 10
+                                ? ConstantChartStringEnum.BAR_LABEL_TOP_3
+                                : this.topRatedList.length > 10 &&
+                                  this.topRatedList.length <= 30
+                                ? ConstantChartStringEnum.BAR_LABEL_TOP_5
+                                : ConstantChartStringEnum.BAR_LABEL_TOP_10,
                         id: ConstantChartStringEnum.BAR_ID_TOP,
                     },
                 },
                 {
                     defaultConfig: {
                         type: ConstantChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues
-                            ?.otherBarValues ?? [
-                            60, 100, 95, 47, 80, 120, 90, 60, 100, 95, 47, 80,
-                            120, 90, 60, 100, 95, 47, 80, 120, 90, 60, 50, 100,
-                            120,
-                        ],
+                        data: barChartValues?.defaultBarValues?.otherBarValues,
+                        dataPercentages:
+                            barChartValues?.defaultBarPercentages
+                                ?.otherBarPercentage,
                         backgroundColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY_2,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
@@ -1668,35 +1955,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             allowAnimation: true,
             offset: true,
             tooltipOffset: { min: 105, max: 279 },
-            dataLabels: this.barChartLabels.length
-                ? this.barChartLabels
-                : [
-                      'MAR',
-                      '',
-                      'MAY',
-                      '',
-                      'JUL',
-                      '',
-                      'SEP',
-                      '',
-                      'NOV',
-                      '',
-                      '2024',
-                      '',
-                      'MAR',
-                      '',
-                      'MAY',
-                      '',
-                      'JUL',
-                      '',
-                      'SEP',
-                      '',
-                      'NOV',
-                      '',
-                      '2025',
-                      '',
-                      'MAR',
-                  ],
+            dataLabels: this.barChartLabels,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 
@@ -1708,9 +1967,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             verticalLeftAxes: {
                 visible: true,
                 minValue: 0,
-                maxValue: barChartValues?.defaultBarValues?.topRatedBarValues
-                    ? barChartMaxValue
-                    : 200,
+                maxValue: barChartMaxValue,
                 stepSize: 10,
                 showGridLines: true,
             },
@@ -1731,6 +1988,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         if (!isRemoving) {
             const chartValues =
                 this.barChartValues.selectedBarValues[topRatedListItemIndex];
+            const chartPercentages =
+                this.barChartValues.selectedBarPercentages[
+                    topRatedListItemIndex
+                ];
 
             let selectedColors: string[] = [];
             let selectedHoverColors: string[] = [];
@@ -1750,6 +2011,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 this.barChart.updateMuiliBar(
                     topRatedList,
                     chartValues,
+                    chartPercentages,
                     selectedColors,
                     selectedHoverColors
                 );

@@ -5,6 +5,7 @@ import { TopRatedListItem } from '../dashboard-top-rated-models/top-rated-list-i
 interface ChartDefaultConfig {
     type: string;
     data: number[];
+    dataPercentages?: number[];
     backgroundColor: string | string[];
     borderColor: string | string;
     hoverBackgroundColor: string | string[];

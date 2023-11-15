@@ -32,7 +32,12 @@ export interface BarChartValues {
         topRatedBarValues: number[];
         otherBarValues: number[];
     };
+    defaultBarPercentages: {
+        topRatedBarPercentage: number[];
+        otherBarPercentage: number[];
+    };
     selectedBarValues: number[][];
+    selectedBarPercentages: number[][];
 }
 
 export interface BarChart extends Chart {
@@ -40,6 +45,7 @@ export interface BarChart extends Chart {
     updateMuiliBar: (
         selectedStates: TopRatedListItem[],
         data: number[],
+        dataPercentages: number[],
         colors: string[],
         hoverColors: string[]
     ) => void;

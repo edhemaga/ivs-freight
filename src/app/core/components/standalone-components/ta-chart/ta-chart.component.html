@@ -80,11 +80,19 @@
             class="d-flex flex-column justify-content-center chart-tooltip"
             [ngStyle]="{
                 left: hoverDataPosition + 'px',
-                'max-width': selectedDataRows.length === 3 ? '145px' : '191px'
+                'max-width':
+                    lineChartType === 'line' && selectedDataRows.length <= 3
+                        ? '146px'
+                        : lineChartType === 'bar' &&
+                          selectedDataRows[0].name.includes('Top')
+                        ? '117px'
+                        : 'fit-content'
             }"
         >
             <div class="chart-tooltip-title">
-                <p class="m-0 ta-font-extra-bold">JANUARY, 2024</p>
+                <p class="m-0 ta-font-extra-bold">
+                    {{ barChartTooltipDateTitle }}
+                </p>
             </div>
 
             <div class="chart-tooltip-border"></div>
@@ -104,10 +112,16 @@
                     <div
                         class="d-flex chart-tooltip-item"
                         [ngClass]="{
-                            'flex-row align-items-center justify-content-between':
-                                selectedDataRows.length > 3,
                             'flex-column justify-content-center':
-                                selectedDataRows.length === 3
+                                (lineChartType === 'line' &&
+                                    selectedDataRows.length <= 3) ||
+                                (lineChartType === 'bar' &&
+                                    selectedDataRows.length <= 3),
+                            'flex-row align-items-center justify-content-between':
+                                (lineChartType === 'line' &&
+                                    selectedDataRows.length > 3) ||
+                                (lineChartType === 'bar' &&
+                                    selectedDataRows.length > 3)
                         }"
                     >
                         <div
@@ -118,7 +132,9 @@
                                 [ngStyle]="{
                                     background: item.color,
                                     'margin-right':
-                                        selectedDataRows.length === 1
+                                        (lineChartType === 'line' &&
+                                            selectedDataRows.length === 1) ||
+                                        lineChartType === 'bar'
                                             ? '4px'
                                             : '6px'
                                 }"
@@ -126,6 +142,7 @@
 
                             <p class="m-0 ta-font-bold">
                                 {{
+                                    lineChartType === 'line' &&
                                     i < selectedDataRows.length - 2
                                         ? (item.name | titlecase)
                                         : item.name
@@ -133,8 +150,47 @@
                             </p>
                         </div>
 
-                        <div class="chart-tooltip-item-right">
-                            <p class="m-0 ta-font-bold">${{ item.value }}K</p>
+                        <div
+                            class="d-flex chart-tooltip-item-right"
+                            [ngClass]="{
+                                'flex-column justify-content-center':
+                                    lineChartType === 'bar' &&
+                                    selectedDataRows.length <= 3,
+                                'flex-row align-items-center justify-content-between':
+                                    lineChartType === 'line' ||
+                                    (lineChartType === 'bar' &&
+                                        selectedDataRows.length > 3)
+                            }"
+                            [ngStyle]="{
+                                'margin-left':
+                                    lineChartType === 'bar' &&
+                                    selectedDataRows.length > 3
+                                        ? '10px'
+                                        : 0
+                            }"
+                        >
+                            <p
+                                class="m-0"
+                                [ngClass]="{
+                                    'ta-font-bold':
+                                        lineChartType === 'line' ||
+                                        (lineChartType === 'bar' &&
+                                            selectedDataRows.length <= 3)
+                                }"
+                            >
+                                {{ item.value }}
+                            </p>
+
+                            <p
+                                class="m-0"
+                                [ngClass]="{
+                                    'ta-font-bold percent':
+                                        lineChartType === 'bar' &&
+                                        selectedDataRows.length > 3
+                                }"
+                            >
+                                {{ item.percent }}
+                            </p>
                         </div>
                     </div>
                 </ng-container>
