@@ -127,7 +127,7 @@ export class GeolocationService {
 
         let apiKeyCredential: string | undefined;
         apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (localVarCredential) {
+        if (apiKeyCredential) {
             localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
         }
         
@@ -215,7 +215,7 @@ export class GeolocationService {
 
         let apiKeyCredential: string | undefined;
         apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (localVarCredential) {
+        if (apiKeyCredential) {
             localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
         }
 
@@ -303,7 +303,7 @@ export class GeolocationService {
 
         let apiKeyCredential: string | undefined;
         apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (localVarCredential) {
+        if (apiKeyCredential) {
             localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
         }
 
@@ -384,7 +384,7 @@ export class GeolocationService {
 
         let apiKeyCredential: string | undefined;
         apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (localVarCredential) {
+        if (apiKeyCredential) {
             localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
         }
 
