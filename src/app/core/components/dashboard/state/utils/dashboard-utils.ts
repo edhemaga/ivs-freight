@@ -10,7 +10,7 @@ import { ConstantStringEnum } from '../enums/constant-string.enum';
 // models
 import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
-import { BarChartInterval } from '../models/dashboard-chart-models/bar-chart-interval.model';
+import { BarChartInterval } from '../models/dashboard-chart-models/bar-chart.model';
 import { ConstantChartStringEnum } from '../enums/constant-chart-string.enum';
 
 export class DashboardUtils {

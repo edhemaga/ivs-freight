@@ -10,6 +10,7 @@ export interface BarChartConfig extends DoughnutChartConfig {
     offset: boolean;
     tooltipOffset: { min: number; max: number };
     hoverOtherChart?: boolean;
+    selectedTab?: string;
 }
 
 export interface BarChartAxes {
@@ -38,6 +39,11 @@ export interface BarChartValues {
     };
     selectedBarValues: number[][];
     selectedBarPercentages: number[][];
+}
+
+export interface BarChartInterval {
+    startTime?: string;
+    endTime?: string;
 }
 
 export interface BarChart extends Chart {

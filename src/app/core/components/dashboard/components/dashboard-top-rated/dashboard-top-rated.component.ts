@@ -63,7 +63,7 @@ import {
     TopRatedApiArguments,
     TopRatedWithoutTabApiArguments,
 } from '../../state/models/dashboard-top-rated-models/top-rated-api-arguments.model';
-import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-chart-interval.model';
+import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-chart.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -231,6 +231,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
+        for (let i = 0; i < this.selectedTopRatedList.length; i++) {
+            this.barChart.removeMultiBarData(
+                this.selectedTopRatedList[i],
+                true
+            );
+        }
+
+        this.selectedTopRatedList = [];
+
         this.barChartValues = {
             defaultBarValues: {
                 topRatedBarValues: [],
@@ -243,10 +252,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             selectedBarValues: [],
             selectedBarPercentages: [],
         };
-
-        this.selectedTopRatedList = [];
-
-        this.barChart.displayBarChartDefaultValues();
     }
 
     public handleSearchValue(searchValue: string): void {
@@ -354,6 +359,13 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         topRatedDropdownItem.isActive = true;
 
+        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.selectedMainPeriod =
+                DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
+
+            this.setCustomSubPeriodList(this.overallCompanyDuration);
+        }
+
         this.getTopRatedListData();
 
         this.popover.close();
@@ -366,7 +378,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.currentActiveTab = activeTab;
 
-        this.getTopRatedListData();
+        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.getTopRatedListData(this.selectedCustomPeriodRange);
+        } else {
+            this.getTopRatedListData();
+        }
     }
 
     public handleShowMoreClick(): void {
@@ -1544,8 +1560,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ? topTenValue +
                                   ConstantChartStringEnum.THOUSAND_SIGN
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue +
-                                  ConstantChartStringEnum.THOUSAND_SIGN,
+                                  topTenValue,
                     };
                 case ConstantStringEnum.REPAIR_SHOP:
                 case ConstantStringEnum.BROKER:
@@ -1560,8 +1575,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ConstantStringEnum.VISIT
                                 ? topTenValue.toString()
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue +
-                                  ConstantChartStringEnum.THOUSAND_SIGN,
+                                  topTenValue,
                     };
                 default:
                     return {
@@ -1580,14 +1594,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ? topTenValue +
                                   ConstantChartStringEnum.THOUSAND_SIGN
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue +
-                                  ConstantChartStringEnum.THOUSAND_SIGN,
+                                  topTenValue,
                         filteredOtherPercentage,
                         filteredOtherValue: ConstantStringEnum.MILEAGE
                             ? otherValue + ConstantChartStringEnum.THOUSAND_SIGN
-                            : ConstantChartStringEnum.DOLLAR_SIGN +
-                              otherValue +
-                              ConstantChartStringEnum.THOUSAND_SIGN,
+                            : ConstantChartStringEnum.DOLLAR_SIGN + otherValue,
                     };
                 case ConstantStringEnum.DISPATCHER:
                 case ConstantStringEnum.BROKER:
@@ -1603,8 +1614,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ConstantStringEnum.VISIT
                                 ? topTenValue.toString()
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
-                                  topTenValue +
-                                  ConstantChartStringEnum.THOUSAND_SIGN,
+                                  topTenValue,
                         filteredOtherPercentage,
                         filteredOtherValue:
                             this.currentActiveTab.name ===
@@ -1613,8 +1623,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ConstantStringEnum.LOAD
                                 ? otherValue.toString()
                                 : ConstantChartStringEnum.DOLLAR_SIGN +
-                                  otherValue +
-                                  ConstantChartStringEnum.THOUSAND_SIGN,
+                                  otherValue,
                     };
                 default:
                     return {
@@ -1757,8 +1766,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                               this.currentActiveTab.name ===
                                   ConstantStringEnum.COST)
                         ? ConstantChartStringEnum.DOLLAR_SIGN +
-                          topRatedListItem.value +
-                          ConstantChartStringEnum.THOUSAND_SIGN
+                          topRatedListItem.value
                         : topRatedListItem.value,
                 percent:
                     topRatedListItem.percent +
@@ -1956,6 +1964,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             offset: true,
             tooltipOffset: { min: 105, max: 279 },
             dataLabels: this.barChartLabels,
+            selectedTab: this.currentActiveTab.name,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 

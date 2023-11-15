@@ -821,13 +821,6 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     updateHoverData(value: number) {
-        console.log(
-            'this.chart.chart.config.data.datasets',
-            this.chart.chart.config.data.datasets
-        );
-
-        console.log('this.chartConfig', this.chartConfig);
-
         if (Array.isArray(this.chartConfig.dataLabels[value])) {
             this.barChartTooltipDateTitle =
                 this.chartConfig.dataLabels[value][0];
@@ -847,11 +840,17 @@ export class TaChartComponent implements OnInit, OnChanges {
             this.barChartTooltipDateTitle = this.chartConfig.dataLabels[value];
         }
 
+        console.log('this.chartConfig', this.chartConfig);
+
         let dataValues = [];
         this.chart.chart.config.data.datasets.map((item, i) => {
             let dataProp = {
                 name: item['label'],
-                value: item['data'][value],
+                value:
+                    (this.chartConfig.selectedTab === 'Revenue' ||
+                    this.chartConfig.selectedTab === 'Cost'
+                        ? '$'
+                        : '') + item['data'][value],
                 percent: item['dataPercentages']?.length
                     ? item['dataPercentages'][value] + '%'
                     : null,
@@ -894,8 +893,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         } else {
             this.showHoverData = true;
         }
-
-        console.log('this.selectedDataRows', this.selectedDataRows);
     }
 
     chartUpdated(data: any[]) {
@@ -978,12 +975,6 @@ export class TaChartComponent implements OnInit, OnChanges {
 
             this.chart.chart.config.data.datasets[i].hoverBackgroundColor =
                 this.selectedHoverColors[i - 2];
-        }
-    }
-
-    displayBarChartDefaultValues(): void {
-        for (let i = 0; i < this.chart.chart.config.data.datasets.length; i++) {
-            this.chart.chart.config.data.datasets[i].hidden = true;
         }
     }
 

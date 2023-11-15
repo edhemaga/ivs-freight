@@ -293,49 +293,19 @@
                             >
                                 <p class="m-0">
                                     {{
-                                        (topRatedTitle === 'Truck' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Driver' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Broker' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Owner' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Repair Shop' &&
-                                            currentActiveTab.name === 'Cost') ||
-                                        (topRatedTitle === 'Fuel Stop' &&
-                                            currentActiveTab.name === 'Cost')
+                                        currentActiveTab.name === 'Revenue' ||
+                                        currentActiveTab.name === 'Cost'
                                             ? '$'
                                             : ''
                                     }}
                                 </p>
                                 <p class="m-0">
-                                    {{ topRatedListItem.value }}
-                                </p>
-                                <p class="m-0">
                                     {{
-                                        (topRatedTitle === 'Truck' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Driver' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Broker' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Owner' &&
-                                            currentActiveTab.name ===
-                                                'Revenue') ||
-                                        (topRatedTitle === 'Repair Shop' &&
-                                            currentActiveTab.name === 'Cost') ||
-                                        (topRatedTitle === 'Fuel Stop' &&
-                                            currentActiveTab.name === 'Cost')
-                                            ? 'K'
-                                            : ''
+                                        currentActiveTab.name === 'Revenue' ||
+                                        currentActiveTab.name === 'Cost'
+                                            ? (topRatedListItem.value
+                                              | thousandPipe)
+                                            : topRatedListItem.value
                                     }}
                                 </p>
                             </div>
