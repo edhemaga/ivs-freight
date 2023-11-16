@@ -11,6 +11,7 @@
  */
 import { TopOwnerResponsePagination } from './topOwnerResponsePagination';
 import { OwnerIntervalResponse } from './ownerIntervalResponse';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface TopOwnerListResponse { 
@@ -19,6 +20,6 @@ export interface TopOwnerListResponse {
     allOthers?: Array<OwnerIntervalResponse> | null;
     totalRevenue?: number | null;
     totalLoadCount?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

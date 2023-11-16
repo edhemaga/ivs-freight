@@ -1875,6 +1875,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartLabels(barChartLables: string[]): void {
+        console.log('barChartLables', barChartLables);
+
         const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
             this.selectedSubPeriod.name
         );

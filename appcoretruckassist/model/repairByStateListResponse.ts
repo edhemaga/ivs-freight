@@ -11,12 +11,13 @@
  */
 import { RepairIntervalResponse } from './repairIntervalResponse';
 import { RepairByStateResponsePagination } from './repairByStateResponsePagination';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface RepairByStateListResponse { 
     pagination?: RepairByStateResponsePagination;
     topTen?: Array<RepairIntervalResponse> | null;
     others?: Array<RepairIntervalResponse> | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 
