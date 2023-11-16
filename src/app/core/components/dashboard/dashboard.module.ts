@@ -30,6 +30,7 @@ import { DashboardStateUsaComponent } from './components/dashboard-state-trackin
 
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { FormatNumberToThousandDecimal } from './state/pipes/thousand-pipe/thousand-formater.pipe';
 
 @NgModule({
     declarations: [
@@ -52,6 +53,9 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
 
         // directives
         ClickOutsideCustomRangeDirective,
+
+        // pipes
+        FormatNumberToThousandDecimal,
 
         // components
         TaTabSwitchComponent,

@@ -10,6 +10,7 @@ export interface BarChartConfig extends DoughnutChartConfig {
     offset: boolean;
     tooltipOffset: { min: number; max: number };
     hoverOtherChart?: boolean;
+    selectedTab?: string;
 }
 
 export interface BarChartAxes {
@@ -32,7 +33,17 @@ export interface BarChartValues {
         topRatedBarValues: number[];
         otherBarValues: number[];
     };
+    defaultBarPercentages: {
+        topRatedBarPercentage: number[];
+        otherBarPercentage: number[];
+    };
     selectedBarValues: number[][];
+    selectedBarPercentages: number[][];
+}
+
+export interface BarChartInterval {
+    startTime?: string;
+    endTime?: string;
 }
 
 export interface BarChart extends Chart {
@@ -40,6 +51,7 @@ export interface BarChart extends Chart {
     updateMuiliBar: (
         selectedStates: TopRatedListItem[],
         data: number[],
+        dataPercentages: number[],
         colors: string[],
         hoverColors: string[]
     ) => void;
@@ -48,6 +60,7 @@ export interface BarChart extends Chart {
         showDefault?: boolean
     ) => void;
     hoverBarChart: (hoveredData: TopRatedListItem) => void;
+    displayBarChartDefaultValues(): () => void;
 
     selectedDrivers: TopRatedListItem[];
 }

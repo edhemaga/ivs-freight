@@ -62,7 +62,6 @@ export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
         startGridBackgroundFromZero: true,
         dataMaxRows: 4,
         hasHoverData: true,
-        hasPercentage: true,
         allowAnimation: true,
         offset: true,
         tooltipOffset: { min: 105, max: 279 },

@@ -28,7 +28,9 @@ export enum ConstantChartStringEnum {
 
     BAR_AXES_POSITION_BOTTOM = 'bottom',
 
-    BAR_LABEL_TOP = 'Top 10',
+    BAR_LABEL_TOP_3 = 'Top 3',
+    BAR_LABEL_TOP_5 = 'Top 5',
+    BAR_LABEL_TOP_10 = 'Top 10',
     BAR_LABEL_OTHER = 'All Others',
     BAR_LABEL_PER_GALLON = 'Price per Gallon',
     BAR_LABEL_LOAD_PER_MILE = 'Load Rate per Mile',
