@@ -823,19 +823,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     updateHoverData(value: number) {
         if (Array.isArray(this.chartConfig.dataLabels[value])) {
             this.barChartTooltipDateTitle =
-                this.chartConfig.dataLabels[value][0];
-
-            if (this.chartConfig.dataLabels[value][1]) {
-                this.barChartTooltipDateTitle += `${
-                    ', ' + this.chartConfig.dataLabels[value][1]
-                }`;
-            }
-
-            if (this.chartConfig.dataLabels[value][2]) {
-                this.barChartTooltipDateTitle += `${
-                    ', ' + this.chartConfig.dataLabels[value][2]
-                }`;
-            }
+                this.chartConfig.dataLabels[value].join(', ');
         } else {
             this.barChartTooltipDateTitle = this.chartConfig.dataLabels[value];
         }
@@ -883,14 +871,10 @@ export class TaChartComponent implements OnInit, OnChanges {
         this.selectedDataRows = dataValues;
 
         const allItemsWithoutValue = this.selectedDataRows.every(
-            (dataRow) => dataRow.value === '0' || dataRow.value === 0
+            (dataRow) => !+dataRow.value
         );
 
-        if (allItemsWithoutValue) {
-            this.showHoverData = false;
-        } else {
-            this.showHoverData = true;
-        }
+        this.showHoverData = !allItemsWithoutValue;
     }
 
     chartUpdated(data: any[]) {

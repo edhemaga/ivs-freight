@@ -2,10 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
 
 @Pipe({
-    name: 'thousandPipe',
+    name: 'addThousandSign',
     standalone: true,
 })
-export class ThousandPipe implements PipeTransform {
+export class FormatNumberToThousandDecimal implements PipeTransform {
     transform(value: number): string {
         if (value && !isNaN(value)) {
             if (value > 100000) {

@@ -254,9 +254,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         };
     }
 
-    public handleSearchValue(searchValue: string): void {
-        console.log(searchValue);
-    }
+    public handleSearchValue(searchValue: string): void {}
 
     public handleInputSelect(
         dropdownListItem: DropdownListItem,
@@ -337,9 +335,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public handleSwitchTopRatedClick(
         topRatedDropdownItem: TopRatedDropdownItem
     ): void {
-        if (topRatedDropdownItem.name === this.topRatedTitle) {
-            return;
-        }
+        if (topRatedDropdownItem.name === this.topRatedTitle) return;
 
         const topRatedTabsToDisplay = [
             {
@@ -580,11 +576,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.resetSelectedValues();
 
-        console.log('selectedTab', selectedTab);
-        console.log('selectedMainPeriod', selectedMainPeriod);
-        console.log('selectedSubPeriod', selectedSubPeriod);
-        console.log('customPeriodRange', customPeriodRange);
-
         switch (this.topRatedTitle) {
             case ConstantStringEnum.DISPATCHER:
                 this.getTopRatedDispatcherListData(
@@ -644,7 +635,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedDispatcher(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((dispatcherData) => {
-                console.log('dispatcherData', dispatcherData);
                 // top rated list and single selection data
                 this.topRatedList = dispatcherData.pagination.data.map(
                     (dispatcher) => {
@@ -758,7 +748,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedDriver(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((driverData) => {
-                console.log('driverData', driverData);
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
                     let filteredIntervalValues: number[] = [];
@@ -863,7 +852,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedTruck(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((truckData) => {
-                console.log('truckData', truckData);
                 // top rated list and single selection data
                 this.topRatedList = truckData.pagination.data.map((truck) => {
                     let filteredIntervalValues: number[] = [];
@@ -964,7 +952,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedBroker(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((brokerData) => {
-                console.log('brokerData', brokerData);
                 // top rated list and single selection data
                 this.topRatedList = brokerData.pagination.data.map((broker) => {
                     let filteredIntervalValues: number[] = [];
@@ -1070,7 +1057,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedShipper(filteredTopRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((shipperData) => {
-                console.log('shipperData', shipperData);
                 // top rated list and single selection data
                 this.topRatedList = shipperData.pagination.data.map(
                     (shipper) => {
@@ -1155,7 +1141,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedOwner(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((ownerData) => {
-                console.log('ownerData', ownerData);
                 // top rated list and single selection data
                 this.topRatedList = ownerData.pagination.data.map((owner) => {
                     let filteredIntervalValues: number[] = [];
@@ -1256,7 +1241,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedRepairShop(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((repairShopData) => {
-                console.log('repairShopData', repairShopData);
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
                     (repairShop) => {
@@ -1363,7 +1347,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             .getTopRatedFuelStop(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((fuelStopData) => {
-                console.log('fuelStopData', fuelStopData);
                 // top rated list and single selection data
                 this.topRatedList = fuelStopData.pagination.data.map(
                     (fuelStop) => {
@@ -1905,8 +1888,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
-        console.log('barChartValues', barChartValues);
-
         this.barChartConfig = {
             dataProperties: [
                 {
