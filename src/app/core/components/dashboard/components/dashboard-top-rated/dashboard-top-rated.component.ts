@@ -56,6 +56,7 @@ import {
 } from '../../state/models/dashboard-chart-models/bar-chart.model';
 import {
     DashboardTopReportType,
+    IntervalLabelResponse,
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
@@ -188,6 +189,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public barChartAxes: BarChartAxes;
     public barChartDateTitle: string;
     private barChartLabels: string[] | string[][] = [];
+    private barChartTooltipLabels: string[];
     private barChartValues: BarChartValues = {
         defaultBarValues: {
             topRatedBarValues: [],
@@ -1874,19 +1876,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.barChartDateTitle = barDateTitle;
     }
 
-    private setBarChartLabels(barChartLables: string[]): void {
-        console.log('barChartLables', barChartLables);
-
+    private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
         const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
             this.selectedSubPeriod.name
         );
 
-        const { filteredLabels } = DashboardUtils.setBarChartLabels(
-            barChartLables,
-            selectedSubPeriod
-        );
+        const { filteredLabels, filteredTooltipLabels } =
+            DashboardUtils.setBarChartLabels(barChartLables, selectedSubPeriod);
 
         this.barChartLabels = filteredLabels;
+        this.barChartTooltipLabels = filteredTooltipLabels;
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
@@ -1951,6 +1950,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             offset: true,
             tooltipOffset: { min: 105, max: 279 },
             dataLabels: this.barChartLabels,
+            dataTooltipLabels: this.barChartTooltipLabels,
             selectedTab: this.currentActiveTab.name,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };

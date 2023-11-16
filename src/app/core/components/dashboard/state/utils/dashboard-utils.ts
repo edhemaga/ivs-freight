@@ -6,12 +6,16 @@ import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.con
 
 // enums
 import { ConstantStringEnum } from '../enums/constant-string.enum';
+import { ConstantChartStringEnum } from '../enums/constant-chart-string.enum';
 
 // models
 import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
-import { BarChartInterval } from '../models/dashboard-chart-models/bar-chart.model';
-import { ConstantChartStringEnum } from '../enums/constant-chart-string.enum';
+import {
+    BarChartInterval,
+    BarChartLabels,
+} from '../models/dashboard-chart-models/bar-chart.model';
+import { IntervalLabelResponse } from 'appcoretruckassist';
 
 export class DashboardUtils {
     static ConvertMainPeriod(mainPeriod: string) {
@@ -113,24 +117,31 @@ export class DashboardUtils {
     }
 
     static setBarChartLabels(
-        barChartLables: string[],
+        barChartLables: IntervalLabelResponse[],
         selectedSubPeriod: string
-    ): { filteredLabels: string[] | string[][] } {
-        const filteredLabels = barChartLables.map((label) => {
+    ): BarChartLabels {
+        let filteredTooltipLabels: string[] = [];
+
+        const filteredLabels = barChartLables.map((barChartLabel) => {
+            filteredTooltipLabels = [
+                ...filteredTooltipLabels,
+                barChartLabel.tooltipLabel,
+            ];
+
             if (
                 ((selectedSubPeriod === ConstantStringEnum.HOURLY ||
                     selectedSubPeriod === ConstantStringEnum.THS ||
                     selectedSubPeriod === ConstantStringEnum.SHS ||
                     selectedSubPeriod === ConstantStringEnum.SMD) &&
-                    !label.includes(ConstantStringEnum.PM) &&
-                    !label.includes(ConstantStringEnum.AM)) ||
+                    !barChartLabel.label.includes(ConstantStringEnum.PM) &&
+                    !barChartLabel.label.includes(ConstantStringEnum.AM)) ||
                 selectedSubPeriod === ConstantStringEnum.DAILY ||
                 selectedSubPeriod === ConstantStringEnum.WEEKLY ||
                 selectedSubPeriod === ConstantStringEnum.BWL ||
                 selectedSubPeriod === ConstantStringEnum.SML ||
                 selectedSubPeriod === ConstantStringEnum.QUARTERLY
             ) {
-                const splitLabel = label.split(
+                const splitLabel = barChartLabel.label.split(
                     ConstantStringEnum.EMPTY_SPACE_STRING
                 );
 
@@ -143,13 +154,19 @@ export class DashboardUtils {
                 return [splitLabel[0], splitLabel[1]];
             }
 
-            return label;
+            return barChartLabel.label;
         });
 
         if (Array.isArray(filteredLabels[0])) {
-            return { filteredLabels: filteredLabels as string[][] };
+            return {
+                filteredLabels: filteredLabels as string[][],
+                filteredTooltipLabels,
+            };
         } else {
-            return { filteredLabels: filteredLabels as string[] };
+            return {
+                filteredLabels: filteredLabels as string[],
+                filteredTooltipLabels,
+            };
         }
     }
 
