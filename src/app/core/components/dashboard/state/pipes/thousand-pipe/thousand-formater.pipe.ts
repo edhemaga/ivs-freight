@@ -7,7 +7,7 @@ import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum'
 })
 export class FormatNumberToThousandDecimal implements PipeTransform {
     transform(value: number): string {
-        if (value && !isNaN(value)) {
+        if (+value) {
             if (value > 100000) {
                 return (
                     (value / 1000).toFixed(1) +
