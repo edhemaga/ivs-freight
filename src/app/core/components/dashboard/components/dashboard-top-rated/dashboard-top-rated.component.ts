@@ -4,6 +4,7 @@ import {
     OnDestroy,
     OnInit,
     ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
@@ -70,6 +71,7 @@ import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-
     selector: 'app-dashboard-top-rated',
     templateUrl: './dashboard-top-rated.component.html',
     styleUrls: ['./dashboard-top-rated.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     @ViewChild('popover') public popover: NgbPopover;
@@ -81,80 +83,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
 
+    // search
+    public searchValue: string;
+    public clearSearchValue: boolean = false;
+
     // list
-    public topRatedList: TopRatedListItem[] = [
-        {
-            id: 1,
-            name: 'Denis Rodman',
-            value: '152324.5',
-            percent: '8.53',
-            isSelected: false,
-        },
-        {
-            id: 2,
-            name: 'Sasa Djordjevic',
-            value: '148456.5',
-            percent: '8.43',
-            isSelected: false,
-        },
-        {
-            id: 3,
-            name: 'Nicolas Drozlibrew',
-            value: '125654.3',
-            percent: '7.35',
-            isSelected: false,
-        },
-        {
-            id: 4,
-            name: 'Samuel Lioton',
-            value: '114489.8',
-            percent: '7.23',
-            isSelected: false,
-        },
-        {
-            id: 5,
-            name: 'Angelo Trotter',
-            value: '95561.4',
-            percent: '6.87',
-            isSelected: false,
-        },
-        {
-            id: 6,
-            name: 'Stan Tolbert',
-            value: '84156.6',
-            percent: '4.07',
-            isSelected: false,
-        },
-        {
-            id: 7,
-            name: 'Michael Scott',
-            value: '65156.2',
-            percent: '3.52',
-            isSelected: false,
-        },
-        {
-            id: 8,
-            name: 'Toby Flanders',
-            value: '42158.8',
-            percent: '3.43',
-            isSelected: false,
-        },
-        {
-            id: 9,
-            name: 'Sasuke Uchica',
-            value: '35891.6',
-            percent: '2.96',
-            isSelected: false,
-        },
-        {
-            id: 10,
-            name: 'Peter Simpson',
-            value: '18185.5',
-            percent: '2.12',
-            isSelected: false,
-        },
-    ];
+    public topRatedList: TopRatedListItem[] = [];
     public selectedTopRatedList: TopRatedListItem[] = [];
+    private topRatedListBeforeSearch: TopRatedListItem[] = [];
     public topRatedListSelectedPercentage: number = 100;
 
     // show more
@@ -217,9 +153,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.getOverallCompanyDuration();
 
-        this.setChartsData();
-
         this.getTopRatedListData();
+
+        this.setChartsData();
     }
 
     private createForm(): void {
@@ -254,9 +190,64 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             selectedBarValues: [],
             selectedBarPercentages: [],
         };
+
+        this.isShowingMore = false;
+        this.topRatedListSliceEnd = 10;
+
+        this.clearSearchValue = true;
     }
 
-    public handleSearchValue(searchValue: string): void {}
+    public highlightSearchValue(text: string, isSelected: boolean) {
+        return DashboardUtils.highlightPartOfString(
+            text,
+            this.searchValue,
+            isSelected
+        );
+    }
+
+    isDisplayingPlaceholder = false;
+
+    public handleSearchValue(searchValue: string): void {
+        if (searchValue) {
+            this.searchValue = searchValue;
+
+            this.topRatedListBeforeSearch = [...this.topRatedList];
+
+            const filteredTopRatedList = this.topRatedList.filter(
+                (topRatedListItem) =>
+                    !topRatedListItem.isSelected &&
+                    topRatedListItem.name
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase())
+            );
+
+            if (!filteredTopRatedList.length) {
+                this.isDisplayingPlaceholder = true;
+
+                return;
+            }
+
+            this.topRatedList = this.topRatedList.splice(
+                0,
+                this.selectedTopRatedList.length
+            );
+
+            this.topRatedList = [...this.topRatedList, ...filteredTopRatedList];
+        } else {
+            this.topRatedList = this.topRatedListBeforeSearch;
+
+            this.searchValue = null;
+            this.clearSearchValue = false;
+
+            this.isDisplayingPlaceholder = false;
+
+            if (this.selectedTopRatedList.length) {
+                this.setDoughnutChartData(this.selectedTopRatedList, true);
+            } else {
+                this.setDoughnutChartData(this.topRatedList);
+            }
+        }
+    }
 
     public handleInputSelect(
         dropdownListItem: DropdownListItem,
@@ -523,6 +514,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getConstantData(): void {
+        this.topRatedList = [DashboardTopRatedConstants.TOP_RATED_LIST_ITEM];
+
         this.topRatedDropdownList = JSON.parse(
             JSON.stringify(DashboardTopRatedConstants.TOP_RATED_DROPDOWN_DATA)
         );
@@ -687,6 +680,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     }
                 );
 
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
+
                 for (let i = 0; i < dispatcherData.topDispatchers.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
@@ -795,6 +792,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     };
                 });
 
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
+
                 for (let i = 0; i < driverData.topDrivers.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
@@ -899,6 +900,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     };
                 });
 
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
+
                 for (let i = 0; i < truckData.topTrucks.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
@@ -999,6 +1004,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     };
                 });
 
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
+
                 for (let i = 0; i < brokerData.topBrokers.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
@@ -1096,6 +1105,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     }
                 );
 
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
+
                 for (let i = 0; i < shipperData.topShippers.length; i++) {
                     // top rated intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
@@ -1187,6 +1200,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         isSelected: false,
                     };
                 });
+
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
 
                 for (let i = 0; i < ownerData.topOwners.length; i++) {
                     // top rated intervals
@@ -1289,6 +1306,18 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         };
                     }
                 );
+
+                this.topRatedList.push({
+                    id: 11,
+                    name: 'Denis Rodman',
+                    value: '152324.5',
+                    percent: '8.53',
+                    isSelected: false,
+                });
+
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
 
                 for (let i = 0; i < repairShopData.topRepairShops.length; i++) {
                     // top rated intervals
@@ -1395,6 +1424,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         };
                     }
                 );
+
+                this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                // intervals
 
                 for (let i = 0; i < fuelStopData.topFuelStops.length; i++) {
                     // top rated intervals

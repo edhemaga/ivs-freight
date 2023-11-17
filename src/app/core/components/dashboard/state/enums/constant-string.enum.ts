@@ -62,4 +62,6 @@ export enum ConstantStringEnum {
     AM = 'AM',
 
     EMPTY_SPACE_STRING = ' ',
+
+    REGEX_GI = 'gi',
 }

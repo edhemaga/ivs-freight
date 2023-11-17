@@ -747,6 +747,7 @@ export class DashboardPerformanceComponent
                 ['19', 'SUN'],
                 ['20', 'MON'],
             ],
+            dataTooltipLabels: [],
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 

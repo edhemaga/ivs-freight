@@ -821,8 +821,9 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     updateHoverData(value: number) {
-        this.barChartTooltipDateTitle =
-            this.chartConfig.dataTooltipLabels[value];
+        if (this.chartConfig.dataTooltipLabels)
+            this.barChartTooltipDateTitle =
+                this.chartConfig.dataTooltipLabels[value];
 
         let dataValues = [];
         this.chart.chart.config.data.datasets.map((item, i) => {

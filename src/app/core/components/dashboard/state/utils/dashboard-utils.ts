@@ -195,4 +195,21 @@ export class DashboardUtils {
 
         return { barDateTitle };
     }
+
+    static highlightPartOfString(
+        text: string,
+        searchValue: string,
+        isSelected: boolean
+    ): string {
+        if (isSelected || !text || !searchValue) {
+            return text;
+        }
+
+        const regex = new RegExp(searchValue, ConstantStringEnum.REGEX_GI);
+
+        return text.replace(
+            regex,
+            (match) => `<span class="highlight">${match}</span>`
+        );
+    }
 }
