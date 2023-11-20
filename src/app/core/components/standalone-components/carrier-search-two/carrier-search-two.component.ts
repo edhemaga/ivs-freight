@@ -1,15 +1,14 @@
 import {
-    AfterViewInit,
     Component,
     ElementRef,
     EventEmitter,
     Input,
+    OnChanges,
     Output,
+    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -22,54 +21,55 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     standalone: true,
     imports: [CommonModule, AngularSvgIconModule, NgbTooltipModule],
 })
-export class CarrierSearchTwoComponent implements AfterViewInit {
+export class CarrierSearchTwoComponent implements OnChanges {
     @ViewChild('searchInput') public searchInput!: ElementRef;
 
     @Input() placeHolderText: string;
+    @Input() clearSearchValue?: boolean = false;
 
     @Output() searchValueEmitter = new EventEmitter<string>();
 
-    public displaySearch: boolean = false;
     public isValueConfirmed: boolean = false;
     public isInputFocused: boolean = false;
+    public isDisplayingButtons: boolean = false;
 
     constructor() {}
 
-    ngAfterViewInit(): void {
-        this.handleSearchValue();
-    }
-
-    public toggleSearch(): void {
-        this.displaySearch = !this.displaySearch;
-
-        if (!this.displaySearch) {
-            this.searchInput.nativeElement.value = null;
-
-            this.isInputFocused = false;
-            this.isValueConfirmed = false;
-        } else {
-            this.searchInput.nativeElement.focus();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            !changes.clearSearchValue?.firstChange &&
+            changes.clearSearchValue?.currentValue
+        ) {
+            this.resetSearchInput();
         }
     }
 
-    public handleSearchValue(): void {
-        fromEvent(this.searchInput.nativeElement, 'input')
-            .pipe(
-                map((event: Event) => (event.target as HTMLInputElement).value),
-                debounceTime(2000),
-                distinctUntilChanged()
-            )
-            .subscribe((searchValue) =>
-                this.searchValueEmitter.emit(searchValue)
-            );
+    public handleSearchValue(event: Event): void {
+        const searchValue = (event.target as HTMLInputElement).value;
+
+        if (searchValue) {
+            this.isDisplayingButtons = true;
+
+            return;
+        }
+
+        this.isDisplayingButtons = false;
+
+        this.searchValueEmitter.emit(null);
     }
 
     public handleSearchFocus(focused: boolean): void {
-        if (focused) {
-            this.isInputFocused = true;
-        } else {
-            this.isInputFocused = false;
+        this.isInputFocused = focused;
+
+        if (this.isInputFocused && this.searchInput.nativeElement.value) {
+            this.isValueConfirmed = false;
         }
+    }
+
+    public handleConfirmClick(): void {
+        this.isValueConfirmed = true;
+
+        this.searchValueEmitter.emit(this.searchInput.nativeElement.value);
     }
 
     public handleClearClick(): void {
@@ -82,15 +82,25 @@ export class CarrierSearchTwoComponent implements AfterViewInit {
         }
 
         this.searchInput.nativeElement.focus();
+
+        this.searchValueEmitter.emit(null);
     }
 
-    public handleConfirmClick(): void {
-        if (!this.searchInput.nativeElement.value) {
-            this.searchInput.nativeElement.focus();
-
-            return;
+    public handleEnterKeyUp(event: { keyCode: number }): void {
+        if (event.keyCode === 13) {
+            this.handleConfirmClick();
         }
+    }
 
-        this.isValueConfirmed = true;
+    private resetSearchInput(): void {
+        this.searchInput.nativeElement.value = null;
+
+        this.searchValueEmitter.emit(null);
+
+        this.searchInput.nativeElement.focus();
+
+        this.isInputFocused = true;
+        this.isValueConfirmed = false;
+        this.isDisplayingButtons = false;
     }
 }

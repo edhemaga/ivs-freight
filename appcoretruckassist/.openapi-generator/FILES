@@ -420,6 +420,7 @@ model/integrationListResponse.ts
 model/integrationModalResponse.ts
 model/integrationProviderResponse.ts
 model/integrationProviderResponsePagination.ts
+model/intervalLabelResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts

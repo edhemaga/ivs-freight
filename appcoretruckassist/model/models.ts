@@ -352,6 +352,7 @@ export * from './integrationListResponse';
 export * from './integrationModalResponse';
 export * from './integrationProviderResponse';
 export * from './integrationProviderResponsePagination';
+export * from './intervalLabelResponse';
 export * from './inviteEmployerResponse';
 export * from './invitePreviousEmployerCommand';
 export * from './invoiceAgeingResponse';

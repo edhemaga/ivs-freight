@@ -11,12 +11,13 @@
  */
 import { PickupDeliveryIntervalResponse } from './pickupDeliveryIntervalResponse';
 import { PickupDeliveryByStateResponsePagination } from './pickupDeliveryByStateResponsePagination';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface PickupDeliveryByStateListResponse { 
     pagination?: PickupDeliveryByStateResponsePagination;
     topTen?: Array<PickupDeliveryIntervalResponse> | null;
     others?: Array<PickupDeliveryIntervalResponse> | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

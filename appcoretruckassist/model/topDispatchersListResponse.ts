@@ -11,6 +11,7 @@
  */
 import { TopDispatchersResponsePagination } from './topDispatchersResponsePagination';
 import { DispatcherIntervalResponse } from './dispatcherIntervalResponse';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface TopDispatchersListResponse { 
@@ -19,6 +20,6 @@ export interface TopDispatchersListResponse {
     allOthers?: Array<DispatcherIntervalResponse> | null;
     totalRevenue?: number | null;
     totalLoadCount?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

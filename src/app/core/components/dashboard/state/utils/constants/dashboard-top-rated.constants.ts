@@ -142,4 +142,12 @@ export class DashboardTopRatedConstants {
             name: 'Yearly',
         },
     ];
+
+    static TOP_RATED_LIST_ITEM = {
+        id: null,
+        name: null,
+        value: null,
+        percent: null,
+        isSelected: false,
+    };
 }

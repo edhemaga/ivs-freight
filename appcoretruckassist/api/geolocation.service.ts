@@ -124,13 +124,6 @@ export class GeolocationService {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-
-        let apiKeyCredential: string | undefined;
-        apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (apiKeyCredential) {
-            localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
-        }
-        
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -211,12 +204,6 @@ export class GeolocationService {
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let apiKeyCredential: string | undefined;
-        apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (apiKeyCredential) {
-            localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -301,12 +288,6 @@ export class GeolocationService {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
-        let apiKeyCredential: string | undefined;
-        apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (apiKeyCredential) {
-            localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
-        }
-
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -380,12 +361,6 @@ export class GeolocationService {
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let apiKeyCredential: string | undefined;
-        apiKeyCredential = this.configuration.lookupCredential('x-api-key');
-        if (apiKeyCredential) {
-            localVarHeaders = localVarHeaders.set('x-api-key', apiKeyCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

@@ -11,6 +11,7 @@ export interface BarChartConfig extends DoughnutChartConfig {
     tooltipOffset: { min: number; max: number };
     hoverOtherChart?: boolean;
     selectedTab?: string;
+    dataTooltipLabels?: string[];
 }
 
 export interface BarChartAxes {
@@ -44,6 +45,11 @@ export interface BarChartValues {
 export interface BarChartInterval {
     startTime?: string;
     endTime?: string;
+}
+
+export interface BarChartLabels {
+    filteredLabels: string[] | string[][];
+    filteredTooltipLabels: string[];
 }
 
 export interface BarChart extends Chart {
