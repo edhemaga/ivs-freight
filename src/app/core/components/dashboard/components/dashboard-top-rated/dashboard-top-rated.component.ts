@@ -83,6 +83,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
 
+    public isDisplayingPlaceholder: boolean = false;
+
     // search
     public searchValue: string;
     public clearSearchValue: boolean = false;
@@ -204,8 +206,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             isSelected
         );
     }
-
-    isDisplayingPlaceholder = false;
 
     public handleSearchValue(searchValue: string): void {
         if (searchValue) {
@@ -1989,7 +1989,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         };
 
         // bar max value
-        const barChartMaxValue = +this.topRatedList[0].value;
+        const barChartMaxValue = +this.topRatedList[0]?.value;
 
         // bar axes
         this.barChartAxes = {
