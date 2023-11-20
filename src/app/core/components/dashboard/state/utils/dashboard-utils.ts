@@ -1,13 +1,17 @@
+import moment from 'moment';
+
 // constants
-import { DashboardTopRatedConstants } from './dashboard-top-rated.constants';
-import { DashboardSubperiodConstants } from './dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
+import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
 
 // enums
-import { ConstantStringEnum } from '../enum/constant-string.enum';
+import { ConstantStringEnum } from '../enums/constant-string.enum';
 
 // models
 import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
+import { BarChartInterval } from '../models/dashboard-chart-models/bar-chart.model';
+import { ConstantChartStringEnum } from '../enums/constant-chart-string.enum';
 
 export class DashboardUtils {
     static ConvertMainPeriod(mainPeriod: string) {
@@ -84,12 +88,12 @@ export class DashboardUtils {
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_3;
         }
 
-        if (selectedDaysRange > 60 && selectedDaysRange <= 365) {
+        if (selectedDaysRange > 60 && selectedDaysRange <= 366) {
             matchingIdList =
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_4;
         }
 
-        if (selectedDaysRange > 365 && selectedDaysRange <= 730) {
+        if (selectedDaysRange > 366 && selectedDaysRange <= 730) {
             matchingIdList =
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_5;
         }
@@ -106,5 +110,72 @@ export class DashboardUtils {
             filteredSubPeriodDropdownList,
             selectedSubPeriod,
         };
+    }
+
+    static setBarChartLabels(
+        barChartLables: string[],
+        selectedSubPeriod: string
+    ): { filteredLabels: string[] | string[][] } {
+        const filteredLabels = barChartLables.map((label) => {
+            if (
+                ((selectedSubPeriod === ConstantStringEnum.HOURLY ||
+                    selectedSubPeriod === ConstantStringEnum.THS ||
+                    selectedSubPeriod === ConstantStringEnum.SHS ||
+                    selectedSubPeriod === ConstantStringEnum.SMD) &&
+                    !label.includes(ConstantStringEnum.PM) &&
+                    !label.includes(ConstantStringEnum.AM)) ||
+                selectedSubPeriod === ConstantStringEnum.DAILY ||
+                selectedSubPeriod === ConstantStringEnum.WEEKLY ||
+                selectedSubPeriod === ConstantStringEnum.BWL ||
+                selectedSubPeriod === ConstantStringEnum.SML ||
+                selectedSubPeriod === ConstantStringEnum.QUARTERLY
+            ) {
+                const splitLabel = label.split(
+                    ConstantStringEnum.EMPTY_SPACE_STRING
+                );
+
+                if (splitLabel[2]) {
+                    const concatinatedDateString = `${splitLabel[0]} ${splitLabel[1]}`;
+
+                    return [concatinatedDateString, splitLabel[2]];
+                }
+
+                return [splitLabel[0], splitLabel[1]];
+            }
+
+            return label;
+        });
+
+        if (Array.isArray(filteredLabels[0])) {
+            return { filteredLabels: filteredLabels as string[][] };
+        } else {
+            return { filteredLabels: filteredLabels as string[] };
+        }
+    }
+
+    static setBarChartDateTitle(
+        startInterval: BarChartInterval,
+        endInterval: BarChartInterval
+    ): { barDateTitle: string } {
+        const startIntervalDate = moment(new Date(startInterval.startTime));
+        const endIntervalDate = moment(new Date(endInterval.endTime));
+
+        const dateTitleStartMonth = startIntervalDate.format(
+            ConstantChartStringEnum.MMMM
+        );
+        const dateTitleStartYear = startIntervalDate.format(
+            ConstantChartStringEnum.YYYY
+        );
+
+        const dateTitleEndMonth = endIntervalDate.format(
+            ConstantChartStringEnum.MMMM
+        );
+        const dateTitleEndtYear = endIntervalDate.format(
+            ConstantChartStringEnum.YYYY
+        );
+
+        const barDateTitle = `${dateTitleStartMonth}, ${dateTitleStartYear} - ${dateTitleEndMonth}, ${dateTitleEndtYear}`;
+
+        return { barDateTitle };
     }
 }

@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ViolationIntervalResponse } from './violationIntervalResponse';
 import { ViolationByStateResponsePagination } from './violationByStateResponsePagination';
 
 
 export interface ViolationByStateListResponse { 
     pagination?: ViolationByStateResponsePagination;
+    topTen?: Array<ViolationIntervalResponse> | null;
+    others?: Array<ViolationIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 

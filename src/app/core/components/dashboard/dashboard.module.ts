@@ -12,8 +12,8 @@ import { AgmCoreModule } from '@agm/core';
 import { ClickOutsideCustomRangeDirective } from './state/directives/click-outside-custom-range.directive';
 
 // components
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { DashboardTopRatedComponent } from './dashboard-top-rated/dashboard-top-rated.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardTopRatedComponent } from './components/dashboard-top-rated/dashboard-top-rated.component';
 
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
@@ -22,14 +22,15 @@ import { TaCustomPeriodRangeComponent } from '../standalone-components/ta-custom
 import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.component';
 import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
 
-import { DashboardPerformanceComponent } from './dashboard-performance/dashboard-performance.component';
-import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/dashboard-pickup-by-state.component';
-import { DashboardMapComponent } from './dashboard-map/dashboard-map.component';
-import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
-import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
+import { DashboardPerformanceComponent } from './components/dashboard-performance/dashboard-performance.component';
+import { DashboardPickupByStateComponent } from './components/dashboard-pickup-by-state/dashboard-pickup-by-state.component';
+import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
+import { DashboardStateTrackingComponent } from './components/dashboard-state-tracking/dashboard-state-tracking.component';
+import { DashboardStateUsaComponent } from './components/dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
 
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { FormatNumberToThousandDecimal } from './state/pipes/thousand-pipe/thousand-formater.pipe';
 
 @NgModule({
     declarations: [
@@ -52,6 +53,9 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
 
         // directives
         ClickOutsideCustomRangeDirective,
+
+        // pipes
+        FormatNumberToThousandDecimal,
 
         // components
         TaTabSwitchComponent,

@@ -19,5 +19,6 @@ export interface TopOwnerListResponse {
     allOthers?: Array<OwnerIntervalResponse> | null;
     totalRevenue?: number | null;
     totalLoadCount?: number | null;
+    intervalLabels?: Array<string> | null;
 }
 

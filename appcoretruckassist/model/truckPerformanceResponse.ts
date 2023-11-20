@@ -12,7 +12,8 @@
 
 
 export interface TruckPerformanceResponse { 
-    mileage?: number;
-    fuelCost?: number;
+    trucksCount?: number | null;
+    trucksDifference?: number | null;
+    trucksAverage?: number | null;
 }
 

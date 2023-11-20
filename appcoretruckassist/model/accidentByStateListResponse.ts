@@ -10,9 +10,13 @@
  * Do not edit the class manually.
  */
 import { AccidentByStateResponsePagination } from './accidentByStateResponsePagination';
+import { AccidentIntervalResponse } from './accidentIntervalResponse';
 
 
 export interface AccidentByStateListResponse { 
     pagination?: AccidentByStateResponsePagination;
+    topTen?: Array<AccidentIntervalResponse> | null;
+    others?: Array<AccidentIntervalResponse> | null;
+    intervalLabels?: Array<string> | null;
 }
 
