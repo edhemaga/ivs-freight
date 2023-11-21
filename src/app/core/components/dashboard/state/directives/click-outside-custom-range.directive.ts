@@ -29,6 +29,10 @@ export class ClickOutsideCustomRangeDirective
     ) {}
 
     ngAfterViewInit(): void {
+        this.startDocumentClickSubscriptipon();
+    }
+
+    private startDocumentClickSubscriptipon(): void {
         this.documentClickSubscription = fromEvent(
             this.document,
             ConstantStringEnum.CLICK
@@ -46,9 +50,6 @@ export class ClickOutsideCustomRangeDirective
     }
 
     private checkIfInsideClick(elementToCheck: HTMLElement): boolean {
-        console.log('elementToCheck', elementToCheck);
-        console.log('this.element', this.element);
-
         return (
             elementToCheck.classList.contains(
                 ConstantStringEnum.CLASS_DROPDOWN_OPTION

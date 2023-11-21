@@ -1,4 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
+// enums
 import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
 
 @Pipe({

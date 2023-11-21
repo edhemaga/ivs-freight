@@ -6,6 +6,9 @@ import { Subject, takeUntil } from 'rxjs';
 // moment
 import moment from 'moment';
 
+// services
+import { DashboardPerformanceService } from '../../state/services/dashboard-performance.service';
+
 // store
 import { DashboardQuery } from '../../state/store/dashboard.query';
 
@@ -39,6 +42,8 @@ import {
     BarChartConfig,
     BarChartValues,
 } from '../../state/models/dashboard-chart-models/bar-chart.model';
+import { PerformanceApiArguments } from '../../state/models/dashboard-performance-models/performance-api-arguments.model';
+import { SubintervalType, TimeInterval } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -159,7 +164,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedColor: null,
             selectedHoverColor: null,
             lastMonthValue: 0,
-            lastMonthTrend: 'SAME AS',
+            lastMonthTrend: 100,
             monthlyAverageValue: 283.32,
             monthlyAverageTrend: 37.24,
         },
@@ -181,7 +186,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedColor: null,
             selectedHoverColor: null,
             lastMonthValue: 3,
-            lastMonthTrend: 'SAME AS',
+            lastMonthTrend: 6,
             monthlyAverageValue: 283.32,
             monthlyAverageTrend: 37.24,
         },
@@ -269,7 +274,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     // tabs
     public performanceTabs: DashboardTab[] = [];
-    private currentActiveTab: DashboardTab;
+    public currentActiveTab: DashboardTab;
 
     private selectedCustomPeriodRange: CustomPeriodRange;
 
@@ -366,7 +371,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private dashboardQuery: DashboardQuery
+        private dashboardQuery: DashboardQuery,
+        private dashboardPerformanceService: DashboardPerformanceService
     ) {}
 
     ngOnInit(): void {
@@ -376,8 +382,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.getOverallCompanyDuration();
 
-        this.setLineChartConfigAndAxes();
-        this.setBarChartConfigAndAxes();
+        this.setChartsData();
+
+        this.getPerformanceListData();
 
         this.setPerformanceDefaultStateData(0);
     }
@@ -522,17 +529,19 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         index: number,
         removeHover: boolean = false
     ): void {
-        if (!removeHover) {
-            this.performanceData[index].isHovered = true;
+        const selectedPerformanceDataItem = this.performanceData[index];
 
-            if (this.performanceData[index].selectedColor) {
+        if (!removeHover) {
+            selectedPerformanceDataItem.isHovered = true;
+
+            if (selectedPerformanceDataItem.selectedColor) {
                 this.lineChart.changeChartFillProperty(
-                    this.performanceData[index].title,
-                    this.performanceData[index].selectedColor.slice(1)
+                    selectedPerformanceDataItem.title,
+                    selectedPerformanceDataItem.selectedColor.slice(1)
                 );
             }
         } else {
-            this.performanceData[index].isHovered = false;
+            selectedPerformanceDataItem.isHovered = false;
 
             this.lineChart.changeChartFillProperty(
                 this.performanceData[index].title,
@@ -551,8 +560,37 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     private getConstantData(): void {
         this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
+        this.currentActiveTab =
+            DashboardPerformanceConstants.PERFORMANCE_TABS[2];
 
         this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
+    }
+
+    private getPerformanceListData(): void {
+        const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
+            this.currentActiveTab.name
+        ) as TimeInterval;
+
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        ) as SubintervalType;
+
+        const performanceArgumentsData: PerformanceApiArguments = [
+            selectedMainPeriod,
+            /* customPeriodRange?.fromDate ?? */ null,
+            /* customPeriodRange?.toDate ?? */ null,
+            selectedSubPeriod,
+        ];
+
+        /* this.resetSelectedValues(); */
+
+        this.dashboardPerformanceService
+            .getPerformance(performanceArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((performanceData) => {
+                console.log('performanceData', performanceData);
+                console.log(typeof performanceData.performance);
+            });
     }
 
     private getOverallCompanyDuration(): void {
@@ -578,20 +616,25 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private setPerformanceDefaultStateData(
         performanceDataItemIndex: number
     ): void {
-        this.performanceData[performanceDataItemIndex].isSelected = true;
-        this.performanceData[performanceDataItemIndex].selectedColor =
-            this.performanceDataColors[performanceDataItemIndex].code;
-        this.performanceData[performanceDataItemIndex].selectedHoverColor =
-            this.performanceDataColors[performanceDataItemIndex].hoverCode;
+        const selectedPerformanceDataItem =
+            this.performanceData[performanceDataItemIndex];
+        const selectedPerformanceDataColor =
+            this.performanceDataColors[performanceDataItemIndex];
 
-        this.performanceDataColors[performanceDataItemIndex].isSelected = true;
+        selectedPerformanceDataItem.isSelected = true;
+        selectedPerformanceDataItem.selectedColor =
+            selectedPerformanceDataColor.code;
+        selectedPerformanceDataItem.selectedHoverColor =
+            selectedPerformanceDataColor.hoverCode;
+
+        selectedPerformanceDataColor.isSelected = true;
 
         this.selectedPerformanceDataCount++;
 
         setTimeout(() => {
             this.lineChart?.insertNewChartData(
                 ConstantChartStringEnum.ADD,
-                this.performanceData[performanceDataItemIndex].title,
+                selectedPerformanceDataItem.title,
                 this.performanceData[
                     performanceDataItemIndex
                 ].selectedColor.slice(1)
@@ -753,6 +796,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 showGridLines: false,
             },
         };
+    }
+
+    private setChartsData(): void {
+        this.setLineChartConfigAndAxes();
+        this.setBarChartConfigAndAxes();
     }
 
     private createLineChartData(

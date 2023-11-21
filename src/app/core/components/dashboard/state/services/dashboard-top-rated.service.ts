@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
-
-// store
-import { DashboardStore } from '../store/dashboard.store';
+import { Observable } from 'rxjs';
 
 // models
 import {
-    DashboardService as DashboardBackendService,
+    DashboardService,
     TopBrokersListResponse,
     TopDispatchersListResponse,
     TopOwnerListResponse,
     TopRepairShopListResponse,
     TopShipperListResponse,
-    CompanyDurationResponse,
     TopFuelStopListResponse,
     TopTruckListResponse,
     TopDriverListResponse,
@@ -23,25 +19,11 @@ import {
     TopRatedWithoutTabApiArguments,
 } from '../models/dashboard-top-rated-models/top-rated-api-arguments.model';
 
-@Injectable({ providedIn: 'root' })
-export class DashboardService {
-    constructor(
-        private dashboardService: DashboardBackendService,
-        private dashboardStore: DashboardStore
-    ) {}
-
-    public getOverallCompanyDuration(): Observable<CompanyDurationResponse> {
-        return this.dashboardService.apiDashboardCompanydurationGet().pipe(
-            tap((companyDuration) => {
-                this.dashboardStore.update((store) => {
-                    return {
-                        ...store,
-                        companyDuration: companyDuration.companyDurationInDays,
-                    };
-                });
-            })
-        );
-    }
+@Injectable({
+    providedIn: 'root',
+})
+export class DashboardTopRatedService {
+    constructor(private dashboardService: DashboardService) {}
 
     // Dashboard - Top Rated
     public getTopRatedDispatcher(

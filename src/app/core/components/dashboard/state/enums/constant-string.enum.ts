@@ -18,6 +18,26 @@ export enum ConstantStringEnum {
     REVENUE = 'Revenue',
     MILEAGE = 'Mileage',
 
+    NET_INCOME = 'NET INCOME',
+    REVENUE_2 = 'REVENUE',
+    EXPENSES = 'EXPENSES',
+    LOAD_2 = 'LOAD',
+    MILES = 'MILES',
+    FUEL_GALLON = 'FUEL_GALLON',
+    FUEL_COST = 'FUEL_COST',
+    REPAIR_COST = 'REPAIR_COST',
+    ROADSIDE_INSP = 'ROADSIDE INSP.',
+    VIOALTION = 'VIOLATION',
+    ACCIDENT = 'ACCIDENT',
+    DRIVER_2 = 'DRIVER',
+    TRUCK_2 = 'TRUCK',
+    TRAILER = 'TRAILER',
+    OWNER_2 = 'OWNER',
+    USER_2 = 'USER',
+    REPAIR_SHOP_2 = 'REPAIR SHOP',
+    BROKER_2 = 'BROKER',
+    SHIPPER_2 = 'SHIPPER',
+
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',
 
@@ -62,4 +82,9 @@ export enum ConstantStringEnum {
     AM = 'AM',
 
     EMPTY_SPACE_STRING = ' ',
+
+    TREND_UP_IMG = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
+    TREND_UP_IMG_2 = 'assets/svg/common/trend-up-red.svg',
+    TREND_DOWN_IMG = 'assets/svg/common/dashboard/trend-down-with-frame.svg',
+    TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
 }
