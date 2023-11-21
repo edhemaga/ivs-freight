@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 // models
 import { PerformanceApiArguments } from '../models/dashboard-performance-models/performance-api-arguments.model';
-import { DashboardService, PerformanceListResponse } from 'appcoretruckassist';
+import { DashboardService, PerformanceResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +14,7 @@ export class DashboardPerformanceService {
 
     public getPerformance(
         data: PerformanceApiArguments
-    ): Observable<PerformanceListResponse> {
+    ): Observable<PerformanceResponse> {
         return this.dashboardService.apiDashboardPerformanceGet(...data);
     }
 }

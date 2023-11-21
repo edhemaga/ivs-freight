@@ -157,14 +157,14 @@
                     >
                         <p class="m-0 ta-font-bold">
                             ${{
-                                performanceData[0].lastMonthValue
+                                performanceData[0].lastIntervalValue
                                     | addThousandSign
                             }}
                         </p>
 
                         <div class="d-flex align-items-center">
                             <ng-container
-                                *ngIf="!performanceData[0].lastMonthTrend"
+                                *ngIf="!performanceData[0].lastIntervalTrend"
                             >
                                 <div
                                     class="d-flex align-items-center trend-span"
@@ -174,18 +174,19 @@
                             </ng-container>
 
                             <ng-container
-                                *ngIf="performanceData[0].lastMonthTrend"
+                                *ngIf="performanceData[0].lastIntervalTrend"
                             >
                                 <p class="m-0 ta-font-bold">
                                     {{
-                                        performanceData[0].lastMonthTrend > 0
+                                        performanceData[0].lastIntervalTrend > 0
                                             ? '+'
                                             : '-'
                                     }}${{
-                                        performanceData[0].lastMonthTrend < 0
+                                        performanceData[0].lastIntervalTrend < 0
                                             ? performanceData[0]
-                                                  .lastMonthTrend * -1
-                                            : (performanceData[0].lastMonthTrend
+                                                  .lastIntervalTrend * -1
+                                            : (performanceData[0]
+                                                  .lastIntervalTrend
                                               | addThousandSign)
                                     }}
                                 </p>
@@ -196,7 +197,7 @@
                                     <svg-icon
                                         class="d-flex align-items-center justify-content-center trend-icon"
                                         [src]="
-                                            performanceData[0].lastMonthTrend
+                                            performanceData[0].lastIntervalTrend
                                                 | setTrendIcon
                                                     : performanceData[0].title
                                         "
@@ -231,7 +232,7 @@
                     >
                         <p class="m-0 ta-font-bold">
                             ${{
-                                performanceData[0].monthlyAverageValue
+                                performanceData[0].intervalAverageValue
                                     | addThousandSign
                             }}
                         </p>
@@ -239,7 +240,7 @@
                         <div class="d-flex align-items-center">
                             <p class="m-0 ta-font-bold">
                                 ${{
-                                    performanceData[0].monthlyAverageTrend
+                                    performanceData[0].intervalAverageValue
                                         | addThousandSign
                                 }}
                             </p>
@@ -344,10 +345,8 @@
 
                             <p class="m-0 ta-font-bold">
                                 {{
-                                    (performanceDataItem.isHovered
-                                        ? performanceDataItem.monthlyAverageValue
-                                        : performanceDataItem.lastMonthValue
-                                    ) | addThousandSign
+                                    performanceDataItem.lastIntervalValue
+                                        | addThousandSign
                                 }}
                             </p>
 
@@ -370,7 +369,9 @@
                         <div class="d-flex flex-column box-last-average">
                             <div class="d-flex align-items-center">
                                 <ng-container
-                                    *ngIf="!performanceDataItem.lastMonthTrend"
+                                    *ngIf="
+                                        !performanceDataItem.lastIntervalTrend
+                                    "
                                 >
                                     <div
                                         class="d-flex align-items-center trend-span"
@@ -380,83 +381,65 @@
                                 </ng-container>
 
                                 <ng-container
-                                    *ngIf="performanceDataItem.lastMonthTrend"
+                                    *ngIf="
+                                        performanceDataItem.lastIntervalTrend
+                                    "
                                 >
                                     <p class="m-0 ta-font-bold">
                                         {{
-                                            performanceDataItem.lastMonthTrend >
+                                            performanceDataItem.lastIntervalTrend >
                                             0
                                                 ? '+'
                                                 : ''
                                         }}
                                     </p>
+
                                     <p class="m-0 ta-font-bold">
                                         {{
-                                            (performanceDataItem.isHovered
-                                                ? performanceDataItem.monthlyAverageTrend
-                                                : performanceDataItem.lastMonthTrend
-                                            ) | addThousandSign
+                                            !performanceDataItem.isHovered ||
+                                            (performanceDataItem.isHovered &&
+                                                (currentActiveTab.name ===
+                                                    'ALL' ||
+                                                    currentActiveTab.name ===
+                                                        'Custom'))
+                                                ? performanceDataItem.lastIntervalTrend
+                                                : performanceDataItem.intervalAverageValue
                                         }}
                                     </p>
 
-                                    <div
-                                        class="d-flex align-items-center justify-content-center trend-icon-box"
+                                    <ng-container
+                                        *ngIf="!performanceDataItem.isHovered"
                                     >
-                                        <svg-icon
-                                            class="d-flex align-items-center justify-content-center trend-icon"
-                                            [src]="
-                                                performanceDataItem.lastMonthTrend
-                                                    | setTrendIcon
-                                                        : performanceDataItem.title
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': 14,
-                                                'height.px': 14
-                                            }"
-                                        ></svg-icon>
-                                    </div>
+                                        <div
+                                            class="d-flex align-items-center justify-content-center trend-icon-box"
+                                        >
+                                            <svg-icon
+                                                class="d-flex align-items-center justify-content-center trend-icon"
+                                                [src]="
+                                                    performanceDataItem.lastIntervalTrend
+                                                        | setTrendIcon
+                                                            : performanceDataItem.title
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': 14,
+                                                    'height.px': 14
+                                                }"
+                                            ></svg-icon>
+                                        </div>
+                                    </ng-container>
                                 </ng-container>
                             </div>
                         </div>
 
                         <div class="d-flex align-items-center box-bottom-title">
-                            <ng-container
-                                *ngIf="!performanceDataItem.isHovered"
-                            >
-                                <p class="m-0 ta-font-bold">
-                                    {{
-                                        currentActiveTab.name === 'Today'
-                                            ? 'YESTERDAY'
-                                            : currentActiveTab.name === 'WTD'
-                                            ? 'LAST WEEK'
-                                            : currentActiveTab.name === 'MTD'
-                                            ? 'LAST MONTH'
-                                            : currentActiveTab.name === 'QTD'
-                                            ? 'LAST QUARTAL'
-                                            : currentActiveTab.name === 'YTD'
-                                            ? 'LAST PERIOD'
-                                            : ''
-                                    }}
-                                </p>
-                            </ng-container>
-
-                            <ng-container *ngIf="performanceDataItem.isHovered">
-                                <p class="m-0 ta-font-bold">
-                                    {{
-                                        currentActiveTab.name === 'Today'
-                                            ? 'DAILY AVERAGE'
-                                            : currentActiveTab.name === 'WTD'
-                                            ? 'WEEKLY AVERAGE'
-                                            : currentActiveTab.name === 'MTD'
-                                            ? 'MONTHLY AVERAGE'
-                                            : currentActiveTab.name === 'QTD'
-                                            ? 'QUARTERLY AVERAGE'
-                                            : currentActiveTab.name === 'YTD'
-                                            ? 'PERIOD AVERAGE'
-                                            : ''
-                                    }}
-                                </p>
-                            </ng-container>
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    currentActiveTab.name
+                                        | setTrendLabel
+                                            : performanceDataItem.isHovered
+                                            : selectedSubPeriod.name
+                                }}
+                            </p>
                         </div>
                     </div>
                 </ng-container>

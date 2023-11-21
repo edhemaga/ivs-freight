@@ -14,6 +14,7 @@ import { ClickOutsideCustomRangeDirective } from './state/directives/click-outsi
 // pipes
 import { FormatNumberToThousandDecimal } from './state/pipes/thousand-pipe/thousand-formater.pipe';
 import { SetTrendIconPipe } from './state/pipes/set-trend-icon-pipe/set-trend-icon.pipe';
+import { SetTrendLabelPipe } from './state/pipes/set-trend-label-pipe/set-trend-label.pipe';
 
 // components
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -62,6 +63,7 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
         // pipes
         FormatNumberToThousandDecimal,
         SetTrendIconPipe,
+        SetTrendLabelPipe,
 
         // components
         TaTabSwitchComponent,

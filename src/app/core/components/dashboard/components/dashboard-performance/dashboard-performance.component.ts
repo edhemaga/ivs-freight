@@ -57,217 +57,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
 
     public performanceForm: UntypedFormGroup;
-    public performanceData: PerformanceDataItem[] = [
-        {
-            title: 'NET INCOME',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 462.57,
-            lastMonthTrend: -2,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'REVENUE',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 642.3,
-            lastMonthTrend: 0,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'LOAD',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 37,
-            lastMonthTrend: -3,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 120000,
-        },
-        {
-            title: 'MILES',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 15.35,
-            lastMonthTrend: 2.06,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'FUEL GALLON',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 2.35,
-            lastMonthTrend: 237.5,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'FUEL COST',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 19.3,
-            lastMonthTrend: 2.37,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'REPAIR COST',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 8.34,
-            lastMonthTrend: 768.3,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'ROADSIDE INSP.',
-            isSelected: false,
-            isHovered: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 47,
-            lastMonthTrend: 5,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'VIOLATION',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 5,
-            lastMonthTrend: 1,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'ACCIDENT',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 0,
-            lastMonthTrend: 100,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'EXPENSES',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 322.25,
-            lastMonthTrend: 8.37,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'DRIVER',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 3,
-            lastMonthTrend: 6,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'TRUCK',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 5,
-            lastMonthTrend: 2,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'TRAILER',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 2,
-            lastMonthTrend: 2,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'OWNER',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 1,
-            lastMonthTrend: 1,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'USER',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 0,
-            lastMonthTrend: 6,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'REPAIR SHOP',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 12,
-            lastMonthTrend: 4,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'BROKER',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 7,
-            lastMonthTrend: 1,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-        {
-            title: 'SHIPPER',
-            isHovered: false,
-            isSelected: false,
-            selectedColor: null,
-            selectedHoverColor: null,
-            lastMonthValue: 35,
-            lastMonthTrend: 12,
-            monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
-        },
-    ];
+    public performanceData: PerformanceDataItem[] = [];
 
     private selectedPerformanceDataCount: number = 0;
     private maxPerformanceDataItemsSelected = 10;
@@ -559,6 +349,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     private getConstantData(): void {
+        this.performanceData = JSON.parse(
+            JSON.stringify(DashboardPerformanceConstants.PERFROMANCE_DATA)
+        );
+
         this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
         this.currentActiveTab =
             DashboardPerformanceConstants.PERFORMANCE_TABS[2];
@@ -589,6 +383,22 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((performanceData) => {
                 console.log('performanceData', performanceData);
+
+                /* this.performanceData =
+                    performanceData.performanceTable.performanceTables[0].map(
+                        (performanceDataItem, index) => {
+                            return {
+                                ...this.performanceData[index],
+                                isHovered: false,
+                                isSelected: false,
+                                selectedColor: null,
+                                selectedHoverColor: null,
+                                lastIntervalValue: performanceDataItem.lastIntervalValue,
+                                lastIntervalTrend: null,
+                                intervalAverageValue: null,
+                            };
+                        }
+                    ); */
             });
     }
 

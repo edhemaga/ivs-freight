@@ -73,6 +73,20 @@ export enum ConstantStringEnum {
     SML = 'SemiMonthly',
     BWL = 'BiWeekly',
 
+    YESTERDAY = 'YESTERDAY',
+
+    LAST_WEEK = 'LAST WEEK',
+    LAST_MONTH = 'LAST MONTH',
+    LAST_QUARTAL = 'LAST QUARTAL',
+    LAST_PERIOD = 'LAST PERIOD',
+
+    AVERAGE = ' AVERAGE',
+    DAILY_AVERAGE = 'DAILY AVERAGE',
+    WEEKLY_AVERAGE = 'WEEKLY AVERAGE',
+    MONTHLY_AVERAGE = 'MONTHLY AVERAGE',
+    QUARTERLY_AVERAGE = 'QUARTERLY AVERAGE',
+    PERIOD_AVERAGE = 'PERIOD AVERAGE',
+
     CLICK = 'click',
     CLASS_DROPDOWN_OPTION = 'dropdown-option',
 
