@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { IntervalLabelResponse } from './intervalLabelResponse';
 import { ShipperIntervalResponse } from './shipperIntervalResponse';
 import { TopShipperResponsePagination } from './topShipperResponsePagination';
 
@@ -18,6 +19,6 @@ export interface TopShipperListResponse {
     topShippers?: Array<ShipperIntervalResponse> | null;
     allOthers?: Array<ShipperIntervalResponse> | null;
     totalLoadCount?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

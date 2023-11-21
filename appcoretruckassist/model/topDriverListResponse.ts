@@ -11,6 +11,7 @@
  */
 import { TopDriverResponsePagination } from './topDriverResponsePagination';
 import { DriverIntervalResponse } from './driverIntervalResponse';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface TopDriverListResponse { 
@@ -19,6 +20,6 @@ export interface TopDriverListResponse {
     allOthers?: Array<DriverIntervalResponse> | null;
     totalRevenue?: number | null;
     totalMileage?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

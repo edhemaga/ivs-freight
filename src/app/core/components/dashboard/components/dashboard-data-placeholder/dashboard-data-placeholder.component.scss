@@ -1,0 +1,42 @@
+@import 'src/theme/variables.scss';
+
+.dashboard-data-placeholder {
+    background: linear-gradient(
+        0deg,
+        rgba(204, 204, 204, 1) 0%,
+        rgba(255, 255, 255, 1) 35%
+    );
+
+    width: 100%;
+    height: 90%;
+
+    .zero-results-container {
+        padding-top: 4px;
+
+        p {
+            color: $bw6-2;
+            font-size: 11px;
+            line-height: 14px;
+        }
+    }
+
+    .center-container {
+        height: 100%;
+
+        p {
+            font-size: 20px;
+            line-height: 24px;
+            color: $ta-light-grey-6;
+
+            &::-moz-selection {
+                color: $ta-light-grey-6;
+                background: rgb(204, 204, 204, 0.2);
+            }
+
+            &::selection {
+                color: $ta-light-grey-6;
+                background: rgb(204, 204, 204, 0.2);
+            }
+        }
+    }
+}

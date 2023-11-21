@@ -11,6 +11,7 @@
  */
 import { TopTruckResponsePagination } from './topTruckResponsePagination';
 import { TruckIntervalResponse } from './truckIntervalResponse';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface TopTruckListResponse { 
@@ -19,6 +20,6 @@ export interface TopTruckListResponse {
     allOthers?: Array<TruckIntervalResponse> | null;
     totalRevenue?: number | null;
     totalMileage?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

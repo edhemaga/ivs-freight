@@ -11,6 +11,7 @@
  */
 import { FuelStopIntervalResponse } from './fuelStopIntervalResponse';
 import { TopFuelStopResponsePagination } from './topFuelStopResponsePagination';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface TopFuelStopListResponse { 
@@ -19,6 +20,6 @@ export interface TopFuelStopListResponse {
     allOthers?: Array<FuelStopIntervalResponse> | null;
     totalCost?: number | null;
     totalVisitCount?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

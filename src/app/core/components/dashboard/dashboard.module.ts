@@ -11,10 +11,15 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // directives
 import { ClickOutsideCustomRangeDirective } from './state/directives/click-outside-custom-range.directive';
 
+// pipes
+import { FormatNumberToThousandDecimal } from './state/pipes/thousand-pipe/thousand-formater.pipe';
+import { SetTrendIconPipe } from './state/pipes/set-trend-icon-pipe/set-trend-icon.pipe';
+
 // components
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardPerformanceComponent } from './components/dashboard-performance/dashboard-performance.component';
 import { DashboardTopRatedComponent } from './components/dashboard-top-rated/dashboard-top-rated.component';
+import { DashboardDataPlaceholderComponent } from './components/dashboard-data-placeholder/dashboard-data-placeholder.component';
 
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
@@ -30,8 +35,6 @@ import { DashboardStateUsaComponent } from './components/dashboard-state-trackin
 
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
-import { FormatNumberToThousandDecimal } from './state/pipes/thousand-pipe/thousand-formater.pipe';
-import { SetTrendIconPipe } from './state/pipes/set-trend-icon-pipe/set-trend-icon.pipe';
 
 @NgModule({
     declarations: [
@@ -42,6 +45,7 @@ import { SetTrendIconPipe } from './state/pipes/set-trend-icon-pipe/set-trend-ic
         DashboardMapComponent,
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
+        DashboardDataPlaceholderComponent,
     ],
     imports: [
         // modules

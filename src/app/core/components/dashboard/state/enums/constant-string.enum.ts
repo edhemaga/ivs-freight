@@ -83,6 +83,8 @@ export enum ConstantStringEnum {
 
     EMPTY_SPACE_STRING = ' ',
 
+    REGEX_GI = 'gi',
+
     TREND_UP_IMG = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
     TREND_UP_IMG_2 = 'assets/svg/common/trend-up-red.svg',
     TREND_DOWN_IMG = 'assets/svg/common/dashboard/trend-down-with-frame.svg',

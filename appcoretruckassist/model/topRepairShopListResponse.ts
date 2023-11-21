@@ -11,6 +11,7 @@
  */
 import { TopRepairShopResponsePagination } from './topRepairShopResponsePagination';
 import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface TopRepairShopListResponse { 
@@ -19,6 +20,6 @@ export interface TopRepairShopListResponse {
     allOther?: Array<RepairShopIntervalResponse> | null;
     totalCost?: number | null;
     totalVisit?: number | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

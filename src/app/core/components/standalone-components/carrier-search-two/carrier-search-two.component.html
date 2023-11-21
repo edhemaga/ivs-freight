@@ -1,18 +1,13 @@
 <div
     class="d-flex align-items-center search-container"
     [ngClass]="{
-        active: displaySearch,
-        confirmed: isValueConfirmed,
-        focused: isValueConfirmed && isInputFocused
+        focused: isInputFocused,
+        confirmed: isValueConfirmed
     }"
 >
     <!-- Icon -->
-    <div
-        class="icon-container"
-        [ngbTooltip]="displaySearch ? null : 'Search'"
-        placement="bottom"
-        (click)="toggleSearch()"
-    >
+
+    <div class="icon-container">
         <svg-icon
             class="search-icon"
             [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
@@ -20,44 +15,45 @@
         ></svg-icon>
     </div>
 
+    <!-- Border -->
+
+    <div class="search-border"></div>
+
     <!-- Input -->
+
     <div class="d-flex align-items-center input-container">
         <input
             #searchInput
             type="text"
             spellcheck="false"
             [placeholder]="placeHolderText ? 'Find ' + placeHolderText : 'Find'"
+            (keyup)="handleSearchValue($event); handleEnterKeyUp($event)"
             (focus)="handleSearchFocus(true)"
             (blur)="handleSearchFocus(false)"
         />
 
-        <div
-            class="d-flex align-items-center btn-container"
-            *ngIf="displaySearch"
-        >
-            <ng-container *ngIf="!isValueConfirmed">
-                <svg-icon
-                    class="confirm-icon"
-                    ngbTooltip="Confirm"
-                    placement="bottom"
-                    [src]="'assets/svg/ic_spec-confirm.svg'"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    (click)="handleConfirmClick()"
-                ></svg-icon>
-            </ng-container>
+        <ng-container *ngIf="isDisplayingButtons">
+            <div class="d-flex align-items-center btn-container">
+                <ng-container *ngIf="!isValueConfirmed">
+                    <svg-icon
+                        class="confirm-icon"
+                        ngbTooltip="Confirm"
+                        placement="top"
+                        [src]="'assets/svg/ic_spec-confirm.svg'"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        (click)="handleConfirmClick()"
+                    ></svg-icon>
+                </ng-container>
 
-            <svg-icon
-                class="clear-icon"
-                ngbTooltip="Clear"
-                placement="bottom"
-                [src]="
-                    isValueConfirmed
-                        ? 'assets/svg/applicant/close-x.svg'
-                        : 'assets/svg/ic_x.svg'
-                "
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                (click)="handleClearClick()"
-            ></svg-icon>
-        </div>
+                <svg-icon
+                    class="clear-icon"
+                    ngbTooltip="Clear"
+                    placement="top"
+                    [src]="'assets/svg/ic_x.svg'"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="handleClearClick()"
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
 </div>

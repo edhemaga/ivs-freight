@@ -779,6 +779,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 ['19', 'SUN'],
                 ['20', 'MON'],
             ],
+            dataTooltipLabels: [],
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 

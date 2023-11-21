@@ -11,12 +11,13 @@
  */
 import { ViolationIntervalResponse } from './violationIntervalResponse';
 import { ViolationByStateResponsePagination } from './violationByStateResponsePagination';
+import { IntervalLabelResponse } from './intervalLabelResponse';
 
 
 export interface ViolationByStateListResponse { 
     pagination?: ViolationByStateResponsePagination;
     topTen?: Array<ViolationIntervalResponse> | null;
     others?: Array<ViolationIntervalResponse> | null;
-    intervalLabels?: Array<string> | null;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 
