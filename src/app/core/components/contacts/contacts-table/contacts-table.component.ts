@@ -263,6 +263,7 @@ export class ContactsTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                hideActivationButton: true,
                 showLabelFilter: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
@@ -277,10 +278,10 @@ export class ContactsTableComponent
         const tableView = JSON.parse(
             localStorage.getItem(`Contact-table-view`)
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.mapingIndex = 0;
@@ -292,7 +293,6 @@ export class ContactsTableComponent
         );
 
         const contactData = this.getTabData();
-
         this.tableData = [
             {
                 title: 'Contacts',
@@ -309,14 +309,12 @@ export class ContactsTableComponent
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
-
         this.setContactData(td);
     }
 
     // Get Contact Data From Store Or Via Api Call
     getTabData() {
         this.contacts = this.contactQuery.getAll();
-
         return this.contacts?.length ? this.contacts : [];
     }
 
@@ -350,11 +348,9 @@ export class ContactsTableComponent
 
         if (td.data.length) {
             this.viewData = td.data;
-
             this.viewData = this.viewData.map((data: any) => {
                 return this.mapContactData(data);
             });
-
             // For Testing
             // for (let i = 0; i < 300; i++) {
             //   this.viewData.push(this.viewData[0]);
@@ -373,6 +369,12 @@ export class ContactsTableComponent
         return {
             ...data,
             isSelected: false,
+            email: data?.contactEmails[0]?.email
+                ? data?.contactEmails[0]?.email
+                : '',
+            phone: data?.contactPhones[0]?.phone
+                ? data?.contactPhones[0]?.phone
+                : '',
             textAddress: data?.address?.address ? data.address.address : '',
             textShortName: this.nameInitialsPipe.transform(data.name),
             avatarColor: this.getAvatarColors(),
@@ -565,7 +567,7 @@ export class ContactsTableComponent
         } else if (event.action === 'tab-selected') {
             this.mapingIndex = 0;
 
-            this.selectedTab = event.tabData.field; 
+            this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
 
@@ -598,7 +600,6 @@ export class ContactsTableComponent
     onTableBodyActions(event: any) {
         if (event.type === 'show-more') {
             this.backFilterQuery.pageIndex++;
-
             this.contactBackFilter(this.backFilterQuery, true);
         } else if (event.type === 'edit-contact') {
             this.modalService.openModal(
