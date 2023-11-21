@@ -25,4 +25,10 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </div>
+    <div *ngIf="activeViewMode == 'Card'">
+        <app-truckassist-cards
+            [viewData]="viewData"
+            [tableData]="tableData"
+        ></app-truckassist-cards>
+    </div>
 </div>

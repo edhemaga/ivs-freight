@@ -81,7 +81,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
-
         // Confirmation Subscribe
         /* this.confirmationService.confirmationData$
       .pipe(takeUntil(this.destroy$))
@@ -417,9 +416,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        console.log('Load Data');
-        console.log(td.data);
 
         this.setLoadData(td);
     }
@@ -764,13 +760,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.action === 'sort') {
             if (event.direction) {
                 this.backLoadFilterQuery.statusType =
-                this.selectedTab === 'template'
-                    ? undefined
-                    : this.selectedTab === 'active'
-                    ? 2
-                    : this.selectedTab === 'closed'
-                    ? 3
-                    : 1;
+                    this.selectedTab === 'template'
+                        ? undefined
+                        : this.selectedTab === 'active'
+                        ? 2
+                        : this.selectedTab === 'closed'
+                        ? 3
+                        : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
 

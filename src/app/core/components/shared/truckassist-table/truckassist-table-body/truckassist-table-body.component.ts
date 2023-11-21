@@ -34,7 +34,7 @@ import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.co
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
-
+interface Options {}
 @Titles()
 @Component({
     selector: 'app-truckassist-table-body',

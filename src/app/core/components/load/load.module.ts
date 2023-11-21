@@ -9,6 +9,7 @@ import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/tr
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards/truckassist-cards.component';
 
 @NgModule({
     declarations: [LoadTableComponent, LoadCardComponent],
@@ -18,9 +19,10 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         AngularSvgIconModule,
         LoadDetailsModule,
         TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent, 
+        TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
-        formatDatePipe
+        TruckassistCardsComponent,
+        formatDatePipe,
     ],
 })
 export class LoadModule {}

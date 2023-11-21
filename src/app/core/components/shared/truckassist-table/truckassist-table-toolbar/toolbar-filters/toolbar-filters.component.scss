@@ -85,19 +85,19 @@
     // VIEW MODE SELECT
     .view-mode-container {
         width: fit-content;
-        height: 32px;
+        height: 34px;
         padding: 4px;
         display: flex;
 
         .mode {
             cursor: pointer;
             width: fit-content;
-            height: 24px;
+            height: 26px;
             border-radius: 2px;
             padding: 5px 8px;
             font-weight: 800;
             font-size: 14px;
-            color: #b7b7b7;
+            color: #aaaaaa;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -109,8 +109,8 @@
         }
 
         .mode-active {
-            background: #f3f3f3 !important;
-            color: #919191 !important;
+            background: #eeeeee !important;
+            color: #424242 !important;
 
             &:hover {
                 color: #6c6c6c !important;
