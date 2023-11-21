@@ -9,28 +9,48 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { NetIncomeGraphPerformanceResponse } from './netIncomeGraphPerformanceResponse';
+import { ViolationGraphPerformanceResponse } from './violationGraphPerformanceResponse';
+import { RevenueGraphPerformanceResponse } from './revenueGraphPerformanceResponse';
+import { FuelGallonGraphPerformanceResponse } from './fuelGallonGraphPerformanceResponse';
+import { FuelCostGraphPerformanceResponse } from './fuelCostGraphPerformanceResponse';
+import { MilesGraphPerformanceResponse } from './milesGraphPerformanceResponse';
+import { AccidentGraphPerformanceResponse } from './accidentGraphPerformanceResponse';
+import { PricePerGallonGraphPerformanceResponse } from './pricePerGallonGraphPerformanceResponse';
+import { ShipperGraphPerformanceResponse } from './shipperGraphPerformanceResponse';
+import { LoadRatePerMileGraphPerformanceResponse } from './loadRatePerMileGraphPerformanceResponse';
+import { UserGraphPerformanceResponse } from './userGraphPerformanceResponse';
+import { TrailerGraphPerformanceResponse } from './trailerGraphPerformanceResponse';
+import { BrokerGraphPerformanceResponse } from './brokerGraphPerformanceResponse';
+import { DriverGraphPerformanceResponse } from './driverGraphPerformanceResponse';
+import { LoadGraphPerformanceResponse } from './loadGraphPerformanceResponse';
+import { RepairCostGraphPerformanceResponse } from './repairCostGraphPerformanceResponse';
+import { ExpencesGraphPerformanceResponse } from './expencesGraphPerformanceResponse';
+import { RoadsideGraphPerformanceResponse } from './roadsideGraphPerformanceResponse';
+import { TruckGraphPerformanceResponse } from './truckGraphPerformanceResponse';
+import { RepairShopGraphPerformanceResponse } from './repairShopGraphPerformanceResponse';
 
 
 export interface PerformanceGraphResponse { 
-    loadRatePerMile?: number | null;
-    pricePerGallon?: number | null;
-    ownersCount?: number | null;
-    usersCount?: number | null;
-    accidentsCount?: number | null;
-    brokersCount?: number | null;
-    driversCount?: number | null;
-    expencesCount?: number | null;
-    fuelCostsCount?: number | null;
-    fuelGallonsCount?: number | null;
-    loadsCount?: number | null;
-    milesCount?: number | null;
-    repairCostsCount?: number | null;
-    repairShopsCount?: number | null;
-    revenuesCount?: number | null;
-    roadsidesCount?: number | null;
-    shippersCount?: number | null;
-    trailersCount?: number | null;
-    trucksCount?: number | null;
-    violationsCount?: number | null;
+    userGraphPerformance?: UserGraphPerformanceResponse;
+    accidentGraphPerformance?: AccidentGraphPerformanceResponse;
+    brokerGraphPerformance?: BrokerGraphPerformanceResponse;
+    driverGraphPerformance?: DriverGraphPerformanceResponse;
+    expencesGraphPerformance?: ExpencesGraphPerformanceResponse;
+    fuelCostGraphPerformance?: FuelCostGraphPerformanceResponse;
+    fuelGallonGraphPerformance?: FuelGallonGraphPerformanceResponse;
+    loadGraphPerformance?: LoadGraphPerformanceResponse;
+    milesGraphPerformance?: MilesGraphPerformanceResponse;
+    netIncomeGraphPerformance?: NetIncomeGraphPerformanceResponse;
+    repairCostGraphPerformance?: RepairCostGraphPerformanceResponse;
+    repairShopGraphPerformance?: RepairShopGraphPerformanceResponse;
+    revenueGraphPerformance?: RevenueGraphPerformanceResponse;
+    roadsideGraphPerformance?: RoadsideGraphPerformanceResponse;
+    shipperGraphPerformance?: ShipperGraphPerformanceResponse;
+    trailerGraphPerformance?: TrailerGraphPerformanceResponse;
+    truckGraphPerformance?: TruckGraphPerformanceResponse;
+    violationGraphPerformance?: ViolationGraphPerformanceResponse;
+    loadRatePerMileGraphPerformance?: LoadRatePerMileGraphPerformanceResponse;
+    pricePerGallonGraphPerformance?: PricePerGallonGraphPerformanceResponse;
 }
 

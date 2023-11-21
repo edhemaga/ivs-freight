@@ -11,9 +11,7 @@
  */
 
 
-export interface RepairShopPerformanceResponse { 
-    lastIntervalValue?: number | null;
-    lastIntervalTrend?: number | null;
-    intervalAverageValue?: number | null;
+export interface ViolationGraphPerformanceResponse { 
+    value?: number | null;
 }
 

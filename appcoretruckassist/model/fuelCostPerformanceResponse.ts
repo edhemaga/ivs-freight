@@ -12,8 +12,8 @@
 
 
 export interface FuelCostPerformanceResponse { 
-    fuelCostsCount?: number | null;
-    fuelCostsDifference?: number | null;
-    fuelCostsAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

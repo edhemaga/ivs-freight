@@ -12,8 +12,8 @@
 
 
 export interface ShipperPerformanceResponse { 
-    shippersCount?: number | null;
-    shippersDifference?: number | null;
-    shippersAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

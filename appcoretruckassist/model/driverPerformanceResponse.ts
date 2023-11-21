@@ -12,8 +12,8 @@
 
 
 export interface DriverPerformanceResponse { 
-    driversCount?: number | null;
-    driversDifference?: number | null;
-    driversAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

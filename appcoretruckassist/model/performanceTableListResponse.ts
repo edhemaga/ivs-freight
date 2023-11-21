@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PerformanceTableResponse } from './performanceTableResponse';
 
 
-export interface RepairShopPerformanceResponse { 
-    lastIntervalValue?: number | null;
-    lastIntervalTrend?: number | null;
-    intervalAverageValue?: number | null;
+export interface PerformanceTableListResponse { 
+    performanceTables?: Array<PerformanceTableResponse> | null;
 }
 

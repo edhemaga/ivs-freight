@@ -12,8 +12,8 @@
 
 
 export interface BrokerPerformanceResponse { 
-    brokersCount?: number | null;
-    brokersDifference?: number | null;
-    brokersAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

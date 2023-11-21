@@ -12,8 +12,8 @@
 
 
 export interface NetIncomePerformanceResponse { 
-    netIncomesCount?: number | null;
-    netIncomesDifference?: number | null;
-    netIncomesAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 
