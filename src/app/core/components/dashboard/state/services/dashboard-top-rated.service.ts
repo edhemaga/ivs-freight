@@ -25,7 +25,6 @@ import {
 export class DashboardTopRatedService {
     constructor(private dashboardService: DashboardService) {}
 
-    // Dashboard - Top Rated
     public getTopRatedDispatcher(
         data: TopRatedApiArguments
     ): Observable<TopDispatchersListResponse> {

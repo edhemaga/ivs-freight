@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { DashboardService } from '../../state/services/dashboard.service';
+import { DashboardTopRatedService } from '../../state/services/dashboard-top-rated.service';
 
 // store
 import { DashboardQuery } from '../../state/store/dashboard.query';
@@ -144,7 +144,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private changeDetectorRef: ChangeDetectorRef,
-        private dashboardService: DashboardService,
+        private dashboardTopRatedService: DashboardTopRatedService,
         private dashboardQuery: DashboardQuery
     ) {}
 
@@ -626,7 +626,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedDispatcher(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((dispatcherData) => {
@@ -743,7 +743,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedDriver(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((driverData) => {
@@ -851,7 +851,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedTruck(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((truckData) => {
@@ -955,7 +955,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedBroker(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((brokerData) => {
@@ -1064,7 +1064,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             1
         ) as TopRatedWithoutTabApiArguments;
 
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedShipper(filteredTopRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((shipperData) => {
@@ -1152,7 +1152,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedOwner(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((ownerData) => {
@@ -1256,7 +1256,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedRepairShop(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((repairShopData) => {
@@ -1374,7 +1374,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         selectedTab: DashboardTopReportType,
         topRatedArgumentsData: TopRatedApiArguments
     ): void {
-        this.dashboardService
+        this.dashboardTopRatedService
             .getTopRatedFuelStop(topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((fuelStopData) => {

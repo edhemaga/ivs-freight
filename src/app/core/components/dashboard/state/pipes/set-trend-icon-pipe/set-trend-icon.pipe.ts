@@ -12,8 +12,6 @@ import { DashboardPerformanceConstants } from '../../utils/constants/dashboard-p
 })
 export class SetTrendIconPipe implements PipeTransform {
     transform(value: number, dataTitle: string): string {
-        console.log('value', value);
-        console.log('dataTitle', dataTitle);
         if (value > 0) {
             if (DashboardPerformanceConstants.TREND_LIST.includes(dataTitle)) {
                 return ConstantStringEnum.TREND_UP_IMG;

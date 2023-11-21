@@ -65,7 +65,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedColor: null,
             selectedHoverColor: null,
             lastMonthValue: 462.57,
-            lastMonthTrend: 138.01,
+            lastMonthTrend: -2,
             monthlyAverageValue: 283.32,
             monthlyAverageTrend: 37.24,
         },
@@ -76,7 +76,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedColor: null,
             selectedHoverColor: null,
             lastMonthValue: 642.3,
-            lastMonthTrend: 5.37,
+            lastMonthTrend: 0,
             monthlyAverageValue: 283.32,
             monthlyAverageTrend: 37.24,
         },
@@ -87,9 +87,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedColor: null,
             selectedHoverColor: null,
             lastMonthValue: 37,
-            lastMonthTrend: 3,
+            lastMonthTrend: -3,
             monthlyAverageValue: 283.32,
-            monthlyAverageTrend: 37.24,
+            monthlyAverageTrend: 120000,
         },
         {
             title: 'MILES',
@@ -589,7 +589,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((performanceData) => {
                 console.log('performanceData', performanceData);
-                console.log(typeof performanceData.performance);
             });
     }
 
@@ -779,7 +778,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 ['19', 'SUN'],
                 ['20', 'MON'],
             ],
-            dataTooltipLabels: [],
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 

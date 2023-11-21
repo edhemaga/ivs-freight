@@ -128,19 +128,17 @@ export class DashboardUtils {
                 barChartLabel.tooltipLabel,
             ];
 
-            if (
-                ((selectedSubPeriod === ConstantStringEnum.HOURLY ||
-                    selectedSubPeriod === ConstantStringEnum.THS ||
-                    selectedSubPeriod === ConstantStringEnum.SHS ||
-                    selectedSubPeriod === ConstantStringEnum.SMD) &&
+            const isSelectedSubPeriodIncludedInCustomPeriodList =
+                (DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST.includes(
+                    selectedSubPeriod
+                ) &&
                     !barChartLabel.label.includes(ConstantStringEnum.PM) &&
                     !barChartLabel.label.includes(ConstantStringEnum.AM)) ||
-                selectedSubPeriod === ConstantStringEnum.DAILY ||
-                selectedSubPeriod === ConstantStringEnum.WEEKLY ||
-                selectedSubPeriod === ConstantStringEnum.BWL ||
-                selectedSubPeriod === ConstantStringEnum.SML ||
-                selectedSubPeriod === ConstantStringEnum.QUARTERLY
-            ) {
+                DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST_2.includes(
+                    selectedSubPeriod
+                );
+
+            if (isSelectedSubPeriodIncludedInCustomPeriodList) {
                 const splitLabel = barChartLabel.label.split(
                     ConstantStringEnum.EMPTY_SPACE_STRING
                 );

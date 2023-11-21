@@ -147,6 +147,14 @@
                         p:nth-child(3) {
                             color: $ta-white-3;
                         }
+
+                        div {
+                            .trend-span {
+                                p {
+                                    color: $white;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -228,6 +236,14 @@
                                 line-height: 18px;
                             }
 
+                            .trend-span {
+                                p {
+                                    font-size: 14px;
+                                    line-height: 18px;
+                                    color: $ta-black;
+                                }
+                            }
+
                             .trend-icon-box {
                                 margin-left: 6px;
                                 background: transparent;
@@ -257,7 +273,7 @@
                         background: $bw2;
                     }
 
-                    &:hover .box-last-month-average .trend-icon-box {
+                    &:hover .box-last-average .trend-icon-box {
                         background: $white;
                     }
 
@@ -274,7 +290,13 @@
                             color: $white;
                         }
 
-                        .box-last-month-average {
+                        .box-last-average {
+                            .trend-span {
+                                p {
+                                    color: $ta-black;
+                                }
+                            }
+
                             .trend-icon-box {
                                 background: $ta-white-3;
                             }
@@ -318,11 +340,19 @@
                         }
                     }
 
-                    &-last-month-average {
+                    &-last-average {
                         p {
                             font-size: 14px;
                             line-height: 18px;
                             color: $ta-black;
+                        }
+
+                        .trend-span {
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $ta-black;
+                            }
                         }
 
                         .trend-icon-box {
