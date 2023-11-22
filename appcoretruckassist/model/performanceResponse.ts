@@ -10,12 +10,12 @@
  * Do not edit the class manually.
  */
 import { PerformanceGraphListResponse } from './performanceGraphListResponse';
-import { PerformanceTableListResponse } from './performanceTableListResponse';
 import { IntervalLabelResponse } from './intervalLabelResponse';
+import { PerformanceTableResponse } from './performanceTableResponse';
 
 
 export interface PerformanceResponse { 
-    performanceTable?: PerformanceTableListResponse;
+    performanceTable?: PerformanceTableResponse;
     performanceGraph?: PerformanceGraphListResponse;
     intervalLabels?: Array<IntervalLabelResponse> | null;
 }

@@ -9,46 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MilesPerformanceResponse } from './milesPerformanceResponse';
-import { TruckPerformanceResponse } from './truckPerformanceResponse';
-import { NetIncomePerformanceResponse } from './netIncomePerformanceResponse';
-import { LoadPerformanceResponse } from './loadPerformanceResponse';
-import { UserPerformanceResponse } from './userPerformanceResponse';
-import { OwnerPerformanceResponse } from './ownerPerformanceResponse';
-import { FuelGallonPerformanceResponse } from './fuelGallonPerformanceResponse';
-import { ViolationPerformanceResponse } from './violationPerformanceResponse';
-import { RevenuePerformanceResponse } from './revenuePerformanceResponse';
-import { FuelCostPerformanceResponse } from './fuelCostPerformanceResponse';
-import { DriverPerformanceResponse } from './driverPerformanceResponse';
-import { ExpencesPerformanceResponse } from './expencesPerformanceResponse';
-import { AccidentPerformanceResponse } from './accidentPerformanceResponse';
-import { ShipperPerformanceResponse } from './shipperPerformanceResponse';
-import { RepairCostPerformanceResponse } from './repairCostPerformanceResponse';
-import { RoadsidePerformanceResponse } from './roadsidePerformanceResponse';
-import { BrokerPerformanceResponse } from './brokerPerformanceResponse';
-import { RepairShopPerformanceResponse } from './repairShopPerformanceResponse';
-import { TrailerPerformanceResponse } from './trailerPerformanceResponse';
+import { PerformanceTableMetric } from './performanceTableMetric';
 
 
 export interface PerformanceTableResponse { 
-    netIncomePerformance?: NetIncomePerformanceResponse;
-    revenuePerformance?: RevenuePerformanceResponse;
-    loadPerformance?: LoadPerformanceResponse;
-    milesPerformance?: MilesPerformanceResponse;
-    fuelGallonPerformance?: FuelGallonPerformanceResponse;
-    fuelCostPerformance?: FuelCostPerformanceResponse;
-    repairCostPerformance?: RepairCostPerformanceResponse;
-    roadsidePerformance?: RoadsidePerformanceResponse;
-    violationPerformance?: ViolationPerformanceResponse;
-    accidentPerformance?: AccidentPerformanceResponse;
-    expencesPerformance?: ExpencesPerformanceResponse;
-    driverPerformance?: DriverPerformanceResponse;
-    truckPerformance?: TruckPerformanceResponse;
-    trailerPerformance?: TrailerPerformanceResponse;
-    ownerPerformance?: OwnerPerformanceResponse;
-    userPerformance?: UserPerformanceResponse;
-    repairShopPerformance?: RepairShopPerformanceResponse;
-    brokerPerformance?: BrokerPerformanceResponse;
-    shipperPerformance?: ShipperPerformanceResponse;
+    performanceTableMetrics?: Array<PerformanceTableMetric> | null;
 }
 

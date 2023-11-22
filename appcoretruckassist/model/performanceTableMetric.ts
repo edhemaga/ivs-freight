@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PerformanceGraphMetric } from './performanceGraphMetric';
 
 
-export interface PerformanceGraphResponse { 
-    performanceGraphMetrics?: Array<PerformanceGraphMetric> | null;
+export interface PerformanceTableMetric { 
+    performanceType?: string | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

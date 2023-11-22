@@ -52,6 +52,7 @@ api/tag.service.ts
 api/telematics.service.ts
 api/terminal.service.ts
 api/test.service.ts
+api/testDeploy.service.ts
 api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
@@ -70,7 +71,6 @@ model/acceptApplicationCommand.ts
 model/accidentByStateListResponse.ts
 model/accidentByStateResponse.ts
 model/accidentByStateResponsePagination.ts
-model/accidentGraphPerformanceResponse.ts
 model/accidentIntervalResponse.ts
 model/accidentItemResponse.ts
 model/accidentItemReviewResponse.ts
@@ -79,7 +79,6 @@ model/accidentMinimalListResponse.ts
 model/accidentMinimalResponse.ts
 model/accidentMinimalResponsePagination.ts
 model/accidentModalResponse.ts
-model/accidentPerformanceResponse.ts
 model/accidentRecordFeedbackResponse.ts
 model/accidentResponse.ts
 model/accidentShortResponse.ts
@@ -126,7 +125,6 @@ model/brokerContactShortResponse.ts
 model/brokerFilterListResponse.ts
 model/brokerFilterResponse.ts
 model/brokerFilterResponsePagination.ts
-model/brokerGraphPerformanceResponse.ts
 model/brokerIntervalResponse.ts
 model/brokerInvoiceAgeingResponse.ts
 model/brokerLoadModalResponse.ts
@@ -135,7 +133,6 @@ model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
 model/brokerModalResponse.ts
-model/brokerPerformanceResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
 model/brokerShortResponse.ts
@@ -316,13 +313,11 @@ model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
 model/driverFilterResponsePagination.ts
 model/driverForgotPasswordCommand.ts
-model/driverGraphPerformanceResponse.ts
 model/driverIntervalResponse.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
 model/driverMinimalResponsePagination.ts
-model/driverPerformanceResponse.ts
 model/driverResponse.ts
 model/driverRightsFeedbackResponse.ts
 model/driverShortResponse.ts
@@ -345,8 +340,6 @@ model/enumValue.ts
 model/eventModalResponse.ts
 model/eventResponse.ts
 model/eventType.ts
-model/expencesGraphPerformanceResponse.ts
-model/expencesPerformanceResponse.ts
 model/factoringCompany.ts
 model/fileResponse.ts
 model/fileResponsePagination.ts
@@ -358,11 +351,7 @@ model/fuelCardListResponse.ts
 model/fuelCardResponse.ts
 model/fuelCardResponsePagination.ts
 model/fuelCardShortResponse.ts
-model/fuelCostGraphPerformanceResponse.ts
-model/fuelCostPerformanceResponse.ts
 model/fuelDispatchHistoryResponse.ts
-model/fuelGallonGraphPerformanceResponse.ts
-model/fuelGallonPerformanceResponse.ts
 model/fuelItemResponse.ts
 model/fuelModalStopResponse.ts
 model/fuelModalStopResponsePagination.ts
@@ -446,7 +435,6 @@ model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadBrokerDetailsResponse.ts
 model/loadBrokerDetailsResponsePagination.ts
-model/loadGraphPerformanceResponse.ts
 model/loadListResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
@@ -454,8 +442,6 @@ model/loadMinimalResponsePagination.ts
 model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
-model/loadPerformanceResponse.ts
-model/loadRatePerMileGraphPerformanceResponse.ts
 model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
@@ -492,8 +478,6 @@ model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
 model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
-model/milesGraphPerformanceResponse.ts
-model/milesPerformanceResponse.ts
 model/milesStopPayrollResponse.ts
 model/milesStopResponse.ts
 model/mobileGpsDataCommand.ts
@@ -506,15 +490,12 @@ model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
-model/netIncomeGraphPerformanceResponse.ts
-model/netIncomePerformanceResponse.ts
 model/notificationEntity.ts
 model/offDutyLocationResponse.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts
 model/ownerModalResponse.ts
-model/ownerPerformanceResponse.ts
 model/ownerResponse.ts
 model/ownerShortResponse.ts
 model/ownerTableResponse.ts
@@ -579,9 +560,10 @@ model/payrollResponse.ts
 model/payrollResponsePagination.ts
 model/perMileEntity.ts
 model/performanceGraphListResponse.ts
+model/performanceGraphMetric.ts
 model/performanceGraphResponse.ts
 model/performanceResponse.ts
-model/performanceTableListResponse.ts
+model/performanceTableMetric.ts
 model/performanceTableResponse.ts
 model/personalInfoFeedbackResponse.ts
 model/pickupDeliveryByStateListResponse.ts
@@ -594,7 +576,6 @@ model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerDocumentsResponse.ts
 model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
-model/pricePerGallonGraphPerformanceResponse.ts
 model/problemDetails.ts
 model/pspAuthFeedbackResponse.ts
 model/ratingSetResponse.ts
@@ -610,8 +591,6 @@ model/repairByStateListResponse.ts
 model/repairByStateResponse.ts
 model/repairByStateResponsePagination.ts
 model/repairCategoryFilterResponse.ts
-model/repairCostGraphPerformanceResponse.ts
-model/repairCostPerformanceResponse.ts
 model/repairIntervalResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
@@ -622,7 +601,6 @@ model/repairServiceTypeResponse.ts
 model/repairShopContactResponse.ts
 model/repairShopExpensesChartResponse.ts
 model/repairShopExpensesResponse.ts
-model/repairShopGraphPerformanceResponse.ts
 model/repairShopIntervalResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
@@ -630,7 +608,6 @@ model/repairShopMinimalResponse.ts
 model/repairShopMinimalResponsePagination.ts
 model/repairShopModalResponse.ts
 model/repairShopOpenHoursResponse.ts
-model/repairShopPerformanceResponse.ts
 model/repairShopResponse.ts
 model/repairShopResponsePagination.ts
 model/repairShopServiceTypeResponse.ts
@@ -641,12 +618,9 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
-model/revenueGraphPerformanceResponse.ts
-model/revenuePerformanceResponse.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
-model/roadsideGraphPerformanceResponse.ts
 model/roadsideInspectionListResponse.ts
 model/roadsideInspectionMinimalListResponse.ts
 model/roadsideInspectionMinimalResponse.ts
@@ -654,7 +628,6 @@ model/roadsideInspectionMinimalResponsePagination.ts
 model/roadsideInspectionResponse.ts
 model/roadsideInspectionResponsePagination.ts
 model/roadsideInspectionSpecialCheckResponse.ts
-model/roadsidePerformanceResponse.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
 model/routingResponse.ts
@@ -669,7 +642,6 @@ model/shipperAverageWaitingTimeResponse.ts
 model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
 model/shipperContactShortResponse.ts
-model/shipperGraphPerformanceResponse.ts
 model/shipperIntervalResponse.ts
 model/shipperListResponse.ts
 model/shipperLoadDetailsResponse.ts
@@ -680,7 +652,6 @@ model/shipperMinimalListResponse.ts
 model/shipperMinimalResponse.ts
 model/shipperMinimalResponsePagination.ts
 model/shipperModalResponse.ts
-model/shipperPerformanceResponse.ts
 model/shipperResponse.ts
 model/shipperResponsePagination.ts
 model/shipperShortResponse.ts
@@ -755,14 +726,12 @@ model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
 model/trailerFilterResponse.ts
-model/trailerGraphPerformanceResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
 model/trailerMinimalListResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
-model/trailerPerformanceResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
@@ -781,7 +750,6 @@ model/truckFilterResponse.ts
 model/truckFilterResponsePagination.ts
 model/truckFuelConsumptionChartResponse.ts
 model/truckFuelConsumptionResponse.ts
-model/truckGraphPerformanceResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckIntervalResponse.ts
 model/truckListResponse.ts
@@ -789,7 +757,6 @@ model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
-model/truckPerformanceResponse.ts
 model/truckResponse.ts
 model/truckRevenueChartResponse.ts
 model/truckRevenueResponse.ts
@@ -891,8 +858,6 @@ model/updateWorkExperienceCommand.ts
 model/updateWorkExperienceItemCommand.ts
 model/updateWorkExperienceItemReviewCommand.ts
 model/updateWorkExperienceReviewCommand.ts
-model/userGraphPerformanceResponse.ts
-model/userPerformanceResponse.ts
 model/userResponse.ts
 model/validatePasswordCommand.ts
 model/verifyApplicantCommand.ts
@@ -907,9 +872,7 @@ model/violationByStateListResponse.ts
 model/violationByStateResponse.ts
 model/violationByStateResponsePagination.ts
 model/violationCategoryResponse.ts
-model/violationGraphPerformanceResponse.ts
 model/violationIntervalResponse.ts
-model/violationPerformanceResponse.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts

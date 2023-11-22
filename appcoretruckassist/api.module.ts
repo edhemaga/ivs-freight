@@ -52,6 +52,7 @@ import { TagService } from './api/tag.service';
 import { TelematicsService } from './api/telematics.service';
 import { TerminalService } from './api/terminal.service';
 import { TestService } from './api/test.service';
+import { TestDeployService } from './api/testDeploy.service';
 import { TitleService } from './api/title.service';
 import { TodoService } from './api/todo.service';
 import { TrailerService } from './api/trailer.service';
