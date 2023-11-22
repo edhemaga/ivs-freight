@@ -3,9 +3,6 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
-// moment
-import moment from 'moment';
-
 // services
 import { DashboardPerformanceService } from '../../state/services/dashboard-performance.service';
 
@@ -44,6 +41,7 @@ import {
 } from '../../state/models/dashboard-chart-models/bar-chart.model';
 import { PerformanceApiArguments } from '../../state/models/dashboard-performance-models/performance-api-arguments.model';
 import { SubintervalType, TimeInterval } from 'appcoretruckassist';
+import { DashboardTopRatedConstants } from '../../state/utils/constants/dashboard-top-rated.constants';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -67,10 +65,13 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public currentActiveTab: DashboardTab;
 
     private selectedCustomPeriodRange: CustomPeriodRange;
+    public clearCustomPeriodRangeValue: boolean = false;
 
     // dropdown
     public subPeriodDropdownList: DropdownListItem[] = [];
     public selectedSubPeriod: DropdownListItem;
+    public selectedDropdownWidthSubPeriod: DropdownListItem;
+    public selectedSubPeriodLabel: string;
 
     private overallCompanyDuration: number;
 
@@ -189,11 +190,15 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         item.title;
 
     public handleSwitchTabClick(activeTab: DashboardTab): void {
+        if (this.clearCustomPeriodRangeValue)
+            this.clearCustomPeriodRangeValue = false;
+
         if (this.currentActiveTab?.name === activeTab.name) {
             return;
         }
 
         this.currentActiveTab = activeTab;
+        this.selectedSubPeriodLabel = activeTab.name;
 
         let matchingIdList: number[] = [];
 
@@ -222,6 +227,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 this.setCustomSubPeriodList(this.overallCompanyDuration);
 
                 break;
+            case ConstantStringEnum.CUSTOM:
+                this.selectedDropdownWidthSubPeriod = this.selectedSubPeriod;
+                this.selectedSubPeriod = null;
+
+                break;
             default:
                 break;
         }
@@ -245,18 +255,29 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public handleSetCustomPeriodRangeClick(
         customPeriodRange: CustomPeriodRange
     ): void {
-        const fromDate = moment(new Date(customPeriodRange.fromDate));
-        const toDate = moment(new Date(customPeriodRange.toDate));
+        this.clearCustomPeriodRangeValue = true;
 
-        const selectedDaysRange =
-            toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+        if (!customPeriodRange) {
+            this.setCustomSubPeriodList(this.overallCompanyDuration);
 
-        if (selectedDaysRange < 0) {
-            return;
+            this.selectedSubPeriod = this.selectedDropdownWidthSubPeriod;
+        } else {
+            this.selectedSubPeriod =
+                DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.find(
+                    (subPeriod) =>
+                        subPeriod.name === customPeriodRange.subPeriod
+                );
+
+            this.selectedDropdownWidthSubPeriod = this.selectedSubPeriod;
+            this.selectedCustomPeriodRange = customPeriodRange;
+
+            this.getPerformanceListData(customPeriodRange);
         }
+    }
 
-        this.selectedCustomPeriodRange = customPeriodRange;
-
+    public handleCustomPeriodRangeSubperiodEmit(
+        selectedDaysRange: number
+    ): void {
         this.setCustomSubPeriodList(selectedDaysRange);
     }
 
@@ -315,6 +336,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         }
     }
 
+    public handleCustomPeriodRangeClose(): void {
+        this.clearCustomPeriodRangeValue = true;
+    }
+
     public handlePerformanceDataHover(
         index: number,
         removeHover: boolean = false
@@ -357,10 +382,14 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.currentActiveTab =
             DashboardPerformanceConstants.PERFORMANCE_TABS[2];
 
+        this.selectedSubPeriodLabel = ConstantStringEnum.WTD;
+
         this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
     }
 
-    private getPerformanceListData(): void {
+    private getPerformanceListData(
+        customPeriodRange?: CustomPeriodRange
+    ): void {
         const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
             this.currentActiveTab.name
         ) as TimeInterval;
@@ -371,8 +400,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         const performanceArgumentsData: PerformanceApiArguments = [
             selectedMainPeriod,
-            /* customPeriodRange?.fromDate ?? */ null,
-            /* customPeriodRange?.toDate ?? */ null,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ];
 
@@ -420,6 +449,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.subPeriodDropdownList = filteredSubPeriodDropdownList;
         this.selectedSubPeriod = selectedSubPeriod;
+
+        this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
     }
 
     private setPerformanceDefaultStateData(

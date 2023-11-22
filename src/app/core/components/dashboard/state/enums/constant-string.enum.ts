@@ -65,7 +65,9 @@ export enum ConstantStringEnum {
     HOURLY = 'Hourly',
     DAILY = 'Daily',
     WEEKLY = 'Weekly',
+    MONTHLY = 'Monthly',
     QUARTERLY = 'Quarterly',
+    YEARLY = 'Yearly',
 
     THS = 'ThreeHours',
     SHS = 'SixHours',

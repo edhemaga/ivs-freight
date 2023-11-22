@@ -8,31 +8,31 @@ import { PerformanceDataItem } from '../../models/dashboard-performance-models/p
 export class DashboardPerformanceConstants {
     static PERFORMANCE_TABS: DashboardTab[] = [
         {
-            name: 'Today',
+            name: ConstantStringEnum.TODAY,
             checked: false,
         },
         {
-            name: 'WTD',
+            name: ConstantStringEnum.WTD,
             checked: false,
         },
         {
-            name: 'MTD',
+            name: ConstantStringEnum.MTD,
             checked: true,
         },
         {
-            name: 'QTD',
+            name: ConstantStringEnum.QTD,
             checked: false,
         },
         {
-            name: 'YTD',
+            name: ConstantStringEnum.YTD,
             checked: false,
         },
         {
-            name: 'ALL',
+            name: ConstantStringEnum.ALL,
             checked: false,
         },
         {
-            name: 'Custom',
+            name: ConstantStringEnum.CUSTOM,
             checked: false,
             custom: true,
         },

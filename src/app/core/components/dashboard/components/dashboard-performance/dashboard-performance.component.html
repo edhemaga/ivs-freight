@@ -21,10 +21,17 @@
                 <app-ta-tab-switch
                     [tabs]="performanceTabs"
                     [disableHeight]="true"
+                    [subPeriodDropdownList]="subPeriodDropdownList"
+                    [selectedSubPeriod]="selectedSubPeriod"
+                    [clearCustomPeriodRangeValue]="clearCustomPeriodRangeValue"
                     (switchClicked)="handleSwitchTabClick($event)"
                     (customPeriodRangeEmitter)="
                         handleSetCustomPeriodRangeClick($event)
                     "
+                    (customPeriodRangeSubperiodEmitter)="
+                        handleCustomPeriodRangeSubperiodEmit($event)
+                    "
+                    (popoverClosedEmitter)="handleCustomPeriodRangeClose()"
                 >
                 </app-ta-tab-switch>
             </div>
@@ -44,7 +51,9 @@
                     'dropdown-right-w-3':
                         selectedSubPeriod?.name === 'Semi-Daily',
                     'dropdown-right-w-4': selectedSubPeriod?.name === 'Daily',
-                    'dropdown-right-w-5': selectedSubPeriod?.name === 'Weekly',
+                    'dropdown-right-w-5':
+                        selectedSubPeriod?.name === 'Weekly' ||
+                        currentActiveTab.name === 'Custom',
                     'dropdown-right-w-6':
                         selectedSubPeriod?.name === 'Bi-Weekly',
                     'dropdown-right-w-7':
@@ -61,6 +70,9 @@
                         name: 'Input Dropdown',
                         type: 'text',
                         isDropdown: true,
+                        isDisabled:
+                            currentActiveTab.name === 'ALL' ||
+                            currentActiveTab.name === 'Custom',
                         hideClear: true,
                         hideColorValidations: true,
                         removeInputBackground: true,
@@ -437,7 +449,7 @@
                                     currentActiveTab.name
                                         | setTrendLabel
                                             : performanceDataItem.isHovered
-                                            : selectedSubPeriod.name
+                                            : selectedSubPeriodLabel
                                 }}
                             </p>
                         </div>

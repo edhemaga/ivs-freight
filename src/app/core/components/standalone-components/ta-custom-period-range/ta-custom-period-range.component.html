@@ -28,6 +28,7 @@
                     }"
                 ></app-ta-input>
             </div>
+
             <div class="custom-period-range-form-date-inputs-input">
                 <app-ta-input
                     formControlName="toDate"
@@ -51,7 +52,7 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     label: 'Period View',
-                    isDisabled: !selectedSubPeriod,
+                    isDisabled: isSubPeriodDisabled,
                     isRequired: true,
                     isDropdown: true,
                     hideClear: true,
