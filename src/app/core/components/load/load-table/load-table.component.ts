@@ -442,7 +442,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setLoadData(td: any) {
         this.columns = td.gridColumns;
-
         if (td.data?.length) {
             this.viewData = td.data;
 
