@@ -5,6 +5,7 @@ import { AccountRoutingModule } from './account-routing.module';
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
     declarations: [AccountTableComponent],
@@ -12,8 +13,9 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
         CommonModule,
         AccountRoutingModule,
         TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent, 
-        TruckassistTableHeadComponent
+        TruckassistTableBodyComponent,
+        TruckassistTableHeadComponent,
+        ClipboardModule,
     ],
 })
 export class AccountModule {}
