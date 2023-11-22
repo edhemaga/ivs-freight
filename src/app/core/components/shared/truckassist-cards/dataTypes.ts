@@ -36,6 +36,7 @@ export interface LoadDetails {
     createdAt: string;
     currentLocation: null;
     dateCreated: string;
+    isFlipped: boolean;
     daysToPay: null;
     dispatch: null;
     driverRate: null;
@@ -98,6 +99,7 @@ interface Broker {
     dnu: boolean;
     id: number;
     payTerm: null | any;
+    phone: number;
 }
 
 interface Company {
