@@ -386,7 +386,6 @@
                 <div class="col-12">
                     <app-ta-input-dropdown
                         formControlName="sharedLabelId"
-                        [template]="'groups'"
                         [inputConfig]="{
                             name: 'Input Dropdown Department',
                             minLength: 2,
@@ -398,7 +397,7 @@
                             textTransform: 'capitalize',
                             dropdownWidthClass: 'w-col-456'
                         }"
-                        [options]="[]"
+                        [options]="sharedDepartments"
                         (selectedItem)="onSelectDropdown($event, 'departments')"
                     ></app-ta-input-dropdown>
                 </div>
