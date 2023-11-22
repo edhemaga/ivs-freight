@@ -12,6 +12,7 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
     selector: 'app-account-table',
@@ -44,7 +45,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private accountQuery: AccountQuery,
-        private accountService: AccountTService
+        private accountService: AccountTService,
+        private clipboard: Clipboard
     ) {}
 
     ngOnInit(): void {
@@ -250,6 +252,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                hideActivationButton: true,
                 showLabelFilter: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
@@ -263,10 +266,10 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const tableView = JSON.parse(
             localStorage.getItem(`Account-table-view`)
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -533,7 +536,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.pageIndex = 1; 
+            this.backFilterQuery.pageIndex = 1;
 
             this.setAccountData(event.tabData);
         } else if (event.action === 'view-mode') {
@@ -556,24 +559,47 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onTableBodyActions(event: any) {
-        if (event.type === 'show-more') {
-            this.backFilterQuery.pageIndex++;
-
-            this.accountBackFilter(this.backFilterQuery, true);
-        } else if (event.type === 'edit-account') {
-            this.modalService.openModal(
-                AccountModalComponent,
-                { size: 'small' },
-                {
-                    ...event,
-                    type: 'edit',
+        switch (event.type) {
+            case 'show-more': {
+                this.backFilterQuery.pageIndex++;
+                this.accountBackFilter(this.backFilterQuery, true);
+                break;
+            }
+            case 'edit-account': {
+                this.modalService.openModal(
+                    AccountModalComponent,
+                    { size: 'small' },
+                    {
+                        ...event,
+                        type: 'edit',
+                    }
+                );
+                break;
+            }
+            case 'go-to-link': {
+                if (event.data?.url) {
+                    this.clipboard.copy(event.data.url);
                 }
-            );
-        } else if (event.type === 'delete-account') {
-            this.accountService
-                .deleteCompanyAccountById(event.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
+                break;
+            }
+            case 'copy-password': {
+                this.clipboard.copy(event.data.password);
+                break;
+            }
+            case 'copy-username': {
+                this.clipboard.copy(event.data.password);
+                break;
+            }
+            case 'delete-account': {
+                this.accountService
+                    .deleteCompanyAccountById(event.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe();
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 
