@@ -42,11 +42,6 @@ export interface BarChartValues {
     selectedBarPercentages: number[][];
 }
 
-export interface BarChartInterval {
-    startTime?: string;
-    endTime?: string;
-}
-
 export interface BarChartLabels {
     filteredLabels: string[] | string[][];
     filteredTooltipLabels: string[];

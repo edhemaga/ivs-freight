@@ -70,9 +70,7 @@
                         name: 'Input Dropdown',
                         type: 'text',
                         isDropdown: true,
-                        isDisabled:
-                            currentActiveTab.name === 'ALL' ||
-                            currentActiveTab.name === 'Custom',
+                        isDisabled: currentActiveTab.name === 'Custom',
                         hideClear: true,
                         hideColorValidations: true,
                         removeInputBackground: true,
@@ -361,21 +359,6 @@
                                         | addThousandSign
                                 }}
                             </p>
-
-                            <p class="m-0 ta-font-bold">
-                                {{
-                                    performanceDataItem.title === 'REVENUE' ||
-                                    performanceDataItem.title === 'MILES' ||
-                                    performanceDataItem.title ===
-                                        'FUEL GALLON' ||
-                                    performanceDataItem.title === 'FUEL COST' ||
-                                    performanceDataItem.title ===
-                                        'REPAIR COST' ||
-                                    performanceDataItem.title === 'EXPENSES'
-                                        ? 'K'
-                                        : ''
-                                }}
-                            </p>
                         </div>
 
                         <div class="d-flex flex-column box-last-average">
@@ -419,26 +402,26 @@
                                         }}
                                     </p>
 
-                                    <ng-container
-                                        *ngIf="!performanceDataItem.isHovered"
+                                    <div
+                                        class="d-flex align-items-center justify-content-center trend-icon-box"
+                                        [ngClass]="{
+                                            'hide-trend-icon-box':
+                                                performanceDataItem.isHovered
+                                        }"
                                     >
-                                        <div
-                                            class="d-flex align-items-center justify-content-center trend-icon-box"
-                                        >
-                                            <svg-icon
-                                                class="d-flex align-items-center justify-content-center trend-icon"
-                                                [src]="
-                                                    performanceDataItem.lastIntervalTrend
-                                                        | setTrendIcon
-                                                            : performanceDataItem.title
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': 14,
-                                                    'height.px': 14
-                                                }"
-                                            ></svg-icon>
-                                        </div>
-                                    </ng-container>
+                                        <svg-icon
+                                            class="d-flex align-items-center justify-content-center trend-icon"
+                                            [src]="
+                                                performanceDataItem.lastIntervalTrend
+                                                    | setTrendIcon
+                                                        : performanceDataItem.title
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                        ></svg-icon>
+                                    </div>
                                 </ng-container>
                             </div>
                         </div>
@@ -458,79 +441,86 @@
             </div>
         </div>
 
-        <!-- Line Chart -->
+        <!-- Charts -->
 
-        <div class="charts-container" (mouseleave)="handleRemoveChartsHover()">
+        <ng-container *ngIf="lineChartConfig && barChartConfig">
             <div
-                class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
+                class="charts-container"
+                (mouseleave)="handleRemoveChartsHover()"
             >
+                <!-- Line Chart -->
+
                 <div
-                    class="d-flex align-items-center justify-content-between line-chart-header"
+                    class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
                 >
-                    <p class="m-0 ta-font-bold">Mar 01 - Mar 24, 2023</p>
-
                     <div
-                        class="d-flex align-items-center line-chart-header-right"
+                        class="d-flex align-items-center justify-content-between line-chart-header"
                     >
-                        <div class="d-flex align-items-center">
-                            <svg-icon
-                                class="circle-icon circle-icon-price"
-                                [src]="
-                                    'assets/svg/common/load/ic_circle-default-load.svg'
-                                "
-                                [svgStyle]="{
-                                    'width.px': 10,
-                                    'height.px': 10
-                                }"
-                            ></svg-icon>
+                        <p class="m-0 ta-font-bold">{{ lineChartDateTitle }}</p>
 
-                            <p class="m-0 ta-font-semi-bold">
-                                Price per Gallon
-                            </p>
+                        <div
+                            class="d-flex align-items-center line-chart-header-right"
+                        >
+                            <div class="d-flex align-items-center">
+                                <svg-icon
+                                    class="circle-icon circle-icon-price"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-semi-bold">
+                                    Price per Gallon
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <svg-icon
+                                    class="circle-icon circle-icon-rate"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-semi-bold">
+                                    Load Rate per Mile
+                                </p>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="d-flex align-items-center">
-                            <svg-icon
-                                class="circle-icon circle-icon-rate"
-                                [src]="
-                                    'assets/svg/common/load/ic_circle-default-load.svg'
-                                "
-                                [svgStyle]="{
-                                    'width.px': 10,
-                                    'height.px': 10
-                                }"
-                            ></svg-icon>
-
-                            <p class="m-0 ta-font-semi-bold">
-                                Load Rate per Mile
-                            </p>
-                        </div>
+                    <div class="line-chart-container">
+                        <app-ta-chart
+                            #lineChart
+                            [chartConfig]="lineChartConfig"
+                            [axesProperties]="lineChartAxes"
+                            [legendAttributes]="{}"
+                        >
+                        </app-ta-chart>
                     </div>
                 </div>
 
-                <div class="line-chart-container">
+                <!-- Bar Chart -->
+
+                <div class="bar-chart-container">
                     <app-ta-chart
-                        #lineChart
-                        [chartConfig]="lineChartConfig"
-                        [axesProperties]="lineChartAxes"
+                        #barChart
+                        [chartConfig]="barChartConfig"
+                        [axesProperties]="barChartAxes"
                         [legendAttributes]="{}"
+                        (hoverOtherChart)="handleBarChartHover($event)"
                     >
                     </app-ta-chart>
                 </div>
             </div>
-
-            <!-- Bar Chart -->
-
-            <div class="bar-chart-container">
-                <app-ta-chart
-                    #barChart
-                    [chartConfig]="barChartConfig"
-                    [axesProperties]="barChartAxes"
-                    [legendAttributes]="{}"
-                    (hoverOtherChart)="handleBarChartHover($event)"
-                >
-                </app-ta-chart>
-            </div>
-        </div>
+        </ng-container>
     </div>
 </div>

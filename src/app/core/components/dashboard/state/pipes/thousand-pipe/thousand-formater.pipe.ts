@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 // enums
 import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
+import { ConstantStringEnum } from '../../enums/constant-string.enum';
 
 @Pipe({
     name: 'addThousandSign',
@@ -19,7 +20,7 @@ export class FormatNumberToThousandDecimal implements PipeTransform {
                 return value.toString();
             }
         } else {
-            return '';
+            return ConstantStringEnum.ZERO_STRING;
         }
     }
 }

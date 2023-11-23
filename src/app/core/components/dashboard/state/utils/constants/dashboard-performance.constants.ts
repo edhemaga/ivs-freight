@@ -73,6 +73,10 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [
+                2, 8, 3, 3, 7, 0, 0, 8, 7, 5, 7, 1, 1, 3, 4, 6, 1, 1, 5, 5, 9,
+                0, 2,
+            ],
         },
         {
             title: ConstantStringEnum.REVENUE_2,
@@ -80,9 +84,10 @@ export class DashboardPerformanceConstants {
             isSelected: false,
             selectedColor: null,
             selectedHoverColor: null,
-            lastIntervalValue: 444.44,
-            lastIntervalTrend: 26.53,
-            intervalAverageValue: 1,
+            lastIntervalValue: null,
+            lastIntervalTrend: null,
+            intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.LOAD_2,
@@ -93,6 +98,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.MILES,
@@ -103,6 +109,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.FUEL_GALLON,
@@ -113,6 +120,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.FUEL_COST,
@@ -123,6 +131,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.REPAIR_COST,
@@ -133,6 +142,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.ROADSIDE_INSP,
@@ -143,6 +153,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.VIOALTION,
@@ -153,6 +164,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.ACCIDENT,
@@ -163,6 +175,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.EXPENSES,
@@ -173,6 +186,10 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [
+                23, 8, 3, 11, 7, 0, 44, 45, 46, 5, 7, 13, 18, 33, 42, 6, 10, 19,
+                5, 5, 9, 40, 22,
+            ],
         },
         {
             title: ConstantStringEnum.DRIVER_2,
@@ -183,6 +200,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.TRUCK_2,
@@ -193,6 +211,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.TRAILER,
@@ -203,6 +222,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.OWNER_2,
@@ -213,6 +233,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.USER_2,
@@ -223,6 +244,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.REPAIR_SHOP_2,
@@ -233,6 +255,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.BROKER_2,
@@ -243,6 +266,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
         {
             title: ConstantStringEnum.SHIPPER_2,
@@ -253,6 +277,7 @@ export class DashboardPerformanceConstants {
             lastIntervalValue: null,
             lastIntervalTrend: null,
             intervalAverageValue: null,
+            lineChartDataValues: [],
         },
     ];
 }

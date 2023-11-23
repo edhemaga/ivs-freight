@@ -272,9 +272,15 @@
                     &:hover {
                         background: $bw2;
                     }
-
                     &:hover .box-last-average .trend-icon-box {
                         background: $white;
+                    }
+
+                    &:hover
+                        .box-last-average
+                        .trend-icon-box.hide-trend-icon-box {
+                        visibility: hidden;
+                        opacity: 0;
                     }
 
                     &.selected {

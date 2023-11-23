@@ -65,7 +65,6 @@ import {
     TopRatedApiArguments,
     TopRatedWithoutTabApiArguments,
 } from '../../state/models/dashboard-top-rated-models/top-rated-api-arguments.model';
-import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-chart.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -728,10 +727,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    dispatcherData.topDispatchers[0],
-                    dispatcherData.topDispatchers[
+                    dispatcherData.intervalLabels[0].tooltipLabel,
+                    dispatcherData.intervalLabels[
                         dispatcherData.topDispatchers.length - 1
-                    ]
+                    ].tooltipLabel
                 );
                 this.setBarChartLabels(dispatcherData.intervalLabels);
 
@@ -838,8 +837,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    driverData.topDrivers[0],
-                    driverData.topDrivers[driverData.topDrivers.length - 1]
+                    driverData.intervalLabels[0].tooltipLabel,
+                    driverData.intervalLabels[
+                        driverData.intervalLabels.length - 1
+                    ].tooltipLabel
                 );
                 this.setBarChartLabels(driverData.intervalLabels);
 
@@ -942,8 +943,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    truckData.topTrucks[0],
-                    truckData.topTrucks[truckData.topTrucks.length - 1]
+                    truckData.intervalLabels[0].tooltipLabel,
+                    truckData.intervalLabels[truckData.topTrucks.length - 1]
+                        .tooltipLabel
                 );
                 this.setBarChartLabels(truckData.intervalLabels);
 
@@ -1048,8 +1050,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    brokerData.topBrokers[0],
-                    brokerData.topBrokers[brokerData.topBrokers.length - 1]
+                    brokerData.intervalLabels[0].tooltipLabel,
+                    brokerData.intervalLabels[brokerData.topBrokers.length - 1]
+                        .tooltipLabel
                 );
                 this.setBarChartLabels(brokerData.intervalLabels);
 
@@ -1139,8 +1142,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    shipperData.topShippers[0],
-                    shipperData.topShippers[shipperData.topShippers.length - 1]
+                    shipperData.intervalLabels[0].tooltipLabel,
+                    shipperData.intervalLabels[
+                        shipperData.topShippers.length - 1
+                    ].tooltipLabel
                 );
                 this.setBarChartLabels(shipperData.intervalLabels);
 
@@ -1243,8 +1248,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    ownerData.topOwners[0],
-                    ownerData.topOwners[ownerData.topOwners.length - 1]
+                    ownerData.intervalLabels[0].tooltipLabel,
+                    ownerData.intervalLabels[ownerData.topOwners.length - 1]
+                        .tooltipLabel
                 );
                 this.setBarChartLabels(ownerData.intervalLabels);
 
@@ -1359,10 +1365,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    repairShopData.topRepairShops[0],
-                    repairShopData.topRepairShops[
+                    repairShopData.intervalLabels[0].tooltipLabel,
+                    repairShopData.intervalLabels[
                         repairShopData.topRepairShops.length - 1
-                    ]
+                    ].tooltipLabel
                 );
                 this.setBarChartLabels(repairShopData.intervalLabels);
 
@@ -1467,10 +1473,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 }
 
                 this.setBarChartDateTitle(
-                    fuelStopData.topFuelStops[0],
-                    fuelStopData.topFuelStops[
+                    fuelStopData.intervalLabels[0].tooltipLabel,
+                    fuelStopData.intervalLabels[
                         fuelStopData.topFuelStops.length - 1
-                    ]
+                    ].tooltipLabel
                 );
                 this.setBarChartLabels(fuelStopData.intervalLabels);
 
@@ -1898,15 +1904,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartDateTitle(
-        startInterval: BarChartInterval,
-        endInterval: BarChartInterval
+        startInterval: string,
+        endInterval: string
     ): void {
-        const { barDateTitle } = DashboardUtils.setBarChartDateTitle(
+        const { chartTitle } = DashboardUtils.setChartDateTitle(
             startInterval,
             endInterval
         );
 
-        this.barChartDateTitle = barDateTitle;
+        this.barChartDateTitle = chartTitle;
     }
 
     private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {

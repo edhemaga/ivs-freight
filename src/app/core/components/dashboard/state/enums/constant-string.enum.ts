@@ -105,4 +105,6 @@ export enum ConstantStringEnum {
     TREND_UP_IMG_2 = 'assets/svg/common/trend-up-red.svg',
     TREND_DOWN_IMG = 'assets/svg/common/dashboard/trend-down-with-frame.svg',
     TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
+
+    ZERO_STRING = '0',
 }

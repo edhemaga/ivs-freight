@@ -7,4 +7,5 @@ export interface PerformanceDataItem {
     lastIntervalValue?: number;
     lastIntervalTrend?: number;
     intervalAverageValue?: number;
+    lineChartDataValues: number[];
 }

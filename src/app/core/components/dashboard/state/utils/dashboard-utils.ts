@@ -1,20 +1,17 @@
-import moment from 'moment';
-
 // constants
 import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
 import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
 
+// helpers
+import { DashboardStringHelper } from './helpers/dashboard-string.helper';
+
 // enums
 import { ConstantStringEnum } from '../enums/constant-string.enum';
-import { ConstantChartStringEnum } from '../enums/constant-chart-string.enum';
 
 // models
 import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
-import {
-    BarChartInterval,
-    BarChartLabels,
-} from '../models/dashboard-chart-models/bar-chart.model';
+import { BarChartLabels } from '../models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
 
 export class DashboardUtils {
@@ -168,30 +165,17 @@ export class DashboardUtils {
         }
     }
 
-    static setBarChartDateTitle(
-        startInterval: BarChartInterval,
-        endInterval: BarChartInterval
-    ): { barDateTitle: string } {
-        const startIntervalDate = moment(new Date(startInterval.startTime));
-        const endIntervalDate = moment(new Date(endInterval.endTime));
+    static setChartDateTitle(
+        startText: string,
+        endText: string
+    ): { chartTitle: string } {
+        const titleStart =
+            DashboardStringHelper.capitalizeFirstLetter(startText);
+        const titleEnd = DashboardStringHelper.capitalizeFirstLetter(endText);
 
-        const dateTitleStartMonth = startIntervalDate.format(
-            ConstantChartStringEnum.MMMM
-        );
-        const dateTitleStartYear = startIntervalDate.format(
-            ConstantChartStringEnum.YYYY
-        );
+        const chartTitle = `${titleStart} - ${titleEnd}`;
 
-        const dateTitleEndMonth = endIntervalDate.format(
-            ConstantChartStringEnum.MMMM
-        );
-        const dateTitleEndtYear = endIntervalDate.format(
-            ConstantChartStringEnum.YYYY
-        );
-
-        const barDateTitle = `${dateTitleStartMonth}, ${dateTitleStartYear} - ${dateTitleEndMonth}, ${dateTitleEndtYear}`;
-
-        return { barDateTitle };
+        return { chartTitle };
     }
 
     static highlightPartOfString(
