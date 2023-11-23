@@ -21,12 +21,9 @@ export class TruckassistCardsComponent implements OnInit {
             console.log(response);
         });
     }
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log(this.viewData, 'viewData', this.tableData, 'tableData');
-    }
+    ngOnChanges(changes: SimpleChanges): void {}
     flipCard(index) {
         this.viewData[index].isFlipped = !this.viewData[index].isFlipped;
-        console.log();
     }
     onSelectItem(card, i) {
         console.log(card, i);

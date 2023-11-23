@@ -416,7 +416,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
-
         this.setLoadData(td);
     }
 
@@ -656,7 +655,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadClosed?.length ? this.loadClosed : [];
         } else if (dataType === 'pending') {
             this.loadPanding = this.loadPandinQuery.getAll();
-
             return this.loadPanding?.length ? this.loadPanding : [];
         } else if (dataType === 'template') {
             this.loadTemplate = this.loadTemplateQuery.getAll();

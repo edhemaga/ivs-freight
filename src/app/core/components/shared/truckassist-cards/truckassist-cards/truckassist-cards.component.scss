@@ -9,6 +9,9 @@
         background: $white;
         max-width: 302px;
         border-radius: 3px;
+        .body-active {
+            background: $ta-light-grey;
+        }
         .card-body {
             padding: 4px;
             display: flex;
@@ -61,13 +64,19 @@
                         .top-item-body {
                             font-size: 11px;
                             font-weight: 700;
+                            line-height: 20px;
                         }
                         .bottom-item-body {
                             font-size: 14px;
                             overflow: hidden;
-                            height: 20px;
+                            line-height: 20px;
                             display: flex;
+                            align-items: center;
                             gap: 4px;
+                            .card-svg {
+                                bottom: 2px;
+                                position: relative;
+                            }
                             .amount {
                                 display: flex;
                                 align-items: center;
@@ -111,7 +120,7 @@
                         height: 26px;
                         width: 26px;
                         padding: 4px;
-
+                        cursor: pointer;
                         span {
                             color: $muted;
                             font-weight: 700;
@@ -124,6 +133,20 @@
                     justify-content: center;
                     width: 26px;
                     height: 26px;
+                    cursor: pointer;
+                }
+                .svg-position {
+                    rotate: (0deg);
+                    transition: all 0.3s;
+                }
+                .rotate-svg {
+                    rotate: (180deg);
+                    transition: all 0.3s;
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
                 }
             }
         }

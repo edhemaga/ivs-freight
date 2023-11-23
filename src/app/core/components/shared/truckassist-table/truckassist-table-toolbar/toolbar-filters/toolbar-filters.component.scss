@@ -1,3 +1,4 @@
+@import '/src/theme/variables.scss';
 // FILTER CONTAINER
 .table-filter-container {
     height: 32px;
@@ -5,7 +6,22 @@
     align-items: center;
     background: #ffffff;
     border-radius: 3px 0px 0px 3px;
-
+    .total-sum-holder {
+        display: flex;
+        align-items: center;
+        .total-sum {
+            background: $ta-blue-16;
+            padding: 4px 6.5px;
+            color: $ta-blue-14;
+            font-weight: 700;
+            border-radius: 2px;
+            font-size: 14px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            margin: 0 2px;
+        }
+    }
     // ARHIVE COUNT
     .ahrive-count-container {
         width: fit-content;

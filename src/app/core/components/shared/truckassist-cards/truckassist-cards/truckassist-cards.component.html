@@ -3,7 +3,7 @@
         class="custom-card p-1"
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
-        <div class="card-body">
+        <div class="card-body" [class.body-active]="card.isFlipped">
             <div class="card-body-left p-1">
                 <div class="card-header">
                     <div class="checkbox-holder">
@@ -25,7 +25,16 @@
                     <div class="item-body">
                         <div class="top-item-body">Comodity</div>
                         <div class="bottom-item-body">
-                            {{ card.textCommodity }}
+                            <svg-icon
+                                *ngIf="card.textCommodity === 'Hazardous'"
+                                [src]="
+                                    'assets/svg/truckassist-table/hazardous-yellow.svg'
+                                "
+                                class="card-svg"
+                            ></svg-icon>
+                            <span>
+                                {{ card.textCommodity }}
+                            </span>
                         </div>
                     </div>
                     <div class="item-body">
@@ -111,6 +120,8 @@
                 </div>
                 <div class="bottom-side" (click)="flipCard(i)">
                     <svg-icon
+                        [class.svg-position]="!card.isFlipped"
+                        [class.rotate-svg]="card.isFlipped"
                         [src]="'assets/svg/common/resize-arrow.svg'"
                     ></svg-icon>
                 </div>

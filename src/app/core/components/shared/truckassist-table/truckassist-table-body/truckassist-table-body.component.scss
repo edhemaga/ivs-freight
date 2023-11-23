@@ -150,7 +150,7 @@ table {
                             transition: background-color 0.25s;
 
                             &:hover {
-                                background-color: #5673aa;
+                                background-color: #0b49d1;
                             }
                         }
 
@@ -240,7 +240,8 @@ table {
                             height: 24px;
                             background-repeat: no-repeat;
                             background-position: center;
-                            background-image: url('../../../../../../assets/svg/truckassist-table/citation-icon.svg');
+                            // Izbacuje gresku zbog ove linije nema je ta slika
+                            // background-image: url('../../../../../../assets/svg/truckassist-table/citation-icon.svg');
                             display: flex;
                             justify-content: center;
                             align-items: center;
