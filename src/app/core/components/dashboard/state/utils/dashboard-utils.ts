@@ -165,6 +165,22 @@ export class DashboardUtils {
         }
     }
 
+    static createBarChartEmptyLabels(
+        barChartLabels: string[] | string[][]
+    ): (string | string[])[] {
+        let emptyLabelsArray: (string | string[])[] = [];
+
+        for (let i = 0; i < barChartLabels.length; i++) {
+            if (Array.isArray(barChartLabels[i])) {
+                emptyLabelsArray = [...emptyLabelsArray, ['', '']];
+            } else {
+                emptyLabelsArray = [...emptyLabelsArray, ''];
+            }
+        }
+
+        return emptyLabelsArray;
+    }
+
     static setChartDateTitle(
         startText: string,
         endText: string

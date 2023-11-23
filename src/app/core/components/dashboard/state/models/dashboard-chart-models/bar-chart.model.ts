@@ -42,6 +42,11 @@ export interface BarChartValues {
     selectedBarPercentages: number[][];
 }
 
+export interface BarChartPerformanceValues {
+    pricePerGallonValues: number[];
+    loadRatePerMileValues: number[];
+}
+
 export interface BarChartLabels {
     filteredLabels: string[] | string[][];
     filteredTooltipLabels: string[];

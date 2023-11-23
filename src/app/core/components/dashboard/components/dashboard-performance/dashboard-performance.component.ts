@@ -44,11 +44,15 @@ import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
-    BarChartValues,
+    BarChartPerformanceValues,
 } from '../../state/models/dashboard-chart-models/bar-chart.model';
 import { PerformanceApiArguments } from '../../state/models/dashboard-performance-models/performance-api-arguments.model';
-import { SubintervalType, TimeInterval } from 'appcoretruckassist';
 import { DashboardArrayHelper } from '../../state/utils/helpers/dashboard-array-helper';
+import {
+    IntervalLabelResponse,
+    SubintervalType,
+    TimeInterval,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-dashboard-performance',
@@ -92,6 +96,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
+    private barChartLabels: string[] | string[][] = [];
+    private barChartValues: BarChartPerformanceValues = {
+        pricePerGallonValues: [],
+        loadRatePerMileValues: [],
+    };
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -418,18 +427,28 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                                 selectedPerformanceType.value,
                             ];
                         } else {
-                            /*  if (
-                                selectedPerformanceType.performanceType !==
-                                    'Price per Gallon' &&
-                                selectedPerformanceType.performanceType !==
-                                    'Load Rate per Mile'
+                            if (
+                                selectedPerformanceType.performanceType ===
+                                ConstantChartStringEnum.BAR_LABEL_PER_GALLON
                             ) {
-                                matchedPerformanceDataItem.lineChartDataValues =
-                                    [
-                                        8, 50, 14, 1, 29, 42, 21, 45, 26, 36,
-                                        13, 23, 21, 48, 20, 21, 18, 46, 32, 10,
-                                    ];
-                            } */
+                                this.barChartValues.pricePerGallonValues = [
+                                    ...this.barChartValues.pricePerGallonValues,
+                                    Math.floor(Math.random() * 50),
+                                    /*   selectedPerformanceType.value, */
+                                ];
+                            }
+
+                            if (
+                                selectedPerformanceType.performanceType ===
+                                ConstantChartStringEnum.BAR_LABEL_LOAD_PER_MILE
+                            ) {
+                                this.barChartValues.loadRatePerMileValues = [
+                                    ...this.barChartValues
+                                        .loadRatePerMileValues,
+                                    Math.floor(Math.random() * 50),
+                                    /*  selectedPerformanceType.value, */
+                                ];
+                            }
                         }
                     }
                 }
@@ -440,10 +459,12 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                         performanceData.intervalLabels.length - 1
                     ].tooltipLabel
                 );
+                this.setBarChartLabels(performanceData.intervalLabels);
 
                 this.setChartsData();
 
                 console.log('this.performanceData', this.performanceData);
+                console.log('this.barChartValues', this.barChartValues);
             });
     }
 
@@ -470,12 +491,12 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     private setPerformanceDefaultStateData(): void {
-        const firstPerformanceDataItemIndex = 0;
+        const performanceDataItemIndex = 0;
 
         const selectedPerformanceDataItem =
-            this.performanceData[firstPerformanceDataItemIndex];
+            this.performanceData[performanceDataItemIndex];
         const selectedPerformanceDataColor =
-            this.performanceDataColors[firstPerformanceDataItemIndex];
+            this.performanceDataColors[performanceDataItemIndex];
 
         selectedPerformanceDataColor.isSelected = true;
 
@@ -494,7 +515,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 ConstantChartStringEnum.ADD,
                 selectedPerformanceDataItem.title,
                 this.performanceData[
-                    firstPerformanceDataItemIndex
+                    performanceDataItemIndex
                 ].selectedColor.slice(1)
             );
         }, 50);
@@ -525,28 +546,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             multiHoverData: true,
             multiChartHover: true,
             tooltipOffset: { min: 134, max: 206 },
-            dataLabels: [
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-                ['', ''],
-            ],
+            dataLabels: [],
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 
@@ -556,6 +556,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             }
         );
 
+        this.lineChartConfig.dataLabels = this.createLineChartEmptyLabels(
+            this.barChartLabels
+        ) as string[][];
+
+        // line max value
         const performanceDataLineChartValues = this.performanceData.map(
             (performanceDataItem) => performanceDataItem.lineChartDataValues
         );
@@ -582,17 +587,26 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         };
     }
 
-    private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
-        console.log('barChartValues', barChartValues);
+    private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        );
+
+        const { filteredLabels, filteredTooltipLabels } =
+            DashboardUtils.setBarChartLabels(barChartLables, selectedSubPeriod);
+
+        this.barChartLabels = filteredLabels;
+    }
+
+    private setBarChartConfigAndAxes(
+        barChartValues: BarChartPerformanceValues
+    ): void {
         this.barChartConfig = {
             dataProperties: [
                 {
                     defaultConfig: {
                         type: ConstantChartStringEnum.BAR,
-                        data: [
-                            52, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41,
-                            28, 24, 12, 21, 27, 37, 28,
-                        ],
+                        data: barChartValues.pricePerGallonValues,
                         backgroundColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
@@ -606,10 +620,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 {
                     defaultConfig: {
                         type: ConstantChartStringEnum.BAR,
-                        data: [
-                            52, 14, 30, 7, 28, 11, 20, 39, 46, 10, 12, 46, 10,
-                            14, 30, 7, 28, 11, 20, 39,
-                        ],
+                        data: barChartValues.loadRatePerMileValues,
                         backgroundColor:
                             ConstantChartStringEnum.CHART_COLOR_GREY_2,
                         borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
@@ -633,36 +644,23 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             allowAnimation: true,
             hoverOtherChart: true,
             tooltipOffset: { min: 134, max: 206 },
-            dataLabels: [
-                ['01', 'WED'],
-                ['02', 'THU'],
-                ['03', 'FRI'],
-                ['04', 'SAT'],
-                ['05', 'SUN'],
-                ['06', 'MON'],
-                ['07', 'TUE'],
-                ['08', 'WED'],
-                ['09', 'THU'],
-                ['10', 'FRI'],
-                ['11', 'SAT'],
-                ['12', 'SUN'],
-                ['13', 'MON'],
-                ['14', 'TUE'],
-                ['15', 'WED'],
-                ['16', 'THU'],
-                ['17', 'FRI'],
-                ['18', 'SAT'],
-                ['19', 'SUN'],
-                ['20', 'MON'],
-            ],
+            dataLabels: this.barChartLabels,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 
+        // bar max value
+        const barChartMaxValue =
+            DashboardArrayHelper.findLargestNumberInArrayOfArrays([
+                barChartValues.pricePerGallonValues,
+                barChartValues.loadRatePerMileValues,
+            ]);
+
+        // bar axes
         this.barChartAxes = {
             verticalLeftAxes: {
                 visible: false,
                 minValue: 0,
-                maxValue: 52,
+                maxValue: barChartMaxValue,
                 stepSize: 10,
                 showGridLines: false,
             },
@@ -676,7 +674,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     private setChartsData(): void {
         this.setLineChartConfigAndAxes();
-        this.setBarChartConfigAndAxes();
+        this.setBarChartConfigAndAxes(this.barChartValues);
 
         this.setPerformanceDefaultStateData();
 
@@ -710,6 +708,12 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 label: selectedLineChartDataTitle,
             },
         };
+    }
+
+    private createLineChartEmptyLabels(
+        barChartLabels: string[] | string[][]
+    ): (string | string[])[] {
+        return DashboardUtils.createBarChartEmptyLabels(barChartLabels);
     }
 
     ngOnDestroy(): void {

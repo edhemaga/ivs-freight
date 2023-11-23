@@ -122,6 +122,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     // charts
     public doughnutChartConfig: DoughnutChartConfig;
+
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
     public barChartDateTitle: string;
