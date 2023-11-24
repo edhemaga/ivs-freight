@@ -29,50 +29,8 @@
                 }
             }
         }
-        /* 
-        &-arrow-btn {
-            outline: none;
-            background: none;
-            border: none;
-            margin-right: 6px;
-
-            &.active {
-                svg-icon {
-                    svg {
-                        transform: rotate(180deg);
-
-                        path {
-                            fill: $ta-black;
-                        }
-                    }
-                }
-            }
-
-            &:hover {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: $ta-black;
-                        }
-                    }
-                }
-            }
-
-            svg-icon {
-                svg {
-                    transition: transform 0.3s ease;
-
-                    path {
-                        fill: $bw5;
-                        transition: fill 0.3s ease;
-                    }
-                }
-            }
-        } */
 
         &-tabs {
-            margin-right: 4px;
-
             .shipper-tab-container {
                 padding: 6px 8px;
                 border-radius: 2px;

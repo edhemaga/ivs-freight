@@ -1,8 +1,8 @@
-<div class="d-flex flex-column dashboard-state">
+<div class="d-flex flex-column dashboard-by-state">
     <!-- Header -->
 
     <div
-        class="d-flex align-items-center justify-content-between dashboard-state-header"
+        class="d-flex align-items-center justify-content-between dashboard-by-state-header"
     >
         <!-- Left Side -->
 
@@ -14,9 +14,123 @@
                     {{ byStateTitle }} by State ({{ byStateList.length }})
                 </p>
             </div>
+
+            <!-- Dropdown -->
+
+            <app-dashboard-dropdown
+                [dropdownList]="byStateDropdownList"
+                (dropdownItemEmitter)="handleSwitchByStateClick($event)"
+            ></app-dashboard-dropdown>
+
+            <!-- Tabs -->
+
+            <div class="d-flex align-items-center">
+                <app-ta-tab-switch
+                    [tabs]="byStateTabs"
+                    [dashboardHeight]="true"
+                    (switchClicked)="handleSwitchTabClick($event)"
+                >
+                </app-ta-tab-switch>
+            </div>
         </div>
 
-        <div class="d-flex align-items-center">aa</div>
+        <!-- Right Side -->
+
+        <div
+            class="d-flex align-items-center dashboard-by-state-header-right-side-container"
+            [formGroup]="byStateForm"
+        >
+            <!-- Dropdowns -->
+
+            <div
+                class="d-flex align-items-center dashboard-by-state-header-dropdown"
+            >
+                <div
+                    class="dropdown-left-container"
+                    [ngClass]="{
+                        'dropdown-left-w-1':
+                            selectedMainPeriod?.name === 'Today',
+                        'dropdown-left-w-2':
+                            selectedMainPeriod?.name === 'Week-to-Date',
+                        'dropdown-left-w-3':
+                            selectedMainPeriod?.name === 'Month-to-Date',
+                        'dropdown-left-w-4':
+                            selectedMainPeriod?.name === 'Year-to-Date',
+                        'dropdown-left-w-5':
+                            selectedMainPeriod?.name === 'All Time',
+                        'dropdown-left-w-6':
+                            selectedMainPeriod?.name === 'Custom',
+                        'dropdown-left-w-7':
+                            selectedMainPeriod?.name === 'Quartal-to-Date'
+                    }"
+                >
+                    <app-ta-input-dropdown
+                        formControlName="mainPeriod"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            hideClear: true,
+                            hideColorValidations: true,
+                            removeInputBackground: true,
+                            dropdownWidthClass: 'w-col-157'
+                        }"
+                        [options]="mainPeriodDropdownList"
+                        [activeItem]="selectedMainPeriod"
+                        (selectedItem)="
+                            handleInputSelect($event, 'MAIN_PERIOD_DROPDOWN')
+                        "
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <div class="dashboard-top-rated-header-border"></div>
+
+                <div
+                    class="dropdown-right-container"
+                    [ngClass]="{
+                        'dropdown-right-w-1':
+                            selectedSubPeriod?.name === 'Hourly',
+                        'dropdown-right-w-2':
+                            selectedSubPeriod?.name === '3 Hours' ||
+                            selectedSubPeriod?.name === '6 Hours',
+                        'dropdown-right-w-3':
+                            selectedSubPeriod?.name === 'Semi-Daily',
+                        'dropdown-right-w-4':
+                            selectedSubPeriod?.name === 'Daily',
+                        'dropdown-right-w-5':
+                            selectedSubPeriod?.name === 'Weekly',
+                        'dropdown-right-w-6':
+                            selectedSubPeriod?.name === 'Bi-Weekly',
+                        'dropdown-right-w-7':
+                            selectedSubPeriod?.name === 'Semi-Monthly',
+                        'dropdown-right-w-8':
+                            selectedSubPeriod?.name === 'Monthly',
+                        'dropdown-right-w-9':
+                            selectedSubPeriod?.name === 'Quarterly',
+                        'dropdown-right-w-10':
+                            selectedSubPeriod?.name === 'Yearly'
+                    }"
+                >
+                    <app-ta-input-dropdown
+                        formControlName="subPeriod"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            hideClear: true,
+                            hideColorValidations: true,
+                            removeInputBackground: true,
+                            dropdownWidthClass: 'w-col-157'
+                        }"
+                        [options]="subPeriodDropdownList"
+                        [activeItem]="selectedSubPeriod"
+                        (selectedItem)="
+                            handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
+                        "
+                    ></app-ta-input-dropdown>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- <div class="dashboard-pickup-holder">
@@ -77,6 +191,9 @@
             </div>
         </div>
     </div>
+
+
+
     <div class="dashboard-pickup-body-holder">
         <div class="pickup_main_holder">
             <div class="dashboard_state_list_holder">

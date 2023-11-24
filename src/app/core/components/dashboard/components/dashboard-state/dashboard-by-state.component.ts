@@ -1,25 +1,60 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    OnDestroy,
+    AfterViewInit,
+} from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
+
+// store
+import { DashboardQuery } from '../../state/store/dashboard.query';
 
 // enums
 import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
 
+// constants
+import { DashboardByStateConstants } from '../../state/utils/constants/dashboard-by-state.constants';
+import { DashboardSubperiodConstants } from '../../state/utils/constants/dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from '../../state/utils/constants/dashboard-top-rated.constants';
+
 // models
 import { ByStateListItem } from '../../state/models/dashboard-by-state-models/by-state-list-item.model';
-
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DropdownItem } from '../../state/models/dropdown-item.model';
+import { DashboardTab } from '../../state/models/dashboard-tab.model';
+import { DropdownListItem } from '../../state/models/dropdown-list-item.model';
+import { DashboardUtils } from '../../state/utils/dashboard-utils';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
     templateUrl: './dashboard-by-state.component.html',
     styleUrls: ['./dashboard-by-state.component.scss'],
 })
-export class DashboardByStateComponent implements OnInit, OnDestroy {
+export class DashboardByStateComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    public byStateForm: UntypedFormGroup;
     public byStateTitle: string = ConstantStringEnum.PICKUP;
 
     // list
     public byStateList: ByStateListItem[] = [];
+
+    // tabs
+    public byStateTabs: DashboardTab[] = [];
+    private currentActiveTab: DashboardTab;
+
+    // dropdowns
+    public byStateDropdownList: DropdownItem[] = [];
+
+    public mainPeriodDropdownList: DropdownListItem[] = [];
+    public subPeriodDropdownList: DropdownListItem[] = [];
+
+    public selectedMainPeriod: DropdownListItem;
+    public selectedSubPeriod: DropdownListItem;
+
+    private overallCompanyDuration: number;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @ViewChild('t2') t2: any;
@@ -236,58 +271,198 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public searchDashboardOptions = {
-        gridNameTitle: 'State',
-    };
-
-    constructor(private tableService: TruckassistTableService) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private dashboardQuery: DashboardQuery
+    ) {}
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
-
     ngOnInit(): void {
-        if (this.pickupCircleColor?.length) {
-            this.chartColors = this.pickupCircleColor;
-        }
-        this.stateSwitchTabsType1 = [
-            {
-                name: 'Count',
-            },
-            {
-                name: 'Revenue',
-            },
-        ];
+        /*  if (this.pickupCircleColor?.length) {
+             this.chartColors = this.pickupCircleColor;
+         } */
 
-        this.pickupSwitch = [
+        this.createForm();
+
+        this.getConstantData();
+
+        this.getOverallCompanyDuration();
+    }
+
+    private createForm(): void {
+        this.byStateForm = this.formBuilder.group({
+            mainPeriod: [null],
+            subPeriod: [null],
+        });
+    }
+
+    public handleInputSelect(
+        dropdownListItem: DropdownListItem,
+        action: string
+    ): void {
+        if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
+            /*   if (this.isDisplayingCustomPeriodRange) {
+                this.isDisplayingCustomPeriodRange = false;
+            }
+ */
+            this.selectedMainPeriod = dropdownListItem;
+
+            let matchingIdList: number[] = [];
+
+            switch (dropdownListItem.name) {
+                case ConstantStringEnum.TODAY:
+                    matchingIdList = DashboardSubperiodConstants.TODAY_ID_LIST;
+
+                    break;
+                case ConstantStringEnum.WEEK_TO_DATE:
+                    matchingIdList = DashboardSubperiodConstants.WTD_ID_LIST;
+
+                    break;
+                case ConstantStringEnum.MONTH_TO_DATE:
+                    matchingIdList = DashboardSubperiodConstants.MTD_ID_LIST;
+
+                    break;
+                case ConstantStringEnum.QUARTAL_TO_DATE:
+                    matchingIdList = DashboardSubperiodConstants.QTD_ID_LIST;
+
+                    break;
+                case ConstantStringEnum.YEAR_TO_DATE:
+                    matchingIdList = DashboardSubperiodConstants.YTD_ID_LIST;
+
+                    break;
+                case ConstantStringEnum.ALL_TIME:
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
+                    /* 
+                    this.getTopRatedListData(); */
+
+                    break;
+                case ConstantStringEnum.CUSTOM:
+                    /* this.isDisplayingCustomPeriodRange = true; */
+
+                    this.subPeriodDropdownList = [];
+                    this.selectedSubPeriod = null;
+
+                    break;
+                default:
+                    break;
+            }
+
+            if (
+                dropdownListItem.name !== ConstantStringEnum.ALL_TIME &&
+                dropdownListItem.name !== ConstantStringEnum.CUSTOM
+            ) {
+                const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+                    DashboardUtils.setSubPeriodList(matchingIdList);
+
+                this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+                this.selectedSubPeriod = selectedSubPeriod;
+
+                /*   this.getTopRatedListData(); */
+            }
+        }
+
+        if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
+            this.selectedSubPeriod = dropdownListItem;
+
+            /*  if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+                this.getTopRatedListData(this.selectedCustomPeriodRange);
+            } else {
+                this.getTopRatedListData();
+            } */
+        }
+    }
+
+    public handleSwitchByStateClick(byStateDropdownItem: DropdownItem): void {
+        if (byStateDropdownItem.name === this.byStateTitle) return;
+
+        const byStateTabsToDisplay = [
             {
-                name: 'Today',
-            },
-            {
-                name: 'WTD',
+                name: byStateDropdownItem.tab1,
                 checked: true,
             },
             {
-                name: 'MTD',
-            },
-            {
-                name: 'YTD',
-            },
-            {
-                name: 'All Time',
-            },
-            {
-                name: 'Custom',
-                custom: true,
+                name: byStateDropdownItem.tab2,
+                checked: false,
             },
         ];
 
-        this.tableService.currentSearchTableData
+        this.byStateTabs = byStateTabsToDisplay;
+        this.currentActiveTab = byStateTabsToDisplay[0];
+
+        this.byStateTitle = byStateDropdownItem.name;
+
+        this.byStateDropdownList.find(
+            (topRatedDropdownItem) => topRatedDropdownItem.isActive
+        ).isActive = false;
+
+        byStateDropdownItem.isActive = true;
+
+        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.selectedMainPeriod =
+                DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
+
+            this.setCustomSubPeriodList(this.overallCompanyDuration);
+        }
+
+        /*  this.getTopRatedListData(); */
+    }
+
+    public handleSwitchTabClick(activeTab: DashboardTab): void {
+        if (this.currentActiveTab?.name === activeTab.name) {
+            return;
+        }
+
+        this.currentActiveTab = activeTab;
+
+        /* if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.getTopRatedListData(this.selectedCustomPeriodRange);
+        } else {
+            this.getTopRatedListData();
+        } */
+    }
+
+    private getConstantData(): void {
+        this.byStateDropdownList = JSON.parse(
+            JSON.stringify(DashboardByStateConstants.BY_STATE_DROPDOWN_DATA)
+        );
+
+        this.byStateTabs = DashboardByStateConstants.BY_STATE_TABS;
+        this.currentActiveTab = DashboardByStateConstants.BY_STATE_TABS[0];
+
+        this.mainPeriodDropdownList =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
+
+        this.selectedMainPeriod =
+            DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
+
+        /*   this.topRatedList = [DashboardTopRatedConstants.TOP_RATED_LIST_ITEM];
+
+        this.mainColorsPallete = DashboardColors.TOP_RATED_MAIN_COLORS_PALLETE;
+        this.secondaryColorsPallete =
+            DashboardColors.TOP_RATED_SECONDARY_COLORS_PALLETE; */
+    }
+
+    private getOverallCompanyDuration(): void {
+        this.dashboardQuery.companyDuration$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res) {
-                    // your search code here
+            .subscribe((companyDuration: number) => {
+                if (companyDuration) {
+                    this.overallCompanyDuration = companyDuration;
                 }
             });
+
+        this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
+
+    private setCustomSubPeriodList(selectedDaysRange: number): void {
+        const { filteredSubPeriodDropdownList, selectedSubPeriod } =
+            DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
+
+        this.subPeriodDropdownList = filteredSubPeriodDropdownList;
+        this.selectedSubPeriod = selectedSubPeriod;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ngAfterViewInit(): void {
         if (this.timePeriod && this.timePeriod.changeTimePeriod) {
@@ -364,7 +539,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.compareColor = [];
 
-        this.pickupStateList.map((item, indx) => {
+        this.pickupStateList.map((item) => {
             this.statesBarChart.removeMultiBarData(item, true);
         });
 
