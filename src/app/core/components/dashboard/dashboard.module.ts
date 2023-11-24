@@ -21,6 +21,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardPerformanceComponent } from './components/dashboard-performance/dashboard-performance.component';
 import { DashboardTopRatedComponent } from './components/dashboard-top-rated/dashboard-top-rated.component';
 import { DashboardDataPlaceholderComponent } from './components/dashboard-data-placeholder/dashboard-data-placeholder.component';
+import { DashboardLoadingPlaceholderComponent } from './components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
 
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
@@ -47,6 +48,7 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
         DashboardDataPlaceholderComponent,
+        DashboardLoadingPlaceholderComponent,
     ],
     imports: [
         // modules

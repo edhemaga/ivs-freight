@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardPerformanceService } from '../../state/services/dashboard-performance.service';
@@ -64,6 +64,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     @ViewChild('barChart') public barChart: BarChart;
 
     private destroy$: Subject<void> = new Subject<void>();
+
+    public isLoading: boolean = true;
 
     public performanceForm: UntypedFormGroup;
     public performanceData: PerformanceDataItem[] = [];
@@ -355,11 +357,16 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedSubPeriod,
         ];
 
+        this.isLoading = true;
+
         /* this.resetSelectedValues(); */
 
         this.dashboardPerformanceService
             .getPerformance(performanceArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((performanceData) => {
                 console.log('performanceData', performanceData);
 
@@ -678,8 +685,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             dataLabels: this.barChartLabels,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
-
-        console.log('this.barChartConfig', this.barChartConfig);
 
         // bar max value
         const barChartMaxValue =

@@ -94,254 +94,95 @@
         <div
             class="d-flex align-items-center dashboard-performance-body-boxes-container"
         >
-            <div
-                class="d-flex flex-column justify-content-center boxes-double-box"
-                placement="bottom"
-                [ngbTooltip]="
-                    performanceData[0].isSelected
-                        ? 'Hide from Chart'
-                        : 'Show on Chart'
-                "
-                [ngStyle]="{
-                    background: performanceData[0].isHovered
-                        ? performanceData[0].selectedHoverColor
-                        : performanceData[0].isSelected
-                        ? performanceData[0].selectedColor
-                        : '#f7f7f780'
-                }"
-                [ngClass]="{ selected: performanceData[0].isSelected }"
-                (mouseenter)="handlePerformanceDataHover(0)"
-                (mouseleave)="handlePerformanceDataHover(0, true)"
-                (click)="
-                    handlePerformanceDataClick(
-                        0,
-                        performanceData[0].selectedColor
-                    )
-                "
-            >
+            <ng-container *ngIf="isLoading">
+                <app-dashboard-loading-placeholder
+                    [performanceDoubleBoxPlaceholder]="true"
+                ></app-dashboard-loading-placeholder>
+            </ng-container>
+
+            <ng-container *ngIf="!isLoading">
                 <div
-                    class="d-flex flex-column justify-content-center boxes-double-box-header"
-                >
-                    <div
-                        class="d-flex flex-column justify-content-center boxes-double-box-header-income"
-                    >
-                        <div
-                            class="d-flex align-items-center boxes-double-box-header-income-up"
-                        >
-                            <svg-icon
-                                class="circle-icon"
-                                [src]="
-                                    'assets/svg/common/load/ic_circle-default-load.svg'
-                                "
-                                [svgStyle]="{
-                                    'width.px': 10,
-                                    'height.px': 10
-                                }"
-                            ></svg-icon>
-
-                            <p class="m-0 ta-font-bold">NET INCOME</p>
-                        </div>
-
-                        <div
-                            class="d-flex align-items-center boxes-double-box-header-income-down"
-                        >
-                            <p class="m-0 ta-font-bold">
-                                $320.56K
-                                <!--  | addThousandSign -->
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Status Bar -->
-
-                    <div class="status-bar">
-                        <div class="status-bar-inner"></div>
-                    </div>
-                </div>
-
-                <div
-                    class="d-flex flex-column justify-content-center boxes-double-box-body"
-                >
-                    <div
-                        class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
-                    >
-                        <p class="m-0 ta-font-bold">
-                            ${{
-                                performanceData[0].lastIntervalValue
-                                    | addThousandSign
-                            }}
-                        </p>
-
-                        <div class="d-flex align-items-center">
-                            <ng-container
-                                *ngIf="!performanceData[0].lastIntervalTrend"
-                            >
-                                <div
-                                    class="d-flex align-items-center trend-span"
-                                >
-                                    <p class="m-0 ta-font-bold">SAME AS</p>
-                                </div>
-                            </ng-container>
-
-                            <ng-container
-                                *ngIf="performanceData[0].lastIntervalTrend"
-                            >
-                                <p class="m-0 ta-font-bold">
-                                    {{
-                                        performanceData[0].lastIntervalTrend > 0
-                                            ? '+'
-                                            : '-'
-                                    }}${{
-                                        performanceData[0].lastIntervalTrend < 0
-                                            ? performanceData[0]
-                                                  .lastIntervalTrend * -1
-                                            : (performanceData[0]
-                                                  .lastIntervalTrend
-                                              | addThousandSign)
-                                    }}
-                                </p>
-
-                                <div
-                                    class="d-flex align-items-center justify-content-center trend-icon-box"
-                                >
-                                    <svg-icon
-                                        class="d-flex align-items-center justify-content-center trend-icon"
-                                        [src]="
-                                            performanceData[0].lastIntervalTrend
-                                                | setTrendIcon
-                                                    : performanceData[0].title
-                                        "
-                                        [svgStyle]="{
-                                            'width.px': 14,
-                                            'height.px': 14
-                                        }"
-                                    ></svg-icon>
-                                </div>
-                            </ng-container>
-                        </div>
-
-                        <p class="m-0 ta-font-bold">
-                            {{
-                                currentActiveTab.name === 'Today'
-                                    ? 'YESTERDAY'
-                                    : currentActiveTab.name === 'WTD'
-                                    ? 'LAST WEEK'
-                                    : currentActiveTab.name === 'MTD'
-                                    ? 'LAST MONTH'
-                                    : currentActiveTab.name === 'QTD'
-                                    ? 'LAST QUARTAL'
-                                    : currentActiveTab.name === 'YTD'
-                                    ? 'LAST PERIOD'
-                                    : ''
-                            }}
-                        </p>
-                    </div>
-
-                    <div
-                        class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
-                    >
-                        <p class="m-0 ta-font-bold">
-                            ${{
-                                performanceData[0].intervalAverageValue
-                                    | addThousandSign
-                            }}
-                        </p>
-
-                        <p class="m-0 ta-font-bold">
-                            {{
-                                currentActiveTab.name === 'Today'
-                                    ? 'DAILY AVERAGE'
-                                    : currentActiveTab.name === 'WTD'
-                                    ? 'WEEKLY AVERAGE'
-                                    : currentActiveTab.name === 'MTD'
-                                    ? 'MONTHLY AVERAGE'
-                                    : currentActiveTab.name === 'QTD'
-                                    ? 'QUARTERLY AVERAGE'
-                                    : currentActiveTab.name === 'YTD'
-                                    ? 'PERIOD AVERAGE'
-                                    : ''
-                            }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="boxes-single-box-container">
-                <ng-container
-                    *ngFor="
-                        let performanceDataItem of performanceData | slice : 1;
-                        let i = index;
-                        trackBy: trackByIdentity
+                    class="d-flex flex-column justify-content-center boxes-double-box"
+                    placement="bottom"
+                    [ngbTooltip]="
+                        performanceData[0].isSelected
+                            ? 'Hide from Chart'
+                            : 'Show on Chart'
+                    "
+                    [ngStyle]="{
+                        background: performanceData[0].isHovered
+                            ? performanceData[0].selectedHoverColor
+                            : performanceData[0].isSelected
+                            ? performanceData[0].selectedColor
+                            : '#f7f7f780'
+                    }"
+                    [ngClass]="{ selected: performanceData[0].isSelected }"
+                    (mouseenter)="handlePerformanceDataHover(0)"
+                    (mouseleave)="handlePerformanceDataHover(0, true)"
+                    (click)="
+                        handlePerformanceDataClick(
+                            0,
+                            performanceData[0].selectedColor
+                        )
                     "
                 >
                     <div
-                        class="d-flex flex-column box"
-                        placement="bottom"
-                        [ngbTooltip]="
-                            performanceDataItem.isSelected
-                                ? 'Hide from Chart'
-                                : 'Show on Chart'
-                        "
-                        [ngStyle]="{
-                            background: performanceDataItem.isHovered
-                                ? performanceDataItem.selectedHoverColor
-                                : performanceDataItem.isSelected
-                                ? performanceDataItem.selectedColor
-                                : '#f7f7f780'
-                        }"
-                        [ngClass]="{ selected: performanceDataItem.isSelected }"
-                        (mouseenter)="handlePerformanceDataHover(i + 1)"
-                        (mouseleave)="handlePerformanceDataHover(i + 1, true)"
-                        (click)="
-                            handlePerformanceDataClick(
-                                i + 1,
-                                performanceDataItem.selectedColor
-                            )
-                        "
+                        class="d-flex flex-column justify-content-center boxes-double-box-header"
                     >
-                        <div class="d-flex align-items-center box-header">
-                            <svg-icon
-                                class="circle-icon"
-                                [src]="
-                                    'assets/svg/common/load/ic_circle-default-load.svg'
-                                "
-                                [svgStyle]="{
-                                    'width.px': 10,
-                                    'height.px': 10
-                                }"
-                            ></svg-icon>
+                        <div
+                            class="d-flex flex-column justify-content-center boxes-double-box-header-income"
+                        >
+                            <div
+                                class="d-flex align-items-center boxes-double-box-header-income-up"
+                            >
+                                <svg-icon
+                                    class="circle-icon"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
 
-                            <p class="m-0 ta-font-bold">
-                                {{ performanceDataItem.title }}
-                            </p>
+                                <p class="m-0 ta-font-bold">NET INCOME</p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center boxes-double-box-header-income-down"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    $320.56K
+                                    <!--  | addThousandSign -->
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="d-flex align-items-center box-value">
-                            <p class="m-0 ta-font-bold">
-                                {{
-                                    performanceDataItem.title === 'REVENUE' ||
-                                    performanceDataItem.title === 'FUEL COST' ||
-                                    performanceDataItem.title ===
-                                        'REPAIR COST' ||
-                                    performanceDataItem.title === 'EXPENSES'
-                                        ? '$'
-                                        : ''
-                                }}
-                            </p>
+                        <!-- Status Bar -->
 
+                        <div class="status-bar">
+                            <div class="status-bar-inner"></div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column justify-content-center boxes-double-box-body"
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
+                        >
                             <p class="m-0 ta-font-bold">
-                                {{
-                                    performanceDataItem.lastIntervalValue
+                                ${{
+                                    performanceData[0].lastIntervalValue
                                         | addThousandSign
                                 }}
                             </p>
-                        </div>
 
-                        <div class="d-flex flex-column box-last-average">
                             <div class="d-flex align-items-center">
                                 <ng-container
                                     *ngIf="
-                                        !performanceDataItem.lastIntervalTrend
+                                        !performanceData[0].lastIntervalTrend
                                     "
                                 >
                                     <div
@@ -352,45 +193,36 @@
                                 </ng-container>
 
                                 <ng-container
-                                    *ngIf="
-                                        performanceDataItem.lastIntervalTrend
-                                    "
+                                    *ngIf="performanceData[0].lastIntervalTrend"
                                 >
                                     <p class="m-0 ta-font-bold">
                                         {{
-                                            performanceDataItem.lastIntervalTrend >
-                                            0
+                                            performanceData[0]
+                                                .lastIntervalTrend > 0
                                                 ? '+'
-                                                : ''
-                                        }}
-                                    </p>
-
-                                    <p class="m-0 ta-font-bold">
-                                        {{
-                                            !performanceDataItem.isHovered ||
-                                            (performanceDataItem.isHovered &&
-                                                (currentActiveTab.name ===
-                                                    'ALL' ||
-                                                    currentActiveTab.name ===
-                                                        'Custom'))
-                                                ? performanceDataItem.lastIntervalTrend
-                                                : performanceDataItem.intervalAverageValue
+                                                : '-'
+                                        }}${{
+                                            performanceData[0]
+                                                .lastIntervalTrend < 0
+                                                ? performanceData[0]
+                                                      .lastIntervalTrend * -1
+                                                : (performanceData[0]
+                                                      .lastIntervalTrend
+                                                  | addThousandSign)
                                         }}
                                     </p>
 
                                     <div
                                         class="d-flex align-items-center justify-content-center trend-icon-box"
-                                        [ngClass]="{
-                                            'hide-trend-icon-box':
-                                                performanceDataItem.isHovered
-                                        }"
                                     >
                                         <svg-icon
                                             class="d-flex align-items-center justify-content-center trend-icon"
                                             [src]="
-                                                performanceDataItem.lastIntervalTrend
+                                                performanceData[0]
+                                                    .lastIntervalTrend
                                                     | setTrendIcon
-                                                        : performanceDataItem.title
+                                                        : performanceData[0]
+                                                              .title
                                             "
                                             [svgStyle]="{
                                                 'width.px': 14,
@@ -400,19 +232,219 @@
                                     </div>
                                 </ng-container>
                             </div>
-                        </div>
 
-                        <div class="d-flex align-items-center box-bottom-title">
                             <p class="m-0 ta-font-bold">
                                 {{
-                                    currentActiveTab.name
-                                        | setTrendLabel
-                                            : performanceDataItem.isHovered
-                                            : selectedSubPeriodLabel
+                                    currentActiveTab.name === 'Today'
+                                        ? 'YESTERDAY'
+                                        : currentActiveTab.name === 'WTD'
+                                        ? 'LAST WEEK'
+                                        : currentActiveTab.name === 'MTD'
+                                        ? 'LAST MONTH'
+                                        : currentActiveTab.name === 'QTD'
+                                        ? 'LAST QUARTAL'
+                                        : currentActiveTab.name === 'YTD'
+                                        ? 'LAST PERIOD'
+                                        : ''
+                                }}
+                            </p>
+                        </div>
+
+                        <div
+                            class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                ${{
+                                    performanceData[0].intervalAverageValue
+                                        | addThousandSign
+                                }}
+                            </p>
+
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    currentActiveTab.name === 'Today'
+                                        ? 'DAILY AVERAGE'
+                                        : currentActiveTab.name === 'WTD'
+                                        ? 'WEEKLY AVERAGE'
+                                        : currentActiveTab.name === 'MTD'
+                                        ? 'MONTHLY AVERAGE'
+                                        : currentActiveTab.name === 'QTD'
+                                        ? 'QUARTERLY AVERAGE'
+                                        : currentActiveTab.name === 'YTD'
+                                        ? 'PERIOD AVERAGE'
+                                        : ''
                                 }}
                             </p>
                         </div>
                     </div>
+                </div>
+            </ng-container>
+
+            <div class="boxes-single-box-container">
+                <ng-container
+                    *ngFor="
+                        let performanceDataItem of performanceData | slice : 1;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <ng-container *ngIf="isLoading">
+                        <app-dashboard-loading-placeholder
+                            [performanceSingleBoxPlaceholder]="true"
+                        ></app-dashboard-loading-placeholder>
+                    </ng-container>
+
+                    <ng-container *ngIf="!isLoading">
+                        <div
+                            class="d-flex flex-column box"
+                            placement="bottom"
+                            [ngbTooltip]="
+                                performanceDataItem.isSelected
+                                    ? 'Hide from Chart'
+                                    : 'Show on Chart'
+                            "
+                            [ngStyle]="{
+                                background: performanceDataItem.isHovered
+                                    ? performanceDataItem.selectedHoverColor
+                                    : performanceDataItem.isSelected
+                                    ? performanceDataItem.selectedColor
+                                    : '#f7f7f780'
+                            }"
+                            [ngClass]="{
+                                selected: performanceDataItem.isSelected
+                            }"
+                            (mouseenter)="handlePerformanceDataHover(i + 1)"
+                            (mouseleave)="
+                                handlePerformanceDataHover(i + 1, true)
+                            "
+                            (click)="
+                                handlePerformanceDataClick(
+                                    i + 1,
+                                    performanceDataItem.selectedColor
+                                )
+                            "
+                        >
+                            <div class="d-flex align-items-center box-header">
+                                <svg-icon
+                                    class="circle-icon"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-bold">
+                                    {{ performanceDataItem.title }}
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center box-value">
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        performanceDataItem.title ===
+                                            'REVENUE' ||
+                                        performanceDataItem.title ===
+                                            'FUEL COST' ||
+                                        performanceDataItem.title ===
+                                            'REPAIR COST' ||
+                                        performanceDataItem.title === 'EXPENSES'
+                                            ? '$'
+                                            : ''
+                                    }}
+                                </p>
+
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        performanceDataItem.lastIntervalValue
+                                            | addThousandSign
+                                    }}
+                                </p>
+                            </div>
+
+                            <div class="d-flex flex-column box-last-average">
+                                <div class="d-flex align-items-center">
+                                    <ng-container
+                                        *ngIf="
+                                            !performanceDataItem.lastIntervalTrend
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center trend-span"
+                                        >
+                                            <p class="m-0 ta-font-bold">
+                                                SAME AS
+                                            </p>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            performanceDataItem.lastIntervalTrend
+                                        "
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            {{
+                                                performanceDataItem.lastIntervalTrend >
+                                                0
+                                                    ? '+'
+                                                    : ''
+                                            }}
+                                        </p>
+
+                                        <p class="m-0 ta-font-bold">
+                                            {{
+                                                !performanceDataItem.isHovered ||
+                                                (performanceDataItem.isHovered &&
+                                                    (currentActiveTab.name ===
+                                                        'ALL' ||
+                                                        currentActiveTab.name ===
+                                                            'Custom'))
+                                                    ? performanceDataItem.lastIntervalTrend
+                                                    : performanceDataItem.intervalAverageValue
+                                            }}
+                                        </p>
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-center trend-icon-box"
+                                            [ngClass]="{
+                                                'hide-trend-icon-box':
+                                                    performanceDataItem.isHovered
+                                            }"
+                                        >
+                                            <svg-icon
+                                                class="d-flex align-items-center justify-content-center trend-icon"
+                                                [src]="
+                                                    performanceDataItem.lastIntervalTrend
+                                                        | setTrendIcon
+                                                            : performanceDataItem.title
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': 14,
+                                                    'height.px': 14
+                                                }"
+                                            ></svg-icon>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center box-bottom-title"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        currentActiveTab.name
+                                            | setTrendLabel
+                                                : performanceDataItem.isHovered
+                                                : selectedSubPeriodLabel
+                                    }}
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
                 </ng-container>
             </div>
         </div>
