@@ -247,30 +247,6 @@
                             }}
                         </p>
 
-                        <div class="d-flex align-items-center">
-                            <p class="m-0 ta-font-bold">
-                                ${{
-                                    performanceData[0].intervalAverageValue
-                                        | addThousandSign
-                                }}
-                            </p>
-
-                            <div
-                                class="d-flex align-items-center justify-content-center trend-icon-box"
-                            >
-                                <svg-icon
-                                    class="d-flex align-items-center justify-content-center trend-icon"
-                                    [src]="
-                                        'assets/svg/common/dashboard/trend-up-with-frame.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': 14,
-                                        'height.px': 14
-                                    }"
-                                ></svg-icon>
-                            </div>
-                        </div>
-
                         <p class="m-0 ta-font-bold">
                             {{
                                 currentActiveTab.name === 'Today'

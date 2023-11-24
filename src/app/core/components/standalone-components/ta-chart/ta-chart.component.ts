@@ -742,7 +742,20 @@ export class TaChartComponent implements OnInit, OnChanges {
         });
 
         this.animationDuration = 1000;
+
         this.setChartOptions();
+
+        this.ref.detectChanges();
+    }
+
+    resetLineChartData() {
+        for (let i = 0; i < this.chart.chart.config.data.datasets.length; i++) {
+            this.chart.chart.config.data.datasets[i].hidden = true;
+
+            this.setChartOptions();
+
+            this.ref.detectChanges();
+        }
     }
 
     hoverDoughnut(elements: any, type?) {
@@ -848,13 +861,13 @@ export class TaChartComponent implements OnInit, OnChanges {
             let dataPropMulti = [
                 {
                     name: 'Price per Gallon',
-                    value: 23,
+                    value: '$' + this.chartConfig.pricePerGallonValue[value],
                     percent: null,
                     color: '#AAAAAA',
                 },
                 {
                     name: 'Load Rate per Mile',
-                    value: 23,
+                    value: '$' + this.chartConfig.loadRatePerMileValue[value],
                     percent: null,
                     color: '#DADADA',
                 },

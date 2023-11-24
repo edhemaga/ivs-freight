@@ -97,6 +97,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
     private barChartLabels: string[] | string[][] = [];
+    private barChartTooltipLabels: string[];
     private barChartValues: BarChartPerformanceValues = {
         pricePerGallonValues: [],
         loadRatePerMileValues: [],
@@ -132,9 +133,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         if (this.clearCustomPeriodRangeValue)
             this.clearCustomPeriodRangeValue = false;
 
-        if (this.currentActiveTab?.name === activeTab.name) {
-            return;
-        }
+        if (this.currentActiveTab?.name === activeTab.name) return;
 
         this.currentActiveTab = activeTab;
         this.selectedSubPeriodLabel = this.selectedSubPeriod.name;
@@ -498,6 +497,32 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         const selectedPerformanceDataColor =
             this.performanceDataColors[performanceDataItemIndex];
 
+        this.performanceData = this.performanceData.map(
+            (performanceDataItem, index) => {
+                if (index !== performanceDataItemIndex) {
+                    return {
+                        ...performanceDataItem,
+                        isSelected: false,
+                    };
+                }
+
+                return performanceDataItem;
+            }
+        );
+
+        this.performanceDataColors = this.performanceDataColors.map(
+            (color, index) => {
+                if (index !== performanceDataItemIndex) {
+                    return {
+                        ...color,
+                        isSelected: false,
+                    };
+                }
+
+                return color;
+            }
+        );
+
         selectedPerformanceDataColor.isSelected = true;
 
         selectedPerformanceDataItem.isSelected = true;
@@ -510,13 +535,15 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.selectedPerformanceDataCount++;
 
+        this.lineChart?.resetLineChartData();
+
         setTimeout(() => {
             this.lineChart?.insertNewChartData(
                 ConstantChartStringEnum.ADD,
                 selectedPerformanceDataItem.title,
                 this.performanceData[
                     performanceDataItemIndex
-                ].selectedColor.slice(1)
+                ].selectedColor?.slice(1)
             );
         }, 50);
     }
@@ -547,6 +574,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             multiChartHover: true,
             tooltipOffset: { min: 134, max: 206 },
             dataLabels: [],
+            dataTooltipLabels: this.barChartTooltipLabels,
+            pricePerGallonValue: this.barChartValues.pricePerGallonValues,
+            loadRatePerMileValue: this.barChartValues.loadRatePerMileValues,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 
@@ -596,6 +626,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             DashboardUtils.setBarChartLabels(barChartLables, selectedSubPeriod);
 
         this.barChartLabels = filteredLabels;
+        this.barChartTooltipLabels = filteredTooltipLabels;
     }
 
     private setBarChartConfigAndAxes(
@@ -647,6 +678,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             dataLabels: this.barChartLabels,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
+
+        console.log('this.barChartConfig', this.barChartConfig);
 
         // bar max value
         const barChartMaxValue =
