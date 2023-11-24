@@ -12,8 +12,8 @@
 
 
 export interface ExpencesPerformanceResponse { 
-    expencesCount?: number | null;
-    expencesDifference?: number | null;
-    expencesAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

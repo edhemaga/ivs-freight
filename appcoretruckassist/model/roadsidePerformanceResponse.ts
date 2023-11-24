@@ -12,8 +12,8 @@
 
 
 export interface RoadsidePerformanceResponse { 
-    roadsidesCount?: number | null;
-    roadsidesDifference?: number | null;
-    roadsidesAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

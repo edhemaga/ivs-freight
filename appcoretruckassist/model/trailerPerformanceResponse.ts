@@ -12,8 +12,8 @@
 
 
 export interface TrailerPerformanceResponse { 
-    trailersCount?: number | null;
-    trailersDifference?: number | null;
-    trailersAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

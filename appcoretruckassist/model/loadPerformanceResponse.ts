@@ -12,8 +12,8 @@
 
 
 export interface LoadPerformanceResponse { 
-    loadsCount?: number | null;
-    loadsDifference?: number | null;
-    loadsAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

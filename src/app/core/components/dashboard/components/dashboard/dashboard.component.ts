@@ -2,11 +2,15 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
+    OnChanges,
     OnDestroy,
     OnInit,
 } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
+
+// decorators
+import { Titles } from 'src/app/core/utils/application.decorators';
 
 // services
 import { SharedService } from '../../../../services/shared/shared.service';
@@ -22,13 +26,16 @@ import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
 // models
 import { SignInResponse } from '../../../../../../../appcoretruckassist/model/signInResponse';
 
+@Titles()
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DashboardComponent
+    implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
     private destroy$: Subject<void> = new Subject<void>();
 
     constructor(
@@ -46,6 +53,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.emitUpdateScrollHeight();
     }
+
+    ngOnChanges(): void {}
 
     private checkIfUserSettingsAreUpdated(): void {
         const loggedUser: SignInResponse = JSON.parse(

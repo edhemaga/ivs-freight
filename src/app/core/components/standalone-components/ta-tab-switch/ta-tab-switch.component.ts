@@ -21,6 +21,7 @@ import { TaCustomPeriodRangeComponent } from '../ta-custom-period-range/ta-custo
 
 // models
 import { CustomPeriodRange } from '../../dashboard/state/models/custom-period-range.model';
+import { DropdownListItem } from '../../dashboard/state/models/dropdown-list-item.model';
 
 @Component({
     selector: 'app-ta-tab-switch',
@@ -41,9 +42,14 @@ export class TaTabSwitchComponent implements OnChanges {
     @Input() tabs: any[];
     @Input() type: string = '';
     @Input() dashboardHeight?: boolean = false;
+    @Input() subPeriodDropdownList?: DropdownListItem[] = [];
+    @Input() selectedSubPeriod?: DropdownListItem;
+    @Input() clearCustomPeriodRangeValue?: boolean = false;
 
     @Output() switchClicked = new EventEmitter<any>();
-    @Output() customPeriodRangeEmitter = new EventEmitter<any>();
+    @Output() customPeriodRangeEmitter = new EventEmitter<CustomPeriodRange>();
+    @Output() customPeriodRangeSubperiodEmitter = new EventEmitter<number>();
+    @Output() popoverClosedEmitter = new EventEmitter();
 
     hoverStyle: any = {
         width: '0px',
@@ -115,5 +121,15 @@ export class TaTabSwitchComponent implements OnChanges {
         const closeComponentArray = this.autoCloseComponent.toArray().reverse();
 
         closeComponentArray[0].tooltip.close();
+    }
+
+    public handleCustomPeriodRangeSubperiodEmit(
+        selectedDaysRange: number
+    ): void {
+        this.customPeriodRangeSubperiodEmitter.emit(selectedDaysRange);
+    }
+
+    public handlePopoverClose(): void {
+        this.popoverClosedEmitter.emit();
     }
 }

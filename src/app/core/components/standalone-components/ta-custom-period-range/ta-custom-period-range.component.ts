@@ -3,9 +3,11 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 import {
     ReactiveFormsModule,
@@ -42,9 +44,12 @@ import { DropdownListItem } from '../../dashboard/state/models/dropdown-list-ite
         TaInputDropdownComponent,
     ],
 })
-export class TaCustomPeriodRangeComponent implements OnInit, OnDestroy {
+export class TaCustomPeriodRangeComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() subPeriodDropdownList: DropdownListItem[] = [];
     @Input() selectedSubPeriod: DropdownListItem;
+    @Input() clearCustomPeriodRangeValue?: boolean = false;
 
     @Output() customPeriodRangeValuesEmitter =
         new EventEmitter<CustomPeriodRange>();
@@ -54,12 +59,20 @@ export class TaCustomPeriodRangeComponent implements OnInit, OnDestroy {
 
     public customPeriodRangeForm: UntypedFormGroup;
 
+    public isSubPeriodDisabled: boolean = true;
+
     constructor(private formBuilder: UntypedFormBuilder) {}
 
     ngOnInit(): void {
         this.createForm();
 
         this.watchDateInputsValueChange();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.clearCustomPeriodRangeValue?.currentValue) {
+            this.resetCustomPeriodRangeForm();
+        }
     }
 
     private createForm(): void {
@@ -72,6 +85,10 @@ export class TaCustomPeriodRangeComponent implements OnInit, OnDestroy {
 
     public handleInputSelect(dropdownListItem: DropdownListItem): void {
         this.selectedSubPeriod = dropdownListItem;
+
+        this.customPeriodRangeForm.patchValue({
+            subPeriod: dropdownListItem.name,
+        });
     }
 
     public handleCancelOrSetClick(isCancelBtnClick: boolean = true): void {
@@ -82,6 +99,8 @@ export class TaCustomPeriodRangeComponent implements OnInit, OnDestroy {
                 this.customPeriodRangeForm.value
             );
         }
+
+        this.resetCustomPeriodRangeForm();
     }
 
     private watchDateInputsValueChange(): void {
@@ -103,9 +122,35 @@ export class TaCustomPeriodRangeComponent implements OnInit, OnDestroy {
                         this.customPeriodRangeSubperiodEmitter.emit(
                             selectedDaysRange
                         );
+
+                        this.isSubPeriodDisabled = false;
                     }
                 }
             });
+    }
+
+    private resetCustomPeriodRangeForm(): void {
+        const formControlNames = Object.keys(
+            this.customPeriodRangeForm.controls
+        );
+
+        this.customPeriodRangeForm.reset();
+
+        for (let i = 0; i < formControlNames.length; i++) {
+            const formControl = this.customPeriodRangeForm.get(
+                formControlNames[i]
+            );
+
+            if (formControl.value) {
+                this.customPeriodRangeForm
+                    .get(formControlNames[i])
+                    .clearValidators();
+            }
+
+            formControl.reset();
+        }
+
+        this.isSubPeriodDisabled = true;
     }
 
     ngOnDestroy(): void {

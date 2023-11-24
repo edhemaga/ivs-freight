@@ -4,8 +4,8 @@ export interface PerformanceDataItem {
     isSelected: boolean;
     selectedColor: string;
     selectedHoverColor: string;
-    lastMonthValue?: number;
-    lastMonthTrend?: number | string;
-    monthlyAverageValue?: number;
-    monthlyAverageTrend: number | string;
+    lastIntervalValue?: number;
+    lastIntervalTrend?: number;
+    intervalAverageValue?: number;
+    lineChartDataValues: number[];
 }

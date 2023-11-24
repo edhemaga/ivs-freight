@@ -1,20 +1,17 @@
-import moment from 'moment';
-
 // constants
 import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
 import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
 
+// helpers
+import { DashboardStringHelper } from './helpers/dashboard-string.helper';
+
 // enums
 import { ConstantStringEnum } from '../enums/constant-string.enum';
-import { ConstantChartStringEnum } from '../enums/constant-chart-string.enum';
 
 // models
 import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
-import {
-    BarChartInterval,
-    BarChartLabels,
-} from '../models/dashboard-chart-models/bar-chart.model';
+import { BarChartLabels } from '../models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
 
 export class DashboardUtils {
@@ -128,19 +125,17 @@ export class DashboardUtils {
                 barChartLabel.tooltipLabel,
             ];
 
-            if (
-                ((selectedSubPeriod === ConstantStringEnum.HOURLY ||
-                    selectedSubPeriod === ConstantStringEnum.THS ||
-                    selectedSubPeriod === ConstantStringEnum.SHS ||
-                    selectedSubPeriod === ConstantStringEnum.SMD) &&
+            const isSelectedSubPeriodIncludedInCustomPeriodList =
+                (DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST.includes(
+                    selectedSubPeriod
+                ) &&
                     !barChartLabel.label.includes(ConstantStringEnum.PM) &&
                     !barChartLabel.label.includes(ConstantStringEnum.AM)) ||
-                selectedSubPeriod === ConstantStringEnum.DAILY ||
-                selectedSubPeriod === ConstantStringEnum.WEEKLY ||
-                selectedSubPeriod === ConstantStringEnum.BWL ||
-                selectedSubPeriod === ConstantStringEnum.SML ||
-                selectedSubPeriod === ConstantStringEnum.QUARTERLY
-            ) {
+                DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST_2.includes(
+                    selectedSubPeriod
+                );
+
+            if (isSelectedSubPeriodIncludedInCustomPeriodList) {
                 const splitLabel = barChartLabel.label.split(
                     ConstantStringEnum.EMPTY_SPACE_STRING
                 );
@@ -170,30 +165,33 @@ export class DashboardUtils {
         }
     }
 
-    static setBarChartDateTitle(
-        startInterval: BarChartInterval,
-        endInterval: BarChartInterval
-    ): { barDateTitle: string } {
-        const startIntervalDate = moment(new Date(startInterval.startTime));
-        const endIntervalDate = moment(new Date(endInterval.endTime));
+    static createBarChartEmptyLabels(
+        barChartLabels: string[] | string[][]
+    ): (string | string[])[] {
+        let emptyLabelsArray: (string | string[])[] = [];
 
-        const dateTitleStartMonth = startIntervalDate.format(
-            ConstantChartStringEnum.MMMM
-        );
-        const dateTitleStartYear = startIntervalDate.format(
-            ConstantChartStringEnum.YYYY
-        );
+        for (let i = 0; i < barChartLabels.length; i++) {
+            if (Array.isArray(barChartLabels[i])) {
+                emptyLabelsArray = [...emptyLabelsArray, ['', '']];
+            } else {
+                emptyLabelsArray = [...emptyLabelsArray, ''];
+            }
+        }
 
-        const dateTitleEndMonth = endIntervalDate.format(
-            ConstantChartStringEnum.MMMM
-        );
-        const dateTitleEndtYear = endIntervalDate.format(
-            ConstantChartStringEnum.YYYY
-        );
+        return emptyLabelsArray;
+    }
 
-        const barDateTitle = `${dateTitleStartMonth}, ${dateTitleStartYear} - ${dateTitleEndMonth}, ${dateTitleEndtYear}`;
+    static setChartDateTitle(
+        startText: string,
+        endText: string
+    ): { chartTitle: string } {
+        const titleStart =
+            DashboardStringHelper.capitalizeFirstLetter(startText);
+        const titleEnd = DashboardStringHelper.capitalizeFirstLetter(endText);
 
-        return { barDateTitle };
+        const chartTitle = `${titleStart} - ${titleEnd}`;
+
+        return { chartTitle };
     }
 
     static highlightPartOfString(
