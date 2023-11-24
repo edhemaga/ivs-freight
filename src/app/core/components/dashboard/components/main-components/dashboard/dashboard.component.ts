@@ -13,18 +13,18 @@ import { Subject, takeUntil } from 'rxjs';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // services
-import { SharedService } from '../../../../services/shared/shared.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { DashboardService } from '../../state/services/dashboard.service';
+import { SharedService } from '../../../../../services/shared/shared.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { DashboardService } from '../../../state/services/dashboard.service';
 
 // components
-import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsBasicModalComponent } from '../../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
 
 // enums
-import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
+import { ConstantStringEnum } from '../../../state/enums/constant-string.enum';
 
 // models
-import { SignInResponse } from '../../../../../../../appcoretruckassist/model/signInResponse';
+import { SignInResponse } from '../../../../../../../../appcoretruckassist/model/signInResponse';
 
 @Titles()
 @Component({

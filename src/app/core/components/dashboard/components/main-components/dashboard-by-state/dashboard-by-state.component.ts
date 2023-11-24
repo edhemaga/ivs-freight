@@ -10,22 +10,22 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // store
-import { DashboardQuery } from '../../state/store/dashboard.query';
+import { DashboardQuery } from '../../../state/store/dashboard.query';
 
 // enums
-import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
+import { ConstantStringEnum } from '../../../state/enums/constant-string.enum';
 
 // constants
-import { DashboardByStateConstants } from '../../state/utils/constants/dashboard-by-state.constants';
-import { DashboardSubperiodConstants } from '../../state/utils/constants/dashboard-subperiod.constants';
-import { DashboardTopRatedConstants } from '../../state/utils/constants/dashboard-top-rated.constants';
+import { DashboardByStateConstants } from '../../../state/utils/constants/dashboard-by-state.constants';
+import { DashboardSubperiodConstants } from '../../../state/utils/constants/dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from '../../../state/utils/constants/dashboard-top-rated.constants';
 
 // models
-import { ByStateListItem } from '../../state/models/dashboard-by-state-models/by-state-list-item.model';
-import { DropdownItem } from '../../state/models/dropdown-item.model';
-import { DashboardTab } from '../../state/models/dashboard-tab.model';
-import { DropdownListItem } from '../../state/models/dropdown-list-item.model';
-import { DashboardUtils } from '../../state/utils/dashboard-utils';
+import { ByStateListItem } from '../../../state/models/dashboard-by-state-models/by-state-list-item.model';
+import { DropdownItem } from '../../../state/models/dropdown-item.model';
+import { DashboardTab } from '../../../state/models/dashboard-tab.model';
+import { DropdownListItem } from '../../../state/models/dropdown-list-item.model';
+import { DashboardUtils } from '../../../state/utils/dashboard-utils';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
