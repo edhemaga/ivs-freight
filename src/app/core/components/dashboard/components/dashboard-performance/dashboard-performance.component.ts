@@ -65,7 +65,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     private destroy$: Subject<void> = new Subject<void>();
 
-    public isLoading: boolean = true;
+    public isLoading: boolean = false;
 
     public performanceForm: UntypedFormGroup;
     public performanceData: PerformanceDataItem[] = [];

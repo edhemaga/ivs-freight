@@ -1,21 +1,18 @@
 .placeholder-container {
-    padding: 8px;
-
     &.performance-double-container,
     &.performance-single-container {
-        width: 177px;
-
         p {
             margin-bottom: 2px;
         }
     }
 
     &.performance-double-container {
+        width: 177px;
+
         p {
             &:nth-child(2),
-            &:nth-child(4),
-            &:nth-child(6) {
-                margin-bottom: 10px;
+            &:nth-child(4) {
+                margin-bottom: 31px;
             }
 
             &:last-child {
@@ -25,6 +22,8 @@
     }
 
     &.performance-single-container {
+        width: 140px;
+
         p {
             &:last-child {
                 margin-bottom: 0;

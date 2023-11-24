@@ -94,38 +94,38 @@
         <div
             class="d-flex align-items-center dashboard-performance-body-boxes-container"
         >
-            <ng-container *ngIf="isLoading">
-                <app-dashboard-loading-placeholder
-                    [performanceDoubleBoxPlaceholder]="true"
-                ></app-dashboard-loading-placeholder>
-            </ng-container>
+            <div
+                class="d-flex flex-column justify-content-center boxes-double-box"
+                placement="bottom"
+                [ngbTooltip]="
+                    performanceData[0].isSelected
+                        ? 'Hide from Chart'
+                        : 'Show on Chart'
+                "
+                [ngStyle]="{
+                    background: performanceData[0].isHovered
+                        ? performanceData[0].selectedHoverColor
+                        : performanceData[0].isSelected
+                        ? performanceData[0].selectedColor
+                        : '#f7f7f780'
+                }"
+                [ngClass]="{ selected: performanceData[0].isSelected }"
+                (mouseenter)="handlePerformanceDataHover(0)"
+                (mouseleave)="handlePerformanceDataHover(0, true)"
+                (click)="
+                    handlePerformanceDataClick(
+                        0,
+                        performanceData[0].selectedColor
+                    )
+                "
+            >
+                <ng-container *ngIf="isLoading">
+                    <app-dashboard-loading-placeholder
+                        [performanceDoubleBoxPlaceholder]="true"
+                    ></app-dashboard-loading-placeholder>
+                </ng-container>
 
-            <ng-container *ngIf="!isLoading">
-                <div
-                    class="d-flex flex-column justify-content-center boxes-double-box"
-                    placement="bottom"
-                    [ngbTooltip]="
-                        performanceData[0].isSelected
-                            ? 'Hide from Chart'
-                            : 'Show on Chart'
-                    "
-                    [ngStyle]="{
-                        background: performanceData[0].isHovered
-                            ? performanceData[0].selectedHoverColor
-                            : performanceData[0].isSelected
-                            ? performanceData[0].selectedColor
-                            : '#f7f7f780'
-                    }"
-                    [ngClass]="{ selected: performanceData[0].isSelected }"
-                    (mouseenter)="handlePerformanceDataHover(0)"
-                    (mouseleave)="handlePerformanceDataHover(0, true)"
-                    (click)="
-                        handlePerformanceDataClick(
-                            0,
-                            performanceData[0].selectedColor
-                        )
-                    "
-                >
+                <ng-container *ngIf="!isLoading">
                     <div
                         class="d-flex flex-column justify-content-center boxes-double-box-header"
                     >
@@ -277,8 +277,8 @@
                             </p>
                         </div>
                     </div>
-                </div>
-            </ng-container>
+                </ng-container>
+            </div>
 
             <div class="boxes-single-box-container">
                 <ng-container
@@ -288,42 +288,41 @@
                         trackBy: trackByIdentity
                     "
                 >
-                    <ng-container *ngIf="isLoading">
-                        <app-dashboard-loading-placeholder
-                            [performanceSingleBoxPlaceholder]="true"
-                        ></app-dashboard-loading-placeholder>
-                    </ng-container>
+                    <div
+                        class="d-flex flex-column box"
+                        placement="bottom"
+                        [ngbTooltip]="
+                            performanceDataItem.isSelected
+                                ? 'Hide from Chart'
+                                : 'Show on Chart'
+                        "
+                        [ngStyle]="{
+                            background: performanceDataItem.isHovered
+                                ? performanceDataItem.selectedHoverColor
+                                : performanceDataItem.isSelected
+                                ? performanceDataItem.selectedColor
+                                : '#f7f7f780',
+                            'padding-top': isLoading ? '5px' : '12px'
+                        }"
+                        [ngClass]="{
+                            selected: performanceDataItem.isSelected
+                        }"
+                        (mouseenter)="handlePerformanceDataHover(i + 1)"
+                        (mouseleave)="handlePerformanceDataHover(i + 1, true)"
+                        (click)="
+                            handlePerformanceDataClick(
+                                i + 1,
+                                performanceDataItem.selectedColor
+                            )
+                        "
+                    >
+                        <ng-container *ngIf="isLoading">
+                            <app-dashboard-loading-placeholder
+                                [performanceSingleBoxPlaceholder]="true"
+                            ></app-dashboard-loading-placeholder>
+                        </ng-container>
 
-                    <ng-container *ngIf="!isLoading">
-                        <div
-                            class="d-flex flex-column box"
-                            placement="bottom"
-                            [ngbTooltip]="
-                                performanceDataItem.isSelected
-                                    ? 'Hide from Chart'
-                                    : 'Show on Chart'
-                            "
-                            [ngStyle]="{
-                                background: performanceDataItem.isHovered
-                                    ? performanceDataItem.selectedHoverColor
-                                    : performanceDataItem.isSelected
-                                    ? performanceDataItem.selectedColor
-                                    : '#f7f7f780'
-                            }"
-                            [ngClass]="{
-                                selected: performanceDataItem.isSelected
-                            }"
-                            (mouseenter)="handlePerformanceDataHover(i + 1)"
-                            (mouseleave)="
-                                handlePerformanceDataHover(i + 1, true)
-                            "
-                            (click)="
-                                handlePerformanceDataClick(
-                                    i + 1,
-                                    performanceDataItem.selectedColor
-                                )
-                            "
-                        >
+                        <ng-container *ngIf="!isLoading">
                             <div class="d-flex align-items-center box-header">
                                 <svg-icon
                                     class="circle-icon"
@@ -443,8 +442,8 @@
                                     }}
                                 </p>
                             </div>
-                        </div>
-                    </ng-container>
+                        </ng-container>
+                    </div>
                 </ng-container>
             </div>
         </div>
