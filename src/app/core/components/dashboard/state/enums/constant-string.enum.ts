@@ -18,6 +18,26 @@ export enum ConstantStringEnum {
     REVENUE = 'Revenue',
     MILEAGE = 'Mileage',
 
+    NET_INCOME = 'NET INCOME',
+    REVENUE_2 = 'REVENUE',
+    EXPENSES = 'EXPENSES',
+    LOAD_2 = 'LOAD',
+    MILES = 'MILES',
+    FUEL_GALLON = 'FUEL GALLON',
+    FUEL_COST = 'FUEL COST',
+    REPAIR_COST = 'REPAIR COST',
+    ROADSIDE_INSP = 'ROADSIDE INSP.',
+    VIOALTION = 'VIOLATION',
+    ACCIDENT = 'ACCIDENT',
+    DRIVER_2 = 'DRIVER',
+    TRUCK_2 = 'TRUCK',
+    TRAILER = 'TRAILER',
+    OWNER_2 = 'OWNER',
+    USER_2 = 'USER',
+    REPAIR_SHOP_2 = 'REPAIR SHOP',
+    BROKER_2 = 'BROKER',
+    SHIPPER_2 = 'SHIPPER',
+
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',
 
@@ -45,13 +65,29 @@ export enum ConstantStringEnum {
     HOURLY = 'Hourly',
     DAILY = 'Daily',
     WEEKLY = 'Weekly',
+    MONTHLY = 'Monthly',
     QUARTERLY = 'Quarterly',
+    YEARLY = 'Yearly',
 
     THS = 'ThreeHours',
     SHS = 'SixHours',
     SMD = 'SemiDaily',
     SML = 'SemiMonthly',
     BWL = 'BiWeekly',
+
+    YESTERDAY = 'YESTERDAY',
+
+    LAST_WEEK = 'LAST WEEK',
+    LAST_MONTH = 'LAST MONTH',
+    LAST_QUARTAL = 'LAST QUARTAL',
+    LAST_PERIOD = 'LAST PERIOD',
+
+    AVERAGE = ' AVERAGE',
+    DAILY_AVERAGE = 'DAILY AVERAGE',
+    WEEKLY_AVERAGE = 'WEEKLY AVERAGE',
+    MONTHLY_AVERAGE = 'MONTHLY AVERAGE',
+    QUARTERLY_AVERAGE = 'QUARTERLY AVERAGE',
+    PERIOD_AVERAGE = 'PERIOD AVERAGE',
 
     PICKUP = 'Pickup',
 
@@ -66,4 +102,11 @@ export enum ConstantStringEnum {
     EMPTY_SPACE_STRING = ' ',
 
     REGEX_GI = 'gi',
+
+    TREND_UP_IMG = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
+    TREND_UP_IMG_2 = 'assets/svg/common/trend-up-red.svg',
+    TREND_DOWN_IMG = 'assets/svg/common/dashboard/trend-down-with-frame.svg',
+    TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
+
+    ZERO_STRING = '0',
 }

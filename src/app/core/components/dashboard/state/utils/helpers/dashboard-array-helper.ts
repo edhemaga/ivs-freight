@@ -14,4 +14,18 @@ export class DashboardArrayHelper {
 
         return sortedArray;
     }
+
+    static findLargestNumberInArrayOfArrays(arr: number[][]) {
+        let largestNumber = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] > largestNumber) {
+                    largestNumber = arr[i][j];
+                }
+            }
+        }
+
+        return largestNumber;
+    }
 }

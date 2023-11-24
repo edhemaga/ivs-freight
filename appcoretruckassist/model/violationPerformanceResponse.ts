@@ -12,8 +12,8 @@
 
 
 export interface ViolationPerformanceResponse { 
-    violationsCount?: number | null;
-    violationsDifference?: number | null;
-    violationsAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

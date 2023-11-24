@@ -12,8 +12,8 @@
 
 
 export interface RevenuePerformanceResponse { 
-    revenuesCount?: number | null;
-    revenuesDifference?: number | null;
-    revenuesAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

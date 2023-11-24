@@ -40,10 +40,14 @@ export interface LineChartConfig {
     multiChartHover: boolean;
     tooltipOffset: { min: number; max: number };
     dataLabels: string[][];
+    dataTooltipLabels: string[];
+    pricePerGallonValue: number[];
+    loadRatePerMileValue: number[];
     noChartImage: string;
 }
 
 export interface LineChart extends Chart {
+    resetLineChartData: () => void;
     insertNewChartData: (
         action: string,
         performanceDataTitle: string,

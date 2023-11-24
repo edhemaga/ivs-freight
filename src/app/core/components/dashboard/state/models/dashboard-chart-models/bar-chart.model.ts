@@ -42,9 +42,9 @@ export interface BarChartValues {
     selectedBarPercentages: number[][];
 }
 
-export interface BarChartInterval {
-    startTime?: string;
-    endTime?: string;
+export interface BarChartPerformanceValues {
+    pricePerGallonValues: number[];
+    loadRatePerMileValues: number[];
 }
 
 export interface BarChartLabels {
