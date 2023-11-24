@@ -53,6 +53,8 @@ export enum ConstantStringEnum {
     SML = 'SemiMonthly',
     BWL = 'BiWeekly',
 
+    PICKUP = 'Pickup',
+
     CLICK = 'click',
     CLASS_DROPDOWN_OPTION = 'dropdown-option',
 

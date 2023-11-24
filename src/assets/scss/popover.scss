@@ -1499,13 +1499,13 @@
     }
 }
 
-.top-rated-popover-main {
+.popover-main {
     &.pickup-popover-main {
         width: 146px;
         height: 234px;
     }
 
-    .top-rated-popover-container {
+    .popover-container {
         width: 155px;
         border-radius: 3px;
         background: $ta-black-2;
@@ -1519,7 +1519,7 @@
         -moz-user-select: none;
         -ms-user-select: none;
 
-        .top-rated-popover-item {
+        .popover-item {
             position: relative;
             display: flex;
             align-items: center;

@@ -10,9 +10,6 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
-// bootstrap
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-
 // services
 import { DashboardService } from '../../state/services/dashboard.service';
 
@@ -33,7 +30,7 @@ import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
 import { ConstantChartStringEnum } from '../../state/enums/constant-chart-string.enum';
 
 // models
-import { TopRatedDropdownItem } from '../../state/models/dashboard-top-rated-models/top-rated-dropdown-item.model';
+import { DropdownItem } from '../../state/models/dropdown-item.model';
 import { DashboardTab } from '../../state/models/dashboard-tab.model';
 import { DropdownListItem } from '../../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../../state/models/dashboard-top-rated-models/top-rated-list-item.model';
@@ -74,7 +71,6 @@ import { BarChartInterval } from '../../state/models/dashboard-chart-models/bar-
     encapsulation: ViewEncapsulation.None,
 })
 export class DashboardTopRatedComponent implements OnInit, OnDestroy {
-    @ViewChild('popover') public popover: NgbPopover;
     @ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
     @ViewChild('barChart') public barChart: BarChart;
 
@@ -104,7 +100,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private currentActiveTab: DashboardTab;
 
     // dropdowns
-    public topRatedDropdownList: TopRatedDropdownItem[] = [];
+    public topRatedDropdownList: DropdownItem[] = [];
 
     public mainPeriodDropdownList: DropdownListItem[] = [];
     public subPeriodDropdownList: DropdownListItem[] = [];
@@ -167,7 +163,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         });
     }
 
-    public trackByIdentity = (_: number, item: TopRatedDropdownItem): string =>
+    public trackByIdentity = (_: number, item: DropdownItem): string =>
         item.name;
 
     public resetSelectedValues(): void {
@@ -325,9 +321,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
     }
 
-    public handleSwitchTopRatedClick(
-        topRatedDropdownItem: TopRatedDropdownItem
-    ): void {
+    public handleSwitchTopRatedClick(topRatedDropdownItem: DropdownItem): void {
         if (topRatedDropdownItem.name === this.topRatedTitle) return;
 
         const topRatedTabsToDisplay = [
@@ -360,8 +354,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
 
         this.getTopRatedListData();
-
-        this.popover.close();
     }
 
     public handleSwitchTabClick(activeTab: DashboardTab): void {

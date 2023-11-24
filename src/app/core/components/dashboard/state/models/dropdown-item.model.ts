@@ -1,4 +1,4 @@
-export interface TopRatedDropdownItem {
+export interface DropdownItem {
     name: string;
     isActive: boolean;
     tab1: string;

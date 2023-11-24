@@ -10,6 +10,7 @@
         class="d-flex align-items-center justify-content-between dashboard-top-rated-header"
     >
         <!-- Left Side -->
+
         <div class="d-flex align-items-center">
             <!-- Title -->
 
@@ -21,46 +22,10 @@
 
             <!-- Dropdown -->
 
-            <button
-                class="dashboard-top-rated-header-arrow-btn"
-                #popover="ngbPopover"
-                autoClose="outside"
-                [ngbPopover]="topRatedPopover"
-                [popoverClass]="'top-rated-popover-main'"
-                [placement]="['bottom']"
-                [container]="'body'"
-                [ngClass]="{ active: popover?.isOpen() }"
-            >
-                <svg-icon
-                    src="assets/svg/common/fill_arrow_down.svg"
-                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-            </button>
-
-            <ng-template #topRatedPopover>
-                <div class="top-rated-popover-container">
-                    <div
-                        *ngFor="
-                            let topRatedDropdownItem of topRatedDropdownList;
-                            trackBy: trackByIdentity
-                        "
-                        class="top-rated-popover-item"
-                        [ngClass]="{ active: topRatedDropdownItem.isActive }"
-                        (click)="
-                            handleSwitchTopRatedClick(topRatedDropdownItem)
-                        "
-                    >
-                        <p class="m-0">{{ topRatedDropdownItem.name }}</p>
-
-                        <div class="popover-icon-container">
-                            <svg-icon
-                                src="assets/svg/common/ic_confirm.svg"
-                                [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                            ></svg-icon>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
+            <app-dashboard-dropdown
+                [dropdownList]="topRatedDropdownList"
+                (dropdownItemEmitter)="handleSwitchTopRatedClick($event)"
+            ></app-dashboard-dropdown>
 
             <!-- Tabs -->
 

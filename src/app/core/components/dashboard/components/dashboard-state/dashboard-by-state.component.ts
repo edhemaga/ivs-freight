@@ -1,13 +1,27 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// enums
+import { ConstantStringEnum } from '../../state/enums/constant-string.enum';
+
+// models
+import { ByStateListItem } from '../../state/models/dashboard-by-state-models/by-state-list-item.model';
+
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
-    templateUrl: './dashboard-pickup-by-state.component.html',
-    styleUrls: ['./dashboard-pickup-by-state.component.scss'],
+    templateUrl: './dashboard-by-state.component.html',
+    styleUrls: ['./dashboard-by-state.component.scss'],
 })
-export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
+export class DashboardByStateComponent implements OnInit, OnDestroy {
+    public byStateTitle: string = ConstantStringEnum.PICKUP;
+
+    // list
+    public byStateList: ByStateListItem[] = [];
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     @ViewChild('t2') t2: any;
     @ViewChild('t3') t3: any;
     @ViewChild('statesBarChart', { static: false }) public statesBarChart: any;
@@ -227,6 +241,8 @@ export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
     };
 
     constructor(private tableService: TruckassistTableService) {}
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
     ngOnInit(): void {
         if (this.pickupCircleColor?.length) {

@@ -27,24 +27,26 @@ import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.com
 import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
 
 import { DashboardPerformanceComponent } from './components/dashboard-performance/dashboard-performance.component';
-import { DashboardPickupByStateComponent } from './components/dashboard-pickup-by-state/dashboard-pickup-by-state.component';
+import { DashboardByStateComponent } from './components/dashboard-state/dashboard-by-state.component';
 import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
 import { DashboardStateTrackingComponent } from './components/dashboard-state-tracking/dashboard-state-tracking.component';
 import { DashboardStateUsaComponent } from './components/dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
 
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { DashboardDropdownComponent } from './components/dashboard-dropdown/dashboard-dropdown.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         DashboardTopRatedComponent,
         DashboardPerformanceComponent,
-        DashboardPickupByStateComponent,
+        DashboardByStateComponent,
         DashboardMapComponent,
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
         DashboardDataPlaceholderComponent,
+        DashboardDropdownComponent,
     ],
     imports: [
         // modules
