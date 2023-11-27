@@ -12,8 +12,8 @@
 
 
 export interface AccidentPerformanceResponse { 
-    accidentsCount?: number | null;
-    accidentsDifference?: number | null;
-    accidentsAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

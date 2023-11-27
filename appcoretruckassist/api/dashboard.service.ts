@@ -33,7 +33,7 @@ import { LiveTrackingLiteResponse } from '../model/liveTrackingLiteResponse';
 // @ts-ignore
 import { LoadStopType } from '../model/loadStopType';
 // @ts-ignore
-import { PerformanceListResponse } from '../model/performanceListResponse';
+import { PerformanceResponse } from '../model/performanceResponse';
 // @ts-ignore
 import { PickupDeliveryByStateListResponse } from '../model/pickupDeliveryByStateListResponse';
 // @ts-ignore
@@ -425,9 +425,9 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PerformanceListResponse>;
-    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PerformanceListResponse>>;
-    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PerformanceListResponse>>;
+    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PerformanceResponse>;
+    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PerformanceResponse>>;
+    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PerformanceResponse>>;
     public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -489,7 +489,7 @@ export class DashboardService {
         }
 
         let localVarPath = `/api/dashboard/performance`;
-        return this.httpClient.request<PerformanceListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PerformanceResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

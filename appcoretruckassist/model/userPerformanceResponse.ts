@@ -12,8 +12,8 @@
 
 
 export interface UserPerformanceResponse { 
-    usersCount?: number | null;
-    usersDifference?: number | null;
-    usersAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 
