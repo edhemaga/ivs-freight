@@ -17,7 +17,7 @@ export class DashboardPerformanceConstants {
         },
         {
             name: ConstantStringEnum.MTD,
-            checked: true,
+            checked: false,
         },
         {
             name: ConstantStringEnum.QTD,
@@ -29,7 +29,7 @@ export class DashboardPerformanceConstants {
         },
         {
             name: ConstantStringEnum.ALL,
-            checked: false,
+            checked: true,
         },
         {
             name: ConstantStringEnum.CUSTOM,
