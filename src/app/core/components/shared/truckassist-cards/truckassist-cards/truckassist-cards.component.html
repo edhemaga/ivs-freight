@@ -1,130 +1,175 @@
-<div class="cards-container">
+<div class="custom-card p-1">
     <div
-        class="custom-card p-1"
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        class="card-body"
+        [ngClass]="{
+            'body-active': isCardFlipped.includes(cardIndex),
+            'body-checked': isCardChecked.includes(cardIndex)
+        }"
     >
-        <div class="card-body" [class.body-active]="card.isFlipped">
-            <div class="card-body-left p-1">
-                <div class="card-header">
-                    <div class="checkbox-holder">
-                        <input
-                            class="table-checkbox"
-                            (change)="onSelectItem(card, i)"
-                            [checked]="card.isSelected"
-                            id="checkbox{{ i }}"
-                            type="checkbox"
-                        />
-                        <label
-                            class="table-checkbox-label"
-                            for="checkbox{{ i }}"
-                        ></label>
-                    </div>
-                    <div class="name">Walmart Hierarchy</div>
+        <div class="card-body-left p-1">
+            <div class="card-header">
+                <div class="checkbox-holder">
+                    <input
+                        class="table-checkbox"
+                        type="checkbox"
+                        id="checkbox{{ cardIndex }}"
+                        (change)="onCheckboxSelect(cardIndex)"
+                    />
+                    <label
+                        class="table-checkbox-label"
+                        for="checkbox{{ cardIndex }}"
+                    ></label>
                 </div>
-                <div class="card-body-content" [class.flipped]="card.isFlipped">
-                    <div class="item-body">
-                        <div class="top-item-body">Comodity</div>
-                        <div class="bottom-item-body">
-                            <svg-icon
-                                *ngIf="card.textCommodity === 'Hazardous'"
-                                [src]="
-                                    'assets/svg/truckassist-table/hazardous-yellow.svg'
-                                "
-                                class="card-svg"
-                            ></svg-icon>
-                            <span>
-                                {{ card.textCommodity }}
-                            </span>
-                        </div>
+                <div class="name">
+                    <span class="svg-ftl-ltl">
+                        <svg-icon [src]="cardHeader.fltOrFtl"></svg-icon>
+                    </span>
+                    <span>
+                        {{ cardHeader.cardTitle }}
+                    </span>
+                </div>
+            </div>
+            <div
+                class="flipped"
+                [ngClass]="{
+                    'card-body-content': !isCardFlipped.includes(cardIndex)
+                }"
+            >
+                <div class="item-body">
+                    <div class="top-item-body">
+                        {{ firstLabel.title }}
                     </div>
-                    <div class="item-body">
-                        <div class="top-item-body">Broker</div>
-                        <div class="bottom-item-body">
-                            {{ card.broker.businessName }}
-                        </div>
-                    </div>
-                    <div class="item-body">
-                        <div class="top-item-body">Contact Name</div>
-                        <div class="bottom-item-body">
-                            {{ card.brokerContact?.contactName }}
-                        </div>
-                    </div>
-                    <div class="item-body">
-                        <div class="top-item-body">Contact Phone</div>
-                        <div class="bottom-item-body">
-                            {{ card.brokerContact?.phone }}
-                        </div>
+                    <div class="bottom-item-body">
+                        <svg-icon
+                            *ngIf="firstLabel[1] === 'Hazardous'"
+                            [src]="
+                                'assets/svg/truckassist-table/hazardous-yellow.svg'
+                            "
+                            class="card-svg"
+                        ></svg-icon>
+                        <span [style]="firstLabel.value.firstValueStyle">
+                            {{ firstLabel.value.firstValue }}
+                        </span>
                     </div>
                 </div>
-                <div
-                    class="card-body-content"
-                    [class.flipped]="!card.isFlipped"
-                >
-                    <div class="item-body">
-                        <div class="top-item-body">Pickup</div>
-                        <div class="bottom-item-body">
-                            <span class="amount-pickup amount">{{
-                                card.loadPickup.count
-                            }}</span>
-                            <span>{{ card.loadDelivery.location }}</span>
-                        </div>
+                <div class="item-body">
+                    <div class="top-item-body">
+                        {{ seccondLabel.title }}
                     </div>
-                    <div class="item-body">
-                        <div class="top-item-body">Delivery</div>
-                        <div class="bottom-item-body">
-                            <span class="amount-delivery amount">{{
-                                card.loadDelivery.count
-                            }}</span>
-                            <span>{{ card.loadDelivery.location }}</span>
-                        </div>
+                    <div class="bottom-item-body">
+                        <span [style]="seccondLabel.value.firstValueStyle">{{
+                            seccondLabel.value.firstValue
+                        }}</span>
+                        <span>{{ seccondLabel.value.seccValue }}</span>
+                        <span [style]="seccondLabel.value.thirdValueStyle">{{
+                            seccondLabel.value.thirdValue
+                        }}</span>
                     </div>
-                    <div class="item-body">
-                        <div class="top-item-body">Total Miles</div>
-                        <div class="bottom-item-body">
-                            {{ card.textMiles }}
-                        </div>
+                </div>
+                <div class="item-body">
+                    <div class="top-item-body">{{ thirdLabel.title }}</div>
+                    <div class="bottom-item-body">
+                        <span [style]="thirdLabel.value.firstValueStyle">{{
+                            thirdLabel.value.firstValue
+                        }}</span>
+                        <span>{{ thirdLabel.value.seccValue }}</span>
+                        <span>{{ thirdLabel.value.thirdValue }}</span>
                     </div>
-                    <div class="item-body">
-                        <div class="top-item-body">Rate</div>
-                        <div class="bottom-item-body">
-                            {{ card.textBase }}
-                        </div>
+                </div>
+                <div class="item-body">
+                    <div class="top-item-body">{{ fourthLabel.title }}</div>
+                    <div class="bottom-item-body">
+                        {{ fourthLabel.value.firstValue }}
                     </div>
                 </div>
             </div>
-
-            <div class="card-body-right">
-                <div class="top-side">
-                    <div class="right-side-svg">
-                        <svg-icon
-                            [src]="
-                                'assets/svg/common/ic_horizontal_dots_details.svg'
-                            "
-                        ></svg-icon>
-                    </div>
-                    <div class="right-side-svg">
-                        <svg-icon
-                            [src]="
-                                'assets/svg/truckassist-table/note/Note-hover.svg'
-                            "
-                        ></svg-icon>
-                    </div>
-                    <div class="right-side-svg">
-                        <svg-icon
-                            [src]="
-                                'assets/svg/truckassist-table/attachment-icon.svg'
-                            "
-                        ></svg-icon>
-                        <span>3</span>
+            <!-- Card Back -->
+            <div
+                class="flipped"
+                [ngClass]="{
+                    'card-body-content': isCardFlipped.includes(cardIndex)
+                }"
+            >
+                <div class="item-body">
+                    <div class="top-item-body">{{ firstLabelBack?.title }}</div>
+                    <div class="bottom-item-body">
+                        <span [style]="firstLabelBack?.value.firstValueStyle">
+                            {{ firstLabelBack?.value.firstValue }}
+                        </span>
+                        <span [style]="firstLabelBack?.value.seccValueStyle">
+                            {{ firstLabelBack?.value.seccValue }}
+                        </span>
                     </div>
                 </div>
-                <div class="bottom-side" (click)="flipCard(i)">
+                <div class="item-body">
+                    <div class="top-item-body">
+                        {{ seccondLabelBack?.title }}
+                    </div>
+                    <div class="bottom-item-body">
+                        <span [style]="seccondLabelBack?.value.firstValueStyle">
+                            {{ seccondLabelBack?.value.firstValue }}
+                        </span>
+                    </div>
+                </div>
+                <div class="item-body">
+                    <div class="top-item-body">{{ thirdLabelBack?.title }}</div>
+                    <div class="bottom-item-body">
+                        <span [style]="thirdLabelBack?.value.firstValueStyle">
+                            {{ thirdLabelBack?.value.firstValue }}
+                        </span>
+                    </div>
+                </div>
+                <div class="item-body">
+                    <div class="top-item-body">
+                        {{ fourthLabelBack?.title }}
+                    </div>
+                    <div class="bottom-item-body">
+                        <span [style]="fourthLabelBack?.value.firstValueStyle">
+                            {{ fourthLabelBack?.value.firstValue }}
+                        </span>
+                        <span [style]="fourthLabelBack?.value.seccValueStyle">{{
+                            fourthLabelBack?.value.seccValue
+                        }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right side of card -->
+        <div class="card-body-right">
+            <div class="top-side">
+                <div class="right-side-svg">
                     <svg-icon
-                        [class.svg-position]="!card.isFlipped"
-                        [class.rotate-svg]="card.isFlipped"
-                        [src]="'assets/svg/common/resize-arrow.svg'"
+                        class="dots"
+                        [src]="
+                            'assets/svg/common/ic_horizontal_dots_details.svg'
+                        "
                     ></svg-icon>
                 </div>
+                <div class="right-side-svg">
+                    <svg-icon
+                        class="document"
+                        [src]="
+                            'assets/svg/truckassist-table/note/Note-hover.svg'
+                        "
+                    ></svg-icon>
+                </div>
+                <div class="right-side-svg">
+                    <svg-icon
+                        [src]="
+                            'assets/svg/truckassist-table/attachment-icon.svg'
+                        "
+                    ></svg-icon>
+                    <span>3</span>
+                </div>
+            </div>
+            <div class="bottom-side" (click)="flipCard(cardIndex)">
+                <svg-icon
+                    [ngClass]="{
+                        'rotate-svg': isCardFlipped.includes(cardIndex),
+                        'svg-position': !isCardFlipped.includes(cardIndex)
+                    }"
+                    [src]="'assets/svg/common/resize-arrow.svg'"
+                ></svg-icon>
             </div>
         </div>
     </div>

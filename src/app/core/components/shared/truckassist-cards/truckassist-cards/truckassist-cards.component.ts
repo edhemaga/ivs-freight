@@ -1,8 +1,28 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { LoadDetails, LoadTableData } from '../dataTypes';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+interface CardHeader {
+    checkbox: boolean;
+    cardTitle: string;
+    fltOrFtl: string;
+}
+interface Value {
+    firstValue?: string;
+    firstValueStyle?: string;
+    seccValue?: string;
+    seccValueStyle?: string;
+    thirdValue?: string;
+    thirdValueStyle?: string;
+}
+interface CardData {
+    title?: string;
+    value?: Value;
+}
+const isCardFlippedArray: Array<number> = [];
+const isCheckboxCheckedArray: Array<number> = [];
 @Component({
     selector: 'app-truckassist-cards',
     templateUrl: './truckassist-cards.component.html',
@@ -11,9 +31,22 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     imports: [CommonModule, AngularSvgIconModule],
 })
 export class TruckassistCardsComponent implements OnInit {
+    isCardFlipped: Array<number> = [];
+    isCardChecked: Array<number> = [];
     @Input() viewData: LoadDetails[];
     @Input() tableData: LoadTableData[];
-    isCardFlipped = false;
+    // Front of cards
+    @Input() cardIndex: number;
+    @Input() cardHeader: CardHeader;
+    @Input() firstLabel: CardData;
+    @Input() seccondLabel: CardData;
+    @Input() thirdLabel: CardData;
+    @Input() fourthLabel: CardData;
+    // Back of cards
+    @Input() firstLabelBack: CardData;
+    @Input() seccondLabelBack: CardData;
+    @Input() thirdLabelBack: CardData;
+    @Input() fourthLabelBack: CardData;
     constructor(private tableService: TruckassistTableService) {}
 
     ngOnInit(): void {
@@ -22,13 +55,27 @@ export class TruckassistCardsComponent implements OnInit {
         });
     }
     ngOnChanges(changes: SimpleChanges): void {}
-    flipCard(index) {
-        this.viewData[index].isFlipped = !this.viewData[index].isFlipped;
+
+    // Flip card based on card index
+    flipCard(index: number) {
+        const indexSelected = isCardFlippedArray.indexOf(index);
+        if (indexSelected !== -1) {
+            isCardFlippedArray.splice(indexSelected, 1);
+            this.isCardFlipped = isCardFlippedArray;
+        } else {
+            isCardFlippedArray.push(index);
+            this.isCardFlipped = isCardFlippedArray;
+        }
     }
-    onSelectItem(card, i) {
-        console.log(card, i);
-    }
-    trackCard(item: number) {
-        return item;
+    // When checkbox is selected
+    onCheckboxSelect(index: number) {
+        const indexSelected = isCheckboxCheckedArray.indexOf(index);
+        if (indexSelected !== -1) {
+            isCheckboxCheckedArray.splice(indexSelected, 1);
+            this.isCardChecked = isCheckboxCheckedArray;
+        } else {
+            isCheckboxCheckedArray.push(index);
+            this.isCardChecked = isCheckboxCheckedArray;
+        }
     }
 }

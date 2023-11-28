@@ -1,151 +1,175 @@
 @import '/src/theme/variables.scss';
 
-.cards-container {
-    margin-top: 11px;
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    .custom-card {
-        background: $white;
-        max-width: 302px;
-        border-radius: 3px;
-        .body-active {
+.custom-card {
+    background: $white;
+    max-width: 302px;
+    border-radius: 3px;
+    .body-active {
+        background: $ta-light-grey;
+    }
+    .body-checked {
+        background: $ta-light-grey;
+    }
+
+    .card-body {
+        padding: 4px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 2px;
+        &:hover {
             background: $ta-light-grey;
         }
-        .card-body {
-            padding: 4px;
-            display: flex;
-            justify-content: space-between;
-            border-radius: 2px;
-            &:hover {
-                background: $ta-light-grey;
-            }
-            .card-body-left {
-                width: 256px;
-                .card-header {
+        .card-body-left {
+            width: 256px;
+            .card-header {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                .checkbox-holder {
                     display: flex;
-                    gap: 10px;
                     align-items: center;
-                    .checkbox-holder {
-                        display: flex;
-                        align-items: center;
-                        .table-checkbox {
-                            display: none;
-                        }
-                        .table-checkbox-label {
-                            width: 14px;
-                            height: 14px;
-                            background-color: $ta-light-grey-6;
-                            margin-bottom: 0;
-                            border-radius: 2px;
-                            cursor: pointer;
-                        }
-                        .table-checkbox:checked + .table-checkbox-label {
-                            background-color: $ta-blue-14;
-                            background-image: url('../../../../../../assets/svg/truckassist-table/check-new.svg');
-                            background-repeat: no-repeat;
-                            background-position: center;
-                            transition: background-color 0.25s;
-                        }
+                    .table-checkbox {
+                        display: none;
                     }
-                    .name {
-                        font-size: 14px;
-                        font-weight: 700;
-                        line-height: 18px;
+                    .table-checkbox-label {
+                        width: 14px;
+                        height: 14px;
+                        background-color: $ta-light-grey-6;
+                        margin-bottom: 0;
+                        border-radius: 2px;
+                        cursor: pointer;
+                    }
+                    .table-checkbox:checked + .table-checkbox-label {
+                        background-color: $ta-blue-14;
+                        background-image: url('../../../../../../assets/svg/truckassist-table/check-new.svg');
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        transition: background-color 0.25s;
                     }
                 }
-                .card-body-content {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                    margin-top: 8px;
-                    .item-body {
-                        height: 40px;
-                        .top-item-body {
-                            font-size: 11px;
-                            font-weight: 700;
-                            line-height: 20px;
-                        }
-                        .bottom-item-body {
-                            font-size: 14px;
-                            overflow: hidden;
-                            line-height: 20px;
-                            display: flex;
-                            align-items: center;
-                            gap: 4px;
-                            .card-svg {
-                                bottom: 2px;
-                                position: relative;
-                            }
-                            .amount {
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                align-content: center;
-                                color: white;
-                                font-size: 11px;
-                                font-weight: 800;
-                                border-radius: 1px;
-                                height: 18px;
-                                width: 18px;
-                            }
-                            .amount-pickup {
-                                background-color: #56b4ac;
-                            }
-                            .amount-delivery {
-                                background-color: #e66767;
+                .name {
+                    font-size: 14px;
+                    font-weight: 700;
+                    line-height: 18px;
+                    .svg-ftl-ltl {
+                        bottom: 1px;
+                        position: relative;
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                            path {
+                                fill: $ta-blue-13;
                             }
                         }
                     }
-                }
-                .flipped {
-                    display: none;
                 }
             }
-
-            .card-body-right {
-                height: 218px;
+            .flipped {
+                display: none;
+            }
+            .card-body-content {
                 display: flex;
                 flex-direction: column;
-
-                .top-side {
-                    height: 192px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-                    .right-side-svg {
+                gap: 8px;
+                margin-top: 8px;
+                .item-body {
+                    height: 40px;
+                    .top-item-body {
+                        font-size: 11px;
+                        font-weight: 700;
+                        line-height: 20px;
+                    }
+                    .bottom-item-body {
+                        font-size: 14px;
+                        overflow: hidden;
+                        line-height: 20px;
                         display: flex;
-                        flex-direction: column;
                         align-items: center;
-                        height: 26px;
-                        width: 26px;
-                        padding: 4px;
-                        cursor: pointer;
-                        span {
-                            color: $muted;
-                            font-weight: 700;
+                        gap: 4px;
+                        .card-svg {
+                            bottom: 2px;
+                            position: relative;
+                        }
+                        .amount {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            align-content: center;
+                            color: white;
                             font-size: 11px;
+                            font-weight: 800;
+                            border-radius: 1px;
+                            height: 18px;
+                            width: 18px;
+                        }
+                        .amount-pickup {
+                            background-color: #56b4ac;
+                        }
+                        .amount-delivery {
+                            background-color: #e66767;
                         }
                     }
                 }
-                .bottom-side {
+            }
+        }
+
+        .card-body-right {
+            height: 218px;
+            display: flex;
+            flex-direction: column;
+
+            .top-side {
+                height: 192px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                .right-side-svg {
                     display: flex;
-                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
                     width: 26px;
-                    height: 26px;
                     cursor: pointer;
-                }
-                .svg-position {
-                    rotate: (0deg);
-                    transition: all 0.3s;
-                }
-                .rotate-svg {
-                    rotate: (180deg);
-                    transition: all 0.3s;
+                    justify-content: center;
                     svg {
                         path {
-                            fill: $ta-blue-13;
+                            fill: #919191;
                         }
+                    }
+                    .dots {
+                        svg {
+                            width: 18px;
+                        }
+                    }
+                    .document {
+                        svg {
+                            height: 16px;
+                            width: 14px;
+                        }
+                    }
+                    span {
+                        color: $muted;
+                        font-weight: 700;
+                        font-size: 11px;
+                    }
+                }
+            }
+            .bottom-side {
+                display: flex;
+                justify-content: center;
+                width: 26px;
+                height: 26px;
+                cursor: pointer;
+            }
+            .svg-position {
+                rotate: (0deg);
+                transition: all 0.3s;
+            }
+            .rotate-svg {
+                rotate: (180deg);
+                transition: all 0.3s;
+                svg {
+                    path {
+                        fill: $ta-blue-13;
                     }
                 }
             }

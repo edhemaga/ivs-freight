@@ -450,6 +450,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        console.log(td);
     }
 
     mapLoadData(data: any) {

@@ -24,10 +24,88 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </div>
-    <div *ngIf="activeViewMode == 'Card'">
-        <app-truckassist-cards
-            [viewData]="viewData"
-            [tableData]="tableData"
-        ></app-truckassist-cards>
+    <!-- Cards -->
+    <div *ngIf="activeViewMode == 'Card'" class="cards-container">
+        <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
+            <app-truckassist-cards
+                [viewData]="viewData"
+                [cardIndex]="[i]"
+                [cardHeader]="{
+                    checkbox: true,
+                    cardTitle: 'INV-' + data?.loadInvoice.invoice,
+                    fltOrFtl:
+                        data.type.name === 'LTL'
+                            ? 'assets/svg/detail-cards/left-arrows.svg'
+                            : 'assets/svg/detail-cards/shuffle.svg'
+                }"
+                [firstLabel]="{
+                    title: 'Status',
+                    value: {
+                        firstValue: data.loadStatus?.status,
+                        firstValueStyle:
+                            data.loadStatus?.status !== 'Assigned'
+                                ? 'font-weight: 900; text-transform: uppercase; color:#AAAAAA;'
+                                : 'font-weight: 900; text-transform: uppercase; color:#50AC25;'
+                    }
+                }"
+                [seccondLabel]="{
+                    title: 'Pickup',
+                    value: {
+                        firstValue: data.loadPickup?.count,
+                        firstValueStyle:
+                            'font-weight: 700; font-size: 11px; background: #56B4AC; width: 18px; height: 18px; border-radius: 1px; color: #FFFFFF; display: flex; justify-content: center; align-items: center;',
+                        seccValue: data?.loadPickup?.location,
+                        thirdValue: data?.loadPickup?.date,
+                        thirdValueStyle: 'color:#919191;'
+                    }
+                }"
+                [thirdLabel]="{
+                    title: 'Delivery',
+                    value: {
+                        firstValue: data.loadDelivery?.count,
+                        firstValueStyle:
+                            'font-weight: 700; font-size: 11px; background: #E66767; width: 18px; height: 18px; border-radius: 1px; color: #FFFFFF; display: flex; justify-content: center; align-items: center;',
+
+                        seccValue: data?.loadDelivery?.location,
+                        thirdValue: data?.loadDelivery?.date,
+                        thirdValueStyle: 'color:#919191;'
+                    }
+                }"
+                [fourthLabel]="{
+                    title: 'Rate',
+                    value: { firstValue: data.textBase }
+                }"
+                [firstLabelBack]="{
+                    title: 'Dispatcher',
+                    value: {
+                        firstValue:
+                            data.dispatcher.avatar !== null
+                                ? data.dispatcher.avatar
+                                : '',
+                        seccValue: data.dispatcher.fullName
+                    }
+                }"
+                [seccondLabelBack]="{
+                    title: 'Broker',
+                    value: {
+                        firstValue: data.broker.businessName
+                    }
+                }"
+                [thirdLabelBack]="{
+                    title: 'Ref. Number',
+                    value: {
+                        firstValue: data.referenceNumber
+                    }
+                }"
+                [fourthLabelBack]="{
+                    title: 'Total Miles',
+                    value: {
+                        firstValue: data.totalMiles,
+                        seccValue: 'mi',
+                        seccValueStyle: 'color:#919191;'
+                    }
+                }"
+            ></app-truckassist-cards>
+        </div>
     </div>
 </div>

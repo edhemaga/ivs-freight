@@ -51,8 +51,6 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
-        console.log(this.options, this.activeTableData);
-
         // Rows Selected
         this.tableService.currentRowsSelected
             .pipe(takeUntil(this.destroy$))
