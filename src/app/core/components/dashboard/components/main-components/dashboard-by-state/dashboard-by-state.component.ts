@@ -35,11 +35,27 @@ import { DashboardUtils } from '../../../state/utils/dashboard-utils';
 export class DashboardByStateComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
+    private destroy$ = new Subject<void>();
+
     public byStateForm: UntypedFormGroup;
     public byStateTitle: string = ConstantStringEnum.PICKUP;
 
+    public isDisplayingPlaceholder: boolean = false;
+
     // list
-    public byStateList: ByStateListItem[] = [];
+    public byStateList: ByStateListItem[] = [
+        {
+            id: null,
+            state: null,
+            value: null,
+            percent: null,
+            isSelected: false,
+        },
+    ];
+
+    // show more
+    public byStateListSliceEnd: number = 10;
+    public isShowingMore: boolean = false;
 
     // tabs
     public byStateTabs: DashboardTab[] = [];
@@ -57,12 +73,8 @@ export class DashboardByStateComponent
     private overallCompanyDuration: number;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    @ViewChild('t2') t2: any;
-    @ViewChild('t3') t3: any;
     @ViewChild('statesBarChart', { static: false }) public statesBarChart: any;
     @ViewChild('timePeriod', { static: false }) public timePeriod: any;
-
-    private destroy$ = new Subject<void>();
 
     public barChartConfig: object = {
         dataProperties: [
@@ -137,20 +149,6 @@ export class DashboardByStateComponent
             showGridLines: false,
         },
     };
-
-    pickupTitle: string = 'Pickup';
-
-    stateSwitchTabsType1: any[] = [];
-
-    stateSwitchTabsType2: any[] = [];
-
-    stateSwitchTabsType3: any[] = [];
-
-    stateSwitchTabsType4: any[] = [];
-
-    pickupSwitch: any[] = [];
-
-    currentSwitchTab: string = 'WTD';
 
     pickupStateList: any[] = [
         {
@@ -232,45 +230,6 @@ export class DashboardByStateComponent
     savedColors: any[] = [];
     selectedStates: any[] = [];
 
-    popoverState: any[] = [
-        {
-            name: 'Pickup',
-            active: true,
-            tabSwitch1: 'Count',
-            tabSwitch2: 'Revenue',
-        },
-        {
-            name: 'Delivery',
-            tabSwitch1: 'Count',
-            tabSwitch2: 'Revenue',
-        },
-        {
-            name: 'Load',
-            tabSwitch1: 'Count',
-            tabSwitch2: 'Revenue',
-        },
-        {
-            name: 'Violation',
-            tabSwitch1: 'Count',
-            tabSwitch2: 'SW',
-        },
-        {
-            name: 'Accident',
-            tabSwitch1: 'Count',
-            tabSwitch2: 'SW',
-        },
-        {
-            name: 'Repair',
-            tabSwitch1: 'Count',
-            tabSwitch2: 'Cost',
-        },
-        {
-            name: 'Fuel',
-            tabSwitch1: 'Price',
-            tabSwitch2: 'Cost',
-        },
-    ];
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dashboardQuery: DashboardQuery
@@ -295,6 +254,9 @@ export class DashboardByStateComponent
             subPeriod: [null],
         });
     }
+
+    public trackByIdentity = (_: number, item: DropdownItem): string =>
+        item.name;
 
     public handleInputSelect(
         dropdownListItem: DropdownListItem,
@@ -470,13 +432,6 @@ export class DashboardByStateComponent
         }
     }
 
-    changeStateSwitchTabs(ev, useLast?) {
-        const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
-        this.timePeriod.changeTimePeriod(switchData);
-        this.currentSwitchTab = switchData;
-        this.statesBarChart.updateTime(switchData);
-    }
-
     selectStateCompare(e, item, indx) {
         const itemId: any = item.id;
         if (!(itemId in this.compareColor)) {
@@ -526,47 +481,6 @@ export class DashboardByStateComponent
         delete this.compareColor[item.id];
     }
 
-    clearSelected() {
-        this.pickupStateList.map((driver) => {
-            driver.acive = false;
-        });
-
-        this.savedColors = [...this.chartColors];
-
-        this.pickupStateList.sort((a, b) => {
-            return a.id - b.id;
-        });
-
-        this.compareColor = [];
-
-        this.pickupStateList.map((item) => {
-            this.statesBarChart.removeMultiBarData(item, true);
-        });
-
-        this.selectedStates = [];
-        this.statesBarChart.selectedDrivers = this.selectedStates;
-    }
-
-    changeState(item) {
-        const newSwitchValue = [
-            {
-                name: item.tabSwitch1,
-                checked: true,
-            },
-            {
-                name: item.tabSwitch2,
-            },
-        ];
-        this.stateSwitchTabsType1 = newSwitchValue;
-        this.pickupTitle = item.name;
-        this.popoverState.map((item) => {
-            item.active = false;
-            return item;
-        });
-        item.active = true;
-        this.t3.close();
-    }
-
     hoverState(index: any) {
         this.statesBarChart.hoverBarChart(this.selectedStates[index]);
     }
@@ -587,9 +501,7 @@ export class DashboardByStateComponent
         }
     }
 
-    selectTimePeriod(period) {
-        this.statesBarChart.updateTime(this.currentSwitchTab, period);
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ngOnDestroy(): void {
         this.destroy$.next();

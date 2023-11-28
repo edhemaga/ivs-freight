@@ -2,6 +2,7 @@
 
 .dashboard-by-state {
     padding: 4px 12px;
+    margin-right: 12px;
     background: $white;
     border-radius: 3px;
     height: 700px;
@@ -89,6 +90,35 @@
                             width: 76px;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    /* Body */
+    .dashboard-by-state-body {
+        /* Body Up */
+        &-up {
+            display: grid;
+            grid-template-columns: 30% 1px 69%;
+            grid-gap: 4px;
+            margin-bottom: 4px;
+
+            ::-webkit-scrollbar:vertical {
+                width: 4px;
+            }
+
+            &-list {
+                height: 400px;
+                overflow: hidden;
+                padding-right: 12px;
+
+                &-search {
+                    margin-bottom: 4px;
+                }
+
+                &.show-more {
+                    overflow: scroll;
                 }
             }
         }
