@@ -339,7 +339,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
-
+    getStatusLabelStyle(status: string | undefined): string {
+        const styles = 'font-weight: 900; text-transform: uppercase;';
+        if (status === 'Assigned') {
+            return styles + 'color:#50AC25;';
+        } else if (status === 'Loaded') {
+            return styles + 'color:#259F94;';
+        } else if (status === 'Dispatched') {
+            return styles + 'color:#3B73ED;';
+        } else {
+            return styles + 'color:#919191;';
+        }
+    }
     sendLoadData() {
         const tableView = JSON.parse(localStorage.getItem(`Load-table-view`));
 

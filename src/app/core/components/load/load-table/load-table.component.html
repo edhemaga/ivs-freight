@@ -30,6 +30,7 @@
             <app-truckassist-cards
                 [viewData]="viewData"
                 [cardIndex]="[i]"
+                [card]="data"
                 [cardHeader]="{
                     checkbox: true,
                     cardTitle: 'INV-' + data?.loadInvoice.invoice,
@@ -42,10 +43,9 @@
                     title: 'Status',
                     value: {
                         firstValue: data.loadStatus?.status,
-                        firstValueStyle:
-                            data.loadStatus?.status !== 'Assigned'
-                                ? 'font-weight: 900; text-transform: uppercase; color:#AAAAAA;'
-                                : 'font-weight: 900; text-transform: uppercase; color:#50AC25;'
+                        firstValueStyle: getStatusLabelStyle(
+                            data.loadStatus?.status
+                        )
                     }
                 }"
                 [seccondLabel]="{

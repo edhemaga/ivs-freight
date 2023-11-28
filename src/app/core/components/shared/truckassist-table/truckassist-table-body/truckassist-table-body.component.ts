@@ -610,7 +610,6 @@ export class TruckassistTableBodyComponent
         } else {
             if (row.tableDropdownContent?.hasContent) {
                 let actions = [...row.tableDropdownContent.content];
-
                 actions = actions.map((actions: any) => {
                     if (actions?.isDropdown) {
                         return {
@@ -623,7 +622,6 @@ export class TruckassistTableBodyComponent
                 });
 
                 this.dropdownActions = [...actions];
-
                 tooltip.open({ data: this.dropdownActions });
             }
         }

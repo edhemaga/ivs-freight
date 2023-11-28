@@ -3,7 +3,7 @@ import { LoadDetails, LoadTableData } from '../dataTypes';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 interface CardHeader {
     checkbox: boolean;
     cardTitle: string;
@@ -28,13 +28,13 @@ const isCheckboxCheckedArray: Array<number> = [];
     templateUrl: './truckassist-cards.component.html',
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule],
+    imports: [CommonModule, AngularSvgIconModule, NgbPopoverModule],
 })
 export class TruckassistCardsComponent implements OnInit {
-    isCardFlipped: Array<number> = [];
-    isCardChecked: Array<number> = [];
+    // All data
     @Input() viewData: LoadDetails[];
     @Input() tableData: LoadTableData[];
+    @Input() card: any;
     // Front of cards
     @Input() cardIndex: number;
     @Input() cardHeader: CardHeader;
@@ -47,11 +47,16 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() seccondLabelBack: CardData;
     @Input() thirdLabelBack: CardData;
     @Input() fourthLabelBack: CardData;
+
+    tooltip;
+    dropdownActions;
+    isCardFlipped: Array<number> = [];
+    isCardChecked: Array<number> = [];
     constructor(private tableService: TruckassistTableService) {}
 
     ngOnInit(): void {
         this.tableService.currentSelectOrDeselect.subscribe((response: any) => {
-            console.log(response);
+            // console.log(response);
         });
     }
     ngOnChanges(changes: SimpleChanges): void {}
@@ -76,6 +81,27 @@ export class TruckassistCardsComponent implements OnInit {
         } else {
             isCheckboxCheckedArray.push(index);
             this.isCardChecked = isCheckboxCheckedArray;
+        }
+    }
+    toggleDropdown(tooltip) {
+        this.tooltip = tooltip;
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            let actions = [...this.card?.tableDropdownContent.content];
+            actions = actions.map((actions: any) => {
+                if (actions?.isDropdown) {
+                    return {
+                        ...actions,
+                        isInnerDropActive: false,
+                    };
+                }
+
+                return actions;
+            });
+            this.dropdownActions = [...actions];
+            tooltip.open({ data: this.dropdownActions });
+            console.log(this.dropdownActions);
         }
     }
 }

@@ -138,12 +138,24 @@
         <div class="card-body-right">
             <div class="top-side">
                 <div class="right-side-svg">
-                    <svg-icon
-                        class="dots"
-                        [src]="
-                            'assets/svg/common/ic_horizontal_dots_details.svg'
-                        "
-                    ></svg-icon>
+                    <div
+                        #t2="ngbPopover"
+                        (click)="toggleDropdown(t2)"
+                        [autoClose]="'outside'"
+                        [ngbPopover]="dropdownPopover"
+                        [placement]="'bottom-right'"
+                        class="table-dropdown-container"
+                        container="body"
+                        popoverClass="table-dropdown-popover"
+                        triggers="manual"
+                    >
+                        <svg-icon
+                            class="dots"
+                            [src]="
+                                'assets/svg/common/ic_horizontal_dots_details.svg'
+                            "
+                        ></svg-icon>
+                    </div>
                 </div>
                 <div class="right-side-svg">
                     <svg-icon
@@ -151,6 +163,17 @@
                         [src]="
                             'assets/svg/truckassist-table/note/Note-hover.svg'
                         "
+                    ></svg-icon>
+                </div>
+                <div class="right-side-svg">
+                    <span class="comment-number">2</span>
+                    <svg-icon
+                        class="comment"
+                        [src]="'assets/svg/detail-cards/comment - count.svg'"
+                    ></svg-icon>
+                    <svg-icon
+                        class="notification"
+                        [src]="'assets/svg/applicant/notification-light.svg'"
                     ></svg-icon>
                 </div>
                 <div class="right-side-svg">
@@ -174,3 +197,70 @@
         </div>
     </div>
 </div>
+<!-- Dropdown -->
+<ng-template #dropdownPopover let-data="data">
+    <div class="table-list-dropdown">
+        <div
+            class="table-list-dropdown-content-container"
+            [ngClass]="{
+                'table-list-dropdown-inner-dropdown-active':
+                    action?.isInnerDropActive
+            }"
+            *ngFor="let action of data"
+        >
+            <!-- Action -->
+            <div
+                class="table-list-dropdown-content"
+                (click)="
+                    !action?.isDropdown
+                        ? onDropAction(action)
+                        : onShowInnerDropdown(action)
+                "
+                [ngClass]="{
+                    'table-list-dropdown-content-muted': action.mutedStyle,
+                    'table-list-dropdown-content-dropdown': action?.isDropdown,
+                    'table-list-dropdown-content-dropdown-active':
+                        action?.isInnerDropActive
+                }"
+                [ngStyle]="action.tableListDropdownContentStyle"
+            >
+                <div class="table-list-dropdown-content-text">
+                    {{ action.title }}
+                </div>
+                <svg-icon
+                    *ngIf="action.svgUrl"
+                    [class]="action.svgClass"
+                    class="table-list-dropdown-content-icon"
+                    [ngClass]="{
+                        'inner-dropdown-open': action?.isInnerDropActive
+                    }"
+                    [src]="action.svgUrl"
+                    [svgStyle]="{
+                        'width.px': action.svgStyle.width,
+                        'height.px': action.svgStyle.height
+                    }"
+                ></svg-icon>
+            </div>
+
+            <!-- Inner Dropdown -->
+            <div
+                class="table-list-inner-dropdown"
+                [ngClass]="{
+                    'table-list-inner-dropdown-active':
+                        action?.isInnerDropActive
+                }"
+                [innerHtml]="
+                    action?.innerDropElement ? action.innerDropElement : null
+                "
+            ></div>
+
+            <!-- Border -->
+            <div
+                class="table-list-dropdown-border-container"
+                *ngIf="action.hasBorder"
+            >
+                <div class="table-list-dropdown-border"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>

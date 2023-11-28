@@ -51,6 +51,10 @@
                     font-size: 14px;
                     font-weight: 700;
                     line-height: 18px;
+                    cursor: pointer;
+                    &:hover {
+                        color: $ta-blue-15;
+                    }
                     .svg-ftl-ltl {
                         bottom: 1px;
                         position: relative;
@@ -130,9 +134,10 @@
                     width: 26px;
                     cursor: pointer;
                     justify-content: center;
+                    position: relative;
                     svg {
                         path {
-                            fill: #919191;
+                            fill: $muted;
                         }
                     }
                     .dots {
@@ -144,6 +149,32 @@
                         svg {
                             height: 16px;
                             width: 14px;
+                        }
+                    }
+                    .comment-number {
+                        position: absolute;
+                        color: $white;
+                        font-size: 9px;
+                        font-weight: 600;
+                    }
+                    .comment {
+                        svg {
+                            width: 16px;
+                        }
+                    }
+                    .notification {
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        top: -8px;
+                        right: 4px;
+                        svg {
+                            path:first-child {
+                                fill: $white;
+                            }
+                            path:nth-child(2) {
+                                fill: $ta-red-2;
+                            }
                         }
                     }
                     span {
