@@ -1,6 +1,7 @@
 // constants
 import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
 import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
+import { DashboardColors } from './constants/dashboard-colors.constants';
 
 // helpers
 import { DashboardStringHelper } from './helpers/dashboard-string.helper';
@@ -13,6 +14,7 @@ import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
 import { BarChartLabels } from '../models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
+import { ByStateListItem } from '../models/dashboard-by-state-models/by-state-list-item.model';
 
 export class DashboardUtils {
     static ConvertMainPeriod(mainPeriod: string) {
@@ -209,5 +211,44 @@ export class DashboardUtils {
             regex,
             (match) => `<span class="highlight">${match}</span>`
         );
+    }
+
+    static setByStateListColorRange(byStateList: ByStateListItem[]): void {
+        let duzina: number = 0;
+
+        if (!byStateList.length) return;
+
+        if (
+            byStateList.length <= DashboardColors.BY_STATE_COLORS_PALLETE.length
+        ) {
+            duzina = 1;
+        } else {
+            duzina = byStateList.length / 5;
+
+            if (!Number.isInteger(duzina)) {
+                duzina = Math.ceil(duzina);
+            }
+        }
+
+        let neki = duzina;
+        let brojacBoje = 0;
+
+        for (let i = 0; i < byStateList.length; i++) {
+            if (i < neki) {
+                byStateList[i].selectedColor =
+                    DashboardColors.BY_STATE_COLORS_PALLETE[brojacBoje].code;
+            }
+
+            if (i + 1 === neki) {
+                brojacBoje++;
+
+                neki += duzina;
+            }
+            /* 
+            console.log(
+                'byStateList[i].selectedColor',
+                byStateList[i].selectedColor
+            ); */
+        }
     }
 }

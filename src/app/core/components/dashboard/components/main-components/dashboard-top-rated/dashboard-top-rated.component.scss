@@ -51,6 +51,12 @@
 
         &-right-side-container {
             .dashboard-top-rated-header-dropdown {
+                &-border {
+                    width: 1px;
+                    height: 18px;
+                    background: $ta-light-grey-6;
+                }
+
                 .dropdown-left-container,
                 .dropdown-right-container {
                     &.dropdown-left-container {

@@ -1,4 +1,10 @@
+@import 'src/theme/variables.scss';
+
 .placeholder-container {
+    .placeholder {
+        background: $bw-9;
+    }
+
     &.performance-double-container,
     &.performance-single-container {
         p {

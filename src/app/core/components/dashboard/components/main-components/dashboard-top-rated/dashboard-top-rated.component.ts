@@ -425,9 +425,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         if (
             topRatedListItem.isSelected ||
             this.selectedTopRatedList.length === maxTopRatedItemsSelected
-        ) {
+        )
             return;
-        }
 
         topRatedListItem.isSelected = true;
 
@@ -1920,7 +1919,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.barChartTooltipLabels = filteredTooltipLabels;
     }
 
-    private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
+    private setBarChartConfigAndAxes(barChartValues: BarChartValues): void {
         this.barChartConfig = {
             dataProperties: [
                 {

@@ -294,6 +294,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         index: number,
         removeHover: boolean = false
     ): void {
+        if (this.isLoading) return;
+
         const selectedPerformanceDataItem = this.performanceData[index];
 
         if (!removeHover) {

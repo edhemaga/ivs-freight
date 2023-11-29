@@ -4,4 +4,5 @@ export interface ByStateListItem {
     value: string;
     percent: string;
     isSelected: boolean;
+    selectedColor: string;
 }
