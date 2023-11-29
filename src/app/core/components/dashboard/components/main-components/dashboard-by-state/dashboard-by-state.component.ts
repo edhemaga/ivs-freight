@@ -9,6 +9,9 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// services
+import { DashboardByStateService } from '../../../state/services/dashboard-by-state.service';
+
 // store
 import { DashboardQuery } from '../../../state/store/dashboard.query';
 
@@ -39,6 +42,17 @@ import {
     BarChartConfig,
     BarChartValues,
 } from '../../../state/models/dashboard-chart-models/bar-chart.model';
+import {
+    ByStateReportType,
+    IntervalLabelResponse,
+    LoadStopType,
+    SubintervalType,
+    TimeInterval,
+} from 'appcoretruckassist';
+import {
+    ByStateApiArguments,
+    ByStateWithLoadStopApiArguments,
+} from '../../../state/models/dashboard-by-state-models/by-state-api-arguments.model';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
@@ -61,8 +75,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     // list
     public byStateList: ByStateListItem[] = [];
-    private byStateListBeforeSearch: ByStateListItem[] = [];
     public selectedByStateList: ByStateListItem[] = [];
+    private byStateListBeforeSearch: ByStateListItem[] = [];
 
     // show more
     public byStateListSliceEnd: number = 10;
@@ -92,7 +106,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     // charts
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
-    public barChartDateTitle: string = 'March, 2023 - March, 2025';
+    public barChartDateTitle: string;
     private barChartLabels: string[] | string[][] = [];
     private barChartTooltipLabels: string[];
     private barChartValues: BarChartValues = {
@@ -128,7 +142,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dashboardQuery: DashboardQuery,
-        private changeDetectorRef: ChangeDetectorRef
+        private changeDetectorRef: ChangeDetectorRef,
+        private dashboardByStateService: DashboardByStateService
     ) {}
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,9 +154,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.getOverallCompanyDuration();
 
-        this.setChartData();
+        this.getByStateListData();
 
-        DashboardUtils.setByStateListColorRange(this.byStateList);
+        this.setChartData();
     }
 
     private createForm(): void {
@@ -153,6 +168,32 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     public trackByIdentity = (_: number, item: DropdownItem): string =>
         item.name;
+
+    public resetSelectedValues(): void {
+        for (let i = 0; i < this.selectedByStateList.length; i++) {
+            this.barChart.removeMultiBarData(this.selectedByStateList[i], true);
+        }
+
+        this.selectedByStateList = [];
+
+        this.barChartValues = {
+            defaultBarValues: {
+                topRatedBarValues: [],
+                otherBarValues: [],
+            },
+            defaultBarPercentages: {
+                topRatedBarPercentage: [],
+                otherBarPercentage: [],
+            },
+            selectedBarValues: [],
+            selectedBarPercentages: [],
+        };
+
+        this.isShowingMore = false;
+        this.byStateListSliceEnd = 10;
+
+        this.clearSearchValue = true;
+    }
 
     public highlightSearchValue(text: string, isSelected: boolean) {
         return DashboardUtils.highlightPartOfString(
@@ -203,6 +244,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         action: string
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
+            if (this.selectedMainPeriod.name === dropdownListItem.name) return;
+
             if (this.isDisplayingCustomPeriodRange) {
                 this.isDisplayingCustomPeriodRange = false;
             }
@@ -234,8 +277,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     break;
                 case ConstantStringEnum.ALL_TIME:
                     this.setCustomSubPeriodList(this.overallCompanyDuration);
-                    /* 
-                    this.getTopRatedListData(); */
+
+                    this.getByStateListData();
 
                     break;
                 case ConstantStringEnum.CUSTOM:
@@ -259,18 +302,20 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 this.subPeriodDropdownList = filteredSubPeriodDropdownList;
                 this.selectedSubPeriod = selectedSubPeriod;
 
-                /*   this.getTopRatedListData(); */
+                this.getByStateListData();
             }
         }
 
         if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
+            if (this.selectedSubPeriod.name === dropdownListItem.name) return;
+
             this.selectedSubPeriod = dropdownListItem;
 
-            /*  if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
-                this.getTopRatedListData(this.selectedCustomPeriodRange);
+            if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+                this.getByStateListData(this.selectedCustomPeriodRange);
             } else {
-                this.getTopRatedListData();
-            } */
+                this.getByStateListData();
+            }
         }
     }
 
@@ -306,21 +351,19 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             this.setCustomSubPeriodList(this.overallCompanyDuration);
         }
 
-        /*  this.getTopRatedListData(); */
+        this.getByStateListData();
     }
 
     public handleSwitchTabClick(activeTab: DashboardTab): void {
-        if (this.currentActiveTab?.name === activeTab.name) {
-            return;
-        }
+        if (this.currentActiveTab.name === activeTab.name) return;
 
         this.currentActiveTab = activeTab;
 
-        /* if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
-            this.getTopRatedListData(this.selectedCustomPeriodRange);
+        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.getByStateListData(this.selectedCustomPeriodRange);
         } else {
-            this.getTopRatedListData();
-        } */
+            this.getByStateListData();
+        }
     }
 
     public handleShowMoreClick(): void {
@@ -361,7 +404,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             this.isDisplayingCustomPeriodRange = false;
             this.selectedCustomPeriodRange = customPeriodRange;
 
-            /*  this.getTopRatedListData(customPeriodRange); */
+            this.getByStateListData(customPeriodRange);
         }
     }
 
@@ -391,8 +434,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             byStateListItem
         );
 
-        /*
-        this.setBarChartData(this.selectedByStateList, byStateListItemIndex); */
+        this.setBarChartData(this.selectedByStateList, byStateListItemIndex);
     }
 
     public handleRemoveSelectedClick(
@@ -415,22 +457,23 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             (byStateItem) => byStateItem.id !== byStateListItem.id
         );
 
-        /* this.setBarChartData(
+        this.setBarChartData(
             this.selectedByStateList,
             byStateListItemIndex,
             true,
             byStateListItem
-        ); */
+        );
     }
 
-    public handleHoverSelected(): /*  index: number,
-        removeHover: boolean = false */
-    void {
-        /*  if (!removeHover) {
+    public handleHoverSelected(
+        index: number,
+        removeHover: boolean = false
+    ): void {
+        if (!removeHover) {
             this.barChart.hoverBarChart(this.selectedByStateList[index]);
         } else {
             this.barChart.hoverBarChart(null);
-        } */
+        }
     }
 
     private getConstantData(): void {
@@ -466,6 +509,661 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
 
+    private getByStateListData(customPeriodRange?: CustomPeriodRange): void {
+        const loadStopType = (
+            this.byStateTitle === ConstantStringEnum.PICKUP
+                ? ConstantStringEnum.PICKUP
+                : ConstantStringEnum.DELIVERY
+        ) as LoadStopType;
+
+        const selectedTab = (
+            this.currentActiveTab.name === ConstantStringEnum.SW
+                ? ConstantStringEnum.SEVERITY_WEIGHT
+                : this.currentActiveTab.name
+        ) as ByStateReportType;
+
+        const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
+            this.selectedMainPeriod.name
+        ) as TimeInterval;
+
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        ) as SubintervalType;
+
+        const byStateArgumentsData = [
+            ...(this.byStateTitle === ConstantStringEnum.PICKUP ||
+            this.byStateTitle === ConstantStringEnum.DELIVERY
+                ? [loadStopType]
+                : []),
+            selectedTab,
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            customPeriodRange?.fromDate ?? null,
+            customPeriodRange?.toDate ?? null,
+            selectedSubPeriod,
+        ];
+
+        this.resetSelectedValues();
+
+        switch (this.byStateTitle) {
+            case ConstantStringEnum.PICKUP:
+                this.getPickupByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateWithLoadStopApiArguments
+                );
+                break;
+            case ConstantStringEnum.DELIVERY:
+                this.getDeliveryByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateWithLoadStopApiArguments
+                );
+                break;
+            case ConstantStringEnum.VIOLATION_2:
+                this.getViolationByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateApiArguments
+                );
+                break;
+            case ConstantStringEnum.ACCIDENT_2:
+                this.getAccidentByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateApiArguments
+                );
+                break;
+            case ConstantStringEnum.REPAIR:
+                this.getRepairByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateApiArguments
+                );
+                break;
+            case ConstantStringEnum.FUEL:
+                this.getFuelByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateApiArguments
+                );
+                break;
+            default:
+                break;
+        }
+    }
+
+    private getPickupByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateWithLoadStopApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getPickupByState(byStateArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((pickupData) => {
+                console.log('pickupData', pickupData);
+                // by state list and single selection data
+                this.byStateList = pickupData.pagination.data.map(
+                    (pickup, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < pickup.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? pickup.intervals[i].count
+                                    : pickup.intervals[i].revenue,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? pickup.intervals[i].countPercentage
+                                    : pickup.intervals[i].revenuePercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: pickup.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? pickup.count.toString()
+                                    : pickup.revenue.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? pickup.countPercentage.toString()
+                                    : pickup.revenuePercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                // intervals
+
+                for (let i = 0; i < pickupData.topTen.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? pickupData.topTen[i].count
+                            : pickupData.topTen[i].revenue,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? pickupData.topTen[i].countPercentage
+                                : pickupData.topTen[i].revenuePercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? pickupData.others[i].count
+                            : pickupData.others[i].revenue,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? pickupData.others[i].countPercentage
+                                : pickupData.others[i].revenuePercentage,
+                        ];
+                }
+
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setBarChartDateTitle(
+                    pickupData.intervalLabels[0].tooltipLabel,
+                    pickupData.intervalLabels[pickupData.topTen.length - 1]
+                        .tooltipLabel
+                );
+                this.setBarChartLabels(pickupData.intervalLabels);
+
+                this.setChartData();
+            });
+    }
+
+    private getDeliveryByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateWithLoadStopApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getDeliveryByState(byStateArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((deliveryData) => {
+                console.log('deliveryData', deliveryData);
+                // by state list and single selection data
+                this.byStateList = deliveryData.pagination.data.map(
+                    (delivery, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < delivery.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? delivery.intervals[i].count
+                                    : delivery.intervals[i].revenue,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? delivery.intervals[i].countPercentage
+                                    : delivery.intervals[i].revenuePercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: delivery.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? delivery.count.toString()
+                                    : delivery.revenue.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? delivery.countPercentage.toString()
+                                    : delivery.revenuePercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                // intervals
+
+                for (let i = 0; i < deliveryData.topTen.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? deliveryData.topTen[i].count
+                            : deliveryData.topTen[i].revenue,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? deliveryData.topTen[i].countPercentage
+                                : deliveryData.topTen[i].revenuePercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? deliveryData.others[i].count
+                            : deliveryData.others[i].revenue,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? deliveryData.others[i].countPercentage
+                                : deliveryData.others[i].revenuePercentage,
+                        ];
+                }
+
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setBarChartDateTitle(
+                    deliveryData.intervalLabels[0].tooltipLabel,
+                    deliveryData.intervalLabels[deliveryData.topTen.length - 1]
+                        .tooltipLabel
+                );
+                this.setBarChartLabels(deliveryData.intervalLabels);
+
+                this.setChartData();
+            });
+    }
+
+    private getViolationByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getViolationByState(byStateArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((violationData) => {
+                console.log('violationData', violationData);
+                // by state list and single selection data
+                this.byStateList = violationData.pagination.data.map(
+                    (violation, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < violation.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? violation.intervals[i].count
+                                    : violation.intervals[i].severityWeight,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? violation.intervals[i].countPercentage
+                                    : violation.intervals[i]
+                                          .severityWeightPercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: violation.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? violation.count.toString()
+                                    : violation.severityWeight.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? violation.countPercentage.toString()
+                                    : violation.severityWeightPercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                // intervals
+
+                for (let i = 0; i < violationData.topTen.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? violationData.topTen[i].count
+                            : violationData.topTen[i].severityWeight,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? violationData.topTen[i].countPercentage
+                                : violationData.topTen[i]
+                                      .severityWeightPercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? violationData.others[i].count
+                            : violationData.others[i].severityWeight,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? violationData.others[i].countPercentage
+                                : violationData.others[i]
+                                      .severityWeightPercentage,
+                        ];
+                }
+
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setBarChartDateTitle(
+                    violationData.intervalLabels[0].tooltipLabel,
+                    violationData.intervalLabels[
+                        violationData.topTen.length - 1
+                    ].tooltipLabel
+                );
+                this.setBarChartLabels(violationData.intervalLabels);
+
+                this.setChartData();
+            });
+    }
+
+    private getAccidentByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getAccidentByState(byStateArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((accidentData) => {
+                console.log('accidentData', accidentData);
+                // by state list and single selection data
+                this.byStateList = accidentData.pagination.data.map(
+                    (accident, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < accident.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? accident.intervals[i].count
+                                    : accident.intervals[i].severityWeight,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? accident.intervals[i].countPercentage
+                                    : accident.intervals[i]
+                                          .severityWeightPercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: accident.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? accident.count.toString()
+                                    : accident.severityWeight.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? accident.countPercentage.toString()
+                                    : accident.severityWeightPercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                // intervals
+
+                for (let i = 0; i < accidentData.topTen.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? accidentData.topTen[i].count
+                            : accidentData.topTen[i].severityWeight,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? accidentData.topTen[i].countPercentage
+                                : accidentData.topTen[i]
+                                      .severityWeightPercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? accidentData.others[i].count
+                            : accidentData.others[i].severityWeight,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? accidentData.others[i].countPercentage
+                                : accidentData.others[i]
+                                      .severityWeightPercentage,
+                        ];
+                }
+
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setBarChartDateTitle(
+                    accidentData.intervalLabels[0].tooltipLabel,
+                    accidentData.intervalLabels[accidentData.topTen.length - 1]
+                        .tooltipLabel
+                );
+                this.setBarChartLabels(accidentData.intervalLabels);
+
+                this.setChartData();
+            });
+    }
+
+    private getRepairByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getRepairByState(byStateArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((repairData) => {
+                console.log('repairData', repairData);
+                // by state list and single selection data
+                this.byStateList = repairData.pagination.data.map(
+                    (repair, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < repair.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? repair.intervals[i].count
+                                    : repair.intervals[i].cost,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? repair.intervals[i].countPercentage
+                                    : repair.intervals[i].costPercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: repair.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? repair.count.toString()
+                                    : repair.cost.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? repair.countPercentage.toString()
+                                    : repair.costPercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                // intervals
+
+                for (let i = 0; i < repairData.topTen.length; i++) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? repairData.topTen[i].count
+                            : repairData.topTen[i].cost,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? repairData.topTen[i].countPercentage
+                                : repairData.topTen[i].costPercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? repairData.others[i].count
+                            : repairData.others[i].cost,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? repairData.others[i].countPercentage
+                                : repairData.others[i].costPercentage,
+                        ];
+                }
+
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setBarChartDateTitle(
+                    repairData.intervalLabels[0].tooltipLabel,
+                    repairData.intervalLabels[repairData.topTen.length - 1]
+                        .tooltipLabel
+                );
+                this.setBarChartLabels(repairData.intervalLabels);
+
+                this.setChartData();
+            });
+    }
+
+    private getFuelByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getFuelByState(byStateArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((fuelData) => {
+                console.log('fuelData', fuelData);
+                // by state list and single selection data
+            });
+    }
+
     private setCustomSubPeriodList(selectedDaysRange: number): void {
         const { filteredSubPeriodDropdownList, selectedSubPeriod } =
             DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
@@ -474,16 +1172,38 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.selectedSubPeriod = selectedSubPeriod;
     }
 
+    private setBarChartDateTitle(
+        startInterval: string,
+        endInterval: string
+    ): void {
+        const { chartTitle } = DashboardUtils.setChartDateTitle(
+            startInterval,
+            endInterval
+        );
+
+        this.barChartDateTitle = chartTitle;
+    }
+
+    private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
+        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+            this.selectedSubPeriod.name
+        );
+
+        const { filteredLabels, filteredTooltipLabels } =
+            DashboardUtils.setBarChartLabels(barChartLables, selectedSubPeriod);
+
+        this.barChartLabels = filteredLabels;
+        this.barChartTooltipLabels = filteredTooltipLabels;
+    }
+
     private setBarChartConfigAndAxes(barChartValues: BarChartValues): void {
         this.barChartConfig = {
             dataProperties: [
                 {
                     defaultConfig: {
                         type: ConstantChartStringEnum.BAR,
-                        data: [
-                            12, 18, 13, 17, 13, 12, 18, 13, 17, 13,
-                        ] /* barChartValues?.defaultBarValues
-                            ?.topRatedBarValues */,
+                        data: barChartValues?.defaultBarValues
+                            ?.topRatedBarValues,
                         dataPercentages:
                             barChartValues?.defaultBarPercentages
                                 ?.topRatedBarPercentage,
@@ -507,9 +1227,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 {
                     defaultConfig: {
                         type: ConstantChartStringEnum.BAR,
-                        data: [
-                            8, 10, 9, 16, 17, 8, 10, 9, 16, 17,
-                        ] /* barChartValues?.defaultBarValues?.otherBarValues */,
+                        data: barChartValues?.defaultBarValues?.otherBarValues,
                         dataPercentages:
                             barChartValues?.defaultBarPercentages
                                 ?.otherBarPercentage,
@@ -539,18 +1257,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             allowAnimation: true,
             offset: true,
             tooltipOffset: { min: 105, max: 279 },
-            dataLabels: [
-                'JAN',
-                'FEB',
-                'MAR',
-                'APR',
-                'MAY',
-                'JUN',
-                'JUL',
-                'AUG',
-                'SEP',
-                'OCT',
-            ] /* this.barChartLabels */,
+            dataLabels: this.barChartLabels,
             dataTooltipLabels: this.barChartTooltipLabels,
             selectedTab: this.currentActiveTab.name,
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
@@ -574,6 +1281,54 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 showGridLines: false,
             },
         };
+    }
+
+    private setBarChartData(
+        byStateList: ByStateListItem[],
+        byStateListItemIndex: number,
+        isRemoving?: boolean,
+        byStateListItem?: ByStateListItem
+    ): void {
+        if (!isRemoving) {
+            const chartValues =
+                this.barChartValues.selectedBarValues[byStateListItemIndex];
+            const chartPercentages =
+                this.barChartValues.selectedBarPercentages[
+                    byStateListItemIndex
+                ];
+
+            let selectedColors: string[] = [];
+            let selectedHoverColors: string[] = [];
+
+            for (let i = 0; i < byStateList.length; i++) {
+                selectedColors = [
+                    ...selectedColors,
+                    this.mainColorsPallete[i].code,
+                ];
+                selectedHoverColors = [
+                    ...selectedHoverColors,
+                    this.mainColorsPallete[i].code,
+                ];
+            }
+
+            if (this.barChart) {
+                this.barChart.updateMuiliBar(
+                    byStateList,
+                    chartValues,
+                    chartPercentages,
+                    selectedColors,
+                    selectedHoverColors
+                );
+            }
+        } else {
+            const displayChartDefaultValue =
+                this.selectedByStateList.length === 0;
+
+            this.barChart.removeMultiBarData(
+                byStateListItem,
+                displayChartDefaultValue
+            );
+        }
     }
 
     private setChartData(): void {

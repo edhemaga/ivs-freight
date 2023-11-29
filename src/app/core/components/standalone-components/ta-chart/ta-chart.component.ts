@@ -46,7 +46,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     @Output() chartHovered: EventEmitter<any> = new EventEmitter();
 
     @HostListener('window:resize', ['$event'])
-    onResize(event) {
+    onResize() {
         this.animationDuration = 0;
         this.setChartOptions();
     }
@@ -521,7 +521,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     updateChartData(hideAnimation) {
-        this.chartConfig['dataProperties'].map((item, indx) => {
+        this.chartConfig['dataProperties'].map(() => {
             this.lineChartType = this.chartConfig['defaultType'];
             this.lineChartLabels = this.chartConfig['dataLabels'];
         });
@@ -540,7 +540,7 @@ export class TaChartComponent implements OnInit, OnChanges {
 
                     let dataset = chart.data.datasets;
 
-                    dataset.map((item, p) => {
+                    dataset.map((item) => {
                         let gradientStroke = ctx?.createLinearGradient(
                             0,
                             0,
@@ -629,7 +629,7 @@ export class TaChartComponent implements OnInit, OnChanges {
 
     chartDataCheck(values: any[]) {
         let hasData = false;
-        values.map((item, i) => {
+        values.map((item) => {
             if (item > 0) {
                 hasData = true;
             }
@@ -646,7 +646,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     elements[i]['_index']
                 ];
             totalValue = totalValue + chartValue;
-            this.legendAttributes.map((item2, a) => {
+            this.legendAttributes.map((item2) => {
                 if (item2['elementId'] == i) {
                     item2['value'] = Math.abs(chartValue);
                 }
@@ -685,7 +685,7 @@ export class TaChartComponent implements OnInit, OnChanges {
 
         let averageAnnotation = 0;
 
-        this.chart.chart.config.data.datasets.map((item, i) => {
+        this.chart.chart.config.data.datasets.map((item) => {
             if (item['id'] == type && color && color != '') {
                 item['fill'] = true;
                 item['colors'] = [startcolorRGBA, endColorRGBA];
@@ -693,7 +693,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 let colorProp = item['borderColor']?.toString();
                 item['borderColor'] = colorProp?.slice(0, 7);
                 lineHovered = item['borderColor'];
-                item['data'].map((val, l) => {
+                item['data'].map((val) => {
                     averageAnnotation = averageAnnotation + val;
                 });
             } else if (item['id'] == type && color == '') {
@@ -728,7 +728,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     insertNewChartData(mod: string, type: string, color: any) {
-        this.chart.chart.config.data.datasets.map((item, i) => {
+        this.chart.chart.config.data.datasets.map((item) => {
             if (item['id'] == type) {
                 if (mod == 'add') {
                     item['hidden'] = false;
@@ -839,7 +839,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 this.chartConfig.dataTooltipLabels[value];
 
         let dataValues = [];
-        this.chart.chart.config.data.datasets.map((item, i) => {
+        this.chart.chart.config.data.datasets.map((item) => {
             let dataProp = {
                 name: item['label'],
                 value:
@@ -873,7 +873,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 },
             ];
 
-            dataPropMulti.map((item, i) => {
+            dataPropMulti.map((item) => {
                 dataValues.push(item);
             });
         }
@@ -909,7 +909,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 hoverBackgroundColor: hoverColors[i],
                 data: data,
                 dataPercentages: dataPercentages,
-                label: item['name'],
+                label: item['name'] || item['state'],
                 type: 'bar',
                 yAxisID: 'y-axis-0',
                 id: item['id'],
@@ -925,9 +925,9 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     updateMultiBarDataInsert(updateData: any[]) {
-        updateData.map((item, i) => {
+        updateData.map((item) => {
             let sameFound = false;
-            this.chart.chart.config.data.datasets.map((ch, a) => {
+            this.chart.chart.config.data.datasets.map((ch) => {
                 if (ch['id'] == 'top10' || ch['id'] == 'allOthers') {
                     ch.hidden = true;
                 }
@@ -973,11 +973,14 @@ export class TaChartComponent implements OnInit, OnChanges {
     hoverBarChart(hoveredData: any) {
         this.animationDuration = 0;
 
-        this.chart.chart.config.data.datasets.map((item, i) => {
+        this.chart.chart.config.data.datasets.map((item) => {
+            let color = item.backgroundColor;
+            let colorProp = color.toString();
+
             if (hoveredData == null || item['id'] == hoveredData['id']) {
-                let color = item.backgroundColor;
-                let colorProp = color.toString();
                 item.backgroundColor = colorProp.slice(0, 7);
+            } else {
+                item.backgroundColor = colorProp + '33';
             }
         });
 
@@ -1077,7 +1080,7 @@ export class TaChartComponent implements OnInit, OnChanges {
             );
         });
 
-        value.map((item, i) => {
+        value.map((item) => {
             let timePeriodCheck = moment(item).format('LT').split(' ')[1];
             let finalFormat = format;
             finalFormat =

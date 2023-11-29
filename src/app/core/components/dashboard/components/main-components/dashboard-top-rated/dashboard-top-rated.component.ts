@@ -250,6 +250,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         action: string
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
+            if (this.selectedMainPeriod.name === dropdownListItem.name) return;
+
             if (this.isDisplayingCustomPeriodRange) {
                 this.isDisplayingCustomPeriodRange = false;
             }
@@ -311,6 +313,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
 
         if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
+            if (this.selectedSubPeriod.name === dropdownListItem.name) return;
+
             this.selectedSubPeriod = dropdownListItem;
 
             if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
@@ -357,7 +361,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     public handleSwitchTabClick(activeTab: DashboardTab): void {
-        if (this.currentActiveTab?.name === activeTab.name) {
+        if (this.currentActiveTab.name === activeTab.name) {
             return;
         }
 

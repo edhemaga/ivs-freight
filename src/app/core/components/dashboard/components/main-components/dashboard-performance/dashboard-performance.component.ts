@@ -193,6 +193,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     public handleInputSelect(dropdownListItem: DropdownListItem): void {
+        if (this.selectedSubPeriod.name === dropdownListItem.name) return;
+
         this.selectedSubPeriod = dropdownListItem;
 
         if (this.currentActiveTab.name === ConstantStringEnum.CUSTOM) {
@@ -370,8 +372,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((performanceData) => {
-                console.log('performanceData', performanceData);
-
                 // performance data
                 this.performanceData = this.performanceData.map(
                     (performanceDataItem) => {
@@ -470,9 +470,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 this.setBarChartLabels(performanceData.intervalLabels);
 
                 this.setChartsData();
-
-                console.log('this.performanceData', this.performanceData);
-                console.log('this.barChartValues', this.barChartValues);
             });
     }
 
