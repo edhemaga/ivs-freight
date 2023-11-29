@@ -171,42 +171,48 @@
                 <div class="right-side-svg">
                     <svg-icon
                         class="document"
-                        [src]="
-                            'assets/svg/truckassist-table/note/Note-hover.svg'
-                        "
+                        [src]="firstLabelRightSide.svg"
                     ></svg-icon>
                 </div>
                 <div class="right-side-svg">
                     <span class="comment-number">{{
-                        firstLabelRightSide.commentsCount
+                        seccondLabelRightSide.count
                     }}</span>
                     <svg-icon
                         class="comment"
-                        [src]="'assets/svg/detail-cards/comment - count.svg'"
+                        [src]="seccondLabelRightSide.svg"
                     ></svg-icon>
                     <svg-icon
-                        *ngIf="firstLabelRightSide.commentsCount > 0"
+                        *ngIf="seccondLabelRightSide.count > 0"
                         class="notification"
                         [src]="'assets/svg/applicant/notification-light.svg'"
                     ></svg-icon>
                 </div>
-                <div class="right-side-svg">
-                    <svg-icon
-                        [src]="
-                            'assets/svg/truckassist-table/attachment-icon.svg'
-                        "
-                    ></svg-icon>
-                    <span>3</span>
+                <div
+                    class="right-side-svg"
+                    *ngIf="thirdLabelRightSide.count > 0"
+                >
+                    <svg-icon [src]="thirdLabelRightSide.svg"></svg-icon>
+                    <span>{{ thirdLabelRightSide.count }}</span>
                 </div>
             </div>
             <div class="bottom-side" (click)="flipCard(cardIndex)">
-                <svg-icon
+                <span
+                    class="expand-card"
+                    type="button"
+                    ngbTooltip
+                    mainTooltip="Expand Card"
+                    tooltipBackground="#424242"
+                    position="bottom"
                     [ngClass]="{
                         'rotate-svg': isCardFlipped.includes(cardIndex),
                         'svg-position': !isCardFlipped.includes(cardIndex)
                     }"
-                    [src]="'assets/svg/common/resize-arrow.svg'"
-                ></svg-icon>
+                >
+                    <svg-icon
+                        [src]="'assets/svg/common/resize-arrow.svg'"
+                    ></svg-icon>
+                </span>
             </div>
         </div>
     </div>

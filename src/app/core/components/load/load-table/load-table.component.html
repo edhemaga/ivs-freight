@@ -106,7 +106,17 @@
                         seccValueStyle: 'color:#919191;'
                     }
                 }"
-                [firstLabelRightSide]="{ commentsCount: data.commentsCount }"
+                [firstLabelRightSide]="{
+                    svg: 'assets/svg/truckassist-table/note/Note-hover.svg'
+                }"
+                [seccondLabelRightSide]="{
+                    count: data.commentsCount,
+                    svg: 'assets/svg/detail-cards/comment - count.svg'
+                }"
+                [thirdLabelRightSide]="{
+                    count: data.fileCount,
+                    svg: 'assets/svg/truckassist-table/attachment-icon.svg'
+                }"
             ></app-truckassist-cards>
         </div>
     </div>

@@ -13,12 +13,14 @@ import {
     LoadDetails,
     LoadTableData,
     RightSideCard,
-} from '../dataTypes';
+} from './dataTypes';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 
 const isCardFlippedArray: Array<number> = [];
 const isCheckboxCheckedArray: Array<number> = [];
@@ -27,7 +29,13 @@ const isCheckboxCheckedArray: Array<number> = [];
     templateUrl: './truckassist-cards.component.html',
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, NgbPopoverModule],
+    imports: [
+        CommonModule,
+        AngularSvgIconModule,
+        NgbPopoverModule,
+        AppTooltipComponent,
+        NgbTooltipModule,
+    ],
 })
 export class TruckassistCardsComponent implements OnInit {
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
@@ -49,6 +57,8 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() fourthLabelBack: CardData;
     //Right side of cards
     @Input() firstLabelRightSide: RightSideCard;
+    @Input() seccondLabelRightSide: RightSideCard;
+    @Input() thirdLabelRightSide: RightSideCard;
 
     isCardFlipped: Array<number> = [];
     isCardChecked: Array<number> = [];
@@ -68,7 +78,9 @@ export class TruckassistCardsComponent implements OnInit {
             // console.log(this.viewData);
         });
     }
-    ngOnChanges(changes: SimpleChanges): void {}
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.seccondLabelRightSide);
+    }
 
     // Flip card based on card index
     flipCard(index: number) {

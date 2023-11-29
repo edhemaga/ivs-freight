@@ -16,7 +16,9 @@ export interface CardData {
     value?: Value;
 }
 export interface RightSideCard {
-    commentsCount: number;
+    count: number;
+    data: [];
+    svg: string;
 }
 export interface DropdownItem {
     hasBorder?: boolean;

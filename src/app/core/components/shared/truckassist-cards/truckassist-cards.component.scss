@@ -41,7 +41,7 @@
                     }
                     .table-checkbox:checked + .table-checkbox-label {
                         background-color: $ta-blue-14;
-                        background-image: url('../../../../../../assets/svg/truckassist-table/check-new.svg');
+                        background-image: url('../../../../../assets/svg/truckassist-table/check-new.svg');
                         background-repeat: no-repeat;
                         background-position: center;
                         transition: background-color 0.25s;
@@ -221,17 +221,24 @@
                 width: 26px;
                 height: 26px;
                 cursor: pointer;
-            }
-            .svg-position {
-                rotate: (0deg);
-                transition: all 0.3s;
-            }
-            .rotate-svg {
-                rotate: (180deg);
-                transition: all 0.3s;
-                svg {
-                    path {
-                        fill: $ta-blue-13;
+                .svg-position {
+                    rotate: (0deg);
+                }
+                .rotate-svg {
+                    rotate: (180deg);
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
+                }
+                .expand-card {
+                    &:hover {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
                     }
                 }
             }
