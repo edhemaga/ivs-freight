@@ -78,9 +78,7 @@ export class TruckassistCardsComponent implements OnInit {
             // console.log(this.viewData);
         });
     }
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log(this.seccondLabelRightSide);
-    }
+    ngOnChanges(changes: SimpleChanges): void {}
 
     // Flip card based on card index
     flipCard(index: number) {
@@ -141,7 +139,6 @@ export class TruckassistCardsComponent implements OnInit {
     }
     // Dropdown Actions
     onDropAction(action: DropdownItem) {
-        console.log(action);
         if (!action?.mutedStyle) {
             // Send Drop Action
             this.bodyActions.emit({
