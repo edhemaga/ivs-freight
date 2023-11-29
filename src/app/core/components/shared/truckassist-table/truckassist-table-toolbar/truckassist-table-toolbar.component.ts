@@ -29,12 +29,7 @@ import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.compo
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
-import { LoadDetails } from '../../truckassist-cards/dataTypes';
 
-interface rowSelected {
-    id: number;
-    tableData: LoadDetails;
-}
 @Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
@@ -121,7 +116,7 @@ export class TruckassistTableToolbarComponent
     tableReseting: boolean;
     selectedViewMode: string;
     selectedTableData: any = {};
-    mySelection: any[] = [];
+
     // tableTypes = [
     //     { configType: 'LOAD_TEMPLATE', id: 1 },DONE
     //     { configType: 'LOAD_CLOSED', id: 2 }, DONE
@@ -190,10 +185,11 @@ export class TruckassistTableToolbarComponent
                     this.getToolbarWidth();
                 }
             });
+
         // Rows Selected
         this.tableService.currentRowsSelected
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: rowSelected[]) => {
+            .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
 
                 if (this.options.toolbarActions.showMoneyCount) {

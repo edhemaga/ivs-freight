@@ -28,6 +28,7 @@
     <div *ngIf="activeViewMode == 'Card'" class="cards-container">
         <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
             <app-truckassist-cards
+                (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
                 [cardIndex]="[i]"
                 [card]="data"
@@ -105,6 +106,7 @@
                         seccValueStyle: 'color:#919191;'
                     }
                 }"
+                [firstLabelRightSide]="{ commentsCount: data.commentsCount }"
             ></app-truckassist-cards>
         </div>
     </div>

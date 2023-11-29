@@ -1,5 +1,4 @@
 /* Table Body */
-@import '/src/theme/variables.scss';
 table {
     width: 100%;
     height: fit-content;
@@ -132,25 +131,23 @@ table {
                             height: 14px;
                             background-color: #dadada;
                             margin-bottom: 0;
-                            border-radius: 2px;
+                            border-radius: 1px;
                             cursor: pointer;
 
                             &:hover {
-                                scale: 1.3;
-                                transition: 0.3s;
                                 background-color: #b7b7b7;
                             }
                         }
 
                         .table-checkbox:checked + .table-checkbox-label {
-                            background-color: $ta-blue-14;
+                            background-color: #91a4c7;
                             background-image: url('../../../../../../assets/svg/truckassist-table/check-new.svg');
                             background-repeat: no-repeat;
                             background-position: center;
                             transition: background-color 0.25s;
 
                             &:hover {
-                                background-color: #0b49d1;
+                                background-color: #5673aa;
                             }
                         }
 
@@ -240,8 +237,7 @@ table {
                             height: 24px;
                             background-repeat: no-repeat;
                             background-position: center;
-                            // Izbacuje gresku zbog ove linije nema je ta slika
-                            // background-image: url('../../../../../../assets/svg/truckassist-table/citation-icon.svg');
+                            background-image: url('../../../../../../assets/svg/truckassist-table/citation-icon.svg');
                             display: flex;
                             justify-content: center;
                             align-items: center;

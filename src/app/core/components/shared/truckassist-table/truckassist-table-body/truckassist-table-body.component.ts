@@ -34,7 +34,7 @@ import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.co
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
-interface Options {}
+
 @Titles()
 @Component({
     selector: 'app-truckassist-table-body',
@@ -610,6 +610,7 @@ export class TruckassistTableBodyComponent
         } else {
             if (row.tableDropdownContent?.hasContent) {
                 let actions = [...row.tableDropdownContent.content];
+
                 actions = actions.map((actions: any) => {
                     if (actions?.isDropdown) {
                         return {
@@ -622,6 +623,7 @@ export class TruckassistTableBodyComponent
                 });
 
                 this.dropdownActions = [...actions];
+
                 tooltip.open({ data: this.dropdownActions });
             }
         }

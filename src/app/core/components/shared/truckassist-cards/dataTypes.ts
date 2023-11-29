@@ -1,4 +1,34 @@
-// Table rows
+export interface CardHeader {
+    checkbox: boolean;
+    cardTitle: string;
+    fltOrFtl: string;
+}
+interface Value {
+    firstValue?: string;
+    firstValueStyle?: string;
+    seccValue?: string;
+    seccValueStyle?: string;
+    thirdValue?: string;
+    thirdValueStyle?: string;
+}
+export interface CardData {
+    title?: string;
+    value?: Value;
+}
+export interface RightSideCard {
+    commentsCount: number;
+}
+export interface DropdownItem {
+    hasBorder?: boolean;
+    name?: string;
+    svgUrl?: string;
+    mutedStyle?: boolean;
+    svgStyle?: { width: number; height: number };
+    title?: string;
+    svgClass?: string;
+    isDropdown?: boolean;
+} // Table rows
+
 interface GridColumn {
     avatar: string;
     disabled: boolean;

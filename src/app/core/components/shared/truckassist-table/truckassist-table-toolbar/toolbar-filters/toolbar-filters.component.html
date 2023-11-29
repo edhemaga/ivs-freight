@@ -4,36 +4,6 @@
         'table-filter-padding': options.toolbarActions.showSearchBorder
     }"
 >
-    <div
-        class="total-sum-holder"
-        *ngIf="
-            tableRowsSelected?.length > 0 && activeTableData.title === 'Pending'
-        "
-    >
-        <!-- BORDER -->
-        <div
-            class="border-container"
-            *ngIf="
-                options?.toolbarActions?.viewModeOptions?.length &&
-                !options.toolbarActions.hideSearch
-            "
-        >
-            <div class="border"></div>
-        </div>
-        <div class="total-sum">
-            {{ currentTotalSum | formatCurrency }}
-        </div>
-    </div>
-    <!-- BORDER -->
-    <div
-        class="border-container"
-        *ngIf="
-            options?.toolbarActions?.viewModeOptions?.length &&
-            !options.toolbarActions.hideSearch
-        "
-    >
-        <div class="border"></div>
-    </div>
     <!-- VIEW MODE SELECT -->
     <div
         class="view-mode-container"

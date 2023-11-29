@@ -1,26 +1,9 @@
-.toolbar-holder {
-    display: flex;
-    padding-top: 22px;
-    // LIST NAME
-    .list-name {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: -moz-fit-content;
-        width: fit-content;
-        height: 32px;
-        color: #424242;
-        font-size: 26px;
-        font-weight: 900;
-        margin-right: 12px;
-    }
-}
 .toolbar-container {
-    height: 34px;
+    height: 32px;
     display: flex;
+    margin-top: 22px;
     user-select: none;
-    align-items: center;
-    background: #ffffff;
+
     // BORDER
     .border-container {
         width: 6px;
@@ -35,6 +18,20 @@
             border-radius: 1px;
             background: #f3f3f3;
         }
+    }
+
+    // LIST NAME
+    .list-name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: -moz-fit-content;
+        width: fit-content;
+        height: 32px;
+        color: #424242;
+        font-size: 26px;
+        font-weight: 900;
+        margin-right: 12px;
     }
 
     // ONE TAB
@@ -59,25 +56,24 @@
         height: fit-content;
         margin-right: 6px;
         display: flex;
-        align-items: center;
-        background: #ffffff;
-        height: 34px;
+
         .tab-container {
             cursor: pointer;
             display: flex;
             background: #ffffff;
-            padding: 5px 4px;
-            height: 34px;
+            padding: 2px;
+            height: 32px;
             width: fit-content;
             border-radius: 3px;
-            align-items: center;
+
             .tab {
                 height: 28px;
                 width: fit-content;
                 border-radius: 3px;
+                padding: 2px;
                 display: flex;
                 align-items: center;
-                padding: 4px;
+
                 svg-icon {
                     display: flex;
                     align-items: center;
@@ -88,32 +84,27 @@
                 .tab-title {
                     font-size: 14px;
                     font-weight: 800;
-                    color: #6c6c6c;
+                    color: #919191;
                     justify-content: center;
                 }
 
                 .data-count {
-                    height: 18px;
-                    min-width: 23px;
-                    padding: 0 5px;
-                    border-radius: 50px;
-                    background: #919191;
+                    height: 24px;
+                    min-width: 24px;
+                    border-radius: 2px;
+                    background: #f3f3f3;
                     display: flex;
-                    margin-left: 4px;
-
-                    font-size: 11px;
-                    font-weight: 800;
-                    color: #ffffff;
-                    .data-count-number {
-                        display: flex;
-                        align-items: center;
-                    }
+                    padding: 3px 4px;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 4px;
                 }
 
                 .tab-title {
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    margin-right: 6px;
                 }
             }
         }
@@ -212,7 +203,7 @@
 
     // LOCATION FILTER AND OPEN MODAL BUTTON
     .modal-open-container {
-        background: #3b73ed;
+        background: #6d82c7;
 
         &:hover {
             background: #536bc2;
@@ -231,8 +222,8 @@
     .location-filter-container,
     .modal-open-container,
     .general-pm-open-container {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -288,8 +279,7 @@
 }
 
 .tab-active {
-    background: #424242 !important;
-    height: 36px !important;
+    background: #919191 !important;
     transition: 0.25s;
 
     svg-icon {
@@ -300,14 +290,14 @@
         }
     }
 
+    .data-count,
     .tab-title {
         color: #ffffff !important;
         transition: 0.25s;
     }
 
     .data-count {
-        background: #eeeeee !important;
-        color: #424242 !important;
+        background: #aaaaaa !important;
         transition: 0.25s;
     }
 }

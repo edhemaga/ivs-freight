@@ -137,10 +137,15 @@
         <!-- Right side of card -->
         <div class="card-body-right">
             <div class="top-side">
-                <div class="right-side-svg">
+                <div
+                    class="right-side-svg"
+                    [ngClass]="
+                        dropDownIsOpened === cardIndex ? 'active-item' : ''
+                    "
+                >
                     <div
-                        #t2="ngbPopover"
-                        (click)="toggleDropdown(t2)"
+                        #t1="ngbPopover"
+                        (click)="toggleDropdown(t1, cardIndex)"
                         [autoClose]="'outside'"
                         [ngbPopover]="dropdownPopover"
                         [placement]="'bottom-right'"
@@ -148,9 +153,15 @@
                         container="body"
                         popoverClass="table-dropdown-popover"
                         triggers="manual"
+                        (hidden)="onRemoveClickEventListener()"
                     >
                         <svg-icon
                             class="dots"
+                            [ngClass]="
+                                dropDownIsOpened === cardIndex
+                                    ? 'rotate-dropdown-svg'
+                                    : 'dropdown-svg-back'
+                            "
                             [src]="
                                 'assets/svg/common/ic_horizontal_dots_details.svg'
                             "
@@ -166,12 +177,15 @@
                     ></svg-icon>
                 </div>
                 <div class="right-side-svg">
-                    <span class="comment-number">2</span>
+                    <span class="comment-number">{{
+                        firstLabelRightSide.commentsCount
+                    }}</span>
                     <svg-icon
                         class="comment"
                         [src]="'assets/svg/detail-cards/comment - count.svg'"
                     ></svg-icon>
                     <svg-icon
+                        *ngIf="firstLabelRightSide.commentsCount > 0"
                         class="notification"
                         [src]="'assets/svg/applicant/notification-light.svg'"
                     ></svg-icon>

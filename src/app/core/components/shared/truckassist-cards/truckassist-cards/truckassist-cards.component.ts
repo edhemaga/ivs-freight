@@ -1,26 +1,25 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { LoadDetails, LoadTableData } from '../dataTypes';
+import {
+    Component,
+    OnInit,
+    Input,
+    SimpleChanges,
+    EventEmitter,
+    Output,
+} from '@angular/core';
+import {
+    CardData,
+    CardHeader,
+    DropdownItem,
+    LoadDetails,
+    LoadTableData,
+    RightSideCard,
+} from '../dataTypes';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-interface CardHeader {
-    checkbox: boolean;
-    cardTitle: string;
-    fltOrFtl: string;
-}
-interface Value {
-    firstValue?: string;
-    firstValueStyle?: string;
-    seccValue?: string;
-    seccValueStyle?: string;
-    thirdValue?: string;
-    thirdValueStyle?: string;
-}
-interface CardData {
-    title?: string;
-    value?: Value;
-}
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+
 const isCardFlippedArray: Array<number> = [];
 const isCheckboxCheckedArray: Array<number> = [];
 @Component({
@@ -31,6 +30,7 @@ const isCheckboxCheckedArray: Array<number> = [];
     imports: [CommonModule, AngularSvgIconModule, NgbPopoverModule],
 })
 export class TruckassistCardsComponent implements OnInit {
+    @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     // All data
     @Input() viewData: LoadDetails[];
     @Input() tableData: LoadTableData[];
@@ -47,16 +47,25 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() seccondLabelBack: CardData;
     @Input() thirdLabelBack: CardData;
     @Input() fourthLabelBack: CardData;
+    //Right side of cards
+    @Input() firstLabelRightSide: RightSideCard;
 
-    tooltip;
-    dropdownActions;
     isCardFlipped: Array<number> = [];
     isCardChecked: Array<number> = [];
-    constructor(private tableService: TruckassistTableService) {}
+    tooltip;
+    dropdownActions;
+    dropdownOpenedId: number;
+    dropDownIsOpened: number;
+    cardData: LoadDetails;
+    dropDownActive;
+    constructor(
+        private tableService: TruckassistTableService,
+        private detailsDataService: DetailsDataService
+    ) {}
 
     ngOnInit(): void {
         this.tableService.currentSelectOrDeselect.subscribe((response: any) => {
-            // console.log(response);
+            // console.log(this.viewData);
         });
     }
     ngOnChanges(changes: SimpleChanges): void {}
@@ -83,25 +92,52 @@ export class TruckassistCardsComponent implements OnInit {
             this.isCardChecked = isCheckboxCheckedArray;
         }
     }
-    toggleDropdown(tooltip) {
+    // Show hide dropdown
+    toggleDropdown(tooltip, cardIndex: number) {
+        this.dropDownIsOpened !== cardIndex
+            ? (this.dropDownIsOpened = cardIndex)
+            : (this.dropDownIsOpened = null);
         this.tooltip = tooltip;
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
             let actions = [...this.card?.tableDropdownContent.content];
-            actions = actions.map((actions: any) => {
+            actions = actions.map((actions: DropdownItem) => {
                 if (actions?.isDropdown) {
                     return {
                         ...actions,
                         isInnerDropActive: false,
                     };
                 }
-
                 return actions;
             });
             this.dropdownActions = [...actions];
             tooltip.open({ data: this.dropdownActions });
-            console.log(this.dropdownActions);
+            this.dropDownActive = tooltip.isOpen() ? this.card.id : -1;
+            this.detailsDataService.setNewData(this.card);
         }
+    }
+    // Remove Click Event On Inner Dropdown
+    onRemoveClickEventListener() {
+        const innerDropdownContent = document.querySelectorAll(
+            '.inner-dropdown-action-title'
+        );
+
+        innerDropdownContent.forEach((content) => {
+            content.removeAllListeners('click');
+        });
+    }
+    // Dropdown Actions
+    onDropAction(action: DropdownItem) {
+        console.log(action);
+        if (!action?.mutedStyle) {
+            // Send Drop Action
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.card,
+                type: action.name,
+            });
+        }
+        this.tooltip.close();
     }
 }
