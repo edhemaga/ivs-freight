@@ -89,7 +89,7 @@
     </div>
     <div
         *ngIf="activeViewMode === 'Card' && selectedTab === 'inactive'"
-        class="cards-container"
+        class="cards-container d-flex flex-wrap"
     >
         <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
             <app-truckassist-cards

@@ -1,11 +1,4 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    SimpleChanges,
-    EventEmitter,
-    Output,
-} from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 // Models
 import {
     CardData,
@@ -79,11 +72,11 @@ export class TruckassistCardsComponent implements OnInit {
     constructor(private detailsDataService: DetailsDataService) {}
 
     ngOnInit(): void {}
-    ngOnChanges(changes: SimpleChanges): void {}
 
     // Flip card based on card index
     public flipCard(index: number) {
         const indexSelected = isCardFlippedArray.indexOf(index);
+
         if (indexSelected !== -1) {
             isCardFlippedArray.splice(indexSelected, 1);
             this.isCardFlipped = isCardFlippedArray;
@@ -91,10 +84,13 @@ export class TruckassistCardsComponent implements OnInit {
             isCardFlippedArray.push(index);
             this.isCardFlipped = isCardFlippedArray;
         }
+
+        return;
     }
     // When checkbox is selected
     public onCheckboxSelect(index: number) {
         const indexSelected = isCheckboxCheckedArray.indexOf(index);
+
         if (indexSelected !== -1) {
             isCheckboxCheckedArray.splice(indexSelected, 1);
             this.isCardChecked = isCheckboxCheckedArray;
@@ -102,6 +98,8 @@ export class TruckassistCardsComponent implements OnInit {
             isCheckboxCheckedArray.push(index);
             this.isCardChecked = isCheckboxCheckedArray;
         }
+
+        return;
     }
     // Show hide dropdown
     public toggleDropdown(tooltip, cardIndex: number) {
@@ -114,6 +112,7 @@ export class TruckassistCardsComponent implements OnInit {
             tooltip.close();
         } else {
             let actions = [...this.card?.tableDropdownContent.content];
+
             actions = actions.map((actions: DropdownItem) => {
                 if (actions?.isDropdown) {
                     return {
@@ -121,6 +120,7 @@ export class TruckassistCardsComponent implements OnInit {
                         isInnerDropActive: false,
                     };
                 }
+
                 return actions;
             });
 
@@ -129,6 +129,8 @@ export class TruckassistCardsComponent implements OnInit {
             this.dropDownActive = tooltip.isOpen() ? this.card.id : -1;
             this.detailsDataService.setNewData(this.card);
         }
+
+        return;
     }
     // Remove Click Event On Inner Dropdown
     public onRemoveClickEventListener() {
@@ -139,11 +141,11 @@ export class TruckassistCardsComponent implements OnInit {
         innerDropdownContent.forEach((content) => {
             content.removeAllListeners('click');
         });
+
+        return;
     }
     // Dropdown Actions
     public onDropAction(action: DropdownItem) {
-        console.log(this.card);
-
         if (!action?.mutedStyle) {
             // Send Drop Action
             this.bodyActions.emit({
@@ -152,6 +154,9 @@ export class TruckassistCardsComponent implements OnInit {
                 type: action.name,
             });
         }
+
         this.tooltip.close();
+
+        return;
     }
 }
