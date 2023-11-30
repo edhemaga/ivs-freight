@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import * as AppConst from 'src/app/const';
-
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-dashboard-map',
@@ -24,11 +22,7 @@ export class DashboardMapComponent implements OnInit, OnDestroy {
     mapLongitude: number = -87.660156;
     mapZoom: number = 1;
 
-    public searchDashboardOptions = {
-        gridNameTitle: 'Map',
-    };
-
-    constructor(private tableService: TruckassistTableService) {}
+    constructor() {}
 
     ngOnInit(): void {
         this.dashboardMapSwitchTabs = [
@@ -39,14 +33,6 @@ export class DashboardMapComponent implements OnInit, OnDestroy {
                 name: 'Mobile App',
             },
         ];
-
-        this.tableService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res) {
-                    // your search code here
-                }
-            });
     }
 
     changeMapSwitchTabs(ev) {}
