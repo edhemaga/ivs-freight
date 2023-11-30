@@ -20,7 +20,7 @@ export class DetailsDataService {
     constructor() {}
 
     setNewData(newData) {
-        this.mainData = {...newData};
+        this.mainData = { ...newData };
     }
 
     public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
