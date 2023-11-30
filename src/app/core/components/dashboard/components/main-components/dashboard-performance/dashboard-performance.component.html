@@ -235,17 +235,10 @@
 
                             <p class="m-0 ta-font-bold">
                                 {{
-                                    currentActiveTab.name === 'Today'
-                                        ? 'YESTERDAY'
-                                        : currentActiveTab.name === 'WTD'
-                                        ? 'LAST WEEK'
-                                        : currentActiveTab.name === 'MTD'
-                                        ? 'LAST MONTH'
-                                        : currentActiveTab.name === 'QTD'
-                                        ? 'LAST QUARTAL'
-                                        : currentActiveTab.name === 'YTD'
-                                        ? 'LAST PERIOD'
-                                        : ''
+                                    currentActiveTab.name
+                                        | setTrendLabel
+                                            : false
+                                            : selectedSubPeriodLabel
                                 }}
                             </p>
                         </div>
@@ -262,17 +255,10 @@
 
                             <p class="m-0 ta-font-bold">
                                 {{
-                                    currentActiveTab.name === 'Today'
-                                        ? 'DAILY AVERAGE'
-                                        : currentActiveTab.name === 'WTD'
-                                        ? 'WEEKLY AVERAGE'
-                                        : currentActiveTab.name === 'MTD'
-                                        ? 'MONTHLY AVERAGE'
-                                        : currentActiveTab.name === 'QTD'
-                                        ? 'QUARTERLY AVERAGE'
-                                        : currentActiveTab.name === 'YTD'
-                                        ? 'PERIOD AVERAGE'
-                                        : ''
+                                    currentActiveTab.name
+                                        | setTrendLabel
+                                            : true
+                                            : selectedSubPeriodLabel
                                 }}
                             </p>
                         </div>
@@ -450,7 +436,7 @@
 
         <!-- Charts -->
 
-        <ng-container *ngIf="lineChartConfig && barChartConfig">
+        <ng-container *ngIf="!isLoading && lineChartConfig && barChartConfig">
             <div
                 class="charts-container"
                 (mouseleave)="handleRemoveChartsHover()"

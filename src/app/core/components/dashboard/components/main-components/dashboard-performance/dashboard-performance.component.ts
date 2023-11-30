@@ -334,7 +334,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.performanceTabs = DashboardPerformanceConstants.PERFORMANCE_TABS;
         this.currentActiveTab =
-            DashboardPerformanceConstants.PERFORMANCE_TABS[2];
+            DashboardPerformanceConstants.PERFORMANCE_TABS[5];
 
         this.selectedSubPeriodLabel = ConstantStringEnum.DAILY;
 
