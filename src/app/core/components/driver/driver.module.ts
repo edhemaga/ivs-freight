@@ -20,6 +20,7 @@ import { TaReCardComponent } from '../shared/ta-common-card/ta-re-card.component
 import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 
@@ -31,7 +32,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         NgbModule,
         AppTooltipComponent,
         TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent, 
+        TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         formatDatePipe,
         TaDetailsHeaderCardComponent,
@@ -43,7 +44,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         TaReCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
-
+        TruckassistCardsComponent,
     ],
 })
 export class DriverModule {}

@@ -6,7 +6,7 @@
         [selectedTab]="selectedTab"
         [columns]="columns"
     ></app-truckassist-table-toolbar>
-    <div *ngIf="activeViewMode === 'List'">
+    <ng-container *ngIf="activeViewMode === 'List'">
         <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -23,13 +23,15 @@
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
         ></app-truckassist-table-body>
-    </div>
+    </ng-container>
     <!-- Cards -->
     <div
         *ngIf="activeViewMode === 'Card'"
         class="cards-container d-flex flex-wrap"
     >
-        <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
+        <ng-container
+            *ngFor="let data of viewData; let i = index; trackBy: trackCard"
+        >
             <app-truckassist-cards
                 (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
@@ -38,10 +40,11 @@
                 [cardHeader]="{
                     checkbox: true,
                     cardTitle: 'INV-' + data?.loadInvoice.invoice,
-                    fltOrFtl:
+                    svg:
                         data.type.name === 'LTL'
                             ? 'assets/svg/detail-cards/left-arrows.svg'
-                            : 'assets/svg/detail-cards/shuffle.svg'
+                            : 'assets/svg/detail-cards/shuffle.svg',
+                    svgStyle: 'margin-right: 5px'
                 }"
                 [firstLabel]="{
                     title: 'Status',
@@ -121,6 +124,6 @@
                     svg: 'assets/svg/truckassist-table/attachment-icon.svg'
                 }"
             ></app-truckassist-cards>
-        </div>
+        </ng-container>
     </div>
 </div>

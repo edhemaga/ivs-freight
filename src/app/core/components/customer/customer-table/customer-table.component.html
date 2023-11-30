@@ -7,7 +7,7 @@
         [columns]="columns"
     ></app-truckassist-table-toolbar>
 
-    <div *ngIf="activeViewMode === 'List'">
+    <ng-container *ngIf="activeViewMode === 'List'">
         <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -24,12 +24,14 @@
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
         ></app-truckassist-table-body>
-    </div>
+    </ng-container>
     <div
         *ngIf="activeViewMode === 'Card' && selectedTab === 'active'"
-        class="cards-container"
+        class="cards-container d-flex flex-wrap"
     >
-        <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
+        <ng-container
+            *ngFor="let data of viewData; let i = index; trackBy: trackCard"
+        >
             <app-truckassist-cards
                 [viewData]="viewData"
                 [cardIndex]="[i]"
@@ -85,13 +87,15 @@
                     }
                 }"
             ></app-truckassist-cards>
-        </div>
+        </ng-container>
     </div>
-    <div
+    <ng-container
         *ngIf="activeViewMode === 'Card' && selectedTab === 'inactive'"
         class="cards-container d-flex flex-wrap"
     >
-        <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
+        <ng-container
+            *ngFor="let data of viewData; let i = index; trackBy: trackCard"
+        >
             <app-truckassist-cards
                 [viewData]="viewData"
                 [cardIndex]="[i]"
@@ -140,8 +144,8 @@
                     title: 'Avg. Delivery Time'
                 }"
             ></app-truckassist-cards>
-        </div>
-    </div>
+        </ng-container>
+    </ng-container>
     <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
         <app-map-list
             [type]="'shipper'"

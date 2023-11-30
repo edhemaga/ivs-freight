@@ -28,8 +28,14 @@
 
             .card-header {
                 gap: 10px;
+                position: relative;
+                padding-left: 22px;
 
                 .checkbox-holder {
+                    position: absolute;
+                    left: 0;
+                    top: -1px;
+
                     .table-checkbox {
                         display: none;
                     }
@@ -55,7 +61,6 @@
                 .name {
                     font-size: 14px;
                     line-height: 18px;
-                    gap: 5px;
                     cursor: pointer;
                     span {
                         white-space: nowrap;

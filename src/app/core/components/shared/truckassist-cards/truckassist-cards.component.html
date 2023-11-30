@@ -9,22 +9,53 @@
         <div class="card-body-left p-1">
             <div class="card-header d-flex align-items-center">
                 <div class="checkbox-holder d-flex align-items-center">
-                    <input
-                        class="table-checkbox"
-                        type="checkbox"
-                        id="checkbox{{ cardIndex }}"
-                        (change)="onCheckboxSelect(cardIndex)"
-                    />
-                    <label
-                        class="table-checkbox-label"
-                        for="checkbox{{ cardIndex }}"
-                    ></label>
+                    <span
+                        class="checkbox-tooltip"
+                        type="button"
+                        ngbTooltip
+                        mainTooltip="Select"
+                        tooltipBackground="#424242"
+                        position="bottom"
+                        [ngClass]="{
+                            'rotate-svg': isCardFlipped.includes(cardIndex),
+                            'svg-position': !isCardFlipped.includes(cardIndex)
+                        }"
+                    >
+                        <input
+                            class="table-checkbox"
+                            type="checkbox"
+                            id="checkbox{{ cardIndex }}"
+                            (change)="onCheckboxSelect(cardIndex)"
+                        />
+                        <label
+                            class="table-checkbox-label"
+                            for="checkbox{{ cardIndex }}"
+                        ></label>
+                    </span>
                 </div>
                 <div class="name d-flex ta-font-bold">
                     <span class="svg-ftl-ltl d-block">
-                        <svg-icon [src]="cardHeader?.fltOrFtl"></svg-icon>
+                        <ng-container *ngIf="cardHeader?.img">
+                            <img
+                                [src]="cardHeader?.img"
+                                alt=""
+                                [style]="cardHeader?.imgStyle"
+                            />
+                        </ng-container>
+                        <ng-container *ngIf="cardHeader?.svg">
+                            <svg-icon
+                                [style]="cardHeader?.svgStyle"
+                                [src]="cardHeader?.svg"
+                            ></svg-icon>
+                        </ng-container>
                     </span>
-                    <span class="d-block title">
+                    <span
+                        class="d-flex align-items-center justify-content-center"
+                        [style]="cardHeader?.cardTitleBeforeStyle"
+                    >
+                        {{ cardHeader?.cardTitleBefore }}
+                    </span>
+                    <span class="d-flex align-items-center title">
                         {{ cardHeader?.cardTitle }}
                     </span>
                 </div>
@@ -79,9 +110,11 @@
                 <div class="item-body">
                     <div class="top-item-body">{{ fourthLabel?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
-                        <svg-icon
-                            [src]="fourthLabel?.value?.firstValueSvg"
-                        ></svg-icon>
+                        <ng-container *ngIf="fourthLabel?.value?.firstValueSvg">
+                            <svg-icon
+                                [src]="fourthLabel?.value?.firstValueSvg"
+                            ></svg-icon>
+                        </ng-container>
                         <span [style]="fourthLabel?.value?.firstValueStyle">
                             {{ fourthLabel?.value?.firstValue }}
                         </span>
@@ -104,9 +137,15 @@
                 <div class="item-body">
                     <div class="top-item-body">{{ firstLabelBack?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
-                        <span [style]="firstLabelBack?.value?.firstValueStyle">
+                        <ng-container
+                            *ngIf="firstLabelBack?.value?.firstValue"
+                            [style]="firstLabelBack?.value?.firstValueStyle"
+                        >
                             {{ firstLabelBack?.value?.firstValue }}
-                        </span>
+                        </ng-container>
+                        <ng-container *ngIf="firstLabelBack?.value?.date">
+                            {{ firstLabelBack?.value?.date | formatDateP }}
+                        </ng-container>
                         <span [style]="firstLabelBack?.value?.seccValueStyle">
                             {{ firstLabelBack?.value?.seccValue }}
                         </span>
@@ -117,9 +156,13 @@
                         {{ seccondLabelBack?.title }}
                     </div>
                     <div class="bottom-item-body d-flex align-items-center">
-                        <svg-icon
-                            [src]="seccondLabelBack?.value?.firstValueSvg"
-                        ></svg-icon>
+                        <ng-container
+                            *ngIf="seccondLabelBack?.value?.firstValueSvg"
+                        >
+                            <svg-icon
+                                [src]="seccondLabelBack?.value?.firstValueSvg"
+                            ></svg-icon>
+                        </ng-container>
                         <span
                             [style]="seccondLabelBack?.value?.firstValueStyle"
                         >
@@ -163,7 +206,9 @@
                 <div
                     class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                     [ngClass]="
-                        dropDownIsOpened === cardIndex ? 'active-item' : ''
+                        dropDownIsOpened === cardIndex && t1.isOpen()
+                            ? 'active-item'
+                            : ''
                     "
                 >
                     <div
@@ -181,7 +226,7 @@
                         <svg-icon
                             class="dots"
                             [ngClass]="
-                                dropDownIsOpened === cardIndex
+                                dropDownIsOpened === cardIndex && t1.isOpen()
                                     ? 'rotate-dropdown-svg'
                                     : 'dropdown-svg-back'
                             "
