@@ -1,36 +1,39 @@
 @import '/src/theme/variables.scss';
-
+@import '/src/assets/scss/fonts.scss';
 .custom-card {
     background: $white;
     max-width: 302px;
     border-radius: 3px;
+
     .body-active {
         background: $ta-light-grey;
     }
+
     .body-checked {
         background: $ta-light-grey;
     }
-
+    // Main tag of card holding all elements with hover on it
     .card-body {
         padding: 4px;
         display: flex;
         justify-content: space-between;
         border-radius: 2px;
+
         &:hover {
             background: $ta-light-grey;
         }
+
         .card-body-left {
             width: 256px;
+
             .card-header {
-                display: flex;
                 gap: 10px;
-                align-items: center;
+
                 .checkbox-holder {
-                    display: flex;
-                    align-items: center;
                     .table-checkbox {
                         display: none;
                     }
+
                     .table-checkbox-label {
                         width: 14px;
                         height: 14px;
@@ -39,6 +42,7 @@
                         border-radius: 2px;
                         cursor: pointer;
                     }
+
                     .table-checkbox:checked + .table-checkbox-label {
                         background-color: $ta-blue-14;
                         background-image: url('../../../../../assets/svg/truckassist-table/check-new.svg');
@@ -47,20 +51,34 @@
                         transition: background-color 0.25s;
                     }
                 }
+
                 .name {
                     font-size: 14px;
-                    font-weight: 700;
                     line-height: 18px;
+                    gap: 5px;
                     cursor: pointer;
+                    span {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .title {
+                        width: 224px;
+                    }
+
                     &:hover {
                         color: $ta-blue-15;
                     }
+
                     .svg-ftl-ltl {
                         bottom: 1px;
                         position: relative;
+
                         svg {
                             width: 16px;
                             height: 16px;
+
                             path {
                                 fill: $ta-blue-13;
                             }
@@ -68,49 +86,48 @@
                     }
                 }
             }
+
             .flipped {
                 display: none;
             }
+
             .card-body-content {
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
                 margin-top: 8px;
+
                 .item-body {
                     height: 40px;
+
                     .top-item-body {
                         font-size: 11px;
                         font-weight: 700;
                         line-height: 20px;
                     }
+
                     .bottom-item-body {
                         font-size: 14px;
                         overflow: hidden;
                         line-height: 20px;
-                        display: flex;
-                        align-items: center;
                         gap: 4px;
+
+                        span {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: block;
+                        }
+
+                        svg {
+                            path {
+                                fill: $muted;
+                            }
+                        }
+
                         .card-svg {
                             bottom: 2px;
                             position: relative;
-                        }
-                        .amount {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            align-content: center;
-                            color: white;
-                            font-size: 11px;
-                            font-weight: 800;
-                            border-radius: 1px;
-                            height: 18px;
-                            width: 18px;
-                        }
-                        .amount-pickup {
-                            background-color: #56b4ac;
-                        }
-                        .amount-delivery {
-                            background-color: #e66767;
                         }
                     }
                 }
@@ -127,20 +144,20 @@
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
+
+                // Right side of card with svg's div holding svg
                 .right-side-svg {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
                     width: 26px;
                     height: 26px;
                     cursor: pointer;
-                    justify-content: center;
                     position: relative;
+
                     svg {
                         path {
                             fill: $muted;
                         }
                     }
+
                     .dots {
                         svg {
                             width: 18px;
@@ -148,35 +165,40 @@
                             bottom: 1px;
                         }
                     }
+
                     .rotate-dropdown-svg {
                         svg {
                             transform: rotate(90deg);
                             transition: all 0.3s;
                         }
                     }
+
                     .dropdown-svg-back {
                         svg {
                             transform: rotate(0deg);
                             transition: all 0.3s;
                         }
                     }
+
                     .document {
                         svg {
                             height: 16px;
                             width: 14px;
                         }
                     }
+
                     .comment-number {
                         position: absolute;
                         color: $white;
                         font-size: 9px;
-                        font-weight: 600;
                     }
+
                     .comment {
                         svg {
                             width: 16px;
                         }
                     }
+
                     .notification {
                         position: absolute;
                         width: 6px;
@@ -192,18 +214,20 @@
                             }
                         }
                     }
+
                     span {
                         color: $muted;
-                        font-weight: 700;
                         font-size: 11px;
                     }
                 }
+
                 .active-item {
                     background: $ta-black;
                     border-radius: 2px;
                     width: 26px;
                     height: 26px;
                     transition: all 0.3s;
+
                     .table-dropdown-container {
                         svg {
                             g {
@@ -216,16 +240,17 @@
                 }
             }
             .bottom-side {
-                display: flex;
-                justify-content: center;
                 width: 26px;
                 height: 26px;
                 cursor: pointer;
+
                 .svg-position {
                     rotate: (0deg);
                 }
+
                 .rotate-svg {
                     rotate: (180deg);
+
                     svg {
                         path {
                             fill: $ta-blue-13;

@@ -1,91 +1,15 @@
-export interface CardHeader {
-    checkbox: boolean;
-    cardTitle: string;
-    fltOrFtl: string;
+export interface SendDataCard {
+    id: number;
+    data: LoadDetails;
+    type: string;
 }
-interface Value {
-    firstValue?: string;
-    firstValueStyle?: string;
-    seccValue?: string;
-    seccValueStyle?: string;
-    thirdValue?: string;
-    thirdValueStyle?: string;
-}
-export interface CardData {
-    title?: string;
-    value?: Value;
-}
-export interface RightSideCard {
-    count: number;
-    data: [];
-    svg: string;
-}
-export interface DropdownItem {
-    hasBorder?: boolean;
-    name?: string;
-    svgUrl?: string;
-    mutedStyle?: boolean;
-    svgStyle?: { width: number; height: number };
-    title?: string;
-    svgClass?: string;
-    isDropdown?: boolean;
-} // Table rows
-
-interface GridColumn {
-    avatar: string;
-    disabled: boolean;
-    export: boolean;
-    field: string;
-    filter: string;
-    filterable: boolean;
-    hidden: boolean;
-    hoverTemplate: string;
-    index: number;
-    isActionColumn: boolean;
-    isNumeric: boolean;
-    isSelectColumn: boolean;
-    name: string;
-    ngTemplate: string;
-    progress: string;
-    resizable: boolean;
-    sortable: boolean;
-    title: string;
-    width: number;
-}
-export interface LoadTableData {
-    extended: boolean;
-    field: string;
-    gridColumns: GridColumn[];
-    gridNameTitle: string;
-    isActive: boolean;
-    length: number;
-    stateName: string;
-    tableConfiguration: string;
-    title: string;
-}
-
-export interface Root {
-    pagination: Pagination;
-    pendingCount: number;
-    activeCount: number;
-    closedCount: number;
-    templateCount: number;
-    totalSum: number;
-}
-
-export interface Pagination {
-    pageIndex: number;
-    pageSize: number;
-    count: number;
-    data: LoadDetails[];
-}
-
 export interface LoadDetails {
     id: number;
     type: Type;
     loadNumber: string;
     statusType: StatusType;
     status: Status;
+    tableDropdownContent: tableDropdownContent;
     lastStatusPassed: LastStatusPassed;
     dispatcher: Dispatcher;
     company: Company;
@@ -140,6 +64,28 @@ export interface LoadDetails {
     fileCount: number;
     loadTotal: LoadTotal;
     isFlipped: boolean;
+}
+
+export interface tableDropdownContent {
+    content: DropdownItem[];
+    hasContent: boolean;
+}
+
+export interface DropdownItem {
+    hasBorder?: boolean;
+    name?: string;
+    svgUrl?: string;
+    mutedStyle?: boolean;
+    svgStyle?: { width: number; height: number };
+    title?: string;
+    svgClass?: string;
+    isDropdown?: boolean;
+}
+
+export interface BodyActions {
+    id: number;
+    card: LoadDetails;
+    type: string;
 }
 
 export interface Type {

@@ -155,7 +155,9 @@ $ta-white-3: #ffffffb3;
 $ta-white-4: #ffffff33;
 $ta-white-5: #f7f7f780;
 $ta-black-3: #1d1d1d;
-
+// Cards
+$ta-green: #56b4ac;
+$ta-red-10: #56b4ac;
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
     border-#{$direction}: $width $style $color;

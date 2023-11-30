@@ -6,24 +6,32 @@ import {
     EventEmitter,
     Output,
 } from '@angular/core';
+// Models
 import {
     CardData,
     CardHeader,
-    DropdownItem,
-    LoadDetails,
     LoadTableData,
     RightSideCard,
-} from './dataTypes';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+} from '../model/cardData';
+import {
+    DropdownItem,
+    LoadDetails,
+    SendDataCard,
+} from '../model/cardTableData';
+// Services
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+// Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+// Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-
+// Array holding id of fliped cards
 const isCardFlippedArray: Array<number> = [];
+// Array holding id of checked cards
 const isCheckboxCheckedArray: Array<number> = [];
+
 @Component({
     selector: 'app-truckassist-cards',
     templateUrl: './truckassist-cards.component.html',
@@ -38,11 +46,11 @@ const isCheckboxCheckedArray: Array<number> = [];
     ],
 })
 export class TruckassistCardsComponent implements OnInit {
-    @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
     // All data
-    @Input() viewData: LoadDetails[];
+    @Input() viewData: LoadDetails;
     @Input() tableData: LoadTableData[];
-    @Input() card: any;
+    @Input() card: LoadDetails;
     // Front of cards
     @Input() cardIndex: number;
     @Input() cardHeader: CardHeader;
@@ -60,28 +68,21 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() seccondLabelRightSide: RightSideCard;
     @Input() thirdLabelRightSide: RightSideCard;
 
-    isCardFlipped: Array<number> = [];
-    isCardChecked: Array<number> = [];
-    tooltip;
-    dropdownActions;
-    dropdownOpenedId: number;
-    dropDownIsOpened: number;
-    cardData: LoadDetails;
-    dropDownActive;
-    constructor(
-        private tableService: TruckassistTableService,
-        private detailsDataService: DetailsDataService
-    ) {}
+    public isCardFlipped: Array<number> = [];
+    public isCardChecked: Array<number> = [];
+    public tooltip;
+    public dropdownActions;
+    public dropdownOpenedId: number;
+    public dropDownIsOpened: number;
+    public cardData: LoadDetails;
+    public dropDownActive: number;
+    constructor(private detailsDataService: DetailsDataService) {}
 
-    ngOnInit(): void {
-        this.tableService.currentSelectOrDeselect.subscribe((response: any) => {
-            // console.log(this.viewData);
-        });
-    }
+    ngOnInit(): void {}
     ngOnChanges(changes: SimpleChanges): void {}
 
     // Flip card based on card index
-    flipCard(index: number) {
+    public flipCard(index: number) {
         const indexSelected = isCardFlippedArray.indexOf(index);
         if (indexSelected !== -1) {
             isCardFlippedArray.splice(indexSelected, 1);
@@ -92,7 +93,7 @@ export class TruckassistCardsComponent implements OnInit {
         }
     }
     // When checkbox is selected
-    onCheckboxSelect(index: number) {
+    public onCheckboxSelect(index: number) {
         const indexSelected = isCheckboxCheckedArray.indexOf(index);
         if (indexSelected !== -1) {
             isCheckboxCheckedArray.splice(indexSelected, 1);
@@ -103,11 +104,12 @@ export class TruckassistCardsComponent implements OnInit {
         }
     }
     // Show hide dropdown
-    toggleDropdown(tooltip, cardIndex: number) {
+    public toggleDropdown(tooltip, cardIndex: number) {
         this.dropDownIsOpened !== cardIndex
             ? (this.dropDownIsOpened = cardIndex)
             : (this.dropDownIsOpened = null);
         this.tooltip = tooltip;
+
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
@@ -121,6 +123,7 @@ export class TruckassistCardsComponent implements OnInit {
                 }
                 return actions;
             });
+
             this.dropdownActions = [...actions];
             tooltip.open({ data: this.dropdownActions });
             this.dropDownActive = tooltip.isOpen() ? this.card.id : -1;
@@ -128,7 +131,7 @@ export class TruckassistCardsComponent implements OnInit {
         }
     }
     // Remove Click Event On Inner Dropdown
-    onRemoveClickEventListener() {
+    public onRemoveClickEventListener() {
         const innerDropdownContent = document.querySelectorAll(
             '.inner-dropdown-action-title'
         );
@@ -138,7 +141,9 @@ export class TruckassistCardsComponent implements OnInit {
         });
     }
     // Dropdown Actions
-    onDropAction(action: DropdownItem) {
+    public onDropAction(action: DropdownItem) {
+        console.log(this.card);
+
         if (!action?.mutedStyle) {
             // Send Drop Action
             this.bodyActions.emit({
