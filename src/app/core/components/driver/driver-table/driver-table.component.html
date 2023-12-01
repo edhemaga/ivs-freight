@@ -25,9 +25,9 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </div>
-    <div class="d-flex flex-wrap cards-container">
+    <div class="d-grid cards-container">
         <ng-container
-            *ngIf="activeViewMode === 'Card' && selectedTab === 'active'"
+            *ngIf="activeViewMode === 'Card' && selectedTab !== 'applicants'"
         >
             <ng-container
                 *ngFor="let data of viewData; let i = index; trackBy: trackCard"
@@ -52,7 +52,8 @@
                         cardTitle: data?.fullName,
                         imgStyle:
                             'height: 20px; border-radius: 1px; margin-right: 5px; padding',
-                        img: data?.avatarImg ? data?.avatarImg : null
+                        img: data?.avatarImg ? data?.avatarImg : null,
+                        isOwner: data?.isOwner
                     }"
                     [firstLabel]="{
                         title: 'Phone No.',
@@ -83,16 +84,24 @@
                     [seccondLabelBack]="{
                         title: 'CDL Exp.',
                         value: {
+                            deadline: true,
+                            deadlineBack: 'background: #919191;',
+                            deadlineFront:
+                                'background: #919191; width:' +
+                                data?.tableCdlDetailExpiration?.percentage +
+                                '%',
                             firstValue:
                                 'in ' +
-                                data.tableCdlDetailExpiration
-                                    .expirationDaysText +
+                                data?.tableCdlDetailExpiration
+                                    ?.expirationDaysText +
                                 ' days'
                         }
                     }"
                     [thirdLabelBack]="{
                         title: 'Medical Exp.',
                         value: {
+                            deadline: true,
+                            deadlineBack: data?.tableMedicalData?.percentage,
                             firstValue:
                                 'in ' +
                                 data?.tableMedicalData?.expirationDaysText +

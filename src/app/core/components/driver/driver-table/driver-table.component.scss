@@ -6,4 +6,5 @@
 .cards-container {
     margin-top: 11px;
     gap: 4px;
+    grid-template-columns: repeat(auto-fit, minmax(302px, 1fr));
 }

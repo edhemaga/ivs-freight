@@ -89,9 +89,9 @@
             ></app-truckassist-cards>
         </ng-container>
     </div>
-    <ng-container
+    <div
         *ngIf="activeViewMode === 'Card' && selectedTab === 'inactive'"
-        class="cards-container d-flex flex-wrap"
+        class="cards-container d-grid"
     >
         <ng-container
             *ngFor="let data of viewData; let i = index; trackBy: trackCard"
@@ -145,7 +145,7 @@
                 }"
             ></app-truckassist-cards>
         </ng-container>
-    </ng-container>
+    </div>
     <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
         <app-map-list
             [type]="'shipper'"

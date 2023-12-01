@@ -25,10 +25,7 @@
         ></app-truckassist-table-body>
     </ng-container>
     <!-- Cards -->
-    <div
-        *ngIf="activeViewMode === 'Card'"
-        class="cards-container d-flex flex-wrap"
-    >
+    <div *ngIf="activeViewMode === 'Card'" class="cards-container d-grid">
         <ng-container
             *ngFor="let data of viewData; let i = index; trackBy: trackCard"
         >

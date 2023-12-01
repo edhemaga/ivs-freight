@@ -46,6 +46,8 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() viewData: LoadDetails;
     @Input() tableData: LoadTableData[];
     @Input() card: LoadDetails;
+    // For Front And back of the cards
+    @Input() deadline: boolean;
     // Front of cards
     @Input() cardIndex: number;
     @Input() cardHeader: CardHeader;
@@ -73,7 +75,9 @@ export class TruckassistCardsComponent implements OnInit {
     public dropDownActive: number;
     constructor(private detailsDataService: DetailsDataService) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.card);
+    }
 
     // Flip card based on card index
     public flipCard(index: number) {

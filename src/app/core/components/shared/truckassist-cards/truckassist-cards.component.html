@@ -34,7 +34,7 @@
                     </span>
                 </div>
                 <div class="name d-flex ta-font-bold">
-                    <span class="svg-ftl-ltl d-block">
+                    <span class="d-block image-holder">
                         <ng-container *ngIf="cardHeader?.img">
                             <img
                                 [src]="cardHeader?.img"
@@ -48,7 +48,21 @@
                                 [src]="cardHeader?.svg"
                             ></svg-icon>
                         </ng-container>
+                        <ng-container
+                            *ngIf="
+                                cardHeader?.isOwner &&
+                                cardHeader?.isOwner !== false
+                            "
+                        >
+                            <svg-icon
+                                class="is-owner"
+                                [src]="
+                                    'assets/svg/common/ic_driver-owner-new.svg'
+                                "
+                            ></svg-icon>
+                        </ng-container>
                     </span>
+                    <span> </span>
                     <span
                         class="d-flex align-items-center justify-content-center"
                         [style]="cardHeader?.cardTitleBeforeStyle"
@@ -91,7 +105,9 @@
                         <span [style]="seccondLabel?.value?.firstValueStyle">{{
                             seccondLabel?.value?.firstValue
                         }}</span>
-                        <span>{{ seccondLabel?.value?.seccValue }}</span>
+                        <span [style]="seccondLabel?.value?.seccValueStyle">{{
+                            seccondLabel?.value?.seccValue
+                        }}</span>
                         <span [style]="seccondLabel?.value?.thirdValueStyle">{{
                             seccondLabel?.value?.thirdValue
                         }}</span>
@@ -156,6 +172,23 @@
                         {{ seccondLabelBack?.title }}
                     </div>
                     <div class="bottom-item-body d-flex align-items-center">
+                        <!-- Only if deadline is required -->
+                        <ng-container *ngIf="seccondLabelBack?.value?.deadline">
+                            <div class="deadline-parent">
+                                <div
+                                    class="deadline-child-back"
+                                    [style]="
+                                        seccondLabelBack?.value?.deadlineBack
+                                    "
+                                ></div>
+                                <div
+                                    class="deadline-child-front"
+                                    [style]="
+                                        seccondLabelBack?.value?.deadlineFront
+                                    "
+                                ></div>
+                            </div>
+                        </ng-container>
                         <ng-container
                             *ngIf="seccondLabelBack?.value?.firstValueSvg"
                         >
@@ -179,6 +212,18 @@
                 <div class="item-body">
                     <div class="top-item-body">{{ thirdLabelBack?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
+                        <!-- Only if deadline is required -->
+                        <ng-container *ngIf="thirdLabelBack?.value?.deadline">
+                            <div class="deadline-parent">
+                                <div class="deadline-child-back"></div>
+                                <div
+                                    class="deadline-child-front"
+                                    [style]="
+                                        thirdLabelBack?.value?.deadlineFront
+                                    "
+                                ></div>
+                            </div>
+                        </ng-container>
                         <span [style]="thirdLabelBack?.value?.firstValueStyle">
                             {{ thirdLabelBack?.value?.firstValue }}
                         </span>
