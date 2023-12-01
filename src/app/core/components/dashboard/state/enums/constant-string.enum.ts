@@ -107,4 +107,15 @@ export enum ConstantStringEnum {
     TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
 
     ZERO_STRING = '0',
+
+    DROPDOWN_CLASS_WIDTH_1 = 'dropdown-right-w-1',
+    DROPDOWN_CLASS_WIDTH_2 = 'dropdown-right-w-2',
+    DROPDOWN_CLASS_WIDTH_3 = 'dropdown-right-w-3',
+    DROPDOWN_CLASS_WIDTH_4 = 'dropdown-right-w-4',
+    DROPDOWN_CLASS_WIDTH_5 = 'dropdown-right-w-5',
+    DROPDOWN_CLASS_WIDTH_6 = 'dropdown-right-w-6',
+    DROPDOWN_CLASS_WIDTH_7 = 'dropdown-right-w-7',
+    DROPDOWN_CLASS_WIDTH_8 = 'dropdown-right-w-8',
+    DROPDOWN_CLASS_WIDTH_9 = 'dropdown-right-w-9',
+    DROPDOWN_CLASS_WIDTH_10 = 'dropdown-right-w-10',
 }

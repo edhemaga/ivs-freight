@@ -249,6 +249,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         }
     }
 
+    public selectedDropdownWidthSubPeriod: DropdownListItem;
+
     public handleInputSelect(
         dropdownListItem: DropdownListItem,
         action: string
@@ -290,10 +292,13 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                     break;
                 case ConstantStringEnum.CUSTOM:
-                    this.isDisplayingCustomPeriodRange = true;
+                    this.selectedDropdownWidthSubPeriod =
+                        this.selectedSubPeriod;
 
                     this.subPeriodDropdownList = [];
                     this.selectedSubPeriod = null;
+
+                    this.isDisplayingCustomPeriodRange = true;
 
                     break;
                 default:
@@ -412,11 +417,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
             this.setCustomSubPeriodList(this.overallCompanyDuration);
+
+            this.selectedSubPeriod = this.selectedDropdownWidthSubPeriod;
         } else {
             this.isDisplayingCustomPeriodRange = false;
             this.selectedCustomPeriodRange = customPeriodRange;
 
             this.getTopRatedListData(customPeriodRange);
+
+            this.selectedDropdownWidthSubPeriod = this.selectedSubPeriod;
         }
     }
 
@@ -568,6 +577,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ];
+
+        console.log('topRatedArgumentsData', topRatedArgumentsData);
 
         this.resetSelectedValues();
 
@@ -1314,14 +1325,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     }
                 );
 
-                this.topRatedList.push({
-                    id: 11,
-                    name: 'Denis Rodman',
-                    value: '152324.5',
-                    percent: '8.53',
-                    isSelected: false,
-                });
-
                 this.topRatedListBeforeSearch = [...this.topRatedList];
 
                 // intervals
@@ -1491,6 +1494,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.subPeriodDropdownList = filteredSubPeriodDropdownList;
         this.selectedSubPeriod = selectedSubPeriod;
+
+        this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
     }
 
     private setDoughnutChartCenterStats(
