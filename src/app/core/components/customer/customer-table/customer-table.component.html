@@ -7,7 +7,7 @@
         [columns]="columns"
     ></app-truckassist-table-toolbar>
 
-    <div *ngIf="activeViewMode == 'List'">
+    <div *ngIf="activeViewMode === 'List'">
         <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -25,7 +25,123 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </div>
-
+    <div
+        *ngIf="activeViewMode === 'Card' && selectedTab === 'active'"
+        class="cards-container"
+    >
+        <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
+            <app-truckassist-cards
+                [viewData]="viewData"
+                [cardIndex]="[i]"
+                [card]="data"
+                [cardHeader]="{
+                    cardTitle: data?.businessName
+                }"
+                [firstLabel]="{
+                    title: 'Phone',
+                    value: {
+                        firstValue: data?.phone
+                    }
+                }"
+                [seccondLabel]="{
+                    title: 'Email',
+                    value: { firstValue: data?.brokerContacts[0]?.email }
+                }"
+                [thirdLabel]="{
+                    title: 'Available Credit',
+                    value: {
+                        firstValue: data?.tablePaymentDetailCreditLimit
+                    }
+                }"
+                [fourthLabel]="{
+                    title: 'Unpaid Inv. Ageing'
+                }"
+                [firstLabelBack]="{
+                    title: 'Contact',
+                    value: {
+                        firstValue: data?.brokerContacts[0]?.department?.name
+                    }
+                }"
+                [seccondLabelBack]="{
+                    title: 'Rating & Review',
+                    value: {
+                        firstValue: data?.tableRaiting?.likeCount,
+                        firstValueSvg: 'assets/svg/common/ic_like.svg',
+                        firstValueStyle:
+                            'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;',
+                        seccondValue: data?.tableRaiting?.dislikeCount,
+                        seccondValueSvg: 'assets/svg/common/ic_dislike.svg',
+                        seccValueStyle:
+                            'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;'
+                    }
+                }"
+                [thirdLabelBack]="{
+                    title: 'Loads'
+                }"
+                [fourthLabelBack]="{
+                    title: 'Revenue',
+                    value: {
+                        firstValue: data?.tableRevenue
+                    }
+                }"
+            ></app-truckassist-cards>
+        </div>
+    </div>
+    <div
+        *ngIf="activeViewMode === 'Card' && selectedTab === 'inactive'"
+        class="cards-container d-flex flex-wrap"
+    >
+        <div *ngFor="let data of viewData; let i = index; trackBy: trackCard">
+            <app-truckassist-cards
+                [viewData]="viewData"
+                [cardIndex]="[i]"
+                [card]="data"
+                [cardHeader]="{
+                    cardTitle: data?.businessName
+                }"
+                [firstLabel]="{
+                    title: 'Phone',
+                    value: {
+                        firstValue: data?.phone
+                    }
+                }"
+                [seccondLabel]="{
+                    title: 'Email'
+                }"
+                [thirdLabel]="{
+                    title: 'Address',
+                    value: {
+                        firstValue: data?.tableAddress
+                    }
+                }"
+                [fourthLabel]="{
+                    title: 'Rating & Review',
+                    value: {
+                        firstValue: data?.tableRaiting?.likeCount,
+                        firstValueSvg: 'assets/svg/common/ic_like.svg',
+                        firstValueStyle:
+                            'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;',
+                        seccondValue: data?.tableRaiting?.dislikeCount,
+                        seccondValueSvg: 'assets/svg/common/ic_dislike.svg',
+                        seccValueStyle:
+                            'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;'
+                    }
+                }"
+                [firstLabelBack]="{
+                    title: 'Shipping Hours'
+                }"
+                [seccondLabelBack]="{
+                    title: 'Receiving Hours'
+                }"
+                [thirdLabelBack]="{
+                    title: 'Avg. Pickup Time'
+                }"
+                [fourthLabelBack]="{
+                    title: 'Avg. Delivery Time'
+                }"
+            ></app-truckassist-cards>
+        </div>
+    </div>
     <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
         <app-map-list
             [type]="'shipper'"

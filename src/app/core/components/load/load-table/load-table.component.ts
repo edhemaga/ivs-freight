@@ -81,7 +81,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
-
         // Confirmation Subscribe
         /* this.confirmationService.confirmationData$
       .pipe(takeUntil(this.destroy$))
@@ -340,7 +339,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
-
+    getStatusLabelStyle(status: string | undefined): string {
+        const styles = 'font-weight: 900; text-transform: uppercase;';
+        if (status === 'Assigned') {
+            return styles + 'color:#50AC25;';
+        } else if (status === 'Loaded') {
+            return styles + 'color:#259F94;';
+        } else if (status === 'Dispatched') {
+            return styles + 'color:#3B73ED;';
+        } else {
+            return styles + 'color:#919191;';
+        }
+    }
     sendLoadData() {
         const tableView = JSON.parse(localStorage.getItem(`Load-table-view`));
 
@@ -417,10 +427,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        console.log('Load Data');
-        console.log(td.data);
-
         this.setLoadData(td);
     }
 
@@ -446,7 +452,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setLoadData(td: any) {
         this.columns = td.gridColumns;
-
         if (td.data?.length) {
             this.viewData = td.data;
 
@@ -661,7 +666,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadClosed?.length ? this.loadClosed : [];
         } else if (dataType === 'pending') {
             this.loadPanding = this.loadPandinQuery.getAll();
-
             return this.loadPanding?.length ? this.loadPanding : [];
         } else if (dataType === 'template') {
             this.loadTemplate = this.loadTemplateQuery.getAll();
@@ -764,13 +768,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.action === 'sort') {
             if (event.direction) {
                 this.backLoadFilterQuery.statusType =
-                this.selectedTab === 'template'
-                    ? undefined
-                    : this.selectedTab === 'active'
-                    ? 2
-                    : this.selectedTab === 'closed'
-                    ? 3
-                    : 1;
+                    this.selectedTab === 'template'
+                        ? undefined
+                        : this.selectedTab === 'active'
+                        ? 2
+                        : this.selectedTab === 'closed'
+                        ? 3
+                        : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
 

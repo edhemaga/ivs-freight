@@ -21,6 +21,7 @@ import { MapsComponent } from '../shared/maps/maps.component';
 import { MapListComponent } from '../shared/map-list/map-list.component';
 import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
 
 @NgModule({
     declarations: [CustomerTableComponent, BrokerCardComponent],
@@ -40,11 +41,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         TruckassistTableToolbarComponent,
         formatEinPipe,
         formatDatePipe,
-        TruckassistTableBodyComponent, 
+        TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         MapsComponent,
         MapListComponent,
-        MapListCardComponent
+        MapListCardComponent,
+        TruckassistCardsComponent,
     ],
 })
 export class CustomerModule {}

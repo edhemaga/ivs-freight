@@ -326,10 +326,10 @@ export class CustomerTableComponent
         const tableView = JSON.parse(
             localStorage.getItem(`Customer-table-view`)
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -1007,7 +1007,7 @@ export class CustomerTableComponent
 
                     this.brokerBackFilter(this.backBrokerFilterQuery);
                 } else {
-                    this.backShipperFilterQuery.sort = event.direction; 
+                    this.backShipperFilterQuery.sort = event.direction;
 
                     this.backShipperFilterQuery.pageIndex = 1;
 
