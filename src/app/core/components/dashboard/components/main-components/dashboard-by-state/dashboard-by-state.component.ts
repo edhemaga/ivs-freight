@@ -533,12 +533,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         switch (this.byStateTitle) {
             case ConstantStringEnum.PICKUP:
-                DashboardUtils.setByStateListColorRange(this.byStateList);
-
-                /* this.getPickupByStateListData(
+                this.getPickupByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateWithLoadStopApiArguments
-                ); */
+                );
                 break;
             case ConstantStringEnum.DELIVERY:
                 this.getDeliveryByStateListData(
