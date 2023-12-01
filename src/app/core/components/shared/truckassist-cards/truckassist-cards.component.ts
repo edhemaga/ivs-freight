@@ -75,9 +75,7 @@ export class TruckassistCardsComponent implements OnInit {
     public dropDownActive: number;
     constructor(private detailsDataService: DetailsDataService) {}
 
-    ngOnInit(): void {
-        console.log(this.card);
-    }
+    ngOnInit(): void {}
 
     // Flip card based on card index
     public flipCard(index: number) {
