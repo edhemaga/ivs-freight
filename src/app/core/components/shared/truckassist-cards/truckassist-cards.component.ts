@@ -20,6 +20,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 // Array holding id of fliped cards
 const isCardFlippedArray: Array<number> = [];
 // Array holding id of checked cards
@@ -36,6 +37,7 @@ const isCheckboxCheckedArray: Array<number> = [];
         NgbPopoverModule,
         AppTooltipComponent,
         NgbTooltipModule,
+        formatDatePipe,
     ],
 })
 export class TruckassistCardsComponent implements OnInit {
@@ -44,6 +46,8 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() viewData: LoadDetails;
     @Input() tableData: LoadTableData[];
     @Input() card: LoadDetails;
+    // For Front And back of the cards
+    @Input() deadline: boolean;
     // Front of cards
     @Input() cardIndex: number;
     @Input() cardHeader: CardHeader;

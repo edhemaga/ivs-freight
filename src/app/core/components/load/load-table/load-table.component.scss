@@ -5,7 +5,7 @@
 }
 .cards-container {
     margin-top: 11px;
-    display: flex;
     gap: 4px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(302px, 1fr));
 }
