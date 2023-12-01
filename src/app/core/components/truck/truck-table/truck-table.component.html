@@ -25,4 +25,114 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </div>
+    <!-- Cards -->
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="cards-container">
+            <ng-container
+                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
+            >
+                <app-truckassist-cards
+                    (bodyActions)="onTableBodyActions($event)"
+                    [viewData]="viewData"
+                    [cardIndex]="[i]"
+                    [card]="data"
+                    [cardHeader]="{
+                        checkbox: true,
+                        cardTitle:
+                            data?.licensePlate !== null
+                                ? data?.licensePlate
+                                : '/'
+                    }"
+                    [firstLabel]="{
+                        title: 'VIN No.',
+                        value: {
+                            firstValue:
+                                data?.tableVin?.regularText !== null
+                                    ? data?.tableVin?.regularText
+                                    : '/',
+                            seccValue:
+                                data?.tableVin?.boldText !== null
+                                    ? data?.tableVin?.boldText
+                                    : '/',
+                            seccValueStyle:
+                                'font-weight:600; position: relative; left: -4px;'
+                        }
+                    }"
+                    [seccondLabel]="{
+                        title: 'Make',
+                        value: {
+                            firstValue:
+                                data?.truckMake?.name !== null
+                                    ? data?.truckMake?.name
+                                    : '/'
+                        }
+                    }"
+                    [thirdLabel]="{
+                        title: 'Model',
+                        value: {
+                            firstValue: data?.model !== null ? data?.model : '/'
+                        }
+                    }"
+                    [fourthLabel]="{
+                        title: 'Mileage',
+                        value: {
+                            firstValue:
+                                data?.mileage !== null ? data?.mileage : '/',
+                            seccondValue: data?.mileage !== null ? 'mi' : '',
+                            seccValueStyle: 'color: #919191'
+                        }
+                    }"
+                    [firstLabelBack]="{
+                        title: 'Owner',
+                        value: {
+                            firstValue:
+                                data.owner.name !== null ? data.owner.name : '/'
+                        }
+                    }"
+                    [seccondLabelBack]="{
+                        title: 'Commission',
+                        value: {
+                            firstValue:
+                                data.tabelOwnerDetailsComm !== null
+                                    ? data.tabelOwnerDetailsComm
+                                    : '/'
+                        }
+                    }"
+                    [thirdLabelBack]="{
+                        title: 'Licence Exp.',
+                        value: {
+                            deadline: true,
+                            deadlineValue:
+                                data?.tableLicencePlateDetailExpiration
+                                    ?.percentage,
+                            firstValue:
+                                data?.tableLicencePlateDetailExpiration
+                                    ?.expirationDaysText !== null
+                                    ? 'in ' +
+                                      data?.tableLicencePlateDetailExpiration
+                                          ?.expirationDaysText +
+                                      ' days'
+                                    : '/'
+                        }
+                    }"
+                    [fourthLabelBack]="{
+                        title: 'FHWA Exp.',
+                        value: {
+                            deadline: true,
+                            deadlineValue:
+                                data?.tableFhwaInspectionExpiration?.percentage,
+                            firstValue:
+                                data?.tableFhwaInspectionExpiration
+                                    ?.expirationDaysText !== null
+                                    ? 'in ' +
+                                      data?.tableFhwaInspectionExpiration
+                                          ?.expirationDaysText +
+                                      ' days'
+                                    : '/'
+                        }
+                    }"
+                ></app-truckassist-cards>
+            </ng-container>
+        </div>
+    </ng-container>
 </div>

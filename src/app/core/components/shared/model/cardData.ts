@@ -20,8 +20,7 @@ interface Value {
     firstValueSvg?: string;
     seccondValueSvg?: string;
     deadline?: boolean;
-    deadlineBack?: string;
-    deadlineFront?: string;
+    deadlineValue?: string;
 }
 export interface CardData {
     title?: string;
@@ -31,6 +30,7 @@ export interface RightSideCard {
     count: number;
     data: [];
     svg: string;
+    svgStyle: string;
 }
 
 export interface LoadTableData {

@@ -1,4 +1,5 @@
 <div class="custom-card p-1">
+    <!-- Card splited on left and right side -->
     <div
         class="card-body"
         [ngClass]="{
@@ -6,7 +7,9 @@
             'body-checked': isCardChecked.includes(cardIndex)
         }"
     >
+        <!-- Left side of the card -->
         <div class="card-body-left p-1">
+            <!-- Head of the card -->
             <div class="card-header d-flex align-items-center">
                 <div class="checkbox-holder d-flex align-items-center">
                     <span
@@ -34,7 +37,7 @@
                     </span>
                 </div>
                 <div class="name d-flex ta-font-bold">
-                    <span class="d-block image-holder">
+                    <span class="d-block image-holder image-hover">
                         <ng-container *ngIf="cardHeader?.img">
                             <img
                                 [src]="cardHeader?.img"
@@ -63,7 +66,7 @@
                         </ng-container>
                     </span>
                     <span
-                        class="d-flex align-items-center justify-content-center"
+                        class="d-flex align-items-center justify-content-center image-hover"
                         [style]="cardHeader?.cardTitleBeforeStyle"
                     >
                         {{ cardHeader?.cardTitleBefore }}
@@ -73,12 +76,14 @@
                     </span>
                 </div>
             </div>
+            <!-- Card body front-->
             <div
                 class="flipped"
                 [ngClass]="{
                     'card-body-content': !isCardFlipped.includes(cardIndex)
                 }"
             >
+                <!-- First item front of the card -->
                 <div class="item-body">
                     <div class="top-item-body">
                         {{ firstLabel?.title }}
@@ -94,16 +99,22 @@
                         <span [style]="firstLabel?.value?.firstValueStyle">
                             {{ firstLabel?.value?.firstValue }}
                         </span>
+                        <span [style]="firstLabel?.value?.seccValueStyle">
+                            {{ firstLabel?.value?.seccValue }}
+                        </span>
                     </div>
                 </div>
+                <!-- Seccond item front of the card -->
                 <div class="item-body">
+                    <!-- Label title -->
                     <div class="top-item-body">
                         {{ seccondLabel?.title }}
                     </div>
+                    <!-- Label body -->
                     <div class="bottom-item-body d-flex align-items-center">
-                        <span [style]="seccondLabel?.value?.firstValueStyle">{{
-                            seccondLabel?.value?.firstValue
-                        }}</span>
+                        <span [style]="seccondLabel?.value?.firstValueStyle">
+                            {{ seccondLabel?.value?.firstValue }}</span
+                        >
                         <span [style]="seccondLabel?.value?.seccValueStyle">{{
                             seccondLabel?.value?.seccValue
                         }}</span>
@@ -112,6 +123,7 @@
                         }}</span>
                     </div>
                 </div>
+                <!-- Third item front of the card -->
                 <div class="item-body">
                     <div class="top-item-body">{{ thirdLabel?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
@@ -122,6 +134,7 @@
                         <span>{{ thirdLabel?.value?.thirdValue }}</span>
                     </div>
                 </div>
+                <!-- Fourth item front of the card -->
                 <div class="item-body">
                     <div class="top-item-body">{{ fourthLabel?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
@@ -142,13 +155,14 @@
                     </div>
                 </div>
             </div>
-            <!-- Card Back -->
+            <!-- Card body Back -->
             <div
                 class="flipped"
                 [ngClass]="{
                     'card-body-content': isCardFlipped.includes(cardIndex)
                 }"
             >
+                <!-- First item in back of the card -->
                 <div class="item-body">
                     <div class="top-item-body">{{ firstLabelBack?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
@@ -166,24 +180,53 @@
                         </span>
                     </div>
                 </div>
+                <!-- Seccond item in back of the card -->
                 <div class="item-body">
                     <div class="top-item-body">
                         {{ seccondLabelBack?.title }}
                     </div>
                     <div class="bottom-item-body d-flex align-items-center">
-                        <!-- Only if deadline is required -->
-                        <ng-container *ngIf="seccondLabelBack?.value?.deadline">
+                        <!-- Show only if deadline is required -->
+                        <ng-container
+                            *ngIf="
+                                seccondLabelBack?.value?.deadline &&
+                                seccondLabelBack?.value?.deadlineValue !== null
+                            "
+                        >
                             <div class="deadline-parent">
                                 <div
                                     class="deadline-child-back"
-                                    [style]="
-                                        seccondLabelBack?.value?.deadlineBack
-                                    "
+                                    [ngClass]="{
+                                        'back-gray':
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue > 50,
+                                        'back-yellow':
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue <= 50 &&
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue > 20,
+                                        'back-red':
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue <= 20
+                                    }"
                                 ></div>
                                 <div
                                     class="deadline-child-front"
-                                    [style]="
-                                        seccondLabelBack?.value?.deadlineFront
+                                    [ngClass]="{
+                                        'front-gray':
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue > 50,
+                                        'front-yellow':
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue <= 50 &&
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue > 20,
+                                        'front-red':
+                                            seccondLabelBack?.value
+                                                ?.deadlineValue <= 20
+                                    }"
+                                    [style.width.%]="
+                                        seccondLabelBack?.value?.deadlineValue
                                     "
                                 ></div>
                             </div>
@@ -208,17 +251,51 @@
                         </span>
                     </div>
                 </div>
+                <!-- Third item in back of the card -->
                 <div class="item-body">
                     <div class="top-item-body">{{ thirdLabelBack?.title }}</div>
                     <div class="bottom-item-body d-flex align-items-center">
-                        <!-- Only if deadline is required -->
-                        <ng-container *ngIf="thirdLabelBack?.value?.deadline">
+                        <!--Show only if deadline is required -->
+                        <ng-container
+                            *ngIf="
+                                thirdLabelBack?.value?.deadline &&
+                                seccondLabelBack?.value?.deadlineValue !== null
+                            "
+                        >
                             <div class="deadline-parent">
-                                <div class="deadline-child-back"></div>
+                                <div
+                                    class="deadline-child-back"
+                                    [ngClass]="{
+                                        'back-gray':
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue > 50,
+                                        'back-yellow':
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue <= 50 &&
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue > 20,
+                                        'back-red':
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue <= 20
+                                    }"
+                                ></div>
                                 <div
                                     class="deadline-child-front"
-                                    [style]="
-                                        thirdLabelBack?.value?.deadlineFront
+                                    [ngClass]="{
+                                        'front-gray':
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue > 50,
+                                        'front-yellow':
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue <= 50 &&
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue > 20,
+                                        'front-red':
+                                            thirdLabelBack?.value
+                                                ?.deadlineValue <= 20
+                                    }"
+                                    [style.width.%]="
+                                        thirdLabelBack?.value?.deadlineValue
                                     "
                                 ></div>
                             </div>
@@ -228,11 +305,57 @@
                         </span>
                     </div>
                 </div>
+                <!-- Fourth item in back of the card -->
                 <div class="item-body">
                     <div class="top-item-body">
                         {{ fourthLabelBack?.title }}
                     </div>
                     <div class="bottom-item-body d-flex align-items-center">
+                        <!--Show only if deadline is required -->
+                        <ng-container
+                            *ngIf="
+                                fourthLabelBack?.value?.deadline &&
+                                seccondLabelBack?.value?.deadlineValue !== null
+                            "
+                        >
+                            <div class="deadline-parent">
+                                <div
+                                    class="deadline-child-back"
+                                    [ngClass]="{
+                                        'back-gray':
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue > 50,
+                                        'back-yellow':
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue <= 50 &&
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue > 20,
+                                        'back-red':
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue <= 20
+                                    }"
+                                ></div>
+                                <div
+                                    class="deadline-child-front"
+                                    [ngClass]="{
+                                        'front-gray':
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue > 50,
+                                        'front-yellow':
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue <= 50 &&
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue > 20,
+                                        'front-red':
+                                            fourthLabelBack?.value
+                                                ?.deadlineValue <= 20
+                                    }"
+                                    [style.width.%]="
+                                        fourthLabelBack?.value?.deadlineValue
+                                    "
+                                ></div>
+                            </div>
+                        </ng-container>
                         <span [style]="fourthLabelBack?.value?.firstValueStyle">
                             {{ fourthLabelBack?.value?.firstValue }}
                         </span>
@@ -247,6 +370,7 @@
         <!-- Right side of card -->
         <div class="card-body-right">
             <div class="top-side">
+                <!-- Open dropdown element-->
                 <div
                     class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                     [ngClass]="
@@ -280,14 +404,20 @@
                         ></svg-icon>
                     </div>
                 </div>
+                <!-- Note element -->
                 <div
                     class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                 >
-                    <svg-icon
-                        class="document"
-                        [src]="firstLabelRightSide?.svg"
-                    ></svg-icon>
+                    <app-ta-note
+                        [note]="card.note"
+                        [mainData]="card"
+                        [entityId]="card.id"
+                        [openedAll]="false"
+                        [parking]="false"
+                    >
+                    </app-ta-note>
                 </div>
+                <!-- Comments element -->
                 <div
                     class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                 >
@@ -304,6 +434,7 @@
                         [src]="'assets/svg/applicant/notification-light.svg'"
                     ></svg-icon>
                 </div>
+                <!-- Atachemnts element -->
                 <div
                     class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                     *ngIf="thirdLabelRightSide?.count > 0"
@@ -314,6 +445,7 @@
                     }}</span>
                 </div>
             </div>
+            <!-- Expand element -->
             <div
                 class="bottom-side d-flex justify-content-center"
                 (click)="flipCard(cardIndex)"

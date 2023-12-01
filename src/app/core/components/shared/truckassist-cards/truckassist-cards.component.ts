@@ -21,6 +21,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 // Array holding id of fliped cards
 const isCardFlippedArray: Array<number> = [];
 // Array holding id of checked cards
@@ -32,11 +34,17 @@ const isCheckboxCheckedArray: Array<number> = [];
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
     imports: [
+        //modules
         CommonModule,
         AngularSvgIconModule,
         NgbPopoverModule,
-        AppTooltipComponent,
         NgbTooltipModule,
+
+        //components
+        AppTooltipComponent,
+        TaNoteComponent,
+
+        //pipes
         formatDatePipe,
     ],
 })

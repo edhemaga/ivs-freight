@@ -106,16 +106,22 @@
                 [firstLabel]="{
                     title: 'Phone',
                     value: {
-                        firstValue: data?.phone
+                        firstValue: data?.phone !== null ? data?.phone : '/'
                     }
                 }"
                 [seccondLabel]="{
-                    title: 'Email'
+                    title: 'Email',
+                    value: {
+                        firstValue: data?.email !== null ? data?.email : '/'
+                    }
                 }"
                 [thirdLabel]="{
                     title: 'Address',
                     value: {
-                        firstValue: data?.tableAddress
+                        firstValue:
+                            data?.tableAddress !== null
+                                ? data?.tableAddress
+                                : '/'
                     }
                 }"
                 [fourthLabel]="{
@@ -132,16 +138,28 @@
                     }
                 }"
                 [firstLabelBack]="{
-                    title: 'Shipping Hours'
+                    title: 'Shipping Hours',
+                    value: {
+                        firstValue: 'Nema u response'
+                    }
                 }"
                 [seccondLabelBack]="{
-                    title: 'Receiving Hours'
+                    title: 'Receiving Hours',
+                    value: {
+                        firstValue: 'Nema u response'
+                    }
                 }"
                 [thirdLabelBack]="{
-                    title: 'Avg. Pickup Time'
+                    title: 'Avg. Pickup Time',
+                    value: {
+                        firstValue: 'Nema u response'
+                    }
                 }"
                 [fourthLabelBack]="{
-                    title: 'Avg. Delivery Time'
+                    title: 'Avg. Delivery Time',
+                    value: {
+                        firstValue: 'Nema u response'
+                    }
                 }"
             ></app-truckassist-cards>
         </ng-container>

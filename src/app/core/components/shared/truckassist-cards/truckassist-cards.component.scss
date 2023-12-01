@@ -63,19 +63,26 @@
                     font-size: 14px;
                     line-height: 18px;
                     cursor: pointer;
+
                     .title {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
                     }
+
                     .image-holder {
                         position: relative;
                         bottom: 1px;
+                    }
+
+                    .image-hover {
+                        transition: 0.2s;
+
                         &:hover {
                             transform: scale(1.8);
-                            transition: 0.2s;
                         }
                     }
+
                     &:hover {
                         color: $ta-blue-15;
                     }
@@ -97,6 +104,7 @@
                             }
                         }
                     }
+
                     .is-owner {
                         position: absolute;
                         z-index: 999;
@@ -152,6 +160,31 @@
                             .deadline-child-front {
                                 height: 8px;
                                 position: absolute;
+                            }
+
+                            .back-gray {
+                                background: $muted;
+                                opacity: 0.2;
+                            }
+
+                            .back-yellow {
+                                background: $ta-deadline-yellow;
+                                opacity: 0.2;
+                            }
+
+                            .back-red {
+                                background: $ta-deadline-red;
+                                opacity: 0.2;
+                            }
+
+                            .front-gray {
+                                background: $muted;
+                            }
+                            .front-yellow {
+                                background: $ta-deadline-yellow;
+                            }
+                            .fron-red {
+                                background: $ta-deadline-red;
                             }
                         }
 
@@ -220,13 +253,6 @@
                         svg {
                             transform: rotate(0deg);
                             transition: all 0.3s;
-                        }
-                    }
-
-                    .document {
-                        svg {
-                            height: 16px;
-                            width: 14px;
                         }
                     }
 

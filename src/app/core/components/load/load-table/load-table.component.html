@@ -111,11 +111,10 @@
                         }
                     }"
                     [firstLabelRightSide]="{
-                        svg: 'assets/svg/truckassist-table/note/Note-hover.svg'
-                    }"
-                    [seccondLabelRightSide]="{
-                        count: data.commentsCount,
-                        svg: 'assets/svg/detail-cards/comment - count.svg'
+                        svg:
+                            data?.note > 0
+                                ? 'assets/svg/truckassist-table/note/Note-hover.svg'
+                                : 'assets/svg/common/ic_note.svg'
                     }"
                     [thirdLabelRightSide]="{
                         count: data.fileCount,

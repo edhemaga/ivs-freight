@@ -57,65 +57,91 @@
                     }"
                     [firstLabel]="{
                         title: 'Phone No.',
-                        value: { firstValue: data?.emergencyContactPhone }
+                        value: {
+                            firstValue: data?.phone !== null ? data?.phone : '/'
+                        }
                     }"
                     [seccondLabel]="{
                         title: 'SSN No.',
                         value: {
-                            firstValue: data?.ssn
+                            firstValue: data?.ssn !== null ? data?.ssn : '/'
                         }
                     }"
                     [thirdLabel]="{
                         title: 'CDL No.',
                         value: {
-                            firstValue: data?.cdlNumber
+                            firstValue:
+                                data?.cdlNumber !== null ? data?.cdlNumber : '/'
                         }
                     }"
                     [fourthLabel]="{
                         title: 'Pay Type',
-                        value: { firstValue: data?.payType?.name }
+                        value: {
+                            firstValue:
+                                data?.payType?.name !== null
+                                    ? data?.payType?.name
+                                    : '/'
+                        }
                     }"
                     [firstLabelBack]="{
-                        title: 'Hired',
+                        title:
+                            selectedTab !== 'inactive'
+                                ? 'Hired'
+                                : 'Deactivated',
                         value: {
-                            date: data?.hired
+                            date:
+                                selectedTab === 'active'
+                                    ? data?.hired !== null
+                                        ? data?.hired
+                                        : '/'
+                                    : 'nema u response inactive'
                         }
                     }"
                     [seccondLabelBack]="{
                         title: 'CDL Exp.',
                         value: {
                             deadline: true,
-                            deadlineBack: 'background: #919191;',
-                            deadlineFront:
-                                'background: #919191; width:' +
-                                data?.tableCdlDetailExpiration?.percentage +
-                                '%',
+                            deadlineValue:
+                                data?.tableCdlDetailExpiration?.percentage,
+
                             firstValue:
-                                'in ' +
                                 data?.tableCdlDetailExpiration
-                                    ?.expirationDaysText +
-                                ' days'
+                                    ?.expirationDaysText !== null
+                                    ? 'in ' +
+                                      data?.tableCdlDetailExpiration
+                                          ?.expirationDaysText +
+                                      ' days'
+                                    : '/'
                         }
                     }"
                     [thirdLabelBack]="{
                         title: 'Medical Exp.',
                         value: {
                             deadline: true,
-                            deadlineBack: data?.tableMedicalData?.percentage,
+                            deadlineValue: data?.tableMedicalData?.percentage,
                             firstValue:
-                                'in ' +
-                                data?.tableMedicalData?.expirationDaysText +
-                                ' days'
+                                data?.tableMedicalData?.expirationDaysText !==
+                                null
+                                    ? 'in ' +
+                                      data?.tableMedicalData
+                                          ?.expirationDaysText +
+                                      ' days'
+                                    : '/'
                         }
                     }"
                     [fourthLabelBack]="{
                         title: 'MVR Exp.',
                         value: {
+                            deadline: true,
+                            deadlineValue: data?.tableMedicalData?.percentage,
                             firstValue:
-                                'in ' +
                                 data?.tableMvrDetailsExpiration
-                                    ?.expirationDaysText +
-                                ' days'
+                                    ?.expirationDaysText !== null
+                                    ? 'in ' +
+                                      data?.tableMvrDetailsExpiration
+                                          ?.expirationDaysText +
+                                      ' days'
+                                    : '/'
                         }
                     }"
                 ></app-truckassist-cards>
