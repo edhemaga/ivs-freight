@@ -214,7 +214,7 @@ export class DashboardUtils {
     }
 
     static setByStateListColorRange(byStateList: ByStateListItem[]): void {
-        let duzina: number = 0;
+        let duzina = 0;
 
         if (!byStateList.length) return;
 
@@ -244,11 +244,16 @@ export class DashboardUtils {
 
                 neki += duzina;
             }
-            /* 
+
+            if (i > 10) {
+                byStateList[i].selectedColor =
+                    DashboardColors.BY_STATE_COLORS_PALLETE[4].code;
+            }
+
             console.log(
                 'byStateList[i].selectedColor',
                 byStateList[i].selectedColor
-            ); */
+            );
         }
     }
 }

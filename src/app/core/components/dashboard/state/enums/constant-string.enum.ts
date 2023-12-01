@@ -122,4 +122,6 @@ export enum ConstantStringEnum {
     TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
 
     ZERO_STRING = '0',
+
+    MAP_STATE_DEFAULT_COLOR = '#E5E5E5',
 }

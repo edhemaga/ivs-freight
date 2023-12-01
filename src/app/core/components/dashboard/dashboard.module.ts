@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -22,6 +22,8 @@ import { DashboardTopRatedComponent } from './components/main-components/dashboa
 import { DashboardPerformanceComponent } from './components/main-components/dashboard-performance/dashboard-performance.component';
 import { DashboardByStateComponent } from './components/main-components/dashboard-by-state/dashboard-by-state.component';
 import { DashboardMapComponent } from './components/main-components/dashboard-map/dashboard-map.component';
+import { DashboardStateTrackingComponent } from './components/components/dashboard-state-tracking/dashboard-state-tracking.component';
+import { DashboardStateUsaComponent } from './components/components/dashboard-states/dashboard-state-usa/dashboard-state-usa.component';
 import { DashboardDataPlaceholderComponent } from './components/components/dashboard-data-placeholder/dashboard-data-placeholder.component';
 import { DashboardLoadingPlaceholderComponent } from './components/components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
 import { DashboardDropdownComponent } from './components/components/dashboard-dropdown/dashboard-dropdown.component';
@@ -33,9 +35,6 @@ import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.com
 import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
 import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 
-import { DashboardStateTrackingComponent } from './components/dashboard-state-tracking/dashboard-state-tracking.component';
-import { DashboardStateUsaComponent } from './components/dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
-
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -43,12 +42,11 @@ import { DashboardStateUsaComponent } from './components/dashboard-state-trackin
         DashboardPerformanceComponent,
         DashboardByStateComponent,
         DashboardMapComponent,
+        DashboardStateTrackingComponent,
+        DashboardStateUsaComponent,
         DashboardDataPlaceholderComponent,
         DashboardLoadingPlaceholderComponent,
         DashboardDropdownComponent,
-
-        DashboardStateTrackingComponent,
-        DashboardStateUsaComponent,
     ],
     imports: [
         // modules
@@ -75,5 +73,6 @@ import { DashboardStateUsaComponent } from './components/dashboard-state-trackin
         CarrierSearchTwoComponent,
         TaSpinnerComponent,
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DashboardModule {}

@@ -53,6 +53,7 @@ import {
     ByStateApiArguments,
     ByStateWithLoadStopApiArguments,
 } from '../../../state/models/dashboard-by-state-models/by-state-api-arguments.model';
+import { MapListItem } from '../../../state/models/dashboard-state-models/map-list-item.model';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
@@ -76,6 +77,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     // list
     public byStateList: ByStateListItem[] = [];
     public selectedByStateList: ByStateListItem[] = [];
+    public byStateMapList: MapListItem[] = [];
     private byStateListBeforeSearch: ByStateListItem[] = [];
 
     // show more
@@ -122,23 +124,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         selectedBarPercentages: [],
     };
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    pickupCircleColor: any[] = [
-        '6278C7',
-        '7A8DCB',
-        '7A8DCB',
-        'A0AFDE',
-        'A0AFDE',
-        'C2CEEC',
-        'C2CEEC',
-        'C2CEEC',
-        'D7E1F4',
-        'D7E1F4',
-    ];
-    compareColor: any = {};
-    savedColors: any[] = [];
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dashboardQuery: DashboardQuery,
@@ -146,7 +131,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         private dashboardByStateService: DashboardByStateService
     ) {}
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////
     ngOnInit(): void {
         this.createForm();
 
@@ -549,10 +533,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         switch (this.byStateTitle) {
             case ConstantStringEnum.PICKUP:
-                this.getPickupByStateListData(
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                /* this.getPickupByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateWithLoadStopApiArguments
-                );
+                ); */
                 break;
             case ConstantStringEnum.DELIVERY:
                 this.getDeliveryByStateListData(
@@ -597,7 +583,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             .getPickupByState(byStateArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((pickupData) => {
-                console.log('pickupData', pickupData);
                 // by state list and single selection data
                 this.byStateList = pickupData.pagination.data.map(
                     (pickup, index) => {
@@ -687,13 +672,18 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         ];
                 }
 
+                // colors range & map
                 DashboardUtils.setByStateListColorRange(this.byStateList);
 
+                this.setMapByState(this.byStateList);
+
+                // chart
                 this.setBarChartDateTitle(
                     pickupData.intervalLabels[0].tooltipLabel,
                     pickupData.intervalLabels[pickupData.topTen.length - 1]
                         .tooltipLabel
                 );
+
                 this.setBarChartLabels(pickupData.intervalLabels);
 
                 this.setChartData();
@@ -708,7 +698,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             .getDeliveryByState(byStateArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((deliveryData) => {
-                console.log('deliveryData', deliveryData);
                 // by state list and single selection data
                 this.byStateList = deliveryData.pagination.data.map(
                     (delivery, index) => {
@@ -798,13 +787,18 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         ];
                 }
 
+                // colors range & map
                 DashboardUtils.setByStateListColorRange(this.byStateList);
 
+                this.setMapByState(this.byStateList);
+
+                // chart
                 this.setBarChartDateTitle(
                     deliveryData.intervalLabels[0].tooltipLabel,
                     deliveryData.intervalLabels[deliveryData.topTen.length - 1]
                         .tooltipLabel
                 );
+
                 this.setBarChartLabels(deliveryData.intervalLabels);
 
                 this.setChartData();
@@ -819,7 +813,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             .getViolationByState(byStateArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((violationData) => {
-                console.log('violationData', violationData);
                 // by state list and single selection data
                 this.byStateList = violationData.pagination.data.map(
                     (violation, index) => {
@@ -912,14 +905,19 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         ];
                 }
 
+                // colors range & map
                 DashboardUtils.setByStateListColorRange(this.byStateList);
 
+                this.setMapByState(this.byStateList);
+
+                // chart
                 this.setBarChartDateTitle(
                     violationData.intervalLabels[0].tooltipLabel,
                     violationData.intervalLabels[
                         violationData.topTen.length - 1
                     ].tooltipLabel
                 );
+
                 this.setBarChartLabels(violationData.intervalLabels);
 
                 this.setChartData();
@@ -934,7 +932,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             .getAccidentByState(byStateArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((accidentData) => {
-                console.log('accidentData', accidentData);
                 // by state list and single selection data
                 this.byStateList = accidentData.pagination.data.map(
                     (accident, index) => {
@@ -1027,13 +1024,18 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         ];
                 }
 
+                // colors range & map
                 DashboardUtils.setByStateListColorRange(this.byStateList);
 
+                this.setMapByState(this.byStateList);
+
+                // chart
                 this.setBarChartDateTitle(
                     accidentData.intervalLabels[0].tooltipLabel,
                     accidentData.intervalLabels[accidentData.topTen.length - 1]
                         .tooltipLabel
                 );
+
                 this.setBarChartLabels(accidentData.intervalLabels);
 
                 this.setChartData();
@@ -1048,7 +1050,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             .getRepairByState(byStateArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((repairData) => {
-                console.log('repairData', repairData);
                 // by state list and single selection data
                 this.byStateList = repairData.pagination.data.map(
                     (repair, index) => {
@@ -1138,13 +1139,18 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         ];
                 }
 
+                // colors range & map
                 DashboardUtils.setByStateListColorRange(this.byStateList);
 
+                this.setMapByState(this.byStateList);
+
+                // chart
                 this.setBarChartDateTitle(
                     repairData.intervalLabels[0].tooltipLabel,
                     repairData.intervalLabels[repairData.topTen.length - 1]
                         .tooltipLabel
                 );
+
                 this.setBarChartLabels(repairData.intervalLabels);
 
                 this.setChartData();
@@ -1158,8 +1164,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.dashboardByStateService
             .getFuelByState(byStateArgumentsData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((fuelData) => {
-                console.log('fuelData', fuelData);
+            .subscribe(() => {
                 // by state list and single selection data
             });
     }
@@ -1337,59 +1342,21 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.changeDetectorRef.detectChanges();
     }
 
+    private setMapByState(byStateList: ByStateListItem[]): void {
+        const filteredByStateList = byStateList.map((byStateListItem) => {
+            return {
+                state: byStateListItem.state,
+                selectedColor: byStateListItem.selectedColor,
+                value: byStateListItem.value,
+                percent: byStateListItem.percent,
+            };
+        });
+
+        this.byStateMapList = filteredByStateList;
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    selectStateCompare(e, item, indx) {
-        /*   const itemId: any = item.id;
-        if (!(itemId in this.compareColor)) {
-            item.active = true;
-            const firstInArray = this.pickupCircleColor[indx];
-            const objectSize = Object.keys(this.compareColor).length;
-            this.compareColor[item.id] = firstInArray;
-            this.selectedStates.push(this.pickupStateList[indx]);
-            this.statesBarChart.selectedDrivers = this.selectedStates;
-            this.pickupStateList.splice(indx, 1);
-            this.updateBarChart(this.selectedStates);
-            this.pickupStateList.splice(objectSize, 0, item);
-
-            this.hoverState(indx);
-        } else {
-            this.removeFromStateList(e, indx, item);
-        } */
-    }
-
-    removeFromStateList(e: Event, indx, item) {
-        /*   e.stopPropagation();
-        item.active = false;
-        this.pickupStateList.splice(indx, 1);
-        let showDefault = false;
-        if (this.selectedStates?.length == 1) {
-            showDefault = true;
-        }
-        this.statesBarChart.removeMultiBarData(
-            this.selectedStates[indx],
-            showDefault
-        );
-        this.selectedStates.splice(indx, 1);
-        this.statesBarChart.selectedDrivers = this.selectedStates;
-        this.pickupStateList.push(item);
-        let allStates = [...this.pickupStateList];
-        let activeStates = allStates.filter((state) => state.active == true);
-        this.pickupStateList = activeStates;
-        let inactiveStates = allStates
-            .filter((state) => !state.active)
-            .sort((a, b) => {
-                return a.id - b.id;
-            });
-        inactiveStates.map((state) => {
-            this.pickupStateList.push(state);
-        });
-        this.savedColors.unshift(this.compareColor[item.id]);
-        delete this.compareColor[item.id]; */
     }
 }

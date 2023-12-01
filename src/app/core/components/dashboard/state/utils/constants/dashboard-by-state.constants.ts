@@ -134,12 +134,12 @@ export class DashboardByStateConstants {
         },
         {
             id: 10,
-            state: 'OK',
+            state: 'MT',
             value: '10',
             percent: '2.02',
             isSelected: false,
             selectedColor: null,
-        } /* ,
+        },
         {
             id: 11,
             state: 'OK',
@@ -147,6 +147,6 @@ export class DashboardByStateConstants {
             percent: '2.02',
             isSelected: false,
             selectedColor: null,
-        }, */,
+        },
     ];
 }

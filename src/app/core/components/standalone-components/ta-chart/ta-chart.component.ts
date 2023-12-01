@@ -973,14 +973,16 @@ export class TaChartComponent implements OnInit, OnChanges {
     hoverBarChart(hoveredData: any) {
         this.animationDuration = 0;
 
-        this.chart.chart.config.data.datasets.map((item) => {
+        this.chart.chart.config.data.datasets.map((item, index) => {
             let color = item.backgroundColor;
             let colorProp = color.toString();
 
             if (hoveredData == null || item['id'] == hoveredData['id']) {
                 item.backgroundColor = colorProp.slice(0, 7);
             } else {
-                item.backgroundColor = colorProp + '33';
+                if (index !== 0 && index !== 1) {
+                    item.backgroundColor = colorProp + '33';
+                }
             }
         });
 
