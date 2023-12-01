@@ -91,7 +91,7 @@
     </div>
     <div
         *ngIf="activeViewMode === 'Card' && selectedTab === 'inactive'"
-        class="cards-container d-grid"
+        class="cards-container"
     >
         <ng-container
             *ngFor="let data of viewData; let i = index; trackBy: trackCard"
