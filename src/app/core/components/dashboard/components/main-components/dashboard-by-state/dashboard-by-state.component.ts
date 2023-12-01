@@ -461,8 +461,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     }
 
     private getConstantData(): void {
-        this.byStateList = DashboardByStateConstants.BY_STATE_LIST;
-
         this.byStateDropdownList = JSON.parse(
             JSON.stringify(DashboardByStateConstants.BY_STATE_DROPDOWN_DATA)
         );
@@ -475,8 +473,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.selectedMainPeriod =
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
-
-        /*  this.topRatedList = [DashboardTopRatedConstants.TOP_RATED_LIST_ITEM]; */
 
         this.mainColorsPallete = DashboardColors.BY_STATE_COLORS_PALLETE;
     }

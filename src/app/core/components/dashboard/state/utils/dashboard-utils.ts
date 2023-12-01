@@ -214,35 +214,35 @@ export class DashboardUtils {
     }
 
     static setByStateListColorRange(byStateList: ByStateListItem[]): void {
-        let duzina = 0;
+        const colors = DashboardColors.BY_STATE_COLORS_PALLETE;
 
-        if (!byStateList.length) return;
+        const customBoundaryNumber = 10;
+        const customStatesLength =
+            byStateList.length > customBoundaryNumber
+                ? customBoundaryNumber
+                : byStateList.length;
 
-        if (
-            byStateList.length <= DashboardColors.BY_STATE_COLORS_PALLETE.length
-        ) {
-            duzina = 1;
-        } else {
-            duzina = byStateList.length / 5;
+        const byStateMeanValue = Math.floor(customStatesLength / colors.length);
+        const byStateResidue = customStatesLength % colors.length;
 
-            if (!Number.isInteger(duzina)) {
-                duzina = Math.ceil(duzina);
+        let byStateListCounter = 0;
+
+        for (let i = 0; i < colors.length; i++) {
+            if (byStateListCounter === customBoundaryNumber) break;
+
+            let colorCounter = byStateMeanValue;
+
+            if (i < byStateResidue) colorCounter += 1;
+
+            for (let j = 0; j < colorCounter; j++) {
+                byStateList[byStateListCounter++].selectedColor =
+                    colors[i].code;
             }
         }
 
-        let neki = duzina;
-        let brojacBoje = 0;
-
-        for (let i = 0; i < byStateList.length; i++) {
-            if (i < neki) {
-                byStateList[i].selectedColor =
-                    DashboardColors.BY_STATE_COLORS_PALLETE[brojacBoje].code;
-            }
-
-            if (i + 1 === neki) {
-                brojacBoje++;
-
-                neki += duzina;
+        if (byStateList.length > customBoundaryNumber) {
+            for (let i = customBoundaryNumber; i < byStateList.length; i++) {
+                byStateList[i].selectedColor = colors[colors.length - 1].code;
             }
         }
     }
