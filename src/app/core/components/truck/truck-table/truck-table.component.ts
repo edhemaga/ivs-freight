@@ -1,32 +1,42 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+
+// Components
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckTService } from '../state/truck.service';
-
-import { TruckListResponse } from 'appcoretruckassist';
-import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
-import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
-import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
-import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { Subject, takeUntil } from 'rxjs';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+
+// Services
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckTService } from '../state/truck.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+// Queries
+import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
+import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
+
+// Stores
+import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
+import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
 import {
     closeAnimationAction,
     tableSearch,
 } from '../../../utils/methods.globals';
+
+// Modals
+import { TruckListResponse } from 'appcoretruckassist';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
-import { DatePipe } from '@angular/common';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
-import { Data } from '../../shared/model/dashboard';
-import { toString } from '@ng-bootstrap/ng-bootstrap/util/util';
+
+// Pipes
+import { DatePipe } from '@angular/common';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+
 @Component({
     selector: 'app-truck-table',
     templateUrl: './truck-table.component.html',
@@ -45,6 +55,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     trucksInactive: TruckInactiveState[] = [];
     loadingPage: boolean = true;
     inactiveTabClicked: boolean = false;
+    public activeTableData;
     backFilterQuery = {
         active: 1,
         pageIndex: 1,
@@ -58,14 +69,21 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     resizeObserver: ResizeObserver;
 
     constructor(
+        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
+        private truckService: TruckTService,
+        private confirmationService: ConfirmationService,
+
+        // Queries
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
-        private truckService: TruckTService,
-        private thousandSeparator: TaThousandSeparatorPipe,
-        private confirmationService: ConfirmationService,
+
+        // Store
         private truckInactiveStore: TruckInactiveStore,
+
+        // Pipes
+        private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe
     ) {}
 
@@ -300,6 +318,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
         this.loadingPage = false;
+
+        // Get Tab Table Data For Selected Tab
+        this.getSelectedTabTableData();
     }
 
     ngAfterViewInit(): void {
@@ -333,13 +354,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendTruckData() {
-        const tableView = JSON.parse(
-            localStorage.getItem(`Truck-table-view`)
-        );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+        const tableView = JSON.parse(localStorage.getItem(`Truck-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -391,7 +410,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ? tableColumnsConfig
             : getTruckColumnDefinition();
     }
-
+    // Set data for display in tables and cards
     setTruckData(td: any) {
         this.columns = td.gridColumns;
 
@@ -402,7 +421,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return this.mapTruckData(data);
             });
 
-            console.log(this.viewData);
+            // Get Tab Table Data For Selected Tab
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
@@ -413,7 +433,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             truckTypeIcon: data.truckType.logoName,
             tableVin: {
-                regularText: data?.vin ? data.vin.substr(0, data.vin.length - 6) : '',
+                regularText: data?.vin
+                    ? data.vin.substr(0, data.vin.length - 6)
+                    : '',
                 boldText: data?.vin ? data.vin.substr(data.vin.length - 6) : '',
             },
             truckTypeClass: data.truckType.logoName.replace('.svg', ''),
@@ -853,6 +875,21 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData() {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (t) => t.field === this.selectedTab
+            );
+        }
+    }
+    // Show More Data
+    private onShowMore() {
+        this.onTableBodyActions({
+            type: 'show-more',
+        });
     }
 
     private changeTruckStatus(id: number) {

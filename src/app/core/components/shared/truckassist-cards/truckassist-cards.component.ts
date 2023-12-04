@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+
 // Models
 import {
     CardData,
@@ -11,20 +12,26 @@ import {
     LoadDetails,
     SendDataCard,
 } from '../model/cardTableData';
+
 // Services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+
 // Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 // Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
+
+// Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
-import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 // Array holding id of fliped cards
 const isCardFlippedArray: Array<number> = [];
+
 // Array holding id of checked cards
 const isCheckboxCheckedArray: Array<number> = [];
 
@@ -50,12 +57,15 @@ const isCheckboxCheckedArray: Array<number> = [];
 })
 export class TruckassistCardsComponent implements OnInit {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
+
     // All data
     @Input() viewData: LoadDetails;
     @Input() tableData: LoadTableData[];
     @Input() card: LoadDetails;
+
     // For Front And back of the cards
     @Input() deadline: boolean;
+
     // Front of cards
     @Input() cardIndex: number;
     @Input() cardHeader: CardHeader;
@@ -63,11 +73,13 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() seccondLabel: CardData;
     @Input() thirdLabel: CardData;
     @Input() fourthLabel: CardData;
+
     // Back of cards
     @Input() firstLabelBack: CardData;
     @Input() seccondLabelBack: CardData;
     @Input() thirdLabelBack: CardData;
     @Input() fourthLabelBack: CardData;
+
     //Right side of cards
     @Input() firstLabelRightSide: RightSideCard;
     @Input() seccondLabelRightSide: RightSideCard;
@@ -99,6 +111,7 @@ export class TruckassistCardsComponent implements OnInit {
 
         return;
     }
+
     // When checkbox is selected
     public onCheckboxSelect(index: number) {
         const indexSelected = isCheckboxCheckedArray.indexOf(index);
@@ -113,6 +126,7 @@ export class TruckassistCardsComponent implements OnInit {
 
         return;
     }
+
     // Show hide dropdown
     public toggleDropdown(tooltip, cardIndex: number) {
         this.dropDownIsOpened !== cardIndex
@@ -144,6 +158,7 @@ export class TruckassistCardsComponent implements OnInit {
 
         return;
     }
+
     // Remove Click Event On Inner Dropdown
     public onRemoveClickEventListener() {
         const innerDropdownContent = document.querySelectorAll(
@@ -156,6 +171,7 @@ export class TruckassistCardsComponent implements OnInit {
 
         return;
     }
+
     // Dropdown Actions
     public onDropAction(action: DropdownItem) {
         if (!action?.mutedStyle) {

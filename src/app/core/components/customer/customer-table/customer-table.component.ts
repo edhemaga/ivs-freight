@@ -6,34 +6,46 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
+// Components
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
+
+// Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { BrokerQuery } from '../state/broker-state/broker.query';
 import { BrokerTService } from '../state/broker-state/broker.service';
+import { ShipperTService } from '../state/shipper-state/shipper.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
+
+// Queries
+import { BrokerQuery } from '../state/broker-state/broker.query';
+import { ShipperQuery } from '../state/shipper-state/shipper.query';
+
+// Stores
 import { BrokerState } from '../state/broker-state/broker.store';
 import { ShipperState } from '../state/shipper-state/shipper.store';
-import { ShipperQuery } from '../state/shipper-state/shipper.query';
-import { ShipperTService } from '../state/shipper-state/shipper.service';
+import { ShipperStore } from '../state/shipper-state/shipper.store';
+
+// Models
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import {
-    tableSearch,
-    closeAnimationAction,
-} from '../../../utils/methods.globals';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
 } from '../../../../../assets/utils/settings/customer-columns';
+
+// Globals
+import {
+    tableSearch,
+    closeAnimationAction,
+} from '../../../utils/methods.globals';
+
+// Pipes
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
-import { DatePipe } from '@angular/common';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
-import { ShipperStore } from '../state/shipper-state/shipper.store';
 @Component({
     selector: 'app-customer-table',
     templateUrl: './customer-table.component.html',
@@ -60,6 +72,7 @@ export class CustomerTableComponent
     activeViewMode: string = 'List';
     resizeObserver: ResizeObserver;
     inactiveTabClicked: boolean = false;
+    public activeTableData;
     backBrokerFilterQuery = {
         ban: null,
         dnu: null,
@@ -94,25 +107,35 @@ export class CustomerTableComponent
     mapListData = [];
 
     constructor(
+        // Angular
+        private ref: ChangeDetectorRef,
+
+        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private brokerQuery: BrokerQuery,
         private brokerService: BrokerTService,
-        private shipperQuery: ShipperQuery,
         private shipperService: ShipperTService,
-        private notificationService: NotificationService,
-        private thousandSeparator: TaThousandSeparatorPipe,
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
-        private ref: ChangeDetectorRef,
-        public datePipe: DatePipe,
         private mapsService: MapsService,
+
+        // Queries
+        private shipperQuery: ShipperQuery,
+
+        // Pipes
+        private thousandSeparator: TaThousandSeparatorPipe,
+        public datePipe: DatePipe,
+
+        // Store
         private shipperStore: ShipperStore
     ) {}
 
     ngOnInit(): void {
         this.sendCustomerData();
 
+        // Get Tab Table Data For Selected Tab
+        this.getSelectedTabTableData();
         // Reset Columns
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -441,6 +464,9 @@ export class CustomerTableComponent
             });
 
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
+
+            // Get Tab Table Data For Selected Tab
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
@@ -1134,6 +1160,21 @@ export class CustomerTableComponent
                     this.mapsService.addRating(res);
                 });
         }
+    }
+
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData() {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (t) => t.field === this.selectedTab
+            );
+        }
+    }
+    // Show More Data
+    private onShowMore() {
+        this.onTableBodyActions({
+            type: 'show-more',
+        });
     }
 
     // Get Business Name

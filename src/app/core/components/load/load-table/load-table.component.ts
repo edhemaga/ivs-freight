@@ -1,27 +1,39 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+
+// Compoenents
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
+
+// Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { LoadTService } from '../state/load.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
+// Models
 import {
     getLoadActiveAndPendingColumnDefinition,
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
 } from '../../../../../assets/utils/settings/load-columns';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { LoadListResponse } from 'appcoretruckassist';
+
+// Queries
 import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
 import { LoadClosedQuery } from '../state/load-closed-state/load-closed.query';
 import { LoadPandinQuery } from '../state/load-pending-state/load-pending.query';
 import { LoadTemplateQuery } from '../state/load-template-state/load-template.query';
+
+// Store
 import { LoadActiveState } from '../state/load-active-state/load-active.store';
 import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
 import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
 import { LoadTemplateState } from '../state/load-template-state/load-template.store';
+
+// Pipes
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
-import { LoadTService } from '../state/load.service';
-import { LoadListResponse } from 'appcoretruckassist';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { DatePipe } from '@angular/common';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 @Component({
     selector: 'app-load-table',
@@ -43,6 +55,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     loadClosed: LoadClosedState[] = [];
     loadPanding: LoadPandingState[] = [];
     loadTemplate: LoadTemplateState[] = [];
+    activeTableData;
     backLoadFilterQuery = {
         loadType: undefined,
         statusType: 1,
@@ -66,21 +79,29 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     constructor(
+        // Services
         private tableService: TruckassistTableService,
         private modalService: ModalService,
+        private loadServices: LoadTService,
+        private imageBase64Service: ImageBase64Service,
+
+        // Queries
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
+
+        // Pipes
         private thousandSeparator: TaThousandSeparatorPipe,
-        private loadServices: LoadTService,
-        private imageBase64Service: ImageBase64Service,
         public datePipe: DatePipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
+
+        // Get Tab Table Data For Selected Tab
+        this.getSelectedTabTableData();
         // Confirmation Subscribe
         /* this.confirmationService.confirmationData$
       .pipe(takeUntil(this.destroy$))
@@ -458,6 +479,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapLoadData(data);
             });
+
+            // Get Tab Table Data For Selected Tab
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
@@ -809,6 +833,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData() {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (t) => t.field === this.selectedTab
+            );
+        }
+    }
+    // Show More Data
+    private onShowMore() {
+        this.onTableBodyActions({
+            type: 'show-more',
+        });
+    }
     // ---------------------------- ngOnDestroy ------------------------------
     ngOnDestroy(): void {
         this.destroy$.next();

@@ -25,127 +25,158 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </ng-container>
-    <div class="cards-container">
-        <ng-container
-            *ngIf="activeViewMode === 'Card' && selectedTab !== 'applicants'"
-        >
+    <div class="elements">
+        <div class="cards-container">
             <ng-container
-                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
+                *ngIf="
+                    activeViewMode === 'Card' && selectedTab !== 'applicants'
+                "
             >
-                <app-truckassist-cards
-                    (bodyActions)="onTableBodyActions($event)"
-                    [viewData]="viewData"
-                    [card]="data"
-                    [cardIndex]="[i]"
-                    [cardHeader]="{
-                        checkbox: true,
-                        cardTitleBefore: !data.avatarImg
-                            ? data.textShortName
-                            : null,
-                        cardTitleBeforeStyle: !data.avatarImg
-                            ? 'background: ' +
-                              (data?.avatarColor?.background || 'initial') +
-                              '; color:' +
-                              (data?.avatarColor?.color || 'initial') +
-                              '; font-size: 7px; font-weight: 800; border-radius:1px; width: 18px; height: 20px; margin-right: 5px; bottom: 1px; position: relative;'
-                            : '',
-                        cardTitle: data?.fullName,
-                        imgStyle:
-                            'height: 20px; border-radius: 1px; margin-right: 5px; padding',
-                        img: data?.avatarImg ? data?.avatarImg : null,
-                        isOwner: data?.isOwner
-                    }"
-                    [firstLabel]="{
-                        title: 'Phone No.',
-                        value: {
-                            firstValue: data?.phone !== null ? data?.phone : '/'
-                        }
-                    }"
-                    [seccondLabel]="{
-                        title: 'SSN No.',
-                        value: {
-                            firstValue: data?.ssn !== null ? data?.ssn : '/'
-                        }
-                    }"
-                    [thirdLabel]="{
-                        title: 'CDL No.',
-                        value: {
-                            firstValue:
-                                data?.cdlNumber !== null ? data?.cdlNumber : '/'
-                        }
-                    }"
-                    [fourthLabel]="{
-                        title: 'Pay Type',
-                        value: {
-                            firstValue:
-                                data?.payType?.name !== null
-                                    ? data?.payType?.name
-                                    : '/'
-                        }
-                    }"
-                    [firstLabelBack]="{
-                        title:
-                            selectedTab !== 'inactive'
-                                ? 'Hired'
-                                : 'Deactivated',
-                        value: {
-                            date:
-                                selectedTab === 'active'
-                                    ? data?.hired !== null
-                                        ? data?.hired
+                <ng-container
+                    *ngFor="
+                        let data of viewData;
+                        let i = index;
+                        trackBy: trackCard
+                    "
+                >
+                    <app-truckassist-cards
+                        (bodyActions)="onTableBodyActions($event)"
+                        [viewData]="viewData"
+                        [card]="data"
+                        [cardIndex]="[i]"
+                        [cardHeader]="{
+                            checkbox: true,
+                            cardTitleBefore: !data.avatarImg
+                                ? data.textShortName
+                                : null,
+                            cardTitleBeforeStyle: !data.avatarImg
+                                ? 'background: ' +
+                                  (data?.avatarColor?.background || 'initial') +
+                                  '; color:' +
+                                  (data?.avatarColor?.color || 'initial') +
+                                  '; font-size: 7px; font-weight: 800; border-radius:1px; width: 18px; height: 20px; margin-right: 5px; bottom: 1px; position: relative;'
+                                : '',
+                            cardTitle: data?.fullName,
+                            imgStyle:
+                                'height: 20px; border-radius: 1px; margin-right: 5px; padding',
+                            img: data?.avatarImg ? data?.avatarImg : null,
+                            isOwner: data?.isOwner
+                        }"
+                        [firstLabel]="{
+                            title: 'Phone No.',
+                            value: {
+                                firstValue:
+                                    data?.phone !== null ? data?.phone : '/'
+                            }
+                        }"
+                        [seccondLabel]="{
+                            title: 'SSN No.',
+                            value: {
+                                firstValue: data?.ssn !== null ? data?.ssn : '/'
+                            }
+                        }"
+                        [thirdLabel]="{
+                            title: 'CDL No.',
+                            value: {
+                                firstValue:
+                                    data?.cdlNumber !== null
+                                        ? data?.cdlNumber
                                         : '/'
-                                    : 'nema u response inactive'
-                        }
-                    }"
-                    [seccondLabelBack]="{
-                        title: 'CDL Exp.',
-                        value: {
-                            deadline: true,
-                            deadlineValue:
-                                data?.tableCdlDetailExpiration?.percentage,
+                            }
+                        }"
+                        [fourthLabel]="{
+                            title: 'Pay Type',
+                            value: {
+                                firstValue:
+                                    data?.payType?.name !== null
+                                        ? data?.payType?.name
+                                        : '/'
+                            }
+                        }"
+                        [firstLabelBack]="{
+                            title:
+                                selectedTab !== 'inactive'
+                                    ? 'Hired'
+                                    : 'Deactivated',
+                            value: {
+                                date:
+                                    selectedTab === 'active'
+                                        ? data?.hired !== null
+                                            ? data?.hired
+                                            : '/'
+                                        : 'nema u response inactive'
+                            }
+                        }"
+                        [seccondLabelBack]="{
+                            title: 'CDL Exp.',
+                            value: {
+                                deadline: true,
+                                deadlineValue:
+                                    data?.tableCdlDetailExpiration?.percentage,
 
-                            firstValue:
-                                data?.tableCdlDetailExpiration
-                                    ?.expirationDaysText !== null
-                                    ? 'in ' +
-                                      data?.tableCdlDetailExpiration
-                                          ?.expirationDaysText +
-                                      ' days'
-                                    : '/'
-                        }
-                    }"
-                    [thirdLabelBack]="{
-                        title: 'Medical Exp.',
-                        value: {
-                            deadline: true,
-                            deadlineValue: data?.tableMedicalData?.percentage,
-                            firstValue:
-                                data?.tableMedicalData?.expirationDaysText !==
-                                null
-                                    ? 'in ' +
-                                      data?.tableMedicalData
-                                          ?.expirationDaysText +
-                                      ' days'
-                                    : '/'
-                        }
-                    }"
-                    [fourthLabelBack]="{
-                        title: 'MVR Exp.',
-                        value: {
-                            deadline: true,
-                            deadlineValue: data?.tableMedicalData?.percentage,
-                            firstValue:
-                                data?.tableMvrDetailsExpiration
-                                    ?.expirationDaysText !== null
-                                    ? 'in ' +
-                                      data?.tableMvrDetailsExpiration
-                                          ?.expirationDaysText +
-                                      ' days'
-                                    : '/'
-                        }
-                    }"
-                ></app-truckassist-cards>
+                                firstValue:
+                                    data?.tableCdlDetailExpiration
+                                        ?.expirationDaysText !== null
+                                        ? 'in ' +
+                                          data?.tableCdlDetailExpiration
+                                              ?.expirationDaysText +
+                                          ' days'
+                                        : '/'
+                            }
+                        }"
+                        [thirdLabelBack]="{
+                            title: 'Medical Exp.',
+                            value: {
+                                deadline: true,
+                                deadlineValue:
+                                    data?.tableMedicalData?.percentage,
+                                firstValue:
+                                    data?.tableMedicalData
+                                        ?.expirationDaysText !== null
+                                        ? 'in ' +
+                                          data?.tableMedicalData
+                                              ?.expirationDaysText +
+                                          ' days'
+                                        : '/'
+                            }
+                        }"
+                        [fourthLabelBack]="{
+                            title: 'MVR Exp.',
+                            value: {
+                                deadline: true,
+                                deadlineValue:
+                                    data?.tableMedicalData?.percentage,
+                                firstValue:
+                                    data?.tableMvrDetailsExpiration
+                                        ?.expirationDaysText !== null
+                                        ? 'in ' +
+                                          data?.tableMvrDetailsExpiration
+                                              ?.expirationDaysText +
+                                          ' days'
+                                        : '/'
+                            }
+                        }"
+                    ></app-truckassist-cards>
+                </ng-container>
             </ng-container>
-        </ng-container>
+            <!-- Show More -->
+            <div
+                class="show-more-container d-flex align-items-center justify-content-between"
+                [ngStyle]="{ 'width.px': tableWidth }"
+                *ngIf="viewData.length"
+            >
+                <div class="showing ta-font-semi-bold">
+                    {{ viewData.length }} OF
+                    {{ activeTableData.length }}
+                </div>
+                <div
+                    class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                    (click)="onShowMore()"
+                    *ngIf="viewData.length < activeTableData.length"
+                >
+                    SHOW MORE
+                </div>
+            </div>
+        </div>
     </div>
 </div>

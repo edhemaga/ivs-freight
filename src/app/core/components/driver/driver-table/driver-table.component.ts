@@ -1,46 +1,56 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+// Components
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
-import { DatePipe } from '@angular/common';
-import { DriverTService } from '../state/driver.service';
-import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 
+// Services
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DriverTService } from '../state/driver.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ApplicantTService } from '../state/applicant.service';
+
+// Queries
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
+import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
+
+// Store
+import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
 } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { ApplicantShortResponse, DriverListResponse } from 'appcoretruckassist';
+import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
 
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
+// Pipes
+import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
+
+// Models
+import { ApplicantShortResponse, DriverListResponse } from 'appcoretruckassist';
+import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
+import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
+import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
+
+// Globals
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
-import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
-import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
-import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { ApplicantTService } from '../state/applicant.service';
-import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -62,6 +72,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     loadingPage: boolean = true;
     inactiveTabClicked: boolean = false;
     applicantTabActive: boolean = false;
+    public activeTableData;
     driverBackFilterQuery = {
         active: 1,
         long: undefined,
@@ -91,19 +102,25 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     mapingIndex: number = 0;
 
     constructor(
+        // Services
         private applicantService: ApplicantTService,
         private modalService: ModalService,
+        private tableService: TruckassistTableService,
+        private driverTService: DriverTService,
+        private imageBase64Service: ImageBase64Service,
+        private confirmationService: ConfirmationService,
+
+        // Queries
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private applicantQuery: ApplicantTableQuery,
-        private tableService: TruckassistTableService,
+
+        // Pipes
         public datePipe: DatePipe,
-        private driverTService: DriverTService,
-        private notificationService: NotificationService,
         private nameInitialsPipe: NameInitialsPipe,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private imageBase64Service: ImageBase64Service,
-        private confirmationService: ConfirmationService,
+
+        // Store
         private driversInactiveStore: DriversInactiveStore,
         private applicantStore: ApplicantTableStore
     ) {}
@@ -113,6 +130,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.sendDriverData();
 
+        // Get Tab Table Data For Selected Tab
+        this.getSelectedTabTableData();
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -511,6 +530,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
+
+            // Get Tab Table Data For Selected Tab
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
@@ -1368,6 +1390,21 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         }
+    }
+
+    // Get Tab Table Data For Selected Tab
+    public getSelectedTabTableData() {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (t) => t.field === this.selectedTab
+            );
+        }
+    }
+    // Show More Data
+    private onShowMore() {
+        this.onTableBodyActions({
+            type: 'show-more',
+        });
     }
 
     private changeDriverStatus(id: number) {
