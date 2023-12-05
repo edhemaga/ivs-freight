@@ -43,3 +43,13 @@ export interface LoadTableData {
     tableConfiguration: string;
     title: string;
 }
+
+export interface CardRows {
+    title: string;
+    endpoint: string;
+    seccondEndpoint?: string;
+    thirdEndpoint?: string;
+    class?: string;
+    hasLiked?: string;
+    hasDislike?: string;
+}

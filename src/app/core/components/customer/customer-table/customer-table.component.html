@@ -25,166 +25,38 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </ng-container>
-    <div class="elements">
-        <div
-            *ngIf="activeViewMode === 'Card' && selectedTab === 'active'"
-            class="cards-container d-flex flex-wrap"
-        >
-            <ng-container
-                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
-            >
-                <app-truckassist-cards
-                    [viewData]="viewData"
-                    [cardIndex]="[i]"
-                    [card]="data"
-                    [cardHeader]="{
-                        cardTitle: data?.businessName
-                    }"
-                    [firstLabel]="{
-                        title: 'Phone',
-                        value: {
-                            firstValue: data?.phone
-                        }
-                    }"
-                    [seccondLabel]="{
-                        title: 'Email',
-                        value: { firstValue: data?.brokerContacts[0]?.email }
-                    }"
-                    [thirdLabel]="{
-                        title: 'Available Credit',
-                        value: {
-                            firstValue: data?.tablePaymentDetailCreditLimit
-                        }
-                    }"
-                    [fourthLabel]="{
-                        title: 'Unpaid Inv. Ageing'
-                    }"
-                    [firstLabelBack]="{
-                        title: 'Contact',
-                        value: {
-                            firstValue:
-                                data?.brokerContacts[0]?.department?.name
-                        }
-                    }"
-                    [seccondLabelBack]="{
-                        title: 'Rating & Review',
-                        value: {
-                            firstValue: data?.tableRaiting?.likeCount,
-                            firstValueSvg: 'assets/svg/common/ic_like.svg',
-                            firstValueStyle:
-                                'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;',
-                            seccondValue: data?.tableRaiting?.dislikeCount,
-                            seccondValueSvg: 'assets/svg/common/ic_dislike.svg',
-                            seccValueStyle:
-                                'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;'
-                        }
-                    }"
-                    [thirdLabelBack]="{
-                        title: 'Loads'
-                    }"
-                    [fourthLabelBack]="{
-                        title: 'Revenue',
-                        value: {
-                            firstValue: data?.tableRevenue
-                        }
-                    }"
-                ></app-truckassist-cards>
-            </ng-container>
-        </div>
-        <div
-            *ngIf="activeViewMode === 'Card' && selectedTab === 'inactive'"
-            class="cards-container"
-        >
-            <ng-container
-                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
-            >
-                <app-truckassist-cards
-                    [viewData]="viewData"
-                    [cardIndex]="[i]"
-                    [card]="data"
-                    [cardHeader]="{
-                        cardTitle: data?.businessName
-                    }"
-                    [firstLabel]="{
-                        title: 'Phone',
-                        value: {
-                            firstValue: data?.phone !== null ? data?.phone : '/'
-                        }
-                    }"
-                    [seccondLabel]="{
-                        title: 'Email',
-                        value: {
-                            firstValue: data?.email !== null ? data?.email : '/'
-                        }
-                    }"
-                    [thirdLabel]="{
-                        title: 'Address',
-                        value: {
-                            firstValue:
-                                data?.tableAddress !== null
-                                    ? data?.tableAddress
-                                    : '/'
-                        }
-                    }"
-                    [fourthLabel]="{
-                        title: 'Rating & Review',
-                        value: {
-                            firstValue: data?.tableRaiting?.likeCount,
-                            firstValueSvg: 'assets/svg/common/ic_like.svg',
-                            firstValueStyle:
-                                'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;',
-                            seccondValue: data?.tableRaiting?.dislikeCount,
-                            seccondValueSvg: 'assets/svg/common/ic_dislike.svg',
-                            seccValueStyle:
-                                'font-weight: 600; font-size: 11px; margin-right:4px; top: 1px; position: relative;'
-                        }
-                    }"
-                    [firstLabelBack]="{
-                        title: 'Shipping Hours',
-                        value: {
-                            firstValue: 'Nema u response'
-                        }
-                    }"
-                    [seccondLabelBack]="{
-                        title: 'Receiving Hours',
-                        value: {
-                            firstValue: 'Nema u response'
-                        }
-                    }"
-                    [thirdLabelBack]="{
-                        title: 'Avg. Pickup Time',
-                        value: {
-                            firstValue: 'Nema u response'
-                        }
-                    }"
-                    [fourthLabelBack]="{
-                        title: 'Avg. Delivery Time',
-                        value: {
-                            firstValue: 'Nema u response'
-                        }
-                    }"
-                ></app-truckassist-cards>
-            </ng-container>
-        </div>
-        <!-- Show More -->
-        <div
-            class="show-more-container d-flex align-items-center justify-content-between"
-            [ngStyle]="{ 'width.px': tableWidth }"
-            *ngIf="viewData.length"
-        >
-            <div class="showing ta-font-semi-bold">
-                {{ viewData.length }} OF
-                {{ activeTableData.length }}
-            </div>
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-truckassist-cards
+                (bodyActions)="onTableBodyActions($event)"
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [displayRowsFront]="sendDataToCardsFront"
+                [displayRowsBack]="sendDataToCardsBack"
+                [page]="page"
+            ></app-truckassist-cards>
+
+            <!-- Show More -->
             <div
-                class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                (click)="onShowMore()"
-                *ngIf="viewData.length < activeTableData.length"
+                class="show-more-container d-flex align-items-center justify-content-between"
+                [ngStyle]="{ 'width.px': tableWidth }"
+                *ngIf="viewData.length"
             >
-                SHOW MORE
+                <div class="showing ta-font-semi-bold">
+                    {{ viewData.length }} OF
+                    {{ activeTableData.length }}
+                </div>
+                <div
+                    class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                    (click)="onShowMore()"
+                    *ngIf="viewData.length < activeTableData.length"
+                >
+                    SHOW MORE
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
     <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
         <app-map-list
             [type]="'shipper'"

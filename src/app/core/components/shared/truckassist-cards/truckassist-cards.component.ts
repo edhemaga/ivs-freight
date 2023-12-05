@@ -1,15 +1,10 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 // Models
-import {
-    CardData,
-    CardHeader,
-    LoadTableData,
-    RightSideCard,
-} from '../model/cardData';
+import { CardRows, LoadTableData } from '../model/cardData';
 import {
     DropdownItem,
-    LoadDetails,
+    CardDetails,
     SendDataCard,
 } from '../model/cardTableData';
 
@@ -28,12 +23,7 @@ import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-
-// Array holding id of fliped cards
-const isCardFlippedArray: Array<number> = [];
-
-// Array holding id of checked cards
-const isCheckboxCheckedArray: Array<number> = [];
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 
 @Component({
     selector: 'app-truckassist-cards',
@@ -53,37 +43,27 @@ const isCheckboxCheckedArray: Array<number> = [];
 
         //pipes
         formatDatePipe,
+        formatCurrency,
     ],
 })
 export class TruckassistCardsComponent implements OnInit {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     // All data
-    @Input() viewData: LoadDetails;
+    @Input() viewData: CardDetails;
     @Input() tableData: LoadTableData[];
-    @Input() card: LoadDetails;
+    // @Input() card: CardDetails;
 
+    // Page
+    @Input() page: string;
     // For Front And back of the cards
     @Input() deadline: boolean;
 
-    // Front of cards
-    @Input() cardIndex: number;
-    @Input() cardHeader: CardHeader;
-    @Input() firstLabel: CardData;
-    @Input() seccondLabel: CardData;
-    @Input() thirdLabel: CardData;
-    @Input() fourthLabel: CardData;
-
-    // Back of cards
-    @Input() firstLabelBack: CardData;
-    @Input() seccondLabelBack: CardData;
-    @Input() thirdLabelBack: CardData;
-    @Input() fourthLabelBack: CardData;
-
-    //Right side of cards
-    @Input() firstLabelRightSide: RightSideCard;
-    @Input() seccondLabelRightSide: RightSideCard;
-    @Input() thirdLabelRightSide: RightSideCard;
+    // Card body endpoints
+    @Input() cardTitle: string;
+    @Input() rows: number[];
+    @Input() displayRowsFront: CardRows;
+    @Input() displayRowsBack: CardRows;
 
     public isCardFlipped: Array<number> = [];
     public isCardChecked: Array<number> = [];
@@ -91,22 +71,29 @@ export class TruckassistCardsComponent implements OnInit {
     public dropdownActions;
     public dropdownOpenedId: number;
     public dropDownIsOpened: number;
-    public cardData: LoadDetails;
+    public cardData: CardDetails;
     public dropDownActive: number;
+
+    // Array holding id of fliped cards
+    public isCardFlippedArray: number[] = [];
+
+    // Array holding id of checked cards
+    public isCheckboxCheckedArray: number[] = [];
     constructor(private detailsDataService: DetailsDataService) {}
 
+    //---------------------------------------ON INIT---------------------------------------
     ngOnInit(): void {}
 
     // Flip card based on card index
     public flipCard(index: number) {
-        const indexSelected = isCardFlippedArray.indexOf(index);
+        const indexSelected = this.isCardFlippedArray.indexOf(index);
 
         if (indexSelected !== -1) {
-            isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = isCardFlippedArray;
+            this.isCardFlippedArray.splice(indexSelected, 1);
+            this.isCardFlipped = this.isCardFlippedArray;
         } else {
-            isCardFlippedArray.push(index);
-            this.isCardFlipped = isCardFlippedArray;
+            this.isCardFlippedArray.push(index);
+            this.isCardFlipped = this.isCardFlippedArray;
         }
 
         return;
@@ -114,46 +101,47 @@ export class TruckassistCardsComponent implements OnInit {
 
     // When checkbox is selected
     public onCheckboxSelect(index: number) {
-        const indexSelected = isCheckboxCheckedArray.indexOf(index);
+        const indexSelected = this.isCheckboxCheckedArray.indexOf(index);
 
         if (indexSelected !== -1) {
-            isCheckboxCheckedArray.splice(indexSelected, 1);
-            this.isCardChecked = isCheckboxCheckedArray;
+            this.isCheckboxCheckedArray.splice(indexSelected, 1);
+            this.isCardChecked = this.isCheckboxCheckedArray;
         } else {
-            isCheckboxCheckedArray.push(index);
-            this.isCardChecked = isCheckboxCheckedArray;
+            this.isCheckboxCheckedArray.push(index);
+            this.isCardChecked = this.isCheckboxCheckedArray;
         }
 
         return;
     }
 
     // Show hide dropdown
-    public toggleDropdown(tooltip, cardIndex: number) {
-        this.dropDownIsOpened !== cardIndex
-            ? (this.dropDownIsOpened = cardIndex)
-            : (this.dropDownIsOpened = null);
+    public toggleDropdown(tooltip, card: CardDetails) {
         this.tooltip = tooltip;
 
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            let actions = [...this.card?.tableDropdownContent.content];
+            if (card.tableDropdownContent?.hasContent) {
+                let actions = [...card.tableDropdownContent.content];
 
-            actions = actions.map((actions: DropdownItem) => {
-                if (actions?.isDropdown) {
-                    return {
-                        ...actions,
-                        isInnerDropActive: false,
-                    };
-                }
+                actions = actions.map((actions: any) => {
+                    if (actions?.isDropdown) {
+                        return {
+                            ...actions,
+                            isInnerDropActive: false,
+                        };
+                    }
 
-                return actions;
-            });
+                    return actions;
+                });
 
-            this.dropdownActions = [...actions];
+                this.dropdownActions = [...actions];
+
+                tooltip.open({ data: this.dropdownActions });
+            }
+
             tooltip.open({ data: this.dropdownActions });
-            this.dropDownActive = tooltip.isOpen() ? this.card.id : -1;
-            this.detailsDataService.setNewData(this.card);
+            this.detailsDataService.setNewData(card);
         }
 
         return;
@@ -173,18 +161,35 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // Dropdown Actions
-    public onDropAction(action: DropdownItem) {
+    public onDropAction(action: DropdownItem, card: CardDetails) {
         if (!action?.mutedStyle) {
             // Send Drop Action
             this.bodyActions.emit({
                 id: this.dropDownActive,
-                data: this.card,
+                data: card,
                 type: action.name,
             });
         }
-
         this.tooltip.close();
-
         return;
+    }
+
+    //Remove quotes from string to convert into endpoint
+    private getValueByStringPath(obj: CardDetails, path: string) {
+        if (path === 'no-endpoint') {
+            return 'No Endpoint';
+        }
+        //Check if value is null return /
+        const value = obj[path];
+
+        if (value === null) {
+            return '/';
+        }
+        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    }
+
+    // Track By For Table Row
+    public trackCard(item: any) {
+        return item.id;
     }
 }

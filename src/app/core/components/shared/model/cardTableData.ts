@@ -1,9 +1,9 @@
 export interface SendDataCard {
     id: number;
-    data: LoadDetails;
+    data: CardDetails;
     type: string;
 }
-export interface LoadDetails {
+export interface CardDetails {
     id: number;
     type: Type;
     loadNumber: string;
@@ -84,7 +84,7 @@ export interface DropdownItem {
 
 export interface BodyActions {
     id: number;
-    card: LoadDetails;
+    card: CardDetails;
     type: string;
 }
 

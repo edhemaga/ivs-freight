@@ -46,6 +46,16 @@ import {
 
 // Pipes
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import {
+    cardTitle,
+    displayRowsBackBroker,
+    displayRowsBackShipper,
+    displayRowsFrontBroker,
+    displayRowsFrontShipper,
+    page,
+    rows,
+} from '../customer-card-data';
+import { CardRows } from '../../shared/model/cardData';
 @Component({
     selector: 'app-customer-table',
     templateUrl: './customer-table.component.html',
@@ -106,6 +116,19 @@ export class CustomerTableComponent
     };
     mapListData = [];
 
+    //Data to display from model Broker
+    public displayRowsFront: CardRows[] = displayRowsFrontBroker;
+    public displayRowsBack: CardRows[] = displayRowsBackBroker;
+    //Data to display from model Shipper
+    public displayRowsFrontShipper: CardRows[] = displayRowsFrontShipper;
+    public displayRowsBackShipper: CardRows[] = displayRowsBackShipper;
+    public cardTitle: string = cardTitle;
+    public page: string = page;
+    public rows: number = rows;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
+
     constructor(
         // Angular
         private ref: ChangeDetectorRef,
@@ -134,18 +157,47 @@ export class CustomerTableComponent
     ngOnInit(): void {
         this.sendCustomerData();
 
+        // Reset Columns
+        this.resetColumns();
+
         // Get Tab Table Data For Selected Tab
         this.getSelectedTabTableData();
-        // Reset Columns
+
+        // Resize Columns
+        this.resizeColumns();
+
+        // Toogle Columns
+        this.toogleColumns();
+
+        // Add-Update Broker-Shipper
+        this.addUpdateBrokerShipper();
+
+        // Delete Selected Rows
+        this.deleleteSelectedRows();
+
+        // Search
+        this.search();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    // Reset Columns
+    public resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
                 if (response) {
-                    this.sendCustomerData();
+                    return this.sendCustomerData();
                 }
             });
+    }
 
-        // Resize
+    // Resize Columns
+    public resizeColumns(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
@@ -162,8 +214,10 @@ export class CustomerTableComponent
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    // Toogle Columns
+    public toogleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
@@ -177,8 +231,10 @@ export class CustomerTableComponent
                     });
                 }
             });
+    }
 
-        // Add-Update Broker-Shipper
+    // Add-Update Broker-Shipper
+    public addUpdateBrokerShipper(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -210,8 +266,10 @@ export class CustomerTableComponent
                     this.updateData(res.id, updatedShipper);
                 }
             });
+    }
 
-        // Delete Selected Rows
+    // Delete Selected Rows
+    public deleleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
@@ -274,8 +332,10 @@ export class CustomerTableComponent
                     }
                 }
             });
+    }
 
-        // Search
+    // Search
+    public search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -302,13 +362,6 @@ export class CustomerTableComponent
                 }
             });
     }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -462,6 +515,12 @@ export class CustomerTableComponent
                     ? this.mapBrokerData(data)
                     : this.mapShipperData(data);
             });
+
+            this.selectedTab === 'active'
+                ? ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack))
+                : ((this.sendDataToCardsFront = this.displayRowsFrontShipper),
+                  (this.sendDataToCardsBack = this.displayRowsBackShipper));
 
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
@@ -1169,6 +1228,7 @@ export class CustomerTableComponent
                 (t) => t.field === this.selectedTab
             );
         }
+        return;
     }
     // Show More Data
     private onShowMore() {

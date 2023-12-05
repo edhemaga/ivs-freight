@@ -1,5 +1,12 @@
 @import '/src/theme/variables.scss';
 @import '/src/assets/scss/fonts.scss';
+//Cards
+.cards-container {
+    margin-top: 11px;
+    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(302px, 1fr));
+}
 .custom-card {
     background: $white;
     min-width: 302px;
@@ -68,6 +75,15 @@
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                    }
+
+                    .title-load {
+                        gap: 4px;
+
+                        svg {
+                            position: relative;
+                            bottom: 2px;
+                        }
                     }
 
                     .image-holder {
@@ -142,6 +158,57 @@
                         overflow: hidden;
                         line-height: 20px;
                         gap: 4px;
+                        width: 100%;
+
+                        // STYLES FOR LOAD PAGE
+                        .load-span {
+                            width: 18px;
+                            height: 18px;
+                            font-size: 11px;
+                            border-radius: 1px;
+                            color: $white;
+                        }
+                        .pickup {
+                            background: $ta-green;
+                        }
+
+                        .delivery {
+                            background: $ta-red;
+                        }
+
+                        .muted {
+                            color: $muted;
+                        }
+
+                        .status {
+                            color: $ta-light-grey-2;
+                        }
+
+                        .loaded {
+                            color: $ta-loaded;
+                        }
+
+                        .assigned {
+                            color: $ta-assigned;
+                        }
+
+                        .dispatched {
+                            color: $ta-blue-14;
+                        }
+
+                        // STYLES FOR CUSTOMER PAGE
+                        .rating-holder {
+                            gap: 8px;
+                            .rating {
+                                gap: 4px;
+
+                                span {
+                                    font-size: 11px;
+                                    position: relative;
+                                    top: 1px;
+                                }
+                            }
+                        }
 
                         .deadline-parent {
                             width: 24px;

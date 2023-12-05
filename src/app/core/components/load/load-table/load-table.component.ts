@@ -17,6 +17,13 @@ import {
     getLoadTemplateColumnDefinition,
 } from '../../../../../assets/utils/settings/load-columns';
 import { LoadListResponse } from 'appcoretruckassist';
+import {
+    cardTitle,
+    displayRowsBack,
+    displayRowsFront,
+    page,
+    rows,
+} from '../load-card-data';
 
 // Queries
 import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
@@ -34,6 +41,7 @@ import { LoadTemplateState } from '../state/load-template-state/load-template.st
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { DatePipe } from '@angular/common';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
+import { CardRows } from '../../shared/model/cardData';
 
 @Component({
     selector: 'app-load-table',
@@ -78,6 +86,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchThree: undefined,
     };
 
+    //Data to display from model
+    public displayRowsFront: CardRows[] = displayRowsFront;
+    public displayRowsBack: CardRows[] = displayRowsBack;
+    public cardTitle: string = cardTitle;
+    public page: string = page;
+    public rows: number = rows;
+
     constructor(
         // Services
         private tableService: TruckassistTableService,
@@ -98,51 +113,40 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
+        //Send Load Data
         this.sendLoadData();
+
+        // Reset Columns
+        this.resetColumns();
 
         // Get Tab Table Data For Selected Tab
         this.getSelectedTabTableData();
-        // Confirmation Subscribe
-        /* this.confirmationService.confirmationData$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res: Confirmation) => {
-          switch (res.type) {
-            case 'delete': {
-              if (res.template === 'driver') {
-                this.deleteDriverById(res.id);
-              }
-              break;
-            }
-            case 'activate': {
-              this.changeDriverStatus(res.id);
-              break;
-            }
-            case 'deactivate': {
-              this.changeDriverStatus(res.id);
-              break;
-            }
-            case 'multiple delete': {
-              this.multipleDeleteDrivers(res.array);
-              break;
-            }
-            default: {
-              break;
-            }
-          }
-        },
-      }); */
 
-        // Reset Columns
-        this.tableService.currentResetColumns
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
-                if (response) {
-                    this.sendLoadData();
-                }
-            });
+        // resize
+        this.resize();
 
-        // Resize
+        // Toogle Columns
+        this.toogleColumns();
+
+        // Search
+        this.search();
+
+        // Delete Selected Rows
+        this.deleteSelectedRows();
+
+        // Driver Actions
+        this.driverActions();
+    }
+
+    // ---------------------------- ngAfterViewInit ------------------------------
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    // Resize
+    public resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
@@ -159,8 +163,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 }
             });
+    }
+    // Reset Columns
+    public resetColumns(): void {
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    this.sendLoadData();
+                }
+            });
+    }
 
-        // Toaggle Columns
+    // Toogle Columns
+    public toogleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
@@ -174,8 +190,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 }
             });
+    }
 
-        // Search
+    // Search
+    public search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -203,8 +221,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             });
+    }
 
-        // Delete Selected Rows
+    // Delete Selected Rows
+    public deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
@@ -225,11 +245,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
               type: 'multiple delete',
               image: true,
             }
-          ); */
+            ); */
                 }
             });
+    }
 
-        // Driver Actions
+    // Driver Actions
+    public driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -237,21 +259,21 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (res.animation === 'add' && this.selectedTab === 'active') {
                     /*  this.viewData.push(this.mapDriverData(res.data));
 
-          this.viewData = this.viewData.map((driver: any) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'add';
-            }
+ this.viewData = this.viewData.map((driver: any) => {
+   if (driver.id === res.id) {
+     driver.actionAnimation = 'add';
+   }
 
-            return driver;
-          });
+   return driver;
+ });
 
-          this.updateDataCount();
+ this.updateDataCount();
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+ const inetval = setInterval(() => {
+   this.viewData = closeAnimationAction(false, this.viewData);
 
-            clearInterval(inetval);
-          }, 2300); */
+   clearInterval(inetval);
+ }, 2300); */
                 }
                 // On Add Driver Inactive
                 else if (
@@ -264,73 +286,66 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 else if (res.animation === 'update') {
                     /*  const updatedDriver = this.mapDriverData(res.data);
 
-          this.viewData = this.viewData.map((driver: any) => {
-            if (driver.id === res.id) {
-              driver = updatedDriver;
-              driver.actionAnimation = 'update';
-            }
+ this.viewData = this.viewData.map((driver: any) => {
+   if (driver.id === res.id) {
+     driver = updatedDriver;
+     driver.actionAnimation = 'update';
+   }
 
-            return driver;
-          });
+   return driver;
+ });
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+ const inetval = setInterval(() => {
+   this.viewData = closeAnimationAction(false, this.viewData);
 
-            clearInterval(inetval);
-          }, 1000); */
+   clearInterval(inetval);
+ }, 1000); */
                 }
                 // On Update Driver Status
                 else if (res.animation === 'update-status') {
                     /* let driverIndex: number;
 
-          this.viewData = this.viewData.map((driver: any, index: number) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';;
-              driverIndex = index;
-            }
+ this.viewData = this.viewData.map((driver: any, index: number) => {
+   if (driver.id === res.id) {
+     driver.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';;
+     driverIndex = index;
+   }
 
-            return driver;
-          });
+   return driver;
+ });
 
-          this.updateDataCount();
+ this.updateDataCount();
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+ const inetval = setInterval(() => {
+   this.viewData = closeAnimationAction(false, this.viewData);
 
-            this.viewData.splice(driverIndex, 1);
-            clearInterval(inetval);
-          }, 900); */
+   this.viewData.splice(driverIndex, 1);
+   clearInterval(inetval);
+ }, 900); */
                 }
                 // On Delete Driver
                 else if (res.animation === 'delete') {
                     /* let driverIndex: number;
 
-          this.viewData = this.viewData.map((driver: any, index: number) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'delete';
-              driverIndex = index;
-            }
+ this.viewData = this.viewData.map((driver: any, index: number) => {
+   if (driver.id === res.id) {
+     driver.actionAnimation = 'delete';
+     driverIndex = index;
+   }
 
-            return driver;
-          });
+   return driver;
+ });
 
-          this.updateDataCount();
+ this.updateDataCount();
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+ const inetval = setInterval(() => {
+   this.viewData = closeAnimationAction(false, this.viewData);
 
-            this.viewData.splice(driverIndex, 1);
-            clearInterval(inetval);
-          }, 900); */
+   this.viewData.splice(driverIndex, 1);
+   clearInterval(inetval);
+ }, 900); */
                 }
             });
-    }
-
-    // ---------------------------- ngAfterViewInit ------------------------------
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
     }
 
     observTableContainer() {
