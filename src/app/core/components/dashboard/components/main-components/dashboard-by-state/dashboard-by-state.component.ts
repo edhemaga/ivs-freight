@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardByStateService } from '../../../state/services/dashboard-by-state.service';
@@ -69,6 +69,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public byStateTitle: string = ConstantStringEnum.PICKUP;
 
     public isDisplayingPlaceholder: boolean = false;
+    public isLoading: boolean = true;
 
     // search
     public searchValue: string;
@@ -80,8 +81,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public byStateMapList: MapListItem[] = [];
     private byStateListBeforeSearch: ByStateListItem[] = [];
 
+    public byStateListLength: number = 0;
+
     // show more
-    public byStateListSliceEnd: number = 10;
     public isShowingMore: boolean = false;
 
     // tabs
@@ -101,6 +103,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     private selectedCustomPeriodRange: CustomPeriodRange;
 
     private overallCompanyDuration: number;
+
+    public selectedDropdownWidthSubPeriod: DropdownListItem;
 
     // colors
     public mainColorsPallete: ByStateColorsPallete[] = [];
@@ -173,9 +177,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             selectedBarPercentages: [],
         };
 
-        this.isShowingMore = false;
-        this.byStateListSliceEnd = 10;
-
         this.clearSearchValue = true;
     }
 
@@ -228,11 +229,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         action: string
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
-            if (this.selectedMainPeriod.name === dropdownListItem.name) return;
+            if (
+                dropdownListItem.name !== ConstantStringEnum.CUSTOM &&
+                this.selectedMainPeriod.name === dropdownListItem.name
+            )
+                return;
 
-            if (this.isDisplayingCustomPeriodRange) {
+            if (this.isDisplayingCustomPeriodRange)
                 this.isDisplayingCustomPeriodRange = false;
-            }
 
             this.selectedMainPeriod = dropdownListItem;
 
@@ -266,10 +270,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
                     break;
                 case ConstantStringEnum.CUSTOM:
-                    this.isDisplayingCustomPeriodRange = true;
+                    this.selectedDropdownWidthSubPeriod =
+                        this.selectedSubPeriod;
 
                     this.subPeriodDropdownList = [];
                     this.selectedSubPeriod = null;
+
+                    this.isDisplayingCustomPeriodRange = true;
 
                     break;
                 default:
@@ -351,20 +358,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     }
 
     public handleShowMoreClick(): void {
-        if (!this.isShowingMore) {
-            this.isShowingMore = true;
+        this.isShowingMore = !this.isShowingMore;
 
-            this.byStateListSliceEnd = this.byStateList.length;
-
-            return;
-        }
-
-        if (this.isShowingMore) {
-            this.isShowingMore = false;
-
-            this.byStateListSliceEnd = 10;
-
-            return;
+        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.getByStateListData(this.selectedCustomPeriodRange);
+        } else {
+            this.getByStateListData();
         }
     }
 
@@ -384,11 +383,15 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
             this.setCustomSubPeriodList(this.overallCompanyDuration);
+
+            this.selectedSubPeriod = this.selectedDropdownWidthSubPeriod;
         } else {
             this.isDisplayingCustomPeriodRange = false;
             this.selectedCustomPeriodRange = customPeriodRange;
 
             this.getByStateListData(customPeriodRange);
+
+            this.selectedDropdownWidthSubPeriod = this.selectedSubPeriod;
         }
     }
 
@@ -519,11 +522,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             null,
             null,
             null,
+            this.isShowingMore,
             selectedMainPeriod,
             customPeriodRange?.fromDate ?? null,
             customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ];
+
+        this.isLoading = true;
 
         this.resetSelectedValues();
 
@@ -575,7 +581,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardByStateService
             .getPickupByState(byStateArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((pickupData) => {
                 // by state list and single selection data
                 this.byStateList = pickupData.pagination.data.map(
@@ -626,6 +635,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
 
                 this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = pickupData.pagination.count;
 
                 // intervals
 
@@ -690,7 +701,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardByStateService
             .getDeliveryByState(byStateArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((deliveryData) => {
                 // by state list and single selection data
                 this.byStateList = deliveryData.pagination.data.map(
@@ -741,6 +755,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
 
                 this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = deliveryData.pagination.count;
 
                 // intervals
 
@@ -805,7 +821,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardByStateService
             .getViolationByState(byStateArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((violationData) => {
                 // by state list and single selection data
                 this.byStateList = violationData.pagination.data.map(
@@ -857,6 +876,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
 
                 this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = violationData.pagination.count;
 
                 // intervals
 
@@ -924,7 +945,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardByStateService
             .getAccidentByState(byStateArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((accidentData) => {
                 // by state list and single selection data
                 this.byStateList = accidentData.pagination.data.map(
@@ -976,6 +1000,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
 
                 this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = accidentData.pagination.count;
 
                 // intervals
 
@@ -1042,7 +1068,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardByStateService
             .getRepairByState(byStateArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((repairData) => {
                 // by state list and single selection data
                 this.byStateList = repairData.pagination.data.map(
@@ -1093,6 +1122,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
 
                 this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = repairData.pagination.count;
 
                 // intervals
 
@@ -1157,7 +1188,10 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardByStateService
             .getFuelByState(byStateArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe(() => {
                 // by state list and single selection data
             });
@@ -1169,6 +1203,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.subPeriodDropdownList = filteredSubPeriodDropdownList;
         this.selectedSubPeriod = selectedSubPeriod;
+
+        this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
     }
 
     private setBarChartDateTitle(

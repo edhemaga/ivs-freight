@@ -436,6 +436,12 @@
 
         <!-- Charts -->
 
+        <ng-container *ngIf="isLoading">
+            <app-dashboard-loading-placeholder
+                [performanceChartsPlaceholder]="true"
+            ></app-dashboard-loading-placeholder>
+        </ng-container>
+
         <ng-container *ngIf="!isLoading && lineChartConfig && barChartConfig">
             <div
                 class="charts-container"
