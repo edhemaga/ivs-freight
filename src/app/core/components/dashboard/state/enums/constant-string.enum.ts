@@ -17,6 +17,8 @@ export enum ConstantStringEnum {
     LOAD = 'Load',
     REVENUE = 'Revenue',
     MILEAGE = 'Mileage',
+    SW = 'SW',
+    COUNT = 'Count',
 
     NET_INCOME = 'NET INCOME',
     REVENUE_2 = 'REVENUE',
@@ -37,6 +39,11 @@ export enum ConstantStringEnum {
     REPAIR_SHOP_2 = 'REPAIR SHOP',
     BROKER_2 = 'BROKER',
     SHIPPER_2 = 'SHIPPER',
+
+    VIOLATION_2 = 'Violation',
+    ACCIDENT_2 = 'Accident',
+    REPAIR = 'Repair',
+    FUEL = 'Fuel',
 
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',
@@ -75,6 +82,8 @@ export enum ConstantStringEnum {
     SML = 'SemiMonthly',
     BWL = 'BiWeekly',
 
+    SEVERITY_WEIGHT = 'SeverityWeight',
+
     YESTERDAY = 'YESTERDAY',
 
     LAST_WEEK = 'LAST WEEK',
@@ -89,6 +98,9 @@ export enum ConstantStringEnum {
     QUARTERLY_AVERAGE = 'QUARTERLY AVERAGE',
     PERIOD_AVERAGE = 'PERIOD AVERAGE',
 
+    PICKUP = 'Pickup',
+    DELIVERY = 'Delivery',
+
     CLICK = 'click',
     CLASS_DROPDOWN_OPTION = 'dropdown-option',
 
@@ -96,6 +108,9 @@ export enum ConstantStringEnum {
 
     PM = 'PM',
     AM = 'AM',
+
+    H_1 = 'H1',
+    H_2 = 'H2',
 
     EMPTY_SPACE_STRING = ' ',
 
@@ -107,4 +122,6 @@ export enum ConstantStringEnum {
     TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
 
     ZERO_STRING = '0',
+
+    MAP_STATE_DEFAULT_COLOR = '#E5E5E5',
 }

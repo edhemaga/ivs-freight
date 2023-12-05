@@ -12,3 +12,5 @@ export interface PerformanceColorsPallete {
     hoverCode: string;
     isSelected: boolean;
 }
+
+export interface ByStateColorsPallete extends TopRatedSecondaryColorsPallete {}
