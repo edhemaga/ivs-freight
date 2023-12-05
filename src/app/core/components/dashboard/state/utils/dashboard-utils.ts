@@ -1,6 +1,7 @@
 // constants
 import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
 import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
+import { DashboardColors } from './constants/dashboard-colors.constants';
 
 // helpers
 import { DashboardStringHelper } from './helpers/dashboard-string.helper';
@@ -13,6 +14,7 @@ import { DropdownListItem } from '../models/dropdown-list-item.model';
 import { FilteredSubperiod } from '../models/filtered-subperiod.model';
 import { BarChartLabels } from '../models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
+import { ByStateListItem } from '../models/dashboard-by-state-models/by-state-list-item.model';
 
 export class DashboardUtils {
     static ConvertMainPeriod(mainPeriod: string) {
@@ -209,5 +211,39 @@ export class DashboardUtils {
             regex,
             (match) => `<span class="highlight">${match}</span>`
         );
+    }
+
+    static setByStateListColorRange(byStateList: ByStateListItem[]): void {
+        const colors = DashboardColors.BY_STATE_COLORS_PALLETE;
+
+        const customBoundaryNumber = 10;
+        const customStatesLength =
+            byStateList.length > customBoundaryNumber
+                ? customBoundaryNumber
+                : byStateList.length;
+
+        const byStateMeanValue = Math.floor(customStatesLength / colors.length);
+        const byStateResidue = customStatesLength % colors.length;
+
+        let byStateListCounter = 0;
+
+        for (let i = 0; i < colors.length; i++) {
+            if (byStateListCounter === customBoundaryNumber) break;
+
+            let colorCounter = byStateMeanValue;
+
+            if (i < byStateResidue) colorCounter += 1;
+
+            for (let j = 0; j < colorCounter; j++) {
+                byStateList[byStateListCounter++].selectedColor =
+                    colors[i].code;
+            }
+        }
+
+        if (byStateList.length > customBoundaryNumber) {
+            for (let i = customBoundaryNumber; i < byStateList.length; i++) {
+                byStateList[i].selectedColor = colors[colors.length - 1].code;
+            }
+        }
     }
 }

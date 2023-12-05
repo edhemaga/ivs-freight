@@ -1,4 +1,5 @@
 import {
+    ByStateColorsPallete,
     PerformanceColorsPallete,
     TopRatedMainColorsPallete,
     TopRatedSecondaryColorsPallete,
@@ -39,5 +40,13 @@ export class DashboardColors {
         { code: '#77bf56', hoverCode: '#50AC25', isSelected: false },
         { code: '#e668a0', hoverCode: '#DF3D85', isSelected: false },
         { code: '#a08266', hoverCode: '#865E3A', isSelected: false },
+    ];
+
+    static BY_STATE_COLORS_PALLETE: ByStateColorsPallete[] = [
+        { code: '#0B49D1' },
+        { code: '#3B73ED' },
+        { code: '#6692F1' },
+        { code: '#92B1F5' },
+        { code: '#BED0F9' },
     ];
 }

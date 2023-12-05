@@ -1,13 +1,13 @@
-import { TopRatedListItem } from '../../models/dashboard-top-rated-models/top-rated-list-item.model';
-
 export class DashboardArrayHelper {
-    static sorPartOfArray(arr: TopRatedListItem[]) {
+    static sorPartOfArray<T extends { isSelected: boolean; id: number }>(
+        arr: T[]
+    ): T[] {
         // Slice the array into two parts: selected and not selected
         const beforeStart = arr.filter((item) => item.isSelected);
         const toSort = arr.filter((item) => !item.isSelected);
 
         // Sort the toSort portion of the array
-        toSort.sort((a: TopRatedListItem, b: TopRatedListItem) => a.id - b.id);
+        toSort.sort((a, b) => a.id - b.id);
 
         // Concatenate the sorted portion back
         const sortedArray = beforeStart.concat(toSort);
@@ -15,7 +15,7 @@ export class DashboardArrayHelper {
         return sortedArray;
     }
 
-    static findLargestNumberInArrayOfArrays(arr: number[][]) {
+    static findLargestNumberInArrayOfArrays(arr: number[][]): number {
         let largestNumber = 0;
 
         for (let i = 0; i < arr.length; i++) {

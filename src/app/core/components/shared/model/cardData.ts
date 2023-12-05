@@ -1,7 +1,14 @@
 export interface CardHeader {
     checkbox: boolean;
+    cardTitleBeforeStyle: string;
+    cardTitleBefore: string;
     cardTitle: string;
-    fltOrFtl?: string;
+    img?: string;
+    imgStyle?: string;
+    svg?: string;
+    svgStyle?: string;
+    date?: string;
+    isOwner?: boolean;
 }
 interface Value {
     firstValue?: string;
@@ -12,6 +19,9 @@ interface Value {
     thirdValueStyle?: string;
     firstValueSvg?: string;
     seccondValueSvg?: string;
+    deadline?: boolean;
+    deadlineBack?: string;
+    deadlineFront?: string;
 }
 export interface CardData {
     title?: string;
