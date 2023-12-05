@@ -3,11 +3,11 @@ import { ConstantStringEnum } from '../../enums/constant-string.enum';
 
 // models
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { TopRatedDropdownItem } from '../../models/dashboard-top-rated-models/top-rated-dropdown-item.model';
+import { DropdownItem } from '../../models/dropdown-item.model';
 import { DashboardTab } from '../../models/dashboard-tab.model';
 
 export class DashboardTopRatedConstants {
-    static TOP_RATED_DROPDOWN_DATA: TopRatedDropdownItem[] = [
+    static TOP_RATED_DROPDOWN_DATA: DropdownItem[] = [
         {
             name: ConstantStringEnum.DISPATCHER,
             isActive: false,

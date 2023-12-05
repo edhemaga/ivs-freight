@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AgmCoreModule } from '@agm/core';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AgmCoreModule } from '@agm/core';
 
 // directives
 import { ClickOutsideCustomRangeDirective } from './state/directives/click-outside-custom-range.directive';
@@ -17,47 +17,45 @@ import { SetTrendIconPipe } from './state/pipes/set-trend-icon-pipe/set-trend-ic
 import { SetTrendLabelPipe } from './state/pipes/set-trend-label-pipe/set-trend-label.pipe';
 
 // components
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashboardPerformanceComponent } from './components/dashboard-performance/dashboard-performance.component';
-import { DashboardTopRatedComponent } from './components/dashboard-top-rated/dashboard-top-rated.component';
-import { DashboardDataPlaceholderComponent } from './components/dashboard-data-placeholder/dashboard-data-placeholder.component';
-import { DashboardLoadingPlaceholderComponent } from './components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
+import { DashboardComponent } from './components/main-components/dashboard/dashboard.component';
+import { DashboardTopRatedComponent } from './components/main-components/dashboard-top-rated/dashboard-top-rated.component';
+import { DashboardPerformanceComponent } from './components/main-components/dashboard-performance/dashboard-performance.component';
+import { DashboardByStateComponent } from './components/main-components/dashboard-by-state/dashboard-by-state.component';
+import { DashboardMapComponent } from './components/main-components/dashboard-map/dashboard-map.component';
+import { DashboardStateTrackingComponent } from './components/components/dashboard-state-tracking/dashboard-state-tracking.component';
+import { DashboardStateUsaComponent } from './components/components/dashboard-states/dashboard-state-usa/dashboard-state-usa.component';
+import { DashboardDataPlaceholderComponent } from './components/components/dashboard-data-placeholder/dashboard-data-placeholder.component';
+import { DashboardLoadingPlaceholderComponent } from './components/components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
+import { DashboardDropdownComponent } from './components/components/dashboard-dropdown/dashboard-dropdown.component';
 
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 import { TaCustomPeriodRangeComponent } from '../standalone-components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.component';
 import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
-
-import { DashboardPickupByStateComponent } from './components/dashboard-pickup-by-state/dashboard-pickup-by-state.component';
-import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
-import { DashboardStateTrackingComponent } from './components/dashboard-state-tracking/dashboard-state-tracking.component';
-import { DashboardStateUsaComponent } from './components/dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
-
-import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         DashboardTopRatedComponent,
         DashboardPerformanceComponent,
-        DashboardPickupByStateComponent,
+        DashboardByStateComponent,
         DashboardMapComponent,
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
         DashboardDataPlaceholderComponent,
         DashboardLoadingPlaceholderComponent,
+        DashboardDropdownComponent,
     ],
     imports: [
         // modules
         CommonModule,
-        DashboardRoutingModule,
         ReactiveFormsModule,
         NgbModule,
-        AgmCoreModule,
+        DashboardRoutingModule,
         AngularSvgIconModule,
+        AgmCoreModule.forRoot(),
 
         // directives
         ClickOutsideCustomRangeDirective,
@@ -70,12 +68,10 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
         // components
         TaTabSwitchComponent,
         TaInputDropdownComponent,
-        TaSpinnerComponent,
         TaCustomPeriodRangeComponent,
         TaChartComponent,
         CarrierSearchTwoComponent,
-        CarrierSearchComponent,
-        AppTooltipComponent,
+        TaSpinnerComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

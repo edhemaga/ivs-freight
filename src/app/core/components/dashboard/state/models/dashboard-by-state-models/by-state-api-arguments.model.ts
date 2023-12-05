@@ -1,0 +1,29 @@
+import {
+    ByStateReportType,
+    LoadStopType,
+    SubintervalType,
+    TimeInterval,
+} from 'appcoretruckassist';
+
+export type ByStateApiArguments = [
+    ByStateReportType,
+    string[],
+    number,
+    number,
+    TimeInterval,
+    string,
+    string,
+    SubintervalType
+];
+
+export type ByStateWithLoadStopApiArguments = [
+    LoadStopType,
+    ByStateReportType,
+    string[],
+    number,
+    number,
+    TimeInterval,
+    string,
+    string,
+    SubintervalType
+];
