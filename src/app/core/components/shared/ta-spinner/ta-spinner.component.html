@@ -1,1 +1,15 @@
-<ng-lottie [options]="lottieSpinner"></ng-lottie>
+<div
+    class="d-flex align-items-center justify-content-left spinner-container"
+    [ngStyle]="{
+        width: isBarSpinner ? '100px' : 'unset',
+        'margin-right': isBarSpinner ? '30px' : 0
+    }"
+>
+    <ng-container *ngIf="!isBarSpinner">
+        <ng-lottie [options]="lottieSpinner"></ng-lottie>
+    </ng-container>
+
+    <ng-container *ngIf="isBarSpinner">
+        <span class="bar-spinner"></span>
+    </ng-container>
+</div>

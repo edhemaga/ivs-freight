@@ -12,8 +12,8 @@
 
 
 export interface FuelGallonPerformanceResponse { 
-    fuelGallonsCount?: number | null;
-    fuelGallonsDifference?: number | null;
-    fuelGallonsAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

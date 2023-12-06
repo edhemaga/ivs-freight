@@ -1,66 +1,70 @@
+// enums
+import { ConstantStringEnum } from '../../enums/constant-string.enum';
+
+// models
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { TopRatedDropdownItem } from '../../models/dashboard-top-rated-models/top-rated-dropdown-item.model';
+import { DropdownItem } from '../../models/dropdown-item.model';
 import { DashboardTab } from '../../models/dashboard-tab.model';
 
 export class DashboardTopRatedConstants {
-    static TOP_RATED_DROPDOWN_DATA: TopRatedDropdownItem[] = [
+    static TOP_RATED_DROPDOWN_DATA: DropdownItem[] = [
         {
-            name: 'Dispatcher',
+            name: ConstantStringEnum.DISPATCHER,
             isActive: false,
-            tab1: 'Load',
-            tab2: 'Revenue',
+            tab1: ConstantStringEnum.LOAD,
+            tab2: ConstantStringEnum.REVENUE,
         },
         {
-            name: 'Driver',
+            name: ConstantStringEnum.DRIVER,
             isActive: true,
-            tab1: 'Mileage',
-            tab2: 'Revenue',
+            tab1: ConstantStringEnum.MILEAGE,
+            tab2: ConstantStringEnum.REVENUE,
         },
         {
-            name: 'Truck',
+            name: ConstantStringEnum.TRUCK,
             isActive: false,
-            tab1: 'Mileage',
-            tab2: 'Revenue',
+            tab1: ConstantStringEnum.MILEAGE,
+            tab2: ConstantStringEnum.REVENUE,
         },
         {
-            name: 'Broker',
+            name: ConstantStringEnum.BROKER,
             isActive: false,
-            tab1: 'Load',
-            tab2: 'Revenue',
+            tab1: ConstantStringEnum.LOAD,
+            tab2: ConstantStringEnum.REVENUE,
         },
         {
-            name: 'Shipper',
+            name: ConstantStringEnum.SHIPPER,
             isActive: false,
             tab1: null,
             tab2: null,
         },
         {
-            name: 'Owner',
+            name: ConstantStringEnum.OWNER,
             isActive: false,
-            tab1: 'Load',
-            tab2: 'Revenue',
+            tab1: ConstantStringEnum.LOAD,
+            tab2: ConstantStringEnum.REVENUE,
         },
         {
-            name: 'Repair Shop',
+            name: ConstantStringEnum.REPAIR_SHOP,
             isActive: false,
-            tab1: 'Visit',
-            tab2: 'Cost',
+            tab1: ConstantStringEnum.VISIT,
+            tab2: ConstantStringEnum.COST,
         },
         {
-            name: 'Fuel Stop',
+            name: ConstantStringEnum.FUEL_STOP,
             isActive: false,
-            tab1: 'Visit',
-            tab2: 'Cost',
+            tab1: ConstantStringEnum.VISIT,
+            tab2: ConstantStringEnum.COST,
         },
     ];
 
     static TOP_RATED_TABS: DashboardTab[] = [
         {
-            name: 'Mileage',
+            name: ConstantStringEnum.MILEAGE,
             checked: true,
         },
         {
-            name: 'Revenue',
+            name: ConstantStringEnum.REVENUE,
             checked: false,
         },
     ];
@@ -68,78 +72,78 @@ export class DashboardTopRatedConstants {
     static MAIN_PERIOD_DROPDOWN_DATA: DropdownListItem[] = [
         {
             id: 1,
-            name: 'Today',
+            name: ConstantStringEnum.TODAY,
         },
         {
             id: 2,
-            name: 'Week-to-Date',
+            name: ConstantStringEnum.WEEK_TO_DATE,
         },
         {
             id: 3,
-            name: 'Month-to-Date',
+            name: ConstantStringEnum.MONTH_TO_DATE,
         },
         {
             id: 4,
-            name: 'Quartal-to-Date',
+            name: ConstantStringEnum.QUARTAL_TO_DATE,
         },
         {
             id: 5,
-            name: 'Year-to-Date',
+            name: ConstantStringEnum.YEAR_TO_DATE,
         },
         {
             id: 6,
-            name: 'All Time',
+            name: ConstantStringEnum.ALL_TIME,
         },
         {
             id: 7,
-            name: 'Custom',
+            name: ConstantStringEnum.CUSTOM,
         },
     ];
 
     static SUB_PERIOD_DROPDOWN_DATA: DropdownListItem[] = [
         {
             id: 1,
-            name: 'Hourly',
+            name: ConstantStringEnum.HOURLY,
         },
         {
             id: 2,
-            name: '3 Hours',
+            name: ConstantStringEnum.THREE_HOURS,
         },
         {
             id: 3,
-            name: '6 Hours',
+            name: ConstantStringEnum.SIX_HOURS,
         },
         {
             id: 4,
-            name: 'Semi-Daily',
+            name: ConstantStringEnum.SEMI_DAILY,
         },
         {
             id: 5,
-            name: 'Daily',
+            name: ConstantStringEnum.DAILY,
         },
         {
             id: 6,
-            name: 'Weekly',
+            name: ConstantStringEnum.WEEKLY,
         },
         {
             id: 7,
-            name: 'Bi-Weekly',
+            name: ConstantStringEnum.BI_WEEKLY,
         },
         {
             id: 8,
-            name: 'Semi-Monthly',
+            name: ConstantStringEnum.SEMI_MONTHLY,
         },
         {
             id: 9,
-            name: 'Monthly',
+            name: ConstantStringEnum.MONTHLY,
         },
         {
             id: 10,
-            name: 'Quarterly',
+            name: ConstantStringEnum.QUARTERLY,
         },
         {
             id: 11,
-            name: 'Yearly',
+            name: ConstantStringEnum.YEARLY,
         },
     ];
 

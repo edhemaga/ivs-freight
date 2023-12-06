@@ -1,0 +1,35 @@
+<button
+    class="dropdown-arrow-btn"
+    #popover="ngbPopover"
+    autoClose="outside"
+    [ngbPopover]="dropdownPopover"
+    [popoverClass]="'popover-main'"
+    [placement]="['bottom']"
+    [container]="'body'"
+    [ngClass]="{ active: popover?.isOpen() }"
+>
+    <svg-icon
+        src="assets/svg/common/fill_arrow_down.svg"
+        [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+    ></svg-icon>
+</button>
+
+<ng-template #dropdownPopover>
+    <div class="popover-container">
+        <div
+            *ngFor="let dropdownItem of dropdownList; trackBy: trackByIdentity"
+            class="popover-item"
+            [ngClass]="{ active: dropdownItem.isActive }"
+            (click)="handleSwitchDropdownItemClick(dropdownItem)"
+        >
+            <p class="m-0">{{ dropdownItem.name }}</p>
+
+            <div class="popover-icon-container">
+                <svg-icon
+                    src="assets/svg/common/ic_confirm.svg"
+                    [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -12,8 +12,8 @@
 
 
 export interface OwnerPerformanceResponse { 
-    ownersCount?: number | null;
-    ownersDifference?: number | null;
-    ownersAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

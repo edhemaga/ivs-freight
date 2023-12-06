@@ -1,0 +1,525 @@
+<div class="d-flex flex-column justify-content-center dashboard-performance">
+    <!-- Header -->
+
+    <div
+        class="d-flex align-items-center justify-content-between dashboard-performance-header"
+    >
+        <!-- Title -->
+
+        <div
+            class="d-flex align-items-center dashboard-performance-header-title"
+        >
+            <p class="m-0 ta-font-black">Performance</p>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <!-- Tabs -->
+
+            <div
+                class="d-flex align-items-center dashboard-performance-header-tabs"
+            >
+                <app-ta-tab-switch
+                    [tabs]="performanceTabs"
+                    [disableHeight]="true"
+                    [subPeriodDropdownList]="subPeriodDropdownList"
+                    [selectedSubPeriod]="selectedSubPeriod"
+                    [clearCustomPeriodRangeValue]="clearCustomPeriodRangeValue"
+                    (switchClicked)="handleSwitchTabClick($event)"
+                    (customPeriodRangeEmitter)="
+                        handleSetCustomPeriodRangeClick($event)
+                    "
+                    (customPeriodRangeSubperiodEmitter)="
+                        handleCustomPeriodRangeSubperiodEmit($event)
+                    "
+                    (popoverClosedEmitter)="handleCustomPeriodRangeClose()"
+                >
+                </app-ta-tab-switch>
+            </div>
+
+            <div class="dashboard-performance-header-border"></div>
+
+            <!-- Dropdown -->
+
+            <div
+                class="d-flex align-items-center dashboard-performance-header-dropdown"
+                [formGroup]="performanceForm"
+                [ngClass]="{
+                    'dropdown-right-w-1': selectedSubPeriod?.name === 'Hourly',
+                    'dropdown-right-w-2':
+                        selectedSubPeriod?.name === '3 Hours' ||
+                        selectedSubPeriod?.name === '6 Hours',
+                    'dropdown-right-w-3':
+                        selectedSubPeriod?.name === 'Semi-Daily',
+                    'dropdown-right-w-4': selectedSubPeriod?.name === 'Daily',
+                    'dropdown-right-w-5':
+                        selectedSubPeriod?.name === 'Weekly' ||
+                        currentActiveTab.name === 'Custom',
+                    'dropdown-right-w-6':
+                        selectedSubPeriod?.name === 'Bi-Weekly',
+                    'dropdown-right-w-7':
+                        selectedSubPeriod?.name === 'Semi-Monthly',
+                    'dropdown-right-w-8': selectedSubPeriod?.name === 'Monthly',
+                    'dropdown-right-w-9':
+                        selectedSubPeriod?.name === 'Quarterly',
+                    'dropdown-right-w-10': selectedSubPeriod?.name === 'Yearly'
+                }"
+            >
+                <app-ta-input-dropdown
+                    formControlName="subPeriod"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        isDropdown: true,
+                        isDisabled: currentActiveTab.name === 'Custom',
+                        hideClear: true,
+                        hideColorValidations: true,
+                        removeInputBackground: true,
+                        dropdownWidthClass: 'w-col-157'
+                    }"
+                    [options]="subPeriodDropdownList"
+                    [activeItem]="selectedSubPeriod"
+                    (selectedItem)="handleInputSelect($event)"
+                ></app-ta-input-dropdown>
+            </div>
+        </div>
+    </div>
+
+    <!-- Body -->
+
+    <div
+        class="d-flex flex-column justify-content-center dashboard-performance-body"
+    >
+        <!-- Boxes -->
+
+        <div
+            class="d-flex align-items-center dashboard-performance-body-boxes-container"
+        >
+            <div
+                class="d-flex flex-column justify-content-center boxes-double-box"
+                placement="bottom"
+                [ngbTooltip]="
+                    performanceData[0].isSelected
+                        ? 'Hide from Chart'
+                        : 'Show on Chart'
+                "
+                [ngStyle]="{
+                    background: performanceData[0].isHovered
+                        ? performanceData[0].selectedHoverColor
+                        : performanceData[0].isSelected
+                        ? performanceData[0].selectedColor
+                        : '#f7f7f780'
+                }"
+                [ngClass]="{ selected: performanceData[0].isSelected }"
+                (mouseenter)="handlePerformanceDataHover(0)"
+                (mouseleave)="handlePerformanceDataHover(0, true)"
+                (click)="
+                    handlePerformanceDataClick(
+                        0,
+                        performanceData[0].selectedColor
+                    )
+                "
+            >
+                <ng-container *ngIf="isLoading">
+                    <app-dashboard-loading-placeholder
+                        [performanceDoubleBoxPlaceholder]="true"
+                    ></app-dashboard-loading-placeholder>
+                </ng-container>
+
+                <ng-container *ngIf="!isLoading">
+                    <div
+                        class="d-flex flex-column justify-content-center boxes-double-box-header"
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center boxes-double-box-header-income"
+                        >
+                            <div
+                                class="d-flex align-items-center boxes-double-box-header-income-up"
+                            >
+                                <svg-icon
+                                    class="circle-icon"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-bold">NET INCOME</p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center boxes-double-box-header-income-down"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    $320.56K
+                                    <!--  | addThousandSign -->
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Status Bar -->
+
+                        <div class="status-bar">
+                            <div class="status-bar-inner"></div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column justify-content-center boxes-double-box-body"
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                ${{
+                                    performanceData[0].lastIntervalValue
+                                        | addThousandSign
+                                }}
+                            </p>
+
+                            <div class="d-flex align-items-center">
+                                <ng-container
+                                    *ngIf="
+                                        !performanceData[0].lastIntervalTrend
+                                    "
+                                >
+                                    <div
+                                        class="d-flex align-items-center trend-span"
+                                    >
+                                        <p class="m-0 ta-font-bold">SAME AS</p>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="performanceData[0].lastIntervalTrend"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        {{
+                                            performanceData[0]
+                                                .lastIntervalTrend > 0
+                                                ? '+'
+                                                : '-'
+                                        }}${{
+                                            performanceData[0]
+                                                .lastIntervalTrend < 0
+                                                ? performanceData[0]
+                                                      .lastIntervalTrend * -1
+                                                : (performanceData[0]
+                                                      .lastIntervalTrend
+                                                  | addThousandSign)
+                                        }}
+                                    </p>
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-center trend-icon-box"
+                                    >
+                                        <svg-icon
+                                            class="d-flex align-items-center justify-content-center trend-icon"
+                                            [src]="
+                                                performanceData[0]
+                                                    .lastIntervalTrend
+                                                    | setTrendIcon
+                                                        : performanceData[0]
+                                                              .title
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+                                </ng-container>
+                            </div>
+
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    currentActiveTab.name
+                                        | setTrendLabel
+                                            : false
+                                            : selectedSubPeriodLabel
+                                }}
+                            </p>
+                        </div>
+
+                        <div
+                            class="d-flex flex-column justify-content-center boxes-double-box-body-stats"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                ${{
+                                    performanceData[0].intervalAverageValue
+                                        | addThousandSign
+                                }}
+                            </p>
+
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    currentActiveTab.name
+                                        | setTrendLabel
+                                            : true
+                                            : selectedSubPeriodLabel
+                                }}
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="boxes-single-box-container">
+                <ng-container
+                    *ngFor="
+                        let performanceDataItem of performanceData | slice : 1;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex flex-column box"
+                        placement="bottom"
+                        [ngbTooltip]="
+                            performanceDataItem.isSelected
+                                ? 'Hide from Chart'
+                                : 'Show on Chart'
+                        "
+                        [ngStyle]="{
+                            background: performanceDataItem.isHovered
+                                ? performanceDataItem.selectedHoverColor
+                                : performanceDataItem.isSelected
+                                ? performanceDataItem.selectedColor
+                                : '#f7f7f780',
+                            'padding-top': isLoading ? '5px' : '12px'
+                        }"
+                        [ngClass]="{
+                            selected: performanceDataItem.isSelected
+                        }"
+                        (mouseenter)="handlePerformanceDataHover(i + 1)"
+                        (mouseleave)="handlePerformanceDataHover(i + 1, true)"
+                        (click)="
+                            handlePerformanceDataClick(
+                                i + 1,
+                                performanceDataItem.selectedColor
+                            )
+                        "
+                    >
+                        <ng-container *ngIf="isLoading">
+                            <app-dashboard-loading-placeholder
+                                [performanceSingleBoxPlaceholder]="true"
+                            ></app-dashboard-loading-placeholder>
+                        </ng-container>
+
+                        <ng-container *ngIf="!isLoading">
+                            <div class="d-flex align-items-center box-header">
+                                <svg-icon
+                                    class="circle-icon"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-bold">
+                                    {{ performanceDataItem.title }}
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center box-value">
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        performanceDataItem.title ===
+                                            'REVENUE' ||
+                                        performanceDataItem.title ===
+                                            'FUEL COST' ||
+                                        performanceDataItem.title ===
+                                            'REPAIR COST' ||
+                                        performanceDataItem.title === 'EXPENSES'
+                                            ? '$'
+                                            : ''
+                                    }}
+                                </p>
+
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        performanceDataItem.lastIntervalValue
+                                            | addThousandSign
+                                    }}
+                                </p>
+                            </div>
+
+                            <div class="d-flex flex-column box-last-average">
+                                <div class="d-flex align-items-center">
+                                    <ng-container
+                                        *ngIf="
+                                            !performanceDataItem.lastIntervalTrend
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center trend-span"
+                                        >
+                                            <p class="m-0 ta-font-bold">
+                                                SAME AS
+                                            </p>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            performanceDataItem.lastIntervalTrend
+                                        "
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            {{
+                                                performanceDataItem.lastIntervalTrend >
+                                                0
+                                                    ? '+'
+                                                    : ''
+                                            }}
+                                        </p>
+
+                                        <p class="m-0 ta-font-bold">
+                                            {{
+                                                !performanceDataItem.isHovered ||
+                                                (performanceDataItem.isHovered &&
+                                                    (currentActiveTab.name ===
+                                                        'ALL' ||
+                                                        currentActiveTab.name ===
+                                                            'Custom'))
+                                                    ? performanceDataItem.lastIntervalTrend
+                                                    : performanceDataItem.intervalAverageValue
+                                            }}
+                                        </p>
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-center trend-icon-box"
+                                            [ngClass]="{
+                                                'hide-trend-icon-box':
+                                                    performanceDataItem.isHovered
+                                            }"
+                                        >
+                                            <svg-icon
+                                                class="d-flex align-items-center justify-content-center trend-icon"
+                                                [src]="
+                                                    performanceDataItem.lastIntervalTrend
+                                                        | setTrendIcon
+                                                            : performanceDataItem.title
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': 14,
+                                                    'height.px': 14
+                                                }"
+                                            ></svg-icon>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center box-bottom-title"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        currentActiveTab.name
+                                            | setTrendLabel
+                                                : performanceDataItem.isHovered
+                                                : selectedSubPeriodLabel
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- Charts -->
+
+        <ng-container *ngIf="isLoading">
+            <app-dashboard-loading-placeholder
+                [performanceChartsPlaceholder]="true"
+            ></app-dashboard-loading-placeholder>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoading && lineChartConfig && barChartConfig">
+            <div
+                class="charts-container"
+                (mouseleave)="handleRemoveChartsHover()"
+            >
+                <!-- Line Chart -->
+
+                <div
+                    class="d-flex flex-column justify-content-center dashboard-performance-body-line-chart-container"
+                >
+                    <div
+                        class="d-flex align-items-center justify-content-between line-chart-header"
+                    >
+                        <p class="m-0 ta-font-bold">{{ lineChartDateTitle }}</p>
+
+                        <div
+                            class="d-flex align-items-center line-chart-header-right"
+                        >
+                            <div class="d-flex align-items-center">
+                                <svg-icon
+                                    class="circle-icon circle-icon-price"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-semi-bold">
+                                    Price per Gallon
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <svg-icon
+                                    class="circle-icon circle-icon-rate"
+                                    [src]="
+                                        'assets/svg/common/load/ic_circle-default-load.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+
+                                <p class="m-0 ta-font-semi-bold">
+                                    Load Rate per Mile
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line-chart-container">
+                        <app-ta-chart
+                            #lineChart
+                            [chartConfig]="lineChartConfig"
+                            [axesProperties]="lineChartAxes"
+                            [legendAttributes]="{}"
+                        >
+                        </app-ta-chart>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+
+                <div class="bar-chart-container">
+                    <app-ta-chart
+                        #barChart
+                        [chartConfig]="barChartConfig"
+                        [axesProperties]="barChartAxes"
+                        [legendAttributes]="{}"
+                        (hoverOtherChart)="handleBarChartHover($event)"
+                    >
+                    </app-ta-chart>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

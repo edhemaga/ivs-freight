@@ -9,28 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PerformanceGraphMetric } from './performanceGraphMetric';
 
 
 export interface PerformanceGraphResponse { 
-    loadRatePerMile?: number | null;
-    pricePerGallon?: number | null;
-    ownersCount?: number | null;
-    usersCount?: number | null;
-    accidentsCount?: number | null;
-    brokersCount?: number | null;
-    driversCount?: number | null;
-    expencesCount?: number | null;
-    fuelCostsCount?: number | null;
-    fuelGallonsCount?: number | null;
-    loadsCount?: number | null;
-    milesCount?: number | null;
-    repairCostsCount?: number | null;
-    repairShopsCount?: number | null;
-    revenuesCount?: number | null;
-    roadsidesCount?: number | null;
-    shippersCount?: number | null;
-    trailersCount?: number | null;
-    trucksCount?: number | null;
-    violationsCount?: number | null;
+    performanceGraphMetrics?: Array<PerformanceGraphMetric> | null;
 }
 

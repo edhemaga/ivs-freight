@@ -1,0 +1,113 @@
+<div
+    class="d-flex flex-column justify-content-center placeholder-container"
+    [ngClass]="{
+        'performance-double-container': performanceDoubleBoxPlaceholder,
+        'performance-single-container': performanceSingleBoxPlaceholder,
+        'performance-charts-container': performanceChartsPlaceholder,
+        'list-placeholder-container': listPlaceholder
+    }"
+>
+    <!-- Performance Double Box Placeholder -->
+
+    <ng-container *ngIf="performanceDoubleBoxPlaceholder">
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 60%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 50%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 100%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 40%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 35%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 30%"></span>
+        </p>
+    </ng-container>
+
+    <!-- Performance Single Box Placeholder -->
+
+    <ng-container *ngIf="performanceSingleBoxPlaceholder">
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 40%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 80%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 50%"></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder" style="width: 75%"></span>
+        </p>
+    </ng-container>
+
+    <!-- Performance Charts Placeholder -->
+
+    <ng-container *ngIf="performanceChartsPlaceholder">
+        <div
+            class="d-flex flex-column justify-content-center align-items-center"
+        >
+            <p class="m-0 ta-font-bold">Chart is Loading...</p>
+
+            <app-ta-spinner [isBarSpinner]="true"></app-ta-spinner>
+        </div>
+    </ng-container>
+
+    <!-- List Placeholder -->
+
+    <ng-container *ngIf="listPlaceholder">
+        <ng-container *ngFor="let _ of numberOfIterations">
+            <div
+                class="d-flex align-items-center justify-content-between list-placeholder"
+            >
+                <!-- Left -->
+
+                <div class="d-flex align-items-center list-placeholder-left">
+                    <p class="placeholder-glow">
+                        <span
+                            class="list-placeholder-left-circle-placeholder placeholder"
+                            style="width: 15px; height: 15px"
+                        ></span>
+                    </p>
+
+                    <p class="placeholder-glow">
+                        <span
+                            class="list-placeholder-circle-placeholder placeholder"
+                            style="width: 15px; height: 15px"
+                        ></span>
+                    </p>
+
+                    <p class="placeholder-glow">
+                        <span class="placeholder" style="width: 125px"></span>
+                    </p>
+                </div>
+
+                <!-- Right -->
+
+                <div class="d-flex align-items-center list-placeholder-right">
+                    <p class="placeholder-glow">
+                        <span class="placeholder" style="width: 25px"></span>
+                    </p>
+
+                    <p class="placeholder-glow">
+                        <span class="placeholder" style="width: 70px"></span>
+                    </p>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>

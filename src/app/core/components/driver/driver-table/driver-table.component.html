@@ -7,7 +7,7 @@
         [columns]="columns"
     ></app-truckassist-table-toolbar>
 
-    <div *ngIf="activeViewMode == 'List'">
+    <ng-container *ngIf="activeViewMode === 'List'">
         <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -24,23 +24,102 @@
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
         ></app-truckassist-table-body>
-
-       <!--  <app-table-modal
-            [columns]="modalColumns"
-            [viewData]="modalViewData"
-            [midSectionWidth]="341"
-            [formGroup]="testControl"
-            [modalScrollStyleOptions]="{
-                horizontalScrollBarMarginTop: 4,
-                horizontalScrollBarLeft: 0,
-                horizontalScrollBarWidth: 606,
-                additionalWidth: 265,
-                modalScrollClassActive: true
-            }"
-        ></app-table-modal> -->
-    </div>
-
-    <div *ngIf="activeViewMode == 'Card'">
-        <app-driver-card [viewData]="viewData"></app-driver-card>
+    </ng-container>
+    <div class="cards-container">
+        <ng-container
+            *ngIf="activeViewMode === 'Card' && selectedTab !== 'applicants'"
+        >
+            <ng-container
+                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
+            >
+                <app-truckassist-cards
+                    (bodyActions)="onTableBodyActions($event)"
+                    [viewData]="viewData"
+                    [card]="data"
+                    [cardIndex]="[i]"
+                    [cardHeader]="{
+                        checkbox: true,
+                        cardTitleBefore: !data.avatarImg
+                            ? data.textShortName
+                            : null,
+                        cardTitleBeforeStyle: !data.avatarImg
+                            ? 'background: ' +
+                              (data?.avatarColor?.background || 'initial') +
+                              '; color:' +
+                              (data?.avatarColor?.color || 'initial') +
+                              '; font-size: 7px; font-weight: 800; border-radius:1px; width: 18px; height: 20px; margin-right: 5px; bottom: 1px; position: relative;'
+                            : '',
+                        cardTitle: data?.fullName,
+                        imgStyle:
+                            'height: 20px; border-radius: 1px; margin-right: 5px; padding',
+                        img: data?.avatarImg ? data?.avatarImg : null,
+                        isOwner: data?.isOwner
+                    }"
+                    [firstLabel]="{
+                        title: 'Phone No.',
+                        value: { firstValue: data?.emergencyContactPhone }
+                    }"
+                    [seccondLabel]="{
+                        title: 'SSN No.',
+                        value: {
+                            firstValue: data?.ssn
+                        }
+                    }"
+                    [thirdLabel]="{
+                        title: 'CDL No.',
+                        value: {
+                            firstValue: data?.cdlNumber
+                        }
+                    }"
+                    [fourthLabel]="{
+                        title: 'Pay Type',
+                        value: { firstValue: data?.payType?.name }
+                    }"
+                    [firstLabelBack]="{
+                        title: 'Hired',
+                        value: {
+                            date: data?.hired
+                        }
+                    }"
+                    [seccondLabelBack]="{
+                        title: 'CDL Exp.',
+                        value: {
+                            deadline: true,
+                            deadlineBack: 'background: #919191;',
+                            deadlineFront:
+                                'background: #919191; width:' +
+                                data?.tableCdlDetailExpiration?.percentage +
+                                '%',
+                            firstValue:
+                                'in ' +
+                                data?.tableCdlDetailExpiration
+                                    ?.expirationDaysText +
+                                ' days'
+                        }
+                    }"
+                    [thirdLabelBack]="{
+                        title: 'Medical Exp.',
+                        value: {
+                            deadline: true,
+                            deadlineBack: data?.tableMedicalData?.percentage,
+                            firstValue:
+                                'in ' +
+                                data?.tableMedicalData?.expirationDaysText +
+                                ' days'
+                        }
+                    }"
+                    [fourthLabelBack]="{
+                        title: 'MVR Exp.',
+                        value: {
+                            firstValue:
+                                'in ' +
+                                data?.tableMvrDetailsExpiration
+                                    ?.expirationDaysText +
+                                ' days'
+                        }
+                    }"
+                ></app-truckassist-cards>
+            </ng-container>
+        </ng-container>
     </div>
 </div>

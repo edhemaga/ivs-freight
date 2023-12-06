@@ -9,46 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MilesPerformanceResponse } from './milesPerformanceResponse';
-import { TruckPerformanceResponse } from './truckPerformanceResponse';
-import { NetIncomePerformanceResponse } from './netIncomePerformanceResponse';
-import { LoadPerformanceResponse } from './loadPerformanceResponse';
-import { UserPerformanceResponse } from './userPerformanceResponse';
-import { OwnerPerformanceResponse } from './ownerPerformanceResponse';
-import { FuelGallonPerformanceResponse } from './fuelGallonPerformanceResponse';
-import { ViolationPerformanceResponse } from './violationPerformanceResponse';
-import { RevenuePerformanceResponse } from './revenuePerformanceResponse';
-import { FuelCostPerformanceResponse } from './fuelCostPerformanceResponse';
-import { DriverPerformanceResponse } from './driverPerformanceResponse';
-import { ExpencesPerformanceResponse } from './expencesPerformanceResponse';
-import { AccidentPerformanceResponse } from './accidentPerformanceResponse';
-import { ShipperPerformanceResponse } from './shipperPerformanceResponse';
-import { RepairCostPerformanceResponse } from './repairCostPerformanceResponse';
-import { RoadsidePerformanceResponse } from './roadsidePerformanceResponse';
-import { BrokerPerformanceResponse } from './brokerPerformanceResponse';
-import { RepairShopPerformanceResponse } from './repairShopPerformanceResponse';
-import { TrailerPerformanceResponse } from './trailerPerformanceResponse';
+import { PerformanceGraphListResponse } from './performanceGraphListResponse';
+import { IntervalLabelResponse } from './intervalLabelResponse';
+import { PerformanceTableResponse } from './performanceTableResponse';
 
 
 export interface PerformanceResponse { 
-    ownerPerformance?: OwnerPerformanceResponse;
-    userPerformance?: UserPerformanceResponse;
-    accidentPerformance?: AccidentPerformanceResponse;
-    brokerPerformance?: BrokerPerformanceResponse;
-    driverPerformance?: DriverPerformanceResponse;
-    expencesPerformance?: ExpencesPerformanceResponse;
-    fuelCostPerformance?: FuelCostPerformanceResponse;
-    fuelGallonPerformance?: FuelGallonPerformanceResponse;
-    loadPerformance?: LoadPerformanceResponse;
-    milesPerformance?: MilesPerformanceResponse;
-    netIncomePerformance?: NetIncomePerformanceResponse;
-    repairCostPerformance?: RepairCostPerformanceResponse;
-    repairShopPerformance?: RepairShopPerformanceResponse;
-    revenuePerformance?: RevenuePerformanceResponse;
-    roadsidePerformance?: RoadsidePerformanceResponse;
-    shipperPerformance?: ShipperPerformanceResponse;
-    trailerPerformance?: TrailerPerformanceResponse;
-    truckPerformance?: TruckPerformanceResponse;
-    violationPerformance?: ViolationPerformanceResponse;
+    performanceTable?: PerformanceTableResponse;
+    performanceGraph?: PerformanceGraphListResponse;
+    intervalLabels?: Array<IntervalLabelResponse> | null;
 }
 

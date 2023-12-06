@@ -24,7 +24,10 @@
     <!-- BORDER -->
     <div
         class="border-container"
-        *ngIf="options?.toolbarActions?.viewModeOptions?.length && !options.toolbarActions.hideSearch"
+        *ngIf="
+            options?.toolbarActions?.viewModeOptions?.length &&
+            !options.toolbarActions.hideSearch
+        "
     >
         <div class="border"></div>
     </div>
@@ -60,7 +63,9 @@
         <div class="ahrive-count">{{ activeTableData.arhiveCount }}</div>
         <svg-icon
             [svgStyle]="{ 'width.px': 17, 'height.px': 17 }"
-            [src]="'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'"
+            [src]="
+                'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'
+            "
         ></svg-icon>
     </div>
 
@@ -178,7 +183,7 @@
         Arhive Filter
     </div>
     -->
-    
+
     <!-- BORDER -->
     <div class="border-container" *ngIf="options.toolbarActions.showTimeFilter">
         <div class="border"></div>
@@ -286,7 +291,6 @@
     </div>
     -->
 
-
     <!-- BORDER -->
     <!--
     <div
@@ -296,7 +300,7 @@
         <div class="border"></div>
     </div>
     -->
-    
+
     <!-- REPAIR ORDER FILTER -->
     <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showRepairOrderFilter">
@@ -415,7 +419,7 @@
         LTL Filter
     </div>
     -->
-    
+
     <!-- BORDER -->
     <div
         class="border-container"

@@ -1,0 +1,435 @@
+@import 'src/theme/variables.scss';
+
+.dashboard-performance {
+    padding: 4px 12px;
+    background: $white;
+    border-radius: 3px;
+    margin-bottom: 12px;
+
+    p {
+        &::-moz-selection {
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
+        }
+    }
+
+    /* Header */
+    &-header {
+        margin-bottom: 4px;
+
+        &-title {
+            p {
+                color: $ta-black;
+                font-size: 26px;
+                line-height: 32px;
+            }
+        }
+
+        &-border {
+            width: 2px;
+            height: 18px;
+            border-radius: 1px;
+            background-color: $ta-light-grey-6;
+        }
+
+        &-dropdown {
+            margin-left: 4px;
+
+            &.dropdown-right-w-1 {
+                width: 82px;
+            }
+
+            &.dropdown-right-w-2 {
+                width: 89px;
+            }
+
+            &.dropdown-right-w-3 {
+                width: 111px;
+            }
+
+            &.dropdown-right-w-4 {
+                width: 70px;
+            }
+
+            &.dropdown-right-w-5 {
+                width: 87px;
+            }
+
+            &.dropdown-right-w-6 {
+                width: 107px;
+            }
+
+            &.dropdown-right-w-7 {
+                width: 135px;
+            }
+
+            &.dropdown-right-w-8 {
+                width: 94px;
+            }
+
+            &.dropdown-right-w-9 {
+                width: 101px;
+            }
+
+            &.dropdown-right-w-10 {
+                width: 76px;
+            }
+        }
+    }
+
+    /* Body */
+    &-body {
+        /* Boxes */
+        &-boxes-container {
+            margin-bottom: 12px;
+
+            .boxes-double-box {
+                padding: 12px;
+                margin-right: 4px;
+                border-radius: 3px;
+                background: $ta-white-5;
+                cursor: pointer;
+                transition: background 0.3s ease-in;
+
+                &:hover {
+                    background: $bw2;
+                }
+
+                &:hover
+                    .boxes-double-box-body
+                    .boxes-double-box-body-stats
+                    .trend-icon-box {
+                    background: $white;
+                }
+
+                &.selected:hover
+                    .boxes-double-box-body
+                    .boxes-double-box-body-stats
+                    .trend-icon-box {
+                    background: $ta-white-3;
+                }
+
+                &.selected {
+                    .circle-icon {
+                        svg {
+                            rect {
+                                fill: $ta-white-3;
+                            }
+                        }
+                    }
+
+                    p {
+                        color: $white;
+                    }
+
+                    .status-bar {
+                        background: $ta-white-3;
+
+                        &-inner {
+                            background: $white;
+                        }
+                    }
+
+                    .boxes-double-box-body {
+                        &-stats {
+                            .trend-icon-box {
+                                background: $ta-white-3;
+                            }
+                        }
+                    }
+
+                    .boxes-double-box-body-stats {
+                        p:last-child {
+                            color: $ta-white-3;
+                        }
+
+                        div {
+                            .trend-span {
+                                p {
+                                    color: $white;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &-header {
+                    margin-bottom: 18px;
+
+                    &-income {
+                        margin-bottom: 10px !important;
+
+                        &-up {
+                            margin-bottom: 6px;
+
+                            .circle-icon {
+                                margin-right: 8px;
+                                line-height: 0;
+
+                                svg {
+                                    rect {
+                                        fill: $ta-light-grey-6;
+                                    }
+                                }
+                            }
+
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $ta-black;
+                            }
+                        }
+
+                        &-down {
+                            p {
+                                font-size: 22px;
+                                line-height: 29px;
+                                color: $ta-black;
+                            }
+                        }
+                    }
+
+                    /* Status Bar */
+                    .status-bar {
+                        width: 176px;
+                        height: 8px;
+                        border-radius: 2px;
+                        background: $bw-9;
+
+                        &-inner {
+                            background: $ta-light-grey-2;
+                            height: 8px;
+                            width: 80%;
+                        }
+                    }
+                }
+
+                &-body {
+                    &-stats {
+                        &:first-child {
+                            margin-bottom: 32px;
+                        }
+
+                        p {
+                            color: $ta-black;
+
+                            &:nth-child(1) {
+                                font-size: 18px;
+                                line-height: 22px;
+                            }
+
+                            &:last-child {
+                                color: $ta-light-grey-2;
+                                font-size: 11px;
+                                line-height: 14px;
+                            }
+                        }
+
+                        div {
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                            }
+
+                            .trend-span {
+                                p {
+                                    font-size: 14px;
+                                    line-height: 18px;
+                                    color: $ta-black;
+                                }
+                            }
+
+                            .trend-icon-box {
+                                margin-left: 6px;
+                                background: transparent;
+                                width: 20px;
+                                height: 20px;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .boxes-single-box-container {
+                width: 100%;
+                display: grid;
+                grid-template-rows: repeat(2, 116px);
+                grid-template-columns: repeat(9, 1fr);
+                gap: 4px;
+
+                .box {
+                    padding: 12px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    transition: background 0.3s ease-in;
+
+                    &:hover {
+                        background: $bw2;
+                    }
+                    &:hover .box-last-average .trend-icon-box {
+                        background: $white;
+                    }
+
+                    &:hover
+                        .box-last-average
+                        .trend-icon-box.hide-trend-icon-box {
+                        visibility: hidden;
+                        opacity: 0;
+                    }
+
+                    &.selected {
+                        .circle-icon {
+                            svg {
+                                rect {
+                                    fill: $ta-white-3;
+                                }
+                            }
+                        }
+
+                        p {
+                            color: $white;
+                        }
+
+                        .box-last-average {
+                            .trend-span {
+                                p {
+                                    color: $white;
+                                }
+                            }
+
+                            .trend-icon-box {
+                                background: $ta-white-3;
+                            }
+                        }
+
+                        .box-bottom-title {
+                            p {
+                                color: $ta-white-3;
+                            }
+                        }
+                    }
+
+                    &-header {
+                        margin-bottom: 6px;
+
+                        .circle-icon {
+                            margin-right: 8px;
+                            line-height: 0;
+
+                            svg {
+                                rect {
+                                    fill: $ta-light-grey-6;
+                                }
+                            }
+                        }
+
+                        p {
+                            font-size: 14px;
+                            line-height: 18px;
+                            color: $ta-black;
+                        }
+                    }
+
+                    &-value {
+                        margin-bottom: 6px;
+
+                        p {
+                            font-size: 22px;
+                            line-height: 28px;
+                            color: $ta-black;
+                        }
+                    }
+
+                    &-last-average {
+                        p {
+                            font-size: 14px;
+                            line-height: 18px;
+                            color: $ta-black;
+                        }
+
+                        .trend-span {
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $ta-black;
+                            }
+                        }
+
+                        .trend-icon-box {
+                            margin-left: 6px;
+                            background: transparent;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                        }
+                    }
+
+                    &-bottom-title {
+                        p {
+                            font-size: 11px;
+                            line-height: 14px;
+                            color: $ta-light-grey-2;
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Line Chart */
+        &-line-chart-container {
+            margin-bottom: -42px;
+
+            .line-chart-header {
+                margin-bottom: 12px;
+
+                p {
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: $ta-light-grey-2;
+                }
+
+                &-right {
+                    div:first-child {
+                        margin-right: 22px;
+                    }
+
+                    p {
+                        font-size: 14px;
+                    }
+
+                    .circle-icon {
+                        margin-right: 8px;
+                        line-height: 0;
+
+                        &-price {
+                            svg {
+                                rect {
+                                    fill: $ta-light-grey-2;
+                                }
+                            }
+                        }
+
+                        &-rate {
+                            svg {
+                                rect {
+                                    fill: $bw-9;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .bar-chart-container {
+            border-top: 1px solid $bw-9;
+            padding-top: 10px;
+        }
+    }
+}

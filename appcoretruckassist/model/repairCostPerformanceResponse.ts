@@ -12,8 +12,8 @@
 
 
 export interface RepairCostPerformanceResponse { 
-    repairCostsCount?: number | null;
-    repairCostsDifference?: number | null;
-    repairCostsAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 

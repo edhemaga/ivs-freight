@@ -33,7 +33,10 @@
             >
                 <!-- Selected Row Count -->
                 <div
-                    *ngIf="column.ngTemplate === 'checkbox' || column.ngTemplate === 'user-checkbox'"
+                    *ngIf="
+                        column.ngTemplate === 'checkbox' ||
+                        column.ngTemplate === 'user-checkbox'
+                    "
                     class="selected-rows-count"
                     #op="ngbPopover"
                     (click)="onSelectedOptions(op)"
@@ -318,7 +321,9 @@
         </tr>
 
         <!-- Border -->
-        <div class="table-border-scroll-section-container table-border-scroll-section-container-left">
+        <div
+            class="table-border-scroll-section-container table-border-scroll-section-container-left"
+        >
             <div
                 class="table-border-scroll-section"
                 [ngClass]="{
@@ -650,7 +655,9 @@
         </tr>
 
         <!-- Border -->
-        <div class="table-border-scroll-section-container table-border-scroll-section-container-right">
+        <div
+            class="table-border-scroll-section-container table-border-scroll-section-container-right"
+        >
             <div
                 class="table-border-scroll-section"
                 [ngClass]="{
@@ -720,7 +727,11 @@
         </div>
 
         <!-- Select Remaining Or  Clear Selected -->
-        <div *ngIf="mySelection.length < selectableRow.length && mySelection.length">
+        <div
+            *ngIf="
+                mySelection.length < selectableRow.length && mySelection.length
+            "
+        >
             <div class="select-option" (click)="onSelect('select')">
                 <div class="text">Select Remaining</div>
                 <div class="count">

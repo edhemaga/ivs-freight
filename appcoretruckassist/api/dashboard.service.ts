@@ -33,7 +33,7 @@ import { LiveTrackingLiteResponse } from '../model/liveTrackingLiteResponse';
 // @ts-ignore
 import { LoadStopType } from '../model/loadStopType';
 // @ts-ignore
-import { PerformanceListResponse } from '../model/performanceListResponse';
+import { PerformanceResponse } from '../model/performanceResponse';
 // @ts-ignore
 import { PickupDeliveryByStateListResponse } from '../model/pickupDeliveryByStateListResponse';
 // @ts-ignore
@@ -138,6 +138,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -145,10 +146,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AccidentByStateListResponse>;
-    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AccidentByStateListResponse>>;
-    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AccidentByStateListResponse>>;
-    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AccidentByStateListResponse>;
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AccidentByStateListResponse>>;
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AccidentByStateListResponse>>;
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -168,6 +169,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -315,6 +320,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -322,10 +328,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairByStateListResponse>;
-    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairByStateListResponse>>;
-    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairByStateListResponse>>;
-    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairByStateListResponse>;
+    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairByStateListResponse>>;
+    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairByStateListResponse>>;
+    public apiDashboardFuelbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -345,6 +351,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -425,9 +435,9 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PerformanceListResponse>;
-    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PerformanceListResponse>>;
-    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PerformanceListResponse>>;
+    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PerformanceResponse>;
+    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PerformanceResponse>>;
+    public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PerformanceResponse>>;
     public apiDashboardPerformanceGet(timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -489,7 +499,7 @@ export class DashboardService {
         }
 
         let localVarPath = `/api/dashboard/performance`;
-        return this.httpClient.request<PerformanceListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PerformanceResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -508,6 +518,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -515,10 +526,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PickupDeliveryByStateListResponse>;
-    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PickupDeliveryByStateListResponse>>;
-    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PickupDeliveryByStateListResponse>>;
-    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PickupDeliveryByStateListResponse>;
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PickupDeliveryByStateListResponse>>;
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PickupDeliveryByStateListResponse>>;
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadStopType !== undefined && loadStopType !== null) {
@@ -542,6 +553,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -619,6 +634,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -626,10 +642,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairByStateListResponse>;
-    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairByStateListResponse>>;
-    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairByStateListResponse>>;
-    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairByStateListResponse>;
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairByStateListResponse>>;
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairByStateListResponse>>;
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -649,6 +665,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -841,6 +861,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -848,10 +869,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopBrokersListResponse>;
-    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopBrokersListResponse>>;
-    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopBrokersListResponse>>;
-    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopBrokersListResponse>;
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopBrokersListResponse>>;
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopBrokersListResponse>>;
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -871,6 +892,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -948,6 +973,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -955,10 +981,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopDispatchersListResponse>;
-    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopDispatchersListResponse>>;
-    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopDispatchersListResponse>>;
-    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopDispatchersListResponse>;
+    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopDispatchersListResponse>>;
+    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopDispatchersListResponse>>;
+    public apiDashboardTopdispatchersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -978,6 +1004,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1055,6 +1085,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1062,10 +1093,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopDriverListResponse>;
-    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopDriverListResponse>>;
-    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopDriverListResponse>>;
-    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopDriverListResponse>;
+    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopDriverListResponse>>;
+    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopDriverListResponse>>;
+    public apiDashboardTopdriversGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -1085,6 +1116,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1162,6 +1197,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1169,10 +1205,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopFuelStopListResponse>;
-    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopFuelStopListResponse>>;
-    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopFuelStopListResponse>>;
-    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopFuelStopListResponse>;
+    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopFuelStopListResponse>>;
+    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopFuelStopListResponse>>;
+    public apiDashboardTopfuelstopsGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -1192,6 +1228,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1269,6 +1309,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1276,10 +1317,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopOwnerListResponse>;
-    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopOwnerListResponse>>;
-    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopOwnerListResponse>>;
-    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopOwnerListResponse>;
+    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopOwnerListResponse>>;
+    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopOwnerListResponse>>;
+    public apiDashboardTopownersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -1299,6 +1340,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1376,6 +1421,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1383,10 +1429,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopRepairShopListResponse>;
-    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopRepairShopListResponse>>;
-    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopRepairShopListResponse>>;
-    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopRepairShopListResponse>;
+    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopRepairShopListResponse>>;
+    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopRepairShopListResponse>>;
+    public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -1406,6 +1452,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1482,6 +1532,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1489,10 +1540,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopShipperListResponse>;
-    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopShipperListResponse>>;
-    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopShipperListResponse>>;
-    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopShipperListResponse>;
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopShipperListResponse>>;
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopShipperListResponse>>;
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (searchTerms) {
@@ -1508,6 +1559,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1585,6 +1640,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1592,10 +1648,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopTruckListResponse>;
-    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopTruckListResponse>>;
-    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopTruckListResponse>>;
-    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopTruckListResponse>;
+    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopTruckListResponse>>;
+    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopTruckListResponse>>;
+    public apiDashboardToptrucksGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -1615,6 +1671,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1692,6 +1752,7 @@ export class DashboardService {
      * @param searchTerms 
      * @param pageIndex 
      * @param pageSize 
+     * @param showMore 
      * @param timeInterval 
      * @param startDate 
      * @param endDate 
@@ -1699,10 +1760,10 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ViolationByStateListResponse>;
-    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ViolationByStateListResponse>>;
-    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ViolationByStateListResponse>>;
-    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ViolationByStateListResponse>;
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ViolationByStateListResponse>>;
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ViolationByStateListResponse>>;
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, showMore?: boolean, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (reportType !== undefined && reportType !== null) {
@@ -1722,6 +1783,10 @@ export class DashboardService {
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (showMore !== undefined && showMore !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>showMore, 'ShowMore');
         }
         if (timeInterval !== undefined && timeInterval !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

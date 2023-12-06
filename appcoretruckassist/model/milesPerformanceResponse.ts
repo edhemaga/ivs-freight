@@ -12,8 +12,8 @@
 
 
 export interface MilesPerformanceResponse { 
-    milesCount?: number | null;
-    milesDifference?: number | null;
-    milesAverage?: number | null;
+    lastIntervalValue?: number | null;
+    lastIntervalTrend?: number | null;
+    intervalAverageValue?: number | null;
 }
 
