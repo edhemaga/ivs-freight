@@ -124,4 +124,15 @@ export enum ConstantStringEnum {
     ZERO_STRING = '0',
 
     MAP_STATE_DEFAULT_COLOR = '#E5E5E5',
+
+    DROPDOWN_CLASS_WIDTH_1 = 'dropdown-right-w-1',
+    DROPDOWN_CLASS_WIDTH_2 = 'dropdown-right-w-2',
+    DROPDOWN_CLASS_WIDTH_3 = 'dropdown-right-w-3',
+    DROPDOWN_CLASS_WIDTH_4 = 'dropdown-right-w-4',
+    DROPDOWN_CLASS_WIDTH_5 = 'dropdown-right-w-5',
+    DROPDOWN_CLASS_WIDTH_6 = 'dropdown-right-w-6',
+    DROPDOWN_CLASS_WIDTH_7 = 'dropdown-right-w-7',
+    DROPDOWN_CLASS_WIDTH_8 = 'dropdown-right-w-8',
+    DROPDOWN_CLASS_WIDTH_9 = 'dropdown-right-w-9',
+    DROPDOWN_CLASS_WIDTH_10 = 'dropdown-right-w-10',
 }
