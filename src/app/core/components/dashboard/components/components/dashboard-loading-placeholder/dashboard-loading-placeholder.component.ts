@@ -8,8 +8,22 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DashboardLoadingPlaceholderComponent implements OnInit {
     @Input() performanceDoubleBoxPlaceholder: boolean = false;
     @Input() performanceSingleBoxPlaceholder: boolean = false;
+    @Input() performanceChartsPlaceholder: boolean = false;
+    @Input() listPlaceholder: boolean = false;
+
+    public numberOfIterations: number[] = [];
 
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.createNNumberOfIterations();
+    }
+
+    private createNNumberOfIterations(): void {
+        const iterations = 6;
+
+        this.numberOfIterations = Array(iterations)
+            .fill(0)
+            .map((_, i) => i);
+    }
 }

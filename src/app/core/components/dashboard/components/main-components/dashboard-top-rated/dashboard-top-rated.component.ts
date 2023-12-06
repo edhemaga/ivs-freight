@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardTopRatedService } from '../../../state/services/dashboard-top-rated.service';
@@ -79,6 +79,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
 
     public isDisplayingPlaceholder: boolean = false;
+    public isLoading: boolean = false;
 
     // search
     public searchValue: string;
@@ -90,8 +91,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private topRatedListBeforeSearch: TopRatedListItem[] = [];
     public topRatedListSelectedPercentage: number = 100;
 
+    public topRatedListLength: number = 0;
+
     // show more
-    public topRatedListSliceEnd: number = 10;
     public isShowingMore: boolean = false;
 
     // tabs
@@ -111,6 +113,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private selectedCustomPeriodRange: CustomPeriodRange;
 
     private overallCompanyDuration: number;
+
+    public selectedDropdownWidthSubPeriod: DropdownListItem;
 
     // colors
     public mainColorsPallete: TopRatedMainColorsPallete[] = [];
@@ -189,9 +193,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             selectedBarPercentages: [],
         };
 
-        this.isShowingMore = false;
-        this.topRatedListSliceEnd = 10;
-
         this.clearSearchValue = true;
     }
 
@@ -250,11 +251,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         action: string
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
-            if (this.selectedMainPeriod.name === dropdownListItem.name) return;
+            if (
+                dropdownListItem.name !== ConstantStringEnum.CUSTOM &&
+                this.selectedMainPeriod.name === dropdownListItem.name
+            )
+                return;
 
-            if (this.isDisplayingCustomPeriodRange) {
+            if (this.isDisplayingCustomPeriodRange)
                 this.isDisplayingCustomPeriodRange = false;
-            }
 
             this.selectedMainPeriod = dropdownListItem;
 
@@ -288,10 +292,13 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                     break;
                 case ConstantStringEnum.CUSTOM:
-                    this.isDisplayingCustomPeriodRange = true;
+                    this.selectedDropdownWidthSubPeriod =
+                        this.selectedSubPeriod;
 
                     this.subPeriodDropdownList = [];
                     this.selectedSubPeriod = null;
+
+                    this.isDisplayingCustomPeriodRange = true;
 
                     break;
                 default:
@@ -375,20 +382,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     public handleShowMoreClick(): void {
-        if (!this.isShowingMore) {
-            this.isShowingMore = true;
+        this.isShowingMore = !this.isShowingMore;
 
-            this.topRatedListSliceEnd = this.topRatedList.length;
-
-            return;
-        }
-
-        if (this.isShowingMore) {
-            this.isShowingMore = false;
-
-            this.topRatedListSliceEnd = 10;
-
-            return;
+        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            this.getTopRatedListData(this.selectedCustomPeriodRange);
+        } else {
+            this.getTopRatedListData();
         }
     }
 
@@ -408,11 +407,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
             this.setCustomSubPeriodList(this.overallCompanyDuration);
+
+            this.selectedSubPeriod = this.selectedDropdownWidthSubPeriod;
         } else {
             this.isDisplayingCustomPeriodRange = false;
             this.selectedCustomPeriodRange = customPeriodRange;
 
             this.getTopRatedListData(customPeriodRange);
+
+            this.selectedDropdownWidthSubPeriod = this.selectedSubPeriod;
         }
     }
 
@@ -558,11 +561,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             null,
             null,
             null,
+            this.isShowingMore,
             selectedMainPeriod,
             customPeriodRange?.fromDate ?? null,
             customPeriodRange?.toDate ?? null,
             selectedSubPeriod,
         ];
+
+        this.isLoading = true;
 
         this.resetSelectedValues();
 
@@ -623,7 +629,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedDispatcher(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((dispatcherData) => {
                 // top rated list and single selection data
                 this.topRatedList = dispatcherData.pagination.data.map(
@@ -676,6 +685,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 );
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = dispatcherData.pagination.count;
 
                 // intervals
 
@@ -740,7 +751,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedDriver(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((driverData) => {
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
@@ -788,6 +802,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 });
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = driverData.pagination.count;
 
                 // intervals
 
@@ -850,7 +866,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedTruck(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((truckData) => {
                 // top rated list and single selection data
                 this.topRatedList = truckData.pagination.data.map((truck) => {
@@ -898,6 +917,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 });
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = truckData.pagination.count;
 
                 // intervals
 
@@ -955,7 +976,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedBroker(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((brokerData) => {
                 // top rated list and single selection data
                 this.topRatedList = brokerData.pagination.data.map((broker) => {
@@ -1003,6 +1027,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 });
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = brokerData.pagination.count;
 
                 // intervals
 
@@ -1065,7 +1091,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.dashboardTopRatedService
             .getTopRatedShipper(filteredTopRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((shipperData) => {
                 // top rated list and single selection data
                 this.topRatedList = shipperData.pagination.data.map(
@@ -1105,6 +1134,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 );
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = shipperData.pagination.count;
 
                 // intervals
 
@@ -1155,7 +1186,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedOwner(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((ownerData) => {
                 // top rated list and single selection data
                 this.topRatedList = ownerData.pagination.data.map((owner) => {
@@ -1203,6 +1237,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 });
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = ownerData.pagination.count;
 
                 // intervals
 
@@ -1260,7 +1296,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedRepairShop(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((repairShopData) => {
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
@@ -1309,15 +1348,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     }
                 );
 
-                this.topRatedList.push({
-                    id: 11,
-                    name: 'Denis Rodman',
-                    value: '152324.5',
-                    percent: '8.53',
-                    isSelected: false,
-                });
-
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = repairShopData.pagination.count;
 
                 // intervals
 
@@ -1378,7 +1411,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     ): void {
         this.dashboardTopRatedService
             .getTopRatedFuelStop(topRatedArgumentsData)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
             .subscribe((fuelStopData) => {
                 // top rated list and single selection data
                 this.topRatedList = fuelStopData.pagination.data.map(
@@ -1428,6 +1464,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 );
 
                 this.topRatedListBeforeSearch = [...this.topRatedList];
+
+                this.topRatedListLength = fuelStopData.pagination.count;
 
                 // intervals
 
@@ -1486,6 +1524,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.subPeriodDropdownList = filteredSubPeriodDropdownList;
         this.selectedSubPeriod = selectedSubPeriod;
+
+        this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
     }
 
     private setDoughnutChartCenterStats(

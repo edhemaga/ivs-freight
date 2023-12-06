@@ -23,8 +23,9 @@ import { LottieModule } from 'ngx-lottie';
     ],
 })
 export class TaSpinnerComponent implements OnChanges {
-    @Input() size: string; // small, big
-    @Input() color: string; // black, gray, white, blueLight, blueDark
+    @Input() size?: string; // small, big
+    @Input() color?: string; // black, gray, white, blueLight, blueDark
+    @Input() isBarSpinner?: boolean = false;
 
     public lottieSpinner: any;
 
