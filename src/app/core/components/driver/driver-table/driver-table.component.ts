@@ -51,6 +51,14 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
+import { CardRows } from '../../shared/model/cardData';
+import {
+    cardTitle,
+    displayRowsActiveBack,
+    displayRowsActiveFront,
+    page,
+    rows,
+} from '../driver-card-data';
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -100,6 +108,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
+
+    //Data to display from model Active
+    public displayRowsFront: CardRows[] = displayRowsActiveFront;
+    public displayRowsBack: CardRows[] = displayRowsActiveBack;
+    //Title
+    public cardTitle: string = cardTitle;
+    // Page
+    public page: string = page;
+    //  Number of rows in card
+    public rows: number = rows;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
 
     constructor(
         // Services
@@ -530,6 +551,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
+
+            // Set data for cards based on tab active
+            this.selectedTab === 'active'
+                ? ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack))
+                : null;
 
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();

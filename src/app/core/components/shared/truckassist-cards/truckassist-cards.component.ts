@@ -85,7 +85,7 @@ export class TruckassistCardsComponent implements OnInit {
     ngOnInit(): void {}
 
     // Flip card based on card index
-    public flipCard(index: number) {
+    public flipCard(index: number): void {
         const indexSelected = this.isCardFlippedArray.indexOf(index);
 
         if (indexSelected !== -1) {
@@ -100,7 +100,7 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // When checkbox is selected
-    public onCheckboxSelect(index: number) {
+    public onCheckboxSelect(index: number): void {
         const indexSelected = this.isCheckboxCheckedArray.indexOf(index);
 
         if (indexSelected !== -1) {
@@ -115,7 +115,7 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // Show hide dropdown
-    public toggleDropdown(tooltip, card: CardDetails) {
+    public toggleDropdown(tooltip, card: CardDetails): void {
         this.tooltip = tooltip;
 
         if (tooltip.isOpen()) {
@@ -124,7 +124,7 @@ export class TruckassistCardsComponent implements OnInit {
             if (card.tableDropdownContent?.hasContent) {
                 let actions = [...card.tableDropdownContent.content];
 
-                actions = actions.map((actions: any) => {
+                actions = actions.map((actions: DropdownItem) => {
                     if (actions?.isDropdown) {
                         return {
                             ...actions,
@@ -148,7 +148,7 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // Remove Click Event On Inner Dropdown
-    public onRemoveClickEventListener() {
+    public onRemoveClickEventListener(): void {
         const innerDropdownContent = document.querySelectorAll(
             '.inner-dropdown-action-title'
         );
@@ -161,7 +161,7 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // Dropdown Actions
-    public onDropAction(action: DropdownItem, card: CardDetails) {
+    public onDropAction(action: DropdownItem, card: CardDetails): void {
         if (!action?.mutedStyle) {
             // Send Drop Action
             this.bodyActions.emit({
@@ -175,21 +175,19 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     //Remove quotes from string to convert into endpoint
-    private getValueByStringPath(obj: CardDetails, path: string) {
-        if (path === 'no-endpoint') {
-            return 'No Endpoint';
-        }
+    private getValueByStringPath(obj: CardDetails, path: string): string {
+        if (path === 'no-endpoint') return 'No Endpoint';
+
         //Check if value is null return /
         const value = obj[path];
 
-        if (value === null) {
-            return '/';
-        }
+        if (value === null) return '/';
+
         return path.split('.').reduce((acc, part) => acc && acc[part], obj);
     }
 
     // Track By For Table Row
-    public trackCard(item: any) {
-        return item.id;
+    public trackCard(item: number): number {
+        return item;
     }
 }

@@ -1,81 +1,15 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
-export interface DataUpdate {
-    animation: string;
-    data: {
-        pagination: {
-            count: number;
-            data: CardDetails[];
-            pageIndex: number;
-            pageSize: number;
-        };
-    };
-    id: string;
-}
-// TOOLBAR ACTIONS
-export interface ToolbarActions {
-    action: string;
-    tabData: DataForCardsAndTables;
-    mode: string;
-}
-export interface TableBodyActions {
-    data: CardDetails;
-    id: number;
-    type: string;
-}
-export interface DataForCardsAndTables {
-    data: CardDetails[];
-    extended: boolean;
-    field: string;
-    gridColumns: GridColumn[];
-    gridNameTitle: string;
-    isActive: boolean;
-    length: number;
-    stateName: string;
-    tableConfiguration: string;
-    title: string;
-}
-// Table Columns
-export interface Column {
-    column: GridColumn;
-    index: number;
-}
-export interface GridColumn {
-    avatar: null | string;
-    disabled: boolean;
-    export: boolean;
-    field: string;
-    filter: string;
-    filterable: boolean;
-    hidden: boolean;
-    hoverTemplate: null | string;
-    index: number;
-    isActionColumn: boolean;
-    isNumeric: boolean;
-    isPined: boolean;
-    isSelectColumn: boolean;
-    name: string;
-    ngTemplate: string;
-    progress: null | string;
-    resizable: boolean;
-    sortable: boolean;
-    tableHeadTitle: string;
-    title: string;
-    width: number;
-}
-// Table Columns end
-export interface SendDataCard {
-    id: number;
-    data: CardDetails;
-    type: string;
-}
-export interface CardDetails {
+import { DropdownItem } from '../cardTableData';
+
+export interface LoadModel {
+    isSelected: boolean;
     id: number;
     type: Type;
-    isSelected: boolean;
     loadNumber: string;
+    loadInvoice: LoadInvoice;
     statusType: StatusType;
     status: Status;
-    tableDropdownContent: tableDropdownContent;
+    lastStatusPassed: LastStatusPassed;
     dispatcher: Dispatcher;
     company: Company;
     dateCreated: string;
@@ -86,6 +20,7 @@ export interface CardDetails {
     generalCommodity: GeneralCommodity;
     weight: number;
     loadRequirements: LoadRequirements;
+    loadDispatcher: LoadDispatcher;
     stops: Stop[];
     splitLoad: SplitLoad;
     note: string;
@@ -129,7 +64,12 @@ export interface CardDetails {
     fileCount: number;
     loadTotal: LoadTotal;
     isFlipped: boolean;
-
+    loadBroker: LoadBroker;
+    loadTruckNumber: LoadTruckTrailerNumber;
+    loadTrailerNumber: LoadTruckTrailerNumber;
+    loadPickup: LoadPickup;
+    loadDelivery: LoadDelivery;
+    loadStatus: LoadStatus;
     textCommodity: string;
     textMiles: string;
     textWeight: string;
@@ -138,39 +78,70 @@ export interface CardDetails {
     textAdvance: string;
     textPayTerms: string;
     textDriver: string;
+    loadComment: LoadComment;
     tableAttachments: File[];
+    tableDropdownContent: TableDropdownContent;
 }
-
-export interface tableDropdownContent {
-    content: DropdownItem[];
+interface TableDropdownContent {
     hasContent: boolean;
+    content: DropdownItem[];
 }
-export interface DropdownItem {
-    title?: string;
-    name?: string;
-    svgUrl?: string;
-    mutedStyle?: boolean;
-    svgStyle?: { width: number; height: number };
-    svgClass?: string;
-    isDropdown?: boolean;
-    hasBorder?: boolean;
-    tableListDropdownContentStyle?: { [key: string]: any };
-}
-
-export interface BodyActions {
-    id: number;
-    card: CardDetails;
-    type: string;
-}
-
-export interface Type {
-    name: string;
-    id: number;
+interface LoadStatus {
+    status: string;
+    color: string;
+    time: string;
 }
 interface LoadTotal {
     total: string;
     subTotal: string;
 }
+interface LoadComment {
+    count: string | number;
+    comments: any[];
+}
+interface LoadStatus {
+    status: string;
+    color: string;
+    time: string;
+}
+interface LoadDelivery {
+    count: string | number;
+    location: string;
+    date: string;
+    time: string;
+}
+
+interface LoadPickup {
+    count: number;
+    location: string;
+    date: string;
+    time: string;
+}
+
+interface LoadTruckTrailerNumber {
+    number: string;
+    color: string;
+}
+
+interface LoadDispatcher {
+    name: string;
+    avatar: string | SafeResourceUrl;
+}
+
+interface LoadBroker {
+    hasBanDnu: boolean;
+    isDnu?: boolean;
+    name: string;
+}
+interface LoadInvoice {
+    invoice: string;
+    type: string;
+}
+export interface Type {
+    name: string;
+    id: number;
+}
+
 export interface StatusType {
     name: string;
     id: number;

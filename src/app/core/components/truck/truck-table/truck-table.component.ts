@@ -36,6 +36,7 @@ import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive
 // Pipes
 import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ConstantStringTruckEnum } from '../constant-string-truck.enum';
 
 @Component({
     selector: 'app-truck-table',
@@ -55,7 +56,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     trucksInactive: TruckInactiveState[] = [];
     loadingPage: boolean = true;
     inactiveTabClicked: boolean = false;
-    public activeTableData;
+    public activeTableData: string;
     backFilterQuery = {
         active: 1,
         pageIndex: 1,
@@ -69,20 +70,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     resizeObserver: ResizeObserver;
 
     constructor(
-        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private truckService: TruckTService,
         private confirmationService: ConfirmationService,
-
-        // Queries
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
-
-        // Store
         private truckInactiveStore: TruckInactiveStore,
-
-        // Pipes
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe
     ) {}
@@ -878,17 +872,17 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get Tab Table Data For Selected Tab
-    private getSelectedTabTableData() {
+    private getSelectedTabTableData(): void {
         if (this.tableData?.length) {
             this.activeTableData = this.tableData.find(
-                (t) => t.field === this.selectedTab
+                (table) => table.field === this.selectedTab
             );
         }
     }
     // Show More Data
-    private onShowMore() {
+    private onShowMore(): void {
         this.onTableBodyActions({
-            type: 'show-more',
+            type: ConstantStringTruckEnum.SHOW_MORE,
         });
     }
 

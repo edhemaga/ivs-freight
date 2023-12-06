@@ -1,6 +1,8 @@
 import { CardRows } from '../shared/model/cardData';
 
-export const rows: number = 4;
+export class rows {
+    static property = [4];
+}
 
 export const page: string = 'Load';
 

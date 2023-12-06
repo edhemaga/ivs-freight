@@ -119,6 +119,7 @@ export class CustomerTableComponent
     //Data to display from model Broker
     public displayRowsFront: CardRows[] = displayRowsFrontBroker;
     public displayRowsBack: CardRows[] = displayRowsBackBroker;
+
     //Data to display from model Shipper
     public displayRowsFrontShipper: CardRows[] = displayRowsFrontShipper;
     public displayRowsBackShipper: CardRows[] = displayRowsBackShipper;
@@ -130,10 +131,7 @@ export class CustomerTableComponent
     public sendDataToCardsBack: CardRows[];
 
     constructor(
-        // Angular
         private ref: ChangeDetectorRef,
-
-        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private brokerQuery: BrokerQuery,
@@ -142,46 +140,33 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
-
-        // Queries
         private shipperQuery: ShipperQuery,
-
-        // Pipes
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
-
-        // Store
         private shipperStore: ShipperStore
     ) {}
 
     ngOnInit(): void {
         this.sendCustomerData();
 
-        // Reset Columns
         this.resetColumns();
 
-        // Get Tab Table Data For Selected Tab
         this.getSelectedTabTableData();
 
-        // Resize Columns
         this.resizeColumns();
 
-        // Toogle Columns
         this.toogleColumns();
 
-        // Add-Update Broker-Shipper
         this.addUpdateBrokerShipper();
 
-        // Delete Selected Rows
         this.deleleteSelectedRows();
 
-        // Search
         this.search();
     }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
-            this.observTableContainer();
+            this.observeTableContainer();
         }, 10);
     }
 
@@ -191,7 +176,7 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
                 if (response) {
-                    return this.sendCustomerData();
+                    this.sendCustomerData();
                 }
             });
     }
@@ -362,7 +347,7 @@ export class CustomerTableComponent
                 }
             });
     }
-    observTableContainer() {
+    observeTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -516,6 +501,7 @@ export class CustomerTableComponent
                     : this.mapShipperData(data);
             });
 
+            // Set data for cards based on tab active
             this.selectedTab === 'active'
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),
                   (this.sendDataToCardsBack = this.displayRowsBack))

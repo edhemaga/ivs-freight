@@ -1,7 +1,7 @@
 //modules
 import { TruckRoutingModule } from './truck-routing.module';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //components
@@ -31,6 +31,7 @@ import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
 
         //pipes
         TaThousandSeparatorPipe,
+        DatePipe,
     ],
 })
 export class TruckModule {}
