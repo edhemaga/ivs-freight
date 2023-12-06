@@ -112,12 +112,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //Data to display from model Active
     public displayRowsFront: CardRows[] = displayRowsActiveFront;
     public displayRowsBack: CardRows[] = displayRowsActiveBack;
+
     //Title
     public cardTitle: string = cardTitle;
+
     // Page
     public page: string = page;
+
     //  Number of rows in card
-    public rows: number = rows;
+    public rows = rows.property;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
