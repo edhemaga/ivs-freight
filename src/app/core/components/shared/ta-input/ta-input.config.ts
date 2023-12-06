@@ -31,6 +31,7 @@ export interface ITaInput {
     isDisabled?: boolean;
     pattern?: string;
     autocomplete?: string;
+    showCount?: boolean;
     minLength?: number;
     maxLength?: number;
     min?: number;

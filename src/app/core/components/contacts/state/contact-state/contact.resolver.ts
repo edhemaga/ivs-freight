@@ -19,26 +19,43 @@ export class ContactResolver implements Resolve<ContactState> {
         return forkJoin([
             this.contactService.getContacts(null, 1, 25),
             this.tableService.getTableConfig(19),
+            this.contactService.companyContactLabelsColorList(),
+            this.contactService.getCompanyContactModal(),
         ]).pipe(
-            tap(([contactPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'contactTableCount',
-                    JSON.stringify({
-                        contact: contactPagination.count,
-                    })
-                );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
+            tap(
+                ([
+                    contactPagination,
+                    tableConfig,
+                    colorRes,
+                    contractLabels,
+                ]) => {
                     localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'contactTableCount',
+                        JSON.stringify({
+                            contact: contactPagination.count,
+                        })
                     );
-                }
+                    if (tableConfig) {
+                        const config = JSON.parse(tableConfig.config);
 
-                this.contactStore.set(contactPagination.pagination.data);
-            })
+                        localStorage.setItem(
+                            `table-${tableConfig.tableType}-Configuration`,
+                            JSON.stringify(config)
+                        );
+                    }
+                    let contactLabels = contractLabels.labels.map((item) => {
+                        return { ...item, dropLabel: true };
+                    });
+                    let contractTableData = contactPagination.pagination.data;
+                    contractTableData.map(
+                        (e: any) => (
+                            (e.colorRes = colorRes),
+                            (e.colorLabels = contactLabels)
+                        )
+                    );
+                    this.contactStore.set(contractTableData);
+                }
+            )
         );
     }
 }

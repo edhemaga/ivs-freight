@@ -19,8 +19,10 @@ export class AccountResolver implements Resolve<AccountState> {
         return forkJoin([
             this.accountService.getAccounts(null, 1, 25),
             this.tableService.getTableConfig(18),
+            this.accountService.companyAccountLabelsColorList(),
+            this.accountService.companyAccountModal(),
         ]).pipe(
-            tap(([accountPagination, tableConfig]) => {
+            tap(([accountPagination, tableConfig, colorRes, accountLabels]) => {
                 localStorage.setItem(
                     'accountTableCount',
                     JSON.stringify({
@@ -36,8 +38,16 @@ export class AccountResolver implements Resolve<AccountState> {
                         JSON.stringify(config)
                     );
                 }
-
-                this.accountStore.set(accountPagination.pagination.data);
+                let accountLabel = accountLabels.labels.map((item) => {
+                    return { ...item, dropLabel: true };
+                });
+                let accountTableData = accountPagination.pagination.data;
+                accountTableData.map(
+                    (e: any) => (
+                        (e.colorRes = colorRes), (e.colorLabels = accountLabel)
+                    )
+                );
+                this.accountStore.set(accountTableData);
             })
         );
     }

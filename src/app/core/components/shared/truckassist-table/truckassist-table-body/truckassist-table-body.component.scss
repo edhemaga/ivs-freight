@@ -58,7 +58,76 @@ table {
                         display: flex;
                         height: 100%;
                         align-items: center;
+                        ::ng-deep {
+                            svg-icon #Group_102994{
+                                display: none;
 
+                            }
+                            app-ta-input-dropdown-label{
+                                .input-custom-group .input-icon::after{
+                                    content: none;
+                                }
+                                &:hover{
+
+                                    input{
+                                        background-color: #91919133;
+                                        &:active:hover{
+                                            background-color: #1d1d1d !important;
+                                            color: #ffffff !important;
+                                        }
+                                        &:focus:hover{
+                                            background-color: #1d1d1d !important;
+                                            color: #ffffff !important;
+                                        }
+                                        &:hover{
+                                            background-color: #91919133;
+                                        }
+                                    }
+                                    .input-pen-container{
+                                        right: 25px;
+                                        .input-pen svg{
+                                             
+                                            #Rectangle_88310{
+                                               fill: rgba(145, 145, 145, 0)
+                                            }
+                                            #Edit{
+                                                #Path_7775{
+                                                    fill: #919191;
+                                                }
+                                                #Path_7776{
+                                                    fill: #919191;
+                                                }
+                                            }
+                                        } 
+                                    } 
+                                    svg-icon #Group_102994{
+                                        path{
+                                            fill: #919191;
+                                        }
+                                        display: flex!important;     
+                                        &:hover{
+                                            path{
+                                                fill: #919191;
+                                            }
+                                        }   
+                                    }
+                                }
+                            }
+
+                            input  {
+                                padding-left: 25px;
+                                &:hover{
+                                    cursor: pointer;
+                                 
+                                    svg-icon #Group_102994{
+                                        display: flex!important;        
+                                    }
+                                }
+                            }
+                            .input-icon{
+                                left: 0px;
+                            }
+                        }
                         // NO TEMPLATE
                         .no-template {
                             color: red;
@@ -1519,13 +1588,82 @@ table {
                                 margin-right: 4px;
                                 height: 21px;
                             }
+                           
+                            ::ng-deep {
+                                svg-icon #Group_102994{
+                                    display: none;
 
+                                }
+                                app-ta-input-dropdown-label{
+                                    .input-custom-group .input-icon::after{
+                                        content: none;
+                                    }
+                                    &:hover{
+
+                                        input{
+                                            background-color: #91919133;
+                                            &:active:hover{
+                                                background-color: #1d1d1d !important;
+                                                color: #ffffff !important;
+                                            }
+                                            &:focus:hover{
+                                                background-color: #1d1d1d !important;
+                                                color: #ffffff !important;
+                                            }
+                                            &:hover{
+                                                background-color: #91919133;
+                                            }
+                                        }
+                                        .input-pen-container{
+                                            right: 25px;
+                                            .input-pen svg{
+                                                 
+                                                #Rectangle_88310{
+                                                   fill: rgba(145, 145, 145, 0)
+                                                }
+                                                #Edit{
+                                                    #Path_7775{
+                                                        fill: #919191;
+                                                    }
+                                                    #Path_7776{
+                                                        fill: #919191;
+                                                    }
+                                                }
+                                            } 
+                                        } 
+                                        svg-icon #Group_102994{
+                                            path{
+                                                fill: #919191;
+                                            }
+                                            display: flex!important;     
+                                            &:hover{
+                                                path{
+                                                    fill: #919191;
+                                                }
+                                            }   
+                                        }
+                                    }
+                                }
+
+                                input  {
+                                    padding-left: 25px;
+                                    &:hover{
+                                        cursor: pointer;
+                                     
+                                        svg-icon #Group_102994{
+                                            display: flex!important;        
+                                        }
+                                    }
+                                }
+                                .input-icon{
+                                    left: 0px;
+                                }
+                            }
                             .lable-name {
                                 font-size: 14px;
                                 font-weight: 400;
                                 height: fit-content;
                                 color: #6c6c6c;
-
                                 &::selection {
                                     color: #6c6c6c;
                                     background: #6c6c6c20;
@@ -2582,8 +2720,19 @@ table {
             // Hover
             &:hover {
                 .columns-container {
-                    background: #f7f7f7 !important;
-
+                    .td-content{
+                        ::ng-deep {
+                            input{
+                                background-color: #e5e5e5 ;
+                            }}   
+                    }
+                    background-color: #e5e5e5 !important;
+                    .lable-container {
+                        ::ng-deep {
+                            input{
+                                background-color: #e5e5e5 ;
+                            }
+                    }}
                     .table-text,
                     .table-name-link,
                     .color-name,
@@ -2653,7 +2802,21 @@ table {
         .selected-row {
             .columns-container {
                 background: #e5e5e5;
-
+                ::ng-deep {
+                    input  
+                    {
+                        background-color: #e5e5e5 !important;
+                        color: #6c6c6c !important;
+                    }
+            }
+                .lable-container {
+                    ::ng-deep {
+                        input  
+                        {
+                            background-color: #e5e5e5 !important;
+                            color: #6c6c6c !important;
+                        }
+                }}
                 // CONTACT COLUMN
                 .contact-container {
                     .contact-count {
@@ -2665,7 +2828,7 @@ table {
                             background: #6c6c6c20 !important;
                         }
                     }
-
+                  
                     .contact-avatar {
                         background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
                     }
@@ -2943,6 +3106,18 @@ table {
 .update-animation {
     background: orange !important;
     transition: 0.4s;
+    .columns-container{
+        .lable-container {
+            ::ng-deep {
+                app-ta-input-dropdown-label{
+                    input{
+                        background: orange !important;
+                        transition: 0.4s;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Deactivate Animation

@@ -13,6 +13,7 @@ import {
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { UpdateCompanyAccountCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-account-table',
@@ -597,12 +598,61 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     .subscribe();
                 break;
             }
+            case 'label-change': {
+                this.saveAcountLabel(event.data);
+                break;
+            }
+            case 'update-lable': {
+                this.updateAcountLable(event);
+                break;
+            }
             default: {
                 break;
             }
         }
     }
-
+    updateAcountLable(event: any) {
+        let companyAcountData = this.viewData.find(
+            (e: any) => e.id === event.id
+        );
+        const newdata: UpdateCompanyAccountCommand = {
+            id: companyAcountData.id ? companyAcountData.id : null,
+            name: companyAcountData.name ? companyAcountData.name : null,
+            username: companyAcountData.username
+                ? companyAcountData.username
+                : null,
+            password: companyAcountData.password
+                ? companyAcountData.password
+                : null,
+            url: companyAcountData.url ? companyAcountData.url : null,
+            companyAccountLabelId: event.data ? event.data.id : null,
+            note: companyAcountData.note ? companyAcountData.note : null,
+        };
+        this.accountService
+            .updateCompanyAccount(
+                newdata,
+                companyAcountData.colorRes,
+                companyAcountData.colorLabels
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+    saveAcountLabel(data: any) {
+        this.accountService
+            .updateCompanyAccountLabel({
+                id: data.id,
+                name: data.name,
+                colorId: data.colorId,
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(

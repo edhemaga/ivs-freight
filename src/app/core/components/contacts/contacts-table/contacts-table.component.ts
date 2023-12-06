@@ -1,5 +1,8 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { GetCompanyContactListResponse } from 'appcoretruckassist';
+import {
+    GetCompanyContactListResponse,
+    UpdateCompanyContactCommand,
+} from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
@@ -557,7 +560,84 @@ export class ContactsTableComponent
                 }
             });
     }
+    saveContractLabel(data: any) {
+        this.contactService
+            .updateCompanyContactLabel({
+                id: data.id,
+                name: data.name,
+                colorId: data.colorId,
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
 
+    updateCompanyContactLabel(event: any) {
+        let companyContractData = this.viewData.find(
+            (e: any) => e.id === event.id
+        );
+        const newdata: UpdateCompanyContactCommand = {
+            id: companyContractData.id,
+            name: companyContractData.name,
+            companyContactLabelId: event.data ? event.data.id : null,
+            avatar: companyContractData.avatar
+                ? companyContractData.avatar
+                : null,
+            address: companyContractData.address
+                ? companyContractData.address
+                : null,
+            shared: companyContractData.shared,
+            note: companyContractData.note,
+            contactEmails: companyContractData.contactEmails
+                ? this.createContactEmails(companyContractData.contactEmails[0])
+                : null,
+            contactPhones: companyContractData.contactPhones
+                ? this.createContactPhones(companyContractData.contactPhones[0])
+                : null,
+        };
+
+        this.contactService
+            .updateCompanyContact(
+                newdata,
+                companyContractData.colorRes,
+                companyContractData.colorLabels
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    console.log(this.viewData);
+                },
+                error: () => {},
+            });
+    }
+    public createContactPhones(element?: any) {
+        return [
+            {
+                id: element?.id ? element.id : 0,
+                phone: element?.phone ? element.phone : null,
+                phoneExt: element?.phoneExt ? element.phoneExt : null,
+                contactPhoneType: element?.contactPhoneType
+                    ? element.contactPhoneType.name
+                    : null,
+                primary: element?.primary ? element.primary : false,
+            },
+        ];
+    }
+
+    public createContactEmails(element?: any) {
+        return [
+            {
+                id: element?.id ? element.id : 0,
+                email: element?.email ? element.email : null,
+                contactEmailType: element?.contactEmailType
+                    ? element.contactEmailType.name
+                    : null,
+                primary: element?.primary ? element.primary : false,
+            },
+        ];
+    }
     // On Toolbar Actions
     onToolBarAction(event: any) {
         if (event.action === 'open-modal') {
@@ -615,6 +695,10 @@ export class ContactsTableComponent
                 .deleteCompanyContactById(event.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
+        } else if (event.type === 'label-change') {
+            this.saveContractLabel(event.data);
+        } else if (event.type === 'update-lable') {
+            this.updateCompanyContactLabel(event);
         }
     }
 

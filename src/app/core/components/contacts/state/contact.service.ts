@@ -70,7 +70,9 @@ export class ContactTService {
 
     // Update Contact
     public updateCompanyContact(
-        data: UpdateCompanyContactCommand
+        data: UpdateCompanyContactCommand,
+        colors?: any,
+        colorLabels?: any
     ): Observable<any> {
         return this.contactService.apiCompanycontactPut(data).pipe(
             tap(() => {
@@ -79,7 +81,12 @@ export class ContactTService {
                 ).subscribe({
                     next: (contact: CompanyContactResponse | any) => {
                         this.contactStore.remove(({ id }) => id === data.id);
-
+                        if (colors) {
+                            contact.colorRes = colors;
+                        }
+                        if (colorLabels) {
+                            contact.colorLabels = colorLabels;
+                        }
                         this.contactStore.add(contact);
 
                         this.tableService.sendActionAnimation({

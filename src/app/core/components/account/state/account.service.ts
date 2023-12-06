@@ -69,7 +69,9 @@ export class AccountTService {
 
     // Update Account
     public updateCompanyAccount(
-        data: UpdateCompanyAccountCommand
+        data: UpdateCompanyAccountCommand,
+        colors?: any,
+        colorLabels?: any
     ): Observable<any> {
         return this.accountService.apiCompanyaccountPut(data).pipe(
             tap(() => {
@@ -78,7 +80,12 @@ export class AccountTService {
                 ).subscribe({
                     next: (account: CompanyAccountResponse | any) => {
                         this.accountStore.remove(({ id }) => id === data.id);
-
+                        if (colors) {
+                            account.colorRes = colors;
+                        }
+                        if (colorLabels) {
+                            account.colorLabels = colorLabels;
+                        }
                         this.accountStore.add(account);
 
                         this.tableService.sendActionAnimation({
