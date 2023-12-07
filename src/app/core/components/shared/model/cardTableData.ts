@@ -1,4 +1,3 @@
-import { SafeResourceUrl } from '@angular/platform-browser';
 export interface DataUpdate {
     animation: string;
     data: {
@@ -155,8 +154,12 @@ export interface DropdownItem {
     isDropdown?: boolean;
     hasBorder?: boolean;
     tableListDropdownContentStyle?: { [key: string]: any };
+    insideDropdownContent?: InsideDropdownContent[];
 }
-
+interface InsideDropdownContent {
+    title: string;
+    name: string;
+}
 export interface BodyActions {
     id: number;
     card: CardDetails;

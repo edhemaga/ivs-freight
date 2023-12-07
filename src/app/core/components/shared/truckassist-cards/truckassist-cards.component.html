@@ -4,6 +4,7 @@
     >
         <div class="custom-card p-1">
             <!-- Card splited on left and right side -->
+
             <div
                 class="card-body"
                 [ngClass]="{
@@ -12,11 +13,14 @@
                 }"
             >
                 <!-- Left side of the card -->
+
                 <div class="card-body-left p-1">
                     <!-- Head of the card -->
+
                     <div class="card-header d-flex align-items-center">
                         <div class="checkbox-holder d-flex align-items-center">
                             <!-- Checkbox -->
+
                             <span
                                 class="checkbox-tooltip"
                                 type="button"
@@ -41,9 +45,12 @@
                                 ></label>
                             </span>
                         </div>
+
                         <!-- Card Title -->
+
                         <div class="name d-flex ta-font-bold">
                             <!-- If Load Page -->
+
                             <ng-container *ngIf="page === 'Load'">
                                 <div class="d-flex title-load">
                                     <svg-icon
@@ -63,13 +70,17 @@
                                     </span>
                                 </div>
                             </ng-container>
+
                             <!-- If Driver page -->
+
                             <ng-container *ngIf="page === 'Driver'">
                                 <span class="title">
                                     {{ getValueByStringPath(card, cardTitle) }}
                                 </span>
                             </ng-container>
+
                             <!-- Rest of the pages -->
+
                             <ng-container
                                 *ngIf="page !== 'Load' && page !== 'Driver'"
                             >
@@ -79,7 +90,9 @@
                             </ng-container>
                         </div>
                     </div>
+
                     <!-- Card body front-->
+
                     <div
                         class="flipped"
                         [ngClass]="{
@@ -87,6 +100,7 @@
                         }"
                     >
                         <!-- Card body item -->
+
                         <ng-container
                             *ngFor="let rowsFront of displayRowsFront"
                         >
@@ -98,8 +112,10 @@
                                     class="bottom-item-body d-flex align-items-center"
                                 >
                                     <!-- LOAD PAGE BODY -->
+
                                     <ng-container *ngIf="page === 'Load'">
                                         <!-- If STATUS title this will be aplied in body -->
+
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Status'"
                                         >
@@ -131,7 +147,9 @@
                                                 }}</span
                                             >
                                         </ng-container>
+
                                         <!-- If not STATUS title this will be in body -->
+
                                         <ng-container
                                             *ngIf="rowsFront.title !== 'Status'"
                                         >
@@ -156,7 +174,9 @@
                                                 }}
                                             </span>
                                         </ng-container>
+
                                         <!-- If there is seccond endpoint  -->
+
                                         <ng-container
                                             *ngIf="rowsFront.seccondEndpoint"
                                         >
@@ -169,7 +189,9 @@
                                                 }}
                                             </span>
                                         </ng-container>
+
                                         <!-- If there is third endpoint -->
+
                                         <ng-container
                                             *ngIf="rowsFront.thirdEndpoint"
                                         >
@@ -183,7 +205,9 @@
                                             </span>
                                         </ng-container>
                                     </ng-container>
+
                                     <!-- CUSTOMER PAGE BODY -->
+
                                     <ng-container *ngIf="page === 'Customer'">
                                         <ng-container
                                             *ngIf="
@@ -202,7 +226,9 @@
                                                 }}
                                             </span>
                                         </ng-container>
+
                                         <!-- Available Credit -->
+
                                         <ng-container
                                             *ngIf="
                                                 rowsFront.endpoint ===
@@ -216,7 +242,9 @@
                                                 ) | formatCurrency
                                             }}
                                         </ng-container>
+
                                         <!-- Rating & Review -->
+
                                         <ng-container
                                             *ngIf="
                                                 rowsFront.endpoint ===
@@ -263,14 +291,18 @@
                                             </div>
                                         </ng-container>
                                     </ng-container>
+
                                     <!-- DRIVER PAGE BODY -->
+
                                     <ng-container *ngIf="page === 'Driver'">
                                     </ng-container>
                                 </div>
                             </div>
                         </ng-container>
                     </div>
+
                     <!-- Card body Back -->
+
                     <div
                         class="flipped"
                         [ngClass]="{
@@ -278,6 +310,7 @@
                         }"
                     >
                         <!-- First item in back of the card -->
+
                         <ng-container *ngFor="let rowsBack of displayRowsBack">
                             <div class="item-body">
                                 <div class="top-item-body">
@@ -287,6 +320,7 @@
                                     class="bottom-item-body d-flex align-items-center"
                                 >
                                     <!-- Load Page Body -->
+
                                     <ng-container *ngIf="page === 'Load'">
                                         <ng-container>
                                             {{
@@ -295,7 +329,9 @@
                                                     rowsBack.endpoint
                                                 )
                                             }}
+
                                             <!-- if miles add mi -->
+
                                             <ng-container
                                                 *ngIf="
                                                     rowsBack.endpoint ===
@@ -307,9 +343,12 @@
                                             >
                                         </ng-container>
                                     </ng-container>
+
                                     <!-- Customer Page Body -->
+
                                     <ng-container *ngIf="page === 'Customer'">
                                         <!-- Rest of body items -->
+
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint !==
@@ -327,6 +366,7 @@
                                         </ng-container>
 
                                         <!-- Rating & Review -->
+
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint ===
@@ -372,7 +412,9 @@
                                                 </span>
                                             </div>
                                         </ng-container>
+
                                         <!-- Format revanue -->
+
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint === 'revenue'
@@ -391,10 +433,13 @@
                         </ng-container>
                     </div>
                 </div>
+
                 <!-- Right side of card -->
+
                 <div class="card-body-right">
                     <div class="top-side">
                         <!-- Open dropdown element-->
+
                         <div
                             class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                             [ngClass]="
@@ -428,7 +473,9 @@
                                 ></svg-icon>
                             </div>
                         </div>
+
                         <!-- Note element -->
+
                         <div
                             class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                         >
@@ -441,7 +488,9 @@
                             >
                             </app-ta-note>
                         </div>
+
                         <!-- Comments element -->
+
                         <ng-container *ngIf="page !== 'Customer'">
                             <div
                                 class="right-side-svg d-flex align-items-center justify-content-center flex-column"
@@ -466,7 +515,9 @@
                                 </ng-container>
                             </div>
                         </ng-container>
+
                         <!-- Atachemnts element -->
+
                         <ng-container *ngIf="thirdLabelRightSide?.count > 0">
                             <div
                                 class="right-side-svg d-flex align-items-center justify-content-center flex-column"
@@ -482,7 +533,9 @@
                             </div>
                         </ng-container>
                     </div>
+
                     <!-- Expand element -->
+
                     <div
                         class="bottom-side d-flex justify-content-center"
                         (click)="flipCard(i)"
@@ -510,6 +563,7 @@
     </ng-container>
 </div>
 <!-- Dropdown -->
+
 <ng-template #dropdownPopover let-data="data">
     <div class="table-list-dropdown">
         <div
@@ -521,6 +575,7 @@
             *ngFor="let action of data"
         >
             <!-- Action -->
+
             <div
                 class="table-list-dropdown-content"
                 (click)="
@@ -555,6 +610,7 @@
             </div>
 
             <!-- Inner Dropdown -->
+
             <div
                 class="table-list-inner-dropdown"
                 [ngClass]="{
@@ -567,6 +623,7 @@
             ></div>
 
             <!-- Border -->
+
             <div
                 class="table-list-dropdown-border-container"
                 *ngIf="action?.hasBorder"

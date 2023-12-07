@@ -1,4 +1,7 @@
 export enum ConstantStringTableComponentsEnum {
+    // TABS
+    APPLICANTS = 'applicants',
+
     SHOW_MORE = 'show-more',
 
     // ACTIONS
@@ -6,6 +9,7 @@ export enum ConstantStringTableComponentsEnum {
     UPDATE = 'update',
     DELETE = 'delete',
     UPDATE_STATUS = 'update-status',
+    DELETE_MULTIPLE = 'delete-multiple',
 
     // LIST OR CARD
     LIST = 'List',
@@ -33,6 +37,10 @@ export enum ConstantStringTableComponentsEnum {
     LOAD = 'load',
     VIEW_MODE = 'view-mode',
 
+    // SIZES
+    SMALL = 'small',
+    MEDIUM = 'medium',
+
     // MONEY
     DOLLAR_SIGN = '$',
 
@@ -49,6 +57,7 @@ export enum ConstantStringTableComponentsEnum {
 
     //EMPTY STRING
     EMPTY_STRING_PLACEHOLDER = '',
+    NA = 'NA',
 
     // SEPARATORS
     COMA = ', ',
@@ -58,6 +67,8 @@ export enum ConstantStringTableComponentsEnum {
     LOAD_TABLE_COUNT = 'loadTableCount',
     LOAD_TABLE_VIEW = 'Load-table-view',
 
+    DRIVER_TABLE_COUNT = 'driverTableCount',
+    DRIVER_TABLE_VIEW = 'Driver-table-view',
     // STATUS OF LOAD
     DEFAULT_COLOR = 'color:#919191;',
 
@@ -72,4 +83,35 @@ export enum ConstantStringTableComponentsEnum {
 
     //QUERY SELECTORS
     TABLE_CONTAINER = '.table-container',
+
+    //LOAD
+    NEW_LICENCE = 'new-licence',
+    NEW_MEDICAL = 'new-medical',
+    NEW_MVR = 'new-mvr',
+    NEW_DRUG = 'new-drug',
+    ACTIVATE_ITEM = 'activate-item',
+    DELETE_ITEM = 'delete-item',
+
+    // DRIVER
+    APP = 'App.',
+    MVR = 'Mvr',
+    PSP = 'Psp',
+    SPH = 'Sph',
+    HOS = 'Hos',
+    SSN = 'Ssn',
+
+    EMAIL = 'Email•',
+    PUSH = 'Push•',
+    SMS = 'SMS',
+    // SVG
+    COMPLETE_ICON = 'complete-icon',
+    DONE_ICON = 'done-icon',
+    WRONG_ICON = 'wrong-icon',
+
+    DEACTIVATE = 'deactivate',
+    ACTIVATE = 'activate',
+    INACTIVE = 'inactive',
+    DRIVER = 'driver',
+    INCOMPLETE = 'Incomplete',
+    MULTIPLE_DELETE = 'multiple delete',
 }

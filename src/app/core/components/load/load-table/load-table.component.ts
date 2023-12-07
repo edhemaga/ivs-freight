@@ -50,7 +50,7 @@ import {
     GridColumn,
     ToolbarActions,
 } from '../../shared/model/cardTableData';
-import { TableDropdownComponentsConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { LoadModel } from '../../shared/model/table-components/load-modal';
 
@@ -74,7 +74,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     loadClosed: LoadClosedState[] = [];
     loadPanding: LoadPandingState[] = [];
     loadTemplate: LoadTemplateState[] = [];
-    activeTableData;
+    activeTableData: DataForCardsAndTables;
     backLoadFilterQuery = {
         loadType: undefined,
         statusType: 1,
@@ -231,7 +231,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Delete Selected Rows Currently is commented out i need to check why // TODO check whhy is this commented out
+    // Delete Selected Rows Currently is commented out i need to check why // TODO check why is this commented out
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -264,6 +264,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: DataUpdate) => {
                 // On Add Driver Active
+
                 if (
                     res.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
@@ -336,6 +337,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+
     public getStatusLabelStyle(status: string | undefined): string {
         const styles = 'font-weight: 900; text-transform: uppercase;';
         if (status === ConstantStringTableComponentsEnum.ASSIGNED) {
@@ -348,6 +350,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return styles + ConstantStringTableComponentsEnum.DEFAULT_COLOR;
         }
     }
+
     private sendLoadData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(
@@ -625,7 +628,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownLoadContent(): DropdownItem[] {
-        return TableDropdownComponentsConstants.DROPDOWN_DATA;
+        return TableDropdownLoadComponentConstants.DROPDOWN_DATA;
     }
 
     private getTabData(dataType: string): LoadActiveState {
@@ -703,7 +706,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 } else {
                     let newData = [...this.viewData];
-
+                    // TODO can't find modal for this data and when this function is called
                     loads.pagination.data.map((data: any) => {
                         newData.push(this.mapLoadData(data));
                     });
@@ -802,6 +805,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.activeTableData = this.tableData.find(
                 (table) => table.field === this.selectedTab
             );
+            console.log(this.activeTableData);
         }
     }
     // Show More Data

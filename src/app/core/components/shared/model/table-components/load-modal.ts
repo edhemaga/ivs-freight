@@ -1,6 +1,16 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { DropdownItem } from '../cardTableData';
 
+export interface LoadResponse {
+    id?: number;
+    loadNumber?: string | null;
+    referenceNumber?: string | null;
+    pickupCount?: number;
+    deliveryCount?: number;
+    totalMiles?: number | null;
+    totalRate?: number | null;
+}
+
 export interface LoadModel {
     isSelected: boolean;
     id: number;
