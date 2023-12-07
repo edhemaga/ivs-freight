@@ -30,6 +30,7 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
     templateUrl: './truckassist-cards.component.html',
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
+    providers: [formatCurrency],
     imports: [
         //modules
         CommonModule,
@@ -43,7 +44,6 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 
         //pipes
         formatDatePipe,
-        formatCurrency,
     ],
 })
 export class TruckassistCardsComponent implements OnInit {
@@ -79,7 +79,10 @@ export class TruckassistCardsComponent implements OnInit {
 
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
-    constructor(private detailsDataService: DetailsDataService) {}
+    constructor(
+        private detailsDataService: DetailsDataService,
+        private formatCurrency: formatCurrency
+    ) {}
 
     //---------------------------------------ON INIT---------------------------------------
     ngOnInit(): void {}
@@ -175,15 +178,21 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     //Remove quotes from string to convert into endpoint
-    private getValueByStringPath(obj: CardDetails, path: string): string {
+    public getValueByStringPath(obj: CardDetails, path: string): string {
         if (path === 'no-endpoint') return 'No Endpoint';
 
-        //Check if value is null return /
+        // Value is obj key
         const value = obj[path];
 
+        //Check if value is null return /
         if (value === null) return '/';
 
-        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+        // Transform number to descimal with $
+        if (path === 'availableCredit' || path === 'revenue') {
+            return this.formatCurrency.transform(value);
+        } else {
+            return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+        }
     }
 
     // Track By For Table Row

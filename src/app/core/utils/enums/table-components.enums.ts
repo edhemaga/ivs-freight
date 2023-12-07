@@ -15,10 +15,12 @@ export enum ConstantStringTableComponentsEnum {
     LIST = 'List',
     CARD = 'Card',
 
+    // TABS
     TEMPLATE = 'template',
     ACTIVE = 'active',
     CLOSED = 'closed',
     PENDING = 'pending',
+    MAP = 'Map',
 
     API = 'api',
 
@@ -92,6 +94,15 @@ export enum ConstantStringTableComponentsEnum {
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
 
+    // CUSTOMER
+    EDIT_CUSTOMER_OR_SHIPPER = 'edit-cutomer-or-shipper',
+    SHIPPERS_WITH_SPACE = 'Shippers ',
+    SHIPPER_WITH_SPACE = 'Shipper ',
+    CUSTOMER_TABLE_VIEW = 'Customer-table-view',
+    BROKER_SHIPPER_TABLE_COUNT = 'brokerShipperTableCount',
+    BROKER = 'broker',
+    SHIPPER = 'shipper',
+
     // DRIVER
     APP = 'App.',
     MVR = 'Mvr',
@@ -103,6 +114,7 @@ export enum ConstantStringTableComponentsEnum {
     EMAIL = 'Email•',
     PUSH = 'Push•',
     SMS = 'SMS',
+
     // SVG
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',

@@ -17,13 +17,17 @@ import {
     getLoadTemplateColumnDefinition,
 } from '../../../../../assets/utils/settings/load-columns';
 import { LoadListResponse } from 'appcoretruckassist';
+import { DisplayLoadConfiguration } from '../load-card-data';
 import {
-    cardTitle,
-    displayRowsBack,
-    displayRowsFront,
-    page,
-    rows,
-} from '../load-card-data';
+    Column,
+    DataForCardsAndTables,
+    DataUpdate,
+    DropdownItem,
+    GridColumn,
+    ToolbarActions,
+} from '../../shared/model/cardTableData';
+import { CardRows } from '../../shared/model/cardData';
+import { LoadModel } from '../../shared/model/table-components/load-modal';
 
 // Queries
 import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
@@ -41,18 +45,12 @@ import { LoadTemplateState } from '../state/load-template-state/load-template.st
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { DatePipe } from '@angular/common';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
-import { CardRows } from '../../shared/model/cardData';
-import {
-    Column,
-    DataForCardsAndTables,
-    DataUpdate,
-    DropdownItem,
-    GridColumn,
-    ToolbarActions,
-} from '../../shared/model/cardTableData';
+
+// Constants
 import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+// Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { LoadModel } from '../../shared/model/table-components/load-modal';
 
 @Component({
     selector: 'app-load-table',
@@ -74,7 +72,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     loadClosed: LoadClosedState[] = [];
     loadPanding: LoadPandingState[] = [];
     loadTemplate: LoadTemplateState[] = [];
-    activeTableData: DataForCardsAndTables;
+    public activeTableData: DataForCardsAndTables;
     backLoadFilterQuery = {
         loadType: undefined,
         statusType: 1,
@@ -98,11 +96,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     //Data to display from model
-    public displayRowsFront: CardRows[] = displayRowsFront;
-    public displayRowsBack: CardRows[] = displayRowsBack;
-    public cardTitle: string = cardTitle;
-    public page: string = page;
-    public rows = rows.property;
+    public displayRowsFront: CardRows[] =
+        DisplayLoadConfiguration.displayRowsFront;
+    public displayRowsBack: CardRows[] =
+        DisplayLoadConfiguration.displayRowsBack;
+    public cardTitle: string = DisplayLoadConfiguration.cardTitle;
+    public page: string = DisplayLoadConfiguration.page;
+    public rows = DisplayLoadConfiguration.rows.property;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -805,15 +805,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.activeTableData = this.tableData.find(
                 (table) => table.field === this.selectedTab
             );
-            console.log(this.activeTableData);
         }
     }
+
     // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
             type: ConstantStringTableComponentsEnum.SHOW_MORE,
         });
     }
+
     // ---------------------------- ngOnDestroy ------------------------------
     public ngOnDestroy(): void {
         this.destroy$.next();

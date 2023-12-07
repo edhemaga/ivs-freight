@@ -25,6 +25,7 @@
         ></app-truckassist-table-body>
     </ng-container>
     <!-- Cards -->
+
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-truckassist-cards
@@ -37,6 +38,7 @@
                 [page]="page"
             ></app-truckassist-cards>
             <!-- Show More -->
+
             <ng-container *ngIf="viewData.length">
                 <div
                     class="show-more-container d-flex align-items-center justify-content-between"
