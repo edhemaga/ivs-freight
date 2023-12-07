@@ -32,11 +32,27 @@ import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperStore } from '../state/shipper-state/shipper.store';
 
 // Models
-import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
+import {
+    BrokerResponse,
+    GetBrokerListResponse,
+    RatingSetResponse,
+    ShipperListResponse,
+    ShipperResponse,
+} from 'appcoretruckassist';
+import { CardRows, Search } from '../../shared/model/cardData';
+import {
+    DataForCardsAndTables,
+    DropdownItem,
+    GridColumn,
+    ResizingEventData,
+    TableColumnConfig,
+    ToolbarActions,
+} from '../../shared/model/cardTableData';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
 } from '../../../../../assets/utils/settings/customer-columns';
+import { DisplayCustomerConfiguration } from '../customer-card-data';
 
 // Globals
 import {
@@ -46,17 +62,19 @@ import {
 
 // Pipes
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import {
-    cardTitle,
-    displayRowsBackBroker,
-    displayRowsBackShipper,
-    displayRowsFrontBroker,
-    displayRowsFrontShipper,
-    page,
-    rows,
-} from '../customer-card-data';
-import { CardRows } from '../../shared/model/cardData';
+
+// Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
+// Constants
+import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import {
+    BodyResponse,
+    UpdateRating,
+    UpdateShipperBroker,
+    ViewDataResponse,
+} from '../customer.modal';
+
 @Component({
     selector: 'app-customer-table',
     templateUrl: './customer-table.component.html',
@@ -73,18 +91,18 @@ export class CustomerTableComponent
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    brokers: BrokerState[] = [];
-    shipper: ShipperState[] = [];
-    selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
-    activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
-    resizeObserver: ResizeObserver;
-    inactiveTabClicked: boolean = false;
-    public activeTableData;
-    backBrokerFilterQuery = {
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: TableColumnConfig[] = [];
+    public brokers: BrokerState[] = [];
+    public shipper: ShipperState[] = [];
+    public selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public resizeObserver: ResizeObserver;
+    public inactiveTabClicked: boolean = false;
+    public activeTableData: DataForCardsAndTables;
+    public backBrokerFilterQuery = {
         ban: null,
         dnu: null,
         invoiceAgeingFrom: undefined,
@@ -102,7 +120,7 @@ export class CustomerTableComponent
         searchThree: undefined,
     };
 
-    backShipperFilterQuery = {
+    public backShipperFilterQuery = {
         stateIds: undefined,
         long: undefined,
         lat: undefined,
@@ -115,18 +133,22 @@ export class CustomerTableComponent
         searchTwo: undefined,
         searchThree: undefined,
     };
-    mapListData = [];
+    public mapListData = [];
 
     //Data to display from model Broker
-    public displayRowsFront: CardRows[] = displayRowsFrontBroker;
-    public displayRowsBack: CardRows[] = displayRowsBackBroker;
+    public displayRowsFront: CardRows[] =
+        DisplayCustomerConfiguration.displayRowsFrontBroker;
+    public displayRowsBack: CardRows[] =
+        DisplayCustomerConfiguration.displayRowsBackBroker;
 
     //Data to display from model Shipper
-    public displayRowsFrontShipper: CardRows[] = displayRowsFrontShipper;
-    public displayRowsBackShipper: CardRows[] = displayRowsBackShipper;
-    public cardTitle: string = cardTitle;
-    public page: string = page;
-    public rows: number = rows;
+    public displayRowsFrontShipper: CardRows[] =
+        DisplayCustomerConfiguration.displayRowsFrontShipper;
+    public displayRowsBackShipper: CardRows[] =
+        DisplayCustomerConfiguration.displayRowsBackShipper;
+    public cardTitle: string = DisplayCustomerConfiguration.cardTitle;
+    public page: string = DisplayCustomerConfiguration.page;
+    public rows = DisplayCustomerConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -147,6 +169,7 @@ export class CustomerTableComponent
         private shipperStore: ShipperStore
     ) {}
 
+    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendCustomerData();
 
@@ -165,6 +188,7 @@ export class CustomerTableComponent
         this.search();
     }
 
+    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observeTableContainer();
@@ -186,27 +210,32 @@ export class CustomerTableComponent
     public resizeColumns(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response?.event?.width) {
-                    this.columns = this.columns.map((col) => {
-                        if (
-                            col.title ===
-                            response.columns[response.event.index].title
-                        ) {
-                            col.width = response.event.width;
-                        }
+            .subscribe(
+                (response: {
+                    columns: GridColumn[];
+                    event: ResizingEventData;
+                }) => {
+                    if (response?.event?.width) {
+                        this.columns = this.columns.map((col) => {
+                            if (
+                                col.title ===
+                                response.columns[response.event.index].title
+                            ) {
+                                col.width = response.event.width;
+                            }
 
-                        return col;
-                    });
+                            return col;
+                        });
+                    }
                 }
-            });
+            );
     }
 
     // Toogle Columns
     public toogleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response: { column: GridColumn; index: number }) => {
                 if (response?.column) {
                     this.columns = this.columns.map((col) => {
                         if (col.field === response.column.field) {
@@ -223,7 +252,7 @@ export class CustomerTableComponent
     public addUpdateBrokerShipper(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res: UpdateShipperBroker) => {
                 // <------------------ Broker ------------------->
                 // Add Broker
                 if (
@@ -240,7 +269,9 @@ export class CustomerTableComponent
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.BROKER
                 ) {
-                    const updatedBroker = this.mapBrokerData(res.data);
+                    const updatedBroker: ViewDataResponse = this.mapBrokerData(
+                        res.data
+                    );
 
                     this.updateData(res.id, updatedBroker);
                 }
@@ -261,7 +292,8 @@ export class CustomerTableComponent
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.SHIPPER
                 ) {
-                    const updatedShipper = this.mapShipperData(res.data);
+                    const updatedShipper: ViewDataResponse =
+                        this.mapShipperData(res.data);
 
                     this.updateData(res.id, updatedShipper);
                 }
@@ -272,7 +304,7 @@ export class CustomerTableComponent
     public deleleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response: ShipperResponse[] | BrokerResponse[]) => {
                 // Multiple Delete
                 if (response.length) {
                     // Delete Broker List
@@ -285,10 +317,16 @@ export class CustomerTableComponent
                             .deleteBrokerList(response)
                             .pipe(takeUntil(this.destroy$))
                             .subscribe(() => {
-                                let brokerName = '';
-                                let brokerText = 'Broker ';
-                                this.viewData.map((data: any) => {
-                                    response.map((r: any) => {
+                                let brokerName:
+                                    | ConstantStringTableComponentsEnum
+                                    | string =
+                                    ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+                                let brokerText:
+                                    | ConstantStringTableComponentsEnum
+                                    | string =
+                                    ConstantStringTableComponentsEnum.BROKER_2;
+                                this.viewData.map((data: BrokerResponse) => {
+                                    response.map((r: BrokerResponse) => {
                                         if (data.id === r.id) {
                                             if (!brokerName) {
                                                 brokerName = data.businessName;
@@ -297,7 +335,8 @@ export class CustomerTableComponent
                                                     brokerName +
                                                     ConstantStringTableComponentsEnum.COMA +
                                                     data.businessName;
-                                                brokerText = 'Brokers ';
+                                                brokerText =
+                                                    ConstantStringTableComponentsEnum.BROKER_3;
                                             }
                                         }
                                     });
@@ -308,11 +347,16 @@ export class CustomerTableComponent
                     }
                     // Delete Shipper List
                     else {
-                        let shipperName = '';
-                        let shipText =
+                        let shipperName:
+                            | ConstantStringTableComponentsEnum
+                            | string =
+                            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+                        let shipText:
+                            | ConstantStringTableComponentsEnum
+                            | string =
                             ConstantStringTableComponentsEnum.SHIPPER_WITH_SPACE;
-                        this.viewData.map((data: any) => {
-                            response.map((r: any) => {
+                        this.viewData.map((data: ShipperResponse) => {
+                            response.map((r: ShipperResponse) => {
                                 if (data.id === r.id) {
                                     if (!shipperName) {
                                         shipperName = data.businessName;
@@ -343,7 +387,7 @@ export class CustomerTableComponent
     public search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res: Search) => {
                 if (res) {
                     this.backBrokerFilterQuery.pageIndex = 1;
                     this.backShipperFilterQuery.pageIndex = 1;
@@ -375,7 +419,8 @@ export class CustomerTableComponent
                 }
             });
     }
-    observeTableContainer() {
+
+    private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -408,7 +453,10 @@ export class CustomerTableComponent
         };
     }
 
-    getViewModeOptions() {
+    private getViewModeOptions(): {
+        name: ConstantStringTableComponentsEnum;
+        active: boolean;
+    }[] {
         return this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
             ? [
                   {
@@ -446,10 +494,10 @@ export class CustomerTableComponent
               ];
     }
 
-    sendCustomerData() {
+    private sendCustomerData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(
-                `ConstantStringTableComponentsEnum.CUSTOMER_TABLE_VIEW`
+                ConstantStringTableComponentsEnum.CUSTOMER_TABLE_VIEW
             )
         );
 
@@ -488,8 +536,8 @@ export class CustomerTableComponent
                 data: this.brokers,
                 extended: false,
                 isCustomer: true,
-                gridNameTitle: 'Customer',
-                stateName: 'brokers',
+                gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
+                stateName: ConstantStringTableComponentsEnum.BROKER_3,
                 tableConfiguration: ConstantStringTableComponentsEnum.BROKER,
                 isActive:
                     this.selectedTab ===
@@ -505,8 +553,8 @@ export class CustomerTableComponent
                 data: this.shipper,
                 extended: false,
                 isCustomer: true,
-                gridNameTitle: 'Customer',
-                stateName: 'shippers',
+                gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
+                stateName: ConstantStringTableComponentsEnum.SHIPPER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.SHIPPER,
                 isActive:
                     this.selectedTab ===
@@ -523,14 +571,14 @@ export class CustomerTableComponent
     }
 
     // Check If Selected Tab Has Active View Mode
-    checkActiveViewMode() {
+    private checkActiveViewMode(): void {
         if (this.activeViewMode === ConstantStringTableComponentsEnum.MAP) {
             let hasMapView = false;
 
             let viewModeOptions =
                 this.tableOptions.toolbarActions.viewModeOptions;
 
-            viewModeOptions.map((viewMode: any) => {
+            viewModeOptions.map((viewMode: { name: string }) => {
                 if (viewMode.name === ConstantStringTableComponentsEnum.MAP) {
                     hasMapView = true;
                 }
@@ -548,7 +596,7 @@ export class CustomerTableComponent
         }
     }
 
-    getGridColumns(configType: string) {
+    private getGridColumns(configType: string): string {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -564,18 +612,20 @@ export class CustomerTableComponent
         }
     }
 
-    setCustomerData(td: any) {
+    private setCustomerData(td: DataForCardsAndTables): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
             this.viewData = td.data;
 
-            this.viewData = this.viewData.map((data: any) => {
-                return this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                    ? this.mapBrokerData(data)
-                    : this.mapShipperData(data);
-            });
+            this.viewData = this.viewData.map(
+                (data: ShipperResponse | BrokerResponse) => {
+                    return this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                        ? this.mapBrokerData(data)
+                        : this.mapShipperData(data);
+                }
+            );
 
             // Set data for cards based on tab active
             this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
@@ -593,8 +643,9 @@ export class CustomerTableComponent
         }
     }
 
+    // TODO Any fix
     // Map Broker Data
-    mapBrokerData(data: any) {
+    private mapBrokerData(data: BrokerResponse): any {
         return {
             ...data,
             isSelected: false,
@@ -603,75 +654,91 @@ export class CustomerTableComponent
                 : data?.mainPoBox?.poBox
                 ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
                   'Treba da se postavo odgovarajuci redosled za po box address'
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
                 : data?.billingPoBox?.poBox
                 ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
                   'Treba da se postavo odgovarajuci redosled za po box address'
-                : '',
-            tablePaymentDetailAvailCredit: 'NA',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tablePaymentDetailAvailCredit: ConstantStringTableComponentsEnum.NA,
             tablePaymentDetailCreditLimit: data?.creditLimit
-                ? '$' + this.thousandSeparator.transform(data.creditLimit)
-                : '',
+                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(data.creditLimit)
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailTerm: data?.payTerm?.name
                 ? data.payTerm.name
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailDTP: data?.daysToPay
-                ? data.daysToPay + ' days'
-                : '',
+                ? data.daysToPay + ConstantStringTableComponentsEnum.DAY
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailInvAgeing: {
-                bfb: '0',
-                dnu: '0',
-                amount: 'Template se promenio',
+                bfb: ConstantStringTableComponentsEnum.NUMBER_0,
+                dnu: ConstantStringTableComponentsEnum.NUMBER_0,
+                amount: 'Template is changed',
             },
             tableLoads: data?.loadCount
                 ? this.thousandSeparator.transform(data.loadCount)
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableMiles: data?.miles
                 ? this.thousandSeparator.transform(data.miles)
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tablePPM: data?.pricePerMile
-                ? '$' + this.thousandSeparator.transform(data.pricePerMile)
-                : '',
+                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(data.pricePerMile)
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableRevenue: data?.revenue
-                ? '$' + this.thousandSeparator.transform(data.revenue)
-                : '',
+                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(data.revenue)
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount ? data.upCount : '0',
-                dislikeCount: data?.downCount ? data.downCount : '0',
+                likeCount: data?.upCount
+                    ? data.upCount
+                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                dislikeCount: data?.downCount
+                    ? data.downCount
+                    : ConstantStringTableComponentsEnum.NUMBER_0,
             },
             tableContact: data?.brokerContacts?.length
                 ? data.brokerContacts.length
                 : 0,
             tableAdded: data.createdAt
-                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
-                : '',
+                ? this.datePipe.transform(
+                      data.createdAt,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
-                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-                : '',
+                ? this.datePipe.transform(
+                      data.updatedAt,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownBrokerContent(data),
+                content: this.getDropdownBrokerContent(),
             },
         };
     }
 
+    // TODO Any fix
     // Map Shipper Data
-    mapShipperData(data: any) {
+    private mapShipperData(data: ShipperResponse): any {
         return {
             ...data,
             isSelected: false,
-            tableAddress: data?.address?.address ? data.address.address : '',
-            tableLoads: 'NA',
+            tableAddress: data?.address?.address
+                ? data.address.address
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLoads: ConstantStringTableComponentsEnum.NA,
             tableAverageWatingTimePickup: data?.avgPickupTime
                 ? data.avgPickupTime
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableAverageWatingTimeDelivery: data?.avgDeliveryTime
                 ? data.avgDeliveryTime
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
@@ -680,7 +747,7 @@ export class CustomerTableComponent
                       ' - ' +
                       data?.shippingTo +
                       ' Treba AM ili PM'
-                    : '',
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableAvailableHoursReceiving:
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom +
@@ -688,275 +755,46 @@ export class CustomerTableComponent
                       ' - ' +
                       data?.receivingTo +
                       ' Treba AM ili PM'
-                    : '',
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount ? data.upCount : '0',
-                dislikeCount: data?.downCount ? data.downCount : '0',
+                likeCount: data?.upCount
+                    ? data.upCount
+                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                dislikeCount: data?.downCount
+                    ? data.downCount
+                    : ConstantStringTableComponentsEnum.NUMBER_0,
             },
             tableContact: data?.shipperContacts?.length
                 ? data.shipperContacts.length
                 : 0,
             tableAdded: data.createdAt
-                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
-                : '',
-            tableEdited: 'NA', // data.updatedAt
-            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-            //: '',
+                ? this.datePipe.transform(
+                      data.createdAt,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableEdited: ConstantStringTableComponentsEnum.NA, // data.updatedAt
+            //? this.datePipe.transform(data.updatedAt, ConstantStringTableComponentsEnum.DATE_FORMAT)
+            //: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownShipperContent(data),
+                content: this.getDropdownShipperContent(),
             },
         };
     }
 
-    getDropdownBrokerContent(data: any) {
-        return [
-            {
-                title: ConstantStringTableComponentsEnum.EDIT,
-                name: ConstantStringTableComponentsEnum.EDIT_CUSTOMER_OR_SHIPPER,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: 'regular',
-            },
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Create Load',
-                name: 'create-load',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Add Contact',
-                name: 'add-contact',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Write Review',
-                name: 'write-review',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Move to Ban List',
-                name: 'move-to-ban-list',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Move to DNU List',
-                name: 'move-to-dnu-list',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Close Business',
-                name: 'close-business',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-            {
-                title: ConstantStringTableComponentsEnum.DELETE,
-                name: ConstantStringTableComponentsEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-        ];
+    private getDropdownBrokerContent(): DropdownItem[] {
+        return TableDropdownCustomerComponentConstants.DROPDOWN_BROKER;
     }
 
-    getDropdownShipperContent(data: any) {
-        return [
-            {
-                title: ConstantStringTableComponentsEnum.EDIT,
-                name: ConstantStringTableComponentsEnum.EDIT_CUSTOMER_OR_SHIPPER,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: 'regular',
-            },
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Add Contact',
-                name: 'add-contact',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Write Review',
-                name: 'write-review',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Close Business',
-                name: 'close-business',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-            {
-                title: ConstantStringTableComponentsEnum.DELETE,
-                name: ConstantStringTableComponentsEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-        ];
+    private getDropdownShipperContent(): DropdownItem[] {
+        return TableDropdownCustomerComponentConstants.DROPDOWN_SHIPPER;
     }
 
     // Update Broker And Shipper Count
-    updateDataCount() {
+    private updateDataCount(): void {
         const brokerShipperCount = JSON.parse(
             localStorage.getItem(
                 ConstantStringTableComponentsEnum.BROKER_SHIPPER_TABLE_COUNT
@@ -972,7 +810,7 @@ export class CustomerTableComponent
     }
 
     // Broker Back Filter Query
-    brokerBackFilter(
+    private brokerBackFilter(
         filter: {
             ban: number | undefined;
             dnu: number | undefined;
@@ -991,7 +829,7 @@ export class CustomerTableComponent
             searchThree: string | undefined;
         },
         isShowMore?: boolean
-    ) {
+    ): void {
         this.brokerService
             .getBrokerList(
                 filter.ban,
@@ -1015,13 +853,15 @@ export class CustomerTableComponent
                 if (!isShowMore) {
                     this.viewData = brokers.pagination.data;
 
-                    this.viewData = this.viewData.map((data: any) => {
-                        return this.mapBrokerData(data);
-                    });
+                    this.viewData = this.viewData.map(
+                        (data: BrokerResponse) => {
+                            return this.mapBrokerData(data);
+                        }
+                    );
                 } else {
                     let newData = [...this.viewData];
 
-                    brokers.pagination.data.map((data: any) => {
+                    brokers.pagination.data.map((data: BrokerResponse) => {
                         newData.push(this.mapBrokerData(data));
                     });
 
@@ -1031,7 +871,7 @@ export class CustomerTableComponent
     }
 
     // Shipper Back Filter Query
-    shipperBackFilter(
+    private shipperBackFilter(
         filter: {
             stateIds?: Array<number> | undefined;
             long: number | undefined;
@@ -1046,7 +886,7 @@ export class CustomerTableComponent
             searchThree: string | undefined;
         },
         isShowMore?: boolean
-    ) {
+    ): void {
         this.shipperService
             .getShippersList(
                 filter.stateIds,
@@ -1066,13 +906,15 @@ export class CustomerTableComponent
                 if (!isShowMore) {
                     this.viewData = shippers.pagination.data;
 
-                    this.viewData = this.viewData.map((data: any) => {
-                        return this.mapShipperData(data);
-                    });
+                    this.viewData = this.viewData.map(
+                        (data: ShipperResponse) => {
+                            return this.mapShipperData(data);
+                        }
+                    );
                 } else {
                     let newData = [...this.viewData];
 
-                    shippers.pagination.data.map((data: any) => {
+                    shippers.pagination.data.map((data: ShipperResponse) => {
                         newData.push(this.mapShipperData(data));
                     });
 
@@ -1082,19 +924,19 @@ export class CustomerTableComponent
     }
 
     // Toolbar Actions
-    onToolBarAction(event: any) {
+    public onToolBarAction(event: ToolbarActions): void {
         // Add Call
-        if (event.action === 'open-modal') {
+        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
             // Add Broker Call Modal
             if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
                 this.modalService.openModal(BrokerModalComponent, {
-                    size: 'medium',
+                    size: ConstantStringTableComponentsEnum.MEDIUM,
                 });
             }
             // Add Shipper Call Modal
             else {
                 this.modalService.openModal(ShipperModalComponent, {
-                    size: 'medium',
+                    size: ConstantStringTableComponentsEnum.MEDIUM,
                 });
             }
         }
@@ -1102,7 +944,8 @@ export class CustomerTableComponent
         else if (
             event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
         ) {
-            this.selectedTab = event.tabData.field;
+            this.selectedTab = event.tabData
+                .field as ConstantStringTableComponentsEnum;
 
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
@@ -1155,7 +998,10 @@ export class CustomerTableComponent
     }
 
     // Head Actions
-    onTableHeadActions(event: any) {
+    public onTableHeadActions(event: {
+        action: string;
+        direction: string;
+    }): void {
         if (event.action === ConstantStringTableComponentsEnum.SORT) {
             if (event.direction) {
                 if (
@@ -1181,8 +1027,9 @@ export class CustomerTableComponent
     }
 
     // Table Body Actions
-    onTableBodyActions(event: any) {
-        let businessName = '';
+    private onTableBodyActions(event: BodyResponse): void {
+        let businessName: string =
+            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
@@ -1256,7 +1103,7 @@ export class CustomerTableComponent
             }
         }
         // Raiting
-        else if (event.type === 'raiting') {
+        else if (event.type === ConstantStringTableComponentsEnum.RATING) {
             let raitingData = {
                 entityTypeRatingId:
                     this.selectedTab ===
@@ -1264,27 +1111,32 @@ export class CustomerTableComponent
                         ? 1
                         : 3,
                 entityTypeId: event.data.id,
-                thumb: event.subType === 'like' ? 1 : -1,
+                thumb:
+                    event.subType === ConstantStringTableComponentsEnum.LIKE
+                        ? 1
+                        : -1,
                 tableData: event.data,
             };
 
             this.reviewRatingService
                 .addRating(raitingData)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((res: any) => {
+                .subscribe((res: RatingSetResponse) => {
                     let newViewData = [...this.viewData];
 
-                    newViewData.map((data: any) => {
+                    newViewData.map((data: UpdateRating) => {
                         if (data.id === event.data.id) {
                             data.actionAnimation =
                                 ConstantStringTableComponentsEnum.UPDATE;
                             data.tableRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
-                                likeCount: res?.upCount ? res.upCount : '0',
+                                likeCount: res?.upCount
+                                    ? res.upCount
+                                    : ConstantStringTableComponentsEnum.NUMBER_0,
                                 dislikeCount: res?.downCount
                                     ? res.downCount
-                                    : '0',
+                                    : ConstantStringTableComponentsEnum.NUMBER_0,
                             };
                         }
                     });
@@ -1306,7 +1158,7 @@ export class CustomerTableComponent
     }
 
     // Get Tab Table Data For Selected Tab
-    private getSelectedTabTableData() {
+    private getSelectedTabTableData(): void {
         if (this.tableData?.length) {
             this.activeTableData = this.tableData.find(
                 (t) => t.field === this.selectedTab
@@ -1315,14 +1167,14 @@ export class CustomerTableComponent
         return;
     }
     // Show More Data
-    private onShowMore() {
+    public onShowMore(): void {
         this.onTableBodyActions({
             type: ConstantStringTableComponentsEnum.SHOW_MORE,
         });
     }
 
     // Get Business Name
-    getBusinessName(event: any, businessName: string) {
+    private getBusinessName(event: BodyResponse, businessName: string) {
         if (!businessName) {
             return (businessName = event.data.businessName);
         } else {
@@ -1334,8 +1186,8 @@ export class CustomerTableComponent
     }
 
     // Add Shipper Or Broker To Viewdata
-    addData(dataId: any) {
-        this.viewData = this.viewData.map((data: any) => {
+    private addData(dataId: number): void {
+        this.viewData = this.viewData.map((data: ViewDataResponse) => {
             if (data.id === dataId) {
                 data.actionAnimation = ConstantStringTableComponentsEnum.ADD;
             }
@@ -1352,8 +1204,8 @@ export class CustomerTableComponent
     }
 
     // Update Shipper Or Broker In Viewdata
-    updateData(dataId: number, updatedData: any) {
-        this.viewData = this.viewData.map((data: any) => {
+    private updateData(dataId: number, updatedData: ViewDataResponse): void {
+        this.viewData = this.viewData.map((data: ViewDataResponse) => {
             if (data.id === dataId) {
                 data = updatedData;
                 data.actionAnimation = ConstantStringTableComponentsEnum.UPDATE;
@@ -1372,8 +1224,8 @@ export class CustomerTableComponent
     }
 
     // Delete Shipper Or Broker From Viewdata
-    deleteDataById(dataId: number) {
-        this.viewData = this.viewData.map((data: any) => {
+    private deleteDataById(dataId: number): void {
+        this.viewData = this.viewData.map((data: ViewDataResponse) => {
             if (data.id === dataId) {
                 data.actionAnimation = ConstantStringTableComponentsEnum.DELETE;
             }
@@ -1391,11 +1243,14 @@ export class CustomerTableComponent
     }
 
     // Multiple Delete Shipper Or Broker From Viewdata
-    multipleDeleteData(response: any) {
-        this.viewData = this.viewData.map((data: any) => {
-            response.map((r: any) => {
-                if (data.id === r.id) {
-                    data.actionAnimation = 'delete-multiple';
+    private multipleDeleteData(
+        response: BrokerResponse[] | ShipperResponse[]
+    ): void {
+        this.viewData = this.viewData.map((data: ViewDataResponse) => {
+            response.map((res: ViewDataResponse) => {
+                if (data.id === res.id) {
+                    data.actionAnimation =
+                        ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
                 }
             });
 
@@ -1414,6 +1269,7 @@ export class CustomerTableComponent
         this.tableService.sendResetSelectedColumns(true);
     }
 
+    // ---------------------------- ngOnDestroy ------------------------------
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
@@ -1422,8 +1278,10 @@ export class CustomerTableComponent
         this.resizeObserver.disconnect();
     }
 
+    // THIS FUNCTION IS RECIVING SOME DATA FROM MAP CHILD COMPONENT BUT THERE IN CHILD COMPONENT IS ONLY  @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>(); WITH NO DATA EXPORTING
+    // SO DATA TYPE WILL STAY ANY I GUES FUNCTION IS NOT FINISHED IN CHILD
     // MAP
-    selectItem(data: any) {
+    public selectItem(data: any): void {
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
@@ -1472,7 +1330,7 @@ export class CustomerTableComponent
         });
     }
 
-    updateMapList(mapListResponse) {
+    public updateMapList(mapListResponse): void {
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
         var addData = mapListResponse.addData ? true : false;

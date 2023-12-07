@@ -10,6 +10,36 @@ export interface DataUpdate {
     };
     id: string;
 }
+
+export interface TableColumnConfig {
+    avatar: null | string;
+    disabled: boolean;
+    export: boolean;
+    field: string;
+    filter: string;
+    filterable: boolean;
+    hidden: boolean;
+    hoverTemplate: any;
+    index: number;
+    isActionColumn: boolean;
+    isNumeric: boolean;
+    isPined: boolean;
+    isSelectColumn: boolean;
+    link: {
+        routerLinkStart: string;
+        routerLinkEnd: string;
+    };
+    minWidth: number;
+    name: string;
+    ngTemplate: string;
+    progress: any;
+    resizable: boolean;
+    sortName: string;
+    sortable: boolean;
+    tableHeadTitle: string;
+    title: string;
+    width: number;
+}
 // TOOLBAR ACTIONS
 export interface ToolbarActions {
     action: string;
@@ -25,7 +55,7 @@ export interface DataForCardsAndTables {
     data: CardDetails[];
     extended: boolean;
     field: string;
-    gridColumns: GridColumn[];
+    gridColumns: TableColumnConfig[];
     gridNameTitle: string;
     isActive: boolean;
     length: number;
@@ -59,6 +89,12 @@ export interface GridColumn {
     sortable: boolean;
     tableHeadTitle: string;
     title: string;
+    width: number;
+}
+export interface ResizingEventData {
+    index: number;
+    isResizing: boolean;
+    section: string;
     width: number;
 }
 // Table Columns end

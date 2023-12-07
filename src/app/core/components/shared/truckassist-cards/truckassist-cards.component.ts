@@ -52,7 +52,6 @@ export class TruckassistCardsComponent implements OnInit {
     // All data
     @Input() viewData: CardDetails;
     @Input() tableData: LoadTableData[];
-    // @Input() card: CardDetails;
 
     // Page
     @Input() page: string;

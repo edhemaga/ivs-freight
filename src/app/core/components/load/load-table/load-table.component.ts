@@ -19,14 +19,13 @@ import {
 import { LoadListResponse } from 'appcoretruckassist';
 import { DisplayLoadConfiguration } from '../load-card-data';
 import {
-    Column,
     DataForCardsAndTables,
     DataUpdate,
     DropdownItem,
     GridColumn,
     ToolbarActions,
 } from '../../shared/model/cardTableData';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows, Search } from '../../shared/model/cardData';
 import { LoadModel } from '../../shared/model/table-components/load-modal';
 
 // Queries
@@ -61,19 +60,19 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: GridColumn[] = [];
-    selectedTab: string = ConstantStringTableComponentsEnum.PENDING;
-    activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
-    resizeObserver: ResizeObserver;
-    loadActive: LoadActiveState[] = [];
-    loadClosed: LoadClosedState[] = [];
-    loadPanding: LoadPandingState[] = [];
-    loadTemplate: LoadTemplateState[] = [];
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: GridColumn[] = [];
+    public selectedTab: string = ConstantStringTableComponentsEnum.PENDING;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public resizeObserver: ResizeObserver;
+    public loadActive: LoadActiveState[] = [];
+    public loadClosed: LoadClosedState[] = [];
+    public loadPanding: LoadPandingState[] = [];
+    public loadTemplate: LoadTemplateState[] = [];
     public activeTableData: DataForCardsAndTables;
-    backLoadFilterQuery = {
+    public backLoadFilterQuery = {
         loadType: undefined,
         statusType: 1,
         status: undefined,
@@ -98,10 +97,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //Data to display from model
     public displayRowsFront: CardRows[] =
         DisplayLoadConfiguration.displayRowsFront;
+
     public displayRowsBack: CardRows[] =
         DisplayLoadConfiguration.displayRowsBack;
+
     public cardTitle: string = DisplayLoadConfiguration.cardTitle;
+
     public page: string = DisplayLoadConfiguration.page;
+
     public rows = DisplayLoadConfiguration.rows.property;
 
     constructor(
@@ -127,7 +130,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.resize();
 
-        this.toogleColumns();
+        this.toggleColumns();
 
         this.search();
 
@@ -162,6 +165,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
+
     // Reset Columns
     private resetColumns(): void {
         this.tableService.currentResetColumns
@@ -174,10 +178,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Toogle Columns
-    private toogleColumns(): void {
+    private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: Column) => {
+            .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((col) => {
                         if (col.field === response.column.field) {
@@ -194,8 +198,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            // I don't know for what is this function called so i can't set response type
-            .subscribe((res: any) => {
+            .subscribe((res: Search) => {
                 if (res) {
                     this.backLoadFilterQuery.statusType =
                         this.selectedTab ===
@@ -339,7 +342,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public getStatusLabelStyle(status: string | undefined): string {
-        const styles = 'font-weight: 900; text-transform: uppercase;';
+        const styles = ConstantStringTableComponentsEnum.STYLES;
         if (status === ConstantStringTableComponentsEnum.ASSIGNED) {
             return styles + ConstantStringTableComponentsEnum.ASSIGNED_COLOR;
         } else if (status === ConstantStringTableComponentsEnum.LOADED) {

@@ -6,6 +6,7 @@ import {
     UpdateTableConfigCommand,
 } from 'appcoretruckassist';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Column } from '../../components/shared/model/cardTableData';
 
 @Injectable({
     providedIn: 'root',
@@ -20,7 +21,7 @@ export class TruckassistTableService {
     public currentUnlockTable = this.unlockTable.asObservable();
 
     /* Toaggle Table Column */
-    private toaggleColumn = new BehaviorSubject<any>(null);
+    private toaggleColumn = new BehaviorSubject<Column>(null);
     public currentToaggleColumn = this.toaggleColumn.asObservable();
 
     /* Set Column Table Width */
@@ -71,7 +72,8 @@ export class TruckassistTableService {
 
     /* Send Chips For Highlight Search To Table */
     private chipsForHighlightSearchToTable = new BehaviorSubject<string[]>([]);
-    public currentChipsForHighlightSearchToTable = this.chipsForHighlightSearchToTable.asObservable();
+    public currentChipsForHighlightSearchToTable =
+        this.chipsForHighlightSearchToTable.asObservable();
 
     /* Set Filter */
     private setTableFilter = new BehaviorSubject<any>(null);
@@ -130,7 +132,7 @@ export class TruckassistTableService {
     }
 
     /* Send Chips For Highlight Search To Table */
-    public sendChipsForHighlightSearchToTable(chip: string[]){
+    public sendChipsForHighlightSearchToTable(chip: string[]) {
         this.chipsForHighlightSearchToTable.next(chip);
     }
 

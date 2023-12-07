@@ -1,4 +1,10 @@
 export enum ConstantStringTableComponentsEnum {
+    // NUMBERS
+    NUMBER_0 = '0',
+
+    // DAYS
+    DAY = ' days',
+
     // TABS
     APPLICANTS = 'applicants',
 
@@ -95,13 +101,21 @@ export enum ConstantStringTableComponentsEnum {
     DELETE_ITEM = 'delete-item',
 
     // CUSTOMER
+    CUSTOMER = 'Customer',
     EDIT_CUSTOMER_OR_SHIPPER = 'edit-cutomer-or-shipper',
     SHIPPERS_WITH_SPACE = 'Shippers ',
     SHIPPER_WITH_SPACE = 'Shipper ',
     CUSTOMER_TABLE_VIEW = 'Customer-table-view',
     BROKER_SHIPPER_TABLE_COUNT = 'brokerShipperTableCount',
+    RATING = 'raiting',
+    LIKE = 'like',
+
     BROKER = 'broker',
+    BROKER_2 = 'Broker ',
+    BROKER_3 = 'Brokers',
+
     SHIPPER = 'shipper',
+    SHIPPER_2 = 'shippers',
 
     // DRIVER
     APP = 'App.',
@@ -126,4 +140,7 @@ export enum ConstantStringTableComponentsEnum {
     DRIVER = 'driver',
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
+
+    // STYLES
+    STYLES = 'font-weight: 900; text-transform: uppercase;',
 }

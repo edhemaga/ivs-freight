@@ -53,3 +53,9 @@ export interface CardRows {
     hasLiked?: string;
     hasDislike?: string;
 }
+
+export interface Search {
+    chip: string;
+    search: string;
+    SearchType: string;
+}
