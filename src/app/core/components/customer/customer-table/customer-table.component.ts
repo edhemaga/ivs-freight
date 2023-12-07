@@ -41,6 +41,12 @@ import {
 } from 'appcoretruckassist';
 import { CardRows, Search } from '../../shared/model/cardData';
 import {
+    BodyResponse,
+    UpdateRating,
+    UpdateShipperBroker,
+    ViewDataResponse,
+} from '../customer.modal';
+import {
     DataForCardsAndTables,
     DropdownItem,
     GridColumn,
@@ -68,12 +74,6 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // Constants
 import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import {
-    BodyResponse,
-    UpdateRating,
-    UpdateShipperBroker,
-    ViewDataResponse,
-} from '../customer.modal';
 
 @Component({
     selector: 'app-customer-table',
