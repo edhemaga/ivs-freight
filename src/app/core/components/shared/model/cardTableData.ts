@@ -1,5 +1,6 @@
 import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { DataForCardsAndTables } from './table-components/all-tables.modal';
 
 export interface MappedShipperBroker extends ShipperResponse {
     isSelected?: boolean;
@@ -62,35 +63,7 @@ export interface DataUpdate {
     id: string;
 }
 
-export interface TableColumnConfig {
-    avatar: null | string;
-    disabled: boolean;
-    export: boolean;
-    field: string;
-    filter: string;
-    filterable: boolean;
-    hidden: boolean;
-    hoverTemplate: any;
-    index: number;
-    isActionColumn: boolean;
-    isNumeric: boolean;
-    isPined: boolean;
-    isSelectColumn: boolean;
-    link: {
-        routerLinkStart: string;
-        routerLinkEnd: string;
-    };
-    minWidth: number;
-    name: string;
-    ngTemplate: string;
-    progress: any;
-    resizable: boolean;
-    sortName: string;
-    sortable: boolean;
-    tableHeadTitle: string;
-    title: string;
-    width: number;
-}
+
 // TOOLBAR ACTIONS
 export interface ToolbarActions {
     action: string;
@@ -102,18 +75,7 @@ export interface TableBodyActions {
     id: number;
     type: string;
 }
-export interface DataForCardsAndTables {
-    data: CardDetails[];
-    extended: boolean;
-    field: string;
-    gridColumns: TableColumnConfig[];
-    gridNameTitle: string;
-    isActive: boolean;
-    length: number;
-    stateName: string;
-    tableConfiguration: string;
-    title: string;
-}
+
 // Table Columns
 export interface Column {
     column: GridColumn;

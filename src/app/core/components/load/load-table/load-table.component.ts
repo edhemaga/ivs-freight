@@ -19,13 +19,12 @@ import {
 import { LoadListResponse } from 'appcoretruckassist';
 import { DisplayLoadConfiguration } from '../load-card-data';
 import {
-    DataForCardsAndTables,
-    DataUpdate,
     DropdownItem,
     GridColumn,
     ToolbarActions,
 } from '../../shared/model/cardTableData';
 import { CardRows, Search } from '../../shared/model/cardData';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
     FilterOptions,
     LoadModel,

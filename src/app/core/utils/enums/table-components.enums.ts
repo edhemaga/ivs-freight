@@ -118,6 +118,10 @@ export enum ConstantStringTableComponentsEnum {
     SHIPPER_2 = 'shippers',
 
     // DRIVER
+    DRIVER = 'driver',
+    DRIVER_2 = 'drivers',
+    APPLICANT = 'APPLICANT',
+
     APP = 'App.',
     MVR = 'Mvr',
     PSP = 'Psp',
@@ -137,7 +141,6 @@ export enum ConstantStringTableComponentsEnum {
     DEACTIVATE = 'deactivate',
     ACTIVATE = 'activate',
     INACTIVE = 'inactive',
-    DRIVER = 'driver',
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
 

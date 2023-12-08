@@ -1,4 +1,10 @@
-import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
+import {
+    ApplicantResponse,
+    BrokerResponse,
+    DriverResponse,
+    ShipperResponse,
+    TimeOnly,
+} from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
 import { DropdownItem } from '../shared/model/cardTableData';
 
@@ -8,9 +14,14 @@ export interface ViewDataResponse {
     id: number;
     isSelected: boolean;
 }
-export interface UpdateShipperBroker {
+type CombinedResponses =
+    | ShipperResponse
+    | BrokerResponse
+    | DriverResponse
+    | ApplicantResponse;
+export interface AllTableModal {
     animation: string;
-    data: ShipperResponse | BrokerResponse;
+    data: CombinedResponses;
     id: number;
     tab: string;
 }

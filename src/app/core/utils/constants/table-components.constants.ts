@@ -440,3 +440,35 @@ export class TableDropdownDriverComponentConstants {
         },
     ];
 }
+
+export class TableDriverColorsConstants {
+    static TEXT_COLORS: string[] = [
+        '#6D82C7',
+        '#4DB6A2',
+        '#E57373',
+        '#E3B00F',
+        '#BA68C8',
+        '#BEAB80',
+        '#81C784',
+        '#FF8A65',
+        '#64B5F6',
+        '#F26EC2',
+        '#A1887F',
+        '#919191',
+    ];
+
+    static BACKGROUND_COLORS: string[] = [
+        '#DAE0F1',
+        '#D2EDE8',
+        '#F9DCDC',
+        '#F8EBC2',
+        '#EED9F1',
+        '#EFEADF',
+        '#DFF1E0',
+        '#FFE2D8',
+        '#D8ECFD',
+        '#FCDAF0',
+        '#E7E1DF',
+        '#E3E3E3',
+    ];
+}

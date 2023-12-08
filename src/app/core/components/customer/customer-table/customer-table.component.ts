@@ -44,16 +44,11 @@ import { CardRows, Search } from '../../shared/model/cardData';
 import {
     BodyResponse,
     UpdateRating,
-    UpdateShipperBroker,
     ViewDataResponse,
 } from '../customer.modal';
 import {
-    DataForCardsAndTables,
     DropdownItem,
-    GridColumn,
     MappedShipperBroker,
-    ResizingEventData,
-    TableColumnConfig,
     ToolbarActions,
 } from '../../shared/model/cardTableData';
 import {
@@ -80,6 +75,10 @@ import {
     FilterOptionBroker,
     FilterOptionshipper,
 } from '../../shared/model/table-components/customer.modals';
+import {
+    DataForCardsAndTables,
+    TableColumnConfig,
+} from '../../shared/model/table-components/all-tables.modal';
 
 interface PaginationFilter {
     companyId?: number | undefined;

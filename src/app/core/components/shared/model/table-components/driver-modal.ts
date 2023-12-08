@@ -1,3 +1,5 @@
+import { DropdownItem } from '../cardTableData';
+
 export interface DriverModal {
     id: number;
     owner: Owner;
@@ -41,8 +43,8 @@ export interface DriverModal {
     emergencyContactName: string;
     emergencyContactPhone: string;
     emergencyContactRelationship: string;
-    general: General;
-    payroll: Payroll;
+    general: GeneralNotifications;
+    payroll: GeneralNotifications;
     employmentHistories: EmploymentHistory[];
     offDutyLocations: OffDutyLocation[];
     mvrExpirationDays: number;
@@ -167,18 +169,6 @@ export interface Team {
 export interface FleetType {
     name: string;
     id: number;
-}
-
-export interface General {
-    mailNotification: boolean;
-    pushNotification: boolean;
-    smsNotification: boolean;
-}
-
-export interface Payroll {
-    mailNotification: boolean;
-    pushNotification: boolean;
-    smsNotification: boolean;
 }
 
 export interface EmploymentHistory {
@@ -359,4 +349,107 @@ export interface CoDriver2 {
     owner: number;
     status: number;
     avatar: string;
+}
+
+export interface FilterOptionApplicant {
+    applicantSpecParamsArchived: boolean;
+    applicantSpecParamsHired: boolean;
+    applicantSpecParamsFavourite: boolean;
+    applicantSpecParamsPageIndex: number;
+    applicantSpecParamsPageSize: number;
+    applicantSpecParamsCompanyId: number;
+    applicantSpecParamsSort: string;
+    searchOne: string;
+    searchTwo: string;
+    searchThree: string;
+}
+
+export interface FilterOptionDriver {
+    active: number;
+    long: number;
+    lat: number;
+    distance: number;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number;
+    sort: string;
+    searchOne: string;
+    searchTwo: string;
+    searchThree: string;
+}
+
+export interface OnTableHeadActionsModal {
+    action: string;
+    direction: string;
+}
+
+export interface OnTableBodyActionsModal {
+    data?: DriverModal;
+    id?: number;
+    type: string;
+}
+export interface AvatarColors {
+    background: string;
+    color: string;
+}
+
+export interface MappedApplicantData {
+    isSelected: boolean;
+    invitedDate?: string | null;
+    acceptedDate: string;
+    doB: string;
+    applicationStatus: string;
+    mvrStatus: string;
+    pspStatus: string;
+    sphStatus: string;
+    hosStatus: string;
+    ssnStatus: string;
+    medicalDaysLeft: number;
+    medicalPercentage: number;
+    cdlDaysLeft: number;
+    cdlPercentage: number;
+}
+
+interface GeneralNotifications {
+    mailNotification: string;
+    pushNotification: string;
+    smsNotification: string;
+}
+
+export interface MappedApplicantData {
+    tableInvited: string;
+    isSelected: boolean;
+    tableAccepted: string | null;
+    tableDOB: string | null;
+    tableApplicantProgress: {
+        title: string;
+        status: string | null;
+        width: number;
+        class: string;
+        percentage: number;
+    }[];
+    tableMedical: {
+        class: string;
+        hideProgres: boolean;
+        isApplicant: boolean;
+        expirationDays: string | null;
+        percentage: number | null;
+    };
+    tableCdl: {
+        class: string;
+        hideProgres: boolean;
+        isApplicant: boolean;
+        expirationDays: string | null;
+        percentage: number | null;
+    };
+    tableRev: {
+        title: string;
+        iconLink: string;
+    };
+    hire: boolean;
+    isFavorite: boolean;
+    tableDropdownContent: {
+        hasContent: boolean;
+        content: DropdownItem[];
+    };
 }

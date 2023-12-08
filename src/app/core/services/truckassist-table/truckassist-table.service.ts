@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
     BrokerResponse,
+    DriverResponse,
     ShipperResponse,
     TableConfigResponse,
     TableConfigService,
@@ -11,10 +12,8 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import {
     Column,
     ColumnWidthData,
-    GridColumn,
-    ResizingEventData,
 } from '../../components/shared/model/cardTableData';
-import { UpdateShipperBroker } from '../../components/customer/customer.modal';
+import { AllTableModal } from '../../components/customer/customer.modal';
 
 @Injectable({
     providedIn: 'root',
@@ -61,12 +60,15 @@ export class TruckassistTableService {
 
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
-        ShipperResponse[] | BrokerResponse[]
+        | ShipperResponse[]
+        | BrokerResponse[]
+        | DriverResponse[]
+        | BrokerResponse[]
     >([]);
     public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
 
     /* Table Action Animation */
-    private actionAnimation = new BehaviorSubject<UpdateShipperBroker>(null);
+    private actionAnimation = new BehaviorSubject<AllTableModal>(null);
     public currentActionAnimation = this.actionAnimation.asObservable();
 
     /* Reset Selected Columns  */

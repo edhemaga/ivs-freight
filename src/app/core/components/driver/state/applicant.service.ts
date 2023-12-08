@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
     ApplicantAdminResponse,
+    ApplicantListResponse,
     ApplicantService,
     CreateApplicantCommand,
+    DriverListResponse,
     ResendInviteCommand,
     UpdateApplicantCommand,
 } from '../../../../../../appcoretruckassist';
@@ -72,7 +74,7 @@ export class ApplicantTService {
         applicantSpecParamsSearch?: string,
         applicantSpecParamsSearch1?: string,
         applicantSpecParamsSearch2?: string
-    ): Observable<any> {
+    ): Observable<DriverListResponse | ApplicantListResponse> {
         return this.applicantService.apiApplicantAdminListGet(
             applicantSpecParamsArchived,
             applicantSpecParamsHired,

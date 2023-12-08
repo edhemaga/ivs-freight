@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 
 // Components
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
@@ -41,11 +40,19 @@ import { NameInitialsPipe } from '../../../pipes/nameinitials';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 // Modals
-import { DriverModal } from '../../shared/model/table-components/driver-modal';
+import {
+    AvatarColors,
+    FilterOptionApplicant,
+    FilterOptionDriver,
+    OnTableBodyActionsModal,
+    OnTableHeadActionsModal,
+    MappedApplicantData,
+} from '../../shared/model/table-components/driver-modal';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
     ApplicantShortResponse,
     DriverListResponse,
-    DriverShortResponse,
+    DriverResponse,
 } from 'appcoretruckassist';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
@@ -57,15 +64,8 @@ import {
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { CardRows } from '../../shared/model/cardData';
+import { DisplayDriverConfiguration } from '../driver-card-data';
 import {
-    cardTitle,
-    displayRowsActiveBack,
-    displayRowsActiveFront,
-    page,
-    rows,
-} from '../driver-card-data';
-import {
-    DataForCardsAndTables,
     DropdownItem,
     GridColumn,
     ToolbarActions,
@@ -75,7 +75,11 @@ import {
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 // Constants
-import { TableDropdownDriverComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import {
+    TableDriverColorsConstants,
+    TableDropdownDriverComponentConstants,
+} from 'src/app/core/utils/constants/table-components.constants';
+
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -84,21 +88,20 @@ import { TableDropdownDriverComponentConstants } from 'src/app/core/utils/consta
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: GridColumn[] = [];
-    selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
-    activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
-    driversActive: DriversActiveState[] = [];
-    driversInactive: DriversInactiveState[] = [];
-    applicantData: ApplicantShortResponse[] = [];
-    loadingPage: boolean = true;
-    inactiveTabClicked: boolean = false;
-    applicantTabActive: boolean = false;
-    activeTableData: DataForCardsAndTables;
-    driverBackFilterQuery = {
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: GridColumn[] = [];
+    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public driversActive: DriversActiveState[] = [];
+    public driversInactive: DriversInactiveState[] = [];
+    public applicantData: ApplicantShortResponse[] = [];
+    public loadingPage: boolean = true;
+    public inactiveTabClicked: boolean = false;
+    public applicantTabActive: boolean = false;
+    public activeTableData: DataForCardsAndTables;
+    public driverBackFilterQuery: FilterOptionDriver = {
         active: 1,
         long: undefined,
         lat: undefined,
@@ -111,7 +114,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchTwo: undefined,
         searchThree: undefined,
     };
-    applicantBackFilterQuery = {
+    public applicantBackFilterQuery: FilterOptionApplicant = {
         applicantSpecParamsArchived: undefined,
         applicantSpecParamsHired: undefined,
         applicantSpecParamsFavourite: undefined,
@@ -123,21 +126,23 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchTwo: undefined,
         searchThree: undefined,
     };
-    resizeObserver: ResizeObserver;
-    mapingIndex: number = 0;
+    public resizeObserver: ResizeObserver;
+    public mapingIndex: number = 0;
 
     //Data to display from model Active
-    public displayRowsFront: CardRows[] = displayRowsActiveFront;
-    public displayRowsBack: CardRows[] = displayRowsActiveBack;
+    public displayRowsFront: CardRows[] =
+        DisplayDriverConfiguration.displayRowsActiveFront;
+    public displayRowsBack: CardRows[] =
+        DisplayDriverConfiguration.displayRowsActiveBack;
 
     //Title
-    public cardTitle: string = cardTitle;
+    public cardTitle: string = DisplayDriverConfiguration.cardTitle;
 
     // Page
-    public page: string = page;
+    public page: string = DisplayDriverConfiguration.page;
 
     //  Number of rows in card
-    public rows = rows.property;
+    public rows: number = DisplayDriverConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -231,7 +236,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
+            .subscribe((response) => {
                 if (response && !this.loadingPage) {
                     this.sendDriverData();
                 }
@@ -242,8 +247,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            // TODO RESPONSE ANY
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.event?.width) {
                     this.columns = this.columns.map((col) => {
                         if (
@@ -263,8 +267,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private toogleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            // TODO RESPONSE ANY
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((col) => {
                         if (col.field === response.column.field) {
@@ -281,8 +284,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            // TODO RESPONSE ANY
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.mapingIndex = 0;
 
@@ -327,8 +329,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private deleteSelectedRow(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            // TODO RESPONSE ANY
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
                     let mappedRes = response.map((item) => {
                         return {
@@ -366,8 +367,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ConstantStringTableComponentsEnum.ACTIVE
                 ) {
                     this.viewData.push(this.mapDriverData(res.data));
-                    // TODO Find for driver modal
-                    this.viewData = this.viewData.map((driver: any) => {
+                    this.viewData = this.viewData.map((driver) => {
                         if (driver.id === res.id) {
                             driver.actionAnimation =
                                 ConstantStringTableComponentsEnum.ADD;
@@ -400,8 +400,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     res.animation === ConstantStringTableComponentsEnum.UPDATE
                 ) {
                     const updatedDriver = this.mapDriverData(res.data);
-                    // TODO Find for driver modal
-                    this.viewData = this.viewData.map((driver: any) => {
+                    this.viewData = this.viewData.map((driver) => {
                         if (driver.id === res.id) {
                             driver = updatedDriver;
                             driver.actionAnimation =
@@ -427,21 +426,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ) {
                     let driverIndex: number;
 
-                    this.viewData = this.viewData.map(
-                        // TODO Find for driver modal
-                        (driver: any, index: number) => {
-                            if (driver.id === res.id) {
-                                driver.actionAnimation =
-                                    this.selectedTab ===
-                                    ConstantStringTableComponentsEnum.ACTIVE
-                                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                                        : ConstantStringTableComponentsEnum.ACTIVATE;
-                                driverIndex = index;
-                            }
-
-                            return driver;
+                    this.viewData = this.viewData.map((driver, index) => {
+                        if (driver.id === res.id) {
+                            driver.actionAnimation =
+                                this.selectedTab ===
+                                ConstantStringTableComponentsEnum.ACTIVE
+                                    ? ConstantStringTableComponentsEnum.DEACTIVATE
+                                    : ConstantStringTableComponentsEnum.ACTIVATE;
+                            driverIndex = index;
                         }
-                    );
+
+                        return driver;
+                    });
 
                     this.updateDataCount();
 
@@ -461,17 +457,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ) {
                     let driverIndex: number;
 
-                    this.viewData = this.viewData.map(
-                        (driver: any, index: number) => {
-                            if (driver.id === res.id) {
-                                driver.actionAnimation =
-                                    ConstantStringTableComponentsEnum.DELETE;
-                                driverIndex = index;
-                            }
-
-                            return driver;
+                    this.viewData = this.viewData.map((driver, index) => {
+                        if (driver.id === res.id) {
+                            driver.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE;
+                            driverIndex = index;
                         }
-                    );
+
+                        return driver;
+                    });
 
                     this.updateDataCount();
 
@@ -488,7 +482,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private observeTableContainer() {
+    private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -504,14 +498,28 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-    initTableOptions(): void {
+    private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showLocationFilter: this.selectedTab !== 'applicants',
-                showArhiveFilter: this.selectedTab === 'applicants',
+                showLocationFilter:
+                    this.selectedTab !==
+                    ConstantStringTableComponentsEnum.APPLICANTS,
+                showArhiveFilter:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ConstantStringTableComponentsEnum.LIST,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.LIST,
+                    },
+                    {
+                        name: ConstantStringTableComponentsEnum.CARD,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.CARD,
+                    },
                 ],
             },
         };
@@ -561,13 +569,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: true,
                 gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
                 stateName: ConstantStringTableComponentsEnum.APPLICANTS,
-                tableConfiguration: 'APPLICANT',
+                tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.APPLICANTS,
                 gridColumns: this.getGridColumns(
                     ConstantStringTableComponentsEnum.APPLICANTS,
-                    'APPLICANT'
+                    ConstantStringTableComponentsEnum.APPLICANT
                 ),
             },
             {
@@ -577,13 +585,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data: driverActiveData,
                 extended: false,
                 gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
-                stateName: 'drivers',
+                stateName: ConstantStringTableComponentsEnum.DRIVER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.DRIVER,
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE,
                 gridColumns: this.getGridColumns(
-                    'drivers',
+                    ConstantStringTableComponentsEnum.DRIVER_2,
                     ConstantStringTableComponentsEnum.DRIVER
                 ),
             },
@@ -594,13 +602,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data: driverInactiveData,
                 extended: false,
                 gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
-                stateName: 'drivers',
+                stateName: ConstantStringTableComponentsEnum.DRIVER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.DRIVER,
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.INACTIVE,
                 gridColumns: this.getGridColumns(
-                    'drivers',
+                    ConstantStringTableComponentsEnum.DRIVER_2,
                     ConstantStringTableComponentsEnum.DRIVER
                 ),
             },
@@ -646,8 +654,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : getDriverColumnsDefinition();
         }
     }
-    // TODO find model for this td
-    private setDriverData(td: any): void {
+
+    private setDriverData(td: DataForCardsAndTables): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -674,7 +682,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // TODO find model for this data
-    private mapDriverData(data: any): void {
+    private mapDriverData(data): DriverResponse {
         if (!data?.avatar) {
             this.mapingIndex++;
         }
@@ -827,8 +835,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    // TODO Need to find modal for this data
-    private mapApplicantsData(data: any): void {
+    private mapApplicantsData(data: MappedApplicantData): MappedApplicantData {
         return {
             ...data,
             isSelected: false,
@@ -925,8 +932,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    // TODO need to find return type for it
-    private getDropdownDriverContent() {
+    private getDropdownDriverContent(): DropdownItem[] {
         return [
             {
                 title: 'Edit',
@@ -1091,36 +1097,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get Avatar Color
-    private getAvatarColors() {
-        let textColors: string[] = [
-            '#6D82C7',
-            '#4DB6A2',
-            '#E57373',
-            '#E3B00F',
-            '#BA68C8',
-            '#BEAB80',
-            '#81C784',
-            '#FF8A65',
-            '#64B5F6',
-            '#F26EC2',
-            '#A1887F',
-            '#919191',
-        ];
+    private getAvatarColors(): AvatarColors {
+        let textColors: string[] = TableDriverColorsConstants.TEXT_COLORS;
 
-        let backgroundColors: string[] = [
-            '#DAE0F1',
-            '#D2EDE8',
-            '#F9DCDC',
-            '#F8EBC2',
-            '#EED9F1',
-            '#EFEADF',
-            '#DFF1E0',
-            '#FFE2D8',
-            '#D8ECFD',
-            '#FCDAF0',
-            '#E7E1DF',
-            '#E3E3E3',
-        ];
+        let backgroundColors: string[] =
+            TableDriverColorsConstants.BACKGROUND_COLORS;
 
         this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 
@@ -1181,13 +1162,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (!isShowMore) {
                     this.viewData = drivers.pagination.data;
 
-                    this.viewData = this.viewData.map((data: DriverModal) => {
+                    this.viewData = this.viewData.map((data) => {
                         return this.mapDriverData(data);
                     });
                 } else {
                     let newData = [...this.viewData];
 
-                    drivers.pagination.data.map((data: DriverShortResponse) => {
+                    drivers.pagination.data.map((data) => {
                         newData.push(this.mapDriverData(data));
                     });
 
@@ -1225,21 +1206,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((applicant: DriverListResponse) => {
+            .subscribe((applicant) => {
                 if (!isShowMore) {
                     this.viewData = applicant.pagination.data;
 
-                    this.viewData = this.viewData.map((data: DriverModal) => {
+                    this.viewData = this.viewData.map((data) => {
                         return this.mapApplicantsData(data);
                     });
                 } else {
                     let newData = [...this.viewData];
 
-                    applicant.pagination.data.map(
-                        (data: DriverShortResponse) => {
-                            newData.push(this.mapApplicantsData(data));
-                        }
-                    );
+                    applicant.pagination.data.map((data) => {
+                        newData.push(this.mapApplicantsData(data));
+                    });
 
                     this.viewData = [...newData];
                 }
@@ -1286,7 +1265,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.driverTService
                     .getDrivers(0, undefined, undefined, undefined, 1, 25)
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe((driverPagination: DriverListResponse) => {
+                    .subscribe((driverPagination) => {
                         this.driversInactiveStore.set(
                             driverPagination.pagination.data
                         );
@@ -1341,10 +1320,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableHeadActions(event: {
-        action: string;
-        direction: string;
-    }): void {
+    public onTableHeadActions(event: OnTableHeadActionsModal): void {
         if (event.action === ConstantStringTableComponentsEnum.SORT) {
             this.mapingIndex = 0;
 
@@ -1374,11 +1350,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: {
-        data?: DriverModal;
-        id?: number;
-        type: string;
-    }): void {
+    public onTableBodyActions(event: OnTableBodyActionsModal): void {
         const mappedEvent = {
             ...event,
             data: {
@@ -1524,7 +1496,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.viewData = this.viewData.map((driver: DriverModal) => {
+                    this.viewData = this.viewData.map((driver) => {
                         if (driver.id === id) {
                             driver.actionAnimation =
                                 ConstantStringTableComponentsEnum.DELETE;
@@ -1548,13 +1520,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private multipleDeleteDrivers(response): void {
+    // This function gets called but service deleteDriverList is commented out so it will not delete any drivers
+    private multipleDeleteDrivers(response: DriverResponse[]): void {
         this.driverTService
             .deleteDriverList(response)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((driver) => {
-                    response.map((id: number) => {
+                    response.map((id) => {
                         if (driver.id === id) {
                             driver.actionAnimation =
                                 ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
@@ -1587,15 +1560,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver.disconnect();
     }
 
-    public testControl: UntypedFormGroup = new UntypedFormGroup({
-        email: new UntypedFormControl(null),
-        password: new UntypedFormControl(null),
-        phone: new UntypedFormControl(null),
-    });
+    // This is added probably for modal and unfinished
     modalColumns: any[] = [];
     modalViewData: any[] = [];
 
-    modalTestInitialization() {
+    private modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
 
         for (let i = 0; i < 3; i++) {
