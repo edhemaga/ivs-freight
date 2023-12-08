@@ -26,7 +26,10 @@ import {
     ToolbarActions,
 } from '../../shared/model/cardTableData';
 import { CardRows, Search } from '../../shared/model/cardData';
-import { LoadModel } from '../../shared/model/table-components/load-modal';
+import {
+    FilterOptions,
+    LoadModel,
+} from '../../shared/model/table-components/load-modal';
 
 // Queries
 import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
@@ -72,7 +75,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadPanding: LoadPandingState[] = [];
     public loadTemplate: LoadTemplateState[] = [];
     public activeTableData: DataForCardsAndTables;
-    public backLoadFilterQuery = {
+    public backLoadFilterQuery: FilterOptions = {
         loadType: undefined,
         statusType: 1,
         status: undefined,

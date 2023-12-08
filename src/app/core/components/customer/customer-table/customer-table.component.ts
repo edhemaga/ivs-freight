@@ -76,6 +76,24 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // Constants
 import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import {
+    FilterOptionBroker,
+    FilterOptionshipper,
+} from '../../shared/model/table-components/customer.modals';
+
+interface PaginationFilter {
+    companyId?: number | undefined;
+    distance?: number | undefined;
+    lat?: number | undefined;
+    long?: number | undefined;
+    pageIndex: number;
+    pageSize: number;
+    searchOne?: string | undefined;
+    searchThree?: string | undefined;
+    searchTwo?: string | undefined;
+    sort?: string | undefined;
+    stateIds?: number[] | undefined;
+}
 
 @Component({
     selector: 'app-customer-table',
@@ -104,7 +122,7 @@ export class CustomerTableComponent
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
-    public backBrokerFilterQuery = {
+    public backBrokerFilterQuery: FilterOptionBroker = {
         ban: null,
         dnu: null,
         invoiceAgeingFrom: undefined,
@@ -122,7 +140,7 @@ export class CustomerTableComponent
         searchThree: undefined,
     };
 
-    public backShipperFilterQuery = {
+    public backShipperFilterQuery: FilterOptionshipper = {
         stateIds: undefined,
         long: undefined,
         lat: undefined,
@@ -213,7 +231,6 @@ export class CustomerTableComponent
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
-                console.log(response);
                 if (response?.event?.width) {
                     this.columns = this.columns.map((col) => {
                         if (
