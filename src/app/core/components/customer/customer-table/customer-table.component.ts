@@ -38,6 +38,7 @@ import {
     RatingSetResponse,
     ShipperListResponse,
     ShipperResponse,
+    TimeOnly,
 } from 'appcoretruckassist';
 import { CardRows, Search } from '../../shared/model/cardData';
 import {
@@ -50,6 +51,7 @@ import {
     DataForCardsAndTables,
     DropdownItem,
     GridColumn,
+    MappedShipperBroker,
     ResizingEventData,
     TableColumnConfig,
     ToolbarActions,
@@ -148,7 +150,7 @@ export class CustomerTableComponent
         DisplayCustomerConfiguration.displayRowsBackShipper;
     public cardTitle: string = DisplayCustomerConfiguration.cardTitle;
     public page: string = DisplayCustomerConfiguration.page;
-    public rows = DisplayCustomerConfiguration.rows;
+    public rows: number = DisplayCustomerConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -210,32 +212,28 @@ export class CustomerTableComponent
     public resizeColumns(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (response: {
-                    columns: GridColumn[];
-                    event: ResizingEventData;
-                }) => {
-                    if (response?.event?.width) {
-                        this.columns = this.columns.map((col) => {
-                            if (
-                                col.title ===
-                                response.columns[response.event.index].title
-                            ) {
-                                col.width = response.event.width;
-                            }
+            .subscribe((response) => {
+                console.log(response);
+                if (response?.event?.width) {
+                    this.columns = this.columns.map((col) => {
+                        if (
+                            col.title ===
+                            response.columns[response.event.index].title
+                        ) {
+                            col.width = response.event.width;
+                        }
 
-                            return col;
-                        });
-                    }
+                        return col;
+                    });
                 }
-            );
+            });
     }
 
     // Toogle Columns
     public toogleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: { column: GridColumn; index: number }) => {
+            .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((col) => {
                         if (col.field === response.column.field) {
@@ -252,7 +250,7 @@ export class CustomerTableComponent
     public addUpdateBrokerShipper(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: UpdateShipperBroker) => {
+            .subscribe((res) => {
                 // <------------------ Broker ------------------->
                 // Add Broker
                 if (
@@ -269,9 +267,7 @@ export class CustomerTableComponent
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.BROKER
                 ) {
-                    const updatedBroker: ViewDataResponse = this.mapBrokerData(
-                        res.data
-                    );
+                    const updatedBroker = this.mapBrokerData(res.data);
 
                     this.updateData(res.id, updatedBroker);
                 }
@@ -292,8 +288,7 @@ export class CustomerTableComponent
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.SHIPPER
                 ) {
-                    const updatedShipper: ViewDataResponse =
-                        this.mapShipperData(res.data);
+                    const updatedShipper = this.mapShipperData(res.data);
 
                     this.updateData(res.id, updatedShipper);
                 }
@@ -304,7 +299,7 @@ export class CustomerTableComponent
     public deleleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: ShipperResponse[] | BrokerResponse[]) => {
+            .subscribe((response) => {
                 // Multiple Delete
                 if (response.length) {
                     // Delete Broker List
@@ -387,7 +382,7 @@ export class CustomerTableComponent
     public search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: Search) => {
+            .subscribe((res) => {
                 if (res) {
                     this.backBrokerFilterQuery.pageIndex = 1;
                     this.backShipperFilterQuery.pageIndex = 1;
@@ -643,9 +638,8 @@ export class CustomerTableComponent
         }
     }
 
-    // TODO Any fix
     // Map Broker Data
-    private mapBrokerData(data: BrokerResponse): any {
+    private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
         return {
             ...data,
             isSelected: false,
@@ -723,9 +717,8 @@ export class CustomerTableComponent
         };
     }
 
-    // TODO Any fix
     // Map Shipper Data
-    private mapShipperData(data: ShipperResponse): any {
+    private mapShipperData(data: ShipperResponse): MappedShipperBroker {
         return {
             ...data,
             isSelected: false,
@@ -1143,13 +1136,13 @@ export class CustomerTableComponent
 
                     this.viewData = [...newViewData];
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
                             this.viewData
                         );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 1000);
 
                     this.mapsService.addRating(res);
@@ -1161,7 +1154,7 @@ export class CustomerTableComponent
     private getSelectedTabTableData(): void {
         if (this.tableData?.length) {
             this.activeTableData = this.tableData.find(
-                (t) => t.field === this.selectedTab
+                (table) => table.field === this.selectedTab
             );
         }
         return;
@@ -1174,7 +1167,7 @@ export class CustomerTableComponent
     }
 
     // Get Business Name
-    private getBusinessName(event: BodyResponse, businessName: string) {
+    private getBusinessName(event: BodyResponse, businessName: string): string {
         if (!businessName) {
             return (businessName = event.data.businessName);
         } else {
@@ -1196,16 +1189,16 @@ export class CustomerTableComponent
 
         this.updateDataCount();
 
-        const inetval = setInterval(() => {
+        const interval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
-            clearInterval(inetval);
+            clearInterval(interval);
         }, 2300);
     }
 
     // Update Shipper Or Broker In Viewdata
-    private updateData(dataId: number, updatedData: ViewDataResponse): void {
-        this.viewData = this.viewData.map((data: ViewDataResponse) => {
+    private updateData(dataId: number, updatedData: MappedShipperBroker): void {
+        this.viewData = this.viewData.map((data) => {
             if (data.id === dataId) {
                 data = updatedData;
                 data.actionAnimation = ConstantStringTableComponentsEnum.UPDATE;
@@ -1216,10 +1209,10 @@ export class CustomerTableComponent
 
         this.ref.detectChanges();
 
-        const inetval = setInterval(() => {
+        const interval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
-            clearInterval(inetval);
+            clearInterval(interval);
         }, 1000);
     }
 
@@ -1235,10 +1228,10 @@ export class CustomerTableComponent
 
         this.updateDataCount();
 
-        const inetval = setInterval(() => {
+        const interval = setInterval(() => {
             this.viewData = closeAnimationAction(true, this.viewData);
 
-            clearInterval(inetval);
+            clearInterval(interval);
         }, 900);
     }
 
@@ -1259,10 +1252,10 @@ export class CustomerTableComponent
 
         this.updateDataCount();
 
-        const inetval = setInterval(() => {
+        const interval = setInterval(() => {
             this.viewData = closeAnimationAction(true, this.viewData);
 
-            clearInterval(inetval);
+            clearInterval(interval);
         }, 900);
 
         this.tableService.sendRowsSelected([]);
@@ -1375,5 +1368,9 @@ export class CustomerTableComponent
             //this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 }

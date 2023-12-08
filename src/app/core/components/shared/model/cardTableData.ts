@@ -1,3 +1,54 @@
+import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
+export interface MappedShipperBroker extends ShipperResponse {
+    isSelected?: boolean;
+    tableAddress?: string;
+    tableLoads?: string;
+    tableAddressPhysical?: string;
+    tableAddressBilling?: string;
+    tableAverageWatingTimePickup?: ConstantStringTableComponentsEnum | TimeOnly;
+    tableAverageWatingTimeDelivery?:
+        | ConstantStringTableComponentsEnum
+        | TimeOnly;
+    tableAvailableHoursShipping?: string;
+    tableAvailableHoursReceiving?: string;
+    tablePaymentDetailAvailCredit?: ConstantStringTableComponentsEnum | string;
+    tablePaymentDetailCreditLimit?: ConstantStringTableComponentsEnum | string;
+    tablePaymentDetailTerm?: string;
+    tablePaymentDetailDTP?: ConstantStringTableComponentsEnum | string;
+    tablePaymentDetailInvAgeing?: {
+        bfb: ConstantStringTableComponentsEnum | string;
+        dnu: ConstantStringTableComponentsEnum | string;
+        amount: string;
+    };
+    tableRaiting?: {
+        hasLiked?: boolean;
+        hasDislike?: boolean;
+        likeCount?: number | string;
+        dislikeCount?: number | string;
+    };
+    tableContact?: number;
+    tableAdded?: string;
+    tableEdited?: string;
+    tableDropdownContent?: {
+        hasContent?: boolean;
+        content?: DropdownItem[];
+    };
+    PaymentDetailInvAgeing?: {
+        bfb: ConstantStringTableComponentsEnum | string;
+        dnu: ConstantStringTableComponentsEnum | string;
+        amount: string;
+    };
+
+    data?: ShipperResponse | BrokerResponse;
+    actionAnimation?: string;
+    id?: number;
+    tableMiles?: string;
+    tablePPM?: string;
+    tableRevenue?: string;
+}
+
 export interface DataUpdate {
     animation: string;
     data: {
@@ -96,6 +147,10 @@ export interface ResizingEventData {
     isResizing: boolean;
     section: string;
     width: number;
+}
+export interface ColumnWidthData {
+    columns: GridColumn[];
+    event: ResizingEventData[];
 }
 // Table Columns end
 export interface SendDataCard {

@@ -71,7 +71,11 @@
                 (headActions)="onTableHeadActions($event)"
             >
                 <app-map-list-card
-                    *ngFor="let latlong of mapListData; let i = index"
+                    *ngFor="
+                        let latlong of mapListData;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
                     #listCard
                     [title]="latlong?.businessName"
                     [isSelected]="latlong?.isSelected"

@@ -105,7 +105,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public page: string = DisplayLoadConfiguration.page;
 
-    public rows = DisplayLoadConfiguration.rows.property;
+    public rows: number = DisplayLoadConfiguration.rows;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -265,7 +265,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: DataUpdate) => {
+            .subscribe((res) => {
                 // On Add Driver Active
 
                 if (

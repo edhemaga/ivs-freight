@@ -66,7 +66,6 @@ import {
 } from '../driver-card-data';
 import {
     DataForCardsAndTables,
-    DataUpdate,
     DropdownItem,
     GridColumn,
     ToolbarActions,
@@ -359,7 +358,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: DataUpdate) => {
+            .subscribe((res) => {
                 // On Add Driver Active
                 if (
                     res.animation === ConstantStringTableComponentsEnum.ADD &&

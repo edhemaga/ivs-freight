@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import {
+    BrokerResponse,
+    ShipperResponse,
     TableConfigResponse,
     TableConfigService,
     TableType,
     UpdateTableConfigCommand,
 } from 'appcoretruckassist';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Column } from '../../components/shared/model/cardTableData';
+import {
+    Column,
+    ColumnWidthData,
+    GridColumn,
+    ResizingEventData,
+} from '../../components/shared/model/cardTableData';
+import { UpdateShipperBroker } from '../../components/customer/customer.modal';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +33,10 @@ export class TruckassistTableService {
     public currentToaggleColumn = this.toaggleColumn.asObservable();
 
     /* Set Column Table Width */
-    private columnWidth = new BehaviorSubject<any>([]);
+    private columnWidth = new BehaviorSubject<{
+        columns: ColumnWidthData;
+        event: { width: number; index: number };
+    }>(null);
     public currentColumnWidth = this.columnWidth.asObservable();
 
     /* Set Table Selection */
@@ -49,11 +60,13 @@ export class TruckassistTableService {
     public currentShowingScroll = this.showingScroll.asObservable();
 
     /* Delete Selected Rows */
-    private deleteSelectedRows = new BehaviorSubject<any>([]);
+    private deleteSelectedRows = new BehaviorSubject<
+        ShipperResponse[] | BrokerResponse[]
+    >([]);
     public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
 
     /* Table Action Animation */
-    private actionAnimation = new BehaviorSubject<any>({});
+    private actionAnimation = new BehaviorSubject<UpdateShipperBroker>(null);
     public currentActionAnimation = this.actionAnimation.asObservable();
 
     /* Reset Selected Columns  */

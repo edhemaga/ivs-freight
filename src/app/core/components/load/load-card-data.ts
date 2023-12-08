@@ -1,9 +1,7 @@
 import { CardRows } from '../shared/model/cardData';
 
 export class DisplayLoadConfiguration {
-    static rows = {
-        property: [4],
-    };
+    static rows: number = 4;
 
     static page: string = 'Load';
     static cardTitle: string = 'loadInvoice.invoice';

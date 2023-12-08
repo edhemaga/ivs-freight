@@ -1,8 +1,7 @@
 import { CardRows } from '../shared/model/cardData';
 export class DisplayCustomerConfiguration {
-    static rows = {
-        property: [4],
-    };
+    static rows: number = 4;
+
     static page: string = 'Customer';
 
     static cardTitle: string = 'businessName';
