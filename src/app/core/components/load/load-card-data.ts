@@ -14,13 +14,13 @@ export class DisplayLoadConfiguration {
         {
             title: 'Pickup',
             endpoint: 'loadPickup.count',
-            seccondEndpoint: 'loadPickup.location',
+            secondEndpoint: 'loadPickup.location',
             thirdEndpoint: 'loadPickup.date',
         },
         {
             title: 'Delivery',
             endpoint: 'loadDelivery.count',
-            seccondEndpoint: 'loadDelivery.location',
+            secondEndpoint: 'loadDelivery.location',
             thirdEndpoint: 'loadDelivery.date',
         },
         {

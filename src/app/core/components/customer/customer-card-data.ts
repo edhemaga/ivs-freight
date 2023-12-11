@@ -35,7 +35,7 @@ export class DisplayCustomerConfiguration {
         {
             title: 'Rating & Review',
             endpoint: 'tableRaiting.likeCount',
-            seccondEndpoint: 'tableRaiting.dislikeCount',
+            secondEndpoint: 'tableRaiting.dislikeCount',
             hasLiked: 'hasLiked',
             hasDislike: 'hasDislike',
         },
@@ -66,7 +66,7 @@ export class DisplayCustomerConfiguration {
         {
             title: 'Rating & Review',
             endpoint: 'tableRaiting.likeCount',
-            seccondEndpoint: 'tableRaiting.dislikeCount',
+            secondEndpoint: 'tableRaiting.dislikeCount',
             hasLiked: 'hasLiked',
             hasDislike: 'hasDislike',
         },
