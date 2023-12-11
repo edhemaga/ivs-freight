@@ -19,6 +19,7 @@ export enum ConstantStringEnum {
     MILEAGE = 'Mileage',
     SW = 'SW',
     COUNT = 'Count',
+    GALLON = 'Gallon',
 
     NET_INCOME = 'NET INCOME',
     REVENUE_2 = 'REVENUE',

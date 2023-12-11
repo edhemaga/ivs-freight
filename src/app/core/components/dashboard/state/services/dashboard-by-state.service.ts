@@ -6,8 +6,10 @@ import { Observable } from 'rxjs';
 import {
     AccidentByStateListResponse,
     DashboardService,
+    FuelByStateListResponse,
     PickupDeliveryByStateListResponse,
     RepairByStateListResponse,
+    RoadsideByStateListResponse,
     ViolationByStateListResponse,
 } from 'appcoretruckassist';
 import {
@@ -39,7 +41,7 @@ export class DashboardByStateService {
 
     public getRoadsideByState(
         data: ByStateApiArguments
-    ): Observable<ViolationByStateListResponse> {
+    ): Observable<RoadsideByStateListResponse> {
         return this.dashboardService.apiDashboardRoadsidebystateGet(...data);
     }
 
@@ -63,7 +65,7 @@ export class DashboardByStateService {
 
     public getFuelByState(
         data: ByStateApiArguments
-    ): Observable<RepairByStateListResponse> {
+    ): Observable<FuelByStateListResponse> {
         return this.dashboardService.apiDashboardFuelbystateGet(...data);
     }
 }

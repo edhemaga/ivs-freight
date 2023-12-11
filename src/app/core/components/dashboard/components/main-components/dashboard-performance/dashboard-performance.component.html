@@ -98,9 +98,11 @@
                 class="d-flex flex-column justify-content-center boxes-double-box"
                 placement="bottom"
                 [ngbTooltip]="
-                    performanceData[0].isSelected
-                        ? 'Hide from Chart'
-                        : 'Show on Chart'
+                    !isLoading
+                        ? performanceData[0].isSelected
+                            ? 'Hide from Chart'
+                            : 'Show on Chart'
+                        : ''
                 "
                 [ngStyle]="{
                     background: performanceData[0].isHovered
@@ -278,9 +280,11 @@
                         class="d-flex flex-column box"
                         placement="bottom"
                         [ngbTooltip]="
-                            performanceDataItem.isSelected
-                                ? 'Hide from Chart'
-                                : 'Show on Chart'
+                            !isLoading
+                                ? performanceDataItem.isSelected
+                                    ? 'Hide from Chart'
+                                    : 'Show on Chart'
+                                : ''
                         "
                         [ngStyle]="{
                             background: performanceDataItem.isHovered
