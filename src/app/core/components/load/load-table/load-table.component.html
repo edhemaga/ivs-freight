@@ -25,103 +25,40 @@
         ></app-truckassist-table-body>
     </ng-container>
     <!-- Cards -->
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <div class="cards-container">
-            <ng-container
-                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
-            >
-                <app-truckassist-cards
-                    (bodyActions)="onTableBodyActions($event)"
-                    [viewData]="viewData"
-                    [cardIndex]="[i]"
-                    [card]="data"
-                    [cardHeader]="{
-                        checkbox: true,
-                        cardTitle: 'INV-' + data?.loadInvoice.invoice,
-                        svg:
-                            data.type.name === 'LTL'
-                                ? 'assets/svg/detail-cards/left-arrows.svg'
-                                : 'assets/svg/detail-cards/shuffle.svg',
-                        svgStyle: 'margin-right: 5px'
-                    }"
-                    [firstLabel]="{
-                        title: 'Status',
-                        value: {
-                            firstValue: data.loadStatus?.status,
-                            firstValueStyle: getStatusLabelStyle(
-                                data.loadStatus?.status
-                            )
-                        }
-                    }"
-                    [seccondLabel]="{
-                        title: 'Pickup',
-                        value: {
-                            firstValue: data.loadPickup?.count,
-                            firstValueStyle:
-                                'font-weight: 700; font-size: 11px; background: #56B4AC; width: 18px; height: 18px; border-radius: 1px; color: #FFFFFF; display: flex; justify-content: center; align-items: center;',
-                            seccValue: data?.loadPickup?.location,
-                            thirdValue: data?.loadPickup?.date,
-                            thirdValueStyle: 'color:#919191;'
-                        }
-                    }"
-                    [thirdLabel]="{
-                        title: 'Delivery',
-                        value: {
-                            firstValue: data.loadDelivery?.count,
-                            firstValueStyle:
-                                'font-weight: 700; font-size: 11px; background: #E66767; width: 18px; height: 18px; border-radius: 1px; color: #FFFFFF; display: flex; justify-content: center; align-items: center;',
 
-                            seccValue: data?.loadDelivery?.location,
-                            thirdValue: data?.loadDelivery?.date,
-                            thirdValueStyle: 'color:#919191;'
-                        }
-                    }"
-                    [fourthLabel]="{
-                        title: 'Rate',
-                        value: { firstValue: data.textBase }
-                    }"
-                    [firstLabelBack]="{
-                        title: 'Dispatcher',
-                        value: {
-                            firstValue:
-                                data.dispatcher.avatar !== null
-                                    ? data.dispatcher.avatar
-                                    : '',
-                            seccValue: data.dispatcher.fullName
-                        }
-                    }"
-                    [seccondLabelBack]="{
-                        title: 'Broker',
-                        value: {
-                            firstValue: data.broker.businessName
-                        }
-                    }"
-                    [thirdLabelBack]="{
-                        title: 'Ref. Number',
-                        value: {
-                            firstValue: data.referenceNumber
-                        }
-                    }"
-                    [fourthLabelBack]="{
-                        title: 'Total Miles',
-                        value: {
-                            firstValue: data.totalMiles,
-                            seccValue: 'mi',
-                            seccValueStyle: 'color:#919191;'
-                        }
-                    }"
-                    [firstLabelRightSide]="{
-                        svg: 'assets/svg/truckassist-table/note/Note-hover.svg'
-                    }"
-                    [seccondLabelRightSide]="{
-                        count: data.commentsCount,
-                        svg: 'assets/svg/detail-cards/comment - count.svg'
-                    }"
-                    [thirdLabelRightSide]="{
-                        count: data.fileCount,
-                        svg: 'assets/svg/truckassist-table/attachment-icon.svg'
-                    }"
-                ></app-truckassist-cards>
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-truckassist-cards
+                (bodyActions)="onTableBodyActions($event)"
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [displayRowsFront]="displayRowsFront"
+                [displayRowsBack]="displayRowsBack"
+                [page]="page"
+            ></app-truckassist-cards>
+            <!-- Show More -->
+
+            <ng-container *ngIf="viewData.length">
+                <div
+                    class="show-more-container d-flex align-items-center justify-content-between"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                >
+                    <div class="showing ta-font-semi-bold">
+                        {{ viewData.length }} OF
+                        {{ activeTableData.length }}
+                    </div>
+                    <ng-container
+                        *ngIf="viewData.length < activeTableData.length"
+                    >
+                        <div
+                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            (click)="onShowMore()"
+                        >
+                            SHOW MORE
+                        </div>
+                    </ng-container>
+                </div>
             </ng-container>
         </div>
     </ng-container>

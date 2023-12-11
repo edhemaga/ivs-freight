@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import {
+    BrokerResponse,
+    DriverResponse,
+    ShipperResponse,
     TableConfigResponse,
     TableConfigService,
     TableType,
     UpdateTableConfigCommand,
 } from 'appcoretruckassist';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+    Column,
+    ColumnWidthData,
+} from '../../components/shared/model/cardTableData';
+import { AllTableModal } from '../../components/customer/customer.modal';
 
 @Injectable({
     providedIn: 'root',
@@ -20,11 +28,14 @@ export class TruckassistTableService {
     public currentUnlockTable = this.unlockTable.asObservable();
 
     /* Toaggle Table Column */
-    private toaggleColumn = new BehaviorSubject<any>(null);
+    private toaggleColumn = new BehaviorSubject<Column>(null);
     public currentToaggleColumn = this.toaggleColumn.asObservable();
 
     /* Set Column Table Width */
-    private columnWidth = new BehaviorSubject<any>([]);
+    private columnWidth = new BehaviorSubject<{
+        columns: ColumnWidthData;
+        event: { width: number; index: number };
+    }>(null);
     public currentColumnWidth = this.columnWidth.asObservable();
 
     /* Set Table Selection */
@@ -48,11 +59,16 @@ export class TruckassistTableService {
     public currentShowingScroll = this.showingScroll.asObservable();
 
     /* Delete Selected Rows */
-    private deleteSelectedRows = new BehaviorSubject<any>([]);
+    private deleteSelectedRows = new BehaviorSubject<
+        | ShipperResponse[]
+        | BrokerResponse[]
+        | DriverResponse[]
+        | BrokerResponse[]
+    >([]);
     public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
 
     /* Table Action Animation */
-    private actionAnimation = new BehaviorSubject<any>({});
+    private actionAnimation = new BehaviorSubject<AllTableModal>(null);
     public currentActionAnimation = this.actionAnimation.asObservable();
 
     /* Reset Selected Columns  */
@@ -71,7 +87,8 @@ export class TruckassistTableService {
 
     /* Send Chips For Highlight Search To Table */
     private chipsForHighlightSearchToTable = new BehaviorSubject<string[]>([]);
-    public currentChipsForHighlightSearchToTable = this.chipsForHighlightSearchToTable.asObservable();
+    public currentChipsForHighlightSearchToTable =
+        this.chipsForHighlightSearchToTable.asObservable();
 
     /* Set Filter */
     private setTableFilter = new BehaviorSubject<any>(null);
@@ -130,7 +147,7 @@ export class TruckassistTableService {
     }
 
     /* Send Chips For Highlight Search To Table */
-    public sendChipsForHighlightSearchToTable(chip: string[]){
+    public sendChipsForHighlightSearchToTable(chip: string[]) {
         this.chipsForHighlightSearchToTable.next(chip);
     }
 
