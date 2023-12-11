@@ -4,6 +4,7 @@ import {
     EventEmitter,
     Input,
     Output,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
@@ -17,6 +18,7 @@ import { PayrollStatusesComponent } from '../payroll-statuses/payroll-statuses.c
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -39,9 +41,12 @@ import { ChangeDetectionStrategy } from '@angular/core';
         TaCounterComponent,
         PayrollStatusesComponent,
         TaLikeDislikeComponent,
+        TaNoteContainerComponent,
     ],
 })
 export class TaCustomCardComponent {
+    @ViewChild('noteContainer') noteContainer: any;
+
     @Input() animationsDisabled = true;
     @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
     @Input() cardName: string = null;
@@ -67,6 +72,7 @@ export class TaCustomCardComponent {
     @Input() hasPayrollStatus: boolean = false;
     @Input() bottomCollapseArrow: boolean = false;
     @Input() customClass: string;
+    @Input() hasFormatTextActionButtons: boolean = false;
 
     @Input() controlName: UntypedFormControl;
 

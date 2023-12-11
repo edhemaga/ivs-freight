@@ -31,7 +31,10 @@
             </div>
 
             <!-- Name -->
-            <span class="header-text">
+            <span
+                class="header-text"
+                [ngStyle]="{ color: _isCardOpen ? '#424242' : '#6C6C6C' }"
+            >
                 {{ cardName }}
             </span>
 
@@ -83,10 +86,6 @@
         >
             <!-- Payroll status -->
             <div class="payroll-status d-flex" *ngIf="hasPayrollStatus">
-                <!-- <app-payroll-statuses
-                    [active]="_isCardOpen && _isCardOpen != 'null'"
-                    [options]="{ value: '$4,146.92 DEBT', type: 'next' }"
-                ></app-payroll-statuses> -->
                 <app-payroll-statuses
                     [active]="_isCardOpen && _isCardOpen != 'null'"
                     [options]="{ value: '$4,146.92 DEBT', type: 'dept' }"
@@ -209,6 +208,20 @@
                 ></svg-icon>
             </div>
 
+            <!-- Format Text Actions -->
+            <app-ta-note-container
+                *ngIf="_isCardOpen && hasFormatTextActionButtons"
+                #noteContainer
+                [isExpanded]="true"
+                [range]="range"
+                [selectionTaken]="selectionTaken"
+                [value]="value"
+                [parking]="parking"
+                [popoverNote]="true"
+                [selectedEditor]="main_editor?.nativeElement"
+                [type]="type"
+            ></app-ta-note-container>
+
             <!-- Arrow -->
             <svg-icon
                 *ngIf="hasArrow && hasBodyData"
@@ -233,7 +246,7 @@
                 value: _isCardOpen.toString(),
                 params: animationMarginParams
             }"
-            class="content-holder {{customClass}}"
+            class="content-holder {{ customClass }}"
         >
             <ng-content></ng-content>
         </div>

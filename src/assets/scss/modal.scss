@@ -111,7 +111,7 @@ ngb-modal-window[aria-hidden='true'] {
                     font-size: 18px;
                     font-weight: 800;
                     color: #424242;
-                    line-height: 18px;
+                    line-height: 22px;
                     padding-top: 1px;
                     position: relative;
                     left: 2px;
@@ -156,13 +156,13 @@ ngb-modal-window[aria-hidden='true'] {
                 }
 
                 .edit-name {
-                    color: #ffffff;
-                    background: #424242;
-                    padding: 2px 6px;
+                    color: $white;
+                    background: $bw5;
+                    padding: 4px 8px;
                     margin: 0px;
                     border-radius: 2px;
                     font-size: 14px;
-                    font-weight: 400;
+                    font-weight: 700;
                     line-height: 18px;
                     text-overflow: ellipsis;
                     overflow: hidden;
@@ -309,6 +309,7 @@ ngb-modal-window[aria-hidden='true'] {
                             transform: translateY(-50%);
                             svg {
                                 path {
+                                    transition: fill 0.3s ease-in-out;
                                     fill: #919191;
                                 }
                             }
@@ -326,7 +327,7 @@ ngb-modal-window[aria-hidden='true'] {
                         }
 
                         &:hover {
-                            background-color: rgb(66, 66, 66, 0.2);
+                            background-color: #eeeeee;
 
                             svg-icon {
                                 svg {
@@ -369,27 +370,24 @@ ngb-modal-window[aria-hidden='true'] {
                         transition: all 0.3s ease-in-out;
 
                         svg {
-                            width: 26px;
-                            height: 26px;
+                            width: 22px;
+                            height: 22px;
 
                             path {
-                                fill: #919191;
+                                fill: $bw5;
                             }
 
                             rect {
                                 fill: transparent;
                                 border-radius: 2px;
+                                transition: fill 0.3s ease-in-out;
                             }
                         }
 
                         &:hover {
                             svg {
-                                path {
-                                    fill: #424242;
-                                }
-
                                 rect {
-                                    fill: rgb(66, 66, 66, 0.2);
+                                    fill: $bw2;
                                 }
                             }
                         }
@@ -849,7 +847,8 @@ body:not(.modal-open) {
         background: rgb(108, 108, 108, 0.2);
     }
 
-    span, div {
+    span,
+    div {
         &::-moz-selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);

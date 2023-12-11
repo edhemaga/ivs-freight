@@ -41,7 +41,6 @@
             }
 
             .header-text {
-                color: #424242;
                 font-weight: 800;
                 font-size: 14px;
                 -webkit-user-select: none;
@@ -49,6 +48,7 @@
                 -ms-user-select: none;
                 user-select: none;
                 line-height: 18px;
+                transition: color 0.3s ease-in-out;
             }
 
             .capsula-wrapper {

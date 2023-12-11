@@ -220,7 +220,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         ],
     ];
 
-    public loadNumber: string;
+    public loadNumber: string = 'IVS-346/22';
 
     public labelsTemplate: any[] = [];
     public labelsDispatcher: any[] = [];
@@ -380,7 +380,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             customClass: 'load-shipper-contact',
         },
         isDropdown: true,
-        isDisabled: true,
+        isDisabled: false,
         blackInput: true,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-330',
@@ -452,8 +452,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public disableCardAnimation: boolean = false;
 
-    public requirementsSectionOpened: boolean = false;
-
     // Modal Table
     tableModalOpen: string = '';
 
@@ -496,12 +494,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadTemplateId: [null],
             dispatcherId: [null],
             companyId: [this.companyUser.companyName, Validators.required],
+            brokerId: [null, Validators.required],
+            brokerContactId: [null],
             dispatchId: [null],
             referenceNumber: [null, Validators.required],
             generalCommodity: [null],
             weight: [null],
-            brokerId: [null, Validators.required],
-            brokerContactId: [null],
+
             // Requirements
             truckTypeId: [null],
             trailerTypeId: [null],
@@ -2586,7 +2585,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     );
 
                     // OVO TREBA PROVERITI, JA SAM USER KOJI JE POZVAN U OVU KOMPANIJU I JA SE NE NALAZIM UNUTAR DISPATCHER LISTE A OVDE SE TRAZI UNUTAR DISPATCHER LISTE KO JE COMPANY OWNER PA PUCA
-                    if( !initialDispatcher ) initialDispatcher = this.labelsDispatcher[0];
+                    if (!initialDispatcher)
+                        initialDispatcher = this.labelsDispatcher[0];
 
                     this.loadForm
                         .get('dispatcherId')
@@ -2907,14 +2907,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
 
             this.isVisiblePayment = !!loadData.advancePay;
-
-            this.requirementsSectionOpened = Object.keys(
-                loadData.loadRequirements
-            ).some(
-                (key) =>
-                    loadData.loadRequirements[key] !== undefined &&
-                    loadData.loadRequirements[key] !== null
-            );
 
             this.selectedTemplate = loadData.loadTemplateId;
             this.selectedDispatcher = loadData.dispatcherId;
@@ -3687,7 +3679,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     modalColumns: any[] = [];
     modalViewData: any[] = [];
-    
+
     public createNewRowInStopItems(action: string, loadStopIndex?: number) {
         // switch (action) {
         //     case 'pickup': {

@@ -16,29 +16,60 @@
     (action)="onModalAction($event)"
 >
     <!-- Origin Tab -->
+
     <form
         origin
         #originElement
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
-        [ngStyle]="{ width: '640px !important' }"
     >
-        <!-------------------------------- FTL Tab -------------------------------->
         <div class="m-tab">
             <div class="load-ftl-first-row">
                 <!-- FTL-LTL Switcher -->
+
                 <app-ta-tab-switch
                     [tabs]="tabs"
                     (switchClicked)="onTabChange($event, 'ftl-ltl')"
                     [type]="'type2-modal-popup'"
                 >
                 </app-ta-tab-switch>
+
                 <!-- Load Template Picker -->
-                <div class="load-template-switcher">
+
+                <button
+                    class="d-flex justify-content-center align-items-center load-template-switcher"
+                    #popover="ngbPopover"
+                    autoClose="outside"
+                    [ngbPopover]="dropdownPopover"
+                    popoverClass="popover-main"
+                    placement="bottom-start"
+                    container="body"
+                >
                     <svg-icon
                         src="assets/svg/common/load/ic_load_template_btn.svg"
                     ></svg-icon>
-                </div>
+                </button>
+
+                <ng-template #dropdownPopover>
+                    <div
+                        class="popover-container load-template-switcher-popover-container"
+                    >
+                        <div class="popover-item">
+                            <p class="m-0">Walmart Monthly Route</p>
+                        </div>
+
+                        <div class="popover-item">
+                            <p class="m-0">Walmart Monthly Route</p>
+                        </div>
+
+                        <div class="popover-item">
+                            <p class="m-0">Walmart Monthly Route</p>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- Dispatcher -->
+
                 <app-ta-input-dropdown
                     formControlName="dispatcherId"
                     [template]="'load-dispatcher'"
@@ -65,8 +96,11 @@
                     [activeItem]="selectedDispatcher"
                     (selectedItem)="onSelectDropdown($event, 'dispatcher')"
                 ></app-ta-input-dropdown>
+
                 <!------------------ Companies Cassses ------------------>
+
                 <!-- Only One Company -->
+
                 <app-ta-input
                     *ngIf="labelsCompanies.length <= 1"
                     formControlName="companyId"
@@ -79,7 +113,9 @@
                         textTransform: 'uppercase'
                     }"
                 ></app-ta-input>
+
                 <!-- Multiple Companies -->
+
                 <app-ta-input-dropdown
                     *ngIf="labelsCompanies.length > 1"
                     formControlName="companyId"
@@ -94,20 +130,43 @@
                     [activeItem]="selectedCompany"
                     (selectedItem)="onSelectDropdown($event, 'company')"
                 ></app-ta-input-dropdown>
-                <!------------------  end ------------------>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <app-ta-input-dropdown
-                        formControlName="dispatchId"
-                        [template]="'load-dispatches-ttd'"
-                        [inputConfig]="loadDispatchesTTDInputConfig"
-                        [options]="labelsDispatches"
-                        [activeItem]="selectedDispatches"
-                        (selectedItem)="onSelectDropdown($event, 'dispatches')"
-                    ></app-ta-input-dropdown>
-                </div>
+
+            <!-- Broker -->
+
+            <div class="load-ftl-second-row">
+                <app-ta-input-dropdown
+                    formControlName="brokerId"
+                    [template]="'svgtext-template'"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Broker',
+                        isDropdown: true,
+                        isRequired: true,
+                        blackInput: true,
+                        textTransform: 'capitalize',
+                        dropdownWidthClass: 'w-col-320'
+                    }"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
+                    [options]="labelsBroker"
+                    [activeItem]="selectedBroker"
+                    (selectedItem)="onSelectDropdown($event, 'broker')"
+                ></app-ta-input-dropdown>
+
+                <app-ta-input-dropdown
+                    formControlName="brokerContactId"
+                    [template]="'load-broker-contact'"
+                    [inputConfig]="loadBrokerContactsInputConfig"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
+                    [options]="labelsBrokerContacts"
+                    [activeItem]="selectedBrokerContact"
+                    (selectedItem)="onSelectDropdown($event, 'broker-contact')"
+                ></app-ta-input-dropdown>
             </div>
+
             <div class="load-ftl-third-row">
                 <app-ta-input
                     formControlName="referenceNumber"
@@ -119,37 +178,16 @@
                         textTransform: 'uppercase'
                     }"
                 ></app-ta-input>
-                <app-ta-input-dropdown
-                    formControlName="brokerId"
-                    [template]="'load-broker'"
-                    [inputConfig]="loadBrokerInputConfig"
-                    [canAddNew]="true"
-                    [canOpenModal]="true"
-                    [options]="labelsBroker"
-                    [activeItem]="selectedBroker"
-                    (selectedItem)="onSelectDropdown($event, 'broker')"
-                ></app-ta-input-dropdown>
-            </div>
-            <div class="load-ftl-fourth-row">
-                <app-ta-input-dropdown
-                    formControlName="brokerContactId"
-                    [template]="'load-broker-contact'"
-                    [inputConfig]="loadBrokerContactsInputConfig"
-                    [canAddNew]="true"
-                    [canOpenModal]="true"
-                    [options]="labelsBrokerContacts"
-                    [activeItem]="selectedBrokerContact"
-                    (selectedItem)="onSelectDropdown($event, 'broker-contact')"
-                ></app-ta-input-dropdown>
+
                 <app-ta-input-dropdown
                     formControlName="generalCommodity"
                     [template]="'svgtext-template'"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'Commodity',
+                        label: 'General Commodity',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-152',
+                        dropdownWidthClass: 'w-col-200',
                         blackInput: true,
                         customClass: 'hazardous-dropdown'
                     }"
@@ -159,6 +197,7 @@
                         onSelectDropdown($event, 'general-commodity')
                     "
                 ></app-ta-input-dropdown>
+
                 <app-ta-input
                     formControlName="weight"
                     [inputConfig]="{
@@ -171,86 +210,90 @@
                 ></app-ta-input>
             </div>
 
-            <!-- Requirements Card -->
-            <app-ta-custom-card
-                [cardName]="'Requirements'"
-                [disableAnimation]="disableCardAnimation"
-                [animationMarginParams]="{
-                    marginTop: '18px',
-                    marginBottom: '22px'
-                }"
-                [isCardOpen]="requirementsSectionOpened"
+            <div class="load-ftl-fourth-row">
+                <app-ta-input-dropdown
+                    formControlName="dispatchId"
+                    [template]="'load-dispatches-ttd'"
+                    [inputConfig]="loadDispatchesTTDInputConfig"
+                    [options]="labelsDispatches"
+                    [activeItem]="selectedDispatches"
+                    (selectedItem)="onSelectDropdown($event, 'dispatches')"
+                ></app-ta-input-dropdown>
+            </div>
+
+            <!-- Requirement -->
+
+            <div
+                class="d-flex flex-column justify-content-center requirement-container"
             >
-                <div class="row">
-                    <div class="col-6">
-                        <app-ta-input-dropdown
-                            formControlName="truckTypeId"
-                            [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Truck Requirement',
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedTruckReq?.logoName,
-                                    template: 'truck',
-                                    class: selectedTruckReq?.name
-                                        ?.trim()
-                                        .replace(' ', '')
-                                        .toLowerCase()
-                                },
-                                dropdownWidthClass: 'w-col-296',
-                                customClass: 'truck-trailer-dropdown'
-                            }"
-                            [options]="labelsTruckReq"
-                            [activeItem]="selectedTruckReq"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'truck-req')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div class="col-6">
-                        <app-ta-input-dropdown
-                            formControlName="trailerTypeId"
-                            [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Trailer Requirement',
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedTrailerReq?.logoName,
-                                    template: 'trailer',
-                                    class: [
-                                        'Tanker',
-                                        'Tanker Pneumatic'
-                                    ].includes(selectedTrailerReq?.name)
-                                        ? 'tanker'
-                                        : selectedTrailerReq?.name
-                                              ?.toLowerCase()
-                                              ?.includes('rgn')
-                                        ? 'low-boy-rgn'
-                                        : selectedTrailerReq?.name
-                                              ?.trim()
-                                              .replace(' ', '')
-                                              .toLowerCase()
-                                },
-                                dropdownWidthClass: 'w-col-308',
-                                customClass: 'truck-trailer-dropdown'
-                            }"
-                            [options]="labelsTrailerReq"
-                            [activeItem]="selectedTrailerReq"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'trailer-req')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
+                <div
+                    class="d-flex align-items-center requirement-container-header"
+                >
+                    <p class="m-0 ta-font-extra-bold">Requirement</p>
+                </div>
+
+                <div class="load-requirements-load-first-row">
+                    <app-ta-input-dropdown
+                        formControlName="truckTypeId"
+                        [template]="'svgtext-template'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Truck Requirement',
+                            isDropdown: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: true,
+                                image: false,
+                                url: selectedTruckReq?.logoName,
+                                template: 'truck',
+                                class: selectedTruckReq?.name
+                                    ?.trim()
+                                    .replace(' ', '')
+                                    .toLowerCase()
+                            },
+                            dropdownWidthClass: 'w-col-302',
+                            customClass: 'truck-trailer-dropdown'
+                        }"
+                        [options]="labelsTruckReq"
+                        [activeItem]="selectedTruckReq"
+                        (selectedItem)="onSelectDropdown($event, 'truck-req')"
+                    ></app-ta-input-dropdown>
+
+                    <app-ta-input-dropdown
+                        formControlName="trailerTypeId"
+                        [template]="'svgtext-template'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Trailer Requirement',
+                            isDropdown: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: true,
+                                image: false,
+                                url: selectedTrailerReq?.logoName,
+                                template: 'trailer',
+                                class: ['Tanker', 'Tanker Pneumatic'].includes(
+                                    selectedTrailerReq?.name
+                                )
+                                    ? 'tanker'
+                                    : selectedTrailerReq?.name
+                                          ?.toLowerCase()
+                                          ?.includes('rgn')
+                                    ? 'low-boy-rgn'
+                                    : selectedTrailerReq?.name
+                                          ?.trim()
+                                          .replace(' ', '')
+                                          .toLowerCase()
+                            },
+                            dropdownWidthClass: 'w-col-302',
+                            customClass: 'truck-trailer-dropdown'
+                        }"
+                        [options]="labelsTrailerReq"
+                        [activeItem]="selectedTrailerReq"
+                        (selectedItem)="onSelectDropdown($event, 'trailer-req')"
+                    ></app-ta-input-dropdown>
                 </div>
 
                 <div class="load-requirements-load-second-row">
@@ -310,29 +353,37 @@
                         (selectedItem)="onSelectDropdown($event, 'year')"
                     ></app-ta-input-dropdown>
 
-                    <app-ta-checkbox
-                        formControlName="liftgate"
-                        [customClass]="'regular-small'"
-                        [label]="'Lifgate'"
-                    ></app-ta-checkbox>
-                </div>
-                <div class="row last-row">
-                    <div class="col-12">
-                        <app-ta-input
-                            formControlName="driverMessage"
-                            [inputConfig]="{
-                                name: 'Description',
-                                type: 'text',
-                                label: 'Driver Message',
-                                minLength: 2,
-                                maxLength: 160,
-                                textTransform: 'capitalize'
-                            }"
-                        ></app-ta-input>
+                    <div class="d-flex align-items-center justify-content-end">
+                        <app-ta-checkbox
+                            formControlName="liftgate"
+                            [customClass]="'medium'"
+                            [label]="'Lifgate'"
+                        ></app-ta-checkbox>
                     </div>
                 </div>
-            </app-ta-custom-card>
+            </div>
+
+            <!-- Driver Message -->
+
+            <div class="d-flex align-items-center load-driver-message-row">
+                <app-ta-custom-card
+                    [cardName]="'Driver Message'"
+                    [isCardOpen]="false"
+                    [hasFormatTextActionButtons]="true"
+                >
+                    <textarea
+                        formControlName="driverMessage"
+                        type="text"
+                        spellcheck="false"
+                        placeholder="Type something..."
+                        autofocus
+                        rows="3"
+                    ></textarea>
+                </app-ta-custom-card>
+            </div>
+
             <!-- Stops -->
+
             <app-ta-custom-card
                 [cardName]="'Stops'"
                 [capsulaText]="
@@ -357,12 +408,14 @@
                 (onActionEvent)="createNewExtraStop()"
             >
                 <!-- Stops Header -->
+
                 <div class="stops-header-bar">
                     <p>#</p>
                     <p>SHIPPER, LOCATION</p>
                     <p>DATE & TIME</p>
                     <p>DETAILS</p>
                 </div>
+
                 <!-- Pickup Stop  -->
                 <app-load-stop
                     [firstOrLast]="true"
@@ -1444,7 +1497,9 @@
             ></app-ta-input-note>
         </div>
     </form>
-    <!-------------------------------- Additional Tab Part -------------------------------->
+
+    <!-- Additional Tab Part -->
+
     <div
         additional
         class="load-map-container"

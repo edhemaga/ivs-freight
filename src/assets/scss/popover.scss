@@ -1559,6 +1559,15 @@
             }
         }
     }
+
+    .load-template-switcher-popover-container {
+        max-width: 220px;
+        width: 100%;
+
+        .popover-item {
+            text-transform: unset;
+        }
+    }
 }
 
 .pickup-delivery-popover {

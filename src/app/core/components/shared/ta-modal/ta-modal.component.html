@@ -62,6 +62,8 @@
                         *ngIf="isVisibleMap"
                         class="modal-header-load-map-button"
                         [ngClass]="{ active: mapVisibility }"
+                        placement="bottom"
+                        ngbTooltip="Open Map"
                         (click)="toggleAdditionalPart('map')"
                     >
                         <svg-icon

@@ -3,6 +3,7 @@
 //------------------------ Form Container Classes ---------------------------------------------------
 .form-container {
     margin-top: 26px;
+    width: 640px !important;
 
     // Specific Classes to add on settings/location/modals
     &.form-container-mt-12 {
@@ -897,34 +898,35 @@
     margin-bottom: 32px;
 
     .load-template-switcher {
+        border: 0;
+        outline: 0;
         width: 26px;
-        aspect-ratio: 1;
         border-radius: 2px;
-        background-color: #eeeeee;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-bottom: 1px;
-
-        &:hover {
-            cursor: pointer;
-        }
+        background: $bw2;
+        padding-left: 8px;
     }
 }
 
-.load-ftl-third-row {
+.load-ftl-second-row {
     display: grid;
-    grid-template-columns: 172px 432px;
+    grid-template-columns: 234px 370px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
     margin-bottom: 32px;
 }
 
-.load-ftl-fourth-row,
-.load-shipper-contact-row {
+.load-ftl-third-row {
     display: grid;
-    grid-template-columns: 330px 152px 110px;
+    grid-template-columns: 234px 200px 158px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.load-ftl-fourth-row {
+    width: 616px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
@@ -940,14 +942,47 @@
     margin-bottom: 32px;
 }
 
-.load-requirements-load-second-row {
+.load-requirements-load-first-row {
     display: grid;
-    grid-template-columns: 100px 120px 150px 90px 1fr;
+    grid-template-columns: 302px 302px;
     grid-template-rows: 26;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 32px;
+}
+
+.load-requirements-load-second-row {
+    display: grid;
+    grid-template-columns: 100px 120px 150px 117px 81px;
+    grid-template-rows: 26;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 22px;
+}
+
+.load-driver-message-row {
+    width: 628px;
+
+    textarea {
+        width: 100%;
+        border: none;
+        outline: none;
+        color: $ta-black-2;
+        font-size: 14px;
+        resize: none;
+
+        &::-moz-selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+    }
 }
 
 .stop-load-date-time {

@@ -130,7 +130,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     @HostListener('window:resize', ['$event'])
     onWindowResize(event: Event) {
-        if(this.isDispatch) {
+        if (this.isDispatch) {
             this.setNoteParentWidth();
         }
     }
