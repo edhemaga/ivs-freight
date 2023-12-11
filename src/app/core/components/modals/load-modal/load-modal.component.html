@@ -167,6 +167,8 @@
                 ></app-ta-input-dropdown>
             </div>
 
+            <!-- Reference No, General Commodity, Weight -->
+
             <div class="load-ftl-third-row">
                 <app-ta-input
                     formControlName="referenceNumber"
@@ -209,6 +211,8 @@
                     }"
                 ></app-ta-input>
             </div>
+
+            <!-- Truck -->
 
             <div class="load-ftl-fourth-row">
                 <app-ta-input-dropdown
@@ -372,12 +376,16 @@
                     [hasFormatTextActionButtons]="true"
                 >
                     <textarea
+                        [ngStyle]="{
+                            'max-height': loadForm.get('driverMessage').value
+                                ? '50px'
+                                : '20px'
+                        }"
                         formControlName="driverMessage"
                         type="text"
                         spellcheck="false"
                         placeholder="Type something..."
                         autofocus
-                        rows="3"
                     ></textarea>
                 </app-ta-custom-card>
             </div>

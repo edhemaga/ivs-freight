@@ -128,6 +128,8 @@ interface IStopRoutes {
     providers: [ModalService, FormService, FinancialCalculationPipe],
 })
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
+    @ViewChild('originElement') originElement: ElementRef;
+
     private destroy$ = new Subject<void>();
 
     @Input() editData: any;
@@ -471,8 +473,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public originHeight: number;
 
-    @ViewChild('originElement') originElement: ElementRef;
-
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
         this.createForm();
@@ -489,7 +489,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private createForm() {
+    private createForm(): void {
         this.loadForm = this.formBuilder.group({
             loadTemplateId: [null],
             dispatcherId: [null],
@@ -501,16 +501,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             generalCommodity: [null],
             weight: [null],
 
-            // Requirements
+            // Requirement
             truckTypeId: [null],
             trailerTypeId: [null],
+            trailerLengthId: [null],
             doorType: [null],
             suspension: [null],
-            trailerLengthId: [null],
             year: [null],
             liftgate: [null],
+
+            // Driver Message
             driverMessage: [null],
-            // ----------------
+
             // Pickup Stop
             pickupStop: ['Pickup'],
             pickupStopOrder: [1],
@@ -525,7 +527,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegHours: [null],
             pickuplegMinutes: [null],
             pickuplegCost: [null],
-            // -------------
+
             // Delivery Stop
             deliveryStop: ['Delivery'],
             deliveryStopOrder: [1],
@@ -540,10 +542,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegHours: [null],
             deliverylegMinutes: [null],
             deliverylegCost: [null],
-            // -------------
+
             // Extra Stops
             extraStops: this.formBuilder.array([]),
-            // -------------
+
             // Billing
             baseRate: [null, Validators.required],
             adjustedRate: [null],
@@ -552,6 +554,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillings: this.formBuilder.array([]),
             billingDropdown: [null],
             invoiced: [null],
+
             // -------------
             note: [null],
             files: [null],
