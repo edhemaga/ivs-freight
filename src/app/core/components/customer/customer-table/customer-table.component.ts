@@ -116,8 +116,8 @@ export class CustomerTableComponent
     public columns: TableColumnConfig[] = [];
     public brokers: BrokerState[] = [];
     public shipper: ShipperState[] = [];
-    public selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab = 'active';
+    public activeViewMode: string = 'List';
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
@@ -935,8 +935,10 @@ export class CustomerTableComponent
     // Toolbar Actions
     public onToolBarAction(event: ToolbarActions): void {
         // Add Call
+
         if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
             // Add Broker Call Modal
+
             if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
                 this.modalService.openModal(BrokerModalComponent, {
                     size: ConstantStringTableComponentsEnum.MEDIUM,

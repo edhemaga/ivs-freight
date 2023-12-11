@@ -211,7 +211,7 @@ export class TruckTService implements OnDestroy {
     public deleteTruckById(
         truckId: number,
         tableSelectedTab?: string
-    ): Observable<any> {
+    ): Observable<TruckResponse> {
         return this.truckService.apiTruckIdDelete(truckId).pipe(
             tap(() => {
                 const truckCount = JSON.parse(
@@ -240,7 +240,9 @@ export class TruckTService implements OnDestroy {
         );
     }
 
-    public deleteTruckList(trucksToDelete: any[]): Observable<any> {
+    public deleteTruckList(
+        trucksToDelete: TruckResponse[]
+    ): Observable<TruckListResponse> {
         // let deleteOnBack = trucksToDelete.map((truck: any) => {
         //   return truck.id;
         // });
@@ -410,57 +412,55 @@ export class TruckTService implements OnDestroy {
         return this.truckService.apiTruckRevenueGet(id, chartType);
     }
 
-    public changeActiveStatus(truckId: any){
+    public changeActiveStatus(truckId: any) {
+        return this.truckService
+            .apiTruckStatusIdPut(truckId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    let storedTruckData = {
+                        ...this.truckItem?.getValue()?.entities[truckId],
+                    };
 
-        return this.truckService.apiTruckStatusIdPut(truckId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-            next: (res: any) => {
-                let storedTruckData = {
-                    ...this.truckItem?.getValue()?.entities[truckId],
-                };
+                    const subTruck = this.getTruckById(truckId)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (truck: any) => {
+                                this.truckActiveStore.remove(
+                                    ({ id }) => id === truckId
+                                );
 
-                const subTruck = this.getTruckById(truckId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (truck: any) => {
-                            this.truckActiveStore.remove(
-                                ({ id }) => id === truckId
-                            );
+                                this.truckMinimalStore.remove(
+                                    ({ id }) => id === truckId
+                                );
 
-                            this.truckMinimalStore.remove(
-                                ({ id }) => id === truckId
-                            );
+                                truck.registrations =
+                                    storedTruckData.registrations;
+                                truck.titles = storedTruckData.titles;
+                                truck.inspections = storedTruckData.inspections;
 
-                            truck.registrations = storedTruckData.registrations;
-                            truck.titles = storedTruckData.titles;
-                            truck.inspections = storedTruckData.inspections;
+                                truck = {
+                                    ...truck,
+                                    fileCount: truck?.filesCountForList
+                                        ? truck.filesCountForList
+                                        : 0,
+                                };
 
-                            truck = {
-                                ...truck,
-                                fileCount: truck?.filesCountForList
-                                    ? truck.filesCountForList
-                                    : 0,
-                            };
+                                this.truckMinimalStore.add(truck);
+                                this.tdlStore.add(truck);
+                                this.truckItem.set([truck]);
 
-                            this.truckMinimalStore.add(truck);
-                            this.tdlStore.add(truck);
-                            this.truckItem.set([truck]);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: truck,
+                                    id: truck.id,
+                                });
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: truck,
-                                id: truck.id,
-                            });
-
-                            subTruck.unsubscribe();
-                        },
-                    });
-            }
-            
-        });
-
-
+                                subTruck.unsubscribe();
+                            },
+                        });
+                },
+            });
     }
 
     ngOnDestroy(): void {
