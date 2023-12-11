@@ -11,13 +11,13 @@
  */
 
 
-export type ByStateReportType = 'Count' | 'Cost' | 'SeverityWeight' | 'Revenue' | 'Price';
+export type ByStateReportType = 'Count' | 'Cost' | 'SeverityWeight' | 'Revenue' | 'Gallon';
 
 export const ByStateReportType = {
     Count: 'Count' as ByStateReportType,
     Cost: 'Cost' as ByStateReportType,
     SeverityWeight: 'SeverityWeight' as ByStateReportType,
     Revenue: 'Revenue' as ByStateReportType,
-    Price: 'Price' as ByStateReportType
+    Gallon: 'Gallon' as ByStateReportType
 };
 

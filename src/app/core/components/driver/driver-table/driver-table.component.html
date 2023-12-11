@@ -15,7 +15,6 @@
             [tableData]="tableData"
             (headActions)="onTableHeadActions($event)"
         ></app-truckassist-table-head>
-
         <app-truckassist-table-body
             [viewData]="viewData"
             [columns]="columns"
@@ -25,101 +24,42 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </ng-container>
-    <div class="cards-container">
-        <ng-container
-            *ngIf="activeViewMode === 'Card' && selectedTab !== 'applicants'"
-        >
-            <ng-container
-                *ngFor="let data of viewData; let i = index; trackBy: trackCard"
-            >
-                <app-truckassist-cards
-                    (bodyActions)="onTableBodyActions($event)"
-                    [viewData]="viewData"
-                    [card]="data"
-                    [cardIndex]="[i]"
-                    [cardHeader]="{
-                        checkbox: true,
-                        cardTitleBefore: !data.avatarImg
-                            ? data.textShortName
-                            : null,
-                        cardTitleBeforeStyle: !data.avatarImg
-                            ? 'background: ' +
-                              (data?.avatarColor?.background || 'initial') +
-                              '; color:' +
-                              (data?.avatarColor?.color || 'initial') +
-                              '; font-size: 7px; font-weight: 800; border-radius:1px; width: 18px; height: 20px; margin-right: 5px; bottom: 1px; position: relative;'
-                            : '',
-                        cardTitle: data?.fullName,
-                        imgStyle:
-                            'height: 20px; border-radius: 1px; margin-right: 5px; padding',
-                        img: data?.avatarImg ? data?.avatarImg : null,
-                        isOwner: data?.isOwner
-                    }"
-                    [firstLabel]="{
-                        title: 'Phone No.',
-                        value: { firstValue: data?.emergencyContactPhone }
-                    }"
-                    [seccondLabel]="{
-                        title: 'SSN No.',
-                        value: {
-                            firstValue: data?.ssn
-                        }
-                    }"
-                    [thirdLabel]="{
-                        title: 'CDL No.',
-                        value: {
-                            firstValue: data?.cdlNumber
-                        }
-                    }"
-                    [fourthLabel]="{
-                        title: 'Pay Type',
-                        value: { firstValue: data?.payType?.name }
-                    }"
-                    [firstLabelBack]="{
-                        title: 'Hired',
-                        value: {
-                            date: data?.hired
-                        }
-                    }"
-                    [seccondLabelBack]="{
-                        title: 'CDL Exp.',
-                        value: {
-                            deadline: true,
-                            deadlineBack: 'background: #919191;',
-                            deadlineFront:
-                                'background: #919191; width:' +
-                                data?.tableCdlDetailExpiration?.percentage +
-                                '%',
-                            firstValue:
-                                'in ' +
-                                data?.tableCdlDetailExpiration
-                                    ?.expirationDaysText +
-                                ' days'
-                        }
-                    }"
-                    [thirdLabelBack]="{
-                        title: 'Medical Exp.',
-                        value: {
-                            deadline: true,
-                            deadlineBack: data?.tableMedicalData?.percentage,
-                            firstValue:
-                                'in ' +
-                                data?.tableMedicalData?.expirationDaysText +
-                                ' days'
-                        }
-                    }"
-                    [fourthLabelBack]="{
-                        title: 'MVR Exp.',
-                        value: {
-                            firstValue:
-                                'in ' +
-                                data?.tableMvrDetailsExpiration
-                                    ?.expirationDaysText +
-                                ' days'
-                        }
-                    }"
-                ></app-truckassist-cards>
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-truckassist-cards
+                (bodyActions)="onTableBodyActions($event)"
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [displayRowsFront]="sendDataToCardsFront"
+                [displayRowsBack]="sendDataToCardsBack"
+                [page]="page"
+            ></app-truckassist-cards>
+            <!-- Show More -->
+
+            <ng-container *ngIf="viewData.length">
+                <div
+                    class="show-more-container d-flex align-items-center justify-content-between"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                >
+                    <div class="showing ta-font-semi-bold">
+                        {{ viewData.length }} OF
+                        {{ activeTableData.length }}
+                    </div>
+
+                    <ng-container
+                        *ngIf="viewData.length < activeTableData.length"
+                    >
+                        <div
+                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            (click)="onShowMore()"
+                        >
+                            SHOW MORE
+                        </div>
+                    </ng-container>
+                </div>
             </ng-container>
-        </ng-container>
-    </div>
+        </div>
+    </ng-container>
 </div>
+`
