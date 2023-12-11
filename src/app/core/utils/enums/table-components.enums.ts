@@ -1,32 +1,29 @@
 export enum ConstantStringTableComponentsEnum {
-    // NUMBERS
+    // Number
     NUMBER_0 = '0',
 
-    // DAYS
+    // Days
     DAY = ' days',
 
-    // TABS
+    // Tabs
     APPLICANTS = 'applicants',
-
+    TEMPLATE = 'template',
+    ACTIVE = 'active',
+    CLOSED = 'closed',
+    PENDING = 'pending',
+    MAP = 'Map',
     SHOW_MORE = 'show-more',
 
-    // ACTIONS
+    // Aactions
     ADD = 'add',
     UPDATE = 'update',
     DELETE = 'delete',
     UPDATE_STATUS = 'update-status',
     DELETE_MULTIPLE = 'delete-multiple',
 
-    // LIST OR CARD
+    // List or card
     LIST = 'List',
     CARD = 'Card',
-
-    // TABS
-    TEMPLATE = 'template',
-    ACTIVE = 'active',
-    CLOSED = 'closed',
-    PENDING = 'pending',
-    MAP = 'Map',
 
     API = 'api',
 
@@ -39,45 +36,46 @@ export enum ConstantStringTableComponentsEnum {
     TABLE = 'table-',
     CONFIGURATION = '-Configuration',
 
-    // DROPDOWNS
+    // Dropdowns
     SORT = 'sort',
     EDIT = 'edit',
     LOAD = 'load',
     VIEW_MODE = 'view-mode',
 
-    // SIZES
+    // Sizes
     SMALL = 'small',
     MEDIUM = 'medium',
 
-    // MONEY
+    // Money
     DOLLAR_SIGN = '$',
 
-    // TIME FORMATING
+    // Time formating
     DATE_FORMAT = 'MM/dd/yy',
     HOURS = 'h',
     MINUTES = 'min',
 
-    // DISTANCE
+    // Distance
     MILES = 'mi',
 
-    // WEIGHTS
+    // Weights
     POUNDS = 'lbs',
 
-    //EMPTY STRING
+    //Empty string
     EMPTY_STRING_PLACEHOLDER = '',
     NA = 'NA',
 
-    // SEPARATORS
+    // Separators
     COMA = ', ',
     DOT = '. ',
 
-    // LOCAL STORAGE GET FOR TABLES
+    // Local storage get for tables
     LOAD_TABLE_COUNT = 'loadTableCount',
     LOAD_TABLE_VIEW = 'Load-table-view',
 
     DRIVER_TABLE_COUNT = 'driverTableCount',
     DRIVER_TABLE_VIEW = 'Driver-table-view',
-    // STATUS OF LOAD
+
+    // Status of load
     DEFAULT_COLOR = 'color:#919191;',
 
     ASSIGNED = 'Assigned',
@@ -89,10 +87,10 @@ export enum ConstantStringTableComponentsEnum {
     DISPATCHED = 'Dispatched',
     DISPATCHED_COLOR = 'color:#3B73ED;',
 
-    //QUERY SELECTORS
+    //Query selectors
     TABLE_CONTAINER = '.table-container',
 
-    //LOAD
+    //Load
     NEW_LICENCE = 'new-licence',
     NEW_MEDICAL = 'new-medical',
     NEW_MVR = 'new-mvr',
@@ -100,7 +98,7 @@ export enum ConstantStringTableComponentsEnum {
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
 
-    // CUSTOMER
+    // Customer
     CUSTOMER = 'Customer',
     EDIT_CUSTOMER_OR_SHIPPER = 'edit-cutomer-or-shipper',
     SHIPPERS_WITH_SPACE = 'Shippers ',
@@ -117,7 +115,7 @@ export enum ConstantStringTableComponentsEnum {
     SHIPPER = 'shipper',
     SHIPPER_2 = 'shippers',
 
-    // DRIVER
+    // Driver
     DRIVER = 'driver',
     DRIVER_2 = 'drivers',
     APPLICANT = 'APPLICANT',
@@ -133,7 +131,7 @@ export enum ConstantStringTableComponentsEnum {
     PUSH = 'Push•',
     SMS = 'SMS',
 
-    // SVG
+    // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
     WRONG_ICON = 'wrong-icon',
@@ -144,6 +142,6 @@ export enum ConstantStringTableComponentsEnum {
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
 
-    // STYLES
+    // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
 }

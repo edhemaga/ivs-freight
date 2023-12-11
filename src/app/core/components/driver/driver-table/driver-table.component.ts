@@ -619,7 +619,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setDriverData(td);
     }
 
-    private getTabData(dataType: string) {
+    private getTabData(dataType: string): DriversInactiveState[] {
         if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
             this.driversActive = this.driversActiveQuery.getAll();
 
@@ -1098,9 +1098,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get Avatar Color
     private getAvatarColors(): AvatarColors {
-        let textColors: string[] = TableDriverColorsConstants.TEXT_COLORS;
+        const textColors: string[] = TableDriverColorsConstants.TEXT_COLORS;
 
-        let backgroundColors: string[] =
+        const backgroundColors: string[] =
             TableDriverColorsConstants.BACKGROUND_COLORS;
 
         this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;

@@ -36,6 +36,7 @@
                 [page]="page"
             ></app-truckassist-cards>
             <!-- Show More -->
+
             <ng-container *ngIf="viewData.length">
                 <div
                     class="show-more-container d-flex align-items-center justify-content-between"
@@ -45,6 +46,7 @@
                         {{ viewData.length }} OF
                         {{ activeTableData.length }}
                     </div>
+
                     <ng-container
                         *ngIf="viewData.length < activeTableData.length"
                     >

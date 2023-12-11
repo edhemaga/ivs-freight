@@ -1,6 +1,6 @@
 import { DropdownItem } from '../../components/shared/model/cardTableData';
 
-// LOAD PAGE
+// Load page
 export class TableDropdownLoadComponentConstants {
     static DROPDOWN_DATA: DropdownItem[] = [
         {
@@ -14,6 +14,7 @@ export class TableDropdownLoadComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'View Details',
             name: 'view-details',
@@ -28,6 +29,7 @@ export class TableDropdownLoadComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Share',
             name: 'share',
@@ -41,6 +43,7 @@ export class TableDropdownLoadComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Print',
             name: 'print',
@@ -52,6 +55,7 @@ export class TableDropdownLoadComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Delete',
             name: 'delete',
@@ -65,7 +69,7 @@ export class TableDropdownLoadComponentConstants {
     ];
 }
 
-// CUSTOMER PAGE
+// Customer page
 export class TableDropdownCustomerComponentConstants {
     static DROPDOWN_BROKER: DropdownItem[] = [
         {
@@ -79,6 +83,7 @@ export class TableDropdownCustomerComponentConstants {
             hasBorder: true,
             svgClass: 'regular',
         },
+
         {
             title: 'View Details',
             name: 'view-details',
@@ -92,6 +97,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Create Load',
             name: 'create-load',
@@ -105,6 +111,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Add Contact',
             name: 'add-contact',
@@ -118,6 +125,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Write Review',
             name: 'write-review',
@@ -131,6 +139,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Move to Ban List',
             name: 'move-to-ban-list',
@@ -144,6 +153,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Move to DNU List',
             name: 'move-to-dnu-list',
@@ -155,6 +165,7 @@ export class TableDropdownCustomerComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Share',
             name: 'share',
@@ -168,6 +179,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Print',
             name: 'print',
@@ -180,6 +192,7 @@ export class TableDropdownCustomerComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Close Business',
             name: 'close-business',
@@ -193,6 +206,7 @@ export class TableDropdownCustomerComponentConstants {
             },
             svgClass: 'delete',
         },
+
         {
             title: 'delete',
             name: 'delete',
@@ -207,6 +221,7 @@ export class TableDropdownCustomerComponentConstants {
             svgClass: 'delete',
         },
     ];
+
     static DROPDOWN_SHIPPER: DropdownItem[] = [
         {
             title: 'Edit',
@@ -219,6 +234,7 @@ export class TableDropdownCustomerComponentConstants {
             hasBorder: true,
             svgClass: 'regular',
         },
+
         {
             title: 'View Details',
             name: 'view-details',
@@ -232,6 +248,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Add Contact',
             name: 'add-contact',
@@ -245,6 +262,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Write Review',
             name: 'write-review',
@@ -256,6 +274,7 @@ export class TableDropdownCustomerComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Share',
             name: 'share',
@@ -269,6 +288,7 @@ export class TableDropdownCustomerComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Print',
             name: 'print',
@@ -281,6 +301,7 @@ export class TableDropdownCustomerComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Close Business',
             name: 'close-business',
@@ -294,6 +315,7 @@ export class TableDropdownCustomerComponentConstants {
             },
             svgClass: 'delete',
         },
+
         {
             title: 'delete',
             name: 'delete',
@@ -307,7 +329,7 @@ export class TableDropdownCustomerComponentConstants {
     ];
 }
 
-// DRIVER PAGE
+// Driver page
 export class TableDropdownDriverComponentConstants {
     static DROPDOWN_APPLICANT: DropdownItem[] = [
         {
@@ -335,6 +357,7 @@ export class TableDropdownDriverComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Hire Applicant',
             name: 'hire-applicant',
@@ -349,6 +372,7 @@ export class TableDropdownDriverComponentConstants {
             },
             svgClass: 'regular',
         },
+
         {
             title: 'Review',
             name: 'review',
@@ -363,6 +387,7 @@ export class TableDropdownDriverComponentConstants {
             },
             svgClass: 'regular',
         },
+
         {
             title: 'Move to Favourites',
             name: 'add-to-favourites',
@@ -376,6 +401,7 @@ export class TableDropdownDriverComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Resend Invitation',
             name: 'resend-invitation',
@@ -390,6 +416,7 @@ export class TableDropdownDriverComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Share',
             name: 'share',
@@ -403,6 +430,7 @@ export class TableDropdownDriverComponentConstants {
                 'margin-bottom.px': 4,
             },
         },
+
         {
             title: 'Print',
             name: 'print',
@@ -415,6 +443,7 @@ export class TableDropdownDriverComponentConstants {
             svgClass: 'regular',
             hasBorder: true,
         },
+
         {
             title: 'Move to Archive',
             name: 'move-to-archive',
@@ -428,6 +457,7 @@ export class TableDropdownDriverComponentConstants {
             },
             svgClass: 'delete',
         },
+
         {
             title: 'Delete',
             name: 'delete-applicant',
