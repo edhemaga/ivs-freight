@@ -88,9 +88,7 @@ export class TruckassistCardsComponent implements OnInit {
     ) {}
 
     //---------------------------------------ON INIT---------------------------------------
-    ngOnInit(): void {
-        console.log(this.viewData);
-    }
+    ngOnInit(): void {}
 
     // Flip card based on card index
     public flipCard(index: number): void {

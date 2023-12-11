@@ -362,7 +362,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 // On Add Driver Active
                 if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.ACTIVE
                 ) {
@@ -389,7 +389,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Add Driver Inactive
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.INACTIVE
                 ) {
@@ -397,7 +397,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.UPDATE
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
                 ) {
                     const updatedDriver = this.mapDriverData(res.data);
                     this.viewData = this.viewData.map((driver) => {
@@ -421,7 +421,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update Driver Status
                 else if (
-                    res.animation ===
+                    res?.animation ===
                     ConstantStringTableComponentsEnum.UPDATE_STATUS
                 ) {
                     let driverIndex: number;
@@ -453,7 +453,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Delete Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.DELETE
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
                 ) {
                     let driverIndex: number;
 
@@ -935,33 +935,33 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private getDropdownDriverContent(): DropdownItem[] {
         return [
             {
-                title: 'Edit',
-                name: 'edit',
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
             },
 
             {
-                title: 'View Details',
-                name: 'view-details',
+                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
+                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Send Message',
-                name: 'send-message',
+                title: ConstantStringTableComponentsEnum.SEND_MESSAGE_2,
+                name: ConstantStringTableComponentsEnum.SEND_MESSAGE,
                 svgUrl: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 svgStyle: {
                     width: 18,
@@ -970,101 +970,101 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
             },
             {
-                title: 'Add New',
-                name: 'add-new',
+                title: ConstantStringTableComponentsEnum.ADD_NEW_2,
+                name: ConstantStringTableComponentsEnum.ADD_NEW,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: 'Add CDL',
-                        name: 'new-licence',
+                        title: ConstantStringTableComponentsEnum.ADD_CDL,
+                        name: ConstantStringTableComponentsEnum.NEW_LICENCE,
                     },
                     {
-                        title: 'Add MVR',
-                        name: 'new-mvr',
+                        title: ConstantStringTableComponentsEnum.ADD_MVR,
+                        name: ConstantStringTableComponentsEnum.NEW_MVR,
                     },
                     {
-                        title: 'Medical Exam',
-                        name: 'new-medical',
+                        title: ConstantStringTableComponentsEnum.MEDICAL_EXAM_3,
+                        name: ConstantStringTableComponentsEnum.NEW_MEDICAL,
                     },
                     {
-                        title: 'Test (Drug, Alcohol)',
-                        name: 'new-drug',
+                        title: ConstantStringTableComponentsEnum.TEST_DRUG_ALCOHOL,
+                        name: ConstantStringTableComponentsEnum.NEW_DRUG,
                     },
                 ],
             },
             {
-                title: 'Request',
-                name: 'add-to-favourites',
+                title: ConstantStringTableComponentsEnum.REQUEST,
+                name: ConstantStringTableComponentsEnum.ADD_TO_FAVORITES,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: 'Background Check',
-                        name: 'background-check',
+                        title: ConstantStringTableComponentsEnum.BACKGROUND_CHECK_2,
+                        name: ConstantStringTableComponentsEnum.BACKGROUND_CHECK,
                     },
                     {
-                        title: 'Medical Exam',
-                        name: 'medical-exam',
+                        title: ConstantStringTableComponentsEnum.MEDICAL_EXAM_2,
+                        name: ConstantStringTableComponentsEnum.MEDICAL_EXAM,
                     },
                     {
-                        title: 'Test (Drug, Alcohol)',
-                        name: 'test-drug',
+                        title: ConstantStringTableComponentsEnum.TEST_DRUG_ALCOHOL,
+                        name: ConstantStringTableComponentsEnum.TEST_DRUG,
                     },
                     {
-                        title: 'MVR',
-                        name: 'test-mvr',
+                        title: ConstantStringTableComponentsEnum.MVR_2,
+                        name: ConstantStringTableComponentsEnum.TEST_MVR,
                     },
                 ],
                 hasBorder: true,
             },
             {
-                title: 'Share',
-                name: 'share',
+                title: ConstantStringTableComponentsEnum.SHARE_2,
+                name: ConstantStringTableComponentsEnum.SHARE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Print',
-                name: 'print',
+                title: ConstantStringTableComponentsEnum.PRINT_2,
+                name: ConstantStringTableComponentsEnum.PRINT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 hasBorder: true,
             },
             {
                 title:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE
-                        ? 'Deactivate'
-                        : 'Activate',
-                name: 'activate-item',
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+                        : ConstantStringTableComponentsEnum.ACTIVATE_2,
+                name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
@@ -1080,8 +1080,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             },
             {
-                title: 'Delete',
-                name: 'delete-item',
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
@@ -1473,6 +1473,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         }
     }
+
     // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
