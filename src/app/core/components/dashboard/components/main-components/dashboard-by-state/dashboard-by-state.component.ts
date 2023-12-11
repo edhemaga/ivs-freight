@@ -826,6 +826,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((violationData) => {
+                console.log('violationData', violationData);
                 // by state list and single selection data
                 this.byStateList = violationData.pagination.data.map(
                     (violation, index) => {
@@ -950,6 +951,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((accidentData) => {
+                console.log('accidentData', accidentData);
                 // by state list and single selection data
                 this.byStateList = accidentData.pagination.data.map(
                     (accident, index) => {
@@ -1192,7 +1194,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 tap(() => (this.isLoading = false))
             )
-            .subscribe(() => {
+            .subscribe((fuelData) => {
+                console.log('fuelData', fuelData);
                 // by state list and single selection data
             });
     }
