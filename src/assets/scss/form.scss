@@ -962,7 +962,8 @@
     margin-bottom: 22px;
 }
 
-.load-driver-message-row {
+.load-driver-message-row,
+.load-stops-row {
     width: 628px;
 
     textarea {
@@ -973,6 +974,14 @@
         color: $ta-black-2;
         font-size: 14px;
         resize: none;
+
+        &::placeholder {
+            color: $bw5;
+        }
+
+        &::-ms-input-placeholder {
+            color: $bw5;
+        }
 
         &::-moz-selection {
             color: $ta-black-2;
