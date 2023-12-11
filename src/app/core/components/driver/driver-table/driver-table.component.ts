@@ -1062,8 +1062,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? 'Deactivate'
+                        : 'Activate',
                 name: 'activate-item',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
@@ -1080,7 +1080,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             },
             {
-                title: ConstantStringTableComponentsEnum.DELETE,
+                title: 'Delete',
                 name: 'delete-item',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
