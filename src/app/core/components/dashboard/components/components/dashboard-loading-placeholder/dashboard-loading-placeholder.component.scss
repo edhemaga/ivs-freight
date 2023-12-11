@@ -45,6 +45,16 @@
             line-height: 22px;
             color: $ta-light-grey-6;
             margin-bottom: 14px !important;
+
+            &::-moz-selection {
+                color: $ta-light-grey-6;
+                background: rgb(204, 204, 204, 0.2);
+            }
+
+            &::selection {
+                color: $ta-light-grey-6;
+                background: rgb(204, 204, 204, 0.2);
+            }
         }
     }
 

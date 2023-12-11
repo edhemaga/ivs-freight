@@ -131,6 +131,32 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     public trackByIdentity = (_: number, item: PerformanceDataItem): string =>
         item.title;
 
+    public resetSelectedValues(): void {
+        this.performanceData = this.performanceData.map(
+            (performanceDataItem) => {
+                return {
+                    ...performanceDataItem,
+                    selectedColor: null,
+                    selectedHoverColor: null,
+                };
+            }
+        );
+
+        this.performanceDataColors = this.performanceDataColors.map((color) => {
+            return {
+                ...color,
+                isSelected: false,
+            };
+        });
+
+        this.selectedPerformanceDataCount = 0;
+
+        this.barChartValues = {
+            pricePerGallonValues: [],
+            loadRatePerMileValues: [],
+        };
+    }
+
     public handleSwitchTabClick(activeTab: DashboardTab): void {
         if (this.clearCustomPeriodRangeValue)
             this.clearCustomPeriodRangeValue = false;
@@ -338,7 +364,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.selectedSubPeriodLabel = ConstantStringEnum.DAILY;
 
-        this.performanceDataColors = DashboardColors.PERFORMANCE_COLORS_PALLETE;
+        this.performanceDataColors = JSON.parse(
+            JSON.stringify(DashboardColors.PERFORMANCE_COLORS_PALLETE)
+        );
     }
 
     private getPerformanceListData(
@@ -363,7 +391,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.isLoading = true;
 
-        /* this.resetSelectedValues(); */
+        this.resetSelectedValues();
 
         this.dashboardPerformanceService
             .getPerformance(performanceArgumentsData)
@@ -372,6 +400,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((performanceData) => {
+                console.log('performanceData', performanceData);
                 // performance data
                 this.performanceData = this.performanceData.map(
                     (performanceDataItem) => {
