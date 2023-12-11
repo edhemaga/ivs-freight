@@ -546,6 +546,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     byStateArgumentsData as ByStateWithLoadStopApiArguments
                 );
                 break;
+            case ConstantStringEnum.ROADSIDE:
+                this.getRoadsideByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateApiArguments
+                );
+                break;
             case ConstantStringEnum.VIOLATION_2:
                 this.getViolationByStateListData(
                     selectedTab,
@@ -812,6 +818,22 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 this.setBarChartLabels(deliveryData.intervalLabels);
 
                 this.setChartData();
+            });
+    }
+
+    private getRoadsideByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getRoadsideByState(byStateArgumentsData)
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
+            .subscribe((roadsideData) => {
+                console.log('roadsideData', roadsideData);
+                // by state list and single selection data
             });
     }
 

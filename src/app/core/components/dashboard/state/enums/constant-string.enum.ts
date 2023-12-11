@@ -44,6 +44,7 @@ export enum ConstantStringEnum {
     ACCIDENT_2 = 'Accident',
     REPAIR = 'Repair',
     FUEL = 'Fuel',
+    ROADSIDE = 'Roadside',
 
     MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
     SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',

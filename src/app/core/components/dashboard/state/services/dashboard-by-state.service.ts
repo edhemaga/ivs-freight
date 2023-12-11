@@ -37,6 +37,12 @@ export class DashboardByStateService {
         );
     }
 
+    public getRoadsideByState(
+        data: ByStateApiArguments
+    ): Observable<ViolationByStateListResponse> {
+        return this.dashboardService.apiDashboardRoadsidebystateGet(...data);
+    }
+
     public getViolationByState(
         data: ByStateApiArguments
     ): Observable<ViolationByStateListResponse> {
