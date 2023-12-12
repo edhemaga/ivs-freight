@@ -4,11 +4,11 @@ export enum ConstantStringTableComponentsEnum {
 
     // Days
     DAY = ' days',
+    MONTHS = ' months',
 
     // Tabs
     APPLICANTS = 'applicants',
     TEMPLATE = 'template',
-    ACTIVE = 'active',
     CLOSED = 'closed',
     PENDING = 'pending',
     MAP = 'Map',
@@ -69,9 +69,11 @@ export enum ConstantStringTableComponentsEnum {
 
     // Distance
     MILES = 'mi',
+    MILES_2 = ' mi',
 
     // Weights
     POUNDS = 'lbs',
+    POUNDS_2 = ' lbs.',
 
     //Empty string
     EMPTY_STRING_PLACEHOLDER = '',
@@ -80,6 +82,8 @@ export enum ConstantStringTableComponentsEnum {
     // Separators
     COMA = ', ',
     DOT = '. ',
+    PERCENTS = '%',
+    SVG = '.svg',
 
     // Local storage get for tables
     LOAD_TABLE_COUNT = 'loadTableCount',
@@ -117,6 +121,9 @@ export enum ConstantStringTableComponentsEnum {
 
     SHARE = 'share',
     SHARE_2 = 'Share',
+
+    ADD_REPAIR = 'add-repair',
+    ADD_REPAIR_2 = 'Add Repair',
 
     MARGIN_BOTTOM = 'margin-bottom.px',
 
@@ -171,6 +178,28 @@ export enum ConstantStringTableComponentsEnum {
     PUSH = 'Push•',
     SMS = 'SMS',
 
+    // Truck
+    EDIT_TRUCK = 'edit-truck',
+    ADD_REGISTRATION = 'add-registration',
+    ADD_REGISTRATION_2 = 'Add Registration',
+
+    ADD_INSPECTION = 'add-inspection',
+    ADD_INSPECTION_2 = 'Add Inspection',
+
+    TRUCK = 'truck',
+    TRUCK_2 = 'Truck',
+    TRUCK_3 = 'TRUCK',
+    TRUCKS = 'trucks',
+
+    FRIDGE = 'Fridge•',
+    DBUNK = 'DBunk•',
+    DCI = 'DCI•',
+    PTO = 'PTO',
+    BLOWER = 'Blower•',
+
+    TRUCK_TABLE_COUNT = 'truckTableCount',
+    TRUCK_TABLE_VIEW = 'Truck-table-view',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
@@ -181,11 +210,23 @@ export enum ConstantStringTableComponentsEnum {
 
     ACTIVATE = 'activate',
     ACTIVATE_2 = 'Activate',
+    ACTIVE = 'active',
+    ACTIVE_2 = 'Active',
 
     INACTIVE = 'inactive',
+    INACTIVE_2 = 'Inactive',
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
+
+    // Card
+    AVAILABLE_CREDIT = 'availableCredit',
+    REVENUE = 'revenue',
+    HIRED = 'hired',
+    MILEAGE = 'mileage',
+    NO_ENDPOINT = 'no-endpoint',
+    NO_ENDPOINT_2 = 'No Endpoint',
+    SLASH = '/',
 }
