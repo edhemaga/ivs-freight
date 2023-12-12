@@ -11,9 +11,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardPerformanceService } from '../../../state/services/dashboard-performance.service';
-
-// store
-import { DashboardQuery } from '../../../state/store/dashboard.query';
+import { DashboardService } from '../../../state/services/dashboard.service';
 
 // constants
 import { DashboardPerformanceConstants } from '../../../state/utils/constants/dashboard-performance.constants';
@@ -107,7 +105,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private dashboardQuery: DashboardQuery,
+        private dashboardService: DashboardService,
         private dashboardPerformanceService: DashboardPerformanceService,
         private changeDetectorRef: ChangeDetectorRef
     ) {}
@@ -119,9 +117,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.getOverallCompanyDuration();
 
-        setTimeout(() => {
-            this.getPerformanceListData();
-        }, 50);
+        this.getPerformanceListData();
     }
 
     private createForm(): void {
@@ -504,15 +500,15 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     private getOverallCompanyDuration(): void {
-        this.dashboardQuery.companyDuration$
+        this.dashboardService.getOverallCompanyDuration$
             .pipe(takeUntil(this.destroy$))
             .subscribe((companyDuration: number) => {
                 if (companyDuration) {
                     this.overallCompanyDuration = companyDuration;
+
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
                 }
             });
-
-        this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {
