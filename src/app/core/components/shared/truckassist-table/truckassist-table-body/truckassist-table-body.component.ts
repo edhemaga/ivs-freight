@@ -105,7 +105,7 @@ export class TruckassistTableBodyComponent
     @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
-    dropdownSelectionArray = new FormArray([]);
+    public dropdownSelectionArray = new FormArray([]);
 
     @Input() viewData: any[];
     @Input() columns: tableBodyColumns[];
