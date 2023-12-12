@@ -4,7 +4,7 @@
             <div
                 class="progress-child-back"
                 [ngClass]="{
-                    expired: !percents,
+                    expired: percents === 0,
                     'back-gray': percents > 50,
                     'back-yellow': percents > 20 && percents <= 50,
                     'back-red': percents <= 20 && percents > 0
@@ -23,20 +23,20 @@
     </ng-container>
     <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
 
-    <ng-container *ngIf="!percents && percents !== null">
+    <ng-container *ngIf="percents > 0">
         <span>
             in
             {{ text }}
             days
         </span>
     </ng-container>
-    <ng-container *ngIf="!percents && percents !== null">
+    <ng-container *ngIf="percents === 0 && percents !== null">
         <span class="ta-font-semi-bold">
             {{ text }}
             days ago
         </span>
     </ng-container>
-    <ng-container *ngIf="!percents">
+    <ng-container *ngIf="percents === null">
         <span> / </span>
     </ng-container>
 </div>

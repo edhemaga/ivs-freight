@@ -159,11 +159,14 @@
                         line-height: 20px;
                     }
 
+                    .gap {
+                        gap: 4px;
+                    }
+
                     .bottom-item-body {
                         font-size: 14px;
                         overflow: hidden;
                         line-height: 20px;
-                        gap: 4px;
                         width: 100%;
 
                         // STYLES FOR LOAD PAGE
@@ -232,6 +235,11 @@
                         .card-svg {
                             bottom: 2px;
                             position: relative;
+                        }
+
+                        // Styles for truck page
+                        .muted {
+                            color: $muted;
                         }
                     }
                 }
