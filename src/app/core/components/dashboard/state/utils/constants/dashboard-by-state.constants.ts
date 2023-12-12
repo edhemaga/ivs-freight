@@ -43,7 +43,7 @@ export class DashboardByStateConstants {
         {
             name: 'Fuel',
             isActive: false,
-            tab1: 'Price',
+            tab1: 'Gallon',
             tab2: 'Cost',
         },
     ];

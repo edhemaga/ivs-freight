@@ -135,8 +135,8 @@
 
                 // This class is for moving with keyboard
                 &.dropdown-option-hovered {
-                    background: #424242;
-                    color: #ffffff;
+                    background: $ta-black;
+                    color: $white;
                     border-radius: 2px;
                     cursor: pointer;
 
@@ -148,8 +148,8 @@
                 }
 
                 &:hover {
-                    background: #424242;
-                    color: #ffffff;
+                    background: $ta-black;
+                    color: $white;
                     border-radius: 2px;
                     cursor: pointer;
 

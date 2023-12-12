@@ -43,7 +43,7 @@ export class ContactResolver implements Resolve<ContactState> {
                             JSON.stringify(config)
                         );
                     }
-                    let contactLabels = contractLabels.labels.map((item) => {
+                    const contactLabels = contractLabels.labels.map((item) => {
                         return { ...item, dropLabel: true };
                     });
                     let contractTableData = contactPagination.pagination.data;

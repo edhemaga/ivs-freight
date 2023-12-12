@@ -39,6 +39,7 @@ api/ownerHistory.service.ts
 api/parking.service.ts
 api/payroll.service.ts
 api/ratingReview.service.ts
+api/redirect.service.ts
 api/registration.service.ts
 api/repair.service.ts
 api/repairShop.service.ts
@@ -347,11 +348,15 @@ model/fileReviewCommand.ts
 model/fileReviewResponse.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
+model/fuelByStateListResponse.ts
+model/fuelByStateResponse.ts
+model/fuelByStateResponsePagination.ts
 model/fuelCardListResponse.ts
 model/fuelCardResponse.ts
 model/fuelCardResponsePagination.ts
 model/fuelCardShortResponse.ts
 model/fuelDispatchHistoryResponse.ts
+model/fuelIntervalResponse.ts
 model/fuelItemResponse.ts
 model/fuelModalStopResponse.ts
 model/fuelModalStopResponsePagination.ts
@@ -621,6 +626,9 @@ model/resendSignUpCompanyOrUserCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
+model/roadsideByStateListResponse.ts
+model/roadsideByStateResponse.ts
+model/roadsideByStateResponsePagination.ts
 model/roadsideInspectionListResponse.ts
 model/roadsideInspectionMinimalListResponse.ts
 model/roadsideInspectionMinimalResponse.ts
@@ -628,6 +636,7 @@ model/roadsideInspectionMinimalResponsePagination.ts
 model/roadsideInspectionResponse.ts
 model/roadsideInspectionResponsePagination.ts
 model/roadsideInspectionSpecialCheckResponse.ts
+model/roadsideIntervalResponse.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
 model/routingResponse.ts

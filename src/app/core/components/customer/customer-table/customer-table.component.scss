@@ -1,11 +1,45 @@
+@import '/src/theme/variables.scss';
+@import '/src/assets/scss/fonts.scss';
+
 .table-container {
     width: calc(100% - 92px);
     position: absolute;
     top: 0;
 }
+
+// Cards
 .cards-container {
     margin-top: 11px;
     gap: 4px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(302px, 1fr));
+}
+
+// Show more
+.show-more-container {
+    height: 18px;
+    width: 100%;
+    margin-top: 2px;
+
+    .showing,
+    .show-more {
+        height: 100%;
+    }
+
+    .showing {
+        font-size: 11px;
+        color: $bw6-2;
+        min-width: 80px;
+    }
+
+    .show-more {
+        cursor: pointer;
+        font-size: 11px;
+        color: $ta-black;
+
+        &:hover {
+            color: $light-blue;
+            transform: 0.25s;
+        }
+    }
 }

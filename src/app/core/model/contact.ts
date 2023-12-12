@@ -1,3 +1,12 @@
+import {
+    AddressEntity,
+    CompanyAccountLabelResponse,
+    ContactColorResponse,
+    UpdateContactEmailCommand,
+    UpdateContactPhoneCommand,
+} from 'appcoretruckassist';
+import { tableDropdownContent } from '../components/shared/model/cardTableData';
+
 export class Contacts {
     status: string;
     data: ContactsData[];
@@ -26,6 +35,57 @@ export interface ManageContact {
     name: string;
     labelId?: number;
     doc: ManageContactDoc;
+}
+export interface TableHeadActionContract {
+    action?: string;
+    direction?: number;
+}
+
+export interface TableBodyActionsContract {
+    id?: number;
+    type?: string;
+    data?: ContractTableData;
+}
+export interface TableToolBarActionActionsContract {
+    mode?: string;
+    action?: string;
+    tabData?: ContactColumn;
+}
+export class ContractTableData {
+    id: number;
+    name: string;
+    isSelected: boolean;
+    note: string;
+    lable?: contractLableData;
+    textAddress?: string;
+    textShared?: string;
+    textShortName?: string;
+    updatedAt?: string;
+    shared?: boolean;
+    phone?: string;
+    isShared: boolean;
+    email: string;
+    createdAt?: string;
+    avatar?: string;
+    avatarImg?: string;
+    avatarColor?: { background?: string; color: string };
+    address?: AddressEntity;
+    contactPhones?: Array<UpdateContactPhoneCommand> | null;
+    contactEmails?: Array<UpdateContactEmailCommand> | null;
+    tableDropdownContent?: tableDropdownContent;
+    companyContactLabelId?: CompanyAccountLabelResponse | null;
+    colorLabels?: Array<CompanyAccountLabelResponse>;
+    colorRes?: ContactColorResponse;
+}
+
+export interface ToolBarActionContract {
+    action?: string;
+    mode?: string;
+}
+
+export interface contractLableData {
+    name: string;
+    color: string;
 }
 
 export interface ManageContactDoc {

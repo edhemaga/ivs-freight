@@ -1,3 +1,4 @@
+import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { Address } from './address';
 
 export interface ManageCompany {
@@ -88,4 +89,10 @@ export interface BankData {
     bankLogo?: string;
     bankLogoWide?: string;
     bankName?: string;
+}
+
+export interface UpdateLable {
+    data: CompanyAccountLabelResponse;
+    id: number;
+    type: string;
 }

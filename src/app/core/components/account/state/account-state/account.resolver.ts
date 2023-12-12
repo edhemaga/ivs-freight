@@ -38,7 +38,7 @@ export class AccountResolver implements Resolve<AccountState> {
                         JSON.stringify(config)
                     );
                 }
-                let accountLabel = accountLabels.labels.map((item) => {
+                const accountLabel = accountLabels.labels.map((item) => {
                     return { ...item, dropLabel: true };
                 });
                 let accountTableData = accountPagination.pagination.data;

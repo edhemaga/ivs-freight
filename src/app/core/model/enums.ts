@@ -75,3 +75,21 @@ export interface UpdatedData {
     notExist: any[];
     success: any[];
 }
+
+export enum ComponentsTableEnum {
+    SHOW_MORE = 'show-more',
+    GO_TO_LINK = 'go-to-link',
+    COPY_PASSWORD = 'copy-password',
+    COPY_USERNAME = 'copy-username',
+    LABLE_CHANGE = 'label-change',
+    UPDATE_LABLE = 'update-lable',
+    OPEN_MODAL = 'open-modal',
+    VIEW_MODE = 'view-mode',
+    TAB_SELECTED = 'tab-selected',
+    EDIT = 'edit',
+    UPDATE = 'update',
+    DELETE = 'delete',
+    ADD = 'add',
+    SORT = 'sort',
+    SMALL = 'small',
+}

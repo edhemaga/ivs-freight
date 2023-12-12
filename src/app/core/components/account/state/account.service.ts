@@ -2,6 +2,7 @@ import { CompanyAccountService } from './../../../../../../appcoretruckassist/ap
 import { Injectable } from '@angular/core';
 import {
     AccountColorResponse,
+    CompanyAccountLabelResponse,
     CompanyAccountLabelService,
     CompanyAccountModalResponse,
     CompanyAccountResponse,
@@ -70,8 +71,8 @@ export class AccountTService {
     // Update Account
     public updateCompanyAccount(
         data: UpdateCompanyAccountCommand,
-        colors?: any,
-        colorLabels?: any
+        colors?: Array<AccountColorResponse>,
+        colorLabels?: Array<CompanyAccountLabelResponse>
     ): Observable<any> {
         return this.accountService.apiCompanyaccountPut(data).pipe(
             tap(() => {
@@ -80,12 +81,10 @@ export class AccountTService {
                 ).subscribe({
                     next: (account: CompanyAccountResponse | any) => {
                         this.accountStore.remove(({ id }) => id === data.id);
-                        if (colors) {
-                            account.colorRes = colors;
-                        }
-                        if (colorLabels) {
-                            account.colorLabels = colorLabels;
-                        }
+
+                        colors && (account.colorRes = colors);
+                        colorLabels && (account.colorLabels = colorLabels);
+
                         this.accountStore.add(account);
 
                         this.tableService.sendActionAnimation({

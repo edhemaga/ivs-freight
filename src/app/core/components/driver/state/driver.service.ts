@@ -23,6 +23,8 @@ import { DriversMinimalListQuery } from './driver-details-minimal-list-state/dri
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { DriverModal } from '../../shared/model/table-components/driver-modal';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Injectable({
     providedIn: 'root',
@@ -114,13 +116,15 @@ export class DriverTService {
                             this.driverMinimimalListStore.add(driver);
 
                             const driverCount = JSON.parse(
-                                localStorage.getItem('driverTableCount')
+                                localStorage.getItem(
+                                    ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT
+                                )
                             );
 
                             driverCount.active++;
 
                             localStorage.setItem(
-                                'driverTableCount',
+                                ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                                 JSON.stringify({
                                     active: driverCount.active,
                                     inactive: driverCount.inactive,
@@ -128,7 +132,8 @@ export class DriverTService {
                             );
 
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation:
+                                    ConstantStringTableComponentsEnum.ADD,
                                 data: driver,
                                 id: driver.id,
                             });
@@ -153,14 +158,22 @@ export class DriverTService {
                 this.driverItemStore.remove(({ id }) => id === driverId);
                 this.dlStore.remove(({ id }) => id === driverId);
                 const driverCount = JSON.parse(
-                    localStorage.getItem('driverTableCount')
+                    localStorage.getItem(
+                        ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT
+                    )
                 );
 
-                if (tableSelectedTab === 'active') {
+                if (
+                    tableSelectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                ) {
                     this.driverActiveStore.remove(({ id }) => id === driverId);
 
                     driverCount.active--;
-                } else if (tableSelectedTab === 'inactive') {
+                } else if (
+                    tableSelectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE
+                ) {
                     this.driverInactiveStore.remove(
                         ({ id }) => id === driverId
                     );
@@ -169,7 +182,7 @@ export class DriverTService {
                 }
 
                 localStorage.setItem(
-                    'driverTableCount',
+                    ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                     JSON.stringify({
                         active: driverCount.active,
                         inactive: driverCount.inactive,
@@ -181,7 +194,8 @@ export class DriverTService {
                     .subscribe({
                         next: (driver: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation:
+                                    ConstantStringTableComponentsEnum.DELETE,
                                 data: driver,
                                 id: driver.id,
                             });
@@ -196,22 +210,30 @@ export class DriverTService {
     public deleteDriverById(
         driverId: number,
         tableSelectedTab?: string
-    ): Observable<any> {
+    ): Observable<DriverModal> {
         return this.driverService.apiDriverIdDelete(driverId).pipe(
             tap(() => {
                 const driverCount = JSON.parse(
-                    localStorage.getItem('driverTableCount')
+                    localStorage.getItem(
+                        ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT
+                    )
                 );
 
                 this.driverMinimimalListStore.remove(
                     ({ id }) => id === driverId
                 );
                 this.dlStore.remove(({ id }) => id === driverId);
-                if (tableSelectedTab === 'active') {
+                if (
+                    tableSelectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                ) {
                     this.driverActiveStore.remove(({ id }) => id === driverId);
 
                     driverCount.active--;
-                } else if (tableSelectedTab === 'inactive') {
+                } else if (
+                    tableSelectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE
+                ) {
                     this.driverInactiveStore.remove(
                         ({ id }) => id === driverId
                     );
@@ -220,7 +242,7 @@ export class DriverTService {
                 }
 
                 localStorage.setItem(
-                    'driverTableCount',
+                    ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                     JSON.stringify({
                         active: driverCount.active,
                         inactive: driverCount.inactive,
@@ -228,14 +250,16 @@ export class DriverTService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: 'delete',
+                    animation: ConstantStringTableComponentsEnum.DELETE,
                     id: driverId,
                 });
             })
         );
     }
 
-    public deleteDriverList(driversToDelete: any[]): Observable<any> {
+    public deleteDriverList(
+        driversToDelete: DriverResponse[]
+    ): Observable<DriverResponse> {
         // let deleteOnBack = driversToDelete.map((driver: any) => {
         //   return driver.id;
         // });
@@ -255,11 +279,11 @@ export class DriverTService {
         //     alert('Proveri jel sljaka driver count update');
 
         //     const driverCount = JSON.parse(
-        //       localStorage.getItem('driverTableCount')
+        //       localStorage.getItem(ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT)
         //     );
 
         //     localStorage.setItem(
-        //       'driverTableCount',
+        //       ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
         //       JSON.stringify({
         //         active: storeDrivers.length,
         //         inactive: driverCount.inactive,
@@ -377,12 +401,14 @@ export class DriverTService {
                 tap(() => {
                     /* Get Table Tab Count */
                     const driverCount = JSON.parse(
-                        localStorage.getItem('driverTableCount')
+                        localStorage.getItem(
+                            ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT
+                        )
                     );
 
                     /* Get Data From Store To Update */
                     let driverToUpdate =
-                        tabSelected === 'active'
+                        tabSelected === ConstantStringTableComponentsEnum.ACTIVE
                             ? this.driversActiveQuery.getAll({
                                   filterBy: ({ id }) => id === driverId,
                               })
@@ -391,7 +417,7 @@ export class DriverTService {
                               });
 
                     /* Remove Data From Store */
-                    tabSelected === 'active'
+                    tabSelected === ConstantStringTableComponentsEnum.ACTIVE
                         ? this.driverActiveStore.remove(
                               ({ id }) => id === driverId
                           )
@@ -400,7 +426,7 @@ export class DriverTService {
                           );
 
                     /* Add Data To New Store */
-                    tabSelected === 'active'
+                    tabSelected === ConstantStringTableComponentsEnum.ACTIVE
                         ? this.driverInactiveStore.add({
                               ...driverToUpdate[0],
                               status: 0,
@@ -411,17 +437,22 @@ export class DriverTService {
                           });
 
                     /* Update Table Tab Count */
-                    if (tabSelected === 'active') {
+                    if (
+                        tabSelected === ConstantStringTableComponentsEnum.ACTIVE
+                    ) {
                         driverCount.active--;
                         driverCount.inactive++;
-                    } else if (tabSelected === 'inactive') {
+                    } else if (
+                        tabSelected ===
+                        ConstantStringTableComponentsEnum.INACTIVE
+                    ) {
                         driverCount.active++;
                         driverCount.inactive--;
                     }
 
                     /* Send Table Tab Count To Local Storage */
                     localStorage.setItem(
-                        'driverTableCount',
+                        ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                         JSON.stringify({
                             active: driverCount.active,
                             inactive: driverCount.inactive,

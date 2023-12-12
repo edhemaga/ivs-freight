@@ -39,6 +39,7 @@ import { OwnerHistoryService } from './api/ownerHistory.service';
 import { ParkingService } from './api/parking.service';
 import { PayrollService } from './api/payroll.service';
 import { RatingReviewService } from './api/ratingReview.service';
+import { RedirectService } from './api/redirect.service';
 import { RegistrationService } from './api/registration.service';
 import { RepairService } from './api/repair.service';
 import { RepairShopService } from './api/repairShop.service';

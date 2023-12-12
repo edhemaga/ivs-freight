@@ -1,16 +1,133 @@
-export interface SendDataCard {
+import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { DataForCardsAndTables } from './table-components/all-tables.modal';
+
+export interface MappedShipperBroker extends ShipperResponse {
+    isSelected?: boolean;
+    tableAddress?: string;
+    tableLoads?: string;
+    tableAddressPhysical?: string;
+    tableAddressBilling?: string;
+    tableAverageWatingTimePickup?: ConstantStringTableComponentsEnum | TimeOnly;
+    tableAverageWatingTimeDelivery?:
+        | ConstantStringTableComponentsEnum
+        | TimeOnly;
+    tableAvailableHoursShipping?: string;
+    tableAvailableHoursReceiving?: string;
+    tablePaymentDetailAvailCredit?: ConstantStringTableComponentsEnum | string;
+    tablePaymentDetailCreditLimit?: ConstantStringTableComponentsEnum | string;
+    tablePaymentDetailTerm?: string;
+    tablePaymentDetailDTP?: ConstantStringTableComponentsEnum | string;
+    tablePaymentDetailInvAgeing?: {
+        bfb: ConstantStringTableComponentsEnum | string;
+        dnu: ConstantStringTableComponentsEnum | string;
+        amount: string;
+    };
+    tableRaiting?: {
+        hasLiked?: boolean;
+        hasDislike?: boolean;
+        likeCount?: number | string;
+        dislikeCount?: number | string;
+    };
+    tableContact?: number;
+    tableAdded?: string;
+    tableEdited?: string;
+    tableDropdownContent?: {
+        hasContent?: boolean;
+        content?: DropdownItem[];
+    };
+    PaymentDetailInvAgeing?: {
+        bfb: ConstantStringTableComponentsEnum | string;
+        dnu: ConstantStringTableComponentsEnum | string;
+        amount: string;
+    };
+
+    data?: ShipperResponse | BrokerResponse;
+    actionAnimation?: string;
+    id?: number;
+    tableMiles?: string;
+    tablePPM?: string;
+    tableRevenue?: string;
+}
+
+export interface DataUpdate {
+    animation: string;
+    data: {
+        pagination: {
+            count: number;
+            data: CardDetails[];
+            pageIndex: number;
+            pageSize: number;
+        };
+    };
+    id: string;
+}
+
+
+// TOOLBAR ACTIONS
+export interface ToolbarActions {
+    action: string;
+    tabData: DataForCardsAndTables;
+    mode: string;
+}
+export interface TableBodyActions {
+    data: CardDetails;
     id: number;
-    data: LoadDetails;
     type: string;
 }
-export interface LoadDetails {
+
+// Table Columns
+export interface Column {
+    column: GridColumn;
+    index: number;
+}
+export interface GridColumn {
+    avatar: null | string;
+    disabled: boolean;
+    export: boolean;
+    field: string;
+    filter: string;
+    filterable: boolean;
+    hidden: boolean;
+    hoverTemplate: null | string;
+    index: number;
+    isActionColumn: boolean;
+    isNumeric: boolean;
+    isPined: boolean;
+    isSelectColumn: boolean;
+    name: string;
+    ngTemplate: string;
+    progress: null | string;
+    resizable: boolean;
+    sortable: boolean;
+    tableHeadTitle: string;
+    title: string;
+    width: number;
+}
+export interface ResizingEventData {
+    index: number;
+    isResizing: boolean;
+    section: string;
+    width: number;
+}
+export interface ColumnWidthData {
+    columns: GridColumn[];
+    event: ResizingEventData[];
+}
+// Table Columns end
+export interface SendDataCard {
+    id: number;
+    data: CardDetails;
+    type: string;
+}
+export interface CardDetails {
     id: number;
     type: Type;
+    isSelected: boolean;
     loadNumber: string;
     statusType: StatusType;
     status: Status;
     tableDropdownContent: tableDropdownContent;
-    lastStatusPassed: LastStatusPassed;
     dispatcher: Dispatcher;
     company: Company;
     dateCreated: string;
@@ -64,27 +181,41 @@ export interface LoadDetails {
     fileCount: number;
     loadTotal: LoadTotal;
     isFlipped: boolean;
+
+    textCommodity: string;
+    textMiles: string;
+    textWeight: string;
+    textBase: string;
+    textAdditional: string;
+    textAdvance: string;
+    textPayTerms: string;
+    textDriver: string;
+    tableAttachments: File[];
 }
 
 export interface tableDropdownContent {
     content: DropdownItem[];
     hasContent: boolean;
 }
-
 export interface DropdownItem {
-    hasBorder?: boolean;
+    title?: string;
     name?: string;
     svgUrl?: string;
     mutedStyle?: boolean;
     svgStyle?: { width: number; height: number };
-    title?: string;
     svgClass?: string;
     isDropdown?: boolean;
+    hasBorder?: boolean;
+    tableListDropdownContentStyle?: { [key: string]: any };
+    insideDropdownContent?: InsideDropdownContent[];
 }
-
+interface InsideDropdownContent {
+    title: string;
+    name: string;
+}
 export interface BodyActions {
     id: number;
-    card: LoadDetails;
+    card: CardDetails;
     type: string;
 }
 
@@ -94,6 +225,7 @@ export interface Type {
 }
 interface LoadTotal {
     total: string;
+    subTotal: string;
 }
 export interface StatusType {
     name: string;
@@ -106,8 +238,8 @@ export interface Status {
 }
 
 export interface LastStatusPassed {
-    additionalProp1: number;
-    additionalProp2: number;
+    hours: number;
+    minutes: number;
     additionalProp3: number;
 }
 

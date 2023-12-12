@@ -1,4 +1,6 @@
 /* Table Body */
+@import 'src/theme/variables';
+
 table {
     width: 100%;
     height: fit-content;
@@ -58,7 +60,6 @@ table {
                         display: flex;
                         height: 100%;
                         align-items: center;
-                        ::ng-deep {
                             svg-icon #Group_102994{
                                 display: none;
 
@@ -70,17 +71,17 @@ table {
                                 &:hover{
 
                                     input{
-                                        background-color: #91919133;
+                                        background-color: $dark-2;
                                         &:active:hover{
-                                            background-color: #1d1d1d !important;
-                                            color: #ffffff !important;
+                                            background-color: $ta-black-3 !important;
+                                            color: $white !important;
                                         }
                                         &:focus:hover{
-                                            background-color: #1d1d1d !important;
-                                            color: #ffffff !important;
+                                            background-color: $ta-black-3 !important;
+                                            color: $white !important;
                                         }
                                         &:hover{
-                                            background-color: #91919133;
+                                            background-color: $dark-2;
                                         }
                                     }
                                     .input-pen-container{
@@ -127,7 +128,6 @@ table {
                             .input-icon{
                                 left: 0px;
                             }
-                        }
                         // NO TEMPLATE
                         .no-template {
                             color: red;
@@ -1589,7 +1589,6 @@ table {
                                 height: 21px;
                             }
                            
-                            ::ng-deep {
                                 svg-icon #Group_102994{
                                     display: none;
 
@@ -1601,17 +1600,17 @@ table {
                                     &:hover{
 
                                         input{
-                                            background-color: #91919133;
+                                            background-color: $dark-2;
                                             &:active:hover{
-                                                background-color: #1d1d1d !important;
-                                                color: #ffffff !important;
+                                                background-color: $ta-black-3 !important;
+                                                color: $white !important;
                                             }
                                             &:focus:hover{
-                                                background-color: #1d1d1d !important;
-                                                color: #ffffff !important;
+                                                background-color:  $ta-black-3!important;
+                                                color: $white !important;
                                             }
                                             &:hover{
-                                                background-color: #91919133;
+                                                background-color: $dark-2;
                                             }
                                         }
                                         .input-pen-container{
@@ -1623,10 +1622,10 @@ table {
                                                 }
                                                 #Edit{
                                                     #Path_7775{
-                                                        fill: #919191;
+                                                        fill: $muted;
                                                     }
                                                     #Path_7776{
-                                                        fill: #919191;
+                                                        fill: $muted;
                                                     }
                                                 }
                                             } 
@@ -1658,7 +1657,6 @@ table {
                                 .input-icon{
                                     left: 0px;
                                 }
-                            }
                             .lable-name {
                                 font-size: 14px;
                                 font-weight: 400;
@@ -2721,18 +2719,16 @@ table {
             &:hover {
                 .columns-container {
                     .td-content{
-                        ::ng-deep {
                             input{
-                                background-color: #e5e5e5 ;
-                            }}   
-                    }
-                    background-color: #e5e5e5 !important;
-                    .lable-container {
-                        ::ng-deep {
-                            input{
-                                background-color: #e5e5e5 ;
+                                background-color: $ta-light-grey ;
                             }
-                    }}
+                    }
+                    background-color: $ta-light-grey !important;
+                    .lable-container {
+                            input{
+                                background-color: $ta-light-grey ;
+                            }
+                    }
                     .table-text,
                     .table-name-link,
                     .color-name,
@@ -2801,22 +2797,19 @@ table {
         // Selected Row
         .selected-row {
             .columns-container {
-                background: #e5e5e5;
-                ::ng-deep {
+                background: $ta-light-grey;
                     input  
                     {
-                        background-color: #e5e5e5 !important;
-                        color: #6c6c6c !important;
+                        background-color: $ta-light-grey !important;
+                        color: $bw6-2 !important;
                     }
-            }
                 .lable-container {
-                    ::ng-deep {
-                        input  
-                        {
-                            background-color: #e5e5e5 !important;
-                            color: #6c6c6c !important;
-                        }
-                }}
+                    input  
+                    {
+                        background-color: $ta-light-grey !important;
+                        color: $bw6-2 !important;
+                    }
+                }
                 // CONTACT COLUMN
                 .contact-container {
                     .contact-count {
@@ -3108,14 +3101,12 @@ table {
     transition: 0.4s;
     .columns-container{
         .lable-container {
-            ::ng-deep {
-                app-ta-input-dropdown-label{
-                    input{
-                        background: orange !important;
-                        transition: 0.4s;
-                    }
+            app-ta-input-dropdown-label{
+                input{
+                    background: orange !important;
+                    transition: 0.4s;
                 }
-            }
+            } 
         }
     }
 }

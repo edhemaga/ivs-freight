@@ -11,37 +11,57 @@ import {
     Output,
     SimpleChanges,
     ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
-import { Router } from '@angular/router';
-
-import {
-    CdkVirtualScrollViewport,
-    VIRTUAL_SCROLL_STRATEGY,
-} from '@angular/cdk/scrolling';
-import { TableStrategy } from './table_strategy';
-import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { SharedService } from '../../../../services/shared/shared.service';
-import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-import { Titles } from 'src/app/core/utils/application.decorators';
-import { FilesService } from 'src/app/core/services/shared/files.service';
-import { CommonModule } from '@angular/common';
 import {
     FormArray,
     FormControl,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+
+//scrolling
+import {
+    CdkVirtualScrollViewport,
+    VIRTUAL_SCROLL_STRATEGY,
+} from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+
+//strategy
+import { TableStrategy } from './table_strategy';
+import { Subject, takeUntil } from 'rxjs';
+
+//services
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { SharedService } from '../../../../services/shared/shared.service';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { FilesService } from 'src/app/core/services/shared/files.service';
+
+//decorators
+import { Titles } from 'src/app/core/utils/application.decorators';
+
+//components
 import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { DomSanitizer } from '@angular/platform-browser';
-import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
 import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
+
+//modul
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+//sanitizer
+import { DomSanitizer } from '@angular/platform-browser';
+
+//pipes
+import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
+
+//models
+import { CompanyAccountLabelResponse } from 'appcoretruckassist';
+import { tableBodyColumns, tableBodyOptions } from '../../model/tablleBody';
 
 @Titles()
 @Component({
@@ -49,6 +69,7 @@ import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
     templateUrl: './truckassist-table-body.component.html',
     styleUrls: ['./truckassist-table-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
         CommonModule,
@@ -79,9 +100,7 @@ export class TruckassistTableBodyComponent
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
     public virtualScrollViewport: CdkVirtualScrollViewport;
-    public selectedContactColor: any;
-
-    public contactLabels: any[] = [];
+    public selectedContactColor: CompanyAccountLabelResponse;
 
     @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
@@ -89,8 +108,8 @@ export class TruckassistTableBodyComponent
     dropdownSelectionArray = new FormArray([]);
 
     @Input() viewData: any[];
-    @Input() columns: any[];
-    @Input() options: any;
+    @Input() columns: tableBodyColumns[];
+    @Input() options: tableBodyOptions;
     @Input() tableData: any[];
     @Input() selectedTab: string;
     selectedContactLabel: any = [];
@@ -152,9 +171,7 @@ export class TruckassistTableBodyComponent
         this.viewDataLength = this.viewData.length;
         // Get Table Sections(Pined, Not Pined, Actions)
         this.getTableSections();
-        if (this.viewData.length) {
-            this.labelDropdown();
-        }
+        this.viewData.length && this.labelDropdown();
         // Set Dropdown Content
         this.setDropContent();
         // For Rendering One By One
@@ -860,7 +877,11 @@ export class TruckassistTableBodyComponent
             type: 'show-more',
         });
     }
-    onSaveLabel(data: any, index: number) {
+
+    public onSaveLabel(
+        data: { data: { name: string; action: string } },
+        index: number
+    ): void {
         this.selectedContactLabel[index] = {
             ...this.selectedContactLabel[index],
             name: data.data.name,
@@ -874,7 +895,11 @@ export class TruckassistTableBodyComponent
                     : 'label-change',
         });
     }
-    onPickExistLabel(event: any, index: number) {
+
+    public onPickExistLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
         this.selectedContactLabel[index] = event;
         this.onSaveLabel(
             {
@@ -886,7 +911,11 @@ export class TruckassistTableBodyComponent
             index
         );
     }
-    onSelectColorLabel(event: any, index: number) {
+
+    public onSelectColorLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
         this.selectedContactColor = event;
         this.selectedContactLabel[index] = {
             ...this.selectedContactLabel[index],
