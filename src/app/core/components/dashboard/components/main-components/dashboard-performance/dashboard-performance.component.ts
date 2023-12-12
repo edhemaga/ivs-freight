@@ -400,7 +400,6 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((performanceData) => {
-                console.log('performanceData', performanceData);
                 // performance data
                 this.performanceData = this.performanceData.map(
                     (performanceDataItem) => {
