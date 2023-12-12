@@ -124,6 +124,13 @@ export class GeolocationService {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
+        let localVarApiKey: string | undefined;
+        // authentication (bearer) required
+        localVarApiKey = this.configuration.lookupCredential('x-api-key');
+        if (localVarApiKey) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'x-api-key ' + localVarApiKey);
+        }
+
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -204,6 +211,13 @@ export class GeolocationService {
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarApiKey: string | undefined;
+        // authentication (bearer) required
+        localVarApiKey = this.configuration.lookupCredential('x-api-key');
+        if (localVarApiKey) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'x-api-key ' + localVarApiKey);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -288,6 +302,13 @@ export class GeolocationService {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
+        let localVarApiKey: string | undefined;
+        // authentication (bearer) required
+        localVarApiKey = this.configuration.lookupCredential('x-api-key');
+        if (localVarApiKey) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'x-api-key ' + localVarApiKey);
+        }
+        
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -361,6 +382,13 @@ export class GeolocationService {
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarApiKey: string | undefined;
+        // authentication (bearer) required
+        localVarApiKey = this.configuration.lookupCredential('x-api-key');
+        if (localVarApiKey) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'x-api-key ' + localVarApiKey);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
