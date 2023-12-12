@@ -1,5 +1,5 @@
 import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
+import { Observable, of, Subject, tap, takeUntil, switchMap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import {
     GetTruckModalResponse,
@@ -9,6 +9,7 @@ import {
     RegistrationService,
     TitleService,
     InspectionService,
+    OwnerDetailsResponse,
 } from 'appcoretruckassist';
 import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
 import { TruckActiveStore } from './truck-active-state/truck-active.store';
@@ -21,7 +22,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
 import { FormDataService } from '../../../services/formData/form-data.service';
 import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
-
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
     public truckId: number;
@@ -77,10 +77,11 @@ export class TruckTService implements OnDestroy {
         );
     }
 
-    public addTruck(data: any): Observable<any> {
+    public addTruck(data: TruckResponse): Observable<TruckResponse> {
+        console.log(data);
         this.formDataService.extractFormDataFromFunction(data);
         return this.truckService.apiTruckPost().pipe(
-            tap((res: any) => {
+            tap((res) => {
                 const subTruck = this.getTruckById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -118,7 +119,7 @@ export class TruckTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.truckService.apiTruckPut().pipe(
             tap(() => {
-                let storedTruckData = {
+                const storedTruckData = {
                     ...this.truckItem?.getValue()?.entities[data.id],
                 };
 
@@ -412,54 +413,46 @@ export class TruckTService implements OnDestroy {
         return this.truckService.apiTruckRevenueGet(id, chartType);
     }
 
-    public changeActiveStatus(truckId: any) {
-        return this.truckService
+    public changeActiveStatus(truckId: number): void {
+        this.truckService
             .apiTruckStatusIdPut(truckId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    let storedTruckData = {
-                        ...this.truckItem?.getValue()?.entities[truckId],
-                    };
+            .pipe(
+                takeUntil(this.destroy$),
+                switchMap((res: number) => {
+                    return this.getTruckById(truckId).pipe(
+                        takeUntil(this.destroy$)
+                    );
+                })
+            )
+            .subscribe((truck: any) => {
+                console.log(truck);
+                const storedTruckData = {
+                    ...this.truckItem?.getValue()?.entities[truckId],
+                };
 
-                    const subTruck = this.getTruckById(truckId)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (truck: any) => {
-                                this.truckActiveStore.remove(
-                                    ({ id }) => id === truckId
-                                );
+                this.truckActiveStore.remove(({ id }) => id === truckId);
+                this.truckMinimalStore.remove(({ id }) => id === truckId);
 
-                                this.truckMinimalStore.remove(
-                                    ({ id }) => id === truckId
-                                );
+                truck.registrations = storedTruckData.registrations;
+                truck.titles = storedTruckData.titles;
+                truck.inspections = storedTruckData.inspections;
 
-                                truck.registrations =
-                                    storedTruckData.registrations;
-                                truck.titles = storedTruckData.titles;
-                                truck.inspections = storedTruckData.inspections;
+                truck = {
+                    ...truck,
+                    fileCount: truck?.filesCountForList
+                        ? truck.filesCountForList
+                        : 0,
+                };
 
-                                truck = {
-                                    ...truck,
-                                    fileCount: truck?.filesCountForList
-                                        ? truck.filesCountForList
-                                        : 0,
-                                };
+                this.truckMinimalStore.add(truck);
+                this.tdlStore.add(truck);
+                this.truckItem.set([truck]);
 
-                                this.truckMinimalStore.add(truck);
-                                this.tdlStore.add(truck);
-                                this.truckItem.set([truck]);
-
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
-                            },
-                        });
-                },
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: truck,
+                    id: truck.id,
+                });
             });
     }
 

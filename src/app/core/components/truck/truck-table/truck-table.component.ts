@@ -60,8 +60,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
-    public selectedTab: string = 'active';
-    public activeViewMode: string = 'List';
+    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     public trucksActive: TruckActiveState[] = [];
     public trucksInactive: TruckInactiveState[] = [];
     public loadingPage: boolean = true;
@@ -344,7 +344,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
-                    let mappedRes = response.map((item) => {
+                    const mappedRes = response.map((item) => {
                         return {
                             id: item.id,
                             data: {
@@ -536,7 +536,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
                   (this.sendDataToCardsBack = this.displayRowsBackInactive));
 
-            // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
         } else {
             this.viewData = [];

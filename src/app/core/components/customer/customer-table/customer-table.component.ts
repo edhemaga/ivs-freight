@@ -38,9 +38,8 @@ import {
     RatingSetResponse,
     ShipperListResponse,
     ShipperResponse,
-    TimeOnly,
 } from 'appcoretruckassist';
-import { CardRows, Search } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/cardData';
 import {
     BodyResponse,
     UpdateRating,
@@ -116,8 +115,8 @@ export class CustomerTableComponent
     public columns: TableColumnConfig[] = [];
     public brokers: BrokerState[] = [];
     public shipper: ShipperState[] = [];
-    public selectedTab = 'active';
-    public activeViewMode: string = 'List';
+    public selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
