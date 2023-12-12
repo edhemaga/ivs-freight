@@ -64,7 +64,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     public trucksActive: TruckActiveState[] = [];
     public trucksInactive: TruckInactiveState[] = [];
-    public loadingPage: boolean = true;
+    public loadingPage: boolean = false;
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
     // TODO type
@@ -127,9 +127,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.search();
 
-        this.loadingPage = false;
-
-        // Get Tab Table Data For Selected Tab
         this.getSelectedTabTableData();
     }
 

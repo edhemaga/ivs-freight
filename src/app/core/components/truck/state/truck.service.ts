@@ -419,13 +419,11 @@ export class TruckTService implements OnDestroy {
             .pipe(
                 takeUntil(this.destroy$),
                 switchMap((res: number) => {
-                    return this.getTruckById(truckId).pipe(
-                        takeUntil(this.destroy$)
-                    );
+                    return this.getTruckById(truckId);
+                    takeUntil(this.destroy$);
                 })
             )
             .subscribe((truck: any) => {
-                console.log(truck);
                 const storedTruckData = {
                     ...this.truckItem?.getValue()?.entities[truckId],
                 };
