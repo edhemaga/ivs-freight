@@ -4,11 +4,11 @@ export enum ConstantStringTableComponentsEnum {
 
     // Days
     DAY = ' days',
+    MONTHS = ' months',
 
     // Tabs
     APPLICANTS = 'applicants',
     TEMPLATE = 'template',
-    ACTIVE = 'active',
     CLOSED = 'closed',
     PENDING = 'pending',
     MAP = 'Map',
@@ -18,6 +18,8 @@ export enum ConstantStringTableComponentsEnum {
     ADD = 'add',
     UPDATE = 'update',
     DELETE = 'delete',
+    DELETE_2 = 'Delete',
+
     UPDATE_STATUS = 'update-status',
     DELETE_MULTIPLE = 'delete-multiple',
 
@@ -39,8 +41,19 @@ export enum ConstantStringTableComponentsEnum {
     // Dropdowns
     SORT = 'sort',
     EDIT = 'edit',
+    EDIT_2 = 'Edit',
+
     LOAD = 'load',
     VIEW_MODE = 'view-mode',
+    REGULAR = 'regular',
+    ADD_NEW = 'add-new',
+    ADD_NEW_2 = 'Add New',
+
+    SEND_MESSAGE = 'send-message',
+    SEND_MESSAGE_2 = 'Send Message',
+
+    VIEW_DETAILS = 'view-details',
+    VIEW_DETAILS_2 = 'View Details',
 
     // Sizes
     SMALL = 'small',
@@ -56,9 +69,11 @@ export enum ConstantStringTableComponentsEnum {
 
     // Distance
     MILES = 'mi',
+    MILES_2 = ' mi',
 
     // Weights
     POUNDS = 'lbs',
+    POUNDS_2 = ' lbs.',
 
     //Empty string
     EMPTY_STRING_PLACEHOLDER = '',
@@ -67,6 +82,8 @@ export enum ConstantStringTableComponentsEnum {
     // Separators
     COMA = ', ',
     DOT = '. ',
+    PERCENTS = '%',
+    SVG = '.svg',
 
     // Local storage get for tables
     LOAD_TABLE_COUNT = 'loadTableCount',
@@ -94,9 +111,21 @@ export enum ConstantStringTableComponentsEnum {
     NEW_LICENCE = 'new-licence',
     NEW_MEDICAL = 'new-medical',
     NEW_MVR = 'new-mvr',
+    ADD_CDL = 'Add CDL',
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
+
+    PRINT = 'print',
+    PRINT_2 = 'Print',
+
+    SHARE = 'share',
+    SHARE_2 = 'Share',
+
+    ADD_REPAIR = 'add-repair',
+    ADD_REPAIR_2 = 'Add Repair',
+
+    MARGIN_BOTTOM = 'margin-bottom.px',
 
     // Customer
     CUSTOMER = 'Customer',
@@ -121,7 +150,25 @@ export enum ConstantStringTableComponentsEnum {
     APPLICANT = 'APPLICANT',
 
     APP = 'App.',
+
     MVR = 'Mvr',
+    MVR_2 = 'MVR',
+    ADD_MVR = 'Add MVR',
+    TEST_MVR = 'test-mvr',
+
+    TEST_DRUG_ALCOHOL = 'Test (Drug, Alcohol)',
+    TEST_DRUG = 'test-drug',
+
+    MEDICAL_EXAM = 'medical-exam',
+    MEDICAL_EXAM_2 = 'Medical-exam',
+    MEDICAL_EXAM_3 = 'Medical-Exam',
+
+    BACKGROUND_CHECK = 'background-check',
+    BACKGROUND_CHECK_2 = 'Background-check',
+
+    REQUEST = 'Request',
+    ADD_TO_FAVORITES = 'add-to-favourites',
+
     PSP = 'Psp',
     SPH = 'Sph',
     HOS = 'Hos',
@@ -131,17 +178,55 @@ export enum ConstantStringTableComponentsEnum {
     PUSH = 'Push•',
     SMS = 'SMS',
 
+    // Truck
+    EDIT_TRUCK = 'edit-truck',
+    ADD_REGISTRATION = 'add-registration',
+    ADD_REGISTRATION_2 = 'Add Registration',
+
+    ADD_INSPECTION = 'add-inspection',
+    ADD_INSPECTION_2 = 'Add Inspection',
+
+    TRUCK = 'truck',
+    TRUCK_2 = 'Truck',
+    TRUCK_3 = 'TRUCK',
+    TRUCKS = 'trucks',
+
+    FRIDGE = 'Fridge•',
+    DBUNK = 'DBunk•',
+    DCI = 'DCI•',
+    PTO = 'PTO',
+    BLOWER = 'Blower•',
+
+    TRUCK_TABLE_COUNT = 'truckTableCount',
+    TRUCK_TABLE_VIEW = 'Truck-table-view',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
     WRONG_ICON = 'wrong-icon',
 
     DEACTIVATE = 'deactivate',
+    DEACTIVATE_2 = 'Deactivate',
+
     ACTIVATE = 'activate',
+    ACTIVATE_2 = 'Activate',
+    ACTIVE = 'active',
+    ACTIVE_2 = 'Active',
+
     INACTIVE = 'inactive',
+    INACTIVE_2 = 'Inactive',
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
+
+    // Card
+    AVAILABLE_CREDIT = 'availableCredit',
+    REVENUE = 'revenue',
+    HIRED = 'hired',
+    MILEAGE = 'mileage',
+    NO_ENDPOINT = 'no-endpoint',
+    NO_ENDPOINT_2 = 'No Endpoint',
+    SLASH = '/',
 }

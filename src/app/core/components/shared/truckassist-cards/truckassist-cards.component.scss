@@ -86,13 +86,15 @@
                         }
                     }
 
-                    .image-holder {
-                        position: relative;
-                        bottom: 1px;
-                    }
-
                     .image-hover {
                         transition: transform 0.2s;
+                        margin-right: 4px;
+                        position: relative;
+                        bottom: 1px;
+                        width: 18px;
+                        height: 20px;
+                        border-radius: 1px;
+                        font-size: 7px;
 
                         &:hover {
                             transform: scale(1.8);
@@ -121,14 +123,18 @@
                         }
                     }
 
-                    .is-owner {
-                        position: absolute;
-                        z-index: 999;
-                        right: 0;
-                        bottom: -5px;
-                        svg {
-                            width: 10px;
-                            height: 10px;
+                    .image-holder {
+                        position: relative;
+
+                        .is-owner {
+                            position: absolute;
+                            right: 0;
+                            bottom: -5px;
+
+                            svg {
+                                width: 10px;
+                                height: 10px;
+                            }
                         }
                     }
                 }
@@ -153,11 +159,14 @@
                         line-height: 20px;
                     }
 
+                    .gap {
+                        gap: 4px;
+                    }
+
                     .bottom-item-body {
                         font-size: 14px;
                         overflow: hidden;
                         line-height: 20px;
-                        gap: 4px;
                         width: 100%;
 
                         // STYLES FOR LOAD PAGE
@@ -210,51 +219,6 @@
                             }
                         }
 
-                        .deadline-parent {
-                            width: 24px;
-                            height: 8px;
-                            border-radius: 2px;
-                            overflow: hidden;
-                            position: relative;
-
-                            .deadline-child-back {
-                                opacity: 0.2;
-                                width: 100%;
-                                height: 8px;
-                                position: absolute;
-                            }
-
-                            .deadline-child-front {
-                                height: 8px;
-                                position: absolute;
-                            }
-
-                            .back-gray {
-                                background: $muted;
-                                opacity: 0.2;
-                            }
-
-                            .back-yellow {
-                                background: $ta-deadline-yellow;
-                                opacity: 0.2;
-                            }
-
-                            .back-red {
-                                background: $ta-deadline-red;
-                                opacity: 0.2;
-                            }
-
-                            .front-gray {
-                                background: $muted;
-                            }
-                            .front-yellow {
-                                background: $ta-deadline-yellow;
-                            }
-                            .fron-red {
-                                background: $ta-deadline-red;
-                            }
-                        }
-
                         span {
                             white-space: nowrap;
                             overflow: hidden;
@@ -271,6 +235,11 @@
                         .card-svg {
                             bottom: 2px;
                             position: relative;
+                        }
+
+                        // Styles for truck page
+                        .muted {
+                            color: $muted;
                         }
                     }
                 }

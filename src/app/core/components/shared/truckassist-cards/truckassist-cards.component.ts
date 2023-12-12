@@ -20,17 +20,20 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
+import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Component({
     selector: 'app-truckassist-cards',
     templateUrl: './truckassist-cards.component.html',
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
-    providers: [formatCurrency],
+    providers: [formatCurrency, formatDatePipe, TaThousandSeparatorPipe],
     imports: [
         //modules
         CommonModule,
@@ -41,6 +44,7 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
         //components
         AppTooltipComponent,
         TaNoteComponent,
+        ProgresBarComponent,
 
         //pipes
         formatDatePipe,
@@ -55,6 +59,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     // Page
     @Input() page: string;
+    @Input() selectedTab: string;
     // For Front And back of the cards
     @Input() deadline: boolean;
 
@@ -80,7 +85,9 @@ export class TruckassistCardsComponent implements OnInit {
     public isCheckboxCheckedArray: number[] = [];
     constructor(
         private detailsDataService: DetailsDataService,
-        private formatCurrency: formatCurrency
+        private formatCurrency: formatCurrency,
+        private formatDate: formatDatePipe,
+        private TaThousandSeparatorPipe: TaThousandSeparatorPipe
     ) {}
 
     //---------------------------------------ON INIT---------------------------------------
@@ -178,19 +185,28 @@ export class TruckassistCardsComponent implements OnInit {
 
     //Remove quotes from string to convert into endpoint
     public getValueByStringPath(obj: CardDetails, path: string): string {
-        if (path === 'no-endpoint') return 'No Endpoint';
+        if (path === ConstantStringTableComponentsEnum.NO_ENDPOINT)
+            return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
 
         // Value is obj key
         const value = obj[path];
 
         //Check if value is null return /
-        if (value === null) return '/';
+        if (value === null) return ConstantStringTableComponentsEnum.SLASH;
 
-        // Transform number to descimal with $
-        if (path === 'availableCredit' || path === 'revenue') {
-            return this.formatCurrency.transform(value);
-        } else {
-            return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+        // Transform number to descimal with $ and transform date
+        switch (path) {
+            case ConstantStringTableComponentsEnum.AVAILABLE_CREDIT:
+            case ConstantStringTableComponentsEnum.REVENUE:
+                return this.formatCurrency.transform(value);
+            case ConstantStringTableComponentsEnum.HIRED:
+                return this.formatDate.transform(value);
+            case ConstantStringTableComponentsEnum.MILEAGE:
+                return this.TaThousandSeparatorPipe.transform(value);
+            default:
+                return path
+                    .split('.')
+                    .reduce((acc, part) => acc && acc[part], obj);
         }
     }
 
