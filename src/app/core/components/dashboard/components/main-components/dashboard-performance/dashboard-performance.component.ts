@@ -119,7 +119,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.getOverallCompanyDuration();
 
-        this.getPerformanceListData();
+        setTimeout(() => {
+            this.getPerformanceListData();
+        }, 50);
     }
 
     private createForm(): void {
