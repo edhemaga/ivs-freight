@@ -1,29 +1,58 @@
-import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { TrailerListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+
+// Components
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';
-import { TrailerActiveState } from '../state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
-import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
-import { TrailerTService } from '../state/trailer.service';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from '../../../utils/methods.globals';
-import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { DatePipe } from '@angular/common';
+
+// Services
+import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TrailerTService } from '../state/trailer.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+// Modals
+import { TrailerListResponse, TrailerResponse } from 'appcoretruckassist';
+import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
+import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    DataForCardsAndTables,
+    TableColumnConfig,
+} from '../../shared/model/table-components/all-tables.modal';
+import {
+    BodyResponseTrailer,
+    MappedTrailer,
+    TraillerData,
+    backFilterQueryInterface,
+} from '../trailer.modal';
+import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+
+// Store
+import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';
+import { TrailerActiveState } from '../state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
+import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-inactive.store';
+
+// Pipes
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { DatePipe } from '@angular/common';
+
+// Animations
+import {
+    closeAnimationAction,
+    tableSearch,
+} from '../../../utils/methods.globals';
+
+// Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { DisplayTrailerConfiguration } from '../trailer-card-data';
+
 @Component({
     selector: 'app-trailer-table',
     templateUrl: './trailer-table.component.html',
@@ -33,17 +62,18 @@ import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-in
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
-    resizeObserver: ResizeObserver;
-    inactiveTabClicked: boolean = false;
+    public tableOptions: TableOptionsInterface;
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: TableColumnConfig[] = [];
+    public selectedTab: ConstantStringTableComponentsEnum | string =
+        ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public resizeObserver: ResizeObserver;
+    public inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
-    backFilterQuery = {
+    public backFilterQuery: backFilterQueryInterface = {
         active: 1,
         pageIndex: 1,
         pageSize: 25,
@@ -54,6 +84,23 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchThree: undefined,
     };
 
+    //Data to display from model Truck Active
+    public displayRowsFrontActive: CardRows[] =
+        DisplayTrailerConfiguration.displayRowsFrontActive;
+    public displayRowsBackActive: CardRows[] =
+        DisplayTrailerConfiguration.displayRowsBackActive;
+
+    public displayRowsFrontInactive: CardRows[] =
+        DisplayTrailerConfiguration.displayRowsFrontInactive;
+    public displayRowsBackInactive: CardRows[] =
+        DisplayTrailerConfiguration.displayRowsBackInactive;
+
+    public cardTitle: string = DisplayTrailerConfiguration.cardTitle;
+    public page: string = DisplayTrailerConfiguration.page;
+    public rows: number = DisplayTrailerConfiguration.rows;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -67,27 +114,50 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        console.log(this.viewData);
+
         this.sendTrailerData();
 
-        // Confirmation Subscribe
+        this.confirmationSubscribe();
+
+        this.resetColumns();
+
+        this.resize();
+
+        this.toggleColumns();
+
+        this.trailerActions();
+
+        this.deleteSelectedRows();
+
+        this.search();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
                     switch (res.type) {
-                        case 'delete': {
+                        case ConstantStringTableComponentsEnum.DELETE: {
                             this.deleteTrailerById(res.id);
                             break;
                         }
-                        case 'activate': {
+                        case ConstantStringTableComponentsEnum.ACTIVATE: {
                             this.changeTrailerStatus(res.id);
                             break;
                         }
-                        case 'deactivate': {
+                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
                             this.changeTrailerStatus(res.id);
                             break;
                         }
-                        case 'multiple delete': {
+                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteTrailers(res.array);
                             break;
                         }
@@ -97,8 +167,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 },
             });
+    }
 
-        // Reset Columns
+    private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
@@ -106,51 +177,55 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sendTrailerData();
                 }
             });
+    }
 
-        // Resize
+    private resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
                 if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
+                    this.columns = this.columns.map((col) => {
                         if (
-                            c.title ===
+                            col.title ===
                             response.columns[response.event.index].title
                         ) {
-                            c.width = response.event.width;
+                            col.width = response.event.width;
                         }
 
-                        return c;
+                        return col;
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
                 if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
+                    this.columns = this.columns.map((col) => {
+                        if (col.field === response.column.field) {
+                            col.hidden = response.column.hidden;
                         }
 
-                        return c;
+                        return col;
                     });
                 }
             });
+    }
 
-        // Trailer Actions
+    private trailerActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 // Add Trailer ACtive
-                if (res.animation === 'add') {
+                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
                     this.viewData.push(this.mapTrailerData(res.data));
 
                     this.viewData = this.viewData.map((trailer: any) => {
                         if (trailer.id === res.id) {
-                            trailer.actionAnimation = 'add';
+                            trailer.actionAnimation =
+                                ConstantStringTableComponentsEnum.ADD;
                         }
 
                         return trailer;
@@ -169,17 +244,21 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // Add Trailer Inactive
                 else if (
-                    res.animation === 'add' &&
-                    this.selectedTab === 'inactive'
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
+                    this.selectedTab ===
+                        ConstantStringTableComponentsEnum.INACTIVE
                 ) {
                     this.updateDataCount();
                 }
                 // Update Trailer
-                else if (res.animation === 'update') {
+                else if (
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
+                ) {
                     this.viewData = this.viewData.map((trailer: any) => {
                         if (trailer.id === res.id) {
                             trailer = this.mapTrailerData(res.data);
-                            trailer.actionAnimation = 'update';
+                            trailer.actionAnimation =
+                                ConstantStringTableComponentsEnum.UPDATE;
                         }
 
                         return trailer;
@@ -195,16 +274,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 1000);
                 }
                 // Update Trailer Status
-                else if (res.animation === 'update-status') {
+                else if (
+                    res?.animation ===
+                    ConstantStringTableComponentsEnum.UPDATE_STATUS
+                ) {
                     let trailerIndex: number;
 
                     this.viewData = this.viewData.map(
                         (trailer: any, index: number) => {
                             if (trailer.id === res.id) {
                                 trailer.actionAnimation =
-                                    this.selectedTab === 'active'
-                                        ? 'deactivate'
-                                        : 'activate';
+                                    this.selectedTab ===
+                                    ConstantStringTableComponentsEnum.ACTIVE
+                                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                                        : ConstantStringTableComponentsEnum.ACTIVATE;
                                 trailerIndex = index;
                             }
 
@@ -225,8 +308,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 900);
                 }
             });
+    }
 
-        // Delete Selected Rows
+    private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
@@ -243,34 +327,45 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: ConstantStringTableComponentsEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: 'trailer',
-                            type: 'multiple delete',
+                            template:
+                                ConstantStringTableComponentsEnum.TRAILER_2,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
                             svg: true,
                         }
                     );
                 }
             });
+    }
 
-        // Search
+    private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab === 'active' ? 1 : 0;
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                            ? 1
+                            : 0;
 
                     this.backFilterQuery.pageIndex = 1;
 
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (searchEvent.action === 'api') {
+                        if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.API
+                        ) {
                             this.trailerBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
+                        } else if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.STORE
+                        ) {
                             this.sendTrailerData();
                         }
                     }
@@ -278,13 +373,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
-    observTableContainer() {
+    private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -300,59 +389,85 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ConstantStringTableComponentsEnum.LIST,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.LIST,
+                    },
+                    {
+                        name: ConstantStringTableComponentsEnum.CARD,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.CARD,
+                    },
                 ],
             },
         };
     }
 
-    sendTrailerData() {
+    private sendTrailerData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(`Trailer-table-view`)
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.TRAILER_TAB_VIEW
+            )
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
 
         const trailerCount = JSON.parse(
-            localStorage.getItem('trailerTableCount')
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.TRAILER_TABLE_COUNT
+            )
         );
 
         const truckActiveData =
-            this.selectedTab === 'active' ? this.getTabData('active') : [];
+            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+                : [];
 
         const truckInactiveData =
-            this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
+                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+                : [];
 
         this.tableData = [
             {
-                title: 'Active',
-                field: 'active',
+                title: ConstantStringTableComponentsEnum.ACTIVE_2,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: trailerCount.active,
                 data: truckActiveData,
                 extended: false,
-                gridNameTitle: 'Trailer',
-                stateName: 'trailers',
-                tableConfiguration: 'TRAILER',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('TRAILER'),
+                gridNameTitle: ConstantStringTableComponentsEnum.TRAILER_3,
+                stateName: ConstantStringTableComponentsEnum.TRAILERS,
+                tableConfiguration: ConstantStringTableComponentsEnum.TRAILER_4,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.TRAILER_4
+                ),
             },
             {
-                title: 'Inactive',
-                field: 'inactive',
+                title: ConstantStringTableComponentsEnum.INACTIVE_2,
+                field: ConstantStringTableComponentsEnum.INACTIVE,
                 length: trailerCount.inactive,
                 data: truckInactiveData,
                 extended: false,
-                gridNameTitle: 'Trailer',
-                stateName: 'trailers',
-                tableConfiguration: 'TRAILER',
-                isActive: this.selectedTab === 'inactive',
-                gridColumns: this.getGridColumns('TRAILER'),
+                gridNameTitle: ConstantStringTableComponentsEnum.TRAILER_3,
+                stateName: ConstantStringTableComponentsEnum.TRAILERS,
+                tableConfiguration: ConstantStringTableComponentsEnum.TRAILER_4,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.TRAILER_4
+                ),
             },
         ];
 
@@ -361,7 +476,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setTrailerData(td);
     }
 
-    private getGridColumns(configType: string): any[] {
+    private getGridColumns(configType: string): string[] {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -371,7 +486,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : getTrailerColumnDefinition();
     }
 
-    setTrailerData(td: any) {
+    private setTrailerData(td: DataForCardsAndTables): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -380,12 +495,19 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTrailerData(data);
             });
+
+            // Set data for cards based on tab active
+            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                ? ((this.sendDataToCardsFront = this.displayRowsFrontActive),
+                  (this.sendDataToCardsBack = this.displayRowsBackActive))
+                : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
+                  (this.sendDataToCardsBack = this.displayRowsBackInactive));
         } else {
             this.viewData = [];
         }
     }
 
-    mapTrailerData(data: any) {
+    private mapTrailerData(data: TraillerData): MappedTrailer {
         return {
             ...data,
             isSelected: false,
@@ -393,41 +515,66 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
-                    : '',
-                boldText: data?.vin ? data.vin.substr(data.vin.length - 6) : '',
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                boldText: data?.vin
+                    ? data.vin.substr(data.vin.length - 6)
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             },
             tableTrailerTypeClass: data.trailerType.logoName.replace(
-                '.svg',
-                ''
+                ConstantStringTableComponentsEnum.SVG,
+                ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
             ),
-            tableMake: data?.trailerMake?.name ? data.trailerMake.name : '',
-            tableModel: data?.model ? data?.model : '',
-            tableColor: data?.color?.code ? data.color.code : '',
-            colorName: data?.color?.name ? data.color.name : '',
+            tableMake: data?.trailerMake?.name
+                ? data.trailerMake.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableModel: data?.model
+                ? data?.model
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableColor: data?.color?.code
+                ? data.color.code
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            colorName: data?.color?.name
+                ? data.color.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tabelLength: data?.trailerLength?.name
                 ? data.trailerLength.name
-                : '',
-            tableDriver: 'NA',
-            tableTruck: 'NA',
-            tableTruckType: 'NA',
-            tableOwner: data?.owner?.name ? data.owner.name : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriver: ConstantStringTableComponentsEnum.NA,
+            tableTruck: ConstantStringTableComponentsEnum.NA,
+            tableTruckType: ConstantStringTableComponentsEnum.NA,
+            tableOwner: data?.owner?.name
+                ? data.owner.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableWeightEmpty: data?.emptyWeight
-                ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
-                : '',
-            tableWeightVolume: 'NA',
-            tableAxle: data?.axles ? data?.axles : '',
-            tableSuspension: data?.suspension?.name ? data.suspension.name : '',
-            tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            tableReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
-            tableDoorType: data?.doorType?.name ? data.doorType.name : '',
-            tableInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+                ? this.thousandSeparator.transform(data.emptyWeight) +
+                  ConstantStringTableComponentsEnum.POUNDS_2
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableWeightVolume: ConstantStringTableComponentsEnum.NA,
+            tableAxle: data?.axles
+                ? data?.axles
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableSuspension: data?.suspension?.name
+                ? data.suspension.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTireSize: data?.tireSize?.name
+                ? data.tireSize.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableReeferUnit: data?.reeferUnit?.name
+                ? data.reeferUnit.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDoorType: data?.doorType?.name
+                ? data.doorType.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableInsPolicy: data?.insurancePolicy
+                ? data.insurancePolicy
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
-                : '',
-            tableLicencePlateDetailST: 'NA',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailST: ConstantStringTableComponentsEnum.NA,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays
@@ -444,8 +591,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : null,
             },
             tableFHWAInspectionTerm: data?.fhwaExp
-                ? data?.fhwaExp + ' months'
-                : '',
+                ? data?.fhwaExp + ConstantStringTableComponentsEnum.MONTHS
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableFHWAInspectionExpiration: {
                 expirationDays: data?.inspectionExpirationDays
                     ? data.inspectionExpirationDays
@@ -461,138 +608,155 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber: 'NA',
-            tableTitleST: 'NA',
-            tableTitlePurchase: 'NA',
-            tableTitleIssued: 'NA',
+            tableTitleNumber: ConstantStringTableComponentsEnum.NA,
+            tableTitleST: ConstantStringTableComponentsEnum.NA,
+            tableTitlePurchase: ConstantStringTableComponentsEnum.NA,
+            tableTitleIssued: ConstantStringTableComponentsEnum.NA,
             tablePurchaseDate: data.purchaseDate
-                ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
-                : '',
+                ? this.datePipe.transform(
+                      data.purchaseDate,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tablePurchasePrice: data?.purchasePrice
-                ? '$' + this.thousandSeparator.transform(data.purchasePrice)
-                : '',
-            tableTerminated: 'NA',
+                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(data.purchasePrice)
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTerminated: ConstantStringTableComponentsEnum.NA,
             tableAdded: data.createdAt
-                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
-                : '',
+                ? this.datePipe.transform(
+                      data.createdAt,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
-                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-                : '',
+                ? this.datePipe.transform(
+                      data.updatedAt,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownTrailerContent(data),
             },
         };
     }
 
-    getDropdownTrailerContent(data: any) {
+    public getDropdownTrailerContent(): DropdownItem[] {
         return [
             {
-                title: 'Edit',
-                name: 'edit-trailer',
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT_TRAILER,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
             },
             {
-                title: 'View Details',
-                name: 'view-details',
+                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
+                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Add New',
-                name: 'add-new',
+                title: ConstantStringTableComponentsEnum.ADD_NEW_2,
+                name: ConstantStringTableComponentsEnum.ADD_NEW,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: 'Add Registration',
-                        name: 'add-registration',
+                        title: ConstantStringTableComponentsEnum.ADD_REGISTRATION_2,
+                        name: ConstantStringTableComponentsEnum.ADD_REGISTRATION,
                     },
 
                     {
-                        title: 'Add Inspection',
-                        name: 'add-inspection',
+                        title: ConstantStringTableComponentsEnum.ADD_INSPECTION_2,
+                        name: ConstantStringTableComponentsEnum.ADD_INSPECTION,
                     },
                 ],
                 hasBorder: true,
             },
             {
-                title: 'Share',
-                name: 'share',
+                title: ConstantStringTableComponentsEnum.SHARE_2,
+                name: ConstantStringTableComponentsEnum.SHARE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Print',
-                name: 'print',
+                title: ConstantStringTableComponentsEnum.PRINT_2,
+                name: ConstantStringTableComponentsEnum.PRINT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
 
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 hasBorder: true,
             },
             {
                 title:
-                    this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
-                name: 'activate-item',
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+                        : ConstantStringTableComponentsEnum.ACTIVATE_2,
+                name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 svgClass:
-                    this.selectedTab === 'active' ? 'deactivate' : 'activate',
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Delete',
-                name: 'delete-item',
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'delete',
+                svgClass: ConstantStringTableComponentsEnum.DELETE,
             },
         ];
     }
 
-    updateDataCount() {
+    private updateDataCount(): void {
         const truckCount = JSON.parse(
-            localStorage.getItem('trailerTableCount')
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.TRAILER_TABLE_COUNT
+            )
         );
 
         this.tableData[0].length = truckCount.active;
@@ -606,12 +770,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableData = [...updatedTableData];
     }
 
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
+    private getTabData(dataType: string): TrailerActiveState[] {
+        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
             this.trailerActive = this.trailerActiveQuery.getAll();
 
             return this.trailerActive?.length ? this.trailerActive : [];
-        } else if (dataType === 'inactive') {
+        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.trailerInactive = this.trailerInactiveQuery.getAll();
@@ -620,7 +784,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    trailerBackFilter(
+    private trailerBackFilter(
         filter: {
             active: number;
             pageIndex: number;
@@ -632,7 +796,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchThree: string | undefined;
         },
         isShowMore?: boolean
-    ) {
+    ): void {
         this.trailerService
             .getTrailers(
                 filter.active,
@@ -664,25 +828,34 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    onToolBarAction(event: any) {
+    public onToolBarAction(event: ToolbarActions): void {
         // Open Modal
-        if (event.action === 'open-modal') {
+        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
             this.modalService.openModal(TrailerModalComponent, {
-                size: 'small',
+                size: ConstantStringTableComponentsEnum.SMALL,
             });
         }
         // Select Tab
-        else if (event.action === 'tab-selected') {
+        else if (
+            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
+        ) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+            this.backFilterQuery.active =
+                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                    ? 1
+                    : 0;
 
-            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+            if (
+                this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE &&
+                !this.inactiveTabClicked
+            ) {
                 this.trailerService
                     .getTrailers(0, 1, 25)
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe((trailerPagination: TrailerListResponse) => {
+                    .subscribe((trailerPagination) => {
                         this.trailerInactiveStore.set(
                             trailerPagination.pagination.data
                         );
@@ -693,16 +866,22 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
         // View Mode
-        else if (event.action === 'view-mode') {
+        else if (event.action === ConstantStringTableComponentsEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
         }
     }
 
-    onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
+    public onTableHeadActions(event: {
+        action: string;
+        direction: string;
+    }): void {
+        if (event.action === ConstantStringTableComponentsEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? 1
+                        : 0;
                 this.backFilterQuery.sort = event.direction;
                 this.backFilterQuery.pageIndex = 1;
 
@@ -713,7 +892,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: any) {
+    public onTableBodyActions(event: BodyResponseTrailer): void {
         const mappedEvent = {
             ...event,
             data: {
@@ -724,73 +903,78 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         switch (event.type) {
-            case 'show-more': {
+            case ConstantStringTableComponentsEnum.SHOW_MORE: {
                 this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? 1
+                        : 0;
                 this.backFilterQuery.pageIndex++;
 
                 this.trailerBackFilter(this.backFilterQuery, true);
                 break;
             }
-            case 'edit-trailer': {
+            case ConstantStringTableComponentsEnum.EDIT_TRAILER: {
                 this.modalService.openModal(
                     TrailerModalComponent,
-                    { size: 'small' },
+                    { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,
-                        type: 'edit',
+                        type: ConstantStringTableComponentsEnum.EDIT,
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case 'add-registration': {
+            case ConstantStringTableComponentsEnum.ADD_REGISTRATION: {
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
-                    { size: 'small' },
+                    { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,
-                        modal: 'trailer',
+                        modal: ConstantStringTableComponentsEnum.TRAILER_2,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case 'add-inspection': {
+            case ConstantStringTableComponentsEnum.ADD_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
-                    { size: 'small' },
+                    { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,
-                        modal: 'trailer',
+                        modal: ConstantStringTableComponentsEnum.TRAILER_2,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case 'activate-item': {
+            case ConstantStringTableComponentsEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'trailer',
+                        template: ConstantStringTableComponentsEnum.TRAILER_2,
                         type:
-                            event.data.status === 1 ? 'deactivate' : 'activate',
+                            event.data.status === 1
+                                ? ConstantStringTableComponentsEnum.DEACTIVATE
+                                : ConstantStringTableComponentsEnum.ACTIVATE,
                         svg: true,
                     }
                 );
                 break;
             }
-            case 'delete-item': {
+            case ConstantStringTableComponentsEnum.DELETE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'trailer',
-                        type: 'delete',
+                        template: ConstantStringTableComponentsEnum.TRAILER_2,
+                        type: ConstantStringTableComponentsEnum.DELETE,
                         svg: true,
                     }
                 );
@@ -802,22 +986,23 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private changeTrailerStatus(id: number) {
+    private changeTrailerStatus(id: number): void {
         this.trailerService
             .changeTrailerStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    private deleteTrailerById(id: number) {
+    private deleteTrailerById(id: number): void {
         this.trailerService
             .deleteTrailerById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.viewData = this.viewData.map((trailer: any) => {
+                    this.viewData = this.viewData.map((trailer) => {
                         if (trailer.id === id) {
-                            trailer.actionAnimation = 'delete';
+                            trailer.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE;
                         }
 
                         return trailer;
@@ -838,27 +1023,35 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private multipleDeleteTrailers(response: any[]) {
+    private multipleDeleteTrailers(response): void {
         this.trailerService
             .deleteTrailerList(response)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                let trailerNumber = '';
-                let trailersText = 'Trailer ';
+                let trailerNumber: string =
+                    ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+                let trailersText: string =
+                    ConstantStringTableComponentsEnum.TRAILER;
 
-                this.viewData = this.viewData.map((trailer: any) => {
-                    response.map((id: any) => {
+                this.viewData = this.viewData.map((trailer) => {
+                    console.log(trailer);
+                    response.map((id) => {
                         if (trailer.id === id) {
-                            trailer.actionAnimation = 'delete-multiple';
+                            trailer.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
 
-                            if (trailerNumber == '') {
+                            if (
+                                trailerNumber ==
+                                ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                            ) {
                                 trailerNumber = trailer.trailerNumber;
                             } else {
                                 trailerNumber =
                                     trailerNumber +
-                                    ', ' +
+                                    ConstantStringTableComponentsEnum.COMA +
                                     trailer.trailerNumber;
-                                trailersText = 'Trailers ';
+                                trailersText =
+                                    ConstantStringTableComponentsEnum.TRAILER;
                             }
                         }
                     });
@@ -868,7 +1061,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
 
-                trailerNumber = '';
+                trailerNumber =
+                    ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
                 const inetval = setInterval(() => {
                     this.viewData = closeAnimationAction(true, this.viewData);
 

@@ -39,7 +39,7 @@ import {
     ShipperListResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
 import {
     BodyResponse,
     UpdateRating,
@@ -109,7 +109,7 @@ export class CustomerTableComponent
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
-    public tableOptions: any = {};
+    public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];

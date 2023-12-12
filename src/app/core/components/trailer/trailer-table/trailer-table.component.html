@@ -7,7 +7,7 @@
         [columns]="columns"
     ></app-truckassist-table-toolbar>
 
-    <div *ngIf="activeViewMode == 'List'">
+    <ng-container *ngIf="activeViewMode === 'List'">
         <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -24,5 +24,41 @@
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
         ></app-truckassist-table-body>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-truckassist-cards
+                (bodyActions)="onTableBodyActions($event)"
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [displayRowsFront]="sendDataToCardsFront"
+                [displayRowsBack]="sendDataToCardsBack"
+                [page]="page"
+            ></app-truckassist-cards>
+            <!-- Show More -->
+
+            <!-- <ng-container *ngIf="viewData.length">
+                <div
+                    class="show-more-container d-flex align-items-center justify-content-between"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                >
+                    <div class="showing ta-font-semi-bold">
+                        {{ viewData.length }} OF
+                        {{ activeTableData.length }}
+                    </div>
+                    <ng-container
+                        *ngIf="viewData.length < activeTableData.length"
+                    >
+                        <div
+                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            (click)="onShowMore()"
+                        >
+                            SHOW MORE
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container> -->
+        </div>
+    </ng-container>
 </div>

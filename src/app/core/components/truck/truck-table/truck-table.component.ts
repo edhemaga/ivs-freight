@@ -38,7 +38,7 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
 import { DisplayTruckConfiguration } from '../truck-card-data';
 
 // Pipes
@@ -56,7 +56,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public tableOptions: any = {};
+    public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -504,8 +504,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setTruckData(td);
     }
 
-    // TODO any type
-    private getGridColumns(configType: string): any[] {
+    private getGridColumns(configType: string): string[] {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );

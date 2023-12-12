@@ -54,7 +54,7 @@ export class TruckassistCardsComponent implements OnInit {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     // All data
-    @Input() viewData: CardDetails;
+    @Input() viewData: CardDetails[];
     @Input() tableData: LoadTableData[];
 
     // Page
@@ -192,7 +192,7 @@ export class TruckassistCardsComponent implements OnInit {
         const value = obj[path];
 
         //Check if value is null return /
-        if (value === null) return ConstantStringTableComponentsEnum.SLASH;
+        if (!obj || !path) return ConstantStringTableComponentsEnum.SLASH;
 
         // Transform number to descimal with $ and transform date
         switch (path) {

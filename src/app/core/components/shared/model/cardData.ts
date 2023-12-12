@@ -1,3 +1,5 @@
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
 export interface CardHeader {
     checkbox: boolean;
     cardTitleBeforeStyle: string;
@@ -58,4 +60,23 @@ export interface Search {
     chip: string;
     search: string;
     SearchType: string;
+}
+
+interface ToolbarAction {
+    name: ConstantStringTableComponentsEnum;
+    active: boolean;
+}
+
+export interface TableOptionsInterface {
+    toolbarActions: {
+        showMoneyFilter?: boolean;
+        showLocationFilter?: boolean;
+        showStateFilter?: boolean;
+        hideSearch?: boolean;
+        viewModeOptions: ToolbarAction[];
+        showTimeFilter?: boolean;
+        showDispatcherFilter?: boolean;
+        showStatusFilter?: boolean;
+        showLtlFilter?: boolean;
+    };
 }
