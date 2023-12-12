@@ -1,46 +1,85 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+// Components
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
-import { DatePipe } from '@angular/common';
-import { DriverTService } from '../state/driver.service';
-import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 
+// Services
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DriverTService } from '../state/driver.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ApplicantTService } from '../state/applicant.service';
+
+// Queries
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
+import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
+
+// Store
+import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
 } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { ApplicantShortResponse, DriverListResponse } from 'appcoretruckassist';
+import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
 
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
+// Pipes
+import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
+
+// Modals
+import {
+    AvatarColors,
+    FilterOptionApplicant,
+    FilterOptionDriver,
+    OnTableBodyActionsModal,
+    OnTableHeadActionsModal,
+    MappedApplicantData,
+} from '../../shared/model/table-components/driver-modal';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+import {
+    ApplicantShortResponse,
+    DriverListResponse,
+    DriverResponse,
+} from 'appcoretruckassist';
+import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
+import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
+import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
+
+// Globals
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
-import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
-import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
-import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { ApplicantTService } from '../state/applicant.service';
-import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
+import { CardRows } from '../../shared/model/cardData';
+import { DisplayDriverConfiguration } from '../driver-card-data';
+import {
+    DropdownItem,
+    GridColumn,
+    ToolbarActions,
+} from '../../shared/model/cardTableData';
+
+// Enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
+// Constants
+import {
+    TableDriverColorsConstants,
+    TableDropdownDriverComponentConstants,
+} from 'src/app/core/utils/constants/table-components.constants';
+
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -49,20 +88,20 @@ import { ApplicantTableStore } from '../state/applicant-state/applicant-table.st
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
-    driversActive: DriversActiveState[] = [];
-    driversInactive: DriversInactiveState[] = [];
-    applicantData: ApplicantShortResponse[] = [];
-    loadingPage: boolean = true;
-    inactiveTabClicked: boolean = false;
-    applicantTabActive: boolean = false;
-    driverBackFilterQuery = {
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: GridColumn[] = [];
+    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public driversActive: DriversActiveState[] = [];
+    public driversInactive: DriversInactiveState[] = [];
+    public applicantData: ApplicantShortResponse[] = [];
+    public loadingPage: boolean = true;
+    public inactiveTabClicked: boolean = false;
+    public applicantTabActive: boolean = false;
+    public activeTableData: DataForCardsAndTables;
+    public driverBackFilterQuery: FilterOptionDriver = {
         active: 1,
         long: undefined,
         lat: undefined,
@@ -75,7 +114,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchTwo: undefined,
         searchThree: undefined,
     };
-    applicantBackFilterQuery = {
+    public applicantBackFilterQuery: FilterOptionApplicant = {
         applicantSpecParamsArchived: undefined,
         applicantSpecParamsHired: undefined,
         applicantSpecParamsFavourite: undefined,
@@ -87,53 +126,101 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchTwo: undefined,
         searchThree: undefined,
     };
-    resizeObserver: ResizeObserver;
-    mapingIndex: number = 0;
+    public resizeObserver: ResizeObserver;
+    public mapingIndex: number = 0;
+
+    //Data to display from model Active
+    public displayRowsFront: CardRows[] =
+        DisplayDriverConfiguration.displayRowsActiveFront;
+    public displayRowsBack: CardRows[] =
+        DisplayDriverConfiguration.displayRowsActiveBack;
+
+    //Title
+    public cardTitle: string = DisplayDriverConfiguration.cardTitle;
+
+    // Page
+    public page: string = DisplayDriverConfiguration.page;
+
+    //  Number of rows in card
+    public rows: number = DisplayDriverConfiguration.rows;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
 
     constructor(
         private applicantService: ApplicantTService,
         private modalService: ModalService,
+        private tableService: TruckassistTableService,
+        private driverTService: DriverTService,
+        private imageBase64Service: ImageBase64Service,
+        private confirmationService: ConfirmationService,
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private applicantQuery: ApplicantTableQuery,
-        private tableService: TruckassistTableService,
         public datePipe: DatePipe,
-        private driverTService: DriverTService,
-        private notificationService: NotificationService,
         private nameInitialsPipe: NameInitialsPipe,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private imageBase64Service: ImageBase64Service,
-        private confirmationService: ConfirmationService,
         private driversInactiveStore: DriversInactiveStore,
         private applicantStore: ApplicantTableStore
     ) {}
 
+    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.modalTestInitialization();
 
         this.sendDriverData();
 
-        // Confirmation Subscribe
+        this.confiramtionSubscribe();
+
+        this.getSelectedTabTableData();
+
+        this.resetColumns();
+
+        this.resize();
+
+        this.toogleColumns();
+
+        this.search();
+
+        this.deleteSelectedRow();
+
+        this.driverActions();
+
+        this.loadingPage = false;
+    }
+
+    // ---------------------------- ngAfterViewInit ------------------------------
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observeTableContainer();
+        }, 10);
+    }
+
+    // Confirmation Subscribe
+    private confiramtionSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'driver') {
+                        case ConstantStringTableComponentsEnum.DELETE: {
+                            if (
+                                res.template ===
+                                ConstantStringTableComponentsEnum.DRIVER
+                            ) {
                                 this.deleteDriverById(res.id);
                             }
                             break;
                         }
-                        case 'activate': {
+                        case ConstantStringTableComponentsEnum.ACTIVATE: {
                             this.changeDriverStatus(res.id);
                             break;
                         }
-                        case 'deactivate': {
+                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
                             this.changeDriverStatus(res.id);
                             break;
                         }
-                        case 'multiple delete': {
+                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteDrivers(res.array);
                             break;
                         }
@@ -143,85 +230,106 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 },
             });
+    }
 
-        // Reset Columns
+    // Reset Columns
+    private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
+            .subscribe((response) => {
                 if (response && !this.loadingPage) {
                     this.sendDriverData();
                 }
             });
+    }
 
-        // Resize
+    // Resize
+    private resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
+                    this.columns = this.columns.map((col) => {
                         if (
-                            c.title ===
+                            col.title ===
                             response.columns[response.event.index].title
                         ) {
-                            c.width = response.event.width;
+                            col.width = response.event.width;
                         }
 
-                        return c;
+                        return col;
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    // Toogle Columns
+    private toogleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
+                    this.columns = this.columns.map((col) => {
+                        if (col.field === response.column.field) {
+                            col.hidden = response.column.hidden;
                         }
 
-                        return c;
+                        return col;
                     });
                 }
             });
+    }
 
-        // Search
+    // Search
+    private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.mapingIndex = 0;
 
                     this.driverBackFilterQuery.active =
-                        this.selectedTab === 'active' ? 1 : 0;
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                            ? 1
+                            : 0;
                     this.driverBackFilterQuery.pageIndex = 1;
 
                     this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
 
                     const searchEvent = tableSearch(
                         res,
-                        this.selectedTab === 'applicants'
+                        this.selectedTab ===
+                            ConstantStringTableComponentsEnum.APPLICANTS
                             ? this.applicantBackFilterQuery
                             : this.driverBackFilterQuery
                     );
 
                     if (searchEvent) {
-                        if (searchEvent.action === 'api') {
-                            this.selectedTab === 'applicants'
+                        if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.API
+                        ) {
+                            this.selectedTab ===
+                            ConstantStringTableComponentsEnum.APPLICANTS
                                 ? this.applicantBackFilter(searchEvent.query)
                                 : this.driverBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
+                        } else if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.STORE
+                        ) {
                             this.sendDriverData();
                         }
                     }
                 }
             });
+    }
 
-        // Delete Selected Rows
+    // Delete Selected Rows
+    private deleteSelectedRow(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
                     let mappedRes = response.map((item) => {
                         return {
@@ -234,29 +342,35 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: ConstantStringTableComponentsEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: 'driver',
-                            type: 'multiple delete',
+                            template: ConstantStringTableComponentsEnum.DRIVER,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
                             image: true,
                         }
                     );
                 }
             });
+    }
 
-        // Driver Actions
+    // Driver Actions
+    private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 // On Add Driver Active
-                if (res.animation === 'add' && this.selectedTab === 'active') {
+                if (
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
+                    this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                ) {
                     this.viewData.push(this.mapDriverData(res.data));
-
-                    this.viewData = this.viewData.map((driver: any) => {
+                    this.viewData = this.viewData.map((driver) => {
                         if (driver.id === res.id) {
-                            driver.actionAnimation = 'add';
+                            driver.actionAnimation =
+                                ConstantStringTableComponentsEnum.ADD;
                         }
 
                         return driver;
@@ -275,19 +389,22 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Add Driver Inactive
                 else if (
-                    res.animation === 'add' &&
-                    this.selectedTab === 'inactive'
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
+                    this.selectedTab ===
+                        ConstantStringTableComponentsEnum.INACTIVE
                 ) {
                     this.updateDataCount();
                 }
                 // On Update Driver
-                else if (res.animation === 'update') {
+                else if (
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
+                ) {
                     const updatedDriver = this.mapDriverData(res.data);
-
-                    this.viewData = this.viewData.map((driver: any) => {
+                    this.viewData = this.viewData.map((driver) => {
                         if (driver.id === res.id) {
                             driver = updatedDriver;
-                            driver.actionAnimation = 'update';
+                            driver.actionAnimation =
+                                ConstantStringTableComponentsEnum.UPDATE;
                         }
 
                         return driver;
@@ -303,22 +420,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 1000);
                 }
                 // On Update Driver Status
-                else if (res.animation === 'update-status') {
+                else if (
+                    res?.animation ===
+                    ConstantStringTableComponentsEnum.UPDATE_STATUS
+                ) {
                     let driverIndex: number;
 
-                    this.viewData = this.viewData.map(
-                        (driver: any, index: number) => {
-                            if (driver.id === res.id) {
-                                driver.actionAnimation =
-                                    this.selectedTab === 'active'
-                                        ? 'deactivate'
-                                        : 'activate';
-                                driverIndex = index;
-                            }
-
-                            return driver;
+                    this.viewData = this.viewData.map((driver, index) => {
+                        if (driver.id === res.id) {
+                            driver.actionAnimation =
+                                this.selectedTab ===
+                                ConstantStringTableComponentsEnum.ACTIVE
+                                    ? ConstantStringTableComponentsEnum.DEACTIVATE
+                                    : ConstantStringTableComponentsEnum.ACTIVATE;
+                            driverIndex = index;
                         }
-                    );
+
+                        return driver;
+                    });
 
                     this.updateDataCount();
 
@@ -333,19 +452,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 900);
                 }
                 // On Delete Driver
-                else if (res.animation === 'delete') {
+                else if (
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
+                ) {
                     let driverIndex: number;
 
-                    this.viewData = this.viewData.map(
-                        (driver: any, index: number) => {
-                            if (driver.id === res.id) {
-                                driver.actionAnimation = 'delete';
-                                driverIndex = index;
-                            }
-
-                            return driver;
+                    this.viewData = this.viewData.map((driver, index) => {
+                        if (driver.id === res.id) {
+                            driver.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE;
+                            driverIndex = index;
                         }
-                    );
+
+                        return driver;
+                    });
 
                     this.updateDataCount();
 
@@ -360,17 +480,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 900);
                 }
             });
-
-        this.loadingPage = false;
     }
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
-    observTableContainer() {
+    private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -379,24 +491,46 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(
+                ConstantStringTableComponentsEnum.TABLE_CONTAINER
+            )
+        );
     }
 
-    initTableOptions(): void {
+    private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showLocationFilter: this.selectedTab !== 'applicants',
-                showArhiveFilter: this.selectedTab === 'applicants',
+                showLocationFilter:
+                    this.selectedTab !==
+                    ConstantStringTableComponentsEnum.APPLICANTS,
+                showArhiveFilter:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ConstantStringTableComponentsEnum.LIST,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.LIST,
+                    },
+                    {
+                        name: ConstantStringTableComponentsEnum.CARD,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.CARD,
+                    },
                 ],
             },
         };
     }
 
-    sendDriverData() {
-        const tableView = JSON.parse(localStorage.getItem(`Driver-table-view`));
+    private sendDriverData(): void {
+        const tableView = JSON.parse(
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.DRIVER_TABLE_VIEW
+            )
+        );
 
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
@@ -406,56 +540,77 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const driverCount = JSON.parse(
-            localStorage.getItem('driverTableCount')
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT
+            )
         );
 
         const applicantsData =
-            this.selectedTab === 'applicants'
-                ? this.getTabData('applicants')
+            this.selectedTab === ConstantStringTableComponentsEnum.APPLICANTS
+                ? this.getTabData(ConstantStringTableComponentsEnum.APPLICANTS)
                 : [];
 
         const driverActiveData =
-            this.selectedTab === 'active' ? this.getTabData('active') : [];
+            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+                : [];
 
         const driverInactiveData =
-            this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
+                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+                : [];
 
         this.tableData = [
             {
-                title: 'Applicants',
-                field: 'applicants',
+                title: ConstantStringTableComponentsEnum.APPLICANTS,
+                field: ConstantStringTableComponentsEnum.APPLICANTS,
                 length: driverCount.applicant,
                 data: applicantsData,
                 extended: true,
-                gridNameTitle: 'Driver',
-                stateName: 'applicants',
-                tableConfiguration: 'APPLICANT',
-                isActive: this.selectedTab === 'applicants',
-                gridColumns: this.getGridColumns('applicants', 'APPLICANT'),
+                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
+                stateName: ConstantStringTableComponentsEnum.APPLICANTS,
+                tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.APPLICANTS,
+                    ConstantStringTableComponentsEnum.APPLICANT
+                ),
             },
             {
-                title: 'Active',
-                field: 'active',
+                title: ConstantStringTableComponentsEnum.ACTIVE,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: driverCount.active,
                 data: driverActiveData,
                 extended: false,
-                gridNameTitle: 'Driver',
-                stateName: 'drivers',
-                tableConfiguration: 'DRIVER',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('drivers', 'DRIVER'),
+                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
+                stateName: ConstantStringTableComponentsEnum.DRIVER_2,
+                tableConfiguration: ConstantStringTableComponentsEnum.DRIVER,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.DRIVER_2,
+                    ConstantStringTableComponentsEnum.DRIVER
+                ),
             },
             {
-                title: 'Inactive',
-                field: 'inactive',
+                title: ConstantStringTableComponentsEnum.INACTIVE,
+                field: ConstantStringTableComponentsEnum.INACTIVE,
                 length: driverCount.inactive,
                 data: driverInactiveData,
                 extended: false,
-                gridNameTitle: 'Driver',
-                stateName: 'drivers',
-                tableConfiguration: 'DRIVER',
-                isActive: this.selectedTab === 'inactive',
-                gridColumns: this.getGridColumns('drivers', 'DRIVER'),
+                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
+                stateName: ConstantStringTableComponentsEnum.DRIVER_2,
+                tableConfiguration: ConstantStringTableComponentsEnum.DRIVER,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.DRIVER_2,
+                    ConstantStringTableComponentsEnum.DRIVER
+                ),
             },
         ];
 
@@ -464,18 +619,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setDriverData(td);
     }
 
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
+    private getTabData(dataType: string): DriversInactiveState[] {
+        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
             this.driversActive = this.driversActiveQuery.getAll();
 
             return this.driversActive?.length ? this.driversActive : [];
-        } else if (dataType === 'inactive') {
+        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.driversInactive = this.driversInactiveQuery.getAll();
 
             return this.driversInactive?.length ? this.driversInactive : [];
-        } else if ('applicants') {
+        } else if (ConstantStringTableComponentsEnum.APPLICANTS) {
             this.applicantTabActive = true;
 
             this.applicantData = this.applicantQuery.getAll();
@@ -484,12 +639,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    getGridColumns(activeTab: string, configType: string) {
+    private getGridColumns(activeTab: string, configType: string): void {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (activeTab === 'applicants') {
+        if (activeTab === ConstantStringTableComponentsEnum.APPLICANTS) {
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getApplicantColumnsDefinition();
@@ -500,23 +655,34 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    setDriverData(td: any) {
+    private setDriverData(td: DataForCardsAndTables): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
             this.viewData = td.data;
 
             this.viewData = this.viewData.map((data: any) => {
-                return this.selectedTab === 'applicants'
+                return this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
+
+            // Set data for cards based on tab active
+            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                ? ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack))
+                : null;
+
+            // Get Tab Table Data For Selected Tab
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
     }
 
-    mapDriverData(data: any) {
+    // TODO find model for this data
+    private mapDriverData(data): DriverResponse {
         if (!data?.avatar) {
             this.mapingIndex++;
         }
@@ -529,45 +695,58 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             avatarColor: this.getAvatarColors(),
             avatarImg: data?.avatar
                 ? this.imageBase64Service.sanitizer(data.avatar)
-                : '',
-            tableAddress: data.address.address ? data.address.address : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAddress: data.address.address
+                ? data.address.address
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableDOB: data.dateOfBirth
-                ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
-                : '',
-            tableAssignedUnitTruck: 'NA',
-            tableAssignedUnitTruckType: 'NA',
-            tableAssignedUnitTrailer: 'NA',
-            tableAssignedUnitTrailerType: 'NA',
+                ? this.datePipe.transform(
+                      data.dateOfBirth,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAssignedUnitTruck: ConstantStringTableComponentsEnum.NA,
+            tableAssignedUnitTruckType: ConstantStringTableComponentsEnum.NA,
+            tableAssignedUnitTrailer: ConstantStringTableComponentsEnum.NA,
+            tableAssignedUnitTrailerType: ConstantStringTableComponentsEnum.NA,
             tablePayrollDetailType: data?.payType?.name
                 ? data.payType.name
-                : '',
-            tableBankDetailBankName: data?.bank?.name ? data.bank.name : '',
-            tableBankDetailRouting: data.routing ? data.routing : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableBankDetailBankName: data?.bank?.name
+                ? data.bank.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableBankDetailRouting: data.routing
+                ? data.routing
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableOwnerDetailsType: data?.owner?.ownerType?.name
                 ? data.owner.ownerType.name
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableOwnerDetailsBusinesName: data?.owner?.name
                 ? data.owner.name
-                : '',
-            tableOwnerDetailsEin: data?.owner?.ssnEin ? data.owner.ssnEin : '',
-            tableOffDutyLocation: 'NA',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableOwnerDetailsEin: data?.owner?.ssnEin
+                ? data.owner.ssnEin
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableOffDutyLocation: ConstantStringTableComponentsEnum.NA,
             tableEmergContact: data?.emergencyContactPhone
                 ? data.emergencyContactPhone
-                : '',
-            tableTwicExp: 'NA',
-            tableFuelCardDetailNumber: data?.fuelCard ? data.fuelCard : '',
-            tableFuelCardDetailType: 'NA',
-            tableFuelCardDetailAccount: 'NA',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTwicExp: ConstantStringTableComponentsEnum.NA,
+            tableFuelCardDetailNumber: data?.fuelCard
+                ? data.fuelCard
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableFuelCardDetailType: ConstantStringTableComponentsEnum.NA,
+            tableFuelCardDetailAccount: ConstantStringTableComponentsEnum.NA,
             tableCdlDetailNumber: data?.cdlNumber
                 ? data.cdlNumber
                 : data?.cdls?.length
                 ? data.cdls[0].cdlNumber
-                : '',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
-                : '',
-            tableCdlDetailEndorsment: 'NA',
-            tableCdlDetailRestriction: 'NA',
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableCdlDetailEndorsment: ConstantStringTableComponentsEnum.NA,
+            tableCdlDetailRestriction: ConstantStringTableComponentsEnum.NA,
             tableCdlDetailExpiration: {
                 expirationDays:
                     data?.cdlExpirationDays || data?.cdlExpirationDays === 0
@@ -581,10 +760,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.cdlPercentage
                         : null,
             },
-            tableTestDetailsType: 'NA',
-            tableTestDetailsReason: 'NA',
-            tableTestDetailsIssued: 'NA',
-            tableTestDetailsResult: 'NA',
+            tableTestDetailsType: ConstantStringTableComponentsEnum.NA,
+            tableTestDetailsReason: ConstantStringTableComponentsEnum.NA,
+            tableTestDetailsIssued: ConstantStringTableComponentsEnum.NA,
+            tableTestDetailsResult: ConstantStringTableComponentsEnum.NA,
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
                     ? data.medicalExpirationDays
@@ -613,153 +792,177 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
 
             tabelNotificationGeneral: `${
-                data?.general?.mailNotification ? 'Email•' : ''
-            }${data?.general?.pushNotification ? 'Push•' : ''}${
-                data?.general?.smsNotification ? 'SMS' : ''
+                data?.general?.mailNotification
+                    ? ConstantStringTableComponentsEnum.EMAIL
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                data?.general?.pushNotification
+                    ? ConstantStringTableComponentsEnum.PUSH
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                data?.general?.smsNotification
+                    ? ConstantStringTableComponentsEnum.SMS
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
             }`,
             tabelNotificationPayroll: `${
-                data?.payroll?.mailNotification ? 'Email•' : ''
-            }${data?.payroll?.pushNotification ? 'Push•' : ''}${
-                data?.payroll?.smsNotification ? 'SMS' : ''
+                data?.payroll?.mailNotification
+                    ? ConstantStringTableComponentsEnum.EMAIL
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                data?.payroll?.pushNotification
+                    ? ConstantStringTableComponentsEnum.PUSH
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                data?.payroll?.smsNotification
+                    ? ConstantStringTableComponentsEnum.SMS
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
             }`,
             tabelHired: data.hired
-                ? this.datePipe.transform(data.hired, 'MM/dd/yy')
-                : '',
-            tableTerminated: 'NA',
-            tableAdded: 'NA',
-            tableEdited: 'NA',
+                ? this.datePipe.transform(
+                      data.hired,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTerminated: ConstantStringTableComponentsEnum.NA,
+            tableAdded: ConstantStringTableComponentsEnum.NA,
+            tableEdited: ConstantStringTableComponentsEnum.NA,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownDriverContent(data),
+                content: this.getDropdownDriverContent(),
             },
         };
     }
 
-    mapApplicantsData(data: any) {
+    private mapApplicantsData(data: MappedApplicantData): MappedApplicantData {
         return {
             ...data,
             isSelected: false,
             tableInvited: data?.invitedDate
-                ? this.datePipe.transform(data.invitedDate, 'MM/dd/yy')
-                : '',
+                ? this.datePipe.transform(
+                      data.invitedDate,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableAccepted: data?.acceptedDate
-                ? this.datePipe.transform(data.acceptedDate, 'MM/dd/yy')
-                : '',
-            tableDOB: data?.doB ? data.doB : '',
+                ? this.datePipe.transform(
+                      data.acceptedDate,
+                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                  )
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDOB: data?.doB
+                ? data.doB
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableApplicantProgress: [
                 {
-                    title: 'App.',
+                    title: ConstantStringTableComponentsEnum.APP,
                     status: data.applicationStatus,
                     width: 34,
-                    class: 'complete-icon',
+                    class: ConstantStringTableComponentsEnum.COMPLETE_ICON,
                     percentage: 34,
                 },
                 {
-                    title: 'Mvr',
+                    title: ConstantStringTableComponentsEnum.MVR,
                     status: data.mvrStatus,
                     width: 34,
-                    class: 'complete-icon',
+                    class: ConstantStringTableComponentsEnum.COMPLETE_ICON,
                     percentage: 34,
                 },
                 {
-                    title: 'Psp',
+                    title: ConstantStringTableComponentsEnum.PSP,
                     status: data.pspStatus,
                     width: 29,
-                    class: 'wrong-icon',
+                    class: ConstantStringTableComponentsEnum.COMPLETE_ICON,
                     percentage: 34,
                 },
                 {
-                    title: 'Sph',
+                    title: ConstantStringTableComponentsEnum.SPH,
                     status: data.sphStatus,
                     width: 30,
-                    class: 'complete-icon',
+                    class: ConstantStringTableComponentsEnum.COMPLETE_ICON,
                     percentage: 34,
                 },
                 {
-                    title: 'Hos',
+                    title: ConstantStringTableComponentsEnum.HOS,
                     status: data.hosStatus,
                     width: 32,
-                    class: 'done-icon',
+                    class: ConstantStringTableComponentsEnum.DONE_ICON,
                     percentage: 34,
                 },
                 {
-                    title: 'Ssn',
+                    title: ConstantStringTableComponentsEnum.SSN,
                     status: data.ssnStatus,
                     width: 29,
-                    class: 'wrong-icon',
+                    class: ConstantStringTableComponentsEnum.WRONG_ICON,
                     percentage: 34,
                 },
             ],
             tableMedical: {
-                class: '',
+                class: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 hideProgres: false,
                 isApplicant: true,
                 expirationDays: data?.medicalDaysLeft
                     ? this.thousandSeparator.transform(data.medicalDaysLeft)
-                    : '',
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 percentage: data?.medicalPercentage
                     ? data.medicalPercentage
                     : null,
             },
             tableCdl: {
-                class: '',
+                class: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 hideProgres: false,
                 isApplicant: true,
                 expirationDays: data?.cdlDaysLeft
                     ? this.thousandSeparator.transform(data.cdlDaysLeft)
-                    : '',
+                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 percentage: data?.cdlPercentage ? data.cdlPercentage : null,
             },
             tableRev: {
-                title: 'Incomplete',
+                title: ConstantStringTableComponentsEnum.INCOMPLETE,
                 iconLink:
                     '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg',
-                // index === 0 || index === 2
-                //     ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
-                //     : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
             },
             hire: false,
             isFavorite: false,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownApplicantContent(data),
+                content: this.getDropdownApplicantContent(),
             },
         };
     }
 
-    getDropdownDriverContent(data: any) {
+    private getDropdownDriverContent(): DropdownItem[] {
         return [
             {
-                title: 'Edit',
-                name: 'edit',
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
             },
 
             {
-                title: 'View Details',
-                name: 'view-details',
+                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
+                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Send Message',
-                name: 'send-message',
-                svgUrl: '',
+                title: ConstantStringTableComponentsEnum.SEND_MESSAGE_2,
+                name: ConstantStringTableComponentsEnum.SEND_MESSAGE,
+                svgUrl: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -767,286 +970,138 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
             },
             {
-                title: 'Add New',
-                name: 'add-new',
+                title: ConstantStringTableComponentsEnum.ADD_NEW_2,
+                name: ConstantStringTableComponentsEnum.ADD_NEW,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: 'Add CDL',
-                        name: 'new-licence',
+                        title: ConstantStringTableComponentsEnum.ADD_CDL,
+                        name: ConstantStringTableComponentsEnum.NEW_LICENCE,
                     },
                     {
-                        title: 'Add MVR',
-                        name: 'new-mvr',
+                        title: ConstantStringTableComponentsEnum.ADD_MVR,
+                        name: ConstantStringTableComponentsEnum.NEW_MVR,
                     },
                     {
-                        title: 'Medical Exam',
-                        name: 'new-medical',
+                        title: ConstantStringTableComponentsEnum.MEDICAL_EXAM_3,
+                        name: ConstantStringTableComponentsEnum.NEW_MEDICAL,
                     },
                     {
-                        title: 'Test (Drug, Alcohol)',
-                        name: 'new-drug',
+                        title: ConstantStringTableComponentsEnum.TEST_DRUG_ALCOHOL,
+                        name: ConstantStringTableComponentsEnum.NEW_DRUG,
                     },
                 ],
             },
             {
-                title: 'Request',
-                name: 'add-to-favourites',
+                title: ConstantStringTableComponentsEnum.REQUEST,
+                name: ConstantStringTableComponentsEnum.ADD_TO_FAVORITES,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: 'Background Check',
-                        name: 'background-check',
+                        title: ConstantStringTableComponentsEnum.BACKGROUND_CHECK_2,
+                        name: ConstantStringTableComponentsEnum.BACKGROUND_CHECK,
                     },
                     {
-                        title: 'Medical Exam',
-                        name: 'medical-exam',
+                        title: ConstantStringTableComponentsEnum.MEDICAL_EXAM_2,
+                        name: ConstantStringTableComponentsEnum.MEDICAL_EXAM,
                     },
                     {
-                        title: 'Test (Drug, Alcohol)',
-                        name: 'test-drug',
+                        title: ConstantStringTableComponentsEnum.TEST_DRUG_ALCOHOL,
+                        name: ConstantStringTableComponentsEnum.TEST_DRUG,
                     },
                     {
-                        title: 'MVR',
-                        name: 'test-mvr',
+                        title: ConstantStringTableComponentsEnum.MVR_2,
+                        name: ConstantStringTableComponentsEnum.TEST_MVR,
                     },
                 ],
                 hasBorder: true,
             },
             {
-                title: 'Share',
-                name: 'share',
+                title: ConstantStringTableComponentsEnum.SHARE_2,
+                name: ConstantStringTableComponentsEnum.SHARE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Print',
-                name: 'print',
+                title: ConstantStringTableComponentsEnum.PRINT_2,
+                name: ConstantStringTableComponentsEnum.PRINT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 hasBorder: true,
             },
             {
                 title:
-                    this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
-                name: 'activate-item',
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+                        : ConstantStringTableComponentsEnum.ACTIVATE_2,
+                name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 svgClass:
-                    this.selectedTab === 'active' ? 'deactivate' : 'activate',
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: 'Delete',
-                name: 'delete-item',
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'delete',
+                svgClass: ConstantStringTableComponentsEnum.DELETE,
             },
         ];
     }
 
-    getDropdownApplicantContent(data: any) {
-        return [
-            {
-                title: 'Edit',
-                name: 'edit',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: 'regular',
-            },
-
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Hire Applicant',
-                name: 'hire-applicant',
-                mutedStyle: true,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Review',
-                name: 'review',
-                mutedStyle: true,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Move to Favourites',
-                name: 'add-to-favourites',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgUrl: '',
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Resend Invitation',
-                name: 'resend-invitation',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Move to Archive',
-                name: 'move-to-archive',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'delete',
-            },
-            {
-                title: 'Delete',
-                name: 'delete-applicant',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'delete',
-            },
-        ];
+    private getDropdownApplicantContent(): DropdownItem[] {
+        return TableDropdownDriverComponentConstants.DROPDOWN_APPLICANT;
     }
 
     // Get Avatar Color
-    getAvatarColors() {
-        let textColors: string[] = [
-            '#6D82C7',
-            '#4DB6A2',
-            '#E57373',
-            '#E3B00F',
-            '#BA68C8',
-            '#BEAB80',
-            '#81C784',
-            '#FF8A65',
-            '#64B5F6',
-            '#F26EC2',
-            '#A1887F',
-            '#919191',
-        ];
+    private getAvatarColors(): AvatarColors {
+        const textColors: string[] = TableDriverColorsConstants.TEXT_COLORS;
 
-        let backgroundColors: string[] = [
-            '#DAE0F1',
-            '#D2EDE8',
-            '#F9DCDC',
-            '#F8EBC2',
-            '#EED9F1',
-            '#EFEADF',
-            '#DFF1E0',
-            '#FFE2D8',
-            '#D8ECFD',
-            '#FCDAF0',
-            '#E7E1DF',
-            '#E3E3E3',
-        ];
+        const backgroundColors: string[] =
+            TableDriverColorsConstants.BACKGROUND_COLORS;
 
         this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 
@@ -1056,9 +1111,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    updateDataCount() {
+    private updateDataCount(): void {
         const driverCount = JSON.parse(
-            localStorage.getItem('driverTableCount')
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT
+            )
         );
 
         const updatedTableData = [...this.tableData];
@@ -1070,7 +1127,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get Driver Back Filter
-    driverBackFilter(
+    private driverBackFilter(
         filter: {
             active: number;
             long: number;
@@ -1085,7 +1142,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchThree: string | undefined;
         },
         isShowMore?: boolean
-    ) {
+    ): void {
         this.driverTService
             .getDrivers(
                 filter.active,
@@ -1105,13 +1162,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (!isShowMore) {
                     this.viewData = drivers.pagination.data;
 
-                    this.viewData = this.viewData.map((data: any) => {
+                    this.viewData = this.viewData.map((data) => {
                         return this.mapDriverData(data);
                     });
                 } else {
                     let newData = [...this.viewData];
 
-                    drivers.pagination.data.map((data: any) => {
+                    drivers.pagination.data.map((data) => {
                         newData.push(this.mapDriverData(data));
                     });
 
@@ -1120,7 +1177,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    applicantBackFilter(
+    private applicantBackFilter(
         filter: {
             applicantSpecParamsArchived: boolean | undefined;
             applicantSpecParamsHired: boolean | undefined;
@@ -1134,7 +1191,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchThree: string | undefined;
         },
         isShowMore?: boolean
-    ) {
+    ): void {
         this.applicantService
             .getApplicantAdminList(
                 filter.applicantSpecParamsArchived,
@@ -1149,17 +1206,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((applicant: any) => {
+            .subscribe((applicant) => {
                 if (!isShowMore) {
                     this.viewData = applicant.pagination.data;
 
-                    this.viewData = this.viewData.map((data: any) => {
+                    this.viewData = this.viewData.map((data) => {
                         return this.mapApplicantsData(data);
                     });
                 } else {
                     let newData = [...this.viewData];
 
-                    applicant.pagination.data.map((data: any) => {
+                    applicant.pagination.data.map((data) => {
                         newData.push(this.mapApplicantsData(data));
                     });
 
@@ -1168,36 +1225,47 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    onToolBarAction(event: any) {
+    public onToolBarAction(event: ToolbarActions): void {
         // Open Modal
-        if (event.action === 'open-modal') {
-            if (this.selectedTab === 'applicants') {
+        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+            if (
+                this.selectedTab ===
+                ConstantStringTableComponentsEnum.APPLICANTS
+            ) {
                 this.modalService.openModal(ApplicantModalComponent, {
-                    size: 'small',
+                    size: ConstantStringTableComponentsEnum.SMALL,
                 });
             } else {
                 this.modalService.openModal(DriverModalComponent, {
-                    size: 'medium',
+                    size: ConstantStringTableComponentsEnum.MEDIUM,
                 });
             }
         }
         // Select Tab
-        else if (event.action === 'tab-selected') {
+        else if (
+            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
+        ) {
             this.selectedTab = event.tabData.field;
             this.mapingIndex = 0;
 
             this.driverBackFilterQuery.active =
-                this.selectedTab === 'active' ? 1 : 0;
+                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                    ? 1
+                    : 0;
             this.driverBackFilterQuery.pageIndex = 1;
 
             this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
 
             // Driver Inactive Api Call
-            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+            if (
+                this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE &&
+                !this.inactiveTabClicked
+            ) {
                 this.driverTService
                     .getDrivers(0, undefined, undefined, undefined, 1, 25)
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe((driverPagination: DriverListResponse) => {
+                    .subscribe((driverPagination) => {
                         this.driversInactiveStore.set(
                             driverPagination.pagination.data
                         );
@@ -1207,7 +1275,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             // Applicants Api Call
             else if (
-                this.selectedTab === 'applicants' &&
+                this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS &&
                 !this.applicantTabActive
             ) {
                 forkJoin([
@@ -1244,19 +1313,22 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
         // Change View Mode
-        else if (event.action === 'view-mode') {
+        else if (event.action === ConstantStringTableComponentsEnum.VIEW_MODE) {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;
         }
     }
 
-    onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
+    public onTableHeadActions(event: OnTableHeadActionsModal): void {
+        if (event.action === ConstantStringTableComponentsEnum.SORT) {
             this.mapingIndex = 0;
 
             if (event.direction) {
-                if (this.selectedTab === 'applicants') {
+                if (
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS
+                ) {
                     this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
                     this.applicantBackFilterQuery.applicantSpecParamsSort =
                         event.direction;
@@ -1264,7 +1336,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.applicantBackFilter(this.applicantBackFilterQuery);
                 } else {
                     this.driverBackFilterQuery.active =
-                        this.selectedTab === 'active' ? 1 : 0;
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                            ? 1
+                            : 0;
                     this.driverBackFilterQuery.pageIndex = 1;
                     this.driverBackFilterQuery.sort = event.direction;
                     this.driverBackFilter(this.driverBackFilterQuery);
@@ -1275,7 +1350,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    onTableBodyActions(event: any) {
+    public onTableBodyActions(event: OnTableBodyActionsModal): void {
         const mappedEvent = {
             ...event,
             data: {
@@ -1283,94 +1358,130 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: event.data?.fullName,
             },
         };
-        if (event.type === 'show-more') {
-            if (this.selectedTab === 'applicants') {
+        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
+            if (
+                this.selectedTab ===
+                ConstantStringTableComponentsEnum.APPLICANTS
+            ) {
                 this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
 
                 this.applicantBackFilter(this.applicantBackFilterQuery, true);
             } else {
                 this.driverBackFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? 1
+                        : 0;
                 this.driverBackFilterQuery.pageIndex++;
 
                 this.driverBackFilter(this.driverBackFilterQuery, true);
             }
-        } else if (event.type === 'edit') {
-            if (this.selectedTab === 'applicants') {
+        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+            if (
+                this.selectedTab ===
+                ConstantStringTableComponentsEnum.APPLICANTS
+            ) {
                 this.modalService.openModal(
                     ApplicantModalComponent,
                     {
-                        size: 'small',
+                        size: ConstantStringTableComponentsEnum.SMALL,
                     },
                     {
                         id: 1,
-                        type: 'edit',
+                        type: ConstantStringTableComponentsEnum.EDIT,
                     }
                 );
             } else {
                 this.modalService.openModal(
                     DriverModalComponent,
-                    { size: 'medium' },
+                    { size: ConstantStringTableComponentsEnum.MEDIUM },
                     {
                         ...event,
                         disableButton: true,
                     }
                 );
             }
-        } else if (event.type === 'new-licence') {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.NEW_LICENCE
+        ) {
             this.modalService.openModal(
                 DriverCdlModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 { ...event, tableActiveTab: this.selectedTab }
             );
-        } else if (event.type === 'new-medical') {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.NEW_MEDICAL
+        ) {
             this.modalService.openModal(
                 DriverMedicalModalComponent,
                 {
-                    size: 'small',
+                    size: ConstantStringTableComponentsEnum.SMALL,
                 },
                 { ...event, tableActiveTab: this.selectedTab }
             );
-        } else if (event.type === 'new-mvr') {
+        } else if (event.type === ConstantStringTableComponentsEnum.NEW_MVR) {
             this.modalService.openModal(
                 DriverMvrModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 { ...event, tableActiveTab: this.selectedTab }
             );
-        } else if (event.type === 'new-drug') {
+        } else if (event.type === ConstantStringTableComponentsEnum.NEW_DRUG) {
             this.modalService.openModal(
                 DriverDrugAlcoholModalComponent,
                 {
-                    size: 'small',
+                    size: ConstantStringTableComponentsEnum.SMALL,
                 },
                 { ...event, tableActiveTab: this.selectedTab }
             );
-        } else if (event.type === 'activate-item') {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: 'driver',
-                    type: event.data.status === 1 ? 'deactivate' : 'activate',
+                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    type:
+                        event.data.status === 1
+                            ? ConstantStringTableComponentsEnum.DEACTIVATE
+                            : ConstantStringTableComponentsEnum.ACTIVATE,
                     image: true,
                 }
             );
-        } else if (event.type === 'delete-item') {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: 'driver',
-                    type: 'delete',
+                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    type: ConstantStringTableComponentsEnum.DELETE,
                     image: true,
                 }
             );
         }
     }
 
-    private changeDriverStatus(id: number) {
+    // Get Tab Table Data For Selected Tab
+    public getSelectedTabTableData(): void {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (tab) => tab.field === this.selectedTab
+            );
+        }
+    }
+
+    // Show More Data
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+        });
+    }
+
+    private changeDriverStatus(id: number): void {
         this.driverTService
             .changeDriverStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
@@ -1380,15 +1491,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private deleteDriverById(id: number) {
+    private deleteDriverById(id: number): void {
         this.driverTService
             .deleteDriverById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.viewData = this.viewData.map((driver: any) => {
+                    this.viewData = this.viewData.map((driver) => {
                         if (driver.id === id) {
-                            driver.actionAnimation = 'delete';
+                            driver.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE;
                         }
 
                         return driver;
@@ -1409,15 +1521,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private multipleDeleteDrivers(response: any[]) {
+    // This function gets called but service deleteDriverList is commented out so it will not delete any drivers
+    private multipleDeleteDrivers(response: DriverResponse[]): void {
         this.driverTService
             .deleteDriverList(response)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.viewData = this.viewData.map((driver: any) => {
-                    response.map((id: any) => {
+                this.viewData = this.viewData.map((driver) => {
+                    response.map((id) => {
                         if (driver.id === id) {
-                            driver.actionAnimation = 'delete-multiple';
+                            driver.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
                         }
                     });
 
@@ -1442,27 +1556,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
+        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
     }
 
-    public testControl: UntypedFormGroup = new UntypedFormGroup({
-        email: new UntypedFormControl(null),
-        password: new UntypedFormControl(null),
-        phone: new UntypedFormControl(null),
-    });
+    // This is added probably for modal and unfinished
     modalColumns: any[] = [];
     modalViewData: any[] = [];
 
-    modalTestInitialization() {
+    private modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
 
         for (let i = 0; i < 3; i++) {
             this.modalViewData.push({
                 tableDescription: {
                     text: 'Jaffa Cakes',
-                    extraText: '',
+                    extraText:
+                        ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 },
                 tableQuantity: {
                     text: 230,
@@ -1470,13 +1581,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 tableBolNo: {
                     text: 1598550,
-                    extraText: '',
+                    extraText:
+                        ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
                 },
                 tableWeight: {
                     text: '2,360',
                     extraText: 'lbs',
                 },
-                tableAction: 'delete',
+                tableAction: ConstantStringTableComponentsEnum.DELETE,
             });
         }
     }

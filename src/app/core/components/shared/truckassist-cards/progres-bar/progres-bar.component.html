@@ -1,0 +1,42 @@
+<div class="progress-bar-parent d-flex align-items-center">
+    <ng-container *ngIf="percents !== null">
+        <div class="progress-bar-holder">
+            <div
+                class="progress-child-back"
+                [ngClass]="{
+                    expired: !percents,
+                    'back-gray': percents > 50,
+                    'back-yellow': percents > 20 && percents <= 50,
+                    'back-red': percents <= 20 && percents > 0
+                }"
+            ></div>
+            <div
+                class="progress-child-front"
+                [ngClass]="{
+                    'front-gray': percents > 50,
+                    'front-yellow': percents > 20 && percents <= 50,
+                    'front-red': percents <= 20
+                }"
+                [style.width.%]="percents"
+            ></div>
+        </div>
+    </ng-container>
+    <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
+
+    <ng-container *ngIf="!percents && percents !== null">
+        <span>
+            in
+            {{ text }}
+            days
+        </span>
+    </ng-container>
+    <ng-container *ngIf="!percents && percents !== null">
+        <span class="ta-font-semi-bold">
+            {{ text }}
+            days ago
+        </span>
+    </ng-container>
+    <ng-container *ngIf="!percents">
+        <span> / </span>
+    </ng-container>
+</div>

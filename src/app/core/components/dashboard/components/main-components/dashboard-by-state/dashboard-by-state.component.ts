@@ -546,6 +546,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     byStateArgumentsData as ByStateWithLoadStopApiArguments
                 );
                 break;
+            case ConstantStringEnum.ROADSIDE:
+                this.getRoadsideByStateListData(
+                    selectedTab,
+                    byStateArgumentsData as ByStateApiArguments
+                );
+                break;
             case ConstantStringEnum.VIOLATION_2:
                 this.getViolationByStateListData(
                     selectedTab,
@@ -641,7 +647,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 // intervals
 
                 for (let i = 0; i < pickupData.topTen.length; i++) {
-                    // top rated intervals
+                    // by state intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
@@ -761,7 +767,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 // intervals
 
                 for (let i = 0; i < deliveryData.topTen.length; i++) {
-                    // top rated intervals
+                    // by state intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
@@ -810,6 +816,129 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
 
                 this.setBarChartLabels(deliveryData.intervalLabels);
+
+                this.setChartData();
+            });
+    }
+
+    private getRoadsideByStateListData(
+        selectedTab: ByStateReportType,
+        byStateArgumentsData: ByStateApiArguments
+    ): void {
+        this.dashboardByStateService
+            .getRoadsideByState(byStateArgumentsData)
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => (this.isLoading = false))
+            )
+            .subscribe((roadsideData) => {
+                // by state list and single selection data
+                this.byStateList = roadsideData.pagination.data.map(
+                    (roadside, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < roadside.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? roadside.intervals[i].count
+                                    : roadside.intervals[i].severityWeight,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? roadside.intervals[i].countPercentage
+                                    : roadside.intervals[i]
+                                          .severityWeightPercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: roadside.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? roadside.count.toString()
+                                    : roadside.severityWeight.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.COUNT
+                                    ? roadside.countPercentage.toString()
+                                    : roadside.severityWeightPercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = roadsideData.pagination.count;
+
+                // intervals
+
+                for (let i = 0; i < roadsideData.topTen.length; i++) {
+                    // by state intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? roadsideData.topTen[i].count
+                            : roadsideData.topTen[i].severityWeight,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? roadsideData.topTen[i].countPercentage
+                                : roadsideData.topTen[i]
+                                      .severityWeightPercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.COUNT
+                            ? roadsideData.others[i].count
+                            : roadsideData.others[i].severityWeight,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.COUNT
+                                ? roadsideData.others[i].countPercentage
+                                : roadsideData.others[i]
+                                      .severityWeightPercentage,
+                        ];
+                }
+
+                // colors range & map
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setMapByState(this.byStateList);
+
+                // chart
+                this.setBarChartDateTitle(
+                    roadsideData.intervalLabels[0].tooltipLabel,
+                    roadsideData.intervalLabels[roadsideData.topTen.length - 1]
+                        .tooltipLabel
+                );
+
+                this.setBarChartLabels(roadsideData.intervalLabels);
 
                 this.setChartData();
             });
@@ -882,7 +1011,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 // intervals
 
                 for (let i = 0; i < violationData.topTen.length; i++) {
-                    // top rated intervals
+                    // by state intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
@@ -1006,7 +1135,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 // intervals
 
                 for (let i = 0; i < accidentData.topTen.length; i++) {
-                    // top rated intervals
+                    // by state intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
@@ -1128,7 +1257,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 // intervals
 
                 for (let i = 0; i < repairData.topTen.length; i++) {
-                    // top rated intervals
+                    // by state intervals
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
@@ -1192,8 +1321,113 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 tap(() => (this.isLoading = false))
             )
-            .subscribe(() => {
+            .subscribe((fuelData) => {
                 // by state list and single selection data
+                this.byStateList = fuelData.pagination.data.map(
+                    (fuel, index) => {
+                        let filteredIntervalValues: number[] = [];
+                        let filteredIntervalPercentages: number[] = [];
+
+                        for (let i = 0; i < fuel.intervals.length; i++) {
+                            filteredIntervalValues = [
+                                ...filteredIntervalValues,
+                                selectedTab === ConstantStringEnum.GALLON
+                                    ? fuel.intervals[i].gallon
+                                    : fuel.intervals[i].cost,
+                            ];
+                            filteredIntervalPercentages = [
+                                ...filteredIntervalPercentages,
+                                selectedTab === ConstantStringEnum.GALLON
+                                    ? fuel.intervals[i].gallonPercentage
+                                    : fuel.intervals[i].costPercentage,
+                            ];
+                        }
+
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervalValues,
+                        ];
+
+                        this.barChartValues.selectedBarPercentages = [
+                            ...this.barChartValues.selectedBarPercentages,
+                            filteredIntervalPercentages,
+                        ];
+
+                        return {
+                            id: index + 1,
+                            state: fuel.stateShortName,
+                            value:
+                                selectedTab === ConstantStringEnum.GALLON
+                                    ? fuel.gallon.toString()
+                                    : fuel.cost.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.GALLON
+                                    ? fuel.gallonPercentage.toString()
+                                    : fuel.costPercentage.toString(),
+                            isSelected: false,
+                            selectedColor: null,
+                        };
+                    }
+                );
+
+                this.byStateListBeforeSearch = [...this.byStateList];
+
+                this.byStateListLength = fuelData.pagination.count;
+
+                // intervals
+
+                for (let i = 0; i < fuelData.topTen.length; i++) {
+                    // by state intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.GALLON
+                            ? fuelData.topTen[i].gallon
+                            : fuelData.topTen[i].cost,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.topRatedBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .topRatedBarPercentage,
+                            selectedTab === ConstantStringEnum.GALLON
+                                ? fuelData.topTen[i].gallonPercentage
+                                : fuelData.topTen[i].costPercentage,
+                        ];
+
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.GALLON
+                            ? fuelData.others[i].gallon
+                            : fuelData.others[i].cost,
+                    ];
+
+                    this.barChartValues.defaultBarPercentages.otherBarPercentage =
+                        [
+                            ...this.barChartValues.defaultBarPercentages
+                                .otherBarPercentage,
+                            selectedTab === ConstantStringEnum.GALLON
+                                ? fuelData.others[i].gallonPercentage
+                                : fuelData.others[i].costPercentage,
+                        ];
+                }
+
+                // colors range & map
+                DashboardUtils.setByStateListColorRange(this.byStateList);
+
+                this.setMapByState(this.byStateList);
+
+                // chart
+                this.setBarChartDateTitle(
+                    fuelData.intervalLabels[0].tooltipLabel,
+                    fuelData.intervalLabels[fuelData.topTen.length - 1]
+                        .tooltipLabel
+                );
+
+                this.setBarChartLabels(fuelData.intervalLabels);
+
+                this.setChartData();
             });
     }
 

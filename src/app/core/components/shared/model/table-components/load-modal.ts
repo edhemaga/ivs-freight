@@ -1,133 +1,25 @@
-import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { DataForCardsAndTables } from './table-components/all-tables.modal';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { DropdownItem } from '../cardTableData';
 
-export interface MappedShipperBroker extends ShipperResponse {
-    isSelected?: boolean;
-    tableAddress?: string;
-    tableLoads?: string;
-    tableAddressPhysical?: string;
-    tableAddressBilling?: string;
-    tableAverageWatingTimePickup?: ConstantStringTableComponentsEnum | TimeOnly;
-    tableAverageWatingTimeDelivery?:
-        | ConstantStringTableComponentsEnum
-        | TimeOnly;
-    tableAvailableHoursShipping?: string;
-    tableAvailableHoursReceiving?: string;
-    tablePaymentDetailAvailCredit?: ConstantStringTableComponentsEnum | string;
-    tablePaymentDetailCreditLimit?: ConstantStringTableComponentsEnum | string;
-    tablePaymentDetailTerm?: string;
-    tablePaymentDetailDTP?: ConstantStringTableComponentsEnum | string;
-    tablePaymentDetailInvAgeing?: {
-        bfb: ConstantStringTableComponentsEnum | string;
-        dnu: ConstantStringTableComponentsEnum | string;
-        amount: string;
-    };
-    tableRaiting?: {
-        hasLiked?: boolean;
-        hasDislike?: boolean;
-        likeCount?: number | string;
-        dislikeCount?: number | string;
-    };
-    tableContact?: number;
-    tableAdded?: string;
-    tableEdited?: string;
-    tableDropdownContent?: {
-        hasContent?: boolean;
-        content?: DropdownItem[];
-    };
-    PaymentDetailInvAgeing?: {
-        bfb: ConstantStringTableComponentsEnum | string;
-        dnu: ConstantStringTableComponentsEnum | string;
-        amount: string;
-    };
-
-    data?: ShipperResponse | BrokerResponse;
-    actionAnimation?: string;
+export interface LoadResponse {
     id?: number;
-    tableMiles?: string;
-    tablePPM?: string;
-    tableRevenue?: string;
+    loadNumber?: string | null;
+    referenceNumber?: string | null;
+    pickupCount?: number;
+    deliveryCount?: number;
+    totalMiles?: number | null;
+    totalRate?: number | null;
 }
 
-export interface DataUpdate {
-    animation: string;
-    data: {
-        pagination: {
-            count: number;
-            data: CardDetails[];
-            pageIndex: number;
-            pageSize: number;
-        };
-    };
-    id: string;
-}
-
-
-// TOOLBAR ACTIONS
-export interface ToolbarActions {
-    action: string;
-    tabData: DataForCardsAndTables;
-    mode: string;
-}
-export interface TableBodyActions {
-    data: CardDetails;
-    id: number;
-    type: string;
-}
-
-// Table Columns
-export interface Column {
-    column: GridColumn;
-    index: number;
-}
-export interface GridColumn {
-    avatar: null | string;
-    disabled: boolean;
-    export: boolean;
-    field: string;
-    filter: string;
-    filterable: boolean;
-    hidden: boolean;
-    hoverTemplate: null | string;
-    index: number;
-    isActionColumn: boolean;
-    isNumeric: boolean;
-    isPined: boolean;
-    isSelectColumn: boolean;
-    name: string;
-    ngTemplate: string;
-    progress: null | string;
-    resizable: boolean;
-    sortable: boolean;
-    tableHeadTitle: string;
-    title: string;
-    width: number;
-}
-export interface ResizingEventData {
-    index: number;
-    isResizing: boolean;
-    section: string;
-    width: number;
-}
-export interface ColumnWidthData {
-    columns: GridColumn[];
-    event: ResizingEventData[];
-}
-// Table Columns end
-export interface SendDataCard {
-    id: number;
-    data: CardDetails;
-    type: string;
-}
-export interface CardDetails {
+export interface LoadModel {
+    isSelected: boolean;
     id: number;
     type: Type;
-    isSelected: boolean;
     loadNumber: string;
+    loadInvoice: LoadInvoice;
     statusType: StatusType;
     status: Status;
-    tableDropdownContent: tableDropdownContent;
+    lastStatusPassed: LastStatusPassed;
     dispatcher: Dispatcher;
     company: Company;
     dateCreated: string;
@@ -138,6 +30,7 @@ export interface CardDetails {
     generalCommodity: GeneralCommodity;
     weight: number;
     loadRequirements: LoadRequirements;
+    loadDispatcher: LoadDispatcher;
     stops: Stop[];
     splitLoad: SplitLoad;
     note: string;
@@ -181,7 +74,12 @@ export interface CardDetails {
     fileCount: number;
     loadTotal: LoadTotal;
     isFlipped: boolean;
-
+    loadBroker: LoadBroker;
+    loadTruckNumber: LoadTruckTrailerNumber;
+    loadTrailerNumber: LoadTruckTrailerNumber;
+    loadPickup: LoadPickup;
+    loadDelivery: LoadDelivery;
+    loadStatus: LoadStatus;
     textCommodity: string;
     textMiles: string;
     textWeight: string;
@@ -190,43 +88,70 @@ export interface CardDetails {
     textAdvance: string;
     textPayTerms: string;
     textDriver: string;
+    loadComment: LoadComment;
     tableAttachments: File[];
+    tableDropdownContent: TableDropdownContent;
 }
-
-export interface tableDropdownContent {
-    content: DropdownItem[];
+interface TableDropdownContent {
     hasContent: boolean;
+    content: DropdownItem[];
 }
-export interface DropdownItem {
-    title?: string;
-    name?: string;
-    svgUrl?: string;
-    mutedStyle?: boolean;
-    svgStyle?: { width: number; height: number };
-    svgClass?: string;
-    isDropdown?: boolean;
-    hasBorder?: boolean;
-    tableListDropdownContentStyle?: { [key: string]: any };
-    insideDropdownContent?: InsideDropdownContent[];
-}
-interface InsideDropdownContent {
-    title: string;
-    name: string;
-}
-export interface BodyActions {
-    id: number;
-    card: CardDetails;
-    type: string;
-}
-
-export interface Type {
-    name: string;
-    id: number;
+interface LoadStatus {
+    status: string;
+    color: string;
+    time: string;
 }
 interface LoadTotal {
     total: string;
     subTotal: string;
 }
+interface LoadComment {
+    count: string | number;
+    comments: any[];
+}
+interface LoadStatus {
+    status: string;
+    color: string;
+    time: string;
+}
+interface LoadDelivery {
+    count: string | number;
+    location: string;
+    date: string;
+    time: string;
+}
+
+interface LoadPickup {
+    count: number;
+    location: string;
+    date: string;
+    time: string;
+}
+
+interface LoadTruckTrailerNumber {
+    number: string;
+    color: string;
+}
+
+interface LoadDispatcher {
+    name: string;
+    avatar: string | SafeResourceUrl;
+}
+
+interface LoadBroker {
+    hasBanDnu: boolean;
+    isDnu?: boolean;
+    name: string;
+}
+interface LoadInvoice {
+    invoice: string;
+    type: string;
+}
+export interface Type {
+    name: string;
+    id: number;
+}
+
 export interface StatusType {
     name: string;
     id: number;
@@ -872,4 +797,26 @@ export interface File {
     fileSize: number;
     tags: string[];
     tagGeneratedByUser: boolean;
+}
+
+export interface FilterOptions {
+    loadType: number;
+    statusType: number;
+    status: number;
+    dispatcherId: number;
+    dispatchId: number;
+    brokerId: number;
+    shipperId: number;
+    dateFrom: string;
+    dateTo: string;
+    revenueFrom: number;
+    revenueTo: number;
+    truckId: number;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number;
+    sort: string;
+    searchOne: string;
+    searchTwo: string;
+    searchThree: string;
 }
