@@ -390,7 +390,7 @@ export class TruckassistTableBodyComponent
     trackTableActionsColumns(item: any) {
         return item.columnId;
     }
-    labelDropdown() {
+    public labelDropdown(): void {
         for (let row of this.viewData) {
             this.dropdownSelectionArray.push(new FormControl());
             if (row['companyContactLabel']) {
