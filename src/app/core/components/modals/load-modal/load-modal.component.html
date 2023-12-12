@@ -387,15 +387,15 @@
             </div>
 
             <!-- Stops -->
-
-            <div class="d-flex align-items-center load-stops-row">
-                <app-ta-custom-card
-                    [cardName]="'Stops'"
-                    [capsulaText]="
+            <!-- [capsulaText]="
                         loadExtraStops().length
                             ? loadExtraStops().length + ' EXTRA'
                             : null
-                    "
+                    " -->
+            <div class="d-flex align-items-center load-stops-row">
+                <app-ta-custom-card
+                    [cardName]="'Stops'"
+                    [capsulaText]="'3 EXTRA'"
                     [isCardOpen]="true"
                     [hasCounter]="2"
                     [hasActionSvg]="
@@ -403,7 +403,6 @@
                             ? 'assets/svg/common/ic_plus.svg'
                             : null
                     "
-                    [isCardOpen]="true"
                     [hasBodyData]="true"
                     [disableAnimation]="disableCardAnimation"
                     [animationMarginParams]="{
