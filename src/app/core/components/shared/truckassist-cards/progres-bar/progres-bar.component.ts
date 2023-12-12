@@ -13,5 +13,7 @@ export class ProgresBarComponent implements OnInit {
     @Input() text: string;
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.percents);
+    }
 }
