@@ -78,7 +78,6 @@ export class TruckTService implements OnDestroy {
     }
 
     public addTruck(data: TruckResponse): Observable<TruckResponse> {
-        console.log(data);
         this.formDataService.extractFormDataFromFunction(data);
         return this.truckService.apiTruckPost().pipe(
             tap((res) => {
@@ -418,9 +417,8 @@ export class TruckTService implements OnDestroy {
             .apiTruckStatusIdPut(truckId)
             .pipe(
                 takeUntil(this.destroy$),
-                switchMap((res: number) => {
+                switchMap(() => {
                     return this.getTruckById(truckId);
-                    takeUntil(this.destroy$);
                 })
             )
             .subscribe((truck: any) => {
