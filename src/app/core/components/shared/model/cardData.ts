@@ -47,7 +47,7 @@ export interface LoadTableData {
 export interface CardRows {
     title: string;
     endpoint: string;
-    seccondEndpoint?: string;
+    secondEndpoint?: string;
     thirdEndpoint?: string;
     class?: string;
     hasLiked?: string;

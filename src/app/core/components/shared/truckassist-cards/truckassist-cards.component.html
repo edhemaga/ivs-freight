@@ -73,7 +73,61 @@
 
                             <!-- If Driver page -->
 
-                            <ng-container *ngIf="page === 'Driver'">
+                            <ng-container
+                                *ngIf="
+                                    page === 'Driver' &&
+                                    selectedTab !== 'applicant'
+                                "
+                            >
+                                <!-- If driver has image -->
+
+                                <ng-container *ngIf="card.avatarImg">
+                                    <div class="image-holder">
+                                        <img
+                                            class="image-hover"
+                                            [src]="card.avatarImg"
+                                        />
+                                        <ng-container
+                                            *ngIf="card.owner !== null"
+                                        >
+                                            <svg-icon
+                                                class="is-owner"
+                                                [src]="
+                                                    'assets/svg/common/ic_owner-status.svg'
+                                                "
+                                            >
+                                            </svg-icon>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                                <!-- If driver doesen't have image -->
+
+                                <ng-container *ngIf="!card.avatarImg">
+                                    <div class="image-holder">
+                                        <span
+                                            class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                            [style.background]="
+                                                card.avatarColor.background
+                                            "
+                                            [style.color]="
+                                                card.avatarColor.color
+                                            "
+                                        >
+                                            {{ card.textShortName }}</span
+                                        >
+                                        <ng-container
+                                            *ngIf="card.owner !== null"
+                                        >
+                                            <svg-icon
+                                                class="is-owner"
+                                                [src]="
+                                                    'assets/svg/common/ic_owner-status.svg'
+                                                "
+                                            >
+                                            </svg-icon>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
                                 <span class="title">
                                     {{ getValueByStringPath(card, cardTitle) }}
                                 </span>
@@ -89,6 +143,8 @@
                                 </span>
                             </ng-container>
                         </div>
+
+                        <!-- Card Title End-->
                     </div>
 
                     <!-- Card body front-->
@@ -102,7 +158,10 @@
                         <!-- Card body item -->
 
                         <ng-container
-                            *ngFor="let rowsFront of displayRowsFront"
+                            *ngFor="
+                                let rowsFront of displayRowsFront;
+                                trackBy: trackCard
+                            "
                         >
                             <div class="item-body">
                                 <div class="top-item-body">
@@ -178,13 +237,13 @@
                                         <!-- If there is seccond endpoint  -->
 
                                         <ng-container
-                                            *ngIf="rowsFront.seccondEndpoint"
+                                            *ngIf="rowsFront.secondEndpoint"
                                         >
                                             <span>
                                                 {{
                                                     getValueByStringPath(
                                                         card,
-                                                        rowsFront.seccondEndpoint
+                                                        rowsFront.secondEndpoint
                                                     )
                                                 }}
                                             </span>
@@ -283,7 +342,7 @@
                                                         {{
                                                             getValueByStringPath(
                                                                 card,
-                                                                rowsFront.seccondEndpoint
+                                                                rowsFront.secondEndpoint
                                                             )
                                                         }}
                                                     </span>
@@ -295,6 +354,12 @@
                                     <!-- DRIVER PAGE BODY -->
 
                                     <ng-container *ngIf="page === 'Driver'">
+                                        {{
+                                            getValueByStringPath(
+                                                card,
+                                                rowsFront.endpoint
+                                            )
+                                        }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -311,7 +376,12 @@
                     >
                         <!-- First item in back of the card -->
 
-                        <ng-container *ngFor="let rowsBack of displayRowsBack">
+                        <ng-container
+                            *ngFor="
+                                let rowsBack of displayRowsBack;
+                                trackBy: trackCard
+                            "
+                        >
                             <div class="item-body">
                                 <div class="top-item-body">
                                     {{ rowsBack.title }}
@@ -405,7 +475,7 @@
                                                         {{
                                                             getValueByStringPath(
                                                                 card,
-                                                                rowsBack.seccondEndpoint
+                                                                rowsBack.secondEndpoint
                                                             )
                                                         }}
                                                     </span>
@@ -426,6 +496,97 @@
                                                     rowsBack.endpoint
                                                 )
                                             }}
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <!--  Driver Page Body -->
+
+                                    <ng-container *ngIf="page === 'Driver'">
+                                        <!-- Hired -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint === 'hired'
+                                            "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <!-- Driver Cdl Progres Bar -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableMedicalData.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <!-- Driver Medical Progres Bar -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableCdlDetailExpiration.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <!-- Driver MVR Progres Bar -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableMvrDetailsExpiration.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
                                         </ng-container>
                                     </ng-container>
                                 </div>
