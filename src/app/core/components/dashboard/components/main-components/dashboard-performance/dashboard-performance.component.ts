@@ -117,11 +117,10 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.getConstantData();
 
-        this.getOverallCompanyDuration();
-
-        setTimeout(() => {
+        (async () => {
+            await this.getOverallCompanyDuration();
             this.getPerformanceListData();
-        }, 50);
+        })();
     }
 
     private createForm(): void {
@@ -503,16 +502,19 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getOverallCompanyDuration(): void {
-        this.dashboardQuery.companyDuration$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((companyDuration: number) => {
-                if (companyDuration) {
-                    this.overallCompanyDuration = companyDuration;
-                }
-            });
+    private getOverallCompanyDuration(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.dashboardQuery.companyDuration$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((companyDuration: number) => {
+                    resolve(true);
+                    if (companyDuration) {
+                        this.overallCompanyDuration = companyDuration;
+                    }
+                });
 
-        this.setCustomSubPeriodList(this.overallCompanyDuration);
+            this.setCustomSubPeriodList(this.overallCompanyDuration);
+        });
     }
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {
