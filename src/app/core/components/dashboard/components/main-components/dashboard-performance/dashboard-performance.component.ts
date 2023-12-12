@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, firstValueFrom, of, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardPerformanceService } from '../../../state/services/dashboard-performance.service';
@@ -118,7 +118,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         (async () => {
-            await this.getOverallCompanyDuration();
+            await firstValueFrom(this.getOverallCompanyDuration());
             this.getPerformanceListData();
         })();
     }
@@ -502,15 +502,16 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getOverallCompanyDuration(): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+    private getOverallCompanyDuration(): Observable<boolean> {
+        return new Observable((subscriber) => {
             this.dashboardQuery.companyDuration$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((companyDuration: number) => {
-                    resolve(true);
                     if (companyDuration) {
                         this.overallCompanyDuration = companyDuration;
                     }
+                    subscriber.next(true);
+                    subscriber.complete();
                 });
 
             this.setCustomSubPeriodList(this.overallCompanyDuration);
