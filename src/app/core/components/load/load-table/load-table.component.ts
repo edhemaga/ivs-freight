@@ -23,7 +23,11 @@ import {
     GridColumn,
     ToolbarActions,
 } from '../../shared/model/cardTableData';
-import { CardRows, Search } from '../../shared/model/cardData';
+import {
+    CardRows,
+    Search,
+    TableOptionsInterface,
+} from '../../shared/model/cardData';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
     FilterOptions,
@@ -62,7 +66,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public tableOptions: any = {};
+    public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
