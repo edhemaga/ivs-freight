@@ -114,8 +114,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        console.log(this.viewData);
-
         this.sendTrailerData();
 
         this.confirmationSubscribe();
@@ -1034,7 +1032,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ConstantStringTableComponentsEnum.TRAILER;
 
                 this.viewData = this.viewData.map((trailer) => {
-                    console.log(trailer);
                     response.map((id) => {
                         if (trailer.id === id) {
                             trailer.actionAnimation =

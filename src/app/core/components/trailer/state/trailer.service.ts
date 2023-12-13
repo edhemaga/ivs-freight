@@ -345,12 +345,10 @@ export class TrailerTService implements OnDestroy {
             .apiTrailerStatusIdPut(trailerId, 'response')
             .pipe(
                 tap(() => {
-                    console.log('-----here-----');
                     const subTrailer = this.getTrailerById(trailerId)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
                             next: (trailer: any) => {
-                                console.log('---here-----');
                                 /* Get Table Tab Count */
                                 const trailerCount = JSON.parse(
                                     localStorage.getItem('trailerTableCount')
@@ -425,13 +423,13 @@ export class TrailerTService implements OnDestroy {
         return this.trailerService.apiTrailerModalGet();
     }
 
-    public changeActiveStatus(trailerId: any) {
+    public changeActiveStatus(trailerId: number) {
         return this.trailerService
             .apiTrailerStatusIdPut(trailerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    let storedTrailerData = {
+                    const storedTrailerData = {
                         ...this.trailerItemStore?.getValue()?.entities[
                             trailerId
                         ],

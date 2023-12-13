@@ -191,8 +191,16 @@ export class TruckassistCardsComponent implements OnInit {
         // Value is obj key
         const value = obj[path];
 
-        //Check if value is null return /
-        if (!obj || !path) return ConstantStringTableComponentsEnum.SLASH;
+        const valueOfKeyIsNullOrUndefined = !path
+            .split('.')
+            .reduce((acc, part) => acc && acc[part], obj);
+
+        const valueOfKeyIsNotZero =
+            path.split('.').reduce((acc, part) => acc && acc[part], obj) !== 0;
+
+        //Check if value is null return / and if it is 0 return expired
+        if (valueOfKeyIsNullOrUndefined && valueOfKeyIsNotZero)
+            return ConstantStringTableComponentsEnum.SLASH;
 
         // Transform number to descimal with $ and transform date
         switch (path) {
