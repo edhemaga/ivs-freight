@@ -105,7 +105,7 @@
                     [ngClass]="
                         selectedSubPeriod?.name
                             | setCustomSubperiodWidth
-                                : selectedDropdownWidthSubPeriod.name
+                                : selectedDropdownWidthSubPeriod?.name
                     "
                 >
                     <app-ta-input-dropdown
@@ -401,13 +401,15 @@
                 <div
                     class="d-flex justify-content-center align-items-center dashboard-top-rated-body-up-doughnut-chart-container"
                 >
-                    <app-ta-chart
-                        #doughnutChart
-                        [chartConfig]="doughnutChartConfig"
-                        [axesProperties]="{}"
-                        [legendAttributes]="{}"
-                    >
-                    </app-ta-chart>
+                    <ng-container *ngIf="doughnutChartConfig">
+                        <app-ta-chart
+                            #doughnutChart
+                            [chartConfig]="doughnutChartConfig"
+                            [axesProperties]="{}"
+                            [legendAttributes]="{}"
+                        >
+                        </app-ta-chart>
+                    </ng-container>
 
                     <!-- Custom Period Range -->
 
@@ -494,13 +496,15 @@
                 <!-- Bar Chart -->
 
                 <div class="bar-chart-container">
-                    <app-ta-chart
-                        #barChart
-                        [chartConfig]="barChartConfig"
-                        [axesProperties]="barChartAxes"
-                        [legendAttributes]="{}"
-                    >
-                    </app-ta-chart>
+                    <ng-container *ngIf="barChartConfig">
+                        <app-ta-chart
+                            #barChart
+                            [chartConfig]="barChartConfig"
+                            [axesProperties]="barChartAxes"
+                            [legendAttributes]="{}"
+                        >
+                        </app-ta-chart>
+                    </ng-container>
                 </div>
             </div>
         </div>

@@ -12,9 +12,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardTopRatedService } from '../../../state/services/dashboard-top-rated.service';
-
-// store
-import { DashboardQuery } from '../../../state/store/dashboard.query';
+import { DashboardService } from '../../../state/services/dashboard.service';
 
 // constants
 import { DashboardTopRatedConstants } from '../../../state/utils/constants/dashboard-top-rated.constants';
@@ -145,7 +143,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private changeDetectorRef: ChangeDetectorRef,
         private dashboardTopRatedService: DashboardTopRatedService,
-        private dashboardQuery: DashboardQuery
+        private dashboardService: DashboardService
     ) {}
 
     ngOnInit(): void {
@@ -156,8 +154,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getTopRatedListData();
-
-        this.setChartsData();
     }
 
     private createForm(): void {
@@ -533,15 +529,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getOverallCompanyDuration(): void {
-        this.dashboardQuery.companyDuration$
+        this.dashboardService.getOverallCompanyDuration$
             .pipe(takeUntil(this.destroy$))
             .subscribe((companyDuration: number) => {
                 if (companyDuration) {
                     this.overallCompanyDuration = companyDuration;
+
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
                 }
             });
-
-        this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
 
     private getTopRatedListData(customPeriodRange?: CustomPeriodRange): void {

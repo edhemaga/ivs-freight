@@ -95,7 +95,7 @@
                     [ngClass]="
                         selectedSubPeriod?.name
                             | setCustomSubperiodWidth
-                                : selectedDropdownWidthSubPeriod.name
+                                : selectedDropdownWidthSubPeriod?.name
                     "
                 >
                     <app-ta-input-dropdown
@@ -503,13 +503,15 @@
                 <!-- Bar Chart -->
 
                 <div class="bar-chart-container">
-                    <app-ta-chart
-                        #barChart
-                        [chartConfig]="barChartConfig"
-                        [axesProperties]="barChartAxes"
-                        [legendAttributes]="{}"
-                    >
-                    </app-ta-chart>
+                    <ng-container *ngIf="barChartConfig">
+                        <app-ta-chart
+                            #barChart
+                            [chartConfig]="barChartConfig"
+                            [axesProperties]="barChartAxes"
+                            [legendAttributes]="{}"
+                        >
+                        </app-ta-chart>
+                    </ng-container>
                 </div>
             </div>
         </div>
