@@ -1,0 +1,31 @@
+image: node:14.20
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Installation
+          caches:
+            - node
+          script:
+            - npm install
+          artifacts:
+            - node_modules/** # Save modules for next steps
+      - step:
+          name: Build
+          script:
+            - npm run build:production
+          artifacts:
+            - dist/** # Save build for next steps
+      - step:
+          name: Deploy
+          script:
+            - echo "$(ls -la)"
+            - echo "$(ls -la dist)"
+            - apt-get update && apt-get install -y openssh-client
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io mkdir /home/frontstage/www-tmp
+            - scp -P29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./dist/carrierassist-fe/* apistage@208.70.254.248://home/frontstage/www-tmp
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io rm -rf /home/frontstage/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io mv /home/frontstage/www /home/frontstage/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io mv /home/frontstage/www-tmp /home/frontstage/www
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io chown apistage:frontstage /home/frontstage/www -R
