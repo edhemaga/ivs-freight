@@ -25,6 +25,7 @@ pipelines:
             - apt-get update && apt-get install -y openssh-client
             - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
             - chmod 600 ~/.ssh/id_rsa
+            - chmod 600 /home/apistage
             - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io mkdir /home/frontstage/www-tmp
             - scp -P29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./dist/carrierassist-fe/* apistage@208.70.254.248://home/frontstage/www-tmp
             - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null apistage@stage.carriera.io rm -rf /home/frontstage/www-old
