@@ -1,5 +1,6 @@
 @import './ta-input.colors.scss';
 // -------------------- Input Control --------------------
+
 .input-control {
     width: 100%;
     height: 26px;
@@ -116,7 +117,9 @@
     &.valid-focus-out-filled {
         background-color: $valid-input;
         color: $valid-content;
-
+        &.input-dropdown-table{
+            background-color: $default-focus-content;
+         }
         &::-moz-selection {
             background-color: $valid-content-background-selection;
             color: $valid-content;

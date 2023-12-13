@@ -1,4 +1,6 @@
 /* Table Body */
+@import 'src/theme/variables';
+
 table {
     width: 100%;
     height: fit-content;
@@ -59,7 +61,92 @@ table {
                         height: 100%;
                         align-items: center;
 
-                        // NO TEMPLATE
+                        svg-icon #Group_102994{
+                            display: none;
+
+                        }
+                        //nput dropdown label
+                        app-ta-input-dropdown-label{
+
+                            .input-custom-group .input-icon::after{
+                                content: none;
+                            }
+
+                            &:hover{
+
+                                //Input
+                                input{
+                                    background-color: $dark-2;
+                                    
+                                    &:active:hover{
+                                        background-color: $ta-black-3 !important;
+                                        color: $white !important;
+                                    }
+
+                                    &:focus:hover{
+                                        background-color: $ta-black-3 !important;
+                                        color: $white !important;
+                                    }
+
+                                    &:hover{
+                                        background-color: $dark-2;
+                                    }
+                                }
+
+                                .input-pen-container{
+                                    right: 25px;
+
+                                    .input-pen svg{
+                                    
+                                        #Rectangle_88310{
+                                            fill: rgba(145, 145, 145, 0)
+                                        }
+                                    
+                                        #Edit{
+                                            #Path_7775{
+                                                fill: $muted;
+                                            }
+                                    
+                                            #Path_7776{
+                                                fill: $muted;
+                                            }
+                                        }
+                                    } 
+                                } 
+
+                                svg-icon #Group_102994{
+                                    path{
+                                        fill: $muted;
+                                    }
+                                    display: flex!important;     
+                                    
+                                    &:hover{
+                                        path{
+                                            fill: $muted;
+                                        }
+                                    }   
+                                }
+                            }
+                        }
+
+                        //Input
+                        input  {
+                            padding-left: 25px;
+                            &:hover{
+                                cursor: pointer;
+                                
+                                svg-icon #Group_102994{
+                                    display: flex!important;        
+                                }
+                            }
+                        }
+                                                    
+                        //Input icon
+                        .input-icon{
+                            left: 0px;
+                        }
+
+                        // No template
                         .no-template {
                             color: red;
                             font-size: 14px;
@@ -70,7 +157,7 @@ table {
                             width: 100%;
                         }
 
-                        // VIN TEMPLATE
+                        // Vin template
                         .vin-container {
                             display: flex;
                             font-size: 14px;
@@ -1519,13 +1606,98 @@ table {
                                 margin-right: 4px;
                                 height: 21px;
                             }
+                           
+                            svg-icon #Group_102994{
+                                display: none;
 
+                            }
+
+                            //Input dropdown label
+                            app-ta-input-dropdown-label{
+
+                                .input-custom-group .input-icon::after{
+                                    content: none;
+                                }
+
+                                &:hover{
+
+                                    //Input
+                                    input{
+                                        background-color: $dark-2;
+
+                                        &:active:hover{
+                                            background-color: $ta-black-3 !important;
+                                            color: $white !important;
+                                        }
+
+                                        &:focus:hover{
+                                            background-color:  $ta-black-3!important;
+                                            color: $white !important;
+                                        }
+
+                                        &:hover{
+                                            background-color: $dark-2;
+                                        }
+                                    }
+
+                                    .input-pen-container{
+                                        right: 25px;
+                                        
+                                        .input-pen svg{
+                                                
+                                            #Rectangle_88310{
+                                                fill: rgba(145, 145, 145, 0)
+                                            }
+
+                                            #Edit{
+                                                #Path_7775{
+                                                    fill: $muted;
+                                                }
+                                                #Path_7776{
+                                                    fill: $muted;
+                                                }
+                                            }
+                                        } 
+                                    } 
+
+                                    svg-icon #Group_102994{
+
+                                        path{
+                                            fill: $muted;
+                                        }
+                                        
+                                        display: flex!important;   
+
+                                        &:hover{
+                                            path{
+                                                fill: $muted;
+                                            }
+                                        }   
+                                    }
+                                }
+                            }
+
+                            //Input
+                            input  {
+                                padding-left: 25px;
+
+                                &:hover{
+                                    cursor: pointer;
+                                    
+                                    svg-icon #Group_102994{
+                                        display: flex!important;        
+                                    }
+                                }
+                            }
+
+                            .input-icon{
+                                left: 0px;
+                            }
                             .lable-name {
                                 font-size: 14px;
                                 font-weight: 400;
                                 height: fit-content;
                                 color: #6c6c6c;
-
                                 &::selection {
                                     color: #6c6c6c;
                                     background: #6c6c6c20;
@@ -2582,8 +2754,17 @@ table {
             // Hover
             &:hover {
                 .columns-container {
-                    background: #f7f7f7 !important;
-
+                    .td-content{
+                            input{
+                                background-color: $ta-light-grey ;
+                            }
+                    }
+                    background-color: $ta-light-grey !important;
+                    .lable-container {
+                            input{
+                                background-color: $ta-light-grey ;
+                            }
+                    }
                     .table-text,
                     .table-name-link,
                     .color-name,
@@ -2652,8 +2833,19 @@ table {
         // Selected Row
         .selected-row {
             .columns-container {
-                background: #e5e5e5;
-
+                background: $ta-light-grey;
+                    input  
+                    {
+                        background-color: $ta-light-grey !important;
+                        color: $bw6-2 !important;
+                    }
+                .lable-container {
+                    input  
+                    {
+                        background-color: $ta-light-grey !important;
+                        color: $bw6-2 !important;
+                    }
+                }
                 // CONTACT COLUMN
                 .contact-container {
                     .contact-count {
@@ -2665,7 +2857,7 @@ table {
                             background: #6c6c6c20 !important;
                         }
                     }
-
+                  
                     .contact-avatar {
                         background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
                     }
@@ -2943,6 +3135,16 @@ table {
 .update-animation {
     background: orange !important;
     transition: 0.4s;
+    .columns-container{
+        .lable-container {
+            app-ta-input-dropdown-label{
+                input{
+                    background: orange !important;
+                    transition: 0.4s;
+                }
+            } 
+        }
+    }
 }
 
 // Deactivate Animation

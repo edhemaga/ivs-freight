@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
+    AccountColorResponse,
+    CompanyAccountLabelResponse,
     CompanyContactLabelService,
     CompanyContactModalResponse,
     CompanyContactResponse,
@@ -70,7 +72,9 @@ export class ContactTService {
 
     // Update Contact
     public updateCompanyContact(
-        data: UpdateCompanyContactCommand
+        data: UpdateCompanyContactCommand,
+        colors?: Array<AccountColorResponse>,
+        colorLabels?: Array<CompanyAccountLabelResponse>
     ): Observable<any> {
         return this.contactService.apiCompanycontactPut(data).pipe(
             tap(() => {
@@ -79,7 +83,8 @@ export class ContactTService {
                 ).subscribe({
                     next: (contact: CompanyContactResponse | any) => {
                         this.contactStore.remove(({ id }) => id === data.id);
-
+                        colors && (contact.colorRes = colors);
+                        colorLabels && (contact.colorLabels = colorLabels);
                         this.contactStore.add(contact);
 
                         this.tableService.sendActionAnimation({
