@@ -73,6 +73,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
+    public activeTableData: string;
     public backFilterQuery: backFilterQueryInterface = {
         active: 1,
         pageIndex: 1,
@@ -500,6 +501,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                   (this.sendDataToCardsBack = this.displayRowsBackActive))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
                   (this.sendDataToCardsBack = this.displayRowsBackInactive));
+
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
@@ -982,6 +985,22 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData(): void {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (table) => table.field === this.selectedTab
+            );
+        }
+    }
+
+    // Show More Data
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+        });
     }
 
     private changeTrailerStatus(id: number): void {

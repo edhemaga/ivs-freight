@@ -77,12 +77,12 @@ export class TruckassistCardsComponent implements OnInit {
     public dropDownIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
-
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
 
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
+
     constructor(
         private detailsDataService: DetailsDataService,
         private formatCurrency: formatCurrency,
@@ -126,11 +126,12 @@ export class TruckassistCardsComponent implements OnInit {
     // Show hide dropdown
     public toggleDropdown(tooltip, card: CardDetails): void {
         this.tooltip = tooltip;
-
         if (tooltip.isOpen()) {
             tooltip.close();
+            this.dropDownIsOpened = null;
         } else {
-            if (card.tableDropdownContent?.hasContent) {
+            if (card?.tableDropdownContent?.content) {
+                this.dropDownIsOpened = card.id;
                 let actions = [...card.tableDropdownContent.content];
 
                 actions = actions.map((actions: DropdownItem) => {

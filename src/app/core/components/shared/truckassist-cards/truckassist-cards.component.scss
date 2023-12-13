@@ -1,15 +1,17 @@
 @import '/src/theme/variables.scss';
 @import '/src/assets/scss/fonts.scss';
+
 //Cards
 .cards-container {
     margin-top: 11px;
+    display: grid;
     gap: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(302px, 1fr));
 }
 .custom-card {
     background: $white;
     border-radius: 3px;
-    flex: 1 0 302px;
-    max-width: 367px;
+
     .body-active {
         background: $ta-gray-02;
     }
@@ -17,6 +19,7 @@
     .body-checked {
         background: $ta-gray-02;
     }
+
     // Main tag of card holding all elements with hover on it
     .card-body {
         padding: 4px;
@@ -268,6 +271,13 @@
                     height: 26px;
                     cursor: pointer;
                     position: relative;
+                    border-radius: 2px;
+                    &:hover {
+                        background: rgba(145, 145, 145, 0.2);
+                    }
+                    .note-tooltip {
+                        height: 30px;
+                    }
 
                     svg {
                         path {
@@ -336,8 +346,9 @@
                     border-radius: 2px;
                     width: 26px;
                     height: 26px;
-                    transition: all 0.3s;
-
+                    &:hover {
+                        background: $ta-black;
+                    }
                     .table-dropdown-container {
                         svg {
                             g {
