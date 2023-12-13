@@ -71,7 +71,7 @@ export class AccountTService {
     // Update Account
     public updateCompanyAccount(
         data: UpdateCompanyAccountCommand,
-        colors?: Array<AccountColorResponse>,
+        colors?: AccountColorResponse,
         colorLabels?: Array<CompanyAccountLabelResponse>
     ): Observable<any> {
         return this.accountService.apiCompanyaccountPut(data).pipe(
@@ -79,7 +79,7 @@ export class AccountTService {
                 const subAccount = this.getCompanyAccountById(
                     data.id
                 ).subscribe({
-                    next: (account: CompanyAccountResponse | any) => {
+                    next: (account: CompanyAccountResponse) => {
                         this.accountStore.remove(({ id }) => id === data.id);
 
                         colors && (account.colorRes = colors);

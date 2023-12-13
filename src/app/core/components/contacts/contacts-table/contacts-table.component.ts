@@ -15,7 +15,7 @@ import { ContactState } from '../state/contact-state/contact.store';
 import { ContactQuery } from '../state/contact-state/contact.query';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 
-//methode
+//methods
 import {
     tableSearch,
     closeAnimationAction,
@@ -30,6 +30,7 @@ import { ContractComponentEnum } from '../state/enum/contract-string.enum';
 //model
 import {
     CompanyAccountLabelResponse,
+    CompanyContactResponse,
     CreateCompanyContactCommand,
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
@@ -88,19 +89,33 @@ export class ContactsTableComponent
     ngOnInit(): void {
         this.sendContactData();
 
-        // Reset Columns
+        this.contractResetColumns();
+
+        this.contractResize();
+
+        this.contractCurrentToaggleColumn();
+
+        this.contractCurrentSearchTableData();
+
+        this.contractCurrentActionAnimation();
+
+        this.contractCurrentDeleteSelectedRows();
+    }
+
+    private contractResetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
+            .subscribe((response) => {
                 if (response) {
                     this.sendContactData();
                 }
             });
+    }
 
-        // Resize
+    private contractResize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.event?.width) {
                     this.columns = this.columns.map((c) => {
                         if (
@@ -114,11 +129,12 @@ export class ContactsTableComponent
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    private contractCurrentToaggleColumn(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((c) => {
                         if (c.field === response.column.field) {
@@ -129,11 +145,12 @@ export class ContactsTableComponent
                     });
                 }
             });
+    }
 
-        // Search
+    private contractCurrentSearchTableData(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.mapingIndex = 0;
 
@@ -150,22 +167,26 @@ export class ContactsTableComponent
                     }
                 }
             });
+    }
 
-        // Contact Actions
+    private contractCurrentActionAnimation(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 // Add Contact
                 if (res.animation === ComponentsTableEnum.ADD) {
                     this.viewData.push(this.mapContactData(res.data));
 
-                    this.viewData = this.viewData.map((contact: any) => {
-                        if (contact.id === res.id) {
-                            contact.actionAnimation = ComponentsTableEnum.ADD;
-                        }
+                    this.viewData = this.viewData.map(
+                        (contact: CompanyContactResponse) => {
+                            if (contact.id === res.id) {
+                                contact.actionAnimation =
+                                    ComponentsTableEnum.ADD;
+                            }
 
-                        return contact;
-                    });
+                            return contact;
+                        }
+                    );
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -182,15 +203,17 @@ export class ContactsTableComponent
                 else if (res.animation === ComponentsTableEnum.UPDATE) {
                     const updatedContact = this.mapContactData(res.data, true);
 
-                    this.viewData = this.viewData.map((contact: any) => {
-                        if (contact.id === res.id) {
-                            contact = updatedContact;
-                            contact.actionAnimation =
-                                ComponentsTableEnum.UPDATE;
-                        }
+                    this.viewData = this.viewData.map(
+                        (contact: CompanyContactResponse) => {
+                            if (contact.id === res.id) {
+                                contact = updatedContact;
+                                contact.actionAnimation =
+                                    ComponentsTableEnum.UPDATE;
+                            }
 
-                        return contact;
-                    });
+                            return contact;
+                        }
+                    );
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -206,11 +229,11 @@ export class ContactsTableComponent
                     let contactIndex: number;
 
                     this.viewData = this.viewData.map(
-                        (contact: any, index: number) => {
+                        (contact: CompanyContactResponse, index: number) => {
                             if (contact.id === res.id) {
                                 contact.actionAnimation =
                                     ComponentsTableEnum.DELETE;
-                                contact = index;
+                                contactIndex = index;
                             }
 
                             return contact;
@@ -230,19 +253,20 @@ export class ContactsTableComponent
                     this.updateDataCount();
                 }
             });
+    }
 
-        // Delete Selected Rows
+    private contractCurrentDeleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length) {
                     this.contactService
                         .deleteAccountList(response)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe(() => {
                             this.viewData = this.viewData.map(
-                                (contact: any) => {
-                                    response.map((r: any) => {
+                                (contact: CompanyContactResponse) => {
+                                    response.map((r) => {
                                         if (contact.id === r.id) {
                                             contact.actionAnimation =
                                                 'deletemultiple';
@@ -379,13 +403,11 @@ export class ContactsTableComponent
 
         if (td.data.length) {
             this.viewData = td.data;
-            this.viewData = this.viewData.map((data: any) => {
-                return this.mapContactData(data);
-            });
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
+            this.viewData = this.viewData.map(
+                (data: CompanyContactResponse) => {
+                    return this.mapContactData(data);
+                }
+            );
         } else {
             this.viewData = [];
         }
@@ -603,6 +625,7 @@ export class ContactsTableComponent
         const companyContractData = this.viewData.find(
             (e: CreateCompanyContactCommand) => e.id === event.id
         );
+
         const newdata: UpdateCompanyContactCommand = {
             id: companyContractData.id ?? null,
             name: companyContractData.name ?? null,

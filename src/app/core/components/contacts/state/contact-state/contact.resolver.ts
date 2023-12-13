@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ContactTService } from '../contact.service';
 import { ContactState, ContactStore } from './contact.store';
+import { ContactsTableData } from 'src/app/core/model/contact';
 
 @Injectable({
     providedIn: 'root',
@@ -35,6 +36,7 @@ export class ContactResolver implements Resolve<ContactState> {
                             contact: contactPagination.count,
                         })
                     );
+
                     if (tableConfig) {
                         const config = JSON.parse(tableConfig.config);
 
@@ -43,12 +45,14 @@ export class ContactResolver implements Resolve<ContactState> {
                             JSON.stringify(config)
                         );
                     }
+
                     const contactLabels = contractLabels.labels.map((item) => {
                         return { ...item, dropLabel: true };
                     });
-                    let contractTableData = contactPagination.pagination.data;
+
+                    const contractTableData = contactPagination.pagination.data;
                     contractTableData.map(
-                        (e: any) => (
+                        (e: ContactsTableData) => (
                             (e.colorRes = colorRes),
                             (e.colorLabels = contactLabels)
                         )

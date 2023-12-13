@@ -61,7 +61,11 @@ import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight
 
 //models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { tableBodyColumns, tableBodyOptions } from '../../model/tablleBody';
+import {
+    tableBodyColorLabel,
+    tableBodyColumns,
+    tableBodyOptions,
+} from '../../model/tableBody';
 
 @Titles()
 @Component({
@@ -112,7 +116,7 @@ export class TruckassistTableBodyComponent
     @Input() options: tableBodyOptions;
     @Input() tableData: any[];
     @Input() selectedTab: string;
-    selectedContactLabel: any = [];
+    selectedContactLabel: tableBodyColorLabel[] = [];
     pinedColumns: any = [];
     pinedWidth: number = 0;
     notPinedColumns: any = [];
@@ -165,7 +169,6 @@ export class TruckassistTableBodyComponent
     ngOnInit(): void {
         // Get Selected Tab Data
         this.getSelectedTabTableData();
-
         this.viewDataEmpty = this.viewData.length ? false : true;
 
         this.viewDataLength = this.viewData.length;
@@ -886,6 +889,7 @@ export class TruckassistTableBodyComponent
             ...this.selectedContactLabel[index],
             name: data.data.name,
         };
+
         this.bodyActions.emit({
             data: this.selectedContactLabel[index],
             id: this.viewData[index].id,
@@ -901,6 +905,7 @@ export class TruckassistTableBodyComponent
         index: number
     ): void {
         this.selectedContactLabel[index] = event;
+
         this.onSaveLabel(
             {
                 data: {
@@ -917,6 +922,7 @@ export class TruckassistTableBodyComponent
         index: number
     ): void {
         this.selectedContactColor = event;
+
         this.selectedContactLabel[index] = {
             ...this.selectedContactLabel[index],
             colorId: this.selectedContactColor.id,

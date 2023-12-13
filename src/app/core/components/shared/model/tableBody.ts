@@ -109,6 +109,7 @@ export interface tableBodyColumns {
     avatar?: tableBodyColumnsAvatar | boolean;
     progress?: tableBodyColumnsProgress | null;
 }
+
 export interface toolbarActions {
     showLocationFilter?: boolean;
     showMoneyFilter?: boolean;
@@ -153,12 +154,14 @@ export interface toolbarActions {
     fuelMoneyFilter?: boolean;
     viewModeOptions?: viewModelOption[];
 }
+
 export interface tableBodyOptions {
     toolbarActions?: toolbarActions;
     config?: tableBodyOptionsConfig;
     disabledMutedStyle?: null;
     actions?: tableBodyOptionsActions[];
 }
+
 export interface tableBodyTableData {
     title?: string;
     field?: string;
@@ -171,6 +174,7 @@ export interface tableBodyTableData {
     data?: tableBodyView[];
     gridColumns?: tableBodyColumns[];
 }
+
 export interface tableBodyOptionsActions {
     title?: string;
     name?: string;
@@ -184,6 +188,7 @@ export interface tableBodyOptionsActions {
     danger?: boolean;
     redIcon?: boolean;
 }
+
 export interface tableBodyView {
     isSelected?: boolean;
     trailerType?: TrailerTypeResponse;
@@ -460,6 +465,7 @@ export interface tableBodyView {
     closedPercentage?: number | null;
     progressBar?: Array<LoadStopProgressBarResponse> | null;
 }
+
 export interface tableBodyOptionsConfig {
     showSort?: boolean;
     sortBy?: string;
@@ -506,4 +512,16 @@ export interface tableBodyColumnsheadIconStyle {
 export interface tableBodyColumnsSvgDimensions {
     width?: number;
     height?: number;
+}
+
+export interface tableBodyColorLabel {
+    code?: string;
+    color?: string;
+    createdAt?: string;
+    hoverCode?: string;
+    name?: string;
+    updatedAt?: string;
+    colorId?: number;
+    count?: number;
+    id?: number;
 }

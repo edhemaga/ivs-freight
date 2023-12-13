@@ -60,74 +60,92 @@ table {
                         display: flex;
                         height: 100%;
                         align-items: center;
-                            svg-icon #Group_102994{
-                                display: none;
 
+                        svg-icon #Group_102994{
+                            display: none;
+
+                        }
+                        //INPUT DROPDOWN LABLE
+                        app-ta-input-dropdown-label{
+
+                            .input-custom-group .input-icon::after{
+                                content: none;
                             }
-                            app-ta-input-dropdown-label{
-                                .input-custom-group .input-icon::after{
-                                    content: none;
-                                }
-                                &:hover{
 
-                                    input{
-                                        background-color: $dark-2;
-                                        &:active:hover{
-                                            background-color: $ta-black-3 !important;
-                                            color: $white !important;
-                                        }
-                                        &:focus:hover{
-                                            background-color: $ta-black-3 !important;
-                                            color: $white !important;
-                                        }
-                                        &:hover{
-                                            background-color: $dark-2;
-                                        }
+                            &:hover{
+
+                                //INPUT
+                                input{
+                                    background-color: $dark-2;
+                                    
+                                    &:active:hover{
+                                        background-color: $ta-black-3 !important;
+                                        color: $white !important;
                                     }
-                                    .input-pen-container{
-                                        right: 25px;
-                                        .input-pen svg{
-                                             
-                                            #Rectangle_88310{
-                                               fill: rgba(145, 145, 145, 0)
+
+                                    &:focus:hover{
+                                        background-color: $ta-black-3 !important;
+                                        color: $white !important;
+                                    }
+
+                                    &:hover{
+                                        background-color: $dark-2;
+                                    }
+                                }
+
+                                .input-pen-container{
+                                    right: 25px;
+
+                                    .input-pen svg{
+                                    
+                                        #Rectangle_88310{
+                                            fill: rgba(145, 145, 145, 0)
+                                        }
+                                    
+                                        #Edit{
+                                            #Path_7775{
+                                                fill: #919191;
                                             }
-                                            #Edit{
-                                                #Path_7775{
-                                                    fill: #919191;
-                                                }
-                                                #Path_7776{
-                                                    fill: #919191;
-                                                }
+                                    
+                                            #Path_7776{
+                                                fill: #919191;
                                             }
-                                        } 
+                                        }
                                     } 
-                                    svg-icon #Group_102994{
+                                } 
+
+                                svg-icon #Group_102994{
+                                    path{
+                                        fill: #919191;
+                                    }
+                                    display: flex!important;     
+                                    
+                                    &:hover{
                                         path{
                                             fill: #919191;
                                         }
-                                        display: flex!important;     
-                                        &:hover{
-                                            path{
-                                                fill: #919191;
-                                            }
-                                        }   
-                                    }
+                                    }   
                                 }
                             }
+                        }
 
-                            input  {
-                                padding-left: 25px;
-                                &:hover{
-                                    cursor: pointer;
-                                 
-                                    svg-icon #Group_102994{
-                                        display: flex!important;        
-                                    }
+                        //INPUT
+                        input  {
+                            padding-left: 25px;
+                            &:hover{
+                                cursor: pointer;
+                                
+                                svg-icon #Group_102994{
+                                    display: flex!important;        
                                 }
                             }
-                            .input-icon{
-                                left: 0px;
-                            }
+                        }
+                                                    
+                        //INPUT ICON
+                        .input-icon{
+                            left: 0px;
+                        }
+
                         // NO TEMPLATE
                         .no-template {
                             color: red;
@@ -1589,74 +1607,91 @@ table {
                                 height: 21px;
                             }
                            
-                                svg-icon #Group_102994{
-                                    display: none;
+                            svg-icon #Group_102994{
+                                display: none;
 
+                            }
+
+                            //INPUT DROPDOWN LABLE
+                            app-ta-input-dropdown-label{
+
+                                .input-custom-group .input-icon::after{
+                                    content: none;
                                 }
-                                app-ta-input-dropdown-label{
-                                    .input-custom-group .input-icon::after{
-                                        content: none;
-                                    }
-                                    &:hover{
 
-                                        input{
-                                            background-color: $dark-2;
-                                            &:active:hover{
-                                                background-color: $ta-black-3 !important;
-                                                color: $white !important;
-                                            }
-                                            &:focus:hover{
-                                                background-color:  $ta-black-3!important;
-                                                color: $white !important;
-                                            }
-                                            &:hover{
-                                                background-color: $dark-2;
-                                            }
+                                &:hover{
+
+                                    //INPUT
+                                    input{
+                                        background-color: $dark-2;
+
+                                        &:active:hover{
+                                            background-color: $ta-black-3 !important;
+                                            color: $white !important;
                                         }
-                                        .input-pen-container{
-                                            right: 25px;
-                                            .input-pen svg{
-                                                 
-                                                #Rectangle_88310{
-                                                   fill: rgba(145, 145, 145, 0)
+
+                                        &:focus:hover{
+                                            background-color:  $ta-black-3!important;
+                                            color: $white !important;
+                                        }
+
+                                        &:hover{
+                                            background-color: $dark-2;
+                                        }
+                                    }
+
+                                    .input-pen-container{
+                                        right: 25px;
+                                        
+                                        .input-pen svg{
+                                                
+                                            #Rectangle_88310{
+                                                fill: rgba(145, 145, 145, 0)
+                                            }
+
+                                            #Edit{
+                                                #Path_7775{
+                                                    fill: $muted;
                                                 }
-                                                #Edit{
-                                                    #Path_7775{
-                                                        fill: $muted;
-                                                    }
-                                                    #Path_7776{
-                                                        fill: $muted;
-                                                    }
+                                                #Path_7776{
+                                                    fill: $muted;
                                                 }
-                                            } 
+                                            }
                                         } 
-                                        svg-icon #Group_102994{
+                                    } 
+
+                                    svg-icon #Group_102994{
+
+                                        path{
+                                            fill: #919191;
+                                        }
+                                        
+                                        display: flex!important;   
+
+                                        &:hover{
                                             path{
                                                 fill: #919191;
                                             }
-                                            display: flex!important;     
-                                            &:hover{
-                                                path{
-                                                    fill: #919191;
-                                                }
-                                            }   
-                                        }
+                                        }   
                                     }
                                 }
+                            }
 
-                                input  {
-                                    padding-left: 25px;
-                                    &:hover{
-                                        cursor: pointer;
-                                     
-                                        svg-icon #Group_102994{
-                                            display: flex!important;        
-                                        }
+                            input  {
+                                padding-left: 25px;
+
+                                &:hover{
+                                    cursor: pointer;
+                                    
+                                    svg-icon #Group_102994{
+                                        display: flex!important;        
                                     }
                                 }
-                                .input-icon{
-                                    left: 0px;
-                                }
+                            }
+
+                            .input-icon{
+                                left: 0px;
+                            }
                             .lable-name {
                                 font-size: 14px;
                                 font-weight: 400;

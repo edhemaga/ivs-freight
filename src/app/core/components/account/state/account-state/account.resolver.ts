@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AccountTService } from '../account.service';
 import { AccountState, AccountStore } from './account.store';
+import { CompanyAccountResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -38,15 +39,18 @@ export class AccountResolver implements Resolve<AccountState> {
                         JSON.stringify(config)
                     );
                 }
+
                 const accountLabel = accountLabels.labels.map((item) => {
                     return { ...item, dropLabel: true };
                 });
-                let accountTableData = accountPagination.pagination.data;
+
+                const accountTableData = accountPagination.pagination.data;
                 accountTableData.map(
-                    (e: any) => (
+                    (e: CompanyAccountResponse) => (
                         (e.colorRes = colorRes), (e.colorLabels = accountLabel)
                     )
                 );
+
                 this.accountStore.set(accountTableData);
             })
         );

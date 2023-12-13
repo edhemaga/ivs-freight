@@ -1,7 +1,10 @@
 import {
     AddressEntity,
     CompanyAccountLabelResponse,
+    CompanyContactLabelResponse,
     ContactColorResponse,
+    ContactEmailResponse,
+    ContactPhoneResponse,
     UpdateContactEmailCommand,
     UpdateContactPhoneCommand,
 } from 'appcoretruckassist';
@@ -30,12 +33,32 @@ export class ContactsData {
     address_unit: string;
 }
 
+export class ContactsTableData {
+    id?: number;
+    note?: string | null;
+    name?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    address?: AddressEntity;
+    shared?: boolean;
+    avatar?: string | null;
+    companyContactLabel?: CompanyContactLabelResponse;
+    colorRes?: ContactColorResponse;
+    colorLabels?: Array<CompanyContactLabelResponse> | null;
+    contactPhones?: Array<ContactPhoneResponse> | null;
+    contactEmails?: Array<ContactEmailResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
+    actionAnimation?: string;
+}
+
 export interface ManageContact {
     contactType?: string;
     name: string;
     labelId?: number;
     doc: ManageContactDoc;
 }
+
 export interface TableHeadActionContract {
     action?: string;
     direction?: number;
@@ -46,11 +69,13 @@ export interface TableBodyActionsContract {
     type?: string;
     data?: ContractTableData;
 }
+
 export interface TableToolBarActionActionsContract {
     mode?: string;
     action?: string;
     tabData?: ContactColumn;
 }
+
 export class ContractTableData {
     id: number;
     name: string;

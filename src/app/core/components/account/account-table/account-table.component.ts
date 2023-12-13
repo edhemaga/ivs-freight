@@ -23,14 +23,15 @@ import {
 
 //enum
 import { AccountComponentEnum } from '../state/enums/account-constant-strings.enum';
+import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 //model
 import {
     CompanyAccountLabelResponse,
+    CompanyAccountResponse,
     CreateCompanyContactCommand,
     UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
 import {
     TableBodyActionsAccount,
     TableHeadActionAccount,
@@ -75,19 +76,33 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.sendAccountData();
 
-        // Reset Columns
+        this.accountResetColumns();
+
+        this.accountResize();
+
+        this.accountCurrentToaggleColumn();
+
+        this.accountCurrentSearchTableData();
+
+        this.accountCurrentActionAnimation();
+
+        this.accountCurrentDeleteSelectedRows();
+    }
+
+    private accountResetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
+            .subscribe((response) => {
                 if (response) {
                     this.sendAccountData();
                 }
             });
+    }
 
-        // Resize
+    private accountResize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.event?.width) {
                     this.columns = this.columns.map((c) => {
                         if (
@@ -101,11 +116,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    private accountCurrentToaggleColumn(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((c) => {
                         if (c.field === response.column.field) {
@@ -116,11 +132,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 }
             });
+    }
 
-        // Search
+    private accountCurrentSearchTableData(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.backFilterQuery.pageIndex = 1;
 
@@ -135,22 +152,26 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             });
+    }
 
-        // Account Actions
+    private accountCurrentActionAnimation(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 // Add Account
                 if (res.animation === ComponentsTableEnum.ADD) {
                     this.viewData.push(this.mapAccountData(res.data));
 
-                    this.viewData = this.viewData.map((account: any) => {
-                        if (account.id === res.id) {
-                            account.actionAnimation = ComponentsTableEnum.ADD;
-                        }
+                    this.viewData = this.viewData.map(
+                        (account: CompanyAccountResponse) => {
+                            if (account.id === res.id) {
+                                account.actionAnimation =
+                                    ComponentsTableEnum.ADD;
+                            }
 
-                        return account;
-                    });
+                            return account;
+                        }
+                    );
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -163,19 +184,22 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
                 }
+
                 // Update Account
                 else if (res.animation === ComponentsTableEnum.UPDATE) {
                     const updatedAccount = this.mapAccountData(res.data);
 
-                    this.viewData = this.viewData.map((account: any) => {
-                        if (account.id === res.id) {
-                            account = updatedAccount;
-                            account.actionAnimation =
-                                ComponentsTableEnum.UPDATE;
-                        }
+                    this.viewData = this.viewData.map(
+                        (account: CompanyAccountResponse) => {
+                            if (account.id === res.id) {
+                                account = updatedAccount;
+                                account.actionAnimation =
+                                    ComponentsTableEnum.UPDATE;
+                            }
 
-                        return account;
-                    });
+                            return account;
+                        }
+                    );
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -186,12 +210,13 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 1000);
                 }
+
                 // Delete Account
                 else if (res.animation === ComponentsTableEnum.DELETE) {
                     let accountIndex: number;
 
                     this.viewData = this.viewData.map(
-                        (account: any, index: number) => {
+                        (account: CompanyAccountResponse, index: number) => {
                             if (account.id === res.id) {
                                 account.actionAnimation =
                                     ComponentsTableEnum.DELETE;
@@ -215,19 +240,20 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
                 }
             });
+    }
 
-        // Delete Selected Rows
+    private accountCurrentDeleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length) {
                     this.accountService
                         .deleteAccountList(response)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe(() => {
                             this.viewData = this.viewData.map(
-                                (account: any) => {
-                                    response.map((r: any) => {
+                                (account: CompanyAccountResponse) => {
+                                    response.map((r) => {
                                         if (account.id === r.id) {
                                             account.actionAnimation =
                                                 'delete-multiple';
@@ -635,10 +661,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
+
     private updateAcountLable(event: TableBodyActionsAccount): void {
         const companyAcountData = this.viewData.find(
             (e: CreateCompanyContactCommand) => e.id === event.id
         );
+
         const newdata: UpdateCompanyAccountCommand = {
             id: companyAcountData.id ?? null,
             name: companyAcountData.name ?? null,
@@ -648,6 +676,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             companyAccountLabelId: event.data ? event.data.id : null,
             note: companyAcountData.note ?? null,
         };
+
         this.accountService
             .updateCompanyAccount(
                 newdata,
@@ -657,6 +686,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
     private saveAcountLabel(data: CompanyAccountLabelResponse): void {
         this.accountService
             .updateCompanyAccountLabel({
@@ -667,6 +697,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
