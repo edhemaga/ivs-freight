@@ -1,4 +1,4 @@
-<div class="cards-container">
+<div class="cards-container d-flex flex-wrap">
     <ng-container
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
@@ -365,9 +365,14 @@
                                         }}
                                     </ng-container>
 
-                                    <!-- Truck page body -->
+                                    <!-- Truck and Trailer page body -->
 
-                                    <ng-container *ngIf="page === 'Truck'">
+                                    <ng-container
+                                        *ngIf="
+                                            page === 'Truck' ||
+                                            page === 'Trailer'
+                                        "
+                                    >
                                         <ng-container
                                             *ngIf="
                                                 rowsFront.title === 'VIN No.'
@@ -662,7 +667,12 @@
 
                                     <!-- Truck Page Body -->
 
-                                    <ng-container *ngIf="page === 'Truck'">
+                                    <ng-container
+                                        *ngIf="
+                                            page === 'Truck' ||
+                                            page === 'Trailer'
+                                        "
+                                    >
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.title ===
@@ -687,13 +697,34 @@
                                             ></app-progres-bar>
                                         </ng-container>
 
+                                        <ng-container
+                                            *ngIf="rowsBack.title === 'Color'"
+                                        >
+                                            <span
+                                                class="color-circle"
+                                                [style.background]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></span>
+                                            <span>{{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.secondEndpoint
+                                                )
+                                            }}</span>
+                                        </ng-container>
+
                                         <!-- Rest of the items -->
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.title !==
                                                     'FHWA Exp.' &&
                                                 rowsBack.title !==
-                                                    'Licence Exp.'
+                                                    'Licence Exp.' &&
+                                                rowsBack.title !== 'Color'
                                             "
                                             >{{
                                                 getValueByStringPath(

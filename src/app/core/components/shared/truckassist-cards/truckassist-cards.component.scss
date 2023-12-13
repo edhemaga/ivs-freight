@@ -4,21 +4,18 @@
 .cards-container {
     margin-top: 11px;
     gap: 4px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(302px, 1fr));
 }
 .custom-card {
     background: $white;
-    min-width: 302px;
-    max-width: 602px;
     border-radius: 3px;
-    flex-grow: 1;
+    flex: 1 0 302px;
+    max-width: 367px;
     .body-active {
-        background: $ta-light-grey;
+        background: $ta-gray-02;
     }
 
     .body-checked {
-        background: $ta-light-grey;
+        background: $ta-gray-02;
     }
     // Main tag of card holding all elements with hover on it
     .card-body {
@@ -28,7 +25,7 @@
         border-radius: 2px;
 
         &:hover {
-            background: $ta-light-grey;
+            background: $bw2;
         }
 
         .card-body-left {
@@ -177,6 +174,7 @@
                             border-radius: 1px;
                             color: $white;
                         }
+
                         .pickup {
                             background: $ta-green;
                         }
@@ -240,6 +238,13 @@
                         // Styles for truck page
                         .muted {
                             color: $muted;
+                        }
+
+                        .color-circle {
+                            width: 14px;
+                            height: 14px;
+                            border-radius: 50%;
+                            margin-right: 4px;
                         }
                     }
                 }
