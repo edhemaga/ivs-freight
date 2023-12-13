@@ -200,6 +200,16 @@ export enum ConstantStringTableComponentsEnum {
     TRUCK_TABLE_COUNT = 'truckTableCount',
     TRUCK_TABLE_VIEW = 'Truck-table-view',
 
+    // Trailer
+    TRAILERS = 'trailers',
+    TRAILER = 'Trailer ',
+    TRAILER_2 = 'trailer',
+    TRAILER_3 = 'Trailer',
+    TRAILER_4 = 'TRAILER',
+    EDIT_TRAILER = 'edit-trailer',
+    TRAILER_TABLE_COUNT = 'trailerTableCount',
+    TRAILER_TAB_VIEW = 'Trailer-table-view',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
