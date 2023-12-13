@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
-
-// store
-import { DashboardStore } from '../store/dashboard.store';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 // models
 import {
@@ -13,21 +10,20 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    constructor(
-        private dashboardService: DashboardBackendService,
-        private dashboardStore: DashboardStore
-    ) {}
+    private companyDurationSubject: BehaviorSubject<number> =
+        new BehaviorSubject<number>(0);
+
+    constructor(private dashboardService: DashboardBackendService) {}
+
+    get getOverallCompanyDuration$(): Observable<number> {
+        return this.companyDurationSubject.asObservable();
+    }
+
+    public setOverallCompanyDuration(companyDuration: number): void {
+        this.companyDurationSubject.next(companyDuration);
+    }
 
     public getOverallCompanyDuration(): Observable<CompanyDurationResponse> {
-        return this.dashboardService.apiDashboardCompanydurationGet().pipe(
-            tap((companyDuration) => {
-                this.dashboardStore.update((store) => {
-                    return {
-                        ...store,
-                        companyDuration: companyDuration.companyDurationInDays,
-                    };
-                });
-            })
-        );
+        return this.dashboardService.apiDashboardCompanydurationGet();
     }
 }

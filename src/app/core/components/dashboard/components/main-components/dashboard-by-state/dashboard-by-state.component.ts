@@ -11,9 +11,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardByStateService } from '../../../state/services/dashboard-by-state.service';
-
-// store
-import { DashboardQuery } from '../../../state/store/dashboard.query';
+import { DashboardService } from '../../../state/services/dashboard.service';
 
 // enums
 import { ConstantStringEnum } from '../../../state/enums/constant-string.enum';
@@ -130,9 +128,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private dashboardQuery: DashboardQuery,
         private changeDetectorRef: ChangeDetectorRef,
-        private dashboardByStateService: DashboardByStateService
+        private dashboardByStateService: DashboardByStateService,
+        private dashboardService: DashboardService
     ) {}
 
     ngOnInit(): void {
@@ -143,8 +141,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.getOverallCompanyDuration();
 
         this.getByStateListData();
-
-        this.setChartData();
     }
 
     private createForm(): void {
@@ -481,15 +477,15 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     }
 
     private getOverallCompanyDuration(): void {
-        this.dashboardQuery.companyDuration$
+        this.dashboardService.getOverallCompanyDuration$
             .pipe(takeUntil(this.destroy$))
             .subscribe((companyDuration: number) => {
                 if (companyDuration) {
                     this.overallCompanyDuration = companyDuration;
+
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
                 }
             });
-
-        this.setCustomSubPeriodList(this.overallCompanyDuration);
     }
 
     private getByStateListData(customPeriodRange?: CustomPeriodRange): void {
