@@ -116,7 +116,7 @@ export class TruckassistTableBodyComponent
     @Input() options: tableBodyOptions;
     @Input() tableData: any[];
     @Input() selectedTab: string;
-    selectedContactLabel: tableBodyColorLabel[] = [];
+    public selectedContactLabel: tableBodyColorLabel[] = [];
     pinedColumns: any = [];
     pinedWidth: number = 0;
     notPinedColumns: any = [];

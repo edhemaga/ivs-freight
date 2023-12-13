@@ -144,9 +144,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (searchEvent.action === 'api') {
+                        if (searchEvent.action === ComponentsTableEnum.API) {
                             this.accountBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
+                        } else if (
+                            searchEvent.action === ComponentsTableEnum.STORE
+                        ) {
                             this.sendAccountData();
                         }
                     }
@@ -253,10 +255,10 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         .subscribe(() => {
                             this.viewData = this.viewData.map(
                                 (account: CompanyAccountResponse) => {
-                                    response.map((r) => {
-                                        if (account.id === r.id) {
+                                    response.map((res) => {
+                                        if (account.id === res.id) {
                                             account.actionAnimation =
-                                                'delete-multiple';
+                                                ComponentsTableEnum.DELETE_MULTIPLE;
                                         }
                                     });
 
@@ -297,7 +299,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(ComponentsTableEnum.TABLE_CONTAINER)
+        );
     }
 
     public initTableOptions(): void {
@@ -306,8 +310,16 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hideActivationButton: true,
                 showLabelFilter: true,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ComponentsTableEnum.LIST,
+                        active:
+                            this.activeViewMode === ComponentsTableEnum.LIST,
+                    },
+                    {
+                        name: ComponentsTableEnum.CARD,
+                        active:
+                            this.activeViewMode === ComponentsTableEnum.CARD,
+                    },
                 ],
             },
         };
@@ -315,7 +327,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sendAccountData() {
         const tableView = JSON.parse(
-            localStorage.getItem(`Account-table-view`)
+            localStorage.getItem(AccountComponentEnum.ACCOUNT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -326,23 +338,23 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const accontCount = JSON.parse(
-            localStorage.getItem('accountTableCount')
+            localStorage.getItem(AccountComponentEnum.ACCOUNT_TABLE_COUNT)
         );
 
         const accountData = this.getTabData();
 
         this.tableData = [
             {
-                title: 'Accounts',
-                field: 'active',
+                title: AccountComponentEnum.ACCOUNTS,
+                field: ComponentsTableEnum.ACTIVE,
                 extended: false,
                 length: accontCount.account,
                 data: accountData,
-                gridNameTitle: 'Account',
-                stateName: 'accounts',
-                tableConfiguration: 'ACCOUNT',
+                gridNameTitle: AccountComponentEnum.ACCOUNT_2,
+                stateName: AccountComponentEnum.ACCOUNTS_2,
+                tableConfiguration: AccountComponentEnum.ACCOUNT,
                 isActive: true,
-                gridColumns: this.getGridColumns('ACCOUNT'),
+                gridColumns: this.getGridColumns(AccountComponentEnum.ACCOUNT),
             },
         ];
 
@@ -353,7 +365,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateDataCount() {
         const accountCount = JSON.parse(
-            localStorage.getItem('accountTableCount')
+            localStorage.getItem(AccountComponentEnum.ACCOUNT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];

@@ -65,7 +65,7 @@ table {
                             display: none;
 
                         }
-                        //INPUT DROPDOWN LABLE
+                        //nput dropdown label
                         app-ta-input-dropdown-label{
 
                             .input-custom-group .input-icon::after{
@@ -74,7 +74,7 @@ table {
 
                             &:hover{
 
-                                //INPUT
+                                //Input
                                 input{
                                     background-color: $dark-2;
                                     
@@ -104,11 +104,11 @@ table {
                                     
                                         #Edit{
                                             #Path_7775{
-                                                fill: #919191;
+                                                fill: $muted;
                                             }
                                     
                                             #Path_7776{
-                                                fill: #919191;
+                                                fill: $muted;
                                             }
                                         }
                                     } 
@@ -116,20 +116,20 @@ table {
 
                                 svg-icon #Group_102994{
                                     path{
-                                        fill: #919191;
+                                        fill: $muted;
                                     }
                                     display: flex!important;     
                                     
                                     &:hover{
                                         path{
-                                            fill: #919191;
+                                            fill: $muted;
                                         }
                                     }   
                                 }
                             }
                         }
 
-                        //INPUT
+                        //Input
                         input  {
                             padding-left: 25px;
                             &:hover{
@@ -141,12 +141,12 @@ table {
                             }
                         }
                                                     
-                        //INPUT ICON
+                        //Input icon
                         .input-icon{
                             left: 0px;
                         }
 
-                        // NO TEMPLATE
+                        // No template
                         .no-template {
                             color: red;
                             font-size: 14px;
@@ -157,7 +157,7 @@ table {
                             width: 100%;
                         }
 
-                        // VIN TEMPLATE
+                        // Vin template
                         .vin-container {
                             display: flex;
                             font-size: 14px;
@@ -1612,7 +1612,7 @@ table {
 
                             }
 
-                            //INPUT DROPDOWN LABLE
+                            //Input dropdown label
                             app-ta-input-dropdown-label{
 
                                 .input-custom-group .input-icon::after{
@@ -1621,7 +1621,7 @@ table {
 
                                 &:hover{
 
-                                    //INPUT
+                                    //Input
                                     input{
                                         background-color: $dark-2;
 
@@ -1663,20 +1663,21 @@ table {
                                     svg-icon #Group_102994{
 
                                         path{
-                                            fill: #919191;
+                                            fill: $muted;
                                         }
                                         
                                         display: flex!important;   
 
                                         &:hover{
                                             path{
-                                                fill: #919191;
+                                                fill: $muted;
                                             }
                                         }   
                                     }
                                 }
                             }
 
+                            //Input
                             input  {
                                 padding-left: 25px;
 

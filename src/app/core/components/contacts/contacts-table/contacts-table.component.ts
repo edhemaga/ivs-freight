@@ -159,9 +159,11 @@ export class ContactsTableComponent
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (searchEvent.action === 'api') {
+                        if (searchEvent.action === ComponentsTableEnum.API) {
                             this.contactBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
+                        } else if (
+                            searchEvent.action === ComponentsTableEnum.STORE
+                        ) {
                             this.sendContactData();
                         }
                     }
@@ -266,10 +268,10 @@ export class ContactsTableComponent
                         .subscribe(() => {
                             this.viewData = this.viewData.map(
                                 (contact: CompanyContactResponse) => {
-                                    response.map((r) => {
-                                        if (contact.id === r.id) {
+                                    response.map((res) => {
+                                        if (contact.id === res.id) {
                                             contact.actionAnimation =
-                                                'deletemultiple';
+                                                ComponentsTableEnum.DELETE_MULTIPLE;
                                         }
                                     });
 
@@ -311,7 +313,9 @@ export class ContactsTableComponent
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(ComponentsTableEnum.TABLE_CONTAINER)
+        );
     }
 
     // Table Options
@@ -321,8 +325,16 @@ export class ContactsTableComponent
                 hideActivationButton: true,
                 showLabelFilter: true,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ComponentsTableEnum.LIST,
+                        active:
+                            this.activeViewMode === ComponentsTableEnum.LIST,
+                    },
+                    {
+                        name: ComponentsTableEnum.CARD,
+                        active:
+                            this.activeViewMode === ComponentsTableEnum.CARD,
+                    },
                 ],
             },
         };
@@ -331,7 +343,7 @@ export class ContactsTableComponent
     // Send Contact Data
     sendContactData() {
         const tableView = JSON.parse(
-            localStorage.getItem(`Contact-table-view`)
+            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -344,22 +356,22 @@ export class ContactsTableComponent
         this.initTableOptions();
 
         const contactCount = JSON.parse(
-            localStorage.getItem('contactTableCount')
+            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
         );
 
         const contactData = this.getTabData();
         this.tableData = [
             {
-                title: 'Contacts',
-                field: 'active',
+                title: ContractComponentEnum.CONTACTS,
+                field: ComponentsTableEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
-                gridNameTitle: 'Contact',
-                stateName: 'contacts',
-                tableConfiguration: 'CONTACT',
+                gridNameTitle: ContractComponentEnum.CONTACT_2,
+                stateName: ContractComponentEnum.CONTACTS_2,
+                tableConfiguration: ContractComponentEnum.CONTACT,
                 isActive: true,
-                gridColumns: this.getGridColumns('CONTACT'),
+                gridColumns: this.getGridColumns(ContractComponentEnum.CONTACT),
             },
         ];
 
@@ -376,7 +388,7 @@ export class ContactsTableComponent
     // Update Contact Count
     updateDataCount() {
         const contactCount = JSON.parse(
-            localStorage.getItem('contactTableCount')
+            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -655,13 +667,11 @@ export class ContactsTableComponent
     public createContactPhones(element: ContactPhone) {
         return [
             {
-                id: element?.id ? element.id : 0,
-                phone: element?.phone ? element.phone : null,
-                phoneExt: element?.phoneExt ? element.phoneExt : null,
-                contactPhoneType: element?.contactPhoneType
-                    ? element.contactPhoneType.name
-                    : null,
-                primary: element?.primary ? element.primary : false,
+                id: element.id ?? 0,
+                phone: element.phone ?? null,
+                phoneExt: element.phoneExt ?? null,
+                contactPhoneType: element.contactPhoneType.name ?? null,
+                primary: element.primary ?? false,
             },
         ];
     }
@@ -669,12 +679,10 @@ export class ContactsTableComponent
     public createContactEmails(element: ContactEmail) {
         return [
             {
-                id: element?.id ? element.id : 0,
-                email: element?.email ? element.email : null,
-                contactEmailType: element?.contactEmailType
-                    ? element.contactEmailType?.name
-                    : null,
-                primary: element?.primary ? element.primary : false,
+                id: element.id ?? 0,
+                email: element.email ?? null,
+                contactEmailType: element.contactEmailType.name ?? null,
+                primary: element.primary ?? false,
             },
         ];
     }
