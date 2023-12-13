@@ -539,19 +539,18 @@
                                 "
                             ></app-ta-input>
 
-                            <div
-                                *ngIf="!pickupDateRange"
-                                class="load-plus-button"
-                                ngbTooltip
-                                mainTooltip="Date Range"
-                                tooltipBackground="#B7B7B7"
-                                position="top"
-                                (click)="pickupDateRange = true"
-                            >
-                                <svg-icon
-                                    src="assets/svg/common/ic_plus.svg"
-                                ></svg-icon>
-                            </div>
+                            <ng-container *ngIf="!pickupDateRange">
+                                <div
+                                    class="load-plus-button"
+                                    placement="bottom"
+                                    ngbTooltip="Date Range"
+                                    (click)="pickupDateRange = true"
+                                >
+                                    <svg-icon
+                                        src="assets/svg/common/ic_plus.svg"
+                                    ></svg-icon>
+                                </div>
+                            </ng-container>
 
                             <app-ta-input
                                 *ngIf="pickupDateRange"

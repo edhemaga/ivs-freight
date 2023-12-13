@@ -179,13 +179,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             id: 5,
             name: 'WORK HOURS',
             checked: true,
-            color: '3074D3',
         },
         {
             id: 6,
             name: 'APPOINTMENT',
             checked: false,
-            color: '3074D3',
         },
     ];
 

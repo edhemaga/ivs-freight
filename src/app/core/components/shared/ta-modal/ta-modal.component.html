@@ -7,12 +7,14 @@
     <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
         <div class="modal-original-part {{ partClass }}">
             <!-- Modal Header -->
+
             <div cdkDragHandle class="modal-header">
                 <div
                     class="modal-header-leftside"
                     [ngClass]="{ 'confirmation-modal': confirmationData }"
                 >
                     <!-- Haeder tabs -->
+
                     <div
                         *ngIf="tabChange"
                         class="modal-header-tab-change"
@@ -27,7 +29,9 @@
                             [type]="'type2-modal-popup'"
                         ></app-ta-tab-switch>
                     </div>
+
                     <!-- Header svg -->
+
                     <svg-icon
                         *ngIf="headerSvg"
                         src="assets/svg/common/confirmation/ic_confirmation_{{
@@ -35,9 +39,13 @@
                         }}.svg"
                         class="modal-header-svg"
                     ></svg-icon>
+
                     <!-- Header title -->
+
                     <h5 class="modal-title">{{ modalTitle }}</h5>
+
                     <!-- Header name -->
+
                     <h5
                         class="edit-name"
                         *ngIf="
@@ -49,15 +57,19 @@
                         {{ editName }}
                     </h5>
                 </div>
+
                 <div class="modal-header-rightside">
                     <!-- Hazardous Logo -->
+
                     <svg-icon
                         *ngIf="isVisibleHazardous"
                         src="assets/svg/common/ic_hazardous.svg"
                         class="modal-hazardous-logo"
                         (click)="toggleAdditionalPart('hazardous')"
                     ></svg-icon>
+
                     <!-- Load Map Button -->
+
                     <div
                         *ngIf="isVisibleMap"
                         class="modal-header-load-map-button"
@@ -70,7 +82,9 @@
                             src="../../../../../assets/svg/common/load/ic_load_map.svg"
                         ></svg-icon>
                     </div>
+
                     <!-- Header close -->
+
                     <svg-icon
                         *ngIf="
                             this.editData?.type !== 'edit-company-first-login'
@@ -81,16 +95,24 @@
                     ></svg-icon>
                 </div>
             </div>
+
             <!-- Divider top -->
+
             <div *ngIf="topDivider" class="divider"></div>
             <!-- Modal body -->
+
             <div class="modal-body">
                 <!-- Modal content -->
+
                 <ng-content select="[origin]"></ng-content>
+
                 <!-- Divider bottom -->
+
                 <div *ngIf="bottomDivider" class="divider"></div>
             </div>
+
             <!-- Modal footer Normal -->
+
             <div
                 *ngIf="!disableFooter && !confirmationData"
                 class="modal-footer"
@@ -102,6 +124,7 @@
                 }"
             >
                 <!-- Footer Left Side -->
+
                 <div
                     class="ta-modal-footer-left-side"
                     *ngIf="
@@ -112,6 +135,7 @@
                     "
                 >
                     <!-- Delete -->
+
                     <button
                         *ngIf="
                             !disableDelete &&
@@ -126,7 +150,9 @@
                     >
                         Delete
                     </button>
+
                     <!-- Map Settings Reset -->
+
                     <button
                         *ngIf="
                             (mapSettingsModal || mapRouteModal) &&
@@ -140,6 +166,7 @@
                     </button>
 
                     <!-- Load Template -->
+
                     <button
                         *ngIf="loadModalTemplate"
                         (click)="onAction('load-template')"
@@ -163,6 +190,7 @@
                     </button>
 
                     <!-- Resend Email -->
+
                     <button
                         *ngIf="resendEmail"
                         (click)="onAction('resend email')"
@@ -186,6 +214,7 @@
                     </button>
 
                     <!-- Deactivated -->
+
                     <button
                         *ngIf="editData?.disableButton"
                         (click)="onAction('deactivate')"
@@ -196,6 +225,7 @@
                     </button>
 
                     <!-- DNU -->
+
                     <button
                         *ngIf="editData?.dnuButton"
                         (click)="onAction('dnu')"
@@ -210,6 +240,7 @@
                     </button>
 
                     <!-- BFB -->
+
                     <button
                         *ngIf="editData?.bfbButton"
                         (click)="onAction('bfb')"
@@ -225,8 +256,10 @@
                 </div>
 
                 <!-- Footer right side -->
+
                 <div class="ta-modal-footer-right-side">
                     <!-- Save and Add New button -->
+
                     <button
                         *ngIf="saveAndAddNew"
                         (click)="onAction('save and add new')"
@@ -253,6 +286,7 @@
                     </button>
 
                     <!-- Set Map Settings -->
+
                     <button
                         *ngIf="mapSettingsModal"
                         (click)="onAction('set-map-settings')"
@@ -275,6 +309,7 @@
                     </button>
 
                     <!-- Create Map Route -->
+
                     <button
                         *ngIf="mapRouteModal"
                         (click)="onAction('create-map-route')"
@@ -301,6 +336,7 @@
                     </button>
 
                     <!-- Save button -->
+
                     <button
                         *ngIf="!mapSettingsModal && !mapRouteModal"
                         (click)="onAction('save')"
@@ -339,6 +375,7 @@
             </div>
 
             <!-- Modal Footer Confirmation Modal -->
+
             <div
                 *ngIf="confirmationData"
                 class="modal-footer"
@@ -347,6 +384,7 @@
                 }"
             >
                 <!-- Cancel -->
+
                 <button
                     *ngIf="confirmationData.subType !== 'cdl void'"
                     (click)="onAction('close')"
@@ -355,7 +393,9 @@
                 >
                     Cancel
                 </button>
+
                 <!-- Delete -->
+
                 <button
                     *ngIf="
                         ['delete', 'multiple delete'].includes(
@@ -374,7 +414,9 @@
                 >
                     Delete
                 </button>
+
                 <!-- Activate -->
+
                 <button
                     *ngIf="confirmationData?.type === 'activate'"
                     (click)="onAction('activate')"
@@ -389,7 +431,9 @@
                             confirmationData?.template.substring(1)
                     }}
                 </button>
+
                 <!-- Deactivate -->
+
                 <button
                     *ngIf="confirmationData?.type === 'deactivate'"
                     (click)="onAction('deactivate')"
@@ -398,7 +442,9 @@
                 >
                     Deactivate {{ confirmationData?.template }}
                 </button>
+
                 <!-- Hire -->
+
                 <button
                     *ngIf="confirmationData?.type === 'hire'"
                     (click)="onAction('hire')"
@@ -407,7 +453,9 @@
                 >
                     Hire
                 </button>
+
                 <!-- Archive -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'archive'"
                     (click)="onAction('archive')"
@@ -420,7 +468,9 @@
                             : 'Archive' + ' ' + confirmationData?.template
                     }}
                 </button>
+
                 <!-- Void CDL -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'cdl void'"
                     (click)="onAction('cdl-void')"
@@ -429,7 +479,9 @@
                 >
                     Void Current CDL
                 </button>
+
                 <!-- DNU -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'dnu'"
                     (click)="onAction('dnu')"
@@ -449,7 +501,9 @@
                     }}
                     DNU
                 </button>
+
                 <!-- DNU -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'ban list'"
                     (click)="onAction('bfb')"
@@ -469,7 +523,9 @@
                     }}
                     Ban List
                 </button>
-                <!-- FAVORITE -->
+
+                <!-- Favourite -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'favorite'"
                     (click)="onAction('favorite')"
@@ -483,9 +539,11 @@
                     }}
                 </button>
             </div>
+
             <!-- End Confirmation Modal -->
 
             <!-- Modal DropZone -->
+
             <div
                 class="drop-zone-active"
                 [class.drop-zone-active-hovered]="hoverZone"
@@ -501,7 +559,9 @@
                 ></app-ta-upload-dropzone>
             </div>
         </div>
+
         <!-- Modal Additional Part -->
+
         <div
             *ngIf="
                 modalAdditionalPart && (mapVisibility || hazardousVisibility)
