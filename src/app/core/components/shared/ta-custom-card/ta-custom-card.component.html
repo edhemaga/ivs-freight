@@ -144,49 +144,12 @@
             <!-- Plus Add New Things -->
 
             <ng-container *ngIf="hasActionSvg && !disableMultipleReviews">
-                <div
-                    class="header-action-container"
-                    [class.hovered]="isHeaderHover"
-                    [class.data]="
-                        (hasBodyData &&
-                            _isCardOpen &&
-                            _isCardOpen != 'null' &&
-                            hasArrow) ||
-                        (isHeaderHover &&
-                            hasBodyData &&
-                            (!_isCardOpen || _isCardOpen == 'null') &&
-                            hasArrow)
-                    "
-                    [class.comment]="
-                        hasBodyData &&
-                        _isCardOpen &&
-                        _isCardOpen != 'null' &&
-                        isCommentData
-                    "
+                <svg-icon
+                    class="action-plus-icon"
+                    [src]="'assets/svg/common/ic_plus.svg'"
+                    [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
                     (click)="onAction($event, 'add')"
-                >
-                    <svg-icon
-                        *ngIf="!hasBodyData && !isHeaderHover"
-                        class="header-action-svg"
-                        [ngClass]="{
-                            'new-position': !hasArrow || !hasBodyData
-                        }"
-                        src="{{ hasActionSvg }}"
-                    ></svg-icon>
-
-                    <ng-container
-                        *ngIf="
-                            isHeaderHover ||
-                            (hasBodyData &&
-                                _isCardOpen &&
-                                _isCardOpen != 'null')
-                        "
-                    >
-                        <p class="header-action-text">
-                            {{ actionText ? actionText : 'ADD NEW' }}
-                        </p>
-                    </ng-container>
-                </div>
+                ></svg-icon>
             </ng-container>
 
             <!-- Header (Details page, Calendar...) -->

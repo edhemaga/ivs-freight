@@ -387,24 +387,19 @@
             </div>
 
             <!-- Stops -->
-            <!-- [capsulaText]="
-                        loadExtraStops().length
-                            ? loadExtraStops().length + ' EXTRA'
-                            : null
-                    " -->
+
             <div class="d-flex align-items-center load-stops-row">
                 <app-ta-custom-card
                     [cardName]="'Stops'"
-                    [capsulaText]="'3 EXTRA'"
-                    [isCardOpen]="true"
-                    [hasCounter]="2"
-                    [hasActionSvg]="
-                        selectedPickupShipper
-                            ? 'assets/svg/common/ic_plus.svg'
+                    [capsulaText]="
+                        loadExtraStops().length
+                            ? loadExtraStops().length + ' EXTRA'
                             : null
                     "
+                    [isCardOpen]="true"
+                    [hasCounter]="2"
+                    [hasActionSvg]="true"
                     [hasBodyData]="true"
-                    [disableAnimation]="disableCardAnimation"
                     [animationMarginParams]="{
                         marginTop: '10px',
                         marginBottom: '12px'
@@ -491,6 +486,7 @@
                                 ></app-ta-input-dropdown>
                             </div>
                         </div>
+
                         <div class="load-shipper-contact-row">
                             <app-ta-tab-switch
                                 [tabs]="stopTimeTabsPickup"
@@ -518,6 +514,7 @@
                                 "
                             ></app-ta-input-dropdown>
                         </div>
+
                         <div
                             class="stop-load-date-time"
                             [ngClass]="{ 'date-range-active': pickupDateRange }"
@@ -541,6 +538,7 @@
                                         .markAsTouched()
                                 "
                             ></app-ta-input>
+
                             <div
                                 *ngIf="!pickupDateRange"
                                 class="load-plus-button"
@@ -554,6 +552,7 @@
                                     src="assets/svg/common/ic_plus.svg"
                                 ></svg-icon>
                             </div>
+
                             <app-ta-input
                                 *ngIf="pickupDateRange"
                                 formControlName="pickupDateTo"
@@ -611,6 +610,7 @@
                                 "
                             ></app-ta-input>
                         </div>
+
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
@@ -620,7 +620,6 @@
                                 [hasBodyData]="true"
                                 [hasArrow]="true"
                                 [bottomCollapseArrow]="true"
-                                [disableAnimation]="disableCardAnimation"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
@@ -1248,7 +1247,6 @@
                                 [hasCounter]="2"
                                 [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                                 [hasBodyData]="true"
-                                [disableAnimation]="disableCardAnimation"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
@@ -1329,7 +1327,6 @@
                 [disablePaymentAction]="!loadForm.get('baseRate').value"
                 [thirdHeaderTitle]="'Invoice Ageing'"
                 [isCardOpen]="true"
-                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
@@ -1518,7 +1515,6 @@
                         ? 'assets/svg/common/ic_plus.svg'
                         : ''
                 "
-                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px'
@@ -1538,7 +1534,6 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Document'"
-                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files

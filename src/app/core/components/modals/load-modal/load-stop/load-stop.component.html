@@ -1,6 +1,6 @@
 <div class="load-stop-container {{ state }}" [ngClass]="{ active: isCardOpen }">
     <div
-        class="load-stop-header-bar"
+        class="d-flex align-items-center load-stop-header-bar"
         [ngClass]="{
             'first-or-last': firstOrLast && isCardOpen,
             'origin-destination-no-filled': !shipper,
@@ -9,30 +9,34 @@
         (click)="toggleStop($event)"
     >
         <div
-            class="load-stop-counter-container"
+            class="d-flex align-items-center justify-content-center load-stop-counter-container"
             [ngClass]="{ 'delivery-mode': isDelivery }"
         >
-            <p>{{ stopNumber }}</p>
+            <p class="m-0 ta-font-bold">{{ stopNumber }}</p>
         </div>
+
         <div class="load-stop-header-content">
             <!-- Number Of Stop -->
-            <div
-                *ngIf="!shipper && state !== 'invalid'"
-                class="origin-destination-no-filled-container first-container-required"
-            >
-                <p>
-                    {{
-                        firstOrLast
-                            ? isDelivery
-                                ? 'DESTINATION'
-                                : 'ORIGIN'
-                            : 'EXTRA STOP'
-                    }}
-                    <span>*</span>
-                </p>
-            </div>
+
+            <ng-container *ngIf="!shipper && state !== 'invalid'">
+                <div
+                    class="origin-destination-no-filled-container first-container-required"
+                >
+                    <p class="m-0 ta-font-semi-bold">
+                        {{
+                            firstOrLast
+                                ? isDelivery
+                                    ? 'DESTINATION'
+                                    : 'ORIGIN'
+                                : 'EXTRA STOP'
+                        }}
+                        <span>*</span>
+                    </p>
+                </div>
+            </ng-container>
 
             <!-- Shipper, Address -->
+
             <div
                 class="load-stop-inner-content first-container"
                 [ngStyle]="{
@@ -43,11 +47,13 @@
                 }"
             >
                 <!-- Required Message -->
+
                 <ng-container
                     *ngIf="
                         !shipper &&
                         !shipperAddress &&
-                        state && state === 'invalid'
+                        state &&
+                        state === 'invalid'
                     "
                 >
                     <div class="load-stop-content-up load-stop-content-up-name">
@@ -59,7 +65,9 @@
                         </p>
                     </div>
                 </ng-container>
+
                 <!-- Data -->
+
                 <ng-container *ngIf="shipper && shipperAddress">
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p>{{ shipper }}</p>
@@ -71,12 +79,15 @@
             </div>
 
             <!-- Date, Time -->
+
             <div class="load-stop-inner-content second-container">
                 <!-- Required Message -->
+
                 <ng-container
                     *ngIf="
                         (!dateRange || !timeRange) &&
-                        state && state === 'invalid'
+                        state &&
+                        state === 'invalid'
                     "
                 >
                     <div class="load-stop-content-up load-stop-content-up-name">
@@ -88,7 +99,9 @@
                         </p>
                     </div>
                 </ng-container>
+
                 <!-- Data -->
+
                 <ng-container *ngIf="dateRange && timeRange">
                     <div
                         class="load-stop-content-up load-stop-content-up-datetime"
@@ -102,6 +115,7 @@
             </div>
 
             <!-- Leg, Deadhead, Shipper Contact -->
+
             <div class="load-stop-inner-content third-container">
                 <div
                     class="load-stop-content-up load-stop-content-up-deadhead"
@@ -112,6 +126,7 @@
                         <span>{{ legMile | number : '1.2-2' }} mi</span>
                     </p>
                 </div>
+
                 <div
                     *ngIf="shipperContact?.fullName"
                     class="load-stop-content-down load-stop-content-down-deadhead"
@@ -141,6 +156,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Load Stop Body -->
+
     <div class="load-stop-body">
         <div
             [ngStyle]="animationMarginParams"

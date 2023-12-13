@@ -452,8 +452,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
 
-    public disableCardAnimation: boolean = false;
-
     // Modal Table
     tableModalOpen: string = '';
 
@@ -1081,8 +1079,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     });
                 } else {
                     this.selectedPickupShipper = event;
-
-                    console.log(this.selectedPickupShipper);
 
                     // Draw Stop on map
                     this.drawStopOnMap();
@@ -2565,7 +2561,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    console.log('load modal: ', res);
                     this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
@@ -2856,12 +2851,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 error: () => {},
             });
-    }
-
-    private getLoadById(id: number) {
-        setTimeout(() => {
-            this.disableCardAnimation = false;
-        }, 1000);
     }
 
     private populateLoadModalData() {
@@ -3600,9 +3589,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .subscribe({
                             next: (
                                 res: LoadStopItemAutocompleteDescriptionResponse
-                            ) => {
-                                console.log('autocomplete pickup: ', res);
-                            },
+                            ) => {},
                             error: () => {},
                         });
                 }
@@ -3621,9 +3608,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .subscribe({
                             next: (
                                 res: LoadStopItemAutocompleteDescriptionResponse
-                            ) => {
-                                console.log('autocomplete delivery: ', res);
-                            },
+                            ) => {},
                             error: () => {},
                         });
                 }
@@ -3642,9 +3627,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .subscribe({
                             next: (
                                 res: LoadStopItemAutocompleteDescriptionResponse
-                            ) => {
-                                console.log('autocomplete extra stop: ', res);
-                            },
+                            ) => {},
                             error: () => {},
                         });
                 }
