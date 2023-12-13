@@ -38,9 +38,8 @@ import {
     RatingSetResponse,
     ShipperListResponse,
     ShipperResponse,
-    TimeOnly,
 } from 'appcoretruckassist';
-import { CardRows, Search } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/cardData';
 import {
     BodyResponse,
     UpdateRating,
@@ -935,8 +934,10 @@ export class CustomerTableComponent
     // Toolbar Actions
     public onToolBarAction(event: ToolbarActions): void {
         // Add Call
+
         if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
             // Add Broker Call Modal
+
             if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
                 this.modalService.openModal(BrokerModalComponent, {
                     size: ConstantStringTableComponentsEnum.MEDIUM,
