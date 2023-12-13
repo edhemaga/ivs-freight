@@ -51,6 +51,7 @@ import { HideContentGuard } from './core/guards/hideContent.guard';
 import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './core/components/routing/state/routing-state/routing-state.resolver';
 import { TelematicResolver } from './core/components/telematic/state/telematic-state.resolver';
+import { DashboardResolver } from './core/components/dashboard/state/resolvers/dashboard.resolver';
 
 const routes: Routes = [
     /* WEBSITE */
@@ -107,6 +108,7 @@ const routes: Routes = [
             import('./core/components/dashboard/dashboard.module').then(
                 (m) => m.DashboardModule
             ),
+        resolve: { dashboard: DashboardResolver },
         canActivate: [AuthGuard],
     },
     {

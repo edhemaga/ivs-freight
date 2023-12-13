@@ -7,13 +7,11 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { Observable, Subject, firstValueFrom, of, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { DashboardPerformanceService } from '../../../state/services/dashboard-performance.service';
-
-// store
-import { DashboardQuery } from '../../../state/store/dashboard.query';
+import { DashboardService } from '../../../state/services/dashboard.service';
 
 // constants
 import { DashboardPerformanceConstants } from '../../../state/utils/constants/dashboard-performance.constants';
@@ -107,7 +105,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private dashboardQuery: DashboardQuery,
+        private dashboardService: DashboardService,
         private dashboardPerformanceService: DashboardPerformanceService,
         private changeDetectorRef: ChangeDetectorRef
     ) {}
@@ -117,10 +115,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.getConstantData();
 
-        (async () => {
-            await firstValueFrom(this.getOverallCompanyDuration());
-            this.getPerformanceListData();
-        })();
+        this.getOverallCompanyDuration();
+
+        this.getPerformanceListData();
     }
 
     private createForm(): void {
@@ -502,20 +499,16 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getOverallCompanyDuration(): Observable<boolean> {
-        return new Observable((subscriber) => {
-            this.dashboardQuery.companyDuration$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((companyDuration: number) => {
-                    if (companyDuration) {
-                        this.overallCompanyDuration = companyDuration;
-                    }
-                    subscriber.next(true);
-                    subscriber.complete();
-                });
+    private getOverallCompanyDuration(): void {
+        this.dashboardService.getOverallCompanyDuration$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((companyDuration: number) => {
+                if (companyDuration) {
+                    this.overallCompanyDuration = companyDuration;
 
-            this.setCustomSubPeriodList(this.overallCompanyDuration);
-        });
+                    this.setCustomSubPeriodList(this.overallCompanyDuration);
+                }
+            });
     }
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {

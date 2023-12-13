@@ -125,7 +125,6 @@ export class AuthStoreService {
     public selectCompanyAccount(
         data: SelectCompanyCommand
     ): Observable<SelectCompanyResponse> {
-        console.log(this.accountService.apiAccountSelectcompanyPost(data));
         return this.accountService.apiAccountSelectcompanyPost(data);
     }
 }
