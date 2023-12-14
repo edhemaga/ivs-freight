@@ -21,14 +21,21 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
 import { MapsService } from '../../../services/shared/maps.service';
 
 // Modals
-import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
+import {
+    RepairListResponse,
+    RepairResponse,
+    RepairShopListResponse,
+} from 'appcoretruckassist';
 import {
     getRepairsShopColumnDefinition,
     getRepairTruckAndTrailerColumnDefinition,
 } from '../../../../../assets/utils/settings/repair-columns';
 import {
     BodyResponseRepair,
+    MapList,
+    MapedTruckAndTrailer,
     RepairBackFilterModal,
+    ShopBackFilterModal,
     ShopbBckFilterQueryInterface,
 } from '../repair.modal';
 import {
@@ -93,46 +100,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public repairShopTabClicked: boolean = false;
-    public backFilterQuery: RepairBackFilterModal = {
-        repairShopId: undefined,
-        unitType: 1,
-        dateFrom: undefined,
-        dateTo: undefined,
-        isPM: undefined,
-        categoryIds: undefined,
-        pmTruckTitles: undefined,
-        pmTrailerTitles: undefined,
-        isOrder: undefined,
-        truckId: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backFilterQuery: RepairBackFilterModal =
+        TableRepair.BACK_FILTER_QUERY;
 
-    public shopFilterQuery: ShopbBckFilterQueryInterface = {
-        active: 1,
-        pinned: undefined,
-        companyOwned: undefined,
-        categoryIds: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        costFrom: undefined,
-        costTo: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public shopFilterQuery: ShopbBckFilterQueryInterface =
+        TableRepair.SHOP_FILTER_QUERY;
 
-    public mapListData = [];
+    public mapListData: MapList[] = [];
 
     constructor(
         private modalService: ModalService,
@@ -644,11 +618,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Set Repair Data
-    private setRepairData(td: DataForCardsAndTables): void {
-        this.columns = td.gridColumns;
+    private setRepairData(tdata: DataForCardsAndTables): void {
+        this.columns = tdata.gridColumns;
 
-        if (td.data.length) {
-            this.viewData = td.data;
+        if (tdata.data.length) {
+            this.viewData = tdata.data;
 
             this.viewData = this.viewData.map((data) => {
                 if (
@@ -670,7 +644,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Map Truck And Trailer Data
-    private mapTruckAndTrailerData(data: any) {
+    private mapTruckAndTrailerData(data: RepairResponse): MapedTruckAndTrailer {
         return {
             ...data,
             isSelected: false,
@@ -760,6 +734,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Map Shop Data
+    // TODO find parametar data type
     private mapShopData(data: any): void {
         return {
             ...data,
@@ -883,24 +858,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Shop Back Filters
     private shopBackFilter(
-        filter: {
-            active?: number;
-            pinned?: boolean | undefined;
-            companyOwned?: boolean | undefined;
-            categoryIds?: Array<number> | undefined;
-            long?: number | undefined;
-            lat?: number | undefined;
-            distance?: number | undefined;
-            costFrom?: number | undefined;
-            costTo?: number | undefined;
-            pageIndex?: number;
-            pageSize?: number;
-            companyId?: number | undefined;
-            sort?: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
-        },
+        filter: ShopBackFilterModal,
         isShowMore?: boolean
     ): void {
         this.repairService
@@ -923,7 +881,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((shop: RepairShopListResponse) => {
+            .subscribe((shop) => {
                 if (!isShowMore) {
                     this.viewData = shop.pagination.data;
 

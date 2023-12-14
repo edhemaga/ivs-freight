@@ -1,7 +1,44 @@
+import {
+    RepairBackFilterModal,
+    ShopbBckFilterQueryInterface,
+} from '../../components/repair/repair.modal';
 import { DropdownItem } from '../../components/shared/model/cardTableData';
+import {
+    FilterOptionBroker,
+    FilterOptionshipper,
+} from '../../components/shared/model/table-components/customer.modals';
+import {
+    FilterOptionApplicant,
+    FilterOptionDriver,
+} from '../../components/shared/model/table-components/driver-modal';
+import { FilterOptionsLoad } from '../../components/shared/model/table-components/load-modal';
+import { backFilterQueryInterface } from '../../components/trailer/trailer.modal';
+import { FilterOptions } from '../../components/truck/truck.modal';
 
 // Load page
 export class TableDropdownLoadComponentConstants {
+    static LOAD_BACK_FILTER: FilterOptionsLoad = {
+        loadType: undefined,
+        statusType: 1,
+        status: undefined,
+        dispatcherId: undefined,
+        dispatchId: undefined,
+        brokerId: undefined,
+        shipperId: undefined,
+        dateFrom: undefined,
+        dateTo: undefined,
+        revenueFrom: undefined,
+        revenueTo: undefined,
+        truckId: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
     static DROPDOWN_DATA: DropdownItem[] = [
         {
             title: 'Edit',
@@ -71,6 +108,38 @@ export class TableDropdownLoadComponentConstants {
 
 // Customer page
 export class TableDropdownCustomerComponentConstants {
+    static BROKER_BACK_FILTER: FilterOptionBroker = {
+        ban: null,
+        dnu: null,
+        invoiceAgeingFrom: undefined,
+        invoiceAgeingTo: undefined,
+        availableCreditFrom: undefined,
+        availableCreditTo: undefined,
+        revenueFrom: undefined,
+        revenueTo: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
+    static SHIPPER_BACK_FILTER: FilterOptionshipper = {
+        stateIds: undefined,
+        long: undefined,
+        lat: undefined,
+        distance: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
     static DROPDOWN_BROKER: DropdownItem[] = [
         {
             title: 'Edit',
@@ -331,6 +400,33 @@ export class TableDropdownCustomerComponentConstants {
 
 // Driver page
 export class TableDropdownDriverComponentConstants {
+    static APPLICANT_BACK_FILTER: FilterOptionApplicant = {
+        applicantSpecParamsArchived: undefined,
+        applicantSpecParamsHired: undefined,
+        applicantSpecParamsFavourite: undefined,
+        applicantSpecParamsPageIndex: 1,
+        applicantSpecParamsPageSize: 25,
+        applicantSpecParamsCompanyId: undefined,
+        applicantSpecParamsSort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
+    static DRIVER_BACK_FILTER: FilterOptionDriver = {
+        active: 1,
+        long: undefined,
+        lat: undefined,
+        distance: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
     static DROPDOWN_APPLICANT: DropdownItem[] = [
         {
             title: 'Edit',
@@ -471,7 +567,19 @@ export class TableDropdownDriverComponentConstants {
     ];
 }
 
+// Truck page
 export class TableDriverColorsConstants {
+    static BACK_FILTER_QUERY: FilterOptions = {
+        active: 1,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
     static TEXT_COLORS: string[] = [
         '#6D82C7',
         '#4DB6A2',
@@ -503,8 +611,61 @@ export class TableDriverColorsConstants {
     ];
 }
 
+// Trailer page
+export class TableDropdownTrailerComponentConstants {
+    static BACK_FILTER_QUERY: backFilterQueryInterface = {
+        active: 1,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+}
+
 // Repair page
 export class TableRepair {
+    static BACK_FILTER_QUERY: RepairBackFilterModal = {
+        repairShopId: undefined,
+        unitType: 1,
+        dateFrom: undefined,
+        dateTo: undefined,
+        isPM: undefined,
+        categoryIds: undefined,
+        pmTruckTitles: undefined,
+        pmTrailerTitles: undefined,
+        isOrder: undefined,
+        truckId: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
+    static SHOP_FILTER_QUERY: ShopbBckFilterQueryInterface = {
+        active: 1,
+        pinned: undefined,
+        companyOwned: undefined,
+        categoryIds: undefined,
+        long: undefined,
+        lat: undefined,
+        distance: undefined,
+        costFrom: undefined,
+        costTo: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
     static DROPDOWN_SHOP: DropdownItem[] = [
         {
             title: 'Edit',

@@ -799,7 +799,7 @@ export interface File {
     tagGeneratedByUser: boolean;
 }
 
-export interface FilterOptions {
+export interface FilterOptionsLoad {
     loadType: number;
     statusType: number;
     status: number;

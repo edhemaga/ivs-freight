@@ -52,6 +52,7 @@ import {
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { DisplayTrailerConfiguration } from '../trailer-card-data';
+import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 @Component({
     selector: 'app-trailer-table',
@@ -74,16 +75,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
     public activeTableData: string;
-    public backFilterQuery: backFilterQueryInterface = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backFilterQuery: backFilterQueryInterface =
+        TableDropdownTrailerComponentConstants.BACK_FILTER_QUERY;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =

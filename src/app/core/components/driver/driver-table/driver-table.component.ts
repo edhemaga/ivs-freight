@@ -101,31 +101,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public applicantTabActive: boolean = false;
     public activeTableData: DataForCardsAndTables;
-    public driverBackFilterQuery: FilterOptionDriver = {
-        active: 1,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
-    public applicantBackFilterQuery: FilterOptionApplicant = {
-        applicantSpecParamsArchived: undefined,
-        applicantSpecParamsHired: undefined,
-        applicantSpecParamsFavourite: undefined,
-        applicantSpecParamsPageIndex: 1,
-        applicantSpecParamsPageSize: 25,
-        applicantSpecParamsCompanyId: undefined,
-        applicantSpecParamsSort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public driverBackFilterQuery: FilterOptionDriver =
+        TableDropdownDriverComponentConstants.DRIVER_BACK_FILTER;
+    public applicantBackFilterQuery: FilterOptionApplicant =
+        TableDropdownDriverComponentConstants.APPLICANT_BACK_FILTER;
     public resizeObserver: ResizeObserver;
     public mapingIndex: number = 0;
 
