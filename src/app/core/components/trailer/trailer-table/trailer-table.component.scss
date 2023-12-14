@@ -30,7 +30,7 @@
 
         &:hover {
             color: $light-blue;
-            transform: color 0.25s;
+            transition: color 0.25s;
         }
     }
 }
