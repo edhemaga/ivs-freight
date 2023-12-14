@@ -753,14 +753,15 @@
                         <div
                             class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                             [ngClass]="
-                                dropDownIsOpened === card.id && t1.isOpen()
+                                dropDownIsOpened === card.id &&
+                                Dropdown.isOpen()
                                     ? 'active-item'
                                     : ''
                             "
                         >
                             <div
-                                #t1="ngbPopover"
-                                (click)="toggleDropdown(t1, card)"
+                                #Dropdown="ngbPopover"
+                                (click)="toggleDropdown(Dropdown, card)"
                                 [autoClose]="'outside'"
                                 [ngbPopover]="dropdownPopover"
                                 [placement]="'bottom-right'"
@@ -774,7 +775,7 @@
                                     class="dots"
                                     [ngClass]="
                                         dropDownIsOpened === card.id &&
-                                        t1.isOpen()
+                                        Dropdown.isOpen()
                                             ? 'rotate-dropdown-svg'
                                             : 'dropdown-svg-back'
                                     "

@@ -272,9 +272,11 @@
                     cursor: pointer;
                     position: relative;
                     border-radius: 2px;
+
                     &:hover {
                         background: rgba(145, 145, 145, 0.2);
                     }
+
                     .note-tooltip {
                         height: 30px;
                     }

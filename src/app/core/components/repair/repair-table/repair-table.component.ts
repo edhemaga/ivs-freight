@@ -215,7 +215,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.updateDataCount();
 
                 // On Add Repair
-                if (res.animation === 'add' && this.selectedTab === res.tab) {
+                if (res?.animation === 'add' && this.selectedTab === res.tab) {
                     this.viewData.push(
                         res.tab !== 'repair-shop'
                             ? this.mapTruckAndTrailerData(res.data)
@@ -241,7 +241,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 // On Update Repair
                 else if (
-                    res.animation === 'update' &&
+                    res?.animation === 'update' &&
                     this.selectedTab === res.tab
                 ) {
                     const updatedRepair =
@@ -269,7 +269,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 // On Delete Repair
                 else if (
-                    res.animation === 'delete' &&
+                    res?.animation === 'delete' &&
                     this.selectedTab === res.tab
                 ) {
                     let repairIndex: number;
@@ -1053,7 +1053,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.backFilterQuery.unitType =
                     this.selectedTab === 'active' ? 1 : 2;
             }
-            
+
             this.selectedTab !== 'repair-shop'
                 ? this.backFilterQuery.pageIndex++
                 : this.shopFilterQuery.pageIndex++;
