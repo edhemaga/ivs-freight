@@ -2,6 +2,7 @@
     <ng-container
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
+        {{ card.name }}
         <div class="custom-card p-1">
             <!-- Card splited on left and right side -->
 
@@ -137,10 +138,32 @@
                                 </span>
                             </ng-container>
 
+                            <!-- If Repair Page -->
+                            <ng-container *ngIf="page === 'Repair'">
+                                <div
+                                    class="finish-order-holder d-flex justify-content-between"
+                                >
+                                    <span class="title">{{
+                                        getValueByStringPath(card, cardTitle)
+                                    }}</span>
+
+                                    <ng-container *ngIf="card.isRepairOrder">
+                                        <span
+                                            class="finish-order-action ta-font-bold"
+                                        >
+                                            Finish Order
+                                        </span>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
                             <!-- Rest of the pages -->
 
                             <ng-container
-                                *ngIf="page !== 'Load' && page !== 'Driver'"
+                                *ngIf="
+                                    page !== 'Load' &&
+                                    page !== 'Driver' &&
+                                    page !== 'Repair'
+                                "
                             >
                                 <span class="title">
                                     {{ getValueByStringPath(card, cardTitle) }}
@@ -431,6 +454,34 @@
                                                 rowsFront.title !== 'VIN No.' &&
                                                 rowsFront.title !== 'Mileage'
                                             "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <!-- Repair page body  -->
+                                    <ng-container *ngIf="page === 'Repair'">
+                                        <ng-container
+                                            *ngIf="rowsFront.title === 'Item'"
+                                        >
+                                            <span class="drop-down-holder">
+                                                {{
+                                                    objectsWithDropDown(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                }}
+                                            </span>
+                                        </ng-container>
+                                        <!-- Rest of body items -->
+
+                                        <ng-container
+                                            *ngIf="rowsFront.title !== 'Item'"
                                         >
                                             {{
                                                 getValueByStringPath(

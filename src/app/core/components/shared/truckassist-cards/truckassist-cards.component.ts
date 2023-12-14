@@ -184,27 +184,46 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
+    public objectsWithDropDown(obj, ObjKey: string): void {
+        const objWithItems = ObjKey.split('.').reduce(
+            (acc, part) => acc && acc[part],
+            obj
+        );
+
+        const descriptions = objWithItems.map((item, index) => {
+            if (index !== objWithItems.length - 1) {
+                return item.description + ' • ';
+            } else {
+                return item.description;
+            }
+        });
+
+        return descriptions.join('');
+    }
+
     //Remove quotes from string to convert into endpoint
-    public getValueByStringPath(obj: CardDetails, path: string): string {
-        if (path === ConstantStringTableComponentsEnum.NO_ENDPOINT)
+    public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
+        if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
             return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
 
         // Value is obj key
-        const value = obj[path];
+        const value = obj[ObjKey];
 
-        const isValueOfKey = !path
-            .split('.')
-            .reduce((acc, part) => acc && acc[part], obj);
+        const isValueOfKey = !ObjKey.split('.').reduce(
+            (acc, part) => acc && acc[part],
+            obj
+        );
 
         const isNotZeroValueOfKey =
-            path.split('.').reduce((acc, part) => acc && acc[part], obj) !== 0;
+            ObjKey.split('.').reduce((acc, part) => acc && acc[part], obj) !==
+            0;
 
         //Check if value is null return / and if it is 0 return expired
         if (isValueOfKey && isNotZeroValueOfKey)
             return ConstantStringTableComponentsEnum.SLASH;
 
         // Transform number to descimal with $ and transform date
-        switch (path) {
+        switch (ObjKey) {
             case ConstantStringTableComponentsEnum.AVAILABLE_CREDIT:
             case ConstantStringTableComponentsEnum.REVENUE:
                 return this.formatCurrency.transform(value);
@@ -213,9 +232,10 @@ export class TruckassistCardsComponent implements OnInit {
             case ConstantStringTableComponentsEnum.MILEAGE:
                 return this.TaThousandSeparatorPipe.transform(value);
             default:
-                return path
-                    .split('.')
-                    .reduce((acc, part) => acc && acc[part], obj);
+                return ObjKey.split('.').reduce(
+                    (acc, part) => acc && acc[part],
+                    obj
+                );
         }
     }
 

@@ -634,11 +634,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setDriverData(td: DataForCardsAndTables): void {
-        this.columns = td.gridColumns;
+    private setDriverData(tdata: DataForCardsAndTables): void {
+        this.columns = tdata.gridColumns;
 
-        if (td.data.length) {
-            this.viewData = td.data;
+        if (tdata.data.length) {
+            this.viewData = tdata.data;
 
             this.viewData = this.viewData.map((data: any) => {
                 return this.selectedTab ===

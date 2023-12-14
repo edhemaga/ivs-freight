@@ -26,7 +26,7 @@
         ></app-truckassist-table-body>
     </ng-container>
 
-    <ng-component *ngIf="activeViewMode === 'Card'">
+    <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-truckassist-cards
                 (bodyActions)="onTableBodyActions($event)"
@@ -38,8 +38,34 @@
                 [page]="page"
                 [selectedTab]="selectedTab"
             ></app-truckassist-cards>
+
+            <!-- Show More -->
+
+            <ng-container *ngIf="viewData.length">
+                <div
+                    class="show-more-container d-flex align-items-center justify-content-between"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                >
+                    <div class="showing ta-font-semi-bold">
+                        {{ viewData.length }} OF
+                        {{ activeTableData.length }}
+                    </div>
+
+                    <ng-container
+                        *ngIf="viewData.length < activeTableData.length"
+                    >
+                        <div
+                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            (click)="onShowMore()"
+                        >
+                            SHOW MORE
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
-    </ng-component>
+    </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Map'">
         <div class="customer-map-container">
             <app-map-list

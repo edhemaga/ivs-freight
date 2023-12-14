@@ -63,7 +63,6 @@ export interface DataUpdate {
     id: string;
 }
 
-
 // TOOLBAR ACTIONS
 export interface ToolbarActions {
     action: string;
@@ -181,7 +180,15 @@ export interface CardDetails {
     fileCount: number;
     loadTotal: LoadTotal;
     isFlipped: boolean;
-
+    items: {
+        description: string;
+        id: number;
+        pmTrailer: string;
+        pmTruck: string;
+        price: number;
+        quantity: number;
+        subtotal: number;
+    };
     textCommodity: string;
     textMiles: string;
     textWeight: string;

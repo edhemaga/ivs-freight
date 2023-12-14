@@ -27,12 +27,8 @@
         justify-content: space-between;
         border-radius: 2px;
 
-        &:hover {
-            background: $bw2;
-        }
-
         .card-body-left {
-            width: 256px;
+            width: calc(100% - 30px);
 
             .card-header {
                 gap: 10px;
@@ -70,11 +66,28 @@
                     font-size: 14px;
                     line-height: 18px;
                     cursor: pointer;
+                    width: 100%;
 
                     .title {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                    }
+
+                    .finish-order-holder {
+                        width: 100%;
+
+                        .finish-order-action {
+                            color: $ta-blue-cards;
+                            font-size: 11px;
+                            padding: 4px 8px;
+                            white-space: nowrap;
+                            position: relative;
+                            bottom: 2px;
+                            border-radius: 2px;
+                            right: -4px;
+                            text-transform: uppercase;
+                        }
                     }
 
                     .title-load {
@@ -102,11 +115,13 @@
                     }
 
                     &:hover {
-                        color: $ta-blue-15;
+                        .title {
+                            color: $ta-blue-15;
+                        }
                     }
 
                     .title {
-                        width: 224px;
+                        width: 100%;
                     }
 
                     .svg-ftl-ltl {
@@ -272,6 +287,7 @@
                     cursor: pointer;
                     position: relative;
                     border-radius: 2px;
+                    top: 2px;
 
                     &:hover {
                         background: rgba(145, 145, 145, 0.2);
@@ -389,6 +405,17 @@
                         }
                     }
                 }
+            }
+        }
+
+        &:hover {
+            background: $bw2;
+
+            .finish-order-action {
+                background: $ta-blue-cards;
+                color: $white !important;
+
+                transition: color 0.25s, background 0.25s;
             }
         }
     }
