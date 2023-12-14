@@ -562,7 +562,12 @@
                             _options[0].name === 'No Results',
                         'active-label':
                             option.id === _activeItem?.id &&
-                            labelMode === 'Label'
+                            labelMode === 'Label' && 
+                            inputConfig.customClass !== 'input-dropdown-table',
+                        'active-dark':  
+                            option.id === _activeItem?.id &&
+                            labelMode === 'Label' &&  
+                            inputConfig.customClass === 'input-dropdown-table'
                     }"
                     class="dropdown-option labels-template"
                 >
@@ -601,14 +606,22 @@
                                 'add-new': option.name === 'ADD NEW',
                                 'no-result':
                                     _options.length === 1 &&
-                                    _options[0].name === 'No Results'
+                                    _options[0].name === 'No Results',
+                                'lable-text-wrap':  
+                                    inputConfig.customClass === 'input-dropdown-table'
                             }"
                             class="labels-template-text"
                         ></div>
                         <div
                             *ngIf="
-                                !['No Results', 'ADD NEW'].includes(option.name)
+                                !['No Results', 'ADD NEW'].includes(option.name),
+                                
                             "
+                            [ngClass]="{
+                                'dont-show-counter':  
+                                    !this._canAddNew &&  
+                                    inputConfig.customClass === 'input-dropdown-table'
+                            }"
                             class="labels-template-counter"
                         >
                             {{ option.count }}
