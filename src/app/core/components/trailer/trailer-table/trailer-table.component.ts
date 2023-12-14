@@ -381,7 +381,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(
+                ConstantStringTableComponentsEnum.TABLE_CONTAINER
+            )
+        );
     }
 
     public initTableOptions(): void {
@@ -1093,7 +1097,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
+        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
         this.destroy$.next();

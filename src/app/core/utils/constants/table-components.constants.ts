@@ -502,3 +502,123 @@ export class TableDriverColorsConstants {
         '#E3E3E3',
     ];
 }
+
+// Repair page
+export class TableRepair {
+    static DROPDOWN_SHOP: DropdownItem[] = [
+        {
+            title: 'Edit',
+            name: 'edit',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'View Details',
+            name: 'view-details',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'All Bill',
+            name: 'all-bill',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Move to Favourite',
+            name: 'move-to-favourite',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Write Review',
+            name: 'write-review',
+            hasBorder: true,
+        },
+        {
+            title: 'Share',
+            name: 'share',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Print',
+            name: 'print',
+            hasBorder: true,
+        },
+        {
+            title: 'Close Business',
+            name: 'close-business',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Delete',
+            name: 'delete',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'delete',
+        },
+    ];
+
+    static DROPDOWN_REPAIR: DropdownItem[] = [
+        {
+            title: 'Edit',
+            name: 'edit',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'View Details',
+            name: 'view-details',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'All Bills',
+            name: 'all-bills',
+            hasBorder: true,
+        },
+        {
+            title: 'Share',
+            name: 'share',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Print',
+            name: 'print',
+            hasBorder: true,
+        },
+        {
+            title: 'Delete',
+            name: 'delete-repair',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'delete',
+        },
+    ];
+}

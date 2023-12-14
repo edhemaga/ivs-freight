@@ -5,6 +5,7 @@ import {
     CreateReviewCommand,
     GetRatingReviewModalResponse,
     RatingReviewService,
+    RatingSetResponse,
     ReviewResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
@@ -31,14 +32,14 @@ export class ReviewsRatingService {
         private router: Router,
         private BrokerTService: BrokerTService,
         private ShipperTService: ShipperTService,
-        private RepairTService: RepairTService,
+        private RepairTService: RepairTService
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
         return this.reviewRatingService.apiRatingreviewModalGet();
     }
 
-    public addRating(data: CreateRatingCommand): Observable<any> {
+    public addRating(data: CreateRatingCommand): Observable<RatingSetResponse> {
         return this.reviewRatingService.apiRatingreviewRatingPost(data).pipe(
             tap((rating: any) => {
                 if (rating.entityType.name === 'Broker') {
@@ -86,11 +87,11 @@ export class ReviewsRatingService {
                     this.ShipperTService.deleteReview(id, customerId);
                 }
 
-                if ( this.router.url.indexOf('shop-details') > -1 ){
+                if (this.router.url.indexOf('shop-details') > -1) {
                     this.RepairTService.deleteReview(id, customerId);
                 }
-
-            }));
+            })
+        );
     }
 
     public getReviewById(id: number): Observable<ReviewResponse> {
@@ -107,7 +108,7 @@ export class ReviewsRatingService {
                         next: (resp: any) => {
                             let splitUrl = this.router.url.split('/');
                             let customerId = parseInt(splitUrl[3]);
-                            
+
                             if (this.router.url.indexOf('broker') > -1) {
                                 this.BrokerTService.addNewReview(
                                     resp,
@@ -120,8 +121,11 @@ export class ReviewsRatingService {
                                     customerId
                                 );
                             }
-                            if ( this.router.url.indexOf('shop-details') > -1 ){
-                                this.RepairTService.addNewReview(resp, customerId);
+                            if (this.router.url.indexOf('shop-details') > -1) {
+                                this.RepairTService.addNewReview(
+                                    resp,
+                                    customerId
+                                );
                             }
                             reviewDataNew.unsubscribe();
                         },
