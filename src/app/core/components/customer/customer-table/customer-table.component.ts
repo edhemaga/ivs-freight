@@ -120,37 +120,10 @@ export class CustomerTableComponent
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
-    public backBrokerFilterQuery: FilterOptionBroker = {
-        ban: null,
-        dnu: null,
-        invoiceAgeingFrom: undefined,
-        invoiceAgeingTo: undefined,
-        availableCreditFrom: undefined,
-        availableCreditTo: undefined,
-        revenueFrom: undefined,
-        revenueTo: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
-
-    public backShipperFilterQuery: FilterOptionshipper = {
-        stateIds: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backBrokerFilterQuery: FilterOptionBroker =
+        TableDropdownCustomerComponentConstants.BROKER_BACK_FILTER;
+    public backShipperFilterQuery: FilterOptionshipper =
+        TableDropdownCustomerComponentConstants.SHIPPER_BACK_FILTER;
     public mapListData = [];
 
     //Data to display from model Broker

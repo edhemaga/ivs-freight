@@ -69,6 +69,7 @@ interface ToolbarAction {
 
 export interface TableOptionsInterface {
     toolbarActions: {
+        showRepairOrderFilter?: boolean;
         showMoneyFilter?: boolean;
         showLocationFilter?: boolean;
         showStateFilter?: boolean;
@@ -78,5 +79,9 @@ export interface TableOptionsInterface {
         showDispatcherFilter?: boolean;
         showStatusFilter?: boolean;
         showLtlFilter?: boolean;
+        showPMFilter?: boolean;
+        showCategoryRepairFilter?: boolean;
+        hideMoneySubType?: boolean;
+        showMoneyCount?: boolean;
     };
 }

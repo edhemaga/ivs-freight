@@ -1,4 +1,4 @@
-<div class="cards-container d-flex flex-wrap">
+<div class="cards-container">
     <ng-container
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
@@ -25,7 +25,11 @@
                                 class="checkbox-tooltip"
                                 type="button"
                                 ngbTooltip
-                                mainTooltip="Select"
+                                mainTooltip="{{
+                                    isCheckboxCheckedArray.includes(i)
+                                        ? 'Clear'
+                                        : 'Select'
+                                }}"
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
@@ -749,14 +753,15 @@
                         <div
                             class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                             [ngClass]="
-                                dropDownIsOpened === i && t1.isOpen()
+                                dropDownIsOpened === card.id &&
+                                Dropdown.isOpen()
                                     ? 'active-item'
                                     : ''
                             "
                         >
                             <div
-                                #t1="ngbPopover"
-                                (click)="toggleDropdown(t1, card)"
+                                #Dropdown="ngbPopover"
+                                (click)="toggleDropdown(Dropdown, card)"
                                 [autoClose]="'outside'"
                                 [ngbPopover]="dropdownPopover"
                                 [placement]="'bottom-right'"
@@ -769,7 +774,8 @@
                                 <svg-icon
                                     class="dots"
                                     [ngClass]="
-                                        dropDownIsOpened === i && t1.isOpen()
+                                        dropDownIsOpened === card.id &&
+                                        Dropdown.isOpen()
                                             ? 'rotate-dropdown-svg'
                                             : 'dropdown-svg-back'
                                     "
@@ -783,16 +789,25 @@
                         <!-- Note element -->
 
                         <div
-                            class="right-side-svg d-flex align-items-center justify-content-center flex-column"
+                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
                         >
-                            <app-ta-note
-                                [note]="card.note"
-                                [mainData]="card"
-                                [entityId]="card.id"
-                                [openedAll]="false"
-                                [parking]="false"
+                            <span
+                                class="note-tooltip d-flex align-items-center"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="View Note"
+                                tooltipBackground="#424242"
+                                position="bottom"
                             >
-                            </app-ta-note>
+                                <app-ta-note
+                                    [note]="card.note"
+                                    [mainData]="card"
+                                    [entityId]="card.id"
+                                    [openedAll]="false"
+                                    [parking]="false"
+                                >
+                                </app-ta-note>
+                            </span>
                         </div>
 
                         <!-- Comments element -->

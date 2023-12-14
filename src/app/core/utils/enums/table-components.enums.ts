@@ -58,6 +58,7 @@ export enum ConstantStringTableComponentsEnum {
     // Sizes
     SMALL = 'small',
     MEDIUM = 'medium',
+    LARGE = 'large',
 
     // Money
     DOLLAR_SIGN = '$',
@@ -66,6 +67,8 @@ export enum ConstantStringTableComponentsEnum {
     DATE_FORMAT = 'MM/dd/yy',
     HOURS = 'h',
     MINUTES = 'min',
+    PM = 'pm',
+    PM_2 = 'PM',
 
     // Distance
     MILES = 'mi',
@@ -227,6 +230,22 @@ export enum ConstantStringTableComponentsEnum {
     INACTIVE_2 = 'Inactive',
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
+
+    // Repair
+    FAVORITE = 'favorite',
+    FINISH_ORDER = 'finish-order',
+    DELETE_REPAIR = 'delete-repair',
+    EDIT_FO_TRAILER = 'edit-fo-trailer',
+    EDIT_FO_TRUCK = 'edit-fo-truck',
+    REPAIR_SHOP = 'repair-shop',
+    NEW_TRAILER = 'new-trailer',
+    NEW_TRUCK = 'new-truck',
+    REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
+    ORDER = 'Order',
+    DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
+    REPAIR_TRUCK = 'REPAIR_TRUCK',
+    REPAIR_TRAILER = 'REPAIR_TRAILER',
+    REPAIR_TABLE_VIEW = 'Repair-table-view',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
