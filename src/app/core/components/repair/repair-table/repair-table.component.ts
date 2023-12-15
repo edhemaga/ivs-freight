@@ -21,11 +21,7 @@ import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRa
 import { MapsService } from '../../../services/shared/maps.service';
 
 // Modals
-import {
-    RepairListResponse,
-    RepairResponse,
-    RepairShopListResponse,
-} from 'appcoretruckassist';
+import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
 import {
     getRepairsShopColumnDefinition,
     getRepairTruckAndTrailerColumnDefinition,
@@ -42,7 +38,7 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
-import { TableOptionsInterface } from '../../shared/model/cardData';
+import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
 import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 
 // Store
@@ -73,6 +69,7 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
+import { DisplayRepairConfiguration } from '../repair-card-data';
 
 @Component({
     selector: 'app-repair-table',
@@ -100,6 +97,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public repairShopTabClicked: boolean = false;
+    public activeTableData: string;
     public backFilterQuery: RepairBackFilterModal =
         TableRepair.BACK_FILTER_QUERY;
 
@@ -107,6 +105,24 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         TableRepair.SHOP_FILTER_QUERY;
 
     public mapListData: MapList[] = [];
+
+    //Data to display from model Truck
+    public displayRowsFront: CardRows[] =
+        DisplayRepairConfiguration.displayRowsFrontTruck;
+    public displayRowsBack: CardRows[] =
+        DisplayRepairConfiguration.displayRowsBackTruck;
+
+    //Title
+    public cardTitle: string = DisplayRepairConfiguration.cardTitle;
+
+    // Page
+    public page: string = DisplayRepairConfiguration.page;
+
+    //  Number of rows in card
+    public rows: number = DisplayRepairConfiguration.rows;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
 
     constructor(
         private modalService: ModalService,
@@ -139,6 +155,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.search();
 
         this.repair();
+
+        this.getSelectedTabTableData();
     }
 
     ngAfterViewInit(): void {
@@ -631,6 +649,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.INACTIVE
                 ) {
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ((this.sendDataToCardsFront = this.displayRowsFront),
+                          (this.sendDataToCardsBack = this.displayRowsBack))
+                        : null;
+                    this.getSelectedTabTableData();
                     return this.mapTruckAndTrailerData(data);
                 } else {
                     return this.mapShopData(data);
@@ -1282,6 +1306,22 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     }, 1000);
                 });
         }
+    }
+
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData(): void {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (table) => table.field === this.selectedTab
+            );
+        }
+    }
+
+    // Show More Data
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+        });
     }
 
     ngOnDestroy(): void {
