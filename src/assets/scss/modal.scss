@@ -85,7 +85,7 @@ ngb-modal-window[aria-hidden='true'] {
             .modal-header {
                 display: flex;
                 align-items: center;
-                padding: 12px 12px 6px;
+                padding: 12px;
                 border: none;
                 cursor: -webkit-grab;
                 cursor: grab;
@@ -292,25 +292,18 @@ ngb-modal-window[aria-hidden='true'] {
                     .modal-header-load-map-button {
                         height: 26px;
                         width: 26px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        position: relative;
-                        background-color: transparent;
+                        background: transparent;
                         border-radius: 2px;
                         margin-right: 9px;
                         cursor: pointer !important;
                         position: relative;
-                        transition: all 0.3s ease-in-out;
+                        transition: background 0.3s ease-in-out;
 
                         svg-icon {
-                            position: absolute;
-                            top: 47%;
-                            transform: translateY(-50%);
                             svg {
                                 path {
                                     transition: fill 0.3s ease-in-out;
-                                    fill: #919191;
+                                    fill: $bw5;
                                 }
                             }
                         }
@@ -327,7 +320,7 @@ ngb-modal-window[aria-hidden='true'] {
                         }
 
                         &:hover {
-                            background-color: #eeeeee;
+                            background: #eeeeee;
 
                             svg-icon {
                                 svg {
@@ -339,7 +332,7 @@ ngb-modal-window[aria-hidden='true'] {
                         }
 
                         &.active {
-                            background-color: #3074d3;
+                            background: #3074d3;
 
                             svg-icon {
                                 svg {
@@ -350,7 +343,7 @@ ngb-modal-window[aria-hidden='true'] {
                             }
 
                             &:hover {
-                                background-color: #255bb9;
+                                background: #255bb9;
 
                                 svg-icon {
                                     svg {
@@ -370,8 +363,8 @@ ngb-modal-window[aria-hidden='true'] {
                         transition: all 0.3s ease-in-out;
 
                         svg {
-                            width: 22px;
-                            height: 22px;
+                            width: 26px;
+                            height: 26px;
 
                             path {
                                 fill: $bw5;
@@ -451,29 +444,35 @@ ngb-modal-window[aria-hidden='true'] {
                 .modal-cancel-btn,
                 .modal-load-template-btn,
                 .modal-map-settings-reset-btn {
-                    position: relative;
-                    min-width: 128px;
-                    height: 32px;
-                    text-align: center;
-                    font-size: 14px;
-                    font-weight: 700;
-                    color: #6c6c6c;
-                    background-color: #eeeeee;
                     outline: none;
                     border: none;
-                    margin: 0;
                     border-radius: 2px;
+                    background: $ta-light-grey-5;
+                    color: $ta-light-grey-6;
+                    font-size: 14px;
+                    min-width: 128px;
+                    height: 32px;
+                    margin: 0;
+                    padding: 0 20px;
+                    position: relative;
+                    pointer-events: none;
+                    transition: background 0.3s ease-in-out;
+
                     -webkit-user-select: none;
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
-                    line-height: 18px;
-                    padding: 0 20px;
-                    transition: all 0.3s ease-in-out;
 
-                    &:hover {
-                        color: #ffffff;
-                        background-color: #6c6c6c;
+                    &.valid {
+                        cursor: pointer;
+                        pointer-events: all;
+                        background: $bw2;
+                        color: $ta-blue-14;
+
+                        &:hover {
+                            background: $ta-blue-15;
+                            color: $white;
+                        }
                     }
                 }
 
@@ -481,37 +480,30 @@ ngb-modal-window[aria-hidden='true'] {
                     outline: none;
                     border: none;
                     border-radius: 2px;
-                    background-color: #eeeeee;
-                    color: #aaaaaa;
-                    font-weight: 700;
+                    background: $ta-light-grey-5;
+                    color: $ta-light-grey-6;
                     font-size: 14px;
-                    min-width: 148px;
+                    min-width: 150px;
                     height: 32px;
-                    text-align: center;
                     margin: 0;
-                    padding: 0;
+                    padding: 0 0;
+                    position: relative;
+                    pointer-events: none;
+                    transition: background 0.3s ease-in-out;
+
                     -webkit-user-select: none;
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
-                    line-height: 18px;
-                    position: relative;
-                    transition: all 0.3s ease-in-out;
-                    cursor: pointer;
-
-                    &:hover {
-                        background-color: #e5e5e5;
-                        color: #aaaaaa;
-                    }
 
                     &.valid {
-                        background-color: #3074d3;
-                        color: #ffffff;
+                        cursor: pointer;
                         pointer-events: all;
+                        background: $ta-blue-14;
+                        color: $white;
 
                         &:hover {
-                            color: #ffffff;
-                            background-color: #255bb9;
+                            background: $ta-blue-15;
                         }
                     }
                 }
@@ -540,7 +532,7 @@ ngb-modal-window[aria-hidden='true'] {
                 }
 
                 .modal-gray-btn {
-                    background-color: #919191;
+                    background-color: $bw5;
                     color: #ffffff;
                 }
 

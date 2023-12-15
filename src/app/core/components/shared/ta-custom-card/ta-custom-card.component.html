@@ -144,12 +144,16 @@
             <!-- Plus Add New Things -->
 
             <ng-container *ngIf="hasActionSvg && !disableMultipleReviews">
-                <svg-icon
-                    class="action-plus-icon"
-                    [src]="'assets/svg/common/ic_plus.svg'"
-                    [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                    (click)="onAction($event, 'add')"
-                ></svg-icon>
+                <div
+                    class="d-flex align-items-center justify-content-center action-plus-icon-container"
+                >
+                    <svg-icon
+                        class="action-plus-icon"
+                        [src]="'assets/svg/common/ic_plus.svg'"
+                        [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                        (click)="onAction($event, 'add')"
+                    ></svg-icon>
+                </div>
             </ng-container>
 
             <!-- Header (Details page, Calendar...) -->

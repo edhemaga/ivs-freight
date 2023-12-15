@@ -112,10 +112,31 @@
             gap: 12px;
 
             // Plus add action
-            .action-plus-icon {
-                svg {
-                    path {
-                        fill: $ta-blue-13;
+            .action-plus-icon-container {
+                width: 26px;
+                height: 26px;
+                border-radius: 2px;
+                background: transparent;
+                transition: background 0.3s ease-in-out;
+
+                &:hover {
+                    background: $ta-blue-16;
+
+                    .action-plus-icon {
+                        svg {
+                            path {
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
+                }
+
+                .action-plus-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                            transition: fill 0.3s ease-in-out;
+                        }
                     }
                 }
             }

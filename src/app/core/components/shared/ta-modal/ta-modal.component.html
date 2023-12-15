@@ -61,38 +61,41 @@
                 <div class="modal-header-rightside">
                     <!-- Hazardous Logo -->
 
-                    <svg-icon
-                        *ngIf="isVisibleHazardous"
-                        src="assets/svg/common/ic_hazardous.svg"
-                        class="modal-hazardous-logo"
-                        (click)="toggleAdditionalPart('hazardous')"
-                    ></svg-icon>
+                    <ng-container *ngIf="isVisibleHazardous">
+                        <svg-icon
+                            src="assets/svg/common/ic_hazardous.svg"
+                            class="modal-hazardous-logo"
+                            (click)="toggleAdditionalPart('hazardous')"
+                        ></svg-icon>
+                    </ng-container>
 
                     <!-- Load Map Button -->
 
-                    <div
-                        *ngIf="isVisibleMap"
-                        class="modal-header-load-map-button"
-                        [ngClass]="{ active: mapVisibility }"
-                        placement="bottom"
-                        ngbTooltip="Open Map"
-                        (click)="toggleAdditionalPart('map')"
-                    >
-                        <svg-icon
-                            src="../../../../../assets/svg/common/load/ic_load_map.svg"
-                        ></svg-icon>
-                    </div>
+                    <ng-container *ngIf="isVisibleMap">
+                        <div
+                            class="d-flex align-items-center justify-content-center modal-header-load-map-button"
+                            [ngClass]="{ active: mapVisibility }"
+                            (click)="toggleAdditionalPart('map')"
+                        >
+                            <svg-icon
+                                src="../../../../../assets/svg/common/load/ic_load_map.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
 
                     <!-- Header close -->
 
-                    <svg-icon
+                    <ng-container
                         *ngIf="
                             this.editData?.type !== 'edit-company-first-login'
                         "
-                        class="modal-close"
-                        src="assets/svg/ic_x.svg"
-                        (click)="onAction('close')"
-                    ></svg-icon>
+                    >
+                        <svg-icon
+                            class="modal-close"
+                            src="assets/svg/ic_x.svg"
+                            (click)="onAction('close')"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
             </div>
 
@@ -239,7 +242,7 @@
                     <button
                         *ngIf="saveAndAddNew"
                         (click)="onAction('save and add new')"
-                        class="modal-save-btn modal-save-btn-add-new"
+                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
@@ -263,34 +266,35 @@
 
                     <!-- Load Template -->
 
-                    <button
-                        *ngIf="loadModalTemplate"
-                        (click)="onAction('load-template')"
-                        class="modal-load-template-btn"
-                        type="button"
-                    >
-                        {{
-                            loadTemplateSpinnerVisibility
-                                ? 'Saving'
-                                : 'Save and Add New'
-                        }}
-                        <div
-                            *ngIf="loadTemplateSpinnerVisibility"
-                            class="modal-spinner"
+                    <ng-container *ngIf="loadModalTemplate">
+                        <button
+                            (click)="onAction('load-template')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-load-template-btn"
+                            type="button"
                         >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
+                            {{
+                                loadTemplateSpinnerVisibility
+                                    ? 'Saving'
+                                    : 'Save and Add New'
+                            }}
+
+                            <ng-container *ngIf="loadTemplateSpinnerVisibility">
+                                <div class="modal-spinner">
+                                    <app-ta-spinner
+                                        [size]="'small'"
+                                        [color]="'white'"
+                                    ></app-ta-spinner>
+                                </div>
+                            </ng-container>
+                        </button>
+                    </ng-container>
 
                     <!-- Set Map Settings -->
 
                     <button
                         *ngIf="mapSettingsModal"
                         (click)="onAction('set-map-settings')"
-                        class="modal-save-btn"
+                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
@@ -313,7 +317,7 @@
                     <button
                         *ngIf="mapRouteModal"
                         (click)="onAction('create-map-route')"
-                        class="modal-save-btn"
+                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
@@ -337,40 +341,41 @@
 
                     <!-- Save button -->
 
-                    <button
-                        *ngIf="!mapSettingsModal && !mapRouteModal"
-                        (click)="onAction('save')"
-                        class="modal-save-btn"
-                        [ngClass]="{ valid: isModalValid }"
-                        type="button"
-                    >
-                        {{
-                            profileUpdateText
-                                ? saveSpinnerVisibility
-                                    ? 'Saving'
-                                    : 'Save Changes'
-                                : applicantText
-                                ? saveSpinnerVisibility
-                                    ? 'Inviting'
-                                    : 'Invite'
-                                : saveSpinnerVisibility
-                                ? 'Saving'
-                                : editData?.type?.includes('edit')
-                                ? editData?.type?.includes('fo')
-                                    ? 'Save'
-                                    : 'Save Changes'
-                                : 'Save'
-                        }}
-                        <div
-                            *ngIf="saveSpinnerVisibility"
-                            class="modal-spinner"
+                    <ng-container *ngIf="!mapSettingsModal && !mapRouteModal">
+                        <button
+                            (click)="onAction('save')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            [ngClass]="{ valid: isModalValid }"
+                            type="button"
                         >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
+                            {{
+                                profileUpdateText
+                                    ? saveSpinnerVisibility
+                                        ? 'Saving'
+                                        : 'Save Changes'
+                                    : applicantText
+                                    ? saveSpinnerVisibility
+                                        ? 'Inviting'
+                                        : 'Invite'
+                                    : saveSpinnerVisibility
+                                    ? 'Saving'
+                                    : editData?.type?.includes('edit')
+                                    ? editData?.type?.includes('fo')
+                                        ? 'Save'
+                                        : 'Save Changes'
+                                    : 'Save'
+                            }}
+
+                            <ng-container *ngIf="saveSpinnerVisibility">
+                                <div class="modal-spinner">
+                                    <app-ta-spinner
+                                        [size]="'small'"
+                                        [color]="'white'"
+                                    ></app-ta-spinner>
+                                </div>
+                            </ng-container>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
 
@@ -420,7 +425,7 @@
                 <button
                     *ngIf="confirmationData?.type === 'activate'"
                     (click)="onAction('activate')"
-                    class="modal-save-btn valid modal-confirmation-btn"
+                    class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn valid modal-confirmation-btn"
                     type="button"
                 >
                     Activate
@@ -448,7 +453,7 @@
                 <button
                     *ngIf="confirmationData?.type === 'hire'"
                     (click)="onAction('hire')"
-                    class="modal-save-btn active valid modal-confirmation-btn"
+                    class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn active valid modal-confirmation-btn"
                     type="button"
                 >
                     Hire
