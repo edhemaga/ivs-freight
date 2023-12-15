@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    EventEmitter,
+    Output,
+    ViewEncapsulation,
+} from '@angular/core';
 
 // Models
 import { CardRows, LoadTableData } from '../model/cardData';
@@ -26,7 +33,7 @@ import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { CardArrayHelper } from './utils/card-array-helper';
 
 @Component({
     selector: 'app-truckassist-cards',
@@ -34,6 +41,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
     providers: [formatCurrency, formatDatePipe, TaThousandSeparatorPipe],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         //modules
         CommonModule,
@@ -83,12 +91,9 @@ export class TruckassistCardsComponent implements OnInit {
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
-    constructor(
-        private detailsDataService: DetailsDataService,
-        private formatCurrency: formatCurrency,
-        private formatDate: formatDatePipe,
-        private TaThousandSeparatorPipe: TaThousandSeparatorPipe
-    ) {}
+    activeDescriptionDropdown: number = -1;
+    descriptionTooltip: any;
+    constructor(private detailsDataService: DetailsDataService) {}
 
     //---------------------------------------ON INIT---------------------------------------
     ngOnInit(): void {}
@@ -185,57 +190,25 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     public objectsWithDropDown(obj, ObjKey: string): void {
-        const objWithItems = ObjKey.split('.').reduce(
-            (acc, part) => acc && acc[part],
-            obj
-        );
-
-        const descriptions = objWithItems.map((item, index) => {
-            if (index !== objWithItems.length - 1) {
-                return item.description + ' • ';
-            } else {
-                return item.description;
-            }
-        });
-
-        return descriptions.join('');
+        return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
     }
 
     //Remove quotes from string to convert into endpoint
     public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
-        if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
-            return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
+        return CardArrayHelper.getValueByStringPath(obj, ObjKey);
+    }
 
-        // Value is obj key
-        const value = obj[ObjKey];
+    public onShowDescriptionDropdown(popup: any, row: any) {
+        if (row.descriptionItems.length > 1) {
+            this.descriptionTooltip = popup;
 
-        const isValueOfKey = !ObjKey.split('.').reduce(
-            (acc, part) => acc && acc[part],
-            obj
-        );
+            if (popup.isOpen()) {
+                popup.close();
+            } else {
+                popup.open({ data: row });
+            }
 
-        const isNotZeroValueOfKey =
-            ObjKey.split('.').reduce((acc, part) => acc && acc[part], obj) !==
-            0;
-
-        //Check if value is null return / and if it is 0 return expired
-        if (isValueOfKey && isNotZeroValueOfKey)
-            return ConstantStringTableComponentsEnum.SLASH;
-
-        // Transform number to descimal with $ and transform date
-        switch (ObjKey) {
-            case ConstantStringTableComponentsEnum.AVAILABLE_CREDIT:
-            case ConstantStringTableComponentsEnum.REVENUE:
-                return this.formatCurrency.transform(value);
-            case ConstantStringTableComponentsEnum.HIRED:
-                return this.formatDate.transform(value);
-            case ConstantStringTableComponentsEnum.MILEAGE:
-                return this.TaThousandSeparatorPipe.transform(value);
-            default:
-                return ObjKey.split('.').reduce(
-                    (acc, part) => acc && acc[part],
-                    obj
-                );
+            this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
     }
 

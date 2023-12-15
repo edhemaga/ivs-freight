@@ -469,14 +469,51 @@
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Item'"
                                         >
-                                            <span class="drop-down-holder">
+                                            <div
+                                                #description="ngbPopover"
+                                                class="description-container"
+                                                (click)="
+                                                    onShowDescriptionDropdown(
+                                                        description,
+                                                        card
+                                                    )
+                                                "
+                                                [innerHtml]="
+                                                    objectsWithDropDown(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                                [ngbPopover]="
+                                                    descriptionPopover
+                                                "
+                                                container="body"
+                                                [placement]="'bottom-left'"
+                                                popoverClass="table-description-popover"
+                                                triggers="manual"
+                                                (hidden)="
+                                                    descriptionPopoverOpen = -1
+                                                "
+                                                (shown)="
+                                                    descriptionPopoverOpen =
+                                                        card.id
+                                                "
+                                            ></div>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title === 'Item' ||
+                                                !descriptionPopover
+                                            "
+                                        >
+                                            <!-- <span class="drop-down-holder">
                                                 {{
                                                     objectsWithDropDown(
                                                         card,
                                                         rowsFront.endpoint
                                                     )
                                                 }}
-                                            </span>
+                                            </span> -->
                                         </ng-container>
                                         <!-- Rest of body items -->
 
@@ -1002,6 +1039,109 @@
             >
                 <div class="table-list-dropdown-border"></div>
             </div>
+        </div>
+    </div>
+</ng-template>
+
+<!-- DESCRIPTION -->
+<ng-template #descriptionPopover let-data="data">
+    <div class="card-dropdown-container">
+        <div class="description-titles d-flex align-items-center">
+            <div
+                class="number-title ta-font-bold d-flex align-items-center justify-content-center"
+            >
+                #
+            </div>
+            <div class="dropdown-titles d-flex justify-content-between">
+                <p
+                    class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                >
+                    DESC • QTY • PRICE
+                </p>
+                <div class="dropdown-right">
+                    <p class="price-total-title ta-font-semi-bold m-0">
+                        {{ data.tabelDescriptionDropTotal }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="description-items">
+            <div
+                class="description-item"
+                [ngClass]="{ 'description-item-margin': i !== 0 }"
+            >
+                <ng-container
+                    *ngFor="let item of data.descriptionItems; let i = index"
+                >
+                    <div class="d-flex align-items-center item-description">
+                        <div class="item-index">{{ i + 1 }}</div>
+                        <ng-container *ngIf="item.pmDescription">
+                            <div class="pm-item">
+                                <svg-icon
+                                    [src]="
+                                        '../../../../../../assets/svg/common/repair-pm/' +
+                                        item.pmDescription.logoName
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '20',
+                                        'height.px': '20'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
+                        <div class="items-holder d-flex">
+                            <div class="d-flex">
+                                <div class="left-description">
+                                    <div
+                                        class="item-title"
+                                        [ngClass]="{
+                                            'pm-style': item.pmDescription
+                                        }"
+                                        [ngStyle]="{
+                                            'min-width.px': item.pmDescription
+                                                ? 229
+                                                : 253,
+                                            'width.px': item.pmDescription
+                                                ? 229
+                                                : 253
+                                        }"
+                                    >
+                                        {{ item.description }}
+                                    </div>
+                                    <div class="items-number-items-cost d-flex">
+                                        <div
+                                            class="number-of-items"
+                                            [ngClass]="{
+                                                'pm-style': item.pmDescription
+                                            }"
+                                        >
+                                            {{ item.quantity }}
+                                        </div>
+                                        <div
+                                            class="item-cost"
+                                            [ngClass]="{
+                                                'pm-style': item.pmDescription
+                                            }"
+                                        >
+                                            {{ item.descriptionPrice }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="item-total-cost"
+                                    [ngClass]="{
+                                        'pm-style': item.pmDescription
+                                    }"
+                                >
+                                    {{ item.descriptionTotalPrice }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="right-background"></div>
         </div>
     </div>
 </ng-template>

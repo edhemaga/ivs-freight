@@ -27,6 +27,12 @@
         justify-content: space-between;
         border-radius: 2px;
 
+        .description-container {
+            overflow: hidden;
+            width: 100%;
+            height: 20px;
+        }
+
         .card-body-left {
             width: calc(100% - 30px);
 
@@ -416,6 +422,68 @@
                 color: $white !important;
 
                 transition: color 0.25s, background 0.25s;
+            }
+        }
+    }
+}
+
+// Dropdown for cards
+.card-dropdown-container {
+    width: 100%;
+
+    .description-titles {
+        background: $ta-dark-dropdown;
+        color: $ta-dark-gray-text-dropdown;
+        height: 26px;
+        border-radius: 2px;
+        padding: 4px;
+        font-size: 11px;
+
+        .number-title {
+            font-size: 11px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .dropdown-titles {
+            width: calc(100% - 18px);
+
+            .dropdown-right {
+                padding-right: 4px;
+                font-size: 11px;
+
+                .price-total-title {
+                    font-size: 14px;
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    .description-items {
+        background: $ta-dark-dropdown;
+        border-radius: 2px;
+        padding: 4px;
+        margin-top: 4px;
+
+        .item-description {
+            color: $white;
+
+            .item-index {
+                width: 18px;
+                height: 18px;
+                color: $ta-dark-gray-text-dropdown;
+                margin-right: 4px;
+            }
+
+            .items-holder {
+                display: grid;
+
+                .left-description {
+                    .items-number-items-cost {
+                        display: grid;
+                    }
+                }
             }
         }
     }
