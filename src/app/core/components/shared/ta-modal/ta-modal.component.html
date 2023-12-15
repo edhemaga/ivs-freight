@@ -165,30 +165,6 @@
                         Reset
                     </button>
 
-                    <!-- Load Template -->
-
-                    <button
-                        *ngIf="loadModalTemplate"
-                        (click)="onAction('load-template')"
-                        class="modal-load-template-btn"
-                        type="button"
-                    >
-                        {{
-                            loadTemplateSpinnerVisibility
-                                ? 'Saving'
-                                : 'Save as Template'
-                        }}
-                        <div
-                            *ngIf="loadTemplateSpinnerVisibility"
-                            class="modal-spinner"
-                        >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
-
                     <!-- Resend Email -->
 
                     <button
@@ -276,6 +252,30 @@
                         }}
                         <div
                             *ngIf="saveAddNewSpinnerVisibility"
+                            class="modal-spinner"
+                        >
+                            <app-ta-spinner
+                                [size]="'small'"
+                                [color]="'white'"
+                            ></app-ta-spinner>
+                        </div>
+                    </button>
+
+                    <!-- Load Template -->
+
+                    <button
+                        *ngIf="loadModalTemplate"
+                        (click)="onAction('load-template')"
+                        class="modal-load-template-btn"
+                        type="button"
+                    >
+                        {{
+                            loadTemplateSpinnerVisibility
+                                ? 'Saving'
+                                : 'Save and Add New'
+                        }}
+                        <div
+                            *ngIf="loadTemplateSpinnerVisibility"
                             class="modal-spinner"
                         >
                             <app-ta-spinner

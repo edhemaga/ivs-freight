@@ -962,46 +962,22 @@
     margin-bottom: 22px;
 }
 
-.load-driver-message-row,
-.load-stops-row {
-    width: 628px;
-
-    textarea {
-        margin-left: 2px;
-        width: 100%;
-        border: none;
-        outline: none;
-        color: $ta-black-2;
-        font-size: 14px;
-        resize: none;
-
-        &::placeholder {
-            color: $bw5;
-        }
-
-        &::-ms-input-placeholder {
-            color: $bw5;
-        }
-
-        &::-moz-selection {
-            color: $ta-black-2;
-            background: rgb(47, 47, 47, 0.2);
-        }
-
-        &::selection {
-            color: $ta-black-2;
-            background: rgb(47, 47, 47, 0.2);
-        }
-    }
+.load-modal-row {
+    max-width: 616px;
+    width: 100%;
 }
 
 .stop-load-date-time {
     display: grid;
-    grid-template-columns: 182px 26px repeat(2, 181px);
+    grid-template-columns: 1fr 26px repeat(2, 1fr);
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 22px;
+
+    .load-plus-button {
+        margin-left: -8px !important;
+    }
 
     &.date-range-active {
         grid-template-columns: repeat(4, 1fr);

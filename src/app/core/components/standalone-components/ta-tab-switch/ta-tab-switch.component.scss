@@ -114,7 +114,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         color: #fff;
         border-radius: 2px;
         height: calc(100% - 8px);
-        left: 2px;
         transition: all 0.25s ease-out;
         pointer-events: none;
 
@@ -139,7 +138,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             }
 
             &:hover:not(.active) {
-                //background-color: #f3f3f3;
                 color: #6c6c6c;
             }
         }
@@ -175,7 +173,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             }
 
             &:hover:not(.active) {
-                //background-color: #f3f3f3;
                 color: #6c6c6c;
             }
         }

@@ -369,26 +369,24 @@
 
             <!-- Driver Message -->
 
-            <div class="d-flex align-items-center load-driver-message-row">
-                <app-ta-custom-card
-                    [cardName]="'Driver Message'"
-                    [isCardOpen]="false"
-                    [hasFormatTextActionButtons]="true"
-                    [animationMarginParams]="{ marginTop: 0, marginBottom: 0 }"
-                >
-                    <textarea
-                        formControlName="driverMessage"
-                        type="text"
-                        spellcheck="false"
-                        placeholder="Type something..."
-                        autofocus
-                    ></textarea>
-                </app-ta-custom-card>
+            <div class="load-modal-row">
+                <app-ta-input-note
+                    formControlName="driverMessage"
+                    [isVisibleNote]="false"
+                    [note]="
+                        loadForm.get('driverMessage').value &&
+                        loadForm.get('driverMessage').value != 'null'
+                            ? loadForm.get('driverMessage').value
+                            : ''
+                    "
+                    [noteLabel]="'Driver Message'"
+                    [placeholder]="'Type something...'"
+                ></app-ta-input-note>
             </div>
 
             <!-- Stops -->
 
-            <div class="d-flex align-items-center load-stops-row">
+            <div class="d-flex align-items-center load-modal-row">
                 <app-ta-custom-card
                     [cardName]="'Stops'"
                     [capsulaText]="
@@ -462,6 +460,8 @@
                         [isCardOpen]="isActivePickupStop"
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
                     >
+                        <!--  Shipper-->
+
                         <div class="row row-no-mt">
                             <div class="col-12">
                                 <app-ta-input-dropdown
@@ -486,6 +486,8 @@
                                 ></app-ta-input-dropdown>
                             </div>
                         </div>
+
+                        <!-- Work Hours, Appointment, Shipper Contact -->
 
                         <div class="load-shipper-contact-row">
                             <app-ta-tab-switch
@@ -515,6 +517,8 @@
                             ></app-ta-input-dropdown>
                         </div>
 
+                        <!--  Date Pickers & Time Pickers -->
+
                         <div
                             class="stop-load-date-time"
                             [ngClass]="{ 'date-range-active': pickupDateRange }"
@@ -542,7 +546,7 @@
                             <ng-container *ngIf="!pickupDateRange">
                                 <div
                                     class="load-plus-button"
-                                    placement="bottom"
+                                    position="top"
                                     ngbTooltip="Date Range"
                                     (click)="pickupDateRange = true"
                                 >
@@ -568,7 +572,6 @@
                                 "
                             ></app-ta-input>
 
-                            <!-- Time Picker -->
                             <app-ta-input
                                 formControlName="pickupTimeFrom"
                                 [inputConfig]="{
@@ -591,7 +594,6 @@
                                 "
                             ></app-ta-input>
 
-                            <!-- Time Picker -->
                             <app-ta-input
                                 formControlName="pickupTimeTo"
                                 [inputConfig]="{
@@ -610,12 +612,14 @@
                             ></app-ta-input>
                         </div>
 
+                        <!-- Stop Items -->
+
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
                                 [isCardOpen]="false"
-                                [hasCounter]="2"
-                                [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                                [hasCounter]="0"
+                                [hasActionSvg]="true"
                                 [hasBodyData]="true"
                                 [hasArrow]="true"
                                 [bottomCollapseArrow]="true"
@@ -1277,26 +1281,39 @@
 
                     <!-- Stops Footer -->
 
-                    <div class="stops-footer-bar">
-                        <div class="stops-footer-bar-left-side">
-                            <p class="stops-footer-bar-text">LOADED MILES</p>
-                            <span class="loaded-miles-value"
+                    <div
+                        class="d-flex align-items-center justify-content-between stops-footer-bar"
+                    >
+                        <div
+                            class="d-flex align-items-center stops-footer-bar-left-side"
+                        >
+                            <p class="m-0 ta-font-bold stops-footer-bar-text">
+                                LOADED
+                            </p>
+
+                            <span class="m-0 ta-font-bold loaded-miles-value"
                                 >{{
                                     loadForm.get('loadMiles').value
                                         | number : '1.2-2'
                                 }}
-                                mi</span
-                            >
+                                <span>mi</span>
+                            </span>
                         </div>
-                        <div class="stops-footer-bar-right-side">
-                            <p class="stops-footer-bar-text">TOTAL MILES</p>
-                            <span class="total-miles-value"
+
+                        <div
+                            class="d-flex align-items-center stops-footer-bar-right-side"
+                        >
+                            <p class="m-0 ta-font-bold stops-footer-bar-text">
+                                TOTAL
+                            </p>
+
+                            <span class="m-0 ta-font-bold total-miles-value"
                                 >{{
                                     loadForm.get('totalMiles').value
                                         | number : '1.2-2'
                                 }}
-                                mi</span
-                            >
+                                <span>mi</span>
+                            </span>
                         </div>
                     </div>
                 </app-ta-custom-card>
@@ -1304,265 +1321,275 @@
 
             <!-- Financial -->
 
-            <app-load-financial
-                [firstHeaderTitle]="'Billing'"
-                [billing]="
-                    loadModalBill | financialCalculation : 'billing' | currency
-                "
-                [disableBillAction]="
-                    !loadForm.get('baseRate').value ||
-                    !additionalBillingTypes?.length
-                "
-                [adjusted]="
-                    loadForm.get('adjustedRate').value ||
-                    loadForm.get('driverRate').value
-                "
-                [secondHeaderTitle]="'Payment'"
-                [payment]="
-                    loadModalPayment
-                        | financialCalculation : 'payment'
-                        | currency
-                "
-                [disablePaymentAction]="!loadForm.get('baseRate').value"
-                [thirdHeaderTitle]="'Invoice Ageing'"
-                [isCardOpen]="true"
-                [animationMarginParams]="{
-                    marginTop: '18px',
-                    marginBottom: '22px'
-                }"
-                (action)="onFinancialAction($event)"
-            >
-                <div class="load-financial-container">
-                    <!-- =============================== Billing =============================== -->
-                    <div class="load-financial-billing">
-                        <!-- Base Rate -->
-                        <app-ta-input
-                            formControlName="baseRate"
-                            [inputConfig]="{
-                                name: 'price-separator',
-                                type: 'text',
-                                label: 'Base Rate',
-                                labelInInput: true,
-                                isRequired: true,
-                                priceSeparator: true,
-                                priceSeparatorLimitation: 6,
-                                placeholderIconRightSide: 'dollar',
-                                placeholderIconColor: 'green',
-                                inputCursorOnRightSide: true,
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true
-                            }"
-                        ></app-ta-input>
-                        <!-- Driver Rate -->
-                        <app-ta-input
-                            *ngIf="
+            <div class="load-modal-row">
+                <app-load-financial
+                    [firstHeaderTitle]="'Billing'"
+                    [billing]="
+                        loadModalBill
+                            | financialCalculation : 'billing'
+                            | currency
+                    "
+                    [disableBillAction]="
+                        !loadForm.get('baseRate').value ||
+                        !additionalBillingTypes?.length
+                    "
+                    [adjusted]="
+                        loadForm.get('adjustedRate').value ||
+                        loadForm.get('driverRate').value
+                    "
+                    [secondHeaderTitle]="'Payment'"
+                    [payment]="
+                        loadModalPayment
+                            | financialCalculation : 'payment'
+                            | currency
+                    "
+                    [disablePaymentAction]="!loadForm.get('baseRate').value"
+                    [thirdHeaderTitle]="'Invoice Ageing'"
+                    [isCardOpen]="true"
+                    [animationMarginParams]="{
+                        marginTop: '18px',
+                        marginBottom: '22px'
+                    }"
+                    (action)="onFinancialAction($event)"
+                >
+                    <div class="load-financial-container">
+                        <div class="load-financial-billing">
+                            <!-- Base Rate -->
+
+                            <app-ta-input
+                                formControlName="baseRate"
+                                [inputConfig]="{
+                                    name: 'price-separator',
+                                    type: 'text',
+                                    label: 'Base Rate',
+                                    labelInInput: true,
+                                    isRequired: true,
+                                    priceSeparator: true,
+                                    priceSeparatorLimitation: 6,
+                                    placeholderIconRightSide: 'dollar',
+                                    placeholderIconColor: 'green',
+                                    inputCursorOnRightSide: true,
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true
+                                }"
+                            ></app-ta-input>
+
+                            <!-- Driver Rate -->
+                            <!--  *ngIf="
                                 selectedDispatches &&
                                 selectedDispatches.payType === 'Flat Rate'
                             "
-                            formControlName="driverRate"
-                            [inputConfig]="{
-                                name: 'price-separator',
-                                type: 'text',
-                                label: 'Driver Rate',
-                                labelInInput: true,
-                                isRequired: true,
-                                priceSeparator: true,
-                                priceSeparatorLimitation: 6,
-                                placeholderIconRightSide: 'dollar',
-                                placeholderIconColor: 'purple',
-                                inputCursorOnRightSide: true,
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true
-                            }"
-                        ></app-ta-input>
-                        <!-- Adjusted Rate -->
-                        <app-ta-input
-                            *ngIf="
-                                selectedDispatches &&
-                                selectedDispatches.payType !== 'Flat Rate' &&
-                                this.selectedAdditionalBillings[0]?.checked &&
-                                this.selectedAdditionalBillings[0]?.id === 6
-                            "
-                            formControlName="adjustedRate"
-                            [inputConfig]="{
-                                name: 'price-separator',
-                                type: 'text',
-                                label: 'Adjusted',
-                                labelInInput: true,
-                                priceSeparator: true,
-                                priceSeparatorLimitation: 6,
-                                placeholderIconRightSide: 'dollar',
-                                placeholderIconColor: 'purple',
-                                inputCursorOnRightSide: true,
-                                removeInput: true,
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                hideDangerMark: true
-                            }"
-                            (clear)="removeAdditionalBilling('adjusted')"
-                        ></app-ta-input>
-                        <div formArrayName="additionalBillings">
-                            <div
-                                *ngFor="
-                                    let additional of additionalBillings()
-                                        .controls;
-                                    let indx = index
-                                "
-                                [ngStyle]="{ 'margin-bottom': '4px' }"
-                            >
-                                <div [formGroupName]="indx">
-                                    <app-ta-input
-                                        formControlName="billingValue"
-                                        [inputConfig]="{
-                                            name: 'price-separator',
-                                            type: 'text',
-                                            label: additional.get('name').value,
-                                            labelInInput: true,
-                                            priceSeparator: true,
-                                            priceSeparatorLimitation: 6,
-                                            placeholderIconRightSide:
-                                                'dollar-additional-load',
-                                            placeholderIconColor: 'blue',
-                                            inputCursorOnRightSide: true,
-                                            removeInput: true,
-                                            isRequired: true,
-                                            hideErrorMessage: true,
-                                            hideRequiredCheck: true,
-                                            hideDangerMark: true
-                                        }"
-                                        (clear)="
-                                            removeAdditionalBilling(
-                                                'billing',
-                                                indx
-                                            )
-                                        "
-                                    ></app-ta-input>
+ -->
+                            <app-ta-input
+                                formControlName="driverRate"
+                                [inputConfig]="{
+                                    name: 'price-separator',
+                                    type: 'text',
+                                    label: 'Driver Rate',
+                                    labelInInput: true,
+                                    isRequired: true,
+                                    priceSeparator: true,
+                                    priceSeparatorLimitation: 6,
+                                    placeholderIconRightSide: 'dollar',
+                                    placeholderIconColor: 'purple',
+                                    inputCursorOnRightSide: true,
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true
+                                }"
+                            ></app-ta-input>
+
+                            <!-- Adjusted Rate -->
+                            <!--  *ngIf="
+                                    selectedDispatches &&
+                                    selectedDispatches.payType !==
+                                        'Flat Rate' &&
+                                    this.selectedAdditionalBillings[0]
+                                        ?.checked &&
+                                    this.selectedAdditionalBillings[0]?.id === 6
+                                " -->
+                            <app-ta-input
+                                formControlName="adjustedRate"
+                                [inputConfig]="{
+                                    name: 'price-separator',
+                                    type: 'text',
+                                    label: 'Adjusted',
+                                    labelInInput: true,
+                                    priceSeparator: true,
+                                    priceSeparatorLimitation: 6,
+                                    placeholderIconRightSide: 'dollar',
+                                    placeholderIconColor: 'purple',
+                                    inputCursorOnRightSide: true,
+                                    removeInput: true,
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true
+                                }"
+                                (clear)="removeAdditionalBilling('adjusted', 0)"
+                            ></app-ta-input>
+
+                            <div formArrayName="additionalBillings">
+                                <div
+                                    *ngFor="
+                                        let additional of additionalBillings()
+                                            .controls;
+                                        let indx = index
+                                    "
+                                    [ngStyle]="{ 'margin-bottom': '4px' }"
+                                >
+                                    <div [formGroupName]="indx">
+                                        <app-ta-input
+                                            formControlName="billingValue"
+                                            [inputConfig]="{
+                                                name: 'price-separator',
+                                                type: 'text',
+                                                label: additional.get('name')
+                                                    .value,
+                                                labelInInput: true,
+                                                priceSeparator: true,
+                                                priceSeparatorLimitation: 6,
+                                                placeholderIconRightSide:
+                                                    'dollar-additional-load',
+                                                placeholderIconColor: 'blue',
+                                                inputCursorOnRightSide: true,
+                                                removeInput: true,
+                                                isRequired: true,
+                                                hideErrorMessage: true,
+                                                hideRequiredCheck: true,
+                                                hideDangerMark: true
+                                            }"
+                                            (clear)="
+                                                removeAdditionalBilling(
+                                                    'billing',
+                                                    indx
+                                                )
+                                            "
+                                        ></app-ta-input>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- 
+                                *ngIf="isVisibleBillDropdown" -->
+                            <app-ta-input-dropdown
+                                formControlName="billingDropdown"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Additional',
+                                    isDropdown: true,
+                                    labelInInput: true,
+                                    autoFocus: true,
+                                    dropdownWidthClass: 'w-col-198',
+                                    readOnly: true
+                                }"
+                                [options]="additionalBillingTypes"
+                                [activeItem]="null"
+                                (selectedItem)="addAdditionalBilling($event)"
+                            ></app-ta-input-dropdown>
                         </div>
-                        <app-ta-input-dropdown
-                            *ngIf="isVisibleBillDropdown"
-                            formControlName="billingDropdown"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Additional',
-                                isDropdown: true,
-                                labelInInput: true,
-                                autoFocus: true,
-                                dropdownWidthClass: 'w-col-198',
-                                readOnly: true
-                            }"
-                            [options]="additionalBillingTypes"
-                            [activeItem]="null"
-                            (selectedItem)="addAdditionalBilling($event)"
-                        ></app-ta-input-dropdown>
+                        <!-- 
+                                *ngIf="isVisiblePayment" -->
+                        <div class="load-financial-payment">
+                            <app-ta-input
+                                formControlName="advancePay"
+                                [inputConfig]="{
+                                    name: 'price-separator',
+                                    type: 'text',
+                                    label: 'Advance',
+                                    labelInInput: true,
+                                    isRequired: true,
+                                    priceSeparator: true,
+                                    priceSeparatorLimitation: 6,
+                                    placeholderIconRightSide: 'dollar',
+                                    placeholderIconColor: 'purple',
+                                    inputCursorOnRightSide: true,
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    removeInput: true
+                                }"
+                                (clear)="removeAdditionalPayment()"
+                            ></app-ta-input>
+                        </div>
+
+                        <div class="load-financial-invoice">
+                            <app-ta-input
+                                formControlName="invoiced"
+                                [inputConfig]="{
+                                    name: 'datepicker',
+                                    type: 'text',
+                                    isDropdown: true,
+                                    label: 'Invoiced',
+                                    isDisabled: true,
+                                    placeholderIcon: 'date',
+                                    isRequired: true,
+                                    customClass: 'datetimeclass'
+                                }"
+                            ></app-ta-input>
+                        </div>
                     </div>
-                    <div class="load-financial-payment">
-                        <app-ta-input
-                            *ngIf="isVisiblePayment"
-                            formControlName="advancePay"
-                            [inputConfig]="{
-                                name: 'price-separator',
-                                type: 'text',
-                                label: 'Advance',
-                                labelInInput: true,
-                                isRequired: true,
-                                priceSeparator: true,
-                                priceSeparatorLimitation: 6,
-                                placeholderIconRightSide: 'dollar',
-                                placeholderIconColor: 'purple',
-                                inputCursorOnRightSide: true,
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                removeInput: true
-                            }"
-                            (clear)="removeAdditionalPayment()"
-                        ></app-ta-input>
-                    </div>
-                    <div class="load-financial-invoice">
-                        <app-ta-input
-                            formControlName="invoiced"
-                            [inputConfig]="{
-                                name: 'datepicker',
-                                type: 'text',
-                                isDropdown: true,
-                                label: 'Invoiced',
-                                isDisabled: true,
-                                placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass: 'datetimeclass'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-            </app-load-financial>
+                </app-load-financial>
+            </div>
 
             <!-- Comments -->
 
-            <app-ta-custom-card
-                [hasCounter]="comments.length ? comments.length : 0"
-                [cardName]="'Comment'"
-                [isCardOpen]="comments.length > 0"
-                [isCommentData]="true"
-                [hasBodyData]="comments.length > 0"
-                [hasScrollBody]="comments.length > 4"
-                [disabledCard]="editData?.type !== 'edit'"
-                [hasActionSvg]="
-                    editData?.type === 'edit'
-                        ? 'assets/svg/common/ic_plus.svg'
-                        : ''
-                "
-                [animationMarginParams]="{
-                    marginTop: '10px',
-                    marginBottom: '12px'
-                }"
-                (onActionEvent)="createComment()"
-            >
-                <app-ta-user-review
-                    *ngIf="comments.length"
-                    [reviewData]="comments"
-                    [isNewReview]="comments[0].isNewReview"
-                    (changeReviewsEvent)="changeCommentsEvent($event)"
-                ></app-ta-user-review>
-            </app-ta-custom-card>
+            <div class="load-modal-row">
+                <app-ta-custom-card
+                    [cardName]="'Comment'"
+                    [isCardOpen]="comments.length > 0"
+                    [hasCounter]="comments.length"
+                    [hasActionSvg]="true"
+                    [hasBodyData]="comments.length > 0"
+                    [hasScrollBody]="comments.length > 4"
+                    [disabledCard]="editData?.type !== 'edit'"
+                    [animationMarginParams]="{
+                        marginTop: '10px',
+                        marginBottom: '12px'
+                    }"
+                    (onActionEvent)="createComment()"
+                >
+                    <app-ta-user-review
+                        *ngIf="comments.length"
+                        [reviewData]="comments"
+                        [isNewReview]="comments[0].isNewReview"
+                        (changeReviewsEvent)="changeCommentsEvent($event)"
+                    ></app-ta-user-review>
+                </app-ta-custom-card>
+            </div>
 
             <!-- Documents -->
 
-            <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
-                [cardName]="'Document'"
-                [isCardOpen]="documents.length > 0"
-            >
-                <app-ta-upload-files
-                    [files]="documents"
-                    [size]="'medium'"
-                    [showDropzone]="true"
-                    (onFileEvent)="onFilesEvent($event)"
-                    [customClassName]="'modals'"
-                    [hasTagsDropdown]="true"
-                    [tags]="tags"
-                ></app-ta-upload-files>
-            </app-ta-custom-card>
+            <div class="load-modal-row">
+                <app-ta-custom-card
+                    [hasCounter]="documents.length"
+                    [cardName]="'Document'"
+                    [isCardOpen]="documents.length > 0"
+                >
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [size]="'medium'"
+                        [showDropzone]="true"
+                        (onFileEvent)="onFilesEvent($event)"
+                        [customClassName]="'modals'"
+                        [hasTagsDropdown]="true"
+                        [tags]="tags"
+                    ></app-ta-upload-files>
+                </app-ta-custom-card>
+            </div>
 
             <!-- Note -->
 
-            <app-ta-input-note
-                formControlName="note"
-                [isVisibleNote]="
-                    loadForm.get('note').value &&
-                    loadForm.get('note').value != 'null'
-                        ? loadForm.get('note').value
-                        : false
-                "
-                [note]="
-                    loadForm.get('note').value &&
-                    loadForm.get('note').value != 'null'
-                        ? loadForm.get('note').value
-                        : ''
-                "
-            ></app-ta-input-note>
+            <div class="load-modal-row">
+                <app-ta-input-note
+                    formControlName="note"
+                    [isVisibleNote]="false"
+                    [note]="
+                        loadForm.get('note').value &&
+                        loadForm.get('note').value != 'null'
+                            ? loadForm.get('note').value
+                            : ''
+                    "
+                ></app-ta-input-note>
+            </div>
         </div>
     </form>
 
@@ -1581,11 +1608,13 @@
         }"
     >
         <!-- Hazardous -->
+
         <app-load-modal-hazardous
             *ngIf="isHazardousVisible"
         ></app-load-modal-hazardous>
 
         <!-- Map -->
+
         <app-maps
             *ngIf="!isHazardousVisible"
             [mapType]="'routing'"

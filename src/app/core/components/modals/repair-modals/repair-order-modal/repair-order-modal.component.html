@@ -116,8 +116,7 @@
                             *ngIf="selectedRepairShop?.phone"
                             class="selected-item-info"
                         >
-                            <svg-icon 
-                                
+                            <svg-icon
                                 [class.hideSvgOnCopy]="hideIconIndex == 1"
                                 src="assets/svg/common/ic_phone.svg"
                             ></svg-icon>
@@ -139,7 +138,6 @@
                             class="selected-item-info"
                         >
                             <svg-icon
-                                
                                 [class.hideSvgOnCopy]="hideIconIndex == 2"
                                 src="assets/svg/common/ic_email.svg"
                             ></svg-icon>
@@ -160,7 +158,6 @@
                         >
                             <svg-icon
                                 [class.hideSvgOnCopy]="hideIconIndex == 3"
-                                
                                 [ngStyle]="{ 'padding-bottom': '4px' }"
                                 src="assets/svg/common/ic_address.svg"
                             ></svg-icon>
@@ -238,7 +235,6 @@
                 [hasCounter]="items.length ? items.length : 0"
                 [hasScrollBody]="items.length > 10"
                 [isCardOpen]="items.length > 0"
-                [isCommentData]="true"
             >
                 <div
                     *ngIf="items.length"

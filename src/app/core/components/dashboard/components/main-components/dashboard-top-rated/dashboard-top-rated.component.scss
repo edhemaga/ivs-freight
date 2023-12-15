@@ -4,7 +4,6 @@
     padding: 4px 12px;
     background: $white;
     border-radius: 3px;
-    height: 700px;
 
     /* Header */
     &-header {
@@ -154,9 +153,9 @@
 
             /* List */
             &-list {
-                height: 400px;
+                height: 320px;
                 overflow: hidden;
-                padding-right: 12px;
+                padding-right: 4px;
 
                 &-search {
                     margin-bottom: 4px;
@@ -167,7 +166,7 @@
                 }
 
                 .top-rated-item {
-                    padding: 8px 12px;
+                    padding: 4px 12px;
                     margin-bottom: 4px;
                     border-radius: 2px;
                     cursor: pointer;
@@ -284,6 +283,7 @@
                                 font-size: 14px;
                                 line-height: 18px;
                                 color: $ta-black;
+                                max-width: 200px;
 
                                 &::-moz-selection {
                                     color: $ta-black;
@@ -391,6 +391,7 @@
             &-doughnut-chart-container {
                 position: relative;
                 z-index: 1;
+                margin-top: -15px;
 
                 /* Custom Period Container */
                 .custom-period-range-container {

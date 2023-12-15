@@ -52,7 +52,6 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
 import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
-import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 import { ViewChild } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
@@ -3569,7 +3568,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe();
     }
 
-    public identity(index: number, item: any): number {
+    public identity(index: number): number {
         return index;
     }
 
@@ -3585,9 +3584,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .autocompleteLoadByDescription(description)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
-                            next: (
-                                res: LoadStopItemAutocompleteDescriptionResponse
-                            ) => {},
+                            next: () => {},
                             error: () => {},
                         });
                 }
@@ -3604,9 +3601,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .autocompleteLoadByDescription(description)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
-                            next: (
-                                res: LoadStopItemAutocompleteDescriptionResponse
-                            ) => {},
+                            next: () => {},
                             error: () => {},
                         });
                 }
@@ -3623,9 +3618,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .autocompleteLoadByDescription(description)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
-                            next: (
-                                res: LoadStopItemAutocompleteDescriptionResponse
-                            ) => {},
+                            next: () => {},
                             error: () => {},
                         });
                 }

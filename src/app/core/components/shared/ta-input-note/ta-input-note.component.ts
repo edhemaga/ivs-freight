@@ -1,11 +1,8 @@
 import {
-    ChangeDetectorRef,
     Component,
     ElementRef,
-    EventEmitter,
     Input,
     OnInit,
-    Output,
     Self,
     ViewChild,
 } from '@angular/core';
@@ -85,10 +82,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         this._isVisibleNote = value ? true : false;
     }
 
-    // @Input('isVisibleNote') set isVisibleNote(value: any) {
-    //   this._isVisibleNote = value ? true : false;
-    // }
-
     animationMarginParams = {
         marginTop: '0px',
         marginBottom: '0px',
@@ -97,7 +90,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() isVisibleArrow: boolean = true;
     @Input() minRows: number = 2;
     @Input() maxRows: number = 5;
-    @Input() placeholder: string = 'Write a note.';
+    @Input() noteLabel: string = 'Note';
+    @Input() placeholder: string = 'Write a note...';
     @Input() isReadOnly: boolean = false;
     @Input() customClass: string = null;
     @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
@@ -106,8 +100,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     constructor(
         @Self() public superControl: NgControl,
         private sharedService: SharedService,
-        private noteService: NoteUpdateService,
-        private ref: ChangeDetectorRef
+        private noteService: NoteUpdateService
     ) {
         this.superControl.valueAccessor = this;
     }
@@ -132,7 +125,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     public registerOnTouched(_: any): void {}
 
     public openNote() {
-        const oldNoActive = this.noActive;
         this.noActive = '';
         this._isVisibleNote = !this._isVisibleNote;
 
@@ -141,7 +133,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         }
     }
 
-    checkFocus(e) {
+    checkFocus() {
         this.isFocused = true;
         if (!this._isVisibleNote) {
             this.sharedService.emitAllNoteOpened.next(false);
@@ -198,7 +190,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         }
     }
 
-    stopBlurRemoveTimeout(){
+    stopBlurRemoveTimeout() {
         clearTimeout(this.blurNoteTimeout);
     }
 

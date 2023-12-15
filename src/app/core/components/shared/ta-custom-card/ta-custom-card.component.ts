@@ -78,7 +78,6 @@ export class TaCustomCardComponent {
 
     @Input() tooltipName: string = '';
     noActive: string;
-    @Input() isCommentData: boolean = false;
     @Input() textBottomPossiton: string;
     @Input() stayOpen: boolean = false;
     @Input() disabledCard: boolean = false;
