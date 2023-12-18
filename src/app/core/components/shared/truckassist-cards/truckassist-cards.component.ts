@@ -5,6 +5,12 @@ import {
     EventEmitter,
     Output,
     ViewEncapsulation,
+    ElementRef,
+    ViewChild,
+    NgZone,
+    QueryList,
+    ViewChildren,
+    Renderer2,
 } from '@angular/core';
 
 // Models
@@ -59,8 +65,17 @@ import { CardArrayHelper } from './utils/card-array-helper';
     ],
 })
 export class TruckassistCardsComponent implements OnInit {
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
+    @ViewChild('parentElement', { read: ElementRef })
+    private cardBodyElement!: ElementRef;
 
+    @ViewChildren('itemsRepair', { read: ElementRef })
+    itemsContainers!: QueryList<ElementRef>;
+
+    containerWidth: number = 0;
+    itemWidth: number = 0;
+    wordsArray: string[] = [];
+
+    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
     // All data
     @Input() viewData: CardDetails[];
     @Input() tableData: LoadTableData[];
@@ -83,20 +98,59 @@ export class TruckassistCardsComponent implements OnInit {
     public dropdownActions;
     public dropdownOpenedId: number;
     public dropDownIsOpened: number;
+    public descriptionIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
-
+    public elementWidth: number;
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
-    activeDescriptionDropdown: number = -1;
-    descriptionTooltip: any;
-    constructor(private detailsDataService: DetailsDataService) {}
+    public activeDescriptionDropdown: number = -1;
+    public descriptionTooltip: HTMLElement;
+
+    constructor(
+        private detailsDataService: DetailsDataService,
+        private ngZone: NgZone,
+        private renderer: Renderer2
+    ) {}
 
     //---------------------------------------ON INIT---------------------------------------
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.viewData);
+    }
+
+    //---------------------------------------ON AFTER INIT---------------------------------------
+    ngAfterViewInit(): void {
+        // On window resize update width of description popup
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver(() => {
+                const width = parentElement.offsetWidth;
+                this.ngZone.run(() => {
+                    console.log(width);
+                    this.elementWidth = width;
+                });
+            });
+            resizeObserver.observe(parentElement);
+        }
+        // On window resize update items count in Repair page
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver(() => {
+                // Setting count number for each card on page
+                this.itemsContainers.forEach((containerRef: ElementRef) => {
+                    this.calculateItemsToFit(containerRef.nativeElement);
+                });
+            });
+            resizeObserver.observe(parentElement);
+        }
+    }
 
     // Flip card based on card index
     public flipCard(index: number): void {
@@ -131,6 +185,7 @@ export class TruckassistCardsComponent implements OnInit {
     // Show hide dropdown
     public toggleDropdown(tooltip, card: CardDetails): void {
         this.tooltip = tooltip;
+
         if (tooltip.isOpen()) {
             tooltip.close();
             this.dropDownIsOpened = null;
@@ -189,7 +244,22 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
-    public objectsWithDropDown(obj, ObjKey: string): void {
+    // Description
+    public onShowDescriptionDropdown(popup, card): void {
+        if (card.descriptionItems.length > 1) {
+            this.descriptionTooltip = popup;
+            if (popup.isOpen()) {
+                popup.close();
+                this.descriptionIsOpened = null;
+            } else {
+                popup.open({ data: card });
+                this.descriptionIsOpened = card.id;
+            }
+            this.activeDescriptionDropdown = popup.isOpen() ? card.id : -1;
+        }
+    }
+
+    public objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
         return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
     }
 
@@ -198,17 +268,58 @@ export class TruckassistCardsComponent implements OnInit {
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
     }
 
-    public onShowDescriptionDropdown(popup: any, row: any) {
-        if (row.descriptionItems.length > 1) {
-            this.descriptionTooltip = popup;
+    public onFinishOrder(card: CardDetails): void {
+        this.bodyActions.emit({
+            data: card,
+            type: 'finish-order',
+        });
+    }
 
-            if (popup.isOpen()) {
-                popup.close();
-            } else {
-                popup.open({ data: row });
+    // Setting count number for each card on page
+    public calculateItemsToFit(container: HTMLElement): void {
+        const content = container.textContent || '';
+        const containerWidth = container.offsetWidth;
+        const contentSentences = content
+            .split('•')
+            .map((sentence) => sentence.trim());
+
+        let visibleSentencesCount = 0;
+        let visibleWidth = 0;
+        let remainingSentences = 0;
+
+        for (let i = 0; i < contentSentences.length; i++) {
+            // Creating test span for measuring the parent
+            const testContent = contentSentences.slice(0, i + 1).join(' • '); // Reconstructing sentences
+            const testElement = this.renderer.createElement('span');
+            testElement.textContent = testContent;
+            document.body.appendChild(testElement); // Append to the body to measure width
+            const testWidth = testElement.offsetWidth;
+            document.body.removeChild(testElement); // Remove element after measurement
+
+            if (testWidth <= containerWidth) {
+                visibleSentencesCount = i + 1;
+                visibleWidth = testWidth;
+            } else if (testWidth - 34 > containerWidth && i > 0) {
+                remainingSentences =
+                    contentSentences.length - visibleSentencesCount;
+                const existingNewElement = container.parentNode.querySelector(
+                    '.container-count.ta-font-medium'
+                );
+                if (existingNewElement) {
+                    container.parentNode.removeChild(existingNewElement);
+                }
+                const newElement = this.renderer.createElement('div');
+                newElement.className =
+                    'container-count ta-font-medium d-flex justify-content-center';
+                const text = this.renderer.createText('+' + remainingSentences);
+                this.renderer.appendChild(newElement, text);
+                this.renderer.insertBefore(
+                    container.parentNode,
+                    newElement,
+                    container.nextSibling
+                );
+                break;
             }
-
-            this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
     }
 

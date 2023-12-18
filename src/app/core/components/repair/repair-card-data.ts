@@ -33,23 +33,23 @@ export class DisplayRepairConfiguration {
     // Data for Truck back
     static displayRowsBackTruck: CardRows[] = [
         {
-            title: 'Phone No.',
-            endpoint: 'phone',
+            title: 'Repair Shop',
+            endpoint: 'repairShop.name',
         },
 
         {
-            title: 'SSN No.',
-            endpoint: 'ssn',
+            title: 'Shop Address',
+            endpoint: 'tableShopAdress',
         },
 
         {
-            title: 'CDL No.',
-            endpoint: 'cdlNumber',
+            title: 'Unit Type',
+            endpoint: 'unitType.name',
         },
 
         {
-            title: 'Pay Type',
-            endpoint: 'payType.name',
+            title: 'Odometer',
+            endpoint: 'odometer',
         },
     ];
 }

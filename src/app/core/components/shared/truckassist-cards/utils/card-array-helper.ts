@@ -19,7 +19,7 @@ export class CardArrayHelper {
     static formatDate: formatDatePipe;
     static TaThousandSeparatorPipe: TaThousandSeparatorPipe;
 
-    static getValueByStringPath(obj: CardDetails, ObjKey: string) {
+    static getValueByStringPath(obj: CardDetails, ObjKey: string): string {
         if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
             return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
 
@@ -56,22 +56,26 @@ export class CardArrayHelper {
         }
     }
 
-    static objectsWithDropDown(obj, ObjKey: string) {
-        if (ObjKey == 'items') {
+    static objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
+        if (ObjKey === 'items') {
             const objWithItems = ObjKey.split('.').reduce(
                 (acc, part) => acc && acc[part],
                 obj
             );
 
-            const descriptions = objWithItems.map((item, index) => {
-                if (index !== objWithItems.length - 1) {
-                    return item.description + ' • ';
-                } else {
-                    return item.description;
-                }
-            });
+            if (Array.isArray(objWithItems)) {
+                const itemsHTML = objWithItems
+                    .map((item, index) => {
+                        item.description;
+                        return index !== objWithItems.length - 1
+                            ? `${item.description} • `
+                            : `${item.description}`;
+                    })
+                    .join('');
 
-            return descriptions.join('');
+                return itemsHTML;
+            }
         }
+        return '';
     }
 }
