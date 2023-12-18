@@ -117,9 +117,7 @@ export class TruckassistCardsComponent implements OnInit {
     ) {}
 
     //---------------------------------------ON INIT---------------------------------------
-    ngOnInit(): void {
-        console.log(this.viewData);
-    }
+    ngOnInit(): void {}
 
     //---------------------------------------ON AFTER INIT---------------------------------------
     ngAfterViewInit(): void {
@@ -131,7 +129,6 @@ export class TruckassistCardsComponent implements OnInit {
             const resizeObserver = new ResizeObserver(() => {
                 const width = parentElement.offsetWidth;
                 this.ngZone.run(() => {
-                    console.log(width);
                     this.elementWidth = width;
                 });
             });
