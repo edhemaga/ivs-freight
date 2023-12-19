@@ -193,7 +193,33 @@
                         >
                             <div class="item-body">
                                 <div class="top-item-body">
-                                    {{ rowsFront.title }}
+                                    <!-- For repair page title -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            rowsFront.title === 'Repair Shop'
+                                        "
+                                    >
+                                        <ng-container
+                                            *ngIf="card.isRepairOrder"
+                                        >
+                                            Repair Shop
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="!card.isRepairOrder"
+                                        >
+                                            Cost
+                                        </ng-container>
+                                    </ng-container>
+                                    <!-- For rest of the pages title -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            rowsFront.title !== 'Repair Shop'
+                                        "
+                                    >
+                                        {{ rowsFront.title }}
+                                    </ng-container>
                                 </div>
 
                                 <div
@@ -526,12 +552,14 @@
                                                 'Repair Shop'
                                             "
                                         >
-                                            <ng-container *ngIf="isRepairOrder">
+                                            <ng-container
+                                                *ngIf="card.isRepairOrder"
+                                            >
                                                 {{ card?.repairShop?.name }}
                                             </ng-container>
 
                                             <ng-container
-                                                *ngIf="!isRepairOrder"
+                                                *ngIf="!card.isRepairOrder"
                                             >
                                                 {{
                                                     card?.tabelDescriptionDropTotal

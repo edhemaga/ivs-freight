@@ -85,6 +85,7 @@ export enum ConstantStringTableComponentsEnum {
     // Separators
     COMA = ', ',
     DOT = '. ',
+    DOT_1 = '.',
     PERCENTS = '%',
     SVG = '.svg',
 
@@ -213,6 +214,24 @@ export enum ConstantStringTableComponentsEnum {
     TRAILER_TABLE_COUNT = 'trailerTableCount',
     TRAILER_TAB_VIEW = 'Trailer-table-view',
 
+    // Repair
+    FAVORITE = 'favorite',
+    FINISH_ORDER = 'finish-order',
+    DELETE_REPAIR = 'delete-repair',
+    EDIT_FO_TRAILER = 'edit-fo-trailer',
+    EDIT_FO_TRUCK = 'edit-fo-truck',
+    REPAIR_SHOP = 'repair-shop',
+    NEW_TRAILER = 'new-trailer',
+    NEW_TRUCK = 'new-truck',
+    REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
+    ORDER = 'Order',
+    DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
+    REPAIR_TRUCK = 'REPAIR_TRUCK',
+    REPAIR_TRAILER = 'REPAIR_TRAILER',
+    REPAIR_TABLE_VIEW = 'Repair-table-view',
+    TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
+    TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
@@ -231,22 +250,6 @@ export enum ConstantStringTableComponentsEnum {
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
 
-    // Repair
-    FAVORITE = 'favorite',
-    FINISH_ORDER = 'finish-order',
-    DELETE_REPAIR = 'delete-repair',
-    EDIT_FO_TRAILER = 'edit-fo-trailer',
-    EDIT_FO_TRUCK = 'edit-fo-truck',
-    REPAIR_SHOP = 'repair-shop',
-    NEW_TRAILER = 'new-trailer',
-    NEW_TRUCK = 'new-truck',
-    REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
-    ORDER = 'Order',
-    DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
-    REPAIR_TRUCK = 'REPAIR_TRUCK',
-    REPAIR_TRAILER = 'REPAIR_TRAILER',
-    REPAIR_TABLE_VIEW = 'Repair-table-view',
-
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
 
@@ -258,4 +261,14 @@ export enum ConstantStringTableComponentsEnum {
     NO_ENDPOINT = 'no-endpoint',
     NO_ENDPOINT_2 = 'No Endpoint',
     SLASH = '/',
+
+    // Cards
+    INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',
+    CLICK = 'click',
+    CONTAINER_COUNT_TA_FONT_MEDIUM = '.container-count.ta-font-medium',
+    SPAN = 'span',
+    DIV = 'div',
+    SEPARATOR = ' • ',
+    PLUS = '+',
+    REPAIR = 'Repair',
 }

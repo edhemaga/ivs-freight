@@ -516,6 +516,26 @@
 
         .description-item {
             gap: 2px;
+            max-height: 254px;
+            overflow-y: scroll;
+            scrollbar-color: $muted;
+
+            &::-webkit-scrollbar {
+                width: 2px !important;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $muted !important;
+                border-radius: 1px !important;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: $ta-black-2 !important;
+            }
+
+            & {
+                scrollbar-width: thin !important;
+            }
 
             .item-description {
                 color: $white;

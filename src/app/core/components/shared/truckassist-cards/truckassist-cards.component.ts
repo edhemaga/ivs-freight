@@ -11,6 +11,7 @@ import {
     QueryList,
     ViewChildren,
     Renderer2,
+    SimpleChanges,
 } from '@angular/core';
 
 // Models
@@ -39,7 +40,12 @@ import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
+// Helpers
 import { CardArrayHelper } from './utils/card-array-helper';
+
+// Enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Component({
     selector: 'app-truckassist-cards',
@@ -119,6 +125,19 @@ export class TruckassistCardsComponent implements OnInit {
     //---------------------------------------ON INIT---------------------------------------
     ngOnInit(): void {}
 
+    //---------------------------------------ON CHANGES---------------------------------------
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
+            if (!changes.firstChange) {
+                setTimeout(() => {
+                    this.itemsContainers.forEach((containerRef: ElementRef) => {
+                        this.calculateItemsToFit(containerRef.nativeElement);
+                    });
+                }, 500);
+            }
+        }
+    }
+
     //---------------------------------------ON AFTER INIT---------------------------------------
     ngAfterViewInit(): void {
         // On window resize update width of description popup
@@ -134,17 +153,27 @@ export class TruckassistCardsComponent implements OnInit {
             });
             resizeObserver.observe(parentElement);
         }
+
         // On window resize update items count in Repair page
         if (this.cardBodyElement) {
             const parentElement = this.cardBodyElement
                 .nativeElement as HTMLElement;
 
-            const resizeObserver = new ResizeObserver(() => {
-                // Setting count number for each card on page
-                this.itemsContainers.forEach((containerRef: ElementRef) => {
-                    this.calculateItemsToFit(containerRef.nativeElement);
-                });
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                    const { width } = entry.contentRect;
+                    if (width !== undefined) {
+                        this.itemsContainers.forEach(
+                            (containerRef: ElementRef) => {
+                                this.calculateItemsToFit(
+                                    containerRef.nativeElement
+                                );
+                            }
+                        );
+                    }
+                }
             });
+
             resizeObserver.observe(parentElement);
         }
     }
@@ -217,11 +246,11 @@ export class TruckassistCardsComponent implements OnInit {
     // Remove Click Event On Inner Dropdown
     public onRemoveClickEventListener(): void {
         const innerDropdownContent = document.querySelectorAll(
-            '.inner-dropdown-action-title'
+            ConstantStringTableComponentsEnum.INNER_DROPDOWN_ACTION
         );
 
         innerDropdownContent.forEach((content) => {
-            content.removeAllListeners('click');
+            content.removeAllListeners(ConstantStringTableComponentsEnum.CLICK);
         });
 
         return;
@@ -268,14 +297,16 @@ export class TruckassistCardsComponent implements OnInit {
     public onFinishOrder(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,
-            type: 'finish-order',
+            type: ConstantStringTableComponentsEnum.FINISH_ORDER,
         });
     }
 
     // Setting count number for each card on page
     public calculateItemsToFit(container: HTMLElement): void {
-        const content = container.textContent || '';
-        const containerWidth = container.offsetWidth;
+        const content =
+            container?.textContent ||
+            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+        const containerWidth = container?.offsetWidth;
         const contentSentences = content
             .split('•')
             .map((sentence) => sentence.trim());
@@ -286,11 +317,16 @@ export class TruckassistCardsComponent implements OnInit {
 
         for (let i = 0; i < contentSentences.length; i++) {
             // Creating test span for measuring the parent
-            const testContent = contentSentences.slice(0, i + 1).join(' • '); // Reconstructing sentences
-            const testElement = this.renderer.createElement('span');
+
+            const testContent = contentSentences
+                .slice(0, i + 1)
+                .join(ConstantStringTableComponentsEnum.SEPARATOR); // Reconstructing sentences
+            const testElement = this.renderer.createElement(
+                ConstantStringTableComponentsEnum.SPAN
+            );
             testElement.textContent = testContent;
             document.body.appendChild(testElement); // Append to the body to measure width
-            const testWidth = testElement.offsetWidth;
+            const testWidth = testElement?.offsetWidth;
             document.body.removeChild(testElement); // Remove element after measurement
 
             if (testWidth <= containerWidth) {
@@ -300,18 +336,22 @@ export class TruckassistCardsComponent implements OnInit {
                 remainingSentences =
                     contentSentences.length - visibleSentencesCount;
                 const existingNewElement = container.parentNode.querySelector(
-                    '.container-count.ta-font-medium'
+                    ConstantStringTableComponentsEnum.CONTAINER_COUNT_TA_FONT_MEDIUM
                 );
                 if (existingNewElement) {
                     container.parentNode.removeChild(existingNewElement);
                 }
-                const newElement = this.renderer.createElement('div');
+                const newElement = this.renderer.createElement(
+                    ConstantStringTableComponentsEnum.DIV
+                );
                 newElement.className =
                     'container-count ta-font-medium d-flex justify-content-center';
-                const text = this.renderer.createText('+' + remainingSentences);
+                const text = this.renderer.createText(
+                    ConstantStringTableComponentsEnum.PLUS + remainingSentences
+                );
                 this.renderer.appendChild(newElement, text);
                 this.renderer.insertBefore(
-                    container.parentNode,
+                    container?.parentNode,
                     newElement,
                     container.nextSibling
                 );

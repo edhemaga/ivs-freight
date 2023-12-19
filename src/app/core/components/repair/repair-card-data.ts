@@ -5,8 +5,6 @@ export class DisplayRepairConfiguration {
 
     static page: string = 'Repair';
 
-    static cardTitle: string = 'truck.truckNumber';
-
     // Data for Truck front
     static displayRowsFrontTruck: CardRows[] = [
         {
@@ -32,6 +30,52 @@ export class DisplayRepairConfiguration {
 
     // Data for Truck back
     static displayRowsBackTruck: CardRows[] = [
+        {
+            title: 'Repair Shop',
+            endpoint: 'repairShop.name',
+        },
+
+        {
+            title: 'Shop Address',
+            endpoint: 'tableShopAdress',
+        },
+
+        {
+            title: 'Unit Type',
+            endpoint: 'unitType.name',
+        },
+
+        {
+            title: 'Odometer',
+            endpoint: 'odometer',
+        },
+    ];
+
+    // Data for Trailer front
+    static displayRowsFrontTrailer: CardRows[] = [
+        {
+            title: 'Issued',
+            endpoint: 'tableIssued',
+        },
+
+        {
+            title: 'Unit No.',
+            endpoint: 'tableUnit',
+        },
+
+        {
+            title: 'Item',
+            endpoint: 'items',
+        },
+
+        {
+            title: 'Repair Shop',
+            endpoint: 'repairShop.name',
+        },
+    ];
+
+    // Data for Trailer back
+    static displayRowsBackTrailer: CardRows[] = [
         {
             title: 'Repair Shop',
             endpoint: 'repairShop.name',
