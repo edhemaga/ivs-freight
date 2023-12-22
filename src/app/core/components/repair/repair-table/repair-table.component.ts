@@ -107,13 +107,20 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public mapListData: MapList[] = [];
 
     //Data to display from model Truck
-    public displayRowsFront: CardRows[] =
+    public displayRowsFrontTruck: CardRows[] =
         DisplayRepairConfiguration.displayRowsFrontTruck;
-    public displayRowsBack: CardRows[] =
+    public displayRowsBackTruck: CardRows[] =
+        DisplayRepairConfiguration.displayRowsBackTruck;
+
+    // Data to display from model Trailer
+    public displayRowsFrontTrailer: CardRows[] =
+        DisplayRepairConfiguration.displayRowsFrontTruck;
+    public displayRowsBackTrailer: CardRows[] =
         DisplayRepairConfiguration.displayRowsBackTruck;
 
     //Title
-    public cardTitle: string = DisplayRepairConfiguration.cardTitle;
+    public cardTitle: string =
+        ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
 
     // Page
     public page: string = DisplayRepairConfiguration.page;
@@ -651,9 +658,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ) {
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE
-                        ? ((this.sendDataToCardsFront = this.displayRowsFront),
-                          (this.sendDataToCardsBack = this.displayRowsBack))
-                        : null;
+                        ? ((this.sendDataToCardsFront =
+                              this.displayRowsFrontTruck),
+                          (this.sendDataToCardsBack =
+                              this.displayRowsBackTruck),
+                          (this.cardTitle =
+                              ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER))
+                        : ((this.sendDataToCardsFront =
+                              this.displayRowsFrontTrailer),
+                          (this.sendDataToCardsBack =
+                              this.displayRowsBackTrailer),
+                          (this.cardTitle =
+                              ConstantStringTableComponentsEnum.TRAILER_TRAILER_NUMBER));
                     this.getSelectedTabTableData();
                     return this.mapTruckAndTrailerData(data);
                 } else {

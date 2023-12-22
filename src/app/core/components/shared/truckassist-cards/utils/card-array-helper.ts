@@ -9,7 +9,6 @@ import { CardDetails } from '../../model/cardTableData';
 // Pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Injectable({
     providedIn: 'root',
@@ -17,23 +16,23 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 export class CardArrayHelper {
     static formatCurrency: formatCurrency;
     static formatDate: formatDatePipe;
-    static TaThousandSeparatorPipe: TaThousandSeparatorPipe;
 
-    static getValueByStringPath(obj: CardDetails, ObjKey: string) {
+    static getValueByStringPath(obj: CardDetails, ObjKey: string): string {
         if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
             return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
 
         // Value is obj key
         const value = obj[ObjKey];
 
-        const isValueOfKey = !ObjKey.split('.').reduce(
-            (acc, part) => acc && acc[part],
-            obj
-        );
+        const isValueOfKey = !ObjKey.split(
+            ConstantStringTableComponentsEnum.DOT_1
+        ).reduce((acc, part) => acc && acc[part], obj);
 
         const isNotZeroValueOfKey =
-            ObjKey.split('.').reduce((acc, part) => acc && acc[part], obj) !==
-            0;
+            ObjKey.split(ConstantStringTableComponentsEnum.DOT_1).reduce(
+                (acc, part) => acc && acc[part],
+                obj
+            ) !== 0;
 
         //Check if value is null return / and if it is 0 return expired
         if (isValueOfKey && isNotZeroValueOfKey)
@@ -46,32 +45,32 @@ export class CardArrayHelper {
                 return this.formatCurrency.transform(value);
             case ConstantStringTableComponentsEnum.HIRED:
                 return this.formatDate.transform(value);
-            case ConstantStringTableComponentsEnum.MILEAGE:
-                return this.TaThousandSeparatorPipe.transform(value);
             default:
-                return ObjKey.split('.').reduce(
-                    (acc, part) => acc && acc[part],
-                    obj
-                );
+                return ObjKey.split(
+                    ConstantStringTableComponentsEnum.DOT_1
+                ).reduce((acc, part) => acc && acc[part], obj);
         }
     }
 
-    static objectsWithDropDown(obj, ObjKey: string) {
-        if (ObjKey == 'items') {
-            const objWithItems = ObjKey.split('.').reduce(
-                (acc, part) => acc && acc[part],
-                obj
-            );
+    static objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
+        if (ObjKey === 'items') {
+            const objWithItems = ObjKey.split(
+                ConstantStringTableComponentsEnum.DOT_1
+            ).reduce((acc, part) => acc && acc[part], obj);
 
-            const descriptions = objWithItems.map((item, index) => {
-                if (index !== objWithItems.length - 1) {
-                    return item.description + ' • ';
-                } else {
-                    return item.description;
-                }
-            });
+            if (Array.isArray(objWithItems)) {
+                const itemsHTML = objWithItems
+                    .map((item, index) => {
+                        item.description;
+                        return index !== objWithItems.length - 1
+                            ? `${item.description} • `
+                            : `${item.description}`;
+                    })
+                    .join('');
 
-            return descriptions.join('');
+                return itemsHTML;
+            }
         }
+        return '';
     }
 }
