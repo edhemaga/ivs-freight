@@ -346,7 +346,7 @@ export class TruckassistCardsComponent {
             this.renderer.removeChild(document.body, testElement); // Remove element after measurement
 
             if (testWidth <= containerWidth) {
-                visibleSentencesCount = i + 1;
+                visibleSentencesCount = i + 2;
                 visibleWidth = testWidth;
             } else if (testWidth - 34 > containerWidth && i > 0) {
                 remainingSentences =
@@ -357,7 +357,7 @@ export class TruckassistCardsComponent {
                 );
 
                 if (existingNewElement) {
-                    container.parentNode.removeChild(existingNewElement);
+                    this.renderer.removeChild(container, existingNewElement);
                 }
 
                 const newElement = this.renderer.createElement(
@@ -367,17 +367,20 @@ export class TruckassistCardsComponent {
                 newElement.className =
                     'container-count ta-font-medium d-flex justify-content-center';
 
-                const text = this.renderer.createText(
-                    ConstantStringTableComponentsEnum.PLUS + remainingSentences
-                );
+                if (remainingSentences > 0) {
+                    const text = this.renderer.createText(
+                        ConstantStringTableComponentsEnum.PLUS +
+                            remainingSentences
+                    );
 
-                this.renderer.appendChild(newElement, text);
+                    this.renderer.appendChild(newElement, text);
 
-                this.renderer.insertBefore(
-                    container?.parentNode,
-                    newElement,
-                    container.nextSibling
-                );
+                    this.renderer.insertBefore(
+                        container?.parentNode,
+                        newElement,
+                        container.nextSibling
+                    );
+                }
                 break;
             }
         }
