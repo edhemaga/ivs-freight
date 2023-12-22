@@ -30,7 +30,7 @@ import {
 } from '../../shared/model/cardData';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
-    FilterOptions,
+    FilterOptionsLoad,
     LoadModel,
 } from '../../shared/model/table-components/load-modal';
 
@@ -78,27 +78,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadPanding: LoadPandingState[] = [];
     public loadTemplate: LoadTemplateState[] = [];
     public activeTableData: DataForCardsAndTables;
-    public backLoadFilterQuery: FilterOptions = {
-        loadType: undefined,
-        statusType: 1,
-        status: undefined,
-        dispatcherId: undefined,
-        dispatchId: undefined,
-        brokerId: undefined,
-        shipperId: undefined,
-        dateFrom: undefined,
-        dateTo: undefined,
-        revenueFrom: undefined,
-        revenueTo: undefined,
-        truckId: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backLoadFilterQuery: FilterOptionsLoad =
+        TableDropdownLoadComponentConstants.LOAD_BACK_FILTER;
 
     //Data to display from model
     public displayRowsFront: CardRows[] =

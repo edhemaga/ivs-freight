@@ -22,16 +22,16 @@ export interface TraillerData {
 
     color: {
         id: number;
-        companyId: any; // Replace 'any' with the actual type if available.
+        companyId: number;
         name: string;
         code: string;
     };
 
     companyOwned: boolean;
-    createdAt: string; // Consider using Date type for timestamps.
+    createdAt: string;
 
     doorType: {
-        name: any;
+        name: string;
         id: number;
     };
 
@@ -74,7 +74,9 @@ export interface TraillerData {
         id: number;
     };
 
-    tireSize: any;
+    tireSize: {
+        name: string;
+    };
 
     trailerLength: {
         id: number;

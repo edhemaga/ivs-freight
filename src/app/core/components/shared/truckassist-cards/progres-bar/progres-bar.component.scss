@@ -24,7 +24,7 @@
         }
 
         .expired {
-            background: $ta-deadline-red;
+            background: $ta-red-11;
             opacity: 1;
         }
 
@@ -34,12 +34,12 @@
         }
 
         .back-yellow {
-            background: $ta-deadline-yellow;
+            background: $ta-orange-1;
             opacity: 0.2;
         }
 
         .back-red {
-            background: $ta-deadline-red;
+            background: $ta-red-11;
             opacity: 0.2;
         }
 
@@ -47,10 +47,10 @@
             background: $muted;
         }
         .front-yellow {
-            background: $ta-deadline-yellow;
+            background: $ta-orange-1;
         }
         .front-red {
-            background: $ta-deadline-red;
+            background: $ta-red-11;
         }
     }
 }

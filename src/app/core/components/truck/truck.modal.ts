@@ -6,3 +6,14 @@ export interface BodyResponseTruck {
     id?: number;
     type?: ConstantStringTableComponentsEnum;
 }
+
+export interface FilterOptions {
+    active: number;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number;
+    sort: string;
+    searchOne: string;
+    searchTwo: string;
+    searchThree: string;
+}

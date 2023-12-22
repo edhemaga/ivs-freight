@@ -1,4 +1,17 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {
+    Component,
+    Input,
+    EventEmitter,
+    Output,
+    ViewEncapsulation,
+    ElementRef,
+    ViewChild,
+    NgZone,
+    QueryList,
+    ViewChildren,
+    Renderer2,
+    SimpleChanges,
+} from '@angular/core';
 
 // Models
 import { CardRows, LoadTableData } from '../model/cardData';
@@ -14,7 +27,7 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
 // Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
@@ -26,6 +39,11 @@ import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
+// Helpers
+import { CardArrayHelper } from './utils/card-array-helper';
+
+// Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Component({
@@ -34,6 +52,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
     providers: [formatCurrency, formatDatePipe, TaThousandSeparatorPipe],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         //modules
         CommonModule,
@@ -50,9 +69,18 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         formatDatePipe,
     ],
 })
-export class TruckassistCardsComponent implements OnInit {
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
+export class TruckassistCardsComponent {
+    @ViewChild('parentElement', { read: ElementRef })
+    private cardBodyElement!: ElementRef;
 
+    @ViewChildren('itemsRepair', { read: ElementRef })
+    public itemsContainers!: QueryList<ElementRef>;
+
+    public containerWidth: number = 0;
+    public itemWidth: number = 0;
+    public wordsArray: string[] = [];
+
+    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
     // All data
     @Input() viewData: CardDetails[];
     @Input() tableData: LoadTableData[];
@@ -75,23 +103,84 @@ export class TruckassistCardsComponent implements OnInit {
     public dropdownActions;
     public dropdownOpenedId: number;
     public dropDownIsOpened: number;
+    public descriptionIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
-
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
-
+    public elementWidth: number;
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
+
+    public activeDescriptionDropdown: number = -1;
+    public descriptionTooltip: NgbPopover;
+
     constructor(
         private detailsDataService: DetailsDataService,
-        private formatCurrency: formatCurrency,
-        private formatDate: formatDatePipe,
-        private TaThousandSeparatorPipe: TaThousandSeparatorPipe
+        private ngZone: NgZone,
+        private renderer: Renderer2
     ) {}
 
-    //---------------------------------------ON INIT---------------------------------------
-    ngOnInit(): void {}
+    //---------------------------------------ON CHANGES---------------------------------------
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
+            if (!changes.firstChange) {
+                setTimeout(() => {
+                    this.itemsContainers.forEach((containerRef: ElementRef) => {
+                        this.calculateItemsToFit(containerRef.nativeElement);
+                    });
+                }, 500);
+            }
+        }
+    }
+
+    //---------------------------------------ON AFTER INIT---------------------------------------
+    ngAfterViewInit(): void {
+        this.windowResizeUpdateDescriptionDropdown();
+
+        this.windownResizeUpdateCountNumberInCards();
+    }
+
+    // On window resize update width of description popup
+    public windowResizeUpdateDescriptionDropdown(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver(() => {
+                const width = parentElement.offsetWidth;
+                this.ngZone.run(() => {
+                    this.elementWidth = width;
+                });
+            });
+            resizeObserver.observe(parentElement);
+        }
+    }
+
+    // On window resize update items count in Repair page
+    public windownResizeUpdateCountNumberInCards(): void {
+        if (this.cardBodyElement) {
+            const parentElement = this.cardBodyElement
+                .nativeElement as HTMLElement;
+
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                    const { width } = entry.contentRect;
+                    if (width !== undefined) {
+                        this.itemsContainers.forEach(
+                            (containerRef: ElementRef) => {
+                                this.calculateItemsToFit(
+                                    containerRef.nativeElement
+                                );
+                            }
+                        );
+                    }
+                }
+            });
+
+            resizeObserver.observe(parentElement);
+        }
+    }
 
     // Flip card based on card index
     public flipCard(index: number): void {
@@ -129,8 +218,10 @@ export class TruckassistCardsComponent implements OnInit {
 
         if (tooltip.isOpen()) {
             tooltip.close();
+            this.dropDownIsOpened = null;
         } else {
-            if (card.tableDropdownContent?.hasContent) {
+            if (card?.tableDropdownContent?.content) {
+                this.dropDownIsOpened = card.id;
                 let actions = [...card.tableDropdownContent.content];
 
                 actions = actions.map((actions: DropdownItem) => {
@@ -159,11 +250,11 @@ export class TruckassistCardsComponent implements OnInit {
     // Remove Click Event On Inner Dropdown
     public onRemoveClickEventListener(): void {
         const innerDropdownContent = document.querySelectorAll(
-            '.inner-dropdown-action-title'
+            ConstantStringTableComponentsEnum.INNER_DROPDOWN_ACTION
         );
 
         innerDropdownContent.forEach((content) => {
-            content.removeAllListeners('click');
+            content.removeAllListeners(ConstantStringTableComponentsEnum.CLICK);
         });
 
         return;
@@ -183,38 +274,115 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
+    // Description
+    public onShowDescriptionDropdown(
+        popup: NgbPopover,
+        card: CardDetails
+    ): void {
+        if (card.descriptionItems.length > 1) {
+            this.descriptionTooltip = popup;
+
+            if (popup.isOpen()) {
+                popup.close();
+                this.descriptionIsOpened = null;
+            } else {
+                popup.open({ data: card });
+                this.descriptionIsOpened = card.id;
+            }
+
+            this.activeDescriptionDropdown = popup.isOpen() ? card.id : -1;
+        }
+    }
+
+    public objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
+        return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
+    }
+
     //Remove quotes from string to convert into endpoint
-    public getValueByStringPath(obj: CardDetails, path: string): string {
-        if (path === ConstantStringTableComponentsEnum.NO_ENDPOINT)
-            return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
+    public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
+        return CardArrayHelper.getValueByStringPath(obj, ObjKey);
+    }
 
-        // Value is obj key
-        const value = obj[path];
+    public onFinishOrder(card: CardDetails): void {
+        this.bodyActions.emit({
+            data: card,
+            type: ConstantStringTableComponentsEnum.FINISH_ORDER,
+        });
+    }
 
-        const valueOfKeyIsNullOrUndefined = !path
-            .split('.')
-            .reduce((acc, part) => acc && acc[part], obj);
+    // Setting count number for each card on page
+    public calculateItemsToFit(container: HTMLElement): void {
+        const content =
+            container?.textContent ||
+            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
 
-        const valueOfKeyIsNotZero =
-            path.split('.').reduce((acc, part) => acc && acc[part], obj) !== 0;
+        const containerWidth = container?.offsetWidth;
 
-        //Check if value is null return / and if it is 0 return expired
-        if (valueOfKeyIsNullOrUndefined && valueOfKeyIsNotZero)
-            return ConstantStringTableComponentsEnum.SLASH;
+        const contentSentences = content
+            .split('•')
+            .map((sentence) => sentence.trim());
 
-        // Transform number to descimal with $ and transform date
-        switch (path) {
-            case ConstantStringTableComponentsEnum.AVAILABLE_CREDIT:
-            case ConstantStringTableComponentsEnum.REVENUE:
-                return this.formatCurrency.transform(value);
-            case ConstantStringTableComponentsEnum.HIRED:
-                return this.formatDate.transform(value);
-            case ConstantStringTableComponentsEnum.MILEAGE:
-                return this.TaThousandSeparatorPipe.transform(value);
-            default:
-                return path
-                    .split('.')
-                    .reduce((acc, part) => acc && acc[part], obj);
+        let visibleSentencesCount = 0;
+        let visibleWidth = 0;
+        let remainingSentences = 0;
+
+        for (let i = 0; i < contentSentences.length; i++) {
+            // Creating test span for measuring the parent
+
+            const testContent = contentSentences
+                .slice(0, i + 1)
+                .join(ConstantStringTableComponentsEnum.SEPARATOR); // Reconstructing sentences
+
+            const testElement = this.renderer.createElement(
+                ConstantStringTableComponentsEnum.SPAN
+            );
+
+            testElement.textContent = testContent;
+
+            this.renderer.appendChild(document.body, testElement); // Append to the body to measure width
+
+            const testWidth = testElement?.offsetWidth;
+
+            this.renderer.removeChild(document.body, testElement); // Remove element after measurement
+
+            if (testWidth <= containerWidth) {
+                visibleSentencesCount = i + 2;
+                visibleWidth = testWidth;
+            } else if (testWidth - 34 > containerWidth && i > 0) {
+                remainingSentences =
+                    contentSentences.length - visibleSentencesCount;
+
+                const existingNewElement = container.parentNode.querySelector(
+                    ConstantStringTableComponentsEnum.CONTAINER_COUNT_TA_FONT_MEDIUM
+                );
+
+                if (existingNewElement) {
+                    this.renderer.removeChild(container, existingNewElement);
+                }
+
+                const newElement = this.renderer.createElement(
+                    ConstantStringTableComponentsEnum.DIV
+                );
+
+                newElement.className =
+                    'container-count ta-font-medium d-flex justify-content-center';
+
+                if (remainingSentences > 0) {
+                    const text = this.renderer.createText(
+                        ConstantStringTableComponentsEnum.PLUS +
+                            remainingSentences
+                    );
+
+                    this.renderer.appendChild(newElement, text);
+
+                    this.renderer.insertBefore(
+                        container?.parentNode,
+                        newElement,
+                        container.nextSibling
+                    );
+                }
+                break;
+            }
         }
     }
 
