@@ -22,8 +22,6 @@
 
     // Main tag of card holding all elements with hover on it
     .card-body {
-        display: flex;
-        justify-content: space-between;
         border-radius: 2px;
         margin: 4px;
 
@@ -37,7 +35,7 @@
         }
 
         .container-count {
-            background: rgba(145, 145, 145, 0.2);
+            background: $dark-2;
             border-radius: 50px;
             height: 20px;
             min-width: 23px;
@@ -335,7 +333,7 @@
                     top: 2px;
 
                     &:hover {
-                        background: rgba(145, 145, 145, 0.2);
+                        background: $dark-2;
                     }
 
                     .note-tooltip {
@@ -519,6 +517,7 @@
             max-height: 254px;
             overflow-y: scroll;
             scrollbar-color: $muted;
+            scrollbar-width: thin !important;
 
             &::-webkit-scrollbar {
                 width: 2px !important;
@@ -531,10 +530,6 @@
 
             &::-webkit-scrollbar-track {
                 background-color: $ta-black-2 !important;
-            }
-
-            & {
-                scrollbar-width: thin !important;
             }
 
             .item-description {

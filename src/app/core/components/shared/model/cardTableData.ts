@@ -120,6 +120,7 @@ export interface SendDataCard {
     type: string;
 }
 export interface CardDetails {
+    descriptionItems?: string[];
     id: number;
     type: Type;
     isSelected: boolean;
