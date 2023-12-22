@@ -139,7 +139,10 @@ export class DisplayRepairConfiguration {
 
         {
             title: 'Rating & Review',
-            endpoint: 'serviceTypes',
+            endpoint: 'tableRaiting.likeCount',
+            secondEndpoint: 'tableRaiting.dislikeCount',
+            hasLiked: 'hasLiked',
+            hasDislike: 'hasDislike',
         },
     ];
 }

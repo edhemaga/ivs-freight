@@ -310,6 +310,8 @@
                         // Styles repair page
                         .service-svg {
                             svg {
+                                height: 18px;
+                                width: 18px;
                                 path {
                                     fill: $dark-3;
                                 }
@@ -416,6 +418,38 @@
                     span {
                         color: $muted;
                         font-size: 11px;
+                    }
+                }
+
+                .right-side-svg-favorite {
+                    width: 26px;
+                    height: 26px;
+                    cursor: pointer;
+                    position: relative;
+                    top: 2px;
+
+                    .tooltip-card {
+                        width: 20px;
+                        height: 30px;
+                        position: absolute;
+                    }
+
+                    .favorite {
+                        svg {
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            g {
+                                path {
+                                    fill: $ta-black;
+                                    transition: fill 0.3s;
+                                }
+                            }
+                        }
                     }
                 }
 

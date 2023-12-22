@@ -3,7 +3,6 @@ import {
     Input,
     EventEmitter,
     Output,
-    ViewEncapsulation,
     ElementRef,
     ViewChild,
     NgZone,
@@ -11,7 +10,6 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
-    OnInit,
 } from '@angular/core';
 
 // Models
@@ -53,7 +51,6 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
     providers: [formatCurrency, formatDatePipe, TaThousandSeparatorPipe],
-    encapsulation: ViewEncapsulation.None,
     imports: [
         //modules
         CommonModule,
@@ -70,7 +67,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         formatDatePipe,
     ],
 })
-export class TruckassistCardsComponent implements OnInit {
+export class TruckassistCardsComponent {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -82,6 +79,7 @@ export class TruckassistCardsComponent implements OnInit {
     public wordsArray: string[] = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
+
     // All data
     @Input() viewData: CardDetails[];
     @Input() tableData: LoadTableData[];
@@ -122,9 +120,6 @@ export class TruckassistCardsComponent implements OnInit {
         private renderer: Renderer2
     ) {}
 
-    ngOnInit() {
-        console.log(this.viewData);
-    }
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
@@ -308,6 +303,13 @@ export class TruckassistCardsComponent implements OnInit {
             CardArrayHelper.getValueByStringPath(obj, ObjKey);
         }
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
+    }
+
+    public onFavorite(card: CardDetails): void {
+        this.bodyActions.emit({
+            data: card,
+            type: 'favorite',
+        });
     }
 
     public onFinishOrder(card: CardDetails): void {
