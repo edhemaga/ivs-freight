@@ -231,6 +231,7 @@ export enum ConstantStringTableComponentsEnum {
     REPAIR_TABLE_VIEW = 'Repair-table-view',
     TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
+    NAME = 'name',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',

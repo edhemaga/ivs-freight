@@ -11,6 +11,7 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
+    OnInit,
 } from '@angular/core';
 
 // Models
@@ -69,7 +70,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         formatDatePipe,
     ],
 })
-export class TruckassistCardsComponent {
+export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -121,6 +122,9 @@ export class TruckassistCardsComponent {
         private renderer: Renderer2
     ) {}
 
+    ngOnInit() {
+        console.log(this.viewData);
+    }
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
@@ -300,6 +304,9 @@ export class TruckassistCardsComponent {
 
     //Remove quotes from string to convert into endpoint
     public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
+        if (ObjKey == 'serviceTypes') {
+            CardArrayHelper.getValueByStringPath(obj, ObjKey);
+        }
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
     }
 

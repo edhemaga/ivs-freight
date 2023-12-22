@@ -263,7 +263,7 @@
                             color: $ta-blue-14;
                         }
 
-                        // STYLES FOR CUSTOMER PAGE
+                        // Styles for customer page
                         .rating-holder {
                             gap: 8px;
                             .rating {
@@ -305,6 +305,23 @@
                             height: 14px;
                             border-radius: 50%;
                             margin-right: 4px;
+                        }
+
+                        // Styles repair page
+                        .service-svg {
+                            svg {
+                                path {
+                                    fill: $dark-3;
+                                }
+                            }
+                        }
+
+                        .active-svg {
+                            svg {
+                                path {
+                                    fill: $muted;
+                                }
+                            }
                         }
                     }
                 }

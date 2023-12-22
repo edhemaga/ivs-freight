@@ -118,6 +118,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public displayRowsBackTrailer: CardRows[] =
         DisplayRepairConfiguration.displayRowsBackTruck;
 
+    // Data to display from model Trailer
+    public displayRowsFrontRepairShop: CardRows[] =
+        DisplayRepairConfiguration.displayRowsFrontRepairShop;
+    public displayRowsBackRepairShop: CardRows[] =
+        DisplayRepairConfiguration.displayRowsBackRepairShop;
+
     //Title
     public cardTitle: string =
         ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
@@ -654,22 +660,38 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.ACTIVE ||
                     this.selectedTab ===
-                        ConstantStringTableComponentsEnum.INACTIVE
-                ) {
+                        ConstantStringTableComponentsEnum.INACTIVE ||
                     this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? ((this.sendDataToCardsFront =
-                              this.displayRowsFrontTruck),
-                          (this.sendDataToCardsBack =
-                              this.displayRowsBackTruck),
-                          (this.cardTitle =
-                              ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER))
-                        : ((this.sendDataToCardsFront =
-                              this.displayRowsFrontTrailer),
-                          (this.sendDataToCardsBack =
-                              this.displayRowsBackTrailer),
-                          (this.cardTitle =
-                              ConstantStringTableComponentsEnum.TRAILER_TRAILER_NUMBER));
+                        ConstantStringTableComponentsEnum.REPAIR_SHOP
+                ) {
+                    switch (this.selectedTab) {
+                        case ConstantStringTableComponentsEnum.ACTIVE:
+                            this.sendDataToCardsFront =
+                                this.displayRowsFrontTruck;
+                            this.sendDataToCardsBack =
+                                this.displayRowsBackTruck;
+                            this.cardTitle =
+                                ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
+
+                            break;
+                        case ConstantStringTableComponentsEnum.REPAIR_SHOP:
+                            this.sendDataToCardsFront =
+                                this.displayRowsFrontRepairShop;
+                            this.sendDataToCardsBack =
+                                this.displayRowsBackRepairShop;
+                            this.cardTitle =
+                                ConstantStringTableComponentsEnum.NAME;
+                            break;
+
+                        case ConstantStringTableComponentsEnum.INACTIVE:
+                            this.sendDataToCardsFront =
+                                this.displayRowsFrontTrailer;
+                            this.sendDataToCardsBack =
+                                this.displayRowsBackTrailer;
+                            this.cardTitle =
+                                ConstantStringTableComponentsEnum.TRAILER_TRAILER_NUMBER;
+                            break;
+                    }
                     this.getSelectedTabTableData();
                     return this.mapTruckAndTrailerData(data);
                 } else {

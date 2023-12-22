@@ -2,7 +2,6 @@
     <ng-container
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
-        {{ card.name }}
         <div class="custom-card">
             <!-- Card splited on left and right side -->
 
@@ -566,13 +565,37 @@
                                                 }}
                                             </ng-container>
                                         </ng-container>
+
+                                        <!-- Repair Shop -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title === 'Services'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let item of card.serviceTypes
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="service-svg"
+                                                    [src]="item.logoName"
+                                                    [ngClass]="{
+                                                        'active-svg':
+                                                            item.active
+                                                    }"
+                                                ></svg-icon>
+                                            </ng-container>
+                                        </ng-container>
+
                                         <!-- Rest of body items -->
 
                                         <ng-container
                                             *ngIf="
                                                 rowsFront.title !== 'Item' &&
                                                 rowsFront.title !==
-                                                    'Repair Shop'
+                                                    'Repair Shop' &&
+                                                rowsFront.title !== 'Services'
                                             "
                                         >
                                             {{
