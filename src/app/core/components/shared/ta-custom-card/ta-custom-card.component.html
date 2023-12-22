@@ -134,12 +134,13 @@
 
             <!-- Download -->
 
-            <svg-icon
-                *ngIf="hasDownload"
-                class="header-action-download"
-                (click)="onAction($event, 'download')"
-                [src]="hasDownload"
-            ></svg-icon>
+            <ng-container *ngIf="hasDownload">
+                <svg-icon
+                    class="header-action-download"
+                    (click)="onAction($event, 'download')"
+                    [src]="hasDownload"
+                ></svg-icon>
+            </ng-container>
 
             <!-- Plus Add New Things -->
 

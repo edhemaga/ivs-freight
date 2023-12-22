@@ -3,16 +3,39 @@
         class="d-flex align-items-center load-stop-header-bar"
         [ngClass]="{
             'first-or-last': firstOrLast && isCardOpen,
+            'not-first-or-last': !firstOrLast,
             'origin-destination-no-filled': !shipper,
             'not-active-stop': !isCardOpen
         }"
         (click)="toggleStop($event)"
     >
         <div
-            class="d-flex align-items-center justify-content-center load-stop-counter-container"
-            [ngClass]="{ 'delivery-mode': isDelivery }"
+            class="d-flex align-items-center justify-content-center load-stop-header-badge"
+            [ngClass]="{
+                'delivery-mode': isDelivery
+            }"
         >
-            <p class="m-0 ta-font-bold">{{ stopNumber }}</p>
+            <div
+                class="d-flex align-items-center justify-content-center load-stop-counter-container"
+            >
+                <p class="m-0 ta-font-bold">{{ stopNumber }}</p>
+            </div>
+
+            <ng-container *ngIf="!firstOrLast">
+                <div
+                    class="load-stop-header-remove-btn"
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="bottom"
+                    tooltipBackground="#424242"
+                    (click)="deleteStop()"
+                >
+                    <svg-icon
+                        [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
+                        [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                    ></svg-icon>
+                </div>
+            </ng-container>
         </div>
 
         <div class="load-stop-header-content">
@@ -139,20 +162,6 @@
                     ></svg-icon>
                     <p>{{ shipperContact?.fullName }}</p>
                 </div>
-            </div>
-
-            <div
-                *ngIf="!firstOrLast"
-                class="load-stop-header-remove-btn"
-                ngbTooltip
-                mainTooltip="Delete"
-                position="top"
-                tooltipBackground="#EF5350"
-                (click)="deleteStop()"
-            >
-                <svg-icon
-                    [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
-                ></svg-icon>
             </div>
         </div>
     </div>

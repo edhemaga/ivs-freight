@@ -40,7 +40,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                 'true',
                 style({
                     height: '*',
-                    overflow: 'visible',
                     opacity: '1',
                     'margin-top': '{{marginTop}}',
                     'margin-bottom': '{{marginBottom}}',
@@ -56,7 +55,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                 'false',
                 style({
                     height: '0px',
-                    overflow: 'hidden',
                     opacity: '0',
                     'margin-top': '0px',
                     'margin-bottom': '0px',
@@ -96,7 +94,7 @@ export class LoadStopComponent {
     @Output('delete') deleteEvent: EventEmitter<void> =
         new EventEmitter<void>();
 
-    public toggleStop(event: any) {
+    public toggleStop(event: Event): void {
         if (!this.disabledCard) {
             event.preventDefault();
             event.stopPropagation();
@@ -107,7 +105,7 @@ export class LoadStopComponent {
         }
     }
 
-    public deleteStop() {
+    public deleteStop(): void {
         this.deleteEvent.emit();
     }
 }

@@ -1,6 +1,6 @@
 export const environment = {
-    API_ENDPOINT: 'https://api-stage.carriera.io',
-    GPS_ENDPOINT: 'https://api-stage.carriera.io',
+    API_ENDPOINT: 'https://localhost:7226',
+    GPS_ENDPOINT: 'https://localhost:7226',
     production: false,
     staging: false,
     perPage: 1000,

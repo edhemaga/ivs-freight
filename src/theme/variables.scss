@@ -164,6 +164,10 @@ $ta-red: #e66767;
 $ta-deadline-red: #df3c3c;
 $ta-deadline-yellow: #f89b2e;
 
+// modals
+$ta-red-12: #f4bebe;
+$ta-red-13: #c20c0c;
+
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
     border-#{$direction}: $width $style $color;

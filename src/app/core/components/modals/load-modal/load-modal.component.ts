@@ -392,6 +392,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
     public loadExtraStopsDateRange: any[] = [];
     public selectedExtraStopTime: any[] = [];
+    public previousDeliveryStopOrder: number;
 
     // Billing
     public originalAdditionalBillingTypes: any[] = [];
@@ -564,19 +565,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
+            .subscribe(
+                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+            );
     }
 
     public onTabChange(event: any, action: string, indx?: number) {
         switch (action) {
             case 'ftl-ltl': {
                 this.selectedTab = event.id;
+
                 break;
             }
             case 'stop-tab': {
                 this.selectExtraStopType[indx] = event.id;
+
                 this.loadExtraStops()
                     .at(indx)
                     .get('stopType')
@@ -589,10 +592,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const obj = this.numberOfLoadExtraStops();
 
                 if (event.id.toString().startsWith('4')) {
+                    this.previousDeliveryStopOrder =
+                        this.loadForm.get('deliveryStopOrder').value;
+
                     this.loadExtraStops()
                         .at(indx)
                         .get('stopOrder')
                         .patchValue(obj.numberOfDeliveries);
+
                     this.loadForm
                         .get('deliveryStopOrder')
                         .patchValue(obj.numberOfDeliveries + 1);
@@ -601,15 +608,22 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .at(indx)
                         .get('stopOrder')
                         .patchValue(obj.numberOfPickups);
+
+                    if (this.previousDeliveryStopOrder)
+                        this.loadForm
+                            .get('deliveryStopOrder')
+                            .patchValue(this.previousDeliveryStopOrder);
                 }
 
-                if (this.selectedExtraStopShipper[indx]) {
-                    this.drawStopOnMap();
-                }
+                this.calculateStopOrder();
+
+                if (this.selectedExtraStopShipper[indx]) this.drawStopOnMap();
+
                 break;
             }
             case 'stop-time-pickup': {
                 this.selectedStopTimePickup = event.id;
+
                 if (this.selectedStopTimePickup === 6) {
                     this.inputService.changeValidators(
                         this.loadForm.get('pickupTimeTo'),
@@ -620,10 +634,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadForm.get('pickupTimeTo')
                     );
                 }
+
                 break;
             }
             case 'stop-time-delivery': {
                 this.selectedStopTimeDelivery = event.id;
+
                 if (this.selectedStopTimeDelivery === 8) {
                     this.inputService.changeValidators(
                         this.loadForm.get('deliveryTimeTo'),
@@ -634,10 +650,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadForm.get('deliveryTimeTo')
                     );
                 }
+
                 break;
             }
             case 'extra-stops-time': {
                 this.selectedExtraStopTime[indx] = event?.id ? event.id : event;
+
                 if (this.selectedExtraStopTime.toString().startsWith('9')) {
                     this.inputService.changeValidators(
                         this.loadExtraStops().at(indx).get('timeTo'),
@@ -648,6 +666,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadExtraStops().at(indx).get('timeTo')
                     );
                 }
+
                 break;
             }
             default: {
@@ -2131,6 +2150,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public removeAdditionalPayment() {
         this.isVisiblePayment = false;
+
         this.inputService.changeValidators(
             this.loadForm.get('advancePay'),
             false
@@ -2140,7 +2160,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     // **************** end ****************
 
     // Load Stop
-    public createNewExtraStop() {
+    public createNewExtraStop(): void {
         // 1. Set Config For Shipper in Extra Stop
         this.loadExtraStopsShipperInputConfig.push({
             id: `${this.loadExtraStops().length}-extra-stop-shipper`,
@@ -2180,60 +2200,56 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.selectExtraStopType.push(3000);
         this.selectedExtraStopTime.push(7000);
 
-        if (!this.selectedPickupShipper) {
-            return;
-        }
+        if (!this.selectedPickupShipper) return;
 
         this.addLoadExtraStop();
     }
 
-    public addLoadExtraStop() {
+    public addLoadExtraStop(): void {
         this.loadExtraStops().push(this.newLoadExtraStop());
 
         this.closeAllLoadExtraStopExceptActive(
             this.loadExtraStops().controls[this.loadExtraStops().length - 1]
         );
 
-        setTimeout(() => {
-            const obj = this.numberOfLoadExtraStops();
+        const obj = this.numberOfLoadExtraStops();
 
-            this.loadExtraStops()
-                .at(this.loadExtraStops().length - 1)
-                .get('stopOrder')
-                .patchValue(obj.numberOfPickups);
+        this.loadExtraStops()
+            .at(this.loadExtraStops().length - 1)
+            .get('stopOrder')
+            .patchValue(obj.numberOfPickups);
 
-            if (this.loadExtraStops().length > 1) {
-                this.typeOfExtraStops.push([
-                    {
-                        id: 3000 + this.loadExtraStops().length,
-                        name: 'Pickup',
-                        checked: true,
-                        color: '26A690',
-                    },
-                    {
-                        id: 4000 + this.loadExtraStops().length,
-                        name: 'Delivery',
-                        checked: false,
-                        color: 'EF5350',
-                    },
-                ]);
+        if (this.loadExtraStops().length > 1) {
+            this.typeOfExtraStops.push([
+                {
+                    id: 3000 + this.loadExtraStops().length,
+                    name: 'Pickup',
+                    checked: true,
+                    color: '26A690',
+                },
+                {
+                    id: 4000 + this.loadExtraStops().length,
+                    name: 'Delivery',
+                    checked: false,
+                    color: 'EF5350',
+                },
+            ]);
 
-                this.stopTimeTabsExtraStops.push([
-                    {
-                        id: 7900 + this.loadExtraStops().length,
-                        name: 'WORK HOURS',
-                        checked: true,
-                        color: '3074D3',
-                    },
-                    {
-                        id: 9000 + this.loadExtraStops().length,
-                        name: 'APPOINTMENT',
-                        checked: false,
-                        color: '3074D3',
-                    },
-                ]);
-            }
-        }, 100);
+            this.stopTimeTabsExtraStops.push([
+                {
+                    id: 7900 + this.loadExtraStops().length,
+                    name: 'WORK HOURS',
+                    checked: true,
+                    color: '3074D3',
+                },
+                {
+                    id: 9000 + this.loadExtraStops().length,
+                    name: 'APPOINTMENT',
+                    checked: false,
+                    color: '3074D3',
+                },
+            ]);
+        }
     }
 
     public newLoadExtraStop(): UntypedFormGroup {
@@ -2286,11 +2302,38 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.loadForm.get('extraStops') as UntypedFormArray;
     }
 
-    public removeLoadExtraStop(index: number) {
+    private calculateStopOrder(): void {
+        let stopOrder = 1;
+
+        for (let i = 0; i < this.loadExtraStops().length; i++) {
+            const stopType = this.loadExtraStops().at(i).get('stopType').value;
+
+            if (stopType === 'Pickup') {
+                this.loadExtraStops()
+                    .at(i)
+                    .get('stopOrder')
+                    .patchValue(stopOrder + 1);
+
+                stopOrder++;
+            }
+        }
+    }
+
+    public removeLoadExtraStop(index: number): void {
         this.loadExtraStops().removeAt(index);
 
-        this.loadExtraStopsShipperInputConfig.splice(index, 1);
+        for (let i = 0; i < this.loadExtraStops().length; i++) {
+            const currentStopOrderValue = this.loadExtraStops()
+                .at(i)
+                .get('stopOrder').value;
 
+            this.loadExtraStops()
+                .at(i)
+                .get('stopOrder')
+                .patchValue(currentStopOrderValue - 1);
+        }
+
+        this.loadExtraStopsShipperInputConfig.splice(index, 1);
         this.loadExtraStopsShipperContactsInputConfig.splice(index, 1);
 
         // 3. Selected arrays
@@ -2303,9 +2346,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.drawStopOnMap();
     }
 
-    public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl) {
+    public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl): void {
         this.isActivePickupStop = false;
         this.isActiveDeliveryStop = false;
+
         if (this.loadExtraStops().length) {
             this.loadExtraStops().controls.map((item) => {
                 if (
@@ -3469,7 +3513,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     /* Comments */
-    public changeCommentsEvent(comments: ReviewCommentModal) {
+    public changeCommentsEvent(comments: ReviewCommentModal): void {
         switch (comments.action) {
             case 'delete': {
                 this.deleteComment(comments);
@@ -3489,7 +3533,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public createComment() {
+    public createComment(): void {
         if (this.comments.some((item) => item.isNewReview)) {
             return;
         }
@@ -3520,7 +3564,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         });
     }
 
-    public addComment(comments: ReviewCommentModal) {
+    public addComment(comments: ReviewCommentModal): void {
         const comment: CreateCommentCommand = {
             entityTypeCommentId: 2,
             entityTypeId: this.editData.id,
@@ -3546,7 +3590,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
     }
 
-    public deleteComment(comments: ReviewCommentModal) {
+    public deleteComment(comments: ReviewCommentModal): void {
         this.comments = comments.sortData;
         this.commentsService
             .deleteCommentById(comments.data)
@@ -3554,7 +3598,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe();
     }
 
-    public updateComment(comments: ReviewCommentModal) {
+    public updateComment(comments: ReviewCommentModal): void {
         this.comments = comments.sortData;
 
         const comment: UpdateCommentCommand = {
@@ -3572,7 +3616,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return index;
     }
 
-    public onBlurDescription(action: string, ind?: number) {
+    public onBlurDescription(action: string, ind?: number): void {
         switch (action) {
             case 'pickup': {
                 const description = this.loadPickupStopItems()

@@ -890,20 +890,88 @@
 .load-ftl-first-row {
     display: grid;
     grid-template-columns: 94px 26px repeat(2, 230px);
-    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
 
     margin-top: 26px;
     margin-bottom: 32px;
 
-    .load-template-switcher {
+    .load-template-switcher-container {
         border: 0;
         outline: 0;
         width: 26px;
+        height: 26px;
         border-radius: 2px;
         background: $bw2;
-        padding-left: 8px;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: $bw-9;
+
+            .load-template-switcher-icon {
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+            }
+        }
+
+        &.active {
+            background: $ta-black;
+
+            &:hover {
+                .load-template-switcher-icon {
+                    svg {
+                        path {
+                            fill: $white;
+                        }
+                    }
+                }
+            }
+
+            .load-template-switcher-icon {
+                svg {
+                    path {
+                        fill: $ta-white-3;
+                    }
+                }
+            }
+        }
+
+        &.valid {
+            background: $ta-blue-16;
+
+            &:hover {
+                background: $ta-red-12;
+
+                .load-template-switcher-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-13;
+                        }
+                    }
+                }
+            }
+
+            .load-template-switcher-icon {
+                svg {
+                    path {
+                        fill: $ta-blue-13;
+                    }
+                }
+            }
+        }
+
+        .load-template-switcher-icon {
+            line-height: 0;
+
+            svg {
+                path {
+                    transition: fill 0.3s ease-in-out;
+                }
+            }
+        }
     }
 }
 

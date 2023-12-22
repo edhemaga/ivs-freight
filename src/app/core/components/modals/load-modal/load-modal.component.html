@@ -24,7 +24,7 @@
         class="form-container form-container-without-mb"
     >
         <div class="m-tab">
-            <div class="load-ftl-first-row">
+            <div class="align-items-center load-ftl-first-row">
                 <!-- FTL-LTL Switcher -->
 
                 <app-ta-tab-switch
@@ -37,7 +37,8 @@
                 <!-- Load Template Picker -->
 
                 <button
-                    class="d-flex justify-content-center align-items-center load-template-switcher"
+                    class="d-flex align-items-center justify-content-center load-template-switcher-container"
+                    [ngClass]="{ active: popover.isOpen() }"
                     #popover="ngbPopover"
                     autoClose="outside"
                     [ngbPopover]="dropdownPopover"
@@ -46,7 +47,9 @@
                     container="body"
                 >
                     <svg-icon
+                        class="load-template-switcher-icon"
                         src="assets/svg/common/load/ic_load_template_btn.svg"
+                        [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
                     ></svg-icon>
                 </button>
 
@@ -778,6 +781,7 @@
                                     "
                                 >
                                     <!-- Tabs  -->
+
                                     <div class="row">
                                         <div class="col-12">
                                             <app-ta-tab-switch
@@ -793,7 +797,9 @@
                                             ></app-ta-tab-switch>
                                         </div>
                                     </div>
+
                                     <!-- Stop Information -->
+
                                     <div class="row">
                                         <div class="col-12">
                                             <app-ta-input-dropdown
@@ -828,6 +834,7 @@
                                             ></app-ta-input-dropdown>
                                         </div>
                                     </div>
+
                                     <div class="load-shipper-contact-row">
                                         <app-ta-tab-switch
                                             [tabs]="
@@ -868,6 +875,7 @@
                                             "
                                         ></app-ta-input-dropdown>
                                     </div>
+
                                     <div
                                         class="stop-load-date-time"
                                         [ngClass]="{
@@ -897,6 +905,7 @@
                                                     .markAsTouched()
                                             "
                                         ></app-ta-input>
+
                                         <div
                                             *ngIf="
                                                 !loadExtraStopsDateRange[indx]
@@ -916,6 +925,7 @@
                                                 src="assets/svg/common/ic_plus.svg"
                                             ></svg-icon>
                                         </div>
+
                                         <app-ta-input
                                             *ngIf="
                                                 loadExtraStopsDateRange[indx]
@@ -937,7 +947,6 @@
                                             "
                                         ></app-ta-input>
 
-                                        <!-- Time Picker -->
                                         <app-ta-input
                                             formControlName="timeFrom"
                                             [inputConfig]="{
@@ -963,7 +972,7 @@
                                                     .markAsTouched()
                                             "
                                         ></app-ta-input>
-                                        <!-- Time Picker -->
+
                                         <app-ta-input
                                             formControlName="timeTo"
                                             [inputConfig]="{
@@ -987,6 +996,7 @@
                                             "
                                         ></app-ta-input>
                                     </div>
+
                                     <div class="stop-items-wrapper">
                                         <app-ta-custom-card
                                             [cardName]="'Item'"
