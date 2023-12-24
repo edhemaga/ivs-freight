@@ -1,9 +1,13 @@
 <app-ta-modal
     [modalTitle]="
-        !editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'
+        isConvertedToTemplate
+            ? 'Create Load Template'
+            : !editData?.type?.includes('edit')
+            ? 'Create Load'
+            : 'Edit Load'
     "
     [editData]="editData"
-    [editName]="loadNumber"
+    [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
     [isModalValid]="loadForm.valid && isFormDirty"
     [customClass]="loadModalSize"
@@ -12,6 +16,8 @@
     [isVisibleMap]="true"
     [loadModalTemplate]="true"
     [modalAdditionalPart]="true"
+    [isConvertedToTemplate]="isConvertedToTemplate"
+    [saveAndAddNew]="true"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
 >
@@ -24,115 +30,148 @@
         class="form-container form-container-without-mb"
     >
         <div class="m-tab">
-            <div class="align-items-center load-ftl-first-row">
+            <div
+                class="align-items-center load-ftl-first-row"
+                [ngClass]="{ 'template-row': isConvertedToTemplate }"
+            >
                 <!-- FTL-LTL Switcher -->
 
-                <app-ta-tab-switch
-                    [tabs]="tabs"
-                    (switchClicked)="onTabChange($event, 'ftl-ltl')"
-                    [type]="'type2-modal-popup'"
-                >
-                </app-ta-tab-switch>
+                <div class="tabs-container">
+                    <app-ta-tab-switch
+                        [tabs]="tabs"
+                        (switchClicked)="onTabChange($event, 'ftl-ltl')"
+                        [type]="'type2-modal-popup'"
+                    >
+                    </app-ta-tab-switch>
+                </div>
 
                 <!-- Load Template Picker -->
 
-                <button
-                    class="d-flex align-items-center justify-content-center load-template-switcher-container"
-                    [ngClass]="{ active: popover.isOpen() }"
-                    #popover="ngbPopover"
-                    autoClose="outside"
-                    [ngbPopover]="dropdownPopover"
-                    popoverClass="popover-main"
-                    placement="bottom-start"
-                    container="body"
-                >
-                    <svg-icon
-                        class="load-template-switcher-icon"
-                        src="assets/svg/common/load/ic_load_template_btn.svg"
-                        [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                    ></svg-icon>
-                </button>
-
-                <ng-template #dropdownPopover>
-                    <div
-                        class="popover-container load-template-switcher-popover-container"
+                <ng-container *ngIf="!isConvertedToTemplate">
+                    <button
+                        class="d-flex align-items-center justify-content-center load-template-switcher-container"
+                        [ngClass]="{ active: popover.isOpen() }"
+                        #popover="ngbPopover"
+                        autoClose="outside"
+                        [ngbPopover]="dropdownPopover"
+                        popoverClass="popover-main"
+                        placement="bottom-start"
+                        container="body"
+                        ngbTooltip
+                        [mainTooltip]="
+                            popover.isOpen() ? 'Close' : 'Select Template'
+                        "
+                        [tooltipBackground]="
+                            popover.isOpen() ? '#CCCCCC' : '#424242'
+                        "
+                        bottom="top"
                     >
-                        <div class="popover-item">
-                            <p class="m-0">Walmart Monthly Route</p>
-                        </div>
+                        <svg-icon
+                            class="load-template-switcher-icon"
+                            src="assets/svg/common/load/ic_load_template_btn.svg"
+                            [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                        ></svg-icon>
+                    </button>
 
-                        <div class="popover-item">
-                            <p class="m-0">Walmart Monthly Route</p>
-                        </div>
+                    <ng-template #dropdownPopover>
+                        <div
+                            class="popover-container load-template-switcher-popover-container"
+                        >
+                            <div class="popover-item">
+                                <p class="m-0">Walmart Monthly Route</p>
+                            </div>
 
-                        <div class="popover-item">
-                            <p class="m-0">Walmart Monthly Route</p>
+                            <div class="popover-item">
+                                <p class="m-0">Walmart Monthly Route</p>
+                            </div>
+
+                            <div class="popover-item">
+                                <p class="m-0">Walmart Monthly Route</p>
+                            </div>
                         </div>
-                    </div>
-                </ng-template>
+                    </ng-template>
+                </ng-container>
 
                 <!-- Dispatcher -->
 
-                <app-ta-input-dropdown
-                    formControlName="dispatcherId"
-                    [template]="'load-dispatcher'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Dispatcher',
-                        isDropdown: true,
-                        dropdownImageInput: {
-                            withText: true,
-                            svg: false,
-                            image: true,
-                            url: selectedDispatcher?.logoName,
-                            nameInitialsInsteadUrl:
-                                !selectedDispatcher?.logoName
-                                    ? selectedDispatcher?.name
-                                    : null,
-                            template: 'user'
-                        },
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-230'
-                    }"
-                    [options]="labelsDispatcher"
-                    [activeItem]="selectedDispatcher"
-                    (selectedItem)="onSelectDropdown($event, 'dispatcher')"
-                ></app-ta-input-dropdown>
+                <div class="dispatcher-container">
+                    <app-ta-input-dropdown
+                        formControlName="dispatcherId"
+                        [template]="'load-dispatcher'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Dispatcher',
+                            isDropdown: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: false,
+                                image: true,
+                                url: selectedDispatcher?.logoName,
+                                nameInitialsInsteadUrl:
+                                    !selectedDispatcher?.logoName
+                                        ? selectedDispatcher?.name
+                                        : null,
+                                template: 'user'
+                            },
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-230'
+                        }"
+                        [options]="labelsDispatcher"
+                        [activeItem]="selectedDispatcher"
+                        (selectedItem)="onSelectDropdown($event, 'dispatcher')"
+                    ></app-ta-input-dropdown>
+                </div>
 
-                <!------------------ Companies Cassses ------------------>
+                <div class="company-template-name-container">
+                    <!-- Template Name -->
 
-                <!-- Only One Company -->
+                    <ng-container *ngIf="isConvertedToTemplate">
+                        <app-ta-input
+                            formControlName="templateName"
+                            [inputConfig]="{
+                                name: 'Template Name',
+                                type: 'text',
+                                label: 'Template Name',
+                                isRequired: true
+                            }"
+                        ></app-ta-input>
+                    </ng-container>
 
-                <app-ta-input
-                    *ngIf="labelsCompanies.length <= 1"
-                    formControlName="companyId"
-                    [inputConfig]="{
-                        name: 'Company',
-                        type: 'text',
-                        label: 'Company',
-                        isDisabled: true,
-                        isRequired: true,
-                        textTransform: 'uppercase'
-                    }"
-                ></app-ta-input>
+                    <ng-container *ngIf="!isConvertedToTemplate">
+                        <!-- Only One Company -->
 
-                <!-- Multiple Companies -->
+                        <app-ta-input
+                            *ngIf="labelsCompanies.length <= 1"
+                            formControlName="companyId"
+                            [inputConfig]="{
+                                name: 'Company',
+                                type: 'text',
+                                label: 'Company',
+                                isDisabled: true,
+                                isRequired: true,
+                                textTransform: 'uppercase'
+                            }"
+                        ></app-ta-input>
 
-                <app-ta-input-dropdown
-                    *ngIf="labelsCompanies.length > 1"
-                    formControlName="companyId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Company',
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-226'
-                    }"
-                    [options]="labelsCompanies"
-                    [activeItem]="selectedCompany"
-                    (selectedItem)="onSelectDropdown($event, 'company')"
-                ></app-ta-input-dropdown>
+                        <!-- Multiple Companies -->
+
+                        <app-ta-input-dropdown
+                            *ngIf="labelsCompanies.length > 1"
+                            formControlName="companyId"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Company',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-226'
+                            }"
+                            [options]="labelsCompanies"
+                            [activeItem]="selectedCompany"
+                            (selectedItem)="onSelectDropdown($event, 'company')"
+                        ></app-ta-input-dropdown>
+                    </ng-container>
+                </div>
             </div>
 
             <!-- Broker -->
@@ -533,7 +572,7 @@
                                     type: 'text',
                                     isDropdown: true,
                                     label: pickupDateRange
-                                        ? 'Date From'
+                                        ? 'Start Date'
                                         : 'Date',
                                     placeholderIcon: 'date',
                                     isRequired: true,
@@ -548,13 +587,23 @@
 
                             <ng-container *ngIf="!pickupDateRange">
                                 <div
-                                    class="load-plus-button"
-                                    position="top"
-                                    ngbTooltip="Date Range"
+                                    class="d-flex align-items-center justify-content-center load-plus-button"
+                                    [ngClass]="{
+                                        disabled: selectedStopTimePickup === 6
+                                    }"
+                                    ngbTooltip
+                                    mainTooltip="Date Range"
+                                    tooltipBackground="#424242"
+                                    bottom="top"
                                     (click)="pickupDateRange = true"
                                 >
                                     <svg-icon
+                                        class="plus-icon"
                                         src="assets/svg/common/ic_plus.svg"
+                                        [svgStyle]="{
+                                            'width.px': '14',
+                                            'height.px': '14'
+                                        }"
                                     ></svg-icon>
                                 </div>
                             </ng-container>
@@ -566,7 +615,7 @@
                                     name: 'datepicker',
                                     type: 'text',
                                     isDropdown: true,
-                                    label: 'Date To',
+                                    label: 'End Date',
                                     placeholderIcon: 'date',
                                     customClass: 'datetimeclass'
                                 }"
@@ -906,25 +955,41 @@
                                             "
                                         ></app-ta-input>
 
-                                        <div
+                                        <ng-container
                                             *ngIf="
                                                 !loadExtraStopsDateRange[indx]
                                             "
-                                            class="load-plus-button"
-                                            ngbTooltip
-                                            mainTooltip="Date Range"
-                                            tooltipBackground="#B7B7B7"
-                                            position="top"
-                                            (click)="
-                                                loadExtraStopsDateRange[
-                                                    indx
-                                                ] = true
-                                            "
                                         >
-                                            <svg-icon
-                                                src="assets/svg/common/ic_plus.svg"
-                                            ></svg-icon>
-                                        </div>
+                                            <div
+                                                class="d-flex align-items-center justify-content-center load-plus-button"
+                                                [ngClass]="{
+                                                    disabled:
+                                                        selectedExtraStopTime[
+                                                            indx
+                                                        ]
+                                                            ?.toString()
+                                                            ?.startsWith('9')
+                                                }"
+                                                ngbTooltip
+                                                mainTooltip="Date Range"
+                                                tooltipBackground="#424242"
+                                                bottom="top"
+                                                (click)="
+                                                    loadExtraStopsDateRange[
+                                                        indx
+                                                    ] = true
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="plus-icon"
+                                                    src="assets/svg/common/ic_plus.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': '14',
+                                                        'height.px': '14'
+                                                    }"
+                                                ></svg-icon>
+                                            </div>
+                                        </ng-container>
 
                                         <app-ta-input
                                             *ngIf="
@@ -1180,19 +1245,30 @@
                                         .markAsTouched()
                                 "
                             ></app-ta-input>
-                            <div
-                                *ngIf="!deliveryDateRange"
-                                class="load-plus-button"
-                                ngbTooltip
-                                mainTooltip="Date Range"
-                                tooltipBackground="#B7B7B7"
-                                position="top"
-                                (click)="deliveryDateRange = true"
-                            >
-                                <svg-icon
-                                    src="assets/svg/common/ic_plus.svg"
-                                ></svg-icon>
-                            </div>
+
+                            <ng-container *ngIf="!deliveryDateRange">
+                                <div
+                                    class="d-flex align-items-center justify-content-center load-plus-button"
+                                    [ngClass]="{
+                                        disabled: selectedStopTimeDelivery === 8
+                                    }"
+                                    ngbTooltip
+                                    mainTooltip="Date Range"
+                                    tooltipBackground="#424242"
+                                    bottom="top"
+                                    (click)="deliveryDateRange = true"
+                                >
+                                    <svg-icon
+                                        class="plus-icon"
+                                        src="assets/svg/common/ic_plus.svg"
+                                        [svgStyle]="{
+                                            'width.px': '14',
+                                            'height.px': '14'
+                                        }"
+                                    ></svg-icon>
+                                </div>
+                            </ng-container>
+
                             <app-ta-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
@@ -1548,21 +1624,22 @@
                     [isCardOpen]="comments.length > 0"
                     [hasCounter]="comments.length"
                     [hasActionSvg]="true"
-                    [hasBodyData]="comments.length > 0"
                     [hasScrollBody]="comments.length > 4"
-                    [disabledCard]="editData?.type !== 'edit'"
+                    [hasBodyData]="comments.length > 0"
                     [animationMarginParams]="{
                         marginTop: '10px',
                         marginBottom: '12px'
                     }"
                     (onActionEvent)="createComment()"
                 >
-                    <app-ta-user-review
-                        *ngIf="comments.length"
-                        [reviewData]="comments"
-                        [isNewReview]="comments[0].isNewReview"
-                        (changeReviewsEvent)="changeCommentsEvent($event)"
-                    ></app-ta-user-review>
+                    <ng-container
+                        *ngFor="
+                            let comment of comments;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <app-ta-comment></app-ta-comment>
+                    </ng-container>
                 </app-ta-custom-card>
             </div>
 

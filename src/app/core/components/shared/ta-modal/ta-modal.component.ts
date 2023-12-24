@@ -106,11 +106,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() modalAdditionalPart: boolean;
     @Input() topDivider: boolean = true;
     @Input() bottomDivider: boolean = true;
+    @Input() isConvertedToTemplate?: boolean = false;
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
     @Input() resetMapVisibility: boolean = false;
-    @Input() showCounter: boolean = false; 
+    @Input() showCounter: boolean = false;
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -338,10 +339,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case 'load-template': {
-                this.action.emit({ action: action, bool: false });
-                break;
-            }
             case 'reset-map-routing': {
                 this.action.emit({ action: action, bool: false });
                 break;
@@ -356,6 +353,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'favorite': {
                 this.confirmationAction.emit(this.confirmationData);
+                break;
+            }
+            case 'convert-to-template': {
+                this.action.emit({ action: action, bool: false });
                 break;
             }
             default: {
@@ -472,10 +473,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
                             this.resendEmailSpinnerVisibility = data.status;
                             break;
                         }
-                        case 'load-template': {
-                            this.loadTemplateSpinnerVisibility = data.status;
-                            break;
-                        }
                         case 'set-map-settings': {
                             this.setMapSettingsSpinnerVisibility = data.status;
                             break;
@@ -491,9 +488,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     }
 
                     if (
-                        !['save and add new', 'load-template'].includes(
-                            data.action
-                        ) &&
+                        !['save and add new'].includes(data.action) &&
                         data.close
                     ) {
                         $('.pac-container').remove();

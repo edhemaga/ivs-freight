@@ -181,7 +181,7 @@
                             position: absolute;
                             right: -10px;
                             top: -1px;
-                            color: $ta-deadline-red;
+                            color: $ta-red-11;
                         }
                     }
                 }
@@ -206,6 +206,14 @@
 
                 .load-stop-header-remove-btn {
                     display: inline-block;
+
+                    &:hover {
+                        svg {
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -265,14 +273,14 @@
         .load-stop-header-remove-btn {
             svg {
                 path {
-                    fill: #e66767;
+                    fill: $ta-red-10;
                 }
             }
 
             &:hover {
                 svg {
                     path {
-                        fill: #c20c0c;
+                        fill: $ta-red-13;
                     }
                 }
             }
@@ -291,6 +299,7 @@
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
 
         .load-stop-header-bar {
+            padding: 4px 8px;
             background: $ta-black-2;
 
             .load-stop-header-content {
@@ -305,6 +314,7 @@
 
                     .load-stop-content-up {
                         line-height: 14px;
+
                         p {
                             color: $white !important;
                         }
@@ -322,6 +332,7 @@
 
                     .load-stop-content-down {
                         line-height: 14px;
+
                         p {
                             color: #919191 !important;
                         }
@@ -338,7 +349,23 @@
 
         &.valid {
             .load-stop-header-bar {
-                background: #3074d3 !important;
+                background: $ta-blue-15 !important;
+
+                .load-stop-header-remove-btn {
+                    svg {
+                        path {
+                            fill: $ta-white-3;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
+                }
 
                 .load-stop-header-content {
                     .origin-destination-no-filled-container {
@@ -394,7 +421,23 @@
 
         &.invalid {
             .load-stop-header-bar {
-                background: #ef5350 !important;
+                background: $ta-red-13 !important;
+
+                .load-stop-header-remove-btn {
+                    svg {
+                        path {
+                            fill: $ta-white-3;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
+                }
 
                 .load-stop-header-content {
                     .origin-destination-no-filled-container {

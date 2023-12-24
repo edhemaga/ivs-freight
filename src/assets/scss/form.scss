@@ -896,6 +896,18 @@
     margin-top: 26px;
     margin-bottom: 32px;
 
+    &.template-row {
+        grid-template-columns: 94px repeat(2, 249px);
+
+        .company-template-name-container {
+            order: 2;
+        }
+    }
+
+    .tabs-container {
+        order: 1;
+    }
+
     .load-template-switcher-container {
         border: 0;
         outline: 0;
@@ -904,6 +916,7 @@
         border-radius: 2px;
         background: $bw2;
         transition: background 0.3s ease-in-out;
+        order: 2;
 
         &:hover {
             background: $bw-9;
@@ -972,6 +985,14 @@
                 }
             }
         }
+    }
+
+    .dispatcher-container {
+        order: 3;
+    }
+
+    .company-template-name-container {
+        order: 4;
     }
 }
 
@@ -1058,24 +1079,39 @@
 .load-plus-button {
     width: 26px;
     height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #eeeeee;
-
-    cursor: pointer;
+    background: $bw2;
     border-radius: 2px;
-    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
 
-    svg-icon {
-        width: 14px;
-        height: 14px;
-        line-height: 12px;
-        svg {
-            width: 14px;
-            height: 14px;
+    &:hover {
+        background: $bw-9;
+
+        .plus-icon {
             path {
-                fill: #919191;
+                fill: $ta-black;
+            }
+        }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        background: $ta-light-grey-5;
+
+        .plus-icon {
+            path {
+                fill: $ta-light-grey-6;
+            }
+        }
+    }
+
+    .plus-icon {
+        line-height: 0;
+
+        svg {
+            path {
+                fill: $bw5;
+                transition: fill 0.3s ease-in-out;
             }
         }
     }

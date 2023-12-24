@@ -72,6 +72,7 @@ import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
 import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
 import { MapsComponent } from '../../shared/maps/maps.component';
 import { TableModalComponent } from '../../shared/table-modal/table-modal.component';
+import { TaCommentComponent } from '../../standalone-components/ta-comment/ta-comment.component';
 
 interface IStopRoutes {
     longitude: number;
@@ -107,6 +108,7 @@ interface IStopRoutes {
         TaInputNoteComponent,
         MapsComponent,
         TableModalComponent,
+        TaCommentComponent,
 
         // Pipe
         FinancialCalculationPipe,
@@ -135,6 +137,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public loadForm: UntypedFormGroup;
     public isFormDirty: boolean;
+
+    public isConvertedToTemplate: boolean = false;
 
     public loadModalSize: string = 'modal-container-M';
 
@@ -485,8 +489,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    public trackByIdentity(index: number): number {
+        return index;
+    }
+
     private createForm(): void {
         this.loadForm = this.formBuilder.group({
+            templateName: [
+                null,
+                this.isConvertedToTemplate && Validators.required,
+            ],
             loadTemplateId: [null],
             dispatcherId: [null],
             companyId: [this.companyUser.companyName, Validators.required],
@@ -680,41 +692,54 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case 'close': {
                 break;
             }
-            case 'save': {
+            case 'save':
+            case 'save and add new': {
                 if (this.loadForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.loadForm);
                     return;
                 }
-                if (this.editData) {
-                    this.updateLoad(this.editData.id);
+
+                if (this.isConvertedToTemplate) {
+                    this.saveLoadTemplate();
+
                     this.modalService.setModalSpinner({
-                        action: null,
+                        action: 'load-template',
                         status: true,
                         close: false,
                     });
                 } else {
-                    this.addLoad();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
+                    if (this.editData) {
+                        this.updateLoad(this.editData.id);
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: false,
+                        });
+                    } else {
+                        this.addLoad();
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: false,
+                        });
+                    }
+                }
+
+                if (data.action === 'save and add new') {
+                    this.modalService.openModal(LoadModalComponent, {
+                        size: 'load',
                     });
                 }
+
                 break;
             }
-            case 'load-template': {
-                if (this.loadForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.loadForm);
-                    return;
-                }
+            case 'convert-to-template': {
+                this.isConvertedToTemplate = true;
 
-                this.saveLoadTemplate();
+                this.inputService.changeValidators(
+                    this.loadForm.get('templateName')
+                );
 
-                this.modalService.setModalSpinner({
-                    action: 'load-template',
-                    status: true,
-                    close: false,
-                });
                 break;
             }
             default: {
@@ -3537,18 +3562,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (this.comments.some((item) => item.isNewReview)) {
             return;
         }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
-        // -------------------------- DEVELOP MODE --------------------------------
+
         this.comments.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(
@@ -3562,6 +3576,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             updatedAt: new Date().toISOString(),
             isNewReview: true,
         });
+
+        console.log(this.comments);
     }
 
     public addComment(comments: ReviewCommentModal): void {
@@ -3610,10 +3626,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    public identity(index: number): number {
-        return index;
     }
 
     public onBlurDescription(action: string, ind?: number): void {
