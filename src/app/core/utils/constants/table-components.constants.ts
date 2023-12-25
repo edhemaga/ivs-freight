@@ -22,6 +22,8 @@ import { backFilterQueryInterface } from '../../components/trailer/trailer.modal
 
 import { FilterOptions } from '../../components/truck/truck.modal';
 
+import { OwnerBackFilterQuery } from '../../components/owner/owner.modal';
+
 // Load page
 export class TableDropdownLoadComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {
@@ -820,4 +822,24 @@ export class TableFuel {
         '#F34235',
         '#6C6C6C',
     ];
+}
+
+// Owner page
+export class TableOwner {
+    static BACKFILTER_QUERY: OwnerBackFilterQuery = {
+        active: 1,
+        companyOwnerId: undefined,
+        long: undefined,
+        lat: undefined,
+        distance: undefined,
+        truckTypeIds: undefined,
+        trailerTypeIds: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
 }

@@ -233,6 +233,13 @@ export enum ConstantStringTableComponentsEnum {
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
     NAME = 'name',
 
+    // Owner
+    TRUCK_TYPE_FILTER = 'truckTypeFilter',
+    TRAILER_TYPE_FILTER = 'trailerTypeFilter',
+    SET = 'Set',
+    LOCATION_FILTER = 'locationFilter',
+    OWNER_TABLE_VIEW = `Owner-table-view`,
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
