@@ -1,3 +1,5 @@
+import { GetOwnerListResponse } from 'appcoretruckassist';
+
 export interface OwnerBackFilterQuery {
     active: number;
     companyOwnerId: any;
@@ -13,4 +15,19 @@ export interface OwnerBackFilterQuery {
     searchOne: string;
     searchTwo: string;
     searchThree: string;
+}
+
+export interface OwnerBodyResponse {
+    id: number;
+    type: string;
+    data: GetOwnerListResponse;
+}
+
+export interface MapOwnerData {
+    isSelected: boolean;
+    textType: string;
+    textAddress: string;
+    textBankName: string;
+    fileCount: number;
+    tableDropdownContent: {};
 }

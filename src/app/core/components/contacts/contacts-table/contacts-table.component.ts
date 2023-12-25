@@ -181,10 +181,10 @@ export class ContactsTableComponent
 
                     this.viewData = this.viewData.map(
                         (contact: CompanyContactResponse) => {
-                            if (contact.id === res.id) {
-                                contact.actionAnimation =
-                                    ComponentsTableEnum.ADD;
-                            }
+                            // if (contact.id === res.id) {
+                            //     contact.actionAnimation =
+                            //         ComponentsTableEnum.ADD;
+                            // }
 
                             return contact;
                         }
@@ -207,11 +207,11 @@ export class ContactsTableComponent
 
                     this.viewData = this.viewData.map(
                         (contact: CompanyContactResponse) => {
-                            if (contact.id === res.id) {
-                                contact = updatedContact;
-                                contact.actionAnimation =
-                                    ComponentsTableEnum.UPDATE;
-                            }
+                            // if (contact.id === res.id) {
+                            //     contact = updatedContact;
+                            //     contact.actionAnimation =
+                            //         ComponentsTableEnum.UPDATE;
+                            // }
 
                             return contact;
                         }
@@ -232,11 +232,11 @@ export class ContactsTableComponent
 
                     this.viewData = this.viewData.map(
                         (contact: CompanyContactResponse, index: number) => {
-                            if (contact.id === res.id) {
-                                contact.actionAnimation =
-                                    ComponentsTableEnum.DELETE;
-                                contactIndex = index;
-                            }
+                            // if (contact.id === res.id) {
+                            //     contact.actionAnimation =
+                            //         ComponentsTableEnum.DELETE;
+                            //     contactIndex = index;
+                            // }
 
                             return contact;
                         }
@@ -269,10 +269,10 @@ export class ContactsTableComponent
                             this.viewData = this.viewData.map(
                                 (contact: CompanyContactResponse) => {
                                     response.map((res) => {
-                                        if (contact.id === res.id) {
-                                            contact.actionAnimation =
-                                                ComponentsTableEnum.DELETE_MULTIPLE;
-                                        }
+                                        // if (contact.id === res.id) {
+                                        //     contact.actionAnimation =
+                                        //         ComponentsTableEnum.DELETE_MULTIPLE;
+                                        // }
                                     });
 
                                     return contact;
@@ -634,31 +634,31 @@ export class ContactsTableComponent
     }
 
     private updateCompanyContactLabel(event: TableBodyActionsContract): void {
-        const companyContractData = this.viewData.find(
-            (e: CreateCompanyContactCommand) => e.id === event.id
-        );
+        // const companyContractData = this.viewData.find(
+        //     (e: CreateCompanyContactCommand) => e.id === event.id
+        // );
 
         const newdata: UpdateCompanyContactCommand = {
-            id: companyContractData.id ?? null,
-            name: companyContractData.name ?? null,
-            companyContactLabelId: event.data ? event.data.id : null,
-            avatar: companyContractData.avatar ?? null,
-            address: companyContractData.address ?? null,
-            shared: companyContractData.shared ?? null,
-            note: companyContractData.note ?? null,
-            contactEmails: companyContractData.contactEmails
-                ? this.createContactEmails(companyContractData.contactEmails[0])
-                : null,
-            contactPhones: companyContractData.contactPhones
-                ? this.createContactPhones(companyContractData.contactPhones[0])
-                : null,
+            // id: companyContractData.id ?? null,
+            // name: companyContractData.name ?? null,
+            // companyContactLabelId: event.data ? event.data.id : null,
+            // avatar: companyContractData.avatar ?? null,
+            // address: companyContractData.address ?? null,
+            // shared: companyContractData.shared ?? null,
+            // note: companyContractData.note ?? null,
+            // contactEmails: companyContractData.contactEmails
+            //     ? this.createContactEmails(companyContractData.contactEmails[0])
+            //     : null,
+            // contactPhones: companyContractData.contactPhones
+            //     ? this.createContactPhones(companyContractData.contactPhones[0])
+            //     : null,
         };
 
         this.contactService
             .updateCompanyContact(
-                newdata,
-                companyContractData.colorRes,
-                companyContractData.colorLabels
+                newdata
+                // companyContractData.colorRes,
+                // companyContractData.colorLabels
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe();

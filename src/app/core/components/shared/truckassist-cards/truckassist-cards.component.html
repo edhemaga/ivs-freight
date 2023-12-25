@@ -609,6 +609,76 @@
                                             }}
                                         </ng-container>
                                     </ng-container>
+
+                                    <!-- Owner page body -->
+                                    <ng-container *ngIf="page === 'Owner'">
+                                        <!-- Fleet -->
+                                        <ng-container
+                                            *ngIf="rowsFront.title === 'Fleet'"
+                                        >
+                                            <div class="fleet-holder d-flex">
+                                                <div
+                                                    class="ta-font-semi-bold d-flex fleet align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="d-flex justify-content-center svg-holder"
+                                                        [src]="
+                                                            'assets/svg/common/dropdown-truck.svg'
+                                                        "
+                                                        [ngClass]="{
+                                                            'no-count':
+                                                                card.truckCount ===
+                                                                0
+                                                        }"
+                                                    ></svg-icon>
+                                                    <span
+                                                        [ngClass]="{
+                                                            'no-count-text':
+                                                                card.truckCount ===
+                                                                0
+                                                        }"
+                                                    >
+                                                        {{ card.truckCount }}
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    class="ta-font-semi-bold d-flex fleet align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="d-flex justify-content-center svg-holder"
+                                                        [src]="
+                                                            'assets/svg/common/dropdown-trailer.svg'
+                                                        "
+                                                        [ngClass]="{
+                                                            'no-count':
+                                                                card.trailerCount ===
+                                                                0
+                                                        }"
+                                                    ></svg-icon>
+                                                    <span
+                                                        [ngClass]="{
+                                                            'no-count-text':
+                                                                card.trailerCount ===
+                                                                0
+                                                        }"
+                                                    >
+                                                        {{ card.trailerCount }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="rowsFront.title !== 'Fleet'"
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+                                    </ng-container>
                                 </div>
                             </div>
                         </ng-container>

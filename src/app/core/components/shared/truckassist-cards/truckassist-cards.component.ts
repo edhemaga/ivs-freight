@@ -10,7 +10,6 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
-    OnInit,
 } from '@angular/core';
 
 // Models
@@ -69,7 +68,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         formatDatePipe,
     ],
 })
-export class TruckassistCardsComponent implements OnInit {
+export class TruckassistCardsComponent {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -125,9 +124,6 @@ export class TruckassistCardsComponent implements OnInit {
         private renderer: Renderer2,
         private tableService: TruckassistTableService
     ) {}
-    ngOnInit(): void {
-        console.log(this.viewData);
-    }
 
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {

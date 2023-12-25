@@ -842,4 +842,90 @@ export class TableOwner {
         searchTwo: undefined,
         searchThree: undefined,
     };
+
+    static DROPDOWN_OWNER_CONTENT = [
+        {
+            title: 'Edit',
+            name: 'edit-owner',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            hasBorder: true,
+            svgClass: 'regular',
+        },
+        {
+            title: 'View Details',
+            name: 'view-details',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Add Truck',
+            name: 'add-truck',
+            svgUrl: '',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Add Trailer',
+            name: 'add-trailer',
+            svgUrl: '',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'Share',
+            name: 'share',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Print',
+            name: 'print',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'Delete',
+            name: 'delete-owner',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'delete',
+        },
+    ];
 }

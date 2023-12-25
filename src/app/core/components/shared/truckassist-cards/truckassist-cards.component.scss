@@ -24,6 +24,7 @@
     .card-body {
         border-radius: 2px;
         margin: 4px;
+        height: calc(100% - 8px);
 
         .description-container {
             overflow: hidden;
@@ -325,19 +326,46 @@
                                 }
                             }
                         }
+
+                        // Styles owner page
+                        .fleet-holder {
+                            gap: 4px;
+
+                            .fleet {
+                                gap: 4px;
+                                font-size: 11px;
+
+                                .svg-holder {
+                                    height: 18px;
+                                    width: 18px;
+                                }
+
+                                .no-count-text {
+                                    color: $muted;
+                                }
+
+                                .no-count {
+                                    svg {
+                                        path {
+                                            fill: $ta-light-grey-6;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
         .card-body-right {
-            height: 218px;
+            height: 100%;
             display: flex;
             flex-direction: column;
             padding: 4px 4px 0 0;
 
             .top-side {
-                height: 192px;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
@@ -479,6 +507,7 @@
                 width: 26px;
                 height: 26px;
                 cursor: pointer;
+                position: relative;
 
                 .svg-position {
                     rotate: (0deg);
@@ -495,9 +524,8 @@
                 }
 
                 .expand-card {
-                    position: relative;
-                    right: -2px;
-                    bottom: -2px;
+                    position: absolute;
+                    bottom: 5px;
 
                     &:hover {
                         svg {

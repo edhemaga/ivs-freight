@@ -45,11 +45,12 @@ export class AccountResolver implements Resolve<AccountState> {
                 });
 
                 const accountTableData = accountPagination.pagination.data;
-                accountTableData.map(
-                    (e: CompanyAccountResponse) => (
-                        (e.colorRes = colorRes), (e.colorLabels = accountLabel)
-                    )
-                );
+                accountTableData
+                    .map
+                    // (e: CompanyAccountResponse) => (
+                    //     (e.colorRes = colorRes), (e.colorLabels = accountLabel)
+                    // )
+                    ();
 
                 this.accountStore.set(accountTableData);
             })

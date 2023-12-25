@@ -82,8 +82,8 @@ export class AccountTService {
                     next: (account: CompanyAccountResponse) => {
                         this.accountStore.remove(({ id }) => id === data.id);
 
-                        colors && (account.colorRes = colors);
-                        colorLabels && (account.colorLabels = colorLabels);
+                        // colors && (account.colorRes = colors);
+                        // colorLabels && (account.colorLabels = colorLabels);
 
                         this.accountStore.add(account);
 

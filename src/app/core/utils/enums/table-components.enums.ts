@@ -239,6 +239,12 @@ export enum ConstantStringTableComponentsEnum {
     SET = 'Set',
     LOCATION_FILTER = 'locationFilter',
     OWNER_TABLE_VIEW = `Owner-table-view`,
+    OWNER_TABLE_COUNTE = 'ownerTableCount',
+    OWNER = 'Owner',
+    OWNER_2 = 'OWNER',
+    OWNERS = 'owners',
+    EDIT_OWNER = 'edit-owner',
+    DELETE_OWNER = 'delete-owner',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',
