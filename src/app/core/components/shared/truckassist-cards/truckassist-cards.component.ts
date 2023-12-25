@@ -10,6 +10,7 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
+    OnInit,
 } from '@angular/core';
 
 // Models
@@ -22,6 +23,7 @@ import {
 
 // Services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // Modules
 import { CommonModule } from '@angular/common';
@@ -67,7 +69,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         formatDatePipe,
     ],
 })
-export class TruckassistCardsComponent {
+export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -87,6 +89,7 @@ export class TruckassistCardsComponent {
     // Page
     @Input() page: string;
     @Input() selectedTab: string;
+
     // For Front And back of the cards
     @Input() deadline: boolean;
 
@@ -105,20 +108,26 @@ export class TruckassistCardsComponent {
     public descriptionIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
+
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
     public elementWidth: number;
+
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
     public activeDescriptionDropdown: number = -1;
     public descriptionTooltip: NgbPopover;
-
+    public mySelection: { id: number; tableData: CardDetails }[] = [];
     constructor(
         private detailsDataService: DetailsDataService,
         private ngZone: NgZone,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private tableService: TruckassistTableService
     ) {}
+    ngOnInit(): void {
+        console.log(this.viewData);
+    }
 
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
@@ -197,9 +206,9 @@ export class TruckassistCardsComponent {
     }
 
     // When checkbox is selected
-    public onCheckboxSelect(index: number): void {
+    public onCheckboxSelect(index: number, card: CardDetails): void {
         const indexSelected = this.isCheckboxCheckedArray.indexOf(index);
-
+        this.mySelection.push({ id: card.id, tableData: card });
         if (indexSelected !== -1) {
             this.isCheckboxCheckedArray.splice(indexSelected, 1);
             this.isCardChecked = this.isCheckboxCheckedArray;
@@ -208,7 +217,7 @@ export class TruckassistCardsComponent {
             this.isCardChecked = this.isCheckboxCheckedArray;
         }
 
-        return;
+        this.tableService.sendRowsSelected(this.mySelection);
     }
 
     // Show hide dropdown
@@ -305,6 +314,7 @@ export class TruckassistCardsComponent {
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
     }
 
+    // Add favorite repairshop
     public onFavorite(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,
@@ -312,6 +322,7 @@ export class TruckassistCardsComponent {
         });
     }
 
+    // Finish repair
     public onFinishOrder(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,

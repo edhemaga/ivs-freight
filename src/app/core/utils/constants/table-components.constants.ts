@@ -1,18 +1,25 @@
+import { SortTypes } from '../../components/fuel/driver.modal';
 import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
 } from '../../components/repair/repair.modal';
+
 import { DropdownItem } from '../../components/shared/model/cardTableData';
+
 import {
     FilterOptionBroker,
     FilterOptionshipper,
 } from '../../components/shared/model/table-components/customer.modals';
+
 import {
     FilterOptionApplicant,
     FilterOptionDriver,
 } from '../../components/shared/model/table-components/driver-modal';
+
 import { FilterOptionsLoad } from '../../components/shared/model/table-components/load-modal';
+
 import { backFilterQueryInterface } from '../../components/trailer/trailer.modal';
+
 import { FilterOptions } from '../../components/truck/truck.modal';
 
 // Load page
@@ -781,5 +788,36 @@ export class TableRepair {
             },
             svgClass: 'delete',
         },
+    ];
+}
+
+// Fuel page
+export class TableFuel {
+    static SORT_TYPES: SortTypes[] = [
+        { name: 'Business Name', id: 1, sortName: 'name' },
+        { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+        { name: 'Favorites', id: 8, sortName: 'favorites' },
+        { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
+        { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
+        { name: 'Purchase', id: 6, sortName: 'purchase' },
+        { name: 'Total Cost', id: 7, sortName: 'cost' },
+    ];
+
+    static FUEL_PRICE_COLORS: string[] = [
+        '#4CAF4F',
+        '#8AC34A',
+        '#FEC107',
+        '#FF9800',
+        '#EF5350',
+        '#919191',
+    ];
+
+    static FUEL_PRICE_HOVER_COLORS: string[] = [
+        '#43A047',
+        '#7CB242',
+        '#FFB300',
+        '#FB8C00',
+        '#F34235',
+        '#6C6C6C',
     ];
 }

@@ -7,7 +7,7 @@
         [columns]="columns"
     ></app-truckassist-table-toolbar>
 
-    <div *ngIf="activeViewMode == 'List'">
+    <div *ngIf="activeViewMode === 'List'">
         <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -26,45 +26,51 @@
         ></app-truckassist-table-body>
     </div>
 
-    <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
-        <app-map-list
-            [type]="'fuelStop'"
-            [columns]="columns"
-            [mapListContent]="mapListData"
-            (headActions)="onTableHeadActions($event)"
-        >
-            <app-map-list-card
-                *ngFor="let latlong of mapListData; let i = index"
-                #listCard
-                [title]="latlong?.businessName"
-                [isSelected]="latlong?.isSelected"
-                [status]="latlong?.status"
-                [item]="latlong"
-                [index]="i"
-                [address]="latlong.address"
-                [rating]="{
-                    up: latlong?.upRatingCount,
-                    down: latlong?.downRatingCount
-                }"
-                [type]="'fuelStop'"
-                (bodyActions)="onTableBodyActions($event)"
-                (clickedMarker)="selectItem($event)"
-                [ngStyle]="{
-                    display:
-                        locationFilterOn && latlong?.isShown == false
-                            ? 'none'
-                            : 'block'
-                }"
-            ></app-map-list-card>
-        </app-map-list>
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <app-truckassist-cards [viewData]="viewData"></app-truckassist-cards>
+    </ng-container>
 
-        <app-maps
-            #mapsComponent
-            [_viewData]="[]"
-            [mapType]="'fuelStop'"
-            (callDropDownAction)="onTableBodyActions($event)"
-            (updateMapList)="updateMapList($event)"
-            (selectMarker)="selectItem($event)"
-        ></app-maps>
-    </div>
+    <ng-container *ngIf="activeViewMode === 'Map'">
+        <div class="customer-map-container">
+            <app-map-list
+                [type]="'fuelStop'"
+                [columns]="columns"
+                [mapListContent]="mapListData"
+                (headActions)="onTableHeadActions($event)"
+            >
+                <app-map-list-card
+                    *ngFor="let latlong of mapListData; let i = index"
+                    #listCard
+                    [title]="latlong?.businessName"
+                    [isSelected]="latlong?.isSelected"
+                    [status]="latlong?.status"
+                    [item]="latlong"
+                    [index]="i"
+                    [address]="latlong.address"
+                    [rating]="{
+                        up: latlong?.upRatingCount,
+                        down: latlong?.downRatingCount
+                    }"
+                    [type]="'fuelStop'"
+                    (bodyActions)="onTableBodyActions($event)"
+                    (clickedMarker)="selectItem($event)"
+                    [ngStyle]="{
+                        display:
+                            locationFilterOn && latlong?.isShown == false
+                                ? 'none'
+                                : 'block'
+                    }"
+                ></app-map-list-card>
+            </app-map-list>
+
+            <app-maps
+                #mapsComponent
+                [_viewData]="[]"
+                [mapType]="'fuelStop'"
+                (callDropDownAction)="onTableBodyActions($event)"
+                (updateMapList)="updateMapList($event)"
+                (selectMarker)="selectItem($event)"
+            ></app-maps>
+        </div>
+    </ng-container>
 </div>
