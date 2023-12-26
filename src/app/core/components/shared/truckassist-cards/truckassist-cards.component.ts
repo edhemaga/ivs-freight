@@ -131,7 +131,10 @@ export class TruckassistCardsComponent {
 
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
+        if (
+            this.page === ConstantStringTableComponentsEnum.REPAIR &&
+            !changes.firstChange
+        ) {
             if (!changes.firstChange) {
                 setTimeout(() => {
                     this.itemsContainers.forEach((containerRef: ElementRef) => {
