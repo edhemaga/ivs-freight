@@ -62,6 +62,7 @@ export class TaCustomCardComponent {
     @Input() hasDivider: boolean = true;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
+    @Input() hasScrollBodyXAxis: boolean = false;
     @Input() hasBodyData: boolean = true;
     @Input() hasCheckbox: boolean = false;
     @Input() hasPlusHeader: boolean = false;
@@ -70,7 +71,6 @@ export class TaCustomCardComponent {
     @Input() customTextAction: string = null;
     @Input() hasDeleteAction: boolean = false;
     @Input() hasPayrollStatus: boolean = false;
-    @Input() bottomCollapseArrow: boolean = false;
     @Input() customClass: string;
     @Input() hasFormatTextActionButtons: boolean = false;
 

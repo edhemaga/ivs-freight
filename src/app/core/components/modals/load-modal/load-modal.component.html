@@ -669,35 +669,31 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="false"
-                                [hasCounter]="0"
+                                [isCardOpen]="pickupStopItems.length"
+                                [hasCounter]="pickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
                                 [hasArrow]="true"
-                                [bottomCollapseArrow]="true"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
+                                [hasScrollBodyXAxis]="pickupStopItems.length"
                                 (onActionEvent)="
-                                    createNewRowInStopItems('pickup')
+                                    createNewStopItemsRow('pickup')
                                 "
-                                (onOpenCard)="showTableModal($event, 'pickup')"
                             >
-                                <app-table-modal
-                                    *ngIf="tableModalOpen === 'pickup'"
-                                    [columns]="modalColumns"
-                                    [viewData]="modalViewData"
-                                    [midSectionWidth]="341"
-                                    [formGroup]="testControl"
-                                    [modalScrollStyleOptions]="{
-                                        horizontalScrollBarMarginTop: 4,
-                                        horizontalScrollBarLeft: 0,
-                                        horizontalScrollBarWidth: 606,
-                                        additionalWidth: 265,
-                                        modalScrollClassActive: true
-                                    }"
-                                ></app-table-modal>
+                                <app-load-stop-items
+                                    [createNewStopItemsRow]="
+                                        isCreatedNewStopItemsRow.pickup
+                                    "
+                                    (stopItemsDataValueEmitter)="
+                                        handleStopItemsDataValueEmit(
+                                            $event,
+                                            'pickup'
+                                        )
+                                    "
+                                ></app-load-stop-items>
                             </app-ta-custom-card>
                         </div>
                     </app-load-stop>
@@ -705,14 +701,13 @@
                     <!-- Extra Stops -->
 
                     <div formArrayName="extraStops">
-                        <div
+                        <ng-container
                             *ngFor="
                                 let extraStop of loadExtraStops().controls;
                                 let indx = index
                             "
                         >
                             <div [formGroupName]="indx">
-                                <!-- Extra Stops -->
                                 <app-load-stop
                                     *ngIf="loadExtraStops().controls.length"
                                     [firstOrLast]="false"
@@ -847,7 +842,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Stop Information -->
+                                    <!-- Shipper -->
 
                                     <div class="row">
                                         <div class="col-12">
@@ -883,6 +878,8 @@
                                             ></app-ta-input-dropdown>
                                         </div>
                                     </div>
+
+                                    <!--  Work Hours, Appointment, Contact -->
 
                                     <div class="load-shipper-contact-row">
                                         <app-ta-tab-switch
@@ -924,6 +921,8 @@
                                             "
                                         ></app-ta-input-dropdown>
                                     </div>
+
+                                    <!--  Date Pickers & Time Pickers -->
 
                                     <div
                                         class="stop-load-date-time"
@@ -1062,56 +1061,52 @@
                                         ></app-ta-input>
                                     </div>
 
+                                    <!-- Stop Items -->
+
                                     <div class="stop-items-wrapper">
                                         <app-ta-custom-card
                                             [cardName]="'Item'"
-                                            [isCardOpen]="false"
-                                            [hasCounter]="2"
-                                            [hasActionSvg]="
-                                                'assets/svg/common/ic_plus.svg'
+                                            [isCardOpen]="
+                                                extraStopItems[indx].length
                                             "
+                                            [hasCounter]="
+                                                extraStopItems[indx].length
+                                            "
+                                            [hasActionSvg]="true"
                                             [hasBodyData]="true"
-                                            (onActionEvent)="
-                                                createNewRowInStopItems(
-                                                    'delivery'.indx
-                                                )
-                                            "
-                                            (onOpenCard)="
-                                                showTableModal(
-                                                    $event,
-                                                    'delivery'.indx
-                                                )
-                                            "
-                                            [disableAnimation]="
-                                                disableCardAnimation
-                                            "
+                                            [hasArrow]="true"
                                             [animationMarginParams]="{
                                                 marginTop: '10px',
                                                 marginBottom: '12px'
                                             }"
+                                            [hasScrollBodyXAxis]="
+                                                extraStopItems[indx].length
+                                            "
+                                            (onActionEvent)="
+                                                createNewStopItemsRow(
+                                                    'extra-stop',
+                                                    indx
+                                                )
+                                            "
                                         >
-                                            <app-table-modal
-                                                *ngIf="
-                                                    tableModalOpen ===
-                                                    'delivery'.indx
+                                            <app-load-stop-items
+                                                [createNewStopItemsRow]="
+                                                    isCreatedNewStopItemsRow
+                                                        .extraStops[indx]
                                                 "
-                                                [columns]="modalColumns"
-                                                [viewData]="modalViewData"
-                                                [midSectionWidth]="341"
-                                                [formGroup]="testControl"
-                                                [modalScrollStyleOptions]="{
-                                                    horizontalScrollBarMarginTop: 4,
-                                                    horizontalScrollBarLeft: 0,
-                                                    horizontalScrollBarWidth: 606,
-                                                    additionalWidth: 265,
-                                                    modalScrollClassActive: true
-                                                }"
-                                            ></app-table-modal>
+                                                (stopItemsDataValueEmitter)="
+                                                    handleStopItemsDataValueEmit(
+                                                        $event,
+                                                        'extra-stop',
+                                                        indx
+                                                    )
+                                                "
+                                            ></app-load-stop-items>
                                         </app-ta-custom-card>
                                     </div>
                                 </app-load-stop>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
 
                     <!-- Delivery Stop -->
@@ -1167,6 +1162,8 @@
                         "
                         (toggle)="toggleStopActivity($event, 'first-delivery')"
                     >
+                        <!-- Shipper -->
+
                         <div class="row">
                             <div class="col-12">
                                 <app-ta-input-dropdown
@@ -1193,6 +1190,9 @@
                                 ></app-ta-input-dropdown>
                             </div>
                         </div>
+
+                        <!-- Work Hours, Appointment, Contact -->
+
                         <div class="load-shipper-contact-row">
                             <app-ta-tab-switch
                                 [tabs]="stopTimeTabsDelivery"
@@ -1220,6 +1220,9 @@
                                 "
                             ></app-ta-input-dropdown>
                         </div>
+
+                        <!--  Date Pickers & Time Pickers -->
+
                         <div
                             class="stop-load-date-time"
                             [ngClass]="{
@@ -1287,7 +1290,6 @@
                                 "
                             ></app-ta-input>
 
-                            <!-- Time Picker -->
                             <app-ta-input
                                 formControlName="deliveryTimeFrom"
                                 [inputConfig]="{
@@ -1309,7 +1311,7 @@
                                         .markAsTouched()
                                 "
                             ></app-ta-input>
-                            <!-- Time Picker -->
+
                             <app-ta-input
                                 formControlName="deliveryTimeTo"
                                 [inputConfig]="{
@@ -1329,38 +1331,37 @@
                                 "
                             ></app-ta-input>
                         </div>
+
+                        <!-- Stop Items -->
+
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="false"
-                                [hasCounter]="2"
-                                [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                                [isCardOpen]="deliveryStopItems.length"
+                                [hasCounter]="deliveryStopItems.length"
+                                [hasActionSvg]="true"
                                 [hasBodyData]="true"
+                                [hasArrow]="true"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
+                                [hasScrollBodyXAxis]="deliveryStopItems.length"
                                 (onActionEvent)="
-                                    createNewRowInStopItems('delivery')
-                                "
-                                (onOpenCard)="
-                                    showTableModal($event, 'delivery')
+                                    createNewStopItemsRow('delivery')
                                 "
                             >
-                                <app-table-modal
-                                    *ngIf="tableModalOpen === 'delivery'"
-                                    [columns]="modalColumns"
-                                    [viewData]="modalViewData"
-                                    [midSectionWidth]="341"
-                                    [formGroup]="testControl"
-                                    [modalScrollStyleOptions]="{
-                                        horizontalScrollBarMarginTop: 4,
-                                        horizontalScrollBarLeft: 0,
-                                        horizontalScrollBarWidth: 606,
-                                        additionalWidth: 265,
-                                        modalScrollClassActive: true
-                                    }"
-                                ></app-table-modal>
+                                <app-load-stop-items
+                                    [createNewStopItemsRow]="
+                                        isCreatedNewStopItemsRow.delivery
+                                    "
+                                    (stopItemsDataValueEmitter)="
+                                        handleStopItemsDataValueEmit(
+                                            $event,
+                                            'delivery'
+                                        )
+                                    "
+                                ></app-load-stop-items>
                             </app-ta-custom-card>
                         </div>
                     </app-load-stop>

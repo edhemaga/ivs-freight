@@ -82,8 +82,8 @@ export class LoadStopComponent {
     @Input() state: 'valid' | 'invalid';
 
     @Input() animationMarginParams = {
-        marginTop: '32px',
-        marginBottom: '22px',
+        marginTop: '12px',
+        marginBottom: '4px',
     };
 
     @Input() isCardOpen: boolean;

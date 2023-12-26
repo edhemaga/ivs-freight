@@ -247,7 +247,10 @@
 
     <div
         class="ta-card-body"
-        [ngClass]="{ scroll: hasScrollBody }"
+        [ngClass]="{
+            scroll: hasScrollBody,
+            'scroll-x-axis': hasScrollBodyXAxis && _isCardOpen
+        }"
         [@.disabled]="disableAnimation"
     >
         <div
@@ -263,12 +266,4 @@
             <ng-content></ng-content>
         </div>
     </div>
-
-    <svg-icon
-        *ngIf="bottomCollapseArrow && hasBodyData"
-        class="bottom-collapse-arrow"
-        [ngClass]="{ rotate: _isCardOpen && _isCardOpen != 'null' }"
-        src="assets/svg/common/ic_arrow_down_updated.svg"
-        (click)="isCardOpenEvent($event)"
-    ></svg-icon>
 </div>

@@ -507,6 +507,22 @@ ngb-modal-window[aria-hidden='true'] {
                     }
                 }
 
+                .modal-save-btn-add-new {
+                    min-width: 181px !important;
+
+                    &.valid {
+                        cursor: pointer;
+                        pointer-events: all;
+                        background: $bw2;
+                        color: $ta-blue-14;
+
+                        &:hover {
+                            background: $ta-blue-15;
+                            color: $white;
+                        }
+                    }
+                }
+
                 .modal-confirmation-btn {
                     min-width: 150px;
                 }

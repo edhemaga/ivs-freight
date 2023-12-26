@@ -10,7 +10,6 @@ import {
     UntypedFormGroup,
     Validators,
     AbstractControl,
-    UntypedFormControl,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
@@ -34,7 +33,6 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
@@ -54,8 +52,6 @@ import { FinancialCalculationPipe } from './load-financial/financialCalculation.
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
 import { ViewChild } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
@@ -71,8 +67,9 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
 import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
 import { MapsComponent } from '../../shared/maps/maps.component';
-import { TableModalComponent } from '../../shared/table-modal/table-modal.component';
 import { TaCommentComponent } from '../../standalone-components/ta-comment/ta-comment.component';
+import { LoadStopItemsComponent } from './load-stop-items/load-stop-items.component';
+import { StopItemsData } from './state/models/load-stop-items-data.model';
 
 interface IStopRoutes {
     longitude: number;
@@ -107,8 +104,8 @@ interface IStopRoutes {
         TaUploadFilesComponent,
         TaInputNoteComponent,
         MapsComponent,
-        TableModalComponent,
         TaCommentComponent,
+        LoadStopItemsComponent,
 
         // Pipe
         FinancialCalculationPipe,
@@ -454,9 +451,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
 
-    // Modal Table
-    tableModalOpen: string = '';
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -467,7 +461,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private financialCalculationPipe: FinancialCalculationPipe,
-        private tagsService: EditTagsService,
         private cdRef: ChangeDetectorRef
     ) {}
 
@@ -530,7 +523,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickupDateTo: [null],
             pickupTimeFrom: [null, Validators.required],
             pickupTimeTo: [null, Validators.required],
-            pickupItems: this.formBuilder.array([]),
             pickuplegMiles: [null],
             pickuplegHours: [null],
             pickuplegMinutes: [null],
@@ -545,7 +537,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliveryDateTo: [null],
             deliveryTimeFrom: [null, Validators.required],
             deliveryTimeTo: [null, Validators.required],
-            deliveryItems: this.formBuilder.array([]),
             deliverylegMiles: [null],
             deliverylegHours: [null],
             deliverylegMinutes: [null],
@@ -2225,6 +2216,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.selectExtraStopType.push(3000);
         this.selectedExtraStopTime.push(7000);
 
+        // Stop items
+        this.isCreatedNewStopItemsRow.extraStops = [
+            ...this.isCreatedNewStopItemsRow.extraStops,
+            false,
+        ];
+        this.extraStopItems = [...this.extraStopItems, []];
+
         if (!this.selectedPickupShipper) return;
 
         this.addLoadExtraStop();
@@ -2297,7 +2295,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             legHours: [null],
             legMinutes: [null],
             legCost: [null],
-            items: this.formBuilder.array([]),
             openClose: [true],
         });
     }
@@ -2386,32 +2383,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get('openClose').patchValue(false);
                 }
             });
-        }
-    }
-
-    public removeLoadStopItem(
-        action: string,
-        loadStopIndex?: number,
-        loadStopItemIndex?: number
-    ) {
-        switch (action) {
-            case 'pickup': {
-                this.loadPickupStopItems().removeAt(loadStopIndex);
-                break;
-            }
-            case 'delivery': {
-                this.loadDeliveryStopItems().removeAt(loadStopIndex);
-                break;
-            }
-            case 'extra-stop': {
-                this.loadExtraStopItems(loadStopIndex).removeAt(
-                    loadStopItemIndex
-                );
-                break;
-            }
-            default: {
-                break;
-            }
         }
     }
 
@@ -3269,7 +3240,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private saveLoadTemplate() {
         const { ...form } = this.loadForm.value;
         const newData: CreateLoadTemplateCommand = {
-            name: 'Novi template',
+            name: 'New template',
             type: this.tabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             dispatcherId: this.selectedDispatcher
@@ -3576,8 +3547,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             updatedAt: new Date().toISOString(),
             isNewReview: true,
         });
-
-        console.log(this.comments);
     }
 
     public addComment(comments: ReviewCommentModal): void {
@@ -3628,183 +3597,70 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe();
     }
 
-    public onBlurDescription(action: string, ind?: number): void {
-        switch (action) {
-            case 'pickup': {
-                const description = this.loadPickupStopItems()
-                    .at(ind)
-                    .get('description').value;
-
-                if (description) {
-                    this.loadService
-                        .autocompleteLoadByDescription(description)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: () => {},
-                            error: () => {},
-                        });
-                }
-
-                break;
-            }
-            case 'delivery': {
-                const description = this.loadDeliveryStopItems()
-                    .at(ind)
-                    .get('description').value;
-
-                if (description) {
-                    this.loadService
-                        .autocompleteLoadByDescription(description)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: () => {},
-                            error: () => {},
-                        });
-                }
-
-                break;
-            }
-            case 'extra-stop': {
-                const description = this.loadExtraStopItems(ind)
-                    .at(ind)
-                    .get('description').value;
-
-                if (description) {
-                    this.loadService
-                        .autocompleteLoadByDescription(description)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: () => {},
-                            error: () => {},
-                        });
-                }
-
-                break;
-            }
-        }
-    }
-
-    updateTags() {
-        let tags = [];
-
-        this.documents.map((item) => {
-            if (item?.tagChanged && item?.fileId) {
-                var tagsData = {
-                    storageId: item.fileId,
-                    tagId: item.tagId?.length ? item.tagId[0] : null,
-                };
-                tags.push(tagsData);
-            }
-        });
-
-        if (tags.length) {
-            this.tagsService.updateTag({ tags: tags }).subscribe();
-        }
-    }
-
     // ********************** Load Stop Items **********************
-    // MODAL TABLE
-    public testControl: UntypedFormGroup = new UntypedFormGroup({
-        email: new UntypedFormControl(null),
-        password: new UntypedFormControl(null),
-        phone: new UntypedFormControl(null),
-    });
 
-    modalColumns: any[] = [];
-    modalViewData: any[] = [];
+    public isCreatedNewStopItemsRow = {
+        pickup: false,
+        delivery: false,
+        extraStops: [],
+    };
 
-    public createNewRowInStopItems(action: string, loadStopIndex?: number) {
-        // switch (action) {
-        //     case 'pickup': {
-        //         this.loadPickupStopItems().push(this.newLoadStopItems());
-        //         break;
-        //     }
-        //     case 'delivery': {
-        //         this.loadDeliveryStopItems().push(this.newLoadStopItems());
-        //         break;
-        //     }
-        //     case 'extra-stop': {
-        //         this.loadExtraStopItems(loadStopIndex).push(
-        //             this.newLoadStopItems()
-        //         );
-        //         break;
-        //     }
-        //     default: {
-        //         break;
-        //     }
-        // }
+    public pickupStopItems: StopItemsData[] = [];
+    public deliveryStopItems: StopItemsData[] = [];
+    public extraStopItems: StopItemsData[][] = [];
+
+    public createNewStopItemsRow(type: string, extraStopId?: number): void {
+        switch (type) {
+            case 'pickup':
+                this.isCreatedNewStopItemsRow.pickup = true;
+
+                setTimeout(() => {
+                    this.isCreatedNewStopItemsRow.pickup = false;
+                }, 400);
+
+                break;
+            case 'delivery':
+                this.isCreatedNewStopItemsRow.delivery = true;
+
+                setTimeout(() => {
+                    this.isCreatedNewStopItemsRow.delivery = false;
+                }, 400);
+
+                break;
+            case 'extra-stop':
+                this.isCreatedNewStopItemsRow.extraStops[extraStopId] = true;
+
+                setTimeout(() => {
+                    this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
+                        false;
+                }, 400);
+
+                break;
+            default:
+                break;
+        }
     }
 
-    showTableModal(isOpen: boolean, stopType: string) {
-        this.tableModalOpen = isOpen ? stopType : '';
+    public handleStopItemsDataValueEmit(
+        stopItemsDataValue: StopItemsData[],
+        type: string,
+        extraStopId?: number
+    ): void {
+        switch (type) {
+            case 'pickup':
+                this.pickupStopItems = stopItemsDataValue;
 
-        this.modalInitialization();
-    }
+                break;
+            case 'delivery':
+                this.deliveryStopItems = stopItemsDataValue;
 
-    public loadPickupStopItems(): UntypedFormArray {
-        return this.loadForm.get('pickupItems') as UntypedFormArray;
-    }
+                break;
+            case 'extra-stop':
+                this.extraStopItems[extraStopId] = stopItemsDataValue;
 
-    public loadDeliveryStopItems(): UntypedFormArray {
-        return this.loadForm.get('deliveryItems') as UntypedFormArray;
-    }
-
-    public loadExtraStopItems(loadStopIndex: number): UntypedFormArray {
-        return this.loadExtraStops()
-            .at(loadStopIndex)
-            .get('items') as UntypedFormArray;
-    }
-
-    // Table Load Filds
-    public newLoadStopItems(): UntypedFormGroup {
-        return this.formBuilder.group({
-            bolNumber: [null],
-            appointmentNumber: [null],
-            pickupNumber: [null],
-            poNumber: [null],
-            sealNumber: [null],
-            weight: [null],
-            length: [null],
-            height: [null],
-            temperature: [null],
-            description: [null, descriptionValidation],
-            code: [null],
-            quantity: [null],
-            units: [null],
-            secure: [null],
-            tarp: [null],
-            stackable: [null],
-            driverAssist: [null],
-            hazardousMaterialId: [null],
-        });
-    }
-
-    modalInitialization() {
-        this.modalColumns = [];
-        this.modalViewData = [];
-
-        this.modalColumns = getLoadModalColumnDefinition();
-
-        for (let i = 0; i < 3; i++) {
-            this.modalViewData.push({
-                tableDescription: {
-                    text: 'Jaffa Cakes',
-                    extraText: '',
-                },
-                tableQuantity: {
-                    text: 230,
-                    extraText: 'Boxes',
-                },
-                tableBolNo: {
-                    text: 1598550,
-                    extraText: '',
-                },
-                tableWeight: {
-                    text: '2,360',
-                    extraText: 'lbs',
-                },
-                tableAction: 'delete',
-            });
+                break;
+            default:
+                break;
         }
     }
 

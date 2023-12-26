@@ -416,6 +416,28 @@
             }
         }
 
+        &.scroll-x-axis {
+            overflow-x: scroll !important;
+            scrollbar-width: none !important; /* Firefox */
+
+            &::-webkit-scrollbar:horizontal {
+                width: 2px !important;
+                border-radius: 2px !important;
+                height: 8px !important;
+            }
+
+            &::-webkit-scrollbar-thumb:horizontal {
+                background: $bw-9 !important;
+                border: 2px solid $ta-light-grey-5 !important;
+                border-radius: 1px !important;
+            }
+
+            &::-webkit-scrollbar-track:horizontal {
+                margin-left: 185px !important;
+                background: $ta-light-grey-5 !important;
+            }
+        }
+
         .content-holder {
             &.innactive {
                 height: 0px !important;
@@ -436,34 +458,6 @@
 
             &.detailsPadding {
                 padding: 0px 4px !important;
-            }
-        }
-    }
-
-    .bottom-collapse-arrow {
-        position: absolute;
-        left: 50%;
-        top: 100%;
-        z-index: 99999;
-        cursor: pointer;
-        width: 18px;
-        height: 20px;
-        line-height: 18px;
-        svg {
-            transform: rotate(180deg);
-            transition: all 0.3s ease-in-out;
-            path {
-                fill: #919191;
-            }
-        }
-
-        &.rotate {
-            svg {
-                transform: rotate(0deg);
-                transition: all 0.3s ease-in-out;
-                path {
-                    fill: #aaaaaa;
-                }
             }
         }
     }
