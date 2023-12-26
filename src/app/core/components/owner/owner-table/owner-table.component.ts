@@ -318,7 +318,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 // Add Owner
 
-                if (res.animation === ConstantStringTableComponentsEnum.ADD) {
+                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
                     if (
                         this.selectedTab ===
                         ConstantStringTableComponentsEnum.INACTIVE
@@ -349,7 +349,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // Update Owner
                 else if (
-                    res.animation ===
+                    res?.animation ===
                         ConstantStringTableComponentsEnum.UPDATE &&
                     this.selectedTab === res.tab
                 ) {
@@ -377,7 +377,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // Delete Owner
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.DELETE
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
                 ) {
                     if (this.selectedTab === res.tab) {
                         let ownerIndex: number;

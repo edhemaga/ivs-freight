@@ -1036,6 +1036,45 @@
                                             </div>
                                         </ng-container>
                                     </ng-container>
+
+                                    <!-- Owner Page Body -->
+                                    <ng-container *ngIf="page === 'Owner'">
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.title !==
+                                                'Bank Account'
+                                            "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.title ===
+                                                'Bank Account'
+                                            "
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/common/ic_password.svg'
+                                                "
+                                            ></svg-icon>
+                                            <span
+                                                class="masked-number"
+                                                [innerHTML]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    ) | maskNumber : 'masked'
+                                                "
+                                            ></span>
+                                        </ng-container>
+                                    </ng-container>
                                 </div>
                             </div>
                         </ng-container>

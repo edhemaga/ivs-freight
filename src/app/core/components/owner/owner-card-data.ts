@@ -29,23 +29,20 @@ export class DisplayOwnerConfiguration {
     // Data for active back
     static displayRowsBackActive: CardRows[] = [
         {
-            title: 'Fuel Stop',
-            endpoint: 'brokerContacts.department.name',
+            title: 'Type',
+            endpoint: 'textType',
         },
         {
-            title: 'Location',
-            endpoint: 'tableRaiting.likeCount',
-            secondEndpoint: 'tableRaiting.dislikeCount',
-            hasLiked: 'hasLiked',
-            hasDislike: 'hasDislike',
+            title: 'Bank Name',
+            endpoint: 'textBankName',
         },
         {
-            title: 'Driver',
-            endpoint: 'referenceNumber',
+            title: 'Routing',
+            endpoint: 'routingNumber',
         },
         {
-            title: 'Fuel Card No.',
-            endpoint: 'revenue',
+            title: 'Bank Account',
+            endpoint: 'accountNumber',
         },
     ];
 
@@ -80,20 +77,20 @@ export class DisplayOwnerConfiguration {
     // Data for inactive back
     static displayRowsBackInactive: CardRows[] = [
         {
-            title: 'Shipping Hours',
-            endpoint: 'no-endpoint',
+            title: 'Type',
+            endpoint: 'textType',
         },
         {
-            title: 'Receiving Hours',
-            endpoint: 'no-endpoint',
+            title: 'Bank Name',
+            endpoint: 'textBankName',
         },
         {
-            title: 'Avg. Pickup Time',
-            endpoint: 'no-endpoint',
+            title: 'Routing',
+            endpoint: 'routingNumber',
         },
         {
-            title: 'Avg. Delivery Time',
-            endpoint: 'no-endpoint',
+            title: 'Bank Account',
+            endpoint: 'accountNumber',
         },
     ];
 }

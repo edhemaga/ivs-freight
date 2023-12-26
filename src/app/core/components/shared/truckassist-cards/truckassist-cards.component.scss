@@ -353,6 +353,13 @@
                                 }
                             }
                         }
+
+                        .masked-number {
+                            .masked {
+                                color: $bw6-2;
+                                margin-left: 4px;
+                            }
+                        }
                     }
                 }
             }

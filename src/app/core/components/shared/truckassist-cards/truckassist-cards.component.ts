@@ -10,6 +10,7 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
+    ViewEncapsulation,
 } from '@angular/core';
 
 // Models
@@ -39,6 +40,7 @@ import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { MaskNumberPipe } from './pipes/maskNumber.pipe';
 
 // Helpers
 import { CardArrayHelper } from './utils/card-array-helper';
@@ -52,6 +54,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
     providers: [formatCurrency, formatDatePipe, TaThousandSeparatorPipe],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         //modules
         CommonModule,
@@ -66,6 +69,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
         //pipes
         formatDatePipe,
+        MaskNumberPipe,
     ],
 })
 export class TruckassistCardsComponent {
@@ -127,6 +131,7 @@ export class TruckassistCardsComponent {
 
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.viewData);
         if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
             if (!changes.firstChange) {
                 setTimeout(() => {
