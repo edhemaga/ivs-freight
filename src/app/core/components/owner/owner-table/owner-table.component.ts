@@ -554,6 +554,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapOwnerData(data);
             });
+
             // Set data for cards based on tab active
             this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),

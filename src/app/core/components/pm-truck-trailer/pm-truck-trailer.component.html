@@ -25,4 +25,19 @@
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </ng-container>
+
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-truckassist-cards
+                (bodyActions)="onTableBodyActions($event)"
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [displayRowsFront]="sendDataToCardsFront"
+                [displayRowsBack]="sendDataToCardsBack"
+                [page]="page"
+                [selectedTab]="selectedTab"
+            ></app-truckassist-cards>
+        </div>
+    </ng-container>
 </div>

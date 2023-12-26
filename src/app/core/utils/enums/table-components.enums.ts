@@ -234,6 +234,17 @@ export enum ConstantStringTableComponentsEnum {
     NAME = 'name',
     SERVICE_TYPES = 'serviceTypes',
 
+    // PM
+    PM_TABLE_VIEW = 'PM-table-view',
+    PM_TRUCK = 'PM_TRUCK',
+    PM_TRUCKS = 'pm_trucks',
+    PM_TRAILERS = 'pm_trailers',
+    PM_TRAILER = 'PM_TRAILER',
+    OPEN_GENERAL_PM = 'open-general-pm',
+    NEW = 'new',
+    GENERIC_PM = 'generic-pm',
+    UNIT_PM = 'unit-pm',
+
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
     TRAILER_TYPE_FILTER = 'trailerTypeFilter',

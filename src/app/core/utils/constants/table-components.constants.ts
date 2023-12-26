@@ -793,6 +793,24 @@ export class TableRepair {
     ];
 }
 
+export class TablePM {
+    static ACTIONS_DROPDOWN: DropdownItem[] = [
+        {
+            title: 'Edit',
+            name: 'edit',
+            class: 'regular-text',
+            contentType: 'edit',
+        },
+        {
+            title: 'Delete',
+            name: 'delete',
+            text: 'Are you sure you want to delete pm(s)',
+            class: 'delete-text',
+            contentType: 'delete',
+        },
+    ];
+}
+
 // Fuel page
 export class TableFuel {
     static SORT_TYPES: SortTypes[] = [

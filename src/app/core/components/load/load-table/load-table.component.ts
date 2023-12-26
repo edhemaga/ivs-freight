@@ -256,25 +256,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 // On Add Driver Active
 
                 if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.ACTIVE
                 ) {
                 }
                 // On Update Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.UPDATE
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
                 ) {
                 }
                 // On Update Driver Status
                 else if (
-                    res.animation ===
+                    res?.animation ===
                     ConstantStringTableComponentsEnum.UPDATE_STATUS
                 ) {
                 }
                 // On Delete Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.DELETE
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
                 ) {
                 }
             });
