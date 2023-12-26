@@ -42,7 +42,6 @@ export class CardArrayHelper {
         switch (ObjKey) {
             case ConstantStringTableComponentsEnum.AVAILABLE_CREDIT:
             case ConstantStringTableComponentsEnum.REVENUE:
-                return this.formatCurrency.transform(value);
             case ConstantStringTableComponentsEnum.HIRED:
                 return this.formatDate.transform(value);
             default:

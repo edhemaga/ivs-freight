@@ -1,8 +1,25 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { GetOwnerListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
+// Modules
+
+// Components
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
+
+// Models
+import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
+import {
+    tableSearch,
+    closeAnimationAction,
+} from '../../../utils/methods.globals';
+import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
+import { GridColumn, ToolbarActions } from '../../shared/model/cardTableData';
+
+// Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { OwnerTService } from '../state/owner.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+// Store
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
 import { OwnerActiveState } from '../state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
@@ -10,14 +27,19 @@ import {
     OwnerInactiveState,
     OwnerInactiveStore,
 } from '../state/owner-inactive-state/owner-inactive.store';
-import { OwnerTService } from '../state/owner.service';
+
+// Pipes
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { TableOwner } from 'src/app/core/utils/constants/table-components.constants';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
-    tableSearch,
-    closeAnimationAction,
-} from '../../../utils/methods.globals';
-import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
+    MapOwnerData,
+    OwnerBackFilterFilter,
+    OwnerBodyResponse,
+} from '../owner.modal';
+import { DisplayOwnerConfiguration } from '../owner-card-data';
+import { CardRows } from '../../shared/model/cardData';
 
 @Component({
     selector: 'app-owner-table',
@@ -28,33 +50,35 @@ import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/o
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
-    resizeObserver: ResizeObserver;
-    ownerActive: OwnerActiveState[] = [];
-    ownerInactive: OwnerInactiveState[] = [];
-    inactiveTabClicked: boolean = false;
-    backFilterQuery = {
-        active: 1,
-        companyOwnerId: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        truckTypeIds: undefined,
-        trailerTypeIds: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    private viewData: any[] = [];
+    public columns: GridColumn[] = [];
+    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    private resizeObserver: ResizeObserver;
+    private ownerActive: OwnerActiveState[] = [];
+    private ownerInactive: OwnerInactiveState[] = [];
+    private inactiveTabClicked: boolean = false;
+    private backFilterQuery = TableOwner.BACKFILTER_QUERY;
 
+    //Data to display from model Broker
+    public displayRowsFront: CardRows[] =
+        DisplayOwnerConfiguration.displayRowsFrontActive;
+    public displayRowsBack: CardRows[] =
+        DisplayOwnerConfiguration.displayRowsBackActive;
+
+    //Data to display from model Shipper
+    public displayRowsFrontInactive: CardRows[] =
+        DisplayOwnerConfiguration.displayRowsFrontInactive;
+    public displayRowsBackInactive: CardRows[] =
+        DisplayOwnerConfiguration.displayRowsBackInactive;
+    public cardTitle: string = DisplayOwnerConfiguration.cardTitle;
+    public page: string = DisplayOwnerConfiguration.page;
+    public rows: number = DisplayOwnerConfiguration.rows;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -64,10 +88,35 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phonePipe: formatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore
     ) {}
+
+    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendOwnerData();
 
-        // Reset Columns
+        this.resetColumns();
+
+        this.resize();
+
+        this.toggleColumns();
+
+        this.search();
+
+        this.onSetTolbarFilter();
+
+        this.deleteSelectedRows();
+
+        this.ownerActions();
+    }
+
+    // ---------------------------- ngAfterViewInit ------------------------------
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    // Reset Columns
+    private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
@@ -75,104 +124,135 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sendOwnerData();
                 }
             });
+    }
 
-        // Resize
+    // Resize
+    private resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
+                    this.columns = this.columns.map((col) => {
                         if (
-                            c.title ===
+                            col.title ===
                             response.columns[response.event.index].title
                         ) {
-                            c.width = response.event.width;
+                            col.width = response.event.width;
                         }
 
-                        return c;
+                        return col;
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    // Toggle Columns
+    private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
+                    this.columns = this.columns.map((col) => {
+                        if (col.field === response.column.field) {
+                            col.hidden = response.column.hidden;
                         }
 
-                        return c;
+                        return col;
                     });
                 }
             });
+    }
 
-        // Search
+    // Search
+    private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab === 'active' ? 1 : 0;
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                            ? 1
+                            : 0;
                     this.backFilterQuery.pageIndex = 1;
 
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (searchEvent.action === 'api') {
+                        if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.API
+                        ) {
                             this.ownerBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
+                        } else if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.STORE
+                        ) {
                             this.sendOwnerData();
                         }
                     }
                 }
             });
+    }
 
-        // On Set Tollbar Filter
+    // On Set Tollbar Filter
+    private onSetTolbarFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab === 'active' ? 1 : 0;
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                            ? 1
+                            : 0;
                     this.backFilterQuery.pageIndex = 1;
                     // TruckTypeFilter
                     if (
-                        res?.filterType === 'truckTypeFilter' ||
-                        res?.type === 'truckTypeFilter'
+                        res?.filterType ===
+                            ConstantStringTableComponentsEnum.TRUCK_TYPE_FILTER ||
+                        res?.type ===
+                            ConstantStringTableComponentsEnum.TRUCK_TYPE_FILTER
                     ) {
                         this.backFilterQuery.truckTypeIds =
-                            res?.action === 'Set'
+                            res?.action ===
+                            ConstantStringTableComponentsEnum.SET
                                 ? res?.queryParams
                                 : undefined;
                     }
                     // TrailerTypeFilter
                     else if (
-                        res?.filterType === 'trailerTypeFilter' ||
-                        res?.type === 'trailerTypeFilter'
+                        res?.filterType ===
+                            ConstantStringTableComponentsEnum.TRAILER_TYPE_FILTER ||
+                        res?.type ===
+                            ConstantStringTableComponentsEnum.TRAILER_TYPE_FILTER
                     ) {
                         this.backFilterQuery.trailerTypeIds =
-                            res?.action === 'Set'
+                            res?.action ===
+                            ConstantStringTableComponentsEnum.SET
                                 ? res?.queryParams
                                 : undefined;
                     }
                     // LocationFilter
                     else if (
-                        res?.filterType === 'locationFilter' ||
-                        res?.type === 'locationFilter'
+                        res?.filterType ===
+                            ConstantStringTableComponentsEnum.LOCATION_FILTER ||
+                        res?.type ===
+                            ConstantStringTableComponentsEnum.LOCATION_FILTER
                     ) {
                         this.backFilterQuery.lat =
-                            res?.action === 'Set'
+                            res?.action ===
+                            ConstantStringTableComponentsEnum.SET
                                 ? res.queryParams.latValue
                                 : undefined;
                         this.backFilterQuery.long =
-                            res?.action === 'Set'
+                            res?.action ===
+                            ConstantStringTableComponentsEnum.SET
                                 ? res?.queryParams.longValue
                                 : undefined;
                         this.backFilterQuery.distance =
-                            res?.action === 'Set'
+                            res?.action ===
+                            ConstantStringTableComponentsEnum.SET
                                 ? res?.queryParams.rangeValue
                                 : undefined;
                     }
@@ -190,21 +270,23 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             });
+    }
 
-        // Delete Selected Rows
+    // Delete Selected Rows
+    private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length) {
                     this.ownerService
                         .deleteOwnerList(response, this.selectedTab)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe(() => {
-                            this.viewData = this.viewData.map((owner: any) => {
-                                response.map((r: any) => {
-                                    if (owner.id === r.id) {
+                            this.viewData = this.viewData.map((owner) => {
+                                response.map((row) => {
+                                    if (owner.id === row.id) {
                                         owner.actionAnimation =
-                                            'delete-multiple';
+                                            ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
                                     }
                                 });
 
@@ -227,19 +309,26 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         });
                 }
             });
+    }
 
-        // Owner Actions
+    // Owner Actions
+    private ownerActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 // Add Owner
-                if (res.animation === 'add') {
-                    if (this.selectedTab === 'inactive') {
+
+                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
+                    if (
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.INACTIVE
+                    ) {
                         this.viewData.push(this.mapOwnerData(res.data));
 
-                        this.viewData = this.viewData.map((owner: any) => {
+                        this.viewData = this.viewData.map((owner) => {
                             if (owner.id === res.id) {
-                                owner.actionAnimation = 'add';
+                                owner.actionAnimation =
+                                    ConstantStringTableComponentsEnum.ADD;
                             }
 
                             return owner;
@@ -257,17 +346,20 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
                 }
+
                 // Update Owner
                 else if (
-                    res.animation === 'update' &&
+                    res?.animation ===
+                        ConstantStringTableComponentsEnum.UPDATE &&
                     this.selectedTab === res.tab
                 ) {
                     const updatedOwner = this.mapOwnerData(res.data);
 
-                    this.viewData = this.viewData.map((owner: any) => {
+                    this.viewData = this.viewData.map((owner) => {
                         if (owner.id === res.id) {
                             owner = updatedOwner;
-                            owner.actionAnimation = 'update';
+                            owner.actionAnimation =
+                                ConstantStringTableComponentsEnum.UPDATE;
                         }
 
                         return owner;
@@ -282,15 +374,19 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 1000);
                 }
+
                 // Delete Owner
-                else if (res.animation === 'delete') {
+                else if (
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
+                ) {
                     if (this.selectedTab === res.tab) {
                         let ownerIndex: number;
 
                         this.viewData = this.viewData.map(
                             (owner: any, index: number) => {
                                 if (owner.id === res.id) {
-                                    owner.actionAnimation = 'delete';
+                                    owner.actionAnimation =
+                                        ConstantStringTableComponentsEnum.DELETE;
                                     ownerIndex = index;
                                 }
 
@@ -314,13 +410,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
-    observTableContainer() {
+    private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -329,67 +419,99 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(
+                ConstantStringTableComponentsEnum.TABLE_CONTAINER
+            )
+        );
     }
 
-    initTableOptions(): void {
+    private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
                 showLocationFilter: true,
                 showTruckTypeFilter: true,
                 showTrailerTypeFilter: true,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ConstantStringTableComponentsEnum.LIST,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.LIST,
+                    },
+                    {
+                        name: ConstantStringTableComponentsEnum.CARD,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.CARD,
+                    },
                 ],
             },
         };
     }
 
-    sendOwnerData() {
+    private sendOwnerData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(`Owner-table-view`)
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.OWNER_TABLE_VIEW
+            )
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
 
-        const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));
+        const ownerCount = JSON.parse(
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.OWNER_TABLE_COUNTE
+            )
+        );
 
         const ownerActiveData =
-            this.selectedTab === 'active' ? this.getTabData('active') : [];
+            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+                : [];
 
         const ownerInactiveData =
-            this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
+                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+                : [];
 
         this.tableData = [
             {
-                title: 'Active',
-                field: 'active',
+                title: ConstantStringTableComponentsEnum.ACTIVE_2,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: ownerCount.active,
                 data: ownerActiveData,
                 extended: false,
-                gridNameTitle: 'Owner',
-                stateName: 'owners',
-                tableConfiguration: 'OWNER',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('OWNER'),
+                gridNameTitle: ConstantStringTableComponentsEnum.OWNER,
+                stateName: ConstantStringTableComponentsEnum.OWNERS,
+                tableConfiguration: ConstantStringTableComponentsEnum.OWNER_2,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.OWNER_2
+                ),
             },
             {
-                title: 'Inactive',
-                field: 'inactive',
+                title: ConstantStringTableComponentsEnum.INACTIVE_2,
+                field: ConstantStringTableComponentsEnum.INACTIVE,
                 length: ownerCount.inactive,
                 data: ownerInactiveData,
                 extended: false,
-                gridNameTitle: 'Owner',
-                stateName: 'owners',
-                tableConfiguration: 'OWNER',
-                isActive: this.selectedTab === 'inactive',
-                gridColumns: this.getGridColumns('OWNER'),
+                gridNameTitle: ConstantStringTableComponentsEnum.OWNER,
+                stateName: ConstantStringTableComponentsEnum.OWNERS,
+                tableConfiguration: ConstantStringTableComponentsEnum.OWNER_2,
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.OWNER_2
+                ),
             },
         ];
 
@@ -398,8 +520,12 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setOwnerData(td);
     }
 
-    updateDataCount() {
-        const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));
+    private updateDataCount(): void {
+        const ownerCount = JSON.parse(
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.OWNER_TABLE_COUNTE
+            )
+        );
 
         const updatedTableData = [...this.tableData];
 
@@ -409,7 +535,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableData = [...updatedTableData];
     }
 
-    getGridColumns(configType: string) {
+    private getGridColumns(configType: string): void {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -419,128 +545,60 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : getOwnerColumnDefinition();
     }
 
-    setOwnerData(td: any) {
+    private setOwnerData(td: DataForCardsAndTables) {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
             this.viewData = td.data;
 
-            this.viewData = this.viewData.map((data: any) => {
+            this.viewData = this.viewData.map((data) => {
                 return this.mapOwnerData(data);
             });
+            // Set data for cards based on tab active
+            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                ? ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack))
+                : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
+                  (this.sendDataToCardsBack = this.displayRowsBackInactive));
         } else {
             this.viewData = [];
         }
     }
 
-    mapOwnerData(data: any) {
+    private mapOwnerData(data): MapOwnerData {
         return {
             ...data,
             isSelected: false,
-            textType: data?.ownerType?.name ? data.ownerType.name : '',
-            textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
-            textAddress: data?.address ? data.address : '',
-            textBankName: data?.bankName ? data.bankName : '',
+            textType: data?.ownerType?.name
+                ? data.ownerType.name
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            textPhone: data?.phone
+                ? this.phonePipe.transform(data.phone)
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            textAddress: data?.address
+                ? data.address
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            textBankName: data?.bankName
+                ? data.bankName
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownOwnerContent(data),
+                content: this.getDropdownOwnerContent(),
             },
         };
     }
-    getDropdownOwnerContent(data: any) {
-        return [
-            {
-                title: 'Edit',
-                name: 'edit-owner',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: 'regular',
-            },
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Add Truck',
-                name: 'add-truck',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Add Trailer',
-                name: 'add-trailer',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
 
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Delete',
-                name: 'delete-owner',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'delete',
-            },
-        ];
+    private getDropdownOwnerContent() {
+        return TableOwner.DROPDOWN_OWNER_CONTENT;
     }
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
+
+    private getTabData(dataType: string) {
+        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
             this.ownerActive = this.ownerActiveQuery.getAll();
 
             return this.ownerActive?.length ? this.ownerActive : [];
-        } else if (dataType === 'inactive') {
+        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.ownerInactive = this.ownerInactiveQuery.getAll();
@@ -550,25 +608,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Owner Back Filter
-    ownerBackFilter(
-        filter: {
-            active: number;
-            companyOwnerId: number | undefined;
-            long: number | undefined;
-            lat: number | undefined;
-            distance: number | undefined;
-            truckTypeIds: Array<number> | undefined;
-            trailerTypeIds: Array<number> | undefined;
-            pageIndex: number;
-            pageSize: number;
-            companyId: number | undefined;
-            sort: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
-        },
+    private ownerBackFilter(
+        filter: OwnerBackFilterFilter,
         isShowMore?: boolean
-    ) {
+    ): void {
         this.ownerService
             .getOwner(
                 filter.active,
@@ -591,13 +634,13 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (!isShowMore) {
                     this.viewData = owners.pagination.data;
 
-                    this.viewData = this.viewData.map((data: any) => {
+                    this.viewData = this.viewData.map((data) => {
                         return this.mapOwnerData(data);
                     });
                 } else {
                     let newData = [...this.viewData];
 
-                    owners.pagination.data.map((data: any) => {
+                    owners.pagination.data.map((data) => {
                         newData.push(this.mapOwnerData(data));
                     });
 
@@ -606,16 +649,27 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    onToolBarAction(event: any) {
-        if (event.action === 'open-modal') {
-            this.modalService.openModal(OwnerModalComponent, { size: 'small' });
-        } else if (event.action === 'tab-selected') {
+    public onToolBarAction(event: ToolbarActions): void {
+        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+            this.modalService.openModal(OwnerModalComponent, {
+                size: ConstantStringTableComponentsEnum.SMALL,
+            });
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
+        ) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+            this.backFilterQuery.active =
+                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                    ? 1
+                    : 0;
 
-            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+            if (
+                this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE &&
+                !this.inactiveTabClicked
+            ) {
                 this.ownerService
                     .getOwner(
                         0,
@@ -639,15 +693,24 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendOwnerData();
             }
-        } else if (event.action === 'view-mode') {
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
+        ) {
             this.activeViewMode = event.mode;
         }
     }
 
-    onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
+    public onTableHeadActions(event: {
+        action: string;
+        direction: string;
+    }): void {
+        if (event.action === ConstantStringTableComponentsEnum.SORT) {
             if (event.direction) {
-                this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+                this.backFilterQuery.active =
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? 1
+                        : 0;
                 this.backFilterQuery.pageIndex = 1;
                 this.backFilterQuery.sort = event.direction;
 
@@ -658,23 +721,30 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    onTableBodyActions(event: any) {
-        if (event.type === 'show-more') {
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+    public onTableBodyActions(event: OwnerBodyResponse): void {
+        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
+            this.backFilterQuery.active =
+                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+                    ? 1
+                    : 0;
             this.backFilterQuery.pageIndex++;
 
             this.ownerBackFilter(this.backFilterQuery, true);
-        } else if (event.type === 'edit-owner') {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.EDIT_OWNER
+        ) {
             this.modalService.openModal(
                 OwnerModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,
-                    type: 'edit',
+                    type: ConstantStringTableComponentsEnum.EDIT,
                     selectedTab: this.selectedTab,
                 }
             );
-        } else if (event.type === 'delete-owner') {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.DELETE_OWNER
+        ) {
             this.ownerService
                 .deleteOwnerById(event.id, this.selectedTab)
                 .pipe(takeUntil(this.destroy$))
@@ -687,7 +757,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
+        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
     }

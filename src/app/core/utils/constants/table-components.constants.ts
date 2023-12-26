@@ -2,18 +2,27 @@ import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
 } from '../../components/repair/repair.modal';
+
 import { DropdownItem } from '../../components/shared/model/cardTableData';
+
 import {
     FilterOptionBroker,
     FilterOptionshipper,
 } from '../../components/shared/model/table-components/customer.modals';
+
 import {
     FilterOptionApplicant,
     FilterOptionDriver,
 } from '../../components/shared/model/table-components/driver-modal';
+
 import { FilterOptionsLoad } from '../../components/shared/model/table-components/load-modal';
+
 import { backFilterQueryInterface } from '../../components/trailer/trailer.modal';
+
 import { FilterOptions } from '../../components/truck/truck.modal';
+
+import { OwnerBackFilterQuery } from '../../components/owner/owner.modal';
+import { SortTypes } from '../../model/fuel';
 
 // Load page
 export class TableDropdownLoadComponentConstants {
@@ -774,6 +783,143 @@ export class TableRepair {
         {
             title: 'Delete',
             name: 'delete-repair',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'delete',
+        },
+    ];
+}
+
+// Fuel page
+export class TableFuel {
+    static SORT_TYPES: SortTypes[] = [
+        { name: 'Business Name', id: 1, sortName: 'name' },
+        { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+        { name: 'Favorites', id: 8, sortName: 'favorites' },
+        { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
+        { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
+        { name: 'Purchase', id: 6, sortName: 'purchase' },
+        { name: 'Total Cost', id: 7, sortName: 'cost' },
+    ];
+
+    static FUEL_PRICE_COLORS: string[] = [
+        '#4CAF4F',
+        '#8AC34A',
+        '#FEC107',
+        '#FF9800',
+        '#EF5350',
+        '#919191',
+    ];
+
+    static FUEL_PRICE_HOVER_COLORS: string[] = [
+        '#43A047',
+        '#7CB242',
+        '#FFB300',
+        '#FB8C00',
+        '#F34235',
+        '#6C6C6C',
+    ];
+}
+
+// Owner page
+export class TableOwner {
+    static BACKFILTER_QUERY: OwnerBackFilterQuery = {
+        active: 1,
+        companyOwnerId: undefined,
+        long: undefined,
+        lat: undefined,
+        distance: undefined,
+        truckTypeIds: undefined,
+        trailerTypeIds: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
+    static DROPDOWN_OWNER_CONTENT: DropdownItem[] = [
+        {
+            title: 'Edit',
+            name: 'edit-owner',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            hasBorder: true,
+            svgClass: 'regular',
+        },
+        {
+            title: 'View Details',
+            name: 'view-details',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Add Truck',
+            name: 'add-truck',
+            svgUrl: '',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Add Trailer',
+            name: 'add-trailer',
+            svgUrl: '',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'Share',
+            name: 'share',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Print',
+            name: 'print',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'Delete',
+            name: 'delete-owner',
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
             svgStyle: {
                 width: 18,

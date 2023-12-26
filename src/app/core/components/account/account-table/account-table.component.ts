@@ -167,8 +167,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map(
                         (account: CompanyAccountResponse) => {
                             if (account.id === res.id) {
-                                account.actionAnimation =
-                                    ComponentsTableEnum.ADD;
+                                // account.actionAnimation =
+                                //     ComponentsTableEnum.ADD;
                             }
 
                             return account;
@@ -195,8 +195,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         (account: CompanyAccountResponse) => {
                             if (account.id === res.id) {
                                 account = updatedAccount;
-                                account.actionAnimation =
-                                    ComponentsTableEnum.UPDATE;
+                                // account.actionAnimation =
+                                //     ComponentsTableEnum.UPDATE;
                             }
 
                             return account;
@@ -220,8 +220,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map(
                         (account: CompanyAccountResponse, index: number) => {
                             if (account.id === res.id) {
-                                account.actionAnimation =
-                                    ComponentsTableEnum.DELETE;
+                                // account.actionAnimation =
+                                //     ComponentsTableEnum.DELETE;
                                 accountIndex = index;
                             }
 
@@ -257,8 +257,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 (account: CompanyAccountResponse) => {
                                     response.map((res) => {
                                         if (account.id === res.id) {
-                                            account.actionAnimation =
-                                                ComponentsTableEnum.DELETE_MULTIPLE;
+                                            // account.actionAnimation =
+                                            //     ComponentsTableEnum.DELETE_MULTIPLE;
                                         }
                                     });
 
@@ -675,28 +675,26 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private updateAcountLable(event: TableBodyActionsAccount): void {
-        const companyAcountData = this.viewData.find(
-            (e: CreateCompanyContactCommand) => e.id === event.id
-        );
-
-        const newdata: UpdateCompanyAccountCommand = {
-            id: companyAcountData.id ?? null,
-            name: companyAcountData.name ?? null,
-            username: companyAcountData.username ?? null,
-            password: companyAcountData.password ?? null,
-            url: companyAcountData.url ?? null,
-            companyAccountLabelId: event.data ? event.data.id : null,
-            note: companyAcountData.note ?? null,
-        };
-
-        this.accountService
-            .updateCompanyAccount(
-                newdata,
-                companyAcountData.colorRes,
-                companyAcountData.colorLabels
-            )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
+        // const companyAcountData = this.viewData.find(
+        //     (e: CreateCompanyContactCommand) => e.id === event.id
+        // );
+        // const newdata: UpdateCompanyAccountCommand = {
+        //     id: companyAcountData.id ?? null,
+        //     name: companyAcountData.name ?? null,
+        //     username: companyAcountData.username ?? null,
+        //     password: companyAcountData.password ?? null,
+        //     url: companyAcountData.url ?? null,
+        //     companyAccountLabelId: event.data ? event.data.id : null,
+        //     note: companyAcountData.note ?? null,
+        // };
+        // this.accountService
+        //     .updateCompanyAccount(
+        //         newdata,
+        //         companyAcountData.colorRes,
+        //         companyAcountData.colorLabels
+        //     )
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe();
     }
 
     private saveAcountLabel(data: CompanyAccountLabelResponse): void {
