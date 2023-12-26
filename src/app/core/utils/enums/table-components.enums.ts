@@ -232,6 +232,7 @@ export enum ConstantStringTableComponentsEnum {
     TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
     NAME = 'name',
+    SERVICE_TYPES = 'serviceTypes',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',

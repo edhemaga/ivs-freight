@@ -8,24 +8,22 @@
     ></app-truckassist-table-toolbar>
 
     <ng-container *ngIf="activeViewMode === 'List'">
-        <div>
-            <app-truckassist-table-head
-                [options]="tableOptions"
-                [viewData]="viewData"
-                [columns]="columns"
-                [tableData]="tableData"
-                (headActions)="onTableHeadActions($event)"
-            ></app-truckassist-table-head>
+        <app-truckassist-table-head
+            [options]="tableOptions"
+            [viewData]="viewData"
+            [columns]="columns"
+            [tableData]="tableData"
+            (headActions)="onTableHeadActions($event)"
+        ></app-truckassist-table-head>
 
-            <app-truckassist-table-body
-                [viewData]="viewData"
-                [columns]="columns"
-                [options]="tableOptions"
-                [selectedTab]="selectedTab"
-                (bodyActions)="onTableBodyActions($event)"
-                [tableData]="tableData"
-            ></app-truckassist-table-body>
-        </div>
+        <app-truckassist-table-body
+            [viewData]="viewData"
+            [columns]="columns"
+            [options]="tableOptions"
+            [selectedTab]="selectedTab"
+            (bodyActions)="onTableBodyActions($event)"
+            [tableData]="tableData"
+        ></app-truckassist-table-body>
     </ng-container>
     <ng-container *ngIf="activeViewMode === 'Card'">
         <app-truckassist-cards

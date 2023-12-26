@@ -33,7 +33,11 @@ import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { TableOwner } from 'src/app/core/utils/constants/table-components.constants';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
-import { MapOwnerData, OwnerBodyResponse } from '../owner.modal';
+import {
+    MapOwnerData,
+    OwnerBackFilterFilter,
+    OwnerBodyResponse,
+} from '../owner.modal';
 import { DisplayOwnerConfiguration } from '../owner-card-data';
 import { CardRows } from '../../shared/model/cardData';
 
@@ -605,24 +609,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Owner Back Filter
     private ownerBackFilter(
-        filter: {
-            active: number;
-            companyOwnerId: number | undefined;
-            long: number | undefined;
-            lat: number | undefined;
-            distance: number | undefined;
-            truckTypeIds: Array<number> | undefined;
-            trailerTypeIds: Array<number> | undefined;
-            pageIndex: number;
-            pageSize: number;
-            companyId: number | undefined;
-            sort: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
-        },
+        filter: OwnerBackFilterFilter,
         isShowMore?: boolean
-    ) {
+    ): void {
         this.ownerService
             .getOwner(
                 filter.active,

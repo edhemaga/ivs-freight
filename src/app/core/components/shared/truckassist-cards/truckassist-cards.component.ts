@@ -304,7 +304,7 @@ export class TruckassistCardsComponent {
 
     //Remove quotes from string to convert into endpoint
     public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
-        if (ObjKey == 'serviceTypes') {
+        if (ObjKey === ConstantStringTableComponentsEnum.SERVICE_TYPES) {
             CardArrayHelper.getValueByStringPath(obj, ObjKey);
         }
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
@@ -314,7 +314,7 @@ export class TruckassistCardsComponent {
     public onFavorite(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,
-            type: 'favorite',
+            type: ConstantStringTableComponentsEnum.FAVORITE,
         });
     }
 

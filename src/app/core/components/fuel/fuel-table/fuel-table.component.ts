@@ -85,16 +85,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.fuelActions();
 
+        this.sorting();
+
         // Map
         this.sortTypes = TableFuel.SORT_TYPES;
 
         this.activeSortType = this.sortTypes[0];
-
-        this.sortBy = this.sortDirection
-            ? this.activeSortType.sortName +
-              (this.sortDirection[0]?.toUpperCase() +
-                  this.sortDirection?.substr(1).toLowerCase())
-            : '';
     }
 
     //-------------------------------NG AFTER INIT-------------------------------
@@ -102,6 +98,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    private sorting(): void {
+        this.sortBy = this.sortDirection
+            ? this.activeSortType.sortName +
+              (this.sortDirection[0]?.toUpperCase() +
+                  this.sortDirection?.substr(1).toLowerCase())
+            : '';
     }
 
     // Reset Columns

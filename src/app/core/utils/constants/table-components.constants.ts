@@ -1,4 +1,3 @@
-import { SortTypes } from '../../components/fuel/driver.modal';
 import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
@@ -23,6 +22,7 @@ import { backFilterQueryInterface } from '../../components/trailer/trailer.modal
 import { FilterOptions } from '../../components/truck/truck.modal';
 
 import { OwnerBackFilterQuery } from '../../components/owner/owner.modal';
+import { SortTypes } from '../../model/fuel';
 
 // Load page
 export class TableDropdownLoadComponentConstants {
@@ -843,7 +843,7 @@ export class TableOwner {
         searchThree: undefined,
     };
 
-    static DROPDOWN_OWNER_CONTENT = [
+    static DROPDOWN_OWNER_CONTENT: DropdownItem[] = [
         {
             title: 'Edit',
             name: 'edit-owner',
