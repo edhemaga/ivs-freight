@@ -713,6 +713,49 @@
                                             }}
                                         </ng-container>
                                     </ng-container>
+
+                                    <!-- Account page body -->
+                                    <ng-container *ngIf="page === 'Account'">
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title !== 'Label' &&
+                                                rowsFront.title !== 'Password'
+                                            "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title === 'Password'
+                                            "
+                                        >
+                                            <div
+                                                appTextToggle="{{
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                }}"
+                                            ></div>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="rowsFront.title === 'Label'"
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+                                    </ng-container>
                                 </div>
                             </div>
                         </ng-container>
