@@ -1,13 +1,13 @@
 import { CardRows } from '../shared/model/cardData';
 export class DisplayPMConfiguration {
-    static rows: number = 4;
+    static ROWS: number = 4;
 
-    static page: string = 'PM';
+    static PAGE: string = 'PM';
 
-    static cardTitle: string = 'textUnit';
+    static CARD_TITLE: string = 'textUnit';
 
     // Data for active front
-    static displayRowsFrontActive: CardRows[] = [
+    static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
         {
             title: 'Oil & Filter',
             endpoint: 'oilFilter.expirationDaysText',
@@ -31,7 +31,7 @@ export class DisplayPMConfiguration {
     ];
 
     // Data for active back
-    static displayRowsBackActive: CardRows[] = [
+    static DISPLAY_ROWS_BACK_ACTIVE: CardRows[] = [
         {
             title: 'Make',
             endpoint: 'ruMake',
@@ -51,7 +51,7 @@ export class DisplayPMConfiguration {
     ];
 
     // Data for inactive front
-    static displayRowsFrontInactive: CardRows[] = [
+    static DISPLAY_ROWS_FRONT_INACTIVE: CardRows[] = [
         {
             title: 'General',
             endpoint: 'general.expirationDaysText',
@@ -75,7 +75,7 @@ export class DisplayPMConfiguration {
     ];
 
     // Data for inactive back
-    static displayRowsBackInactive: CardRows[] = [
+    static DISPLAY_ROWS_BACK_INACTIVE: CardRows[] = [
         {
             title: 'Make',
             endpoint: 'ruMake',

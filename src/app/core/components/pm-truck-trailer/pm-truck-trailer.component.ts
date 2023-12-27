@@ -14,13 +14,17 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
 // Models
 import { GridColumn, ToolbarActions } from '../shared/model/cardTableData';
 import { Truck, Trailer } from '../shared/model/pm';
+import { DataForCardsAndTables } from '../shared/model/table-components/all-tables.modal';
+import { CardRows } from '../shared/model/cardData';
 
 // Services
 import { ModalService } from '../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../services/truckassist-table/truckassist-table.service';
+
+// Constants
 import { TablePM } from '../../utils/constants/table-components.constants';
-import { DataForCardsAndTables } from '../shared/model/table-components/all-tables.modal';
-import { CardRows } from '../shared/model/cardData';
+
+// Data
 import { DisplayPMConfiguration } from './pm-card-data';
 
 @Component({
@@ -40,19 +44,19 @@ export class PmTruckTrailerComponent implements OnInit {
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
-        DisplayPMConfiguration.displayRowsFrontActive;
+        DisplayPMConfiguration.DISPLAY_ROWS_FRONT_ACTIVE;
     public displayRowsBack: CardRows[] =
-        DisplayPMConfiguration.displayRowsBackActive;
+        DisplayPMConfiguration.DISPLAY_ROWS_BACK_ACTIVE;
 
     //Data to display from model Shipper
     public displayRowsFrontInactive: CardRows[] =
-        DisplayPMConfiguration.displayRowsFrontInactive;
+        DisplayPMConfiguration.DISPLAY_ROWS_FRONT_INACTIVE;
     public displayRowsBackInactive: CardRows[] =
-        DisplayPMConfiguration.displayRowsBackInactive;
+        DisplayPMConfiguration.DISPLAY_ROWS_BACK_INACTIVE;
 
-    public cardTitle: string = DisplayPMConfiguration.cardTitle;
-    public page: string = DisplayPMConfiguration.page;
-    public rows: number = DisplayPMConfiguration.rows;
+    public cardTitle: string = DisplayPMConfiguration.CARD_TITLE;
+    public page: string = DisplayPMConfiguration.PAGE;
+    public rows: number = DisplayPMConfiguration.ROWS;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -81,9 +85,7 @@ export class PmTruckTrailerComponent implements OnInit {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
-                if (response) {
-                    this.sendPMData();
-                }
+                if (response) this.sendPMData();
             });
     }
 
