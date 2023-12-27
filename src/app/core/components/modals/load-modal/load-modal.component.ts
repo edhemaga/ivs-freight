@@ -86,6 +86,7 @@ import {
     CreateLoadTemplateCommand,
     RoutingResponse,
     LoadStopCommand,
+    LoadType,
 } from 'appcoretruckassist';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 import { IBilling, IPayment } from './load-financial/load-financial.component';
@@ -93,6 +94,8 @@ import { MapRouteModel } from '../../shared/model/map-route';
 import { StopItemsData } from './state/models/load-stop-items-model/load-stop-items-data.model';
 import { StopRoutes } from './state/models/load-modal-model/stop-routes.model';
 import { LoadModalTab } from './state/models/load-modal-model/load-modal-tab';
+import { Load } from './state/models/load-modal-model/load.model';
+import { Tags } from './state/models/load-modal-model/tags.model';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -328,7 +331,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
-
     }
 
     ngDoCheck(): void {
@@ -2745,11 +2747,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             adjustedRate,
             driverRate,
             advancePay,
-            ...loadForm
         } = this.loadForm.value;
 
         let documents: Blob[] = [];
-        let tagsArray = [];
+        let tagsArray: Tags[] = [];
 
         this.documents.map((item) => {
             if (item.tagId?.length)
@@ -2758,15 +2759,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     tagIds: item.tagId,
                 });
 
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+            if (item.realFile) documents.push(item.realFile);
         });
 
         if (!tagsArray.length) tagsArray = null;
 
-        const newData = {
-            type: this.tabs.find((item) => item.id === this.selectedTab).name,
+        const newData: Load = {
+            type: this.tabs.find((tab) => tab.id === this.selectedTab)
+                .name as LoadType,
             loadNumber: this.loadNumber,
             loadTemplateId: this.selectedTemplate
                 ? this.selectedTemplate.id
@@ -2791,28 +2791,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ? this.selectedGeneralCommodity.id
                 : null,
             weight: convertThousanSepInNumber(weight),
-            loadRequirementsId: null,
-            loadRequirementsTruckTypeId: this.selectedTruckReq
-                ? this.selectedTruckReq.id
-                : null,
-            loadRequirementsTrailerTypeId: this.selectedTrailerReq
-                ? this.selectedTrailerReq.id
-                : null,
-            loadRequirementsDoorType: this.selectedDoorType
-                ? this.selectedDoorType.id
-                : null,
-            loadRequirementsSuspension: this.selectedSuspension
-                ? this.selectedSuspension.id
-                : null,
-            loadRequirementsTrailerLengthId: this.selectedTrailerLength
-                ? this.selectedTrailerLength.id
-                : null,
-            loadRequirementsYear: this.selectedYear
-                ? this.selectedYear.id
-                : null,
-            loadRequirementsLiftgate: liftgate,
-            loadRequirementsDriverMessage: driverMessage,
-            note: /* note */ 'rf<span style="font-weight: bold;">dfs</span>dfdsfsd<span style="font-style: italic;">fdsf</span>dfdf<span style="text-decoration-line: underline;">dfdfdf</span>dfdfdf<span style="color: rgb(38, 166, 144);">dfd</span>',
+            loadRequirements: {
+                id: null,
+                truckTypeId: this.selectedTruckReq
+                    ? this.selectedTruckReq.id
+                    : null,
+                trailerTypeId: this.selectedTrailerReq
+                    ? this.selectedTrailerReq.id
+                    : null,
+                doorType: this.selectedDoorType
+                    ? this.selectedDoorType.id
+                    : null,
+                suspension: this.selectedSuspension
+                    ? this.selectedSuspension.id
+                    : null,
+                trailerLengthId: this.selectedTrailerLength
+                    ? this.selectedTrailerLength.id
+                    : null,
+                year: this.selectedYear ? this.selectedYear.name : null,
+                liftgate: liftgate,
+                driverMessage: driverMessage,
+            },
+            note: note,
             baseRate: convertThousanSepInNumber(baseRate),
             adjustedRate: adjustedRate
                 ? convertThousanSepInNumber(adjustedRate)

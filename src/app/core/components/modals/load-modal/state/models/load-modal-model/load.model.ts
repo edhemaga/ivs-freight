@@ -3,6 +3,7 @@ import {
     LoadStopCommand,
     LoadType,
 } from 'appcoretruckassist';
+import { Tags } from './tags.model';
 
 export interface Load {
     type: LoadType;
@@ -17,15 +18,17 @@ export interface Load {
     referenceNumber: string;
     generalCommodity: number;
     weight: number;
-    loadRequirementsId: number;
-    loadRequirementsTruckTypeId: number;
-    loadRequirementsTrailerTypeId: number;
-    loadRequirementsDoorType: number;
-    loadRequirementsSuspension: number;
-    loadRequirementsTrailerLengthId: number;
-    loadRequirementsYear: number;
-    loadRequirementsLiftgate: boolean;
-    loadRequirementsDriverMessage: string;
+    loadRequirements: {
+        id: number;
+        truckTypeId: number;
+        trailerTypeId: number;
+        doorType: number;
+        suspension: number;
+        trailerLengthId: number;
+        year: number;
+        liftgate: boolean;
+        driverMessage: string;
+    };
     note: string;
     baseRate: number;
     adjustedRate: number;
@@ -37,5 +40,5 @@ export interface Load {
     additionalBillingRates: LoadBillingAdditionalCommand[];
     stops: LoadStopCommand[];
     files: Blob[];
-    tags: any[];
+    tags: Tags[];
 }
