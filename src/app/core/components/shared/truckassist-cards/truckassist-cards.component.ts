@@ -120,8 +120,10 @@ export class TruckassistCardsComponent {
     public isCheckboxCheckedArray: number[] = [];
 
     public activeDescriptionDropdown: number = -1;
+
     public descriptionTooltip: NgbPopover;
     public mySelection: { id: number; tableData: CardDetails }[] = [];
+
     constructor(
         private detailsDataService: DetailsDataService,
         private ngZone: NgZone,
@@ -135,13 +137,11 @@ export class TruckassistCardsComponent {
             this.page === ConstantStringTableComponentsEnum.REPAIR &&
             !changes.firstChange
         ) {
-            if (!changes.firstChange) {
-                setTimeout(() => {
-                    this.itemsContainers.forEach((containerRef: ElementRef) => {
-                        this.calculateItemsToFit(containerRef.nativeElement);
-                    });
-                }, 500);
-            }
+            setTimeout(() => {
+                this.itemsContainers.forEach((containerRef: ElementRef) => {
+                    this.calculateItemsToFit(containerRef.nativeElement);
+                });
+            }, 500);
         }
     }
 

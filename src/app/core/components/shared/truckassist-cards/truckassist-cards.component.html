@@ -610,6 +610,37 @@
                                         </ng-container>
                                     </ng-container>
 
+                                    <!-- PM page body -->
+                                    <ng-container *ngIf="page === 'PM'">
+                                        <div
+                                            class="progresbar-pm d-flex align-items-center"
+                                        >
+                                            <span
+                                                class="checkbox-tooltip"
+                                                type="button"
+                                                ngbTooltip
+                                                mainTooltip="View PM"
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                            >
+                                                <app-progres-bar
+                                                    [percents]="
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    "
+                                                    [text]="
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.endpoint
+                                                        )
+                                                    "
+                                                ></app-progres-bar>
+                                            </span>
+                                        </div>
+                                    </ng-container>
+
                                     <!-- Owner page body -->
                                     <ng-container *ngIf="page === 'Owner'">
                                         <!-- Fleet -->
@@ -1035,6 +1066,16 @@
                                                 </span>
                                             </div>
                                         </ng-container>
+                                    </ng-container>
+
+                                    <!-- PM Page Body -->
+                                    <ng-container *ngIf="page === 'PM'">
+                                        {{
+                                            getValueByStringPath(
+                                                card,
+                                                rowsBack.endpoint
+                                            )
+                                        }}
                                     </ng-container>
 
                                     <!-- Owner Page Body -->
