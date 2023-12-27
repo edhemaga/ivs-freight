@@ -37,6 +37,8 @@ import {
     TableHeadActionAccount,
     TableToolBarActionActionsAccount,
 } from 'src/app/core/model/account';
+import { DisplayAccountConfiguration } from '../account-data';
+import { CardRows } from '../../shared/model/cardData';
 
 @Component({
     selector: 'app-account-table',
@@ -65,6 +67,15 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchThree: undefined,
     };
 
+    //Data to display from model Broker
+    public displayRowsFront: CardRows[] =
+        DisplayAccountConfiguration.DISPLAY_ROWS_FRONT_ACTIVE;
+
+    public cardTitle: string = DisplayAccountConfiguration.CARD_TITLE;
+    public page: string = DisplayAccountConfiguration.PAGE;
+    public rows: number = DisplayAccountConfiguration.ROWS;
+
+    public sendDataToCardsFront: CardRows[];
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -161,7 +172,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // Add Account
-                if (res.animation === ComponentsTableEnum.ADD) {
+                if (res?.animation === ComponentsTableEnum.ADD) {
                     this.viewData.push(this.mapAccountData(res.data));
 
                     this.viewData = this.viewData.map(
@@ -188,7 +199,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 // Update Account
-                else if (res.animation === ComponentsTableEnum.UPDATE) {
+                else if (res?.animation === ComponentsTableEnum.UPDATE) {
                     const updatedAccount = this.mapAccountData(res.data);
 
                     this.viewData = this.viewData.map(
@@ -214,7 +225,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 // Delete Account
-                else if (res.animation === ComponentsTableEnum.DELETE) {
+                else if (res?.animation === ComponentsTableEnum.DELETE) {
                     let accountIndex: number;
 
                     this.viewData = this.viewData.map(

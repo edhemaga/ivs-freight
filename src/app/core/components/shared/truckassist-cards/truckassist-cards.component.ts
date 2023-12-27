@@ -35,6 +35,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 import { ProgresBarComponent } from './progres-bar/progres-bar.component';
+import { TaInputComponent } from '../ta-input/ta-input.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -43,10 +44,14 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { MaskNumberPipe } from './pipes/maskNumber.pipe';
 
 // Helpers
-import { CardArrayHelper } from './utils/card-array-helper';
+import { CardArrayHelper } from './utils/helpers/card-array-helper';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
+
+// Directives
+import { DirectiveCardModule } from './directives/card-directive.module';
 
 @Component({
     selector: 'app-truckassist-cards',
@@ -66,10 +71,15 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         AppTooltipComponent,
         TaNoteComponent,
         ProgresBarComponent,
+        TaInputComponent,
 
         //pipes
         formatDatePipe,
         MaskNumberPipe,
+        HidePasswordPipe,
+
+        // Directives
+        DirectiveCardModule,
     ],
 })
 export class TruckassistCardsComponent {
@@ -80,8 +90,6 @@ export class TruckassistCardsComponent {
     public itemsContainers!: QueryList<ElementRef>;
 
     public containerWidth: number = 0;
-    public itemWidth: number = 0;
-    public wordsArray: string[] = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
