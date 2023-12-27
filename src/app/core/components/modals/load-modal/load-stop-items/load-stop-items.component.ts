@@ -27,14 +27,14 @@ import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-i
 import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
-import { LoadModalConstants } from '../state/utils/constants/load-modal.constants';
+import { LoadStopItemsConstants } from '../state/utils/constants/load-stop-items.constants';
 
 // enums
-import { ConstantStringEnum } from '../state/enums/constant-string.enum';
+import { ConstantStringEnum } from '../state/enums/load-stop-items.enum';
 
 // models
-import { DropdownListItem } from '../state/models/dropdown-list-item.model';
-import { StopItemsData } from '../state/models/load-stop-items-data.model';
+import { DropdownListItem } from '../state/models/load-stop-items-model/dropdown-list-item.model';
+import { StopItemsData } from '../state/models/load-stop-items-model/load-stop-items-data.model';
 
 @Component({
     selector: 'app-load-stop-items',
@@ -147,11 +147,12 @@ export class LoadStopItemsComponent implements OnInit, OnChanges {
     }
 
     private getConstantData(): void {
-        this.stopItemHeaders = LoadModalConstants.STOP_ITEM_HEADERS;
+        this.stopItemHeaders = LoadStopItemsConstants.STOP_ITEM_HEADERS;
 
-        this.quantityDropdownList = LoadModalConstants.QUANTITY_DROPDOWN_LIST;
-        this.stackDropdownList = LoadModalConstants.STACK_DROPDOWN_LIST;
-        this.secureDropdownList = LoadModalConstants.SECURE_DROPDOWN_LIST;
+        this.quantityDropdownList =
+            LoadStopItemsConstants.QUANTITY_DROPDOWN_LIST;
+        this.stackDropdownList = LoadStopItemsConstants.STACK_DROPDOWN_LIST;
+        this.secureDropdownList = LoadStopItemsConstants.SECURE_DROPDOWN_LIST;
     }
 
     private getStopItemsDataValue(): void {
@@ -162,7 +163,7 @@ export class LoadStopItemsComponent implements OnInit, OnChanges {
 
     private createIsHoverRow(): boolean[] {
         return JSON.parse(
-            JSON.stringify(LoadModalConstants.IS_INPUT_HOVER_ROW)
+            JSON.stringify(LoadStopItemsConstants.IS_INPUT_HOVER_ROW)
         );
     }
 

@@ -1,33 +1,38 @@
-import { LoadResponse } from './../../../../../../appcoretruckassist/model/loadResponse';
 import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+// services
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+// models
 import {
     CreateResponse,
     LoadListResponse,
     LoadService,
     LoadTemplateListResponse,
     LoadTemplateResponse,
+    LoadResponse,
+    LoadMinimalListResponse,
+    LoadModalResponse,
+    CreateLoadTemplateCommand,
+    LoadStopItemAutocompleteDescriptionResponse,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
-import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
-import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
-import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoadTService {
     constructor(
-        private loadServices: LoadService,
+        private loadService: LoadService,
         private formDataService: FormDataService
     ) {}
 
-    // Get Load List
-    // statusType -> 1 - pending, 2 - active, 3 - closed
+    // table operations
+
     public getLoadList(
         loadType?: number,
-        statusType?: number,
+        statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
         status?: number,
         dispatcherId?: number,
         dispatchId?: number,
@@ -46,7 +51,7 @@ export class LoadTService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
-        return this.loadServices.apiLoadListGet(
+        return this.loadService.apiLoadListGet(
             loadType,
             statusType,
             status,
@@ -68,15 +73,14 @@ export class LoadTService {
             search2
         );
     }
-    //Get Load minimal list
+
     public getLoadMinimalList(
         pageIndex?: number,
         pageSize?: number
     ): Observable<LoadMinimalListResponse> {
-        return this.loadServices.apiLoadListMinimalGet(pageIndex, pageSize);
+        return this.loadService.apiLoadListMinimalGet(pageIndex, pageSize);
     }
-    
-    // Get Load Template List
+
     public getLoadTemplateList(
         loadType?: number,
         revenueFrom?: number,
@@ -89,7 +93,7 @@ export class LoadTService {
         search1?: string,
         search2?: string
     ): Observable<LoadTemplateListResponse> {
-        return this.loadServices.apiLoadTemplateListGet(
+        return this.loadService.apiLoadTemplateListGet(
             loadType,
             revenueFrom,
             revenueTo,
@@ -103,44 +107,49 @@ export class LoadTService {
         );
     }
 
-    public createLoad(data: any): Observable<CreateResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.loadServices.apiLoadPost();
-    }
-
-    public updateLoad(data: any): Observable<any> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.loadServices.apiLoadPut();
-    }
-
     public deleteLoadById(id: number): Observable<any> {
-        return this.loadServices.apiLoadIdDelete(id);
+        return this.loadService.apiLoadIdDelete(id);
     }
 
     public getLoadById(loadId: number): Observable<LoadResponse> {
-        return this.loadServices.apiLoadIdGet(loadId);
-    }
-
-    public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
-        return this.loadServices.apiLoadModalGet(id);
+        return this.loadService.apiLoadIdGet(loadId);
     }
 
     public autocompleteLoadByDescription(
         desctiption: string
     ): Observable<LoadStopItemAutocompleteDescriptionResponse> {
-        return this.loadServices.apiLoadStopsAutocompleteDescriptionDescriptionGet(
+        return this.loadService.apiLoadStopsAutocompleteDescriptionDescriptionGet(
             desctiption
         );
     }
 
-    // Load Templates
+    // modal operations
+
+    public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
+        return this.loadService.apiLoadModalGet(id);
+    }
+
+    public createLoad(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.loadService.apiLoadPost();
+    }
+
+    public updateLoad(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.loadService.apiLoadPut();
+    }
+
+    // modal operations - template
+
     public createLoadTemplate(
         data: CreateLoadTemplateCommand
     ): Observable<CreateResponse> {
-        return this.loadServices.apiLoadTemplatePost(data);
+        return this.loadService.apiLoadTemplatePost(data);
     }
 
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
-        return this.loadServices.apiLoadTemplateIdGet(id);
+        return this.loadService.apiLoadTemplateIdGet(id);
     }
 }

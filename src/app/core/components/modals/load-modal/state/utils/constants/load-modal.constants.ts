@@ -1,97 +1,78 @@
-// enums
-import { ConstantStringEnum } from '../../enums/constant-string.enum';
-
-// models
-import { DropdownListItem } from '../../models/dropdown-list-item.model';
+import { LoadModalTab } from '../../models/load-modal-model/load-modal-tab';
 
 export class LoadModalConstants {
-    static STOP_ITEM_HEADERS: string[] = [
-        ConstantStringEnum.HASH,
-        ConstantStringEnum.DESCRIPTION,
-        ConstantStringEnum.QUANTITY,
-        ConstantStringEnum.TMP,
-        ConstantStringEnum.WEIGHT,
-        ConstantStringEnum.LENGTH,
-        ConstantStringEnum.HEIGHT,
-        ConstantStringEnum.TARP,
-        ConstantStringEnum.STACK,
-        ConstantStringEnum.SECURE,
-        ConstantStringEnum.BOL_NO,
-        ConstantStringEnum.PICKUP_NO,
-        ConstantStringEnum.SEAL_NO,
-        ConstantStringEnum.CODE,
-    ];
-
-    static QUANTITY_DROPDOWN_LIST: DropdownListItem[] = [
+    static LOAD_MODAL_TABS: LoadModalTab[] = [
         {
             id: 1,
-            name: ConstantStringEnum.BAG,
+            name: 'FTL',
+            checked: true,
         },
         {
             id: 2,
-            name: ConstantStringEnum.BALE,
+            name: 'LTL',
+            checked: false,
         },
-        {
-            id: 3,
-            name: ConstantStringEnum.BARREL,
-        },
-        {
-            id: 4,
-            name: ConstantStringEnum.BOX,
-        },
+    ];
+
+    static TYPE_OF_EXTRA_STOPS: LoadModalTab[][] = [
+        [
+            {
+                id: 3000,
+                name: 'Pickup',
+                checked: true,
+                color: '26A690',
+            },
+            {
+                id: 4000,
+                name: 'Delivery',
+                checked: false,
+                color: 'EF5350',
+            },
+        ],
+    ];
+
+    static STOP_TIME_TABS_PICKUP: LoadModalTab[] = [
         {
             id: 5,
-            name: ConstantStringEnum.BULK,
+            name: 'WORK HOURS',
+            checked: true,
         },
         {
             id: 6,
-            name: ConstantStringEnum.CASE,
+            name: 'APPOINTMENT',
+            checked: false,
         },
+    ];
+
+    static STOP_TIME_TABS_DELIVERY: LoadModalTab[] = [
         {
             id: 7,
-            name: ConstantStringEnum.PALLET,
+            name: 'WORK HOURS',
+            checked: true,
+            color: '3074D3',
         },
         {
             id: 8,
-            name: ConstantStringEnum.PIECE,
+            name: 'APPOINTMENT',
+            checked: false,
+            color: '3074D3',
         },
     ];
 
-    static STACK_DROPDOWN_LIST: DropdownListItem[] = [
-        {
-            id: 1,
-            name: ConstantStringEnum.YES,
-        },
-        {
-            id: 2,
-            name: ConstantStringEnum.NO,
-        },
-    ];
-
-    static SECURE_DROPDOWN_LIST: DropdownListItem[] = [
-        {
-            id: 1,
-            name: ConstantStringEnum.STRAP,
-        },
-        {
-            id: 2,
-            name: ConstantStringEnum.CHAIN,
-        },
-    ];
-
-    static IS_INPUT_HOVER_ROW: boolean[] = [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
+    static STOP_TIME_TABS_EXTRA_STOPS: LoadModalTab[][] = [
+        [
+            {
+                id: 7900,
+                name: 'WORK HOURS',
+                checked: true,
+                color: '3074D3',
+            },
+            {
+                id: 9000,
+                name: 'APPOINTMENT',
+                checked: false,
+                color: '3074D3',
+            },
+        ],
     ];
 }
