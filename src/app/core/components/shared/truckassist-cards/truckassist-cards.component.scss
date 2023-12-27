@@ -24,6 +24,7 @@
     .card-body {
         border-radius: 2px;
         margin: 4px;
+        height: calc(100% - 8px);
 
         .description-container {
             overflow: hidden;
@@ -184,7 +185,7 @@
                 margin-top: 8px;
 
                 .item-body {
-                    height: 40px;
+                    height: fit-content;
 
                     .top-item-body {
                         font-size: 11px;
@@ -263,7 +264,7 @@
                             color: $ta-blue-14;
                         }
 
-                        // STYLES FOR CUSTOMER PAGE
+                        // Styles for customer page
                         .rating-holder {
                             gap: 8px;
                             .rating {
@@ -306,19 +307,85 @@
                             border-radius: 50%;
                             margin-right: 4px;
                         }
+
+                        // Styles repair page
+                        .service-svg {
+                            svg {
+                                height: 18px;
+                                width: 18px;
+                                path {
+                                    fill: $dark-3;
+                                }
+                            }
+                        }
+
+                        .active-svg {
+                            svg {
+                                path {
+                                    fill: $muted;
+                                }
+                            }
+                        }
+
+                        .progresbar-pm {
+                            cursor: pointer;
+                            line-height: 26px;
+                            position: relative;
+                            left: -4px;
+                            padding: 0 4px;
+                            width: 138px;
+
+                            &:hover {
+                                background: $dark-2;
+                            }
+                        }
+
+                        // Styles owner page
+                        .fleet-holder {
+                            gap: 4px;
+
+                            .fleet {
+                                gap: 4px;
+                                font-size: 11px;
+
+                                .svg-holder {
+                                    height: 18px;
+                                    width: 18px;
+                                }
+
+                                .no-count-text {
+                                    color: $muted;
+                                }
+
+                                .no-count {
+                                    svg {
+                                        path {
+                                            fill: $ta-light-grey-6;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .masked-number {
+                            .masked {
+                                color: $bw6-2;
+                                margin-left: 4px;
+                            }
+                        }
                     }
                 }
             }
         }
 
         .card-body-right {
-            height: 218px;
+            height: 100%;
             display: flex;
             flex-direction: column;
             padding: 4px 4px 0 0;
 
             .top-side {
-                height: 192px;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
@@ -402,6 +469,31 @@
                     }
                 }
 
+                .right-side-svg-favorite {
+                    width: 26px;
+                    height: 26px;
+                    cursor: pointer;
+                    position: relative;
+                    top: 2px;
+
+                    .tooltip-card {
+                        width: 20px;
+                        height: 30px;
+                        position: absolute;
+                    }
+
+                    &:hover {
+                        svg {
+                            g {
+                                path {
+                                    fill: $ta-black;
+                                    transition: fill 0.3s;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 .active-item {
                     background: $ta-black;
                     border-radius: 2px;
@@ -428,6 +520,7 @@
                 width: 26px;
                 height: 26px;
                 cursor: pointer;
+                position: relative;
 
                 .svg-position {
                     rotate: (0deg);
@@ -444,9 +537,8 @@
                 }
 
                 .expand-card {
-                    position: relative;
-                    right: -2px;
-                    bottom: -2px;
+                    position: absolute;
+                    bottom: 5px;
 
                     &:hover {
                         svg {

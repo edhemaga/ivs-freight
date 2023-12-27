@@ -6,17 +6,10 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 // Models
 import { CardDetails } from '../../model/cardTableData';
 
-// Pipes
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-
 @Injectable({
     providedIn: 'root',
 })
 export class CardArrayHelper {
-    static formatCurrency: formatCurrency;
-    static formatDate: formatDatePipe;
-
     static getValueByStringPath(obj: CardDetails, ObjKey: string): string {
         if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
             return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
@@ -39,17 +32,11 @@ export class CardArrayHelper {
             return ConstantStringTableComponentsEnum.SLASH;
 
         // Transform number to descimal with $ and transform date
-        switch (ObjKey) {
-            case ConstantStringTableComponentsEnum.AVAILABLE_CREDIT:
-            case ConstantStringTableComponentsEnum.REVENUE:
-                return this.formatCurrency.transform(value);
-            case ConstantStringTableComponentsEnum.HIRED:
-                return this.formatDate.transform(value);
-            default:
-                return ObjKey.split(
-                    ConstantStringTableComponentsEnum.DOT_1
-                ).reduce((acc, part) => acc && acc[part], obj);
-        }
+
+        return ObjKey.split(ConstantStringTableComponentsEnum.DOT_1).reduce(
+            (acc, part) => acc && acc[part],
+            obj
+        );
     }
 
     static objectsWithDropDown(obj: CardDetails, ObjKey: string): string {

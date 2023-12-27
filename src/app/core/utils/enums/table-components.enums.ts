@@ -231,6 +231,32 @@ export enum ConstantStringTableComponentsEnum {
     REPAIR_TABLE_VIEW = 'Repair-table-view',
     TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
+    NAME = 'name',
+    SERVICE_TYPES = 'serviceTypes',
+
+    // PM
+    PM_TABLE_VIEW = 'PM-table-view',
+    PM_TRUCK = 'PM_TRUCK',
+    PM_TRUCKS = 'pm_trucks',
+    PM_TRAILERS = 'pm_trailers',
+    PM_TRAILER = 'PM_TRAILER',
+    OPEN_GENERAL_PM = 'open-general-pm',
+    NEW = 'new',
+    GENERIC_PM = 'generic-pm',
+    UNIT_PM = 'unit-pm',
+
+    // Owner
+    TRUCK_TYPE_FILTER = 'truckTypeFilter',
+    TRAILER_TYPE_FILTER = 'trailerTypeFilter',
+    SET = 'Set',
+    LOCATION_FILTER = 'locationFilter',
+    OWNER_TABLE_VIEW = `Owner-table-view`,
+    OWNER_TABLE_COUNTE = 'ownerTableCount',
+    OWNER = 'Owner',
+    OWNER_2 = 'OWNER',
+    OWNERS = 'owners',
+    EDIT_OWNER = 'edit-owner',
+    DELETE_OWNER = 'delete-owner',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',

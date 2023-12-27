@@ -2,7 +2,6 @@
     <ng-container
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
-        {{ card.name }}
         <div class="custom-card">
             <!-- Card splited on left and right side -->
 
@@ -566,14 +565,145 @@
                                                 }}
                                             </ng-container>
                                         </ng-container>
+
+                                        <!-- Repair Shop -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title === 'Services'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let item of card.serviceTypes
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="service-svg"
+                                                    [src]="
+                                                        '/assets/svg/common/repair-services/' +
+                                                        item.logoName
+                                                    "
+                                                    [ngClass]="{
+                                                        'active-svg':
+                                                            item.active
+                                                    }"
+                                                ></svg-icon>
+                                            </ng-container>
+                                        </ng-container>
+
                                         <!-- Rest of body items -->
 
                                         <ng-container
                                             *ngIf="
                                                 rowsFront.title !== 'Item' &&
                                                 rowsFront.title !==
-                                                    'Repair Shop'
+                                                    'Repair Shop' &&
+                                                rowsFront.title !== 'Services'
                                             "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <!-- PM page body -->
+                                    <ng-container *ngIf="page === 'PM'">
+                                        <div
+                                            class="progresbar-pm d-flex align-items-center"
+                                        >
+                                            <span
+                                                class="checkbox-tooltip"
+                                                type="button"
+                                                ngbTooltip
+                                                mainTooltip="View PM"
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                            >
+                                                <app-progres-bar
+                                                    [percents]="
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    "
+                                                    [text]="
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.endpoint
+                                                        )
+                                                    "
+                                                ></app-progres-bar>
+                                            </span>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- Owner page body -->
+                                    <ng-container *ngIf="page === 'Owner'">
+                                        <!-- Fleet -->
+                                        <ng-container
+                                            *ngIf="rowsFront.title === 'Fleet'"
+                                        >
+                                            <div class="fleet-holder d-flex">
+                                                <div
+                                                    class="ta-font-semi-bold d-flex fleet align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="d-flex justify-content-center svg-holder"
+                                                        [src]="
+                                                            'assets/svg/common/dropdown-truck.svg'
+                                                        "
+                                                        [ngClass]="{
+                                                            'no-count':
+                                                                card.truckCount ===
+                                                                0
+                                                        }"
+                                                    ></svg-icon>
+
+                                                    <span
+                                                        [ngClass]="{
+                                                            'no-count-text':
+                                                                card.truckCount ===
+                                                                0
+                                                        }"
+                                                    >
+                                                        {{ card.truckCount }}
+                                                    </span>
+                                                </div>
+
+                                                <div
+                                                    class="ta-font-semi-bold d-flex fleet align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="d-flex justify-content-center svg-holder"
+                                                        [src]="
+                                                            'assets/svg/common/dropdown-trailer.svg'
+                                                        "
+                                                        [ngClass]="{
+                                                            'no-count':
+                                                                card.trailerCount ===
+                                                                0
+                                                        }"
+                                                    ></svg-icon>
+
+                                                    <span
+                                                        [ngClass]="{
+                                                            'no-count-text':
+                                                                card.trailerCount ===
+                                                                0
+                                                        }"
+                                                    >
+                                                        {{ card.trailerCount }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="rowsFront.title !== 'Fleet'"
                                         >
                                             {{
                                                 getValueByStringPath(
@@ -890,6 +1020,101 @@
                                                 rowsBack.endpoint
                                             )
                                         }}
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableRaiting.likeCount'
+                                            "
+                                        >
+                                            <div class="rating-holder d-flex">
+                                                <span
+                                                    class="rating ta-font-semi-bold d-flex align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="svg-like"
+                                                        [src]="
+                                                            'assets/svg/common/ic_like.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                    <span>
+                                                        {{
+                                                            getValueByStringPath(
+                                                                card,
+                                                                rowsBack.endpoint
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </span>
+                                                <span
+                                                    class="rating ta-font-semi-bold d-flex align-items-center"
+                                                >
+                                                    <svg-icon
+                                                        class="svg-dislike"
+                                                        [src]="
+                                                            'assets/svg/common/ic_dislike.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                    <span>
+                                                        {{
+                                                            getValueByStringPath(
+                                                                card,
+                                                                rowsBack.secondEndpoint
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+
+                                    <!-- PM Page Body -->
+                                    <ng-container *ngIf="page === 'PM'">
+                                        {{
+                                            getValueByStringPath(
+                                                card,
+                                                rowsBack.endpoint
+                                            )
+                                        }}
+                                    </ng-container>
+
+                                    <!-- Owner Page Body -->
+                                    <ng-container *ngIf="page === 'Owner'">
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.title !==
+                                                'Bank Account'
+                                            "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.title ===
+                                                'Bank Account'
+                                            "
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/common/ic_password.svg'
+                                                "
+                                            ></svg-icon>
+                                            <span
+                                                class="masked-number"
+                                                [innerHTML]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    ) | maskNumber : 'masked'
+                                                "
+                                            ></span>
+                                        </ng-container>
                                     </ng-container>
                                 </div>
                             </div>
@@ -987,6 +1212,30 @@
                                         "
                                     ></svg-icon>
                                 </ng-container>
+                            </div>
+                        </ng-container>
+
+                        <!-- Favorite element -->
+                        <ng-container *ngIf="page === 'Repair'">
+                            <div
+                                class="right-side-svg-favorite d-flex align-items-center justify-content-center flex-column"
+                                (click)="onFavorite(card)"
+                            >
+                                <span
+                                    class="tooltip-card d-flex align-items-center"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Mark as Favourite"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        class="favorite"
+                                        [src]="
+                                            'assets/svg/truckassist-table/favorite.svg'
+                                        "
+                                    ></svg-icon>
+                                </span>
                             </div>
                         </ng-container>
 

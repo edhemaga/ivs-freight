@@ -3,7 +3,6 @@ import {
     Input,
     EventEmitter,
     Output,
-    ViewEncapsulation,
     ElementRef,
     ViewChild,
     NgZone,
@@ -11,6 +10,7 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
+    ViewEncapsulation,
 } from '@angular/core';
 
 // Models
@@ -23,6 +23,7 @@ import {
 
 // Services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // Modules
 import { CommonModule } from '@angular/common';
@@ -39,6 +40,7 @@ import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { MaskNumberPipe } from './pipes/maskNumber.pipe';
 
 // Helpers
 import { CardArrayHelper } from './utils/card-array-helper';
@@ -67,6 +69,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
         //pipes
         formatDatePipe,
+        MaskNumberPipe,
     ],
 })
 export class TruckassistCardsComponent {
@@ -81,6 +84,7 @@ export class TruckassistCardsComponent {
     public wordsArray: string[] = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
+
     // All data
     @Input() viewData: CardDetails[];
     @Input() tableData: LoadTableData[];
@@ -88,6 +92,7 @@ export class TruckassistCardsComponent {
     // Page
     @Input() page: string;
     @Input() selectedTab: string;
+
     // For Front And back of the cards
     @Input() deadline: boolean;
 
@@ -106,31 +111,37 @@ export class TruckassistCardsComponent {
     public descriptionIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
+
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
     public elementWidth: number;
+
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
     public activeDescriptionDropdown: number = -1;
+
     public descriptionTooltip: NgbPopover;
+    public mySelection: { id: number; tableData: CardDetails }[] = [];
 
     constructor(
         private detailsDataService: DetailsDataService,
         private ngZone: NgZone,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private tableService: TruckassistTableService
     ) {}
 
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.page === ConstantStringTableComponentsEnum.REPAIR) {
-            if (!changes.firstChange) {
-                setTimeout(() => {
-                    this.itemsContainers.forEach((containerRef: ElementRef) => {
-                        this.calculateItemsToFit(containerRef.nativeElement);
-                    });
-                }, 500);
-            }
+        if (
+            this.page === ConstantStringTableComponentsEnum.REPAIR &&
+            !changes.firstChange
+        ) {
+            setTimeout(() => {
+                this.itemsContainers.forEach((containerRef: ElementRef) => {
+                    this.calculateItemsToFit(containerRef.nativeElement);
+                });
+            }, 500);
         }
     }
 
@@ -198,9 +209,9 @@ export class TruckassistCardsComponent {
     }
 
     // When checkbox is selected
-    public onCheckboxSelect(index: number): void {
+    public onCheckboxSelect(index: number, card: CardDetails): void {
         const indexSelected = this.isCheckboxCheckedArray.indexOf(index);
-
+        this.mySelection.push({ id: card.id, tableData: card });
         if (indexSelected !== -1) {
             this.isCheckboxCheckedArray.splice(indexSelected, 1);
             this.isCardChecked = this.isCheckboxCheckedArray;
@@ -209,7 +220,7 @@ export class TruckassistCardsComponent {
             this.isCardChecked = this.isCheckboxCheckedArray;
         }
 
-        return;
+        this.tableService.sendRowsSelected(this.mySelection);
     }
 
     // Show hide dropdown
@@ -300,9 +311,21 @@ export class TruckassistCardsComponent {
 
     //Remove quotes from string to convert into endpoint
     public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
+        if (ObjKey === ConstantStringTableComponentsEnum.SERVICE_TYPES) {
+            CardArrayHelper.getValueByStringPath(obj, ObjKey);
+        }
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
     }
 
+    // Add favorite repairshop
+    public onFavorite(card: CardDetails): void {
+        this.bodyActions.emit({
+            data: card,
+            type: ConstantStringTableComponentsEnum.FAVORITE,
+        });
+    }
+
+    // Finish repair
     public onFinishOrder(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,

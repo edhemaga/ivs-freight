@@ -96,4 +96,53 @@ export class DisplayRepairConfiguration {
             endpoint: 'odometer',
         },
     ];
+
+    // Data for repair-shop front
+    static displayRowsFrontRepairShop: CardRows[] = [
+        {
+            title: 'Phone',
+            endpoint: 'phone',
+        },
+
+        {
+            title: 'Email',
+            endpoint: 'email',
+        },
+
+        {
+            title: 'Address',
+            endpoint: 'tableAddress',
+        },
+
+        {
+            title: 'Services',
+            endpoint: 'serviceTypes',
+        },
+    ];
+
+    // Data for repair-shop back
+    static displayRowsBackRepairShop: CardRows[] = [
+        {
+            title: 'Bill',
+            endpoint: 'tableRepairCountBill',
+        },
+
+        {
+            title: 'Expense',
+            endpoint: 'tableExpense',
+        },
+
+        {
+            title: 'Contact',
+            endpoint: 'contacts',
+        },
+
+        {
+            title: 'Rating & Review',
+            endpoint: 'tableRaiting.likeCount',
+            secondEndpoint: 'tableRaiting.dislikeCount',
+            hasLiked: 'hasLiked',
+            hasDislike: 'hasDislike',
+        },
+    ];
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-progres-bar',
@@ -8,10 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
     imports: [CommonModule],
     standalone: true,
 })
-export class ProgresBarComponent implements OnInit {
+export class ProgresBarComponent {
     @Input() percents: number;
     @Input() text: string;
-    constructor() {}
-
-    ngOnInit(): void {}
 }

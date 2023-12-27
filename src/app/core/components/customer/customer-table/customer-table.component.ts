@@ -242,7 +242,7 @@ export class CustomerTableComponent
                 // <------------------ Broker ------------------->
                 // Add Broker
                 if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     res.tab === ConstantStringTableComponentsEnum.BROKER
                 ) {
                     this.viewData.push(this.mapBrokerData(res.data));
@@ -251,7 +251,7 @@ export class CustomerTableComponent
                 }
                 // Update Broker
                 else if (
-                    res.animation ===
+                    res?.animation ===
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.BROKER
                 ) {
@@ -263,7 +263,7 @@ export class CustomerTableComponent
                 // <------------------ Shipper ------------------->
                 // Add Shipper
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     res.tab === ConstantStringTableComponentsEnum.SHIPPER
                 ) {
                     this.viewData.push(this.mapShipperData(res.data));
@@ -272,7 +272,7 @@ export class CustomerTableComponent
                 }
                 // Update Shipper
                 else if (
-                    res.animation ===
+                    res?.animation ===
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.SHIPPER
                 ) {
