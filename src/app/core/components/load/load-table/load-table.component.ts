@@ -56,6 +56,7 @@ import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constant
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-load-table',
@@ -65,7 +66,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-
+    loadTableData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -143,6 +144,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRows();
 
         this.driverActions();
+
+        this.setTableFilter();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -150,6 +153,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                console.log(res);
+                if (res?.filteredArray) {
+                    if (!res.selectedFilter) {
+                        this.viewData = this.loadTableData;
+                        this.viewData = this.viewData?.filter((d) =>
+                            res.filteredArray.every((i) => i.id == d.id)
+                        );
+                    }
+                    if (res.selectedFilter) {
+                        this.viewData = this.loadTableData;
+                    }
+                }
+            });
     }
 
     // Resize
@@ -408,6 +430,17 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data: loadTemplateData,
                 extended: false,
                 gridNameTitle: 'Load',
+                moneyCountSelected: false,
+                ltlArray: checkSpecialFilterArray(
+                    loadTemplateData,
+                    ConstantStringTableComponentsEnum.LTL,
+                    'type'
+                ),
+                ftlArray: checkSpecialFilterArray(
+                    loadTemplateData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    'type'
+                ),
                 stateName: 'loads',
                 tableConfiguration: 'LOAD_TEMPLATE',
                 isActive: this.selectedTab === 'template',
@@ -419,7 +452,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.pendingCount,
                 data: loadPendingData,
                 extended: false,
+                moneyCountSelected: false,
                 gridNameTitle: 'Load',
+                ltlArray: checkSpecialFilterArray(
+                    loadPendingData,
+                    ConstantStringTableComponentsEnum.LTL,
+                    'type'
+                ),
+                ftlArray: checkSpecialFilterArray(
+                    loadPendingData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    'type'
+                ),
                 stateName: 'loads',
                 tableConfiguration: 'LOAD_REGULAR',
                 isActive: this.selectedTab === 'pending',
@@ -430,6 +474,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 field: 'active',
                 length: loadCount.activeCount,
                 data: loadActiveData,
+                moneyCountSelected: false,
+                ftlArray: checkSpecialFilterArray(
+                    loadActiveData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    'type'
+                ),
                 extended: false,
                 gridNameTitle: 'Load',
                 stateName: 'loads',
@@ -441,7 +491,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'Closed',
                 field: 'closed',
                 length: loadCount.closedCount,
+                moneyCountSelected: false,
                 data: repairClosedData,
+                ftlArray: checkSpecialFilterArray(
+                    repairClosedData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    'type'
+                ),
                 extended: false,
                 gridNameTitle: 'Load',
                 stateName: 'loads',
@@ -489,6 +545,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.loadTableData = this.viewData;
     }
 
     private mapLoadData(data: LoadModel): LoadModel {

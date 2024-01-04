@@ -36,6 +36,7 @@ import {
     getRepairsShopColumnDefinition,
     getRepairTruckAndTrailerColumnDefinition,
 } from '../../../../../assets/utils/settings/repair-columns';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-repair-table',
@@ -122,7 +123,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.sendRepairData();
-
+        //Table Filter
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.viewData?.filter((d) =>
+                            res.filteredArray.some((i) => i.id == d.id)
+                        );
+                    }
+                    if (!res.selectedFilter) {
+                        this.sendRepairData();
+                    }
+                }
+            });
         // Reset Columns
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -326,11 +341,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showTimeFilter: this.selectedTab !== 'repair-shop',
                 showRepairOrderFilter: this.selectedTab !== 'repair-shop',
                 showPMFilter: this.selectedTab !== 'repair-shop',
+                showRepairShop: this.selectedTab === 'repair-shop',
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 hideMoneySubType: true,
                 showLocationFilter: true,
-                showMoneyCount: this.selectedTab !== 'repair-shop',
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -390,6 +405,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 moneyCountSelected: false,
                 data: repairTruckData,
                 gridNameTitle: 'Repair',
+                repairArray: checkSpecialFilterArray(
+                    repairTruckData,
+                    'order',
+                    'repairType'
+                ),
                 stateName: 'repair_trucks',
                 tableConfiguration: 'REPAIR_TRUCK',
                 isActive: this.selectedTab === 'active',
@@ -406,6 +426,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 moneyCountSelected: false,
                 data: repairTrailerData,
                 gridNameTitle: 'Repair',
+                repairArray: checkSpecialFilterArray(
+                    repairTrailerData,
+                    'order',
+                    'repairType'
+                ),
                 stateName: 'repair_trailers',
                 tableConfiguration: 'REPAIR_TRAILER',
                 isActive: this.selectedTab === 'inactive',
@@ -418,6 +443,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 data: repairShopData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_shops',
+                closedArray: checkSpecialFilterArray(repairShopData, 'status'),
                 tableConfiguration: 'REPAIR_SHOP',
                 isActive: this.selectedTab === 'repair-shop',
                 gridColumns: this.getGridColumns('REPAIR_SHOP'),
@@ -1053,7 +1079,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.backFilterQuery.unitType =
                     this.selectedTab === 'active' ? 1 : 2;
             }
-            
+
             this.selectedTab !== 'repair-shop'
                 ? this.backFilterQuery.pageIndex++
                 : this.shopFilterQuery.pageIndex++;

@@ -1,11 +1,12 @@
+@import 'src/theme/variables';
+
 // FILTER CONTAINER
 .table-filter-container {
-    height: 32px;
+    height: 34px;
     display: flex;
     align-items: center;
-    background: #ffffff;
-    border-radius: 3px 0px 0px 3px;
-
+    background: $white;
+    gap: 4px;
     // ARHIVE COUNT
     .ahrive-count-container {
         width: fit-content;
@@ -27,7 +28,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #3074d3;
+            color: $ta-blue-5;
             font-size: 14px;
             font-weight: 700;
             padding: 0 6px;
@@ -39,7 +40,7 @@
 
             svg {
                 path {
-                    fill: #3074d3;
+                    fill: $ta-blue-5;
                 }
             }
         }
@@ -53,9 +54,9 @@
         justify-content: center;
         align-items: center;
         border-radius: 2px;
-        background: #3074d3;
+        background: $ta-blue-5;
         padding: 0 8px;
-        color: #ffffff;
+        color: $white;
         font-size: 14px;
         font-weight: 700;
         margin-left: 4px;
@@ -63,57 +64,64 @@
 
     // TOTAL MONEY COUNT
     .money-count-container {
-        width: fit-content;
-        height: 24px;
+        width: 88px;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 16px;
-        color: #3074d3;
-        font-size: 14px;
-        font-weight: 700;
-        border-radius: 2px;
-        margin: 0px 6px 0px 4px;
-        transition: color 0.25s;
-
-        &::selection {
-            color: #ffffff;
-            background: #ffffff20;
+        padding: 4px;
+        .container-money{
+            width: 80px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: $ta-blue-18;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 2px;
+            transition: color 0.25s;    
+            &::selection {
+                color: $white;
+                background: #ffffff20;
+            }
         }
+      
     }
 
     // VIEW MODE SELECT
     .view-mode-container {
         width: fit-content;
-        height: 32px;
-        padding: 4px;
+        // height: 34px;
+        padding: 4px 0;
         display: flex;
+        gap: 4px;
 
         .mode {
             cursor: pointer;
             width: fit-content;
-            height: 24px;
+            // height: 26px;
             border-radius: 2px;
-            padding: 5px 8px;
+            padding: 4px 8px;
             font-weight: 800;
+            line-height: 18px;
             font-size: 14px;
-            color: #b7b7b7;
+            color: $ta-light-grey-2;
             display: flex;
             justify-content: center;
             align-items: center;
 
             &:hover {
-                color: #6c6c6c !important;
+                color: $bw6-2 !important;
                 transition: 0.25s !important;
             }
         }
 
         .mode-active {
-            background: #f3f3f3 !important;
-            color: #919191 !important;
+            background: $bw2 !important;
+            color: $ta-black !important;
 
             &:hover {
-                color: #6c6c6c !important;
+                color: $ta-black !important;
                 transition: 0.25s !important;
             }
         }
@@ -122,36 +130,51 @@
 
 // BORDER
 .border-container {
-    width: 6px;
+    width: 2px;
     height: 32px;
-    background: #ffffff;
+    background: $white;
     display: flex;
     align-items: center;
     justify-content: center;
     .border {
         width: 2px;
-        height: 20px;
+        height: 18px;
         border-radius: 1px;
-        background: #f3f3f3;
+        background: $ta-light-grey-4;
     }
 }
 
 // NO FILTER YET
 .no-filter {
-    height: 28px;
+    min-height: 18px;
     width: fit-content;
-    color: #6c6c6c;
-    font-size: 12px;
-    font-weight: bold;
+    // color: $bw6-2;
+    color: $ta-light-grey-2;
+    font-size: 14px;
+    font-weight: 800;
     display: flex;
+    padding: 4px 8px;
+    line-height: 18px;
     align-items: center;
     justify-content: center;
+    &:hover{
+        color: #6C6C6C;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    &.active-options-filter{
+        color: $ta-black !important;
+        border-radius: 2px;
+        background: $bw2 !important;
+        cursor: pointer;
+    }
 }
 
 // NG CLASS
 .money-count-select-style {
-    background: #3074d3;
-    color: white !important;
+    background: #E9EFFD;
+    color: $ta-blue-18;
 
     transition: 0.25s;
 }

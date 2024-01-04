@@ -1,0 +1,56 @@
+<div
+    class="user-icon"
+    (click)="toggleSpecialFilter()"
+    [ngClass]="{
+        'load-filter':  type == 'load-filter' && !activeFilter,
+        'load-filter-active':  type == 'load-filter' && activeFilter,
+        'fuel-filter':  type == 'fuel-filter' && !activeFilter,
+        'fuel-filter-active':  type == 'fuel-filter' && activeFilter,
+        'repair-filter':  type == 'repair-filter' && !activeFilter,
+        'repair-filter-active':  type == 'repair-filter' && activeFilter,
+        'archive-filter': type == 'archiveFilter' && !activeFilter,
+        'archive-filter-active': type == 'archiveFilter' && activeFilter,
+        'broker-filter': type == 'broker-filter' && !activeFilter,
+        'broker-filter-active': type == 'broker-filter' && activeFilter,
+        'zero-filter':   dataArray?.filteredArray?.length == 0 ||  !dataArray?.filteredArray?.length
+    }"
+>
+    <div
+        mainContent
+        ngbTooltip
+        mainTooltip="{{
+            !hoverClose
+                ? dataArray?.filteredArray?.length > 0
+                    ? activeFilter ? 'Close Filter' : filterTitle
+                    :  activeFilter ? 'Close Filter' : filterTitle
+                : 'Remove Filter'
+        }}"
+        position="bottom"
+        tooltipBackground="{{ activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F' }}"
+        tooltipColor="{{activeFilter ? '#2F2F2F' : '#FFFFFF'}}"
+        tooltipTextAlign="center"
+        class="main-icon-holder"
+    >
+        <div>
+            <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
+        </div>
+        <div  class="filters-selected-value-holder show-number">
+            {{dataArray?.filteredArray?.length > 0 ?  dataArray?.filteredArray?.length : '0'}}
+        </div>
+
+        <div 
+            *ngIf="
+                dataArray?.filteredArray?.length > 0 &&
+                activeFilter 
+            " 
+            class="filters-selected-value-holder 
+            clear-filter-icon" 
+            (mouseenter)="hoverClose = true"
+            (mouseleave)="hoverClose = false"
+            >
+            <svg-icon
+                src="../../../../../assets/svg/common/ic_cancel_violation.svg"
+            ></svg-icon>  
+        </div>
+    </div>
+</div>

@@ -78,6 +78,7 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 interface PaginationFilter {
     companyId?: number | undefined;
@@ -108,7 +109,7 @@ export class CustomerTableComponent
     private destroy$ = new Subject<void>();
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
-
+    customerTableData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -204,6 +205,8 @@ export class CustomerTableComponent
         this.deleleteSelectedRows();
 
         this.search();
+
+        this.setTableFilter();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -211,6 +214,24 @@ export class CustomerTableComponent
         setTimeout(() => {
             this.observeTableContainer();
         }, 10);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.customerTableData;
+                        this.viewData = this.viewData?.filter((d) =>
+                            res.filteredArray.some((i) => i.id == d.id)
+                        );
+                    }
+                    if (!res.selectedFilter) {
+                        this.viewData = this.customerTableData;
+                    }
+                }
+            });
     }
 
     // Reset Columns
@@ -449,6 +470,12 @@ export class CustomerTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showBrokerFilter:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                showBrokerFilterClosed:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE,
                 showMoneyFilter:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE,
@@ -545,10 +572,23 @@ export class CustomerTableComponent
                 length: brokerShipperCount.broker,
                 data: this.brokers,
                 extended: false,
+                moneyCountSelected: false,
                 isCustomer: true,
                 gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
                 stateName: ConstantStringTableComponentsEnum.BROKER_3,
                 tableConfiguration: ConstantStringTableComponentsEnum.BROKER,
+                bannedArray: checkSpecialFilterArray(
+                    this.brokers,
+                    ConstantStringTableComponentsEnum.BAN
+                ),
+                dnuArray: checkSpecialFilterArray(
+                    this.brokers,
+                    ConstantStringTableComponentsEnum.DNU
+                ),
+                closedArray: checkSpecialFilterArray(
+                    this.brokers,
+                    ConstantStringTableComponentsEnum.STATUS
+                ),
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE,
@@ -561,8 +601,13 @@ export class CustomerTableComponent
                 field: ConstantStringTableComponentsEnum.INACTIVE,
                 length: brokerShipperCount.shipper,
                 data: this.shipper,
+                moneyCountSelected: false,
                 extended: false,
                 isCustomer: true,
+                closedArray: checkSpecialFilterArray(
+                    this.shipper,
+                    ConstantStringTableComponentsEnum.STATUS
+                ),
                 gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
                 stateName: ConstantStringTableComponentsEnum.SHIPPER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.SHIPPER,
@@ -627,7 +672,6 @@ export class CustomerTableComponent
 
         if (td.data.length) {
             this.viewData = td.data;
-
             this.viewData = this.viewData.map(
                 (data: ShipperResponse | BrokerResponse) => {
                     return this.selectedTab ===
@@ -651,6 +695,7 @@ export class CustomerTableComponent
         } else {
             this.viewData = [];
         }
+        this.customerTableData = this.viewData;
     }
 
     // Map Broker Data

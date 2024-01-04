@@ -22,6 +22,7 @@ import {
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-user-table',
@@ -68,7 +69,20 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // ---------------------------  NgOnInit ----------------------------------
     ngOnInit(): void {
         this.sendUserData();
-
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.viewData?.filter((d) =>
+                            res.filteredArray.some((i) => i.id == d.id)
+                        );
+                    }
+                    if (!res.selectedFilter) {
+                        this.sendUserData();
+                    }
+                }
+            });
         // Reset Columns
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -329,13 +343,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Send User Data
     sendUserData() {
-        const tableView = JSON.parse(
-            localStorage.getItem(`User-table-view`)
-        );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+        const tableView = JSON.parse(localStorage.getItem(`User-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -351,6 +363,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: userCount.users,
                 arhiveCount: 0,
                 data: userData,
+                deactivatedUserArray: checkSpecialFilterArray(
+                    userData,
+                    'status'
+                ),
                 gridNameTitle: 'User',
                 stateName: 'users',
                 tableConfiguration: 'USER',
@@ -390,6 +406,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        console.log(this.viewData);
     }
 
     // Map User Data

@@ -44,10 +44,11 @@
             {{ filterActiveArray.length > 0 ? filterActiveArray.length : totalFiltersNum  }}
         </div>
         <div *ngIf="
-            filterActiveTime != '' ||
+           ( filterActiveTime != '' ||
             longValueSet != 0 ||
             singleFormActive ||
-            activeFormNum > 0
+            activeFormNum > 0) &&
+            !hoverClose
             " 
             class="filters-selected-value-holder conf-icon-holder">
             <svg-icon

@@ -21,6 +21,7 @@ import { FuelQuery } from '../state/fule-state/fuel-state.query';
 import { DatePipe } from '@angular/common';
 import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
 import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-fuel-table',
@@ -35,7 +36,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
     private destroy$ = new Subject<void>();
-
+    fuelTableData: any[] = [];
     tableOptions: any = {};
     tableData: any[] = [];
     viewData: any[] = [];
@@ -145,7 +146,21 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
           } */
                 }
             });
-
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.fuelTableData;
+                        this.viewData = this.viewData?.filter((d) =>
+                            res.filteredArray.some((i) => i.id == d.id)
+                        );
+                    }
+                    if (!res.selectedFilter) {
+                        this.viewData = this.fuelTableData;
+                    }
+                }
+            });
         // Delete Selected Rows
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -311,6 +326,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 showTimeFilter: this.selectedTab === 'active',
                 showTruckFilter: this.selectedTab === 'active',
+                showFuelPermanentlyClosed: this.selectedTab === 'inactive',
                 showLocationFilter: true,
                 showFuelStopFilter: this.selectedTab === 'active',
                 showMoneyFilter: true,
@@ -359,13 +375,11 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendFuelData() {
-        const tableView = JSON.parse(
-            localStorage.getItem(`Fuel-table-view`)
-        );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+        const tableView = JSON.parse(localStorage.getItem(`Fuel-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -383,6 +397,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: fuelCount.fuelTransactions,
                 data: this.fuelData,
                 gridNameTitle: 'Fuel',
+                fuelArray: checkSpecialFilterArray(
+                    this.fuelData,
+                    'archivedDate'
+                ),
                 tableConfiguration: 'FUEL_TRANSACTION',
                 isActive: this.selectedTab === 'active',
                 gridColumns: this.getGridColumns('FUEL_TRANSACTION'),
@@ -393,6 +411,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: fuelCount.fuelStops,
                 data: this.fuelData,
                 gridNameTitle: 'Fuel',
+                closedArray: checkSpecialFilterArray(this.fuelData, 'isClosed'),
                 tableConfiguration: 'FUEL_STOP',
                 isActive: this.selectedTab === 'inactive',
                 gridColumns: this.getGridColumns('FUEL_STOP'),
@@ -478,6 +497,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.fuelTableData = this.viewData;
     }
 
     mapFuelTransactionsData(data: any) {
@@ -579,7 +599,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.sendFuelData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
-            
+
             this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }

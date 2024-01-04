@@ -5,6 +5,28 @@
     }"
 >
     <!-- VIEW MODE SELECT -->
+
+    <!-- TOTAL MONEY COUNT -->
+    <div
+        class="money-count-container"
+        [ngClass]="{
+            'money-count-select-style': activeTableData.moneyCountSelected
+        }"
+        *ngIf="options.toolbarActions.showMoneyFilter"
+    >
+    <div class="container-money" >
+        {{  '123450' | moneyFilter  }}
+    </div>
+    </div>
+    <div
+        class="border-container"
+        *ngIf="
+            options?.toolbarActions?.viewModeOptions?.length
+            && options.toolbarActions.showMoneyFilter
+        "
+    >
+        <div class="border"></div>
+    </div>
     <div
         class="view-mode-container"
         *ngIf="options?.toolbarActions?.viewModeOptions?.length"
@@ -37,67 +59,77 @@
         *ngIf="!options.toolbarActions.hideSearch"
         [searchType]="'tabel'"
         [selectedTabData]="activeTableData"
+        [toolbarSearch]="true"
     ></app-carrier-search>
 
     <!-- SEARCH BORDER ONLY -->
     <div
         class="border-container"
-        *ngIf="options.toolbarActions.showSearchBorder"
+        *ngIf=" !options.toolbarActions.hideSearch"
     >
         <div class="border"></div>
     </div>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showArhiveCount"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- ARHIVE COUNT -->
-    <div
+    <!-- <div
         class="ahrive-count-container"
         *ngIf="options.toolbarActions.showArhiveCount"
     >
-        <div class="ahrive-count">{{ activeTableData.arhiveCount }}</div>
+        <div class="ahrive-count">{{ activeTableData.length }}</div>
         <svg-icon
             [svgStyle]="{ 'width.px': 17, 'height.px': 17 }"
             [src]="
                 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'
             "
         ></svg-icon>
-    </div>
-
+    </div> --> 
+    <app-special-filter
+        *ngIf="options.toolbarActions.showArhiveCount"
+        [type]="'archiveFilter'"
+        [icon]="'ic_deactivate'"
+        [filterTitle]="'Deactivated user'"
+        [dataArray]="this.activeTableData.deactivatedUserArray"
+        (setFilter)="onSpecialFilter($event,'deactivatedUserArray')"
+        [selectedFilter]="this.activeTableData.deactivatedUserArray.selectedFilter"
+    ></app-special-filter>
+    
     <!-- BORDER -->
-    <div
-        class="border-container"
-        *ngIf="
-            options.toolbarActions.showCountSelectedInList &&
-            activeTableData?.listSelectedCount
-        "
-    >
-        <div class="border"></div>
-    </div>
+    <ng-container  *ngIf="
+        options.toolbarActions.showCountSelectedInList &&
+        activeTableData?.listSelectedCount.length
+    ">
+        <div class="border-container">
+            <div class="border"></div>
+        </div>
+    </ng-container>
 
     <!-- COUNT SELECTED IN LIST  -->
-    <div
-        class="count-selected-in-list-container"
-        *ngIf="
-            options.toolbarActions.showCountSelectedInList &&
-            activeTableData?.listSelectedCount
-        "
-    >
-        {{ activeTableData.listSelectedCount }} Selected
-    </div>
+    <ng-container  *ngIf="
+        options.toolbarActions.showCountSelectedInList &&
+        activeTableData?.listSelectedCount
+    ">
+        <div
+            class="count-selected-in-list-container"
+        >
+            {{ activeTableData.listSelectedCount }} Selected
+        </div>
+    </ng-container>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showLocationFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- LOCATION FILTER -->
     <app-filter
@@ -111,12 +143,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showFuelStopFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- FUEL STOP FILTER -->
     <app-filter
@@ -148,12 +180,12 @@
     -->
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showStateFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- STATE FILTER -->
     <app-filter
@@ -178,16 +210,21 @@
     -->
 
     <!-- ARHIVE FILTER -->
-    <!--
-    <div class="no-filter" *ngIf="options.toolbarActions.showArhiveFilter">
-        Arhive Filter
-    </div>
-    -->
 
+    <app-special-filter
+        *ngIf="options.toolbarActions.showArhiveFilter"
+        [type]="'archiveFilter'"
+        [icon]="'ic_driver_arhive'"
+        [filterTitle]="'Archive Filter'" 
+        [dataArray]="this.activeTableData.driverArhivedArray"
+        (setFilter)="onSpecialFilter($event,'driverArhivedArray')"
+        [selectedFilter]="this.activeTableData.driverArhivedArray.selectedFilter"
+
+    ></app-special-filter>
     <!-- BORDER -->
-    <div class="border-container" *ngIf="options.toolbarActions.showTimeFilter">
+    <!-- <div class="border-container" *ngIf="options.toolbarActions.showTimeFilter">
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- TIME FILTER -->
     <app-filter
@@ -200,12 +237,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showTruckFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- TRUCK FILTER -->
     <app-filter
@@ -220,12 +257,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showTrailerFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- TRAILER FILTER -->
     <app-filter
@@ -240,12 +277,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showInjuryFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- INJURY FILTER -->
     <app-filter
@@ -308,9 +345,9 @@
     </div>
     -->
     <!-- BORDER -->
-    <div class="border-container" *ngIf="options.toolbarActions.showPMFilter">
+    <!-- <div class="border-container" *ngIf="options.toolbarActions.showPMFilter">
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- PM FILTER -->
     <app-filter
@@ -327,12 +364,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showCategoryRepairFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- CATEGORY REPAIR FILTER -->
     <app-filter
@@ -348,12 +385,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showCategoryFuelFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- CATEGORY FUEL FILTER -->
 
@@ -369,12 +406,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showDispatcherFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- DISPECHER FILTER -->
     <app-filter
@@ -388,12 +425,12 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showStatusFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- STATUS FILTER -->
     <app-filter
@@ -414,19 +451,33 @@
     </div>
     -->
     <!-- LTL FILTER -->
-    <!--
-    <div class="no-filter" *ngIf="options.toolbarActions.showLtlFilter">
-        LTL Filter
+    <!-- <div
+        *ngFor="let data of datas"
+        class="no-filter"
+        [ngClass]="{
+            'active-options-filter': data.active
+        }"
+        (click)="changeFilterView(data.name)"
+    >
+        {{ data.name }}
     </div>
-    -->
+    
+    <app-filter
 
+        [type]="'repair-filter'"
+        [icon]="'ic_shuffle'"
+        [filterTitle]="'Schuffle Filter'"
+        [leftSideIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-filter> -->
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showTruckTypeFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- TRUCK TYPE FILTER -->
     <app-filter
@@ -442,12 +493,12 @@
     >
     </app-filter>
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showTrailerTypeFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- TRAILER TYPE FILTER -->
     <app-filter
@@ -480,12 +531,12 @@
     -->
 
     <!-- BORDER -->
-    <div
+    <!-- <div
         class="border-container"
         *ngIf="options.toolbarActions.showMoneyFilter"
     >
         <div class="border"></div>
-    </div>
+    </div> -->
 
     <!-- MONEY FILTER -->
     <app-filter
@@ -500,19 +551,104 @@
     >
     </app-filter>
 
-    <!-- BORDER -->
-    <div class="border-container" *ngIf="options.toolbarActions.showMoneyCount">
-        <div class="border"></div>
-    </div>
+    <ng-container *ngIf="options.toolbarActions.showMoneyFilter">
+        <div class="border-container" >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+   
+    <!-- FILTER -->
+    <ng-container *ngIf="options.toolbarActions.showLtlFilter">
+        <div    
+            *ngFor="let filterData of loadFilterData"
+            class="no-filter"
+            [ngClass]="{
+                'active-options-filter': filterData.active
+            }"
+            (click)="changeFilterView(filterData.name)"
+        >
+            {{ filterData.name  | uppercase}}
+        </div>
 
-    <!-- TOTAL MONEY COUNT -->
-    <div
-        class="money-count-container"
-        [ngClass]="{
-            'money-count-select-style': activeTableData.moneyCountSelected
-        }"
-        *ngIf="options.toolbarActions.showMoneyCount"
-    >
-        $12.34K
-    </div>
+        <div class="border-container" >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
+    <app-special-filter
+        *ngIf="options.toolbarActions.showLtlFilter && showFtl && this.activeTableData.ftlArray"
+        [type]="'load-filter'"
+        [icon]="'ic_shuffle'"
+        [filterTitle]="'Schuffle Filter'"
+        [dataArray]="this.activeTableData.ftlArray"
+        (setFilter)="onSpecialFilter($event,'ftlArray')"
+        [selectedFilter]="this.activeTableData.ftlArray.selectedFilter"
+    ></app-special-filter>
+
+    <app-special-filter
+        *ngIf="options.toolbarActions.showLtlFilter && showLtl && this.activeTableData.ltlArray"
+        [type]="'load-filter'"
+        [icon]="'ic_ltl_single'"
+        [filterTitle]="'LTL Single'"
+        [dataArray]="this.activeTableData.ltlArray"
+        (setFilter)="onSpecialFilter($event,'ltlArray')"
+        [selectedFilter]="this.activeTableData.ltlArray.selectedFilter"
+    ></app-special-filter>
+
+    <app-special-filter
+        *ngIf="options.toolbarActions.showBrokerFilter"
+        [type]="'archiveFilter'"
+        [icon]="'ic_banned_broker'"
+        [filterTitle]="'Banned'"
+        [dataArray]="this.activeTableData.bannedArray"
+        (setFilter)="onSpecialFilter($event,'ban')"
+        [selectedFilter]="this.activeTableData.bannedArray.selectedFilter"
+    ></app-special-filter>
+
+    <app-special-filter
+        *ngIf="options.toolbarActions.showBrokerFilter"
+        [type]="'broker-filter'"
+        [icon]="'ic_dnu_broker'"
+        [filterTitle]="'Do not use'"
+        [dataArray]="this.activeTableData.dnuArray"
+        (setFilter)="onSpecialFilter($event,'dnu')"
+        [selectedFilter]="this.activeTableData.dnuArray.selectedFilter"
+    ></app-special-filter>
+    
+    <app-special-filter
+        *ngIf="options.toolbarActions.showBrokerFilter || options.toolbarActions.showRepairShop || options.toolbarActions.showBrokerFilterClosed || options.toolbarActions.showFuelPermanentlyClosed"
+        [type]="'broker-filter'"
+        [icon]="'ic_closed_broker'"
+        [filterTitle]="'Permanently Closed'"
+        [dataArray]="this.activeTableData.closedArray"
+        (setFilter)="onSpecialFilter($event,'closedArray')"
+        [selectedFilter]="this.activeTableData.closedArray.selectedFilter"
+    ></app-special-filter>
+
+    <app-special-filter
+        *ngIf="options.toolbarActions.showFuelStopFilter"
+        [type]="'fuel-filter'"
+        [icon]="'ic_fuel_transaction'"
+        [filterTitle]="'Fuel Transaction'"
+        [dataArray]="this.activeTableData.fuelArray"
+        (setFilter)="onSpecialFilter($event,'specialFilterArray1')"
+        [selectedFilter]="this.activeTableData.fuelArray.selectedFilter"
+    ></app-special-filter>
+
+    <app-special-filter
+        *ngIf="options.toolbarActions.showRepairOrderFilter"
+        [type]="'repair-filter'"
+        [icon]="'ic_repair_track'"
+        [filterTitle]="'Repair Filter'"
+        [dataArray]="this.activeTableData.repairArray"
+        (setFilter)="onSpecialFilter($event,'repairArray')"
+        [selectedFilter]="this.activeTableData.repairArray.selectedFilter"
+    ></app-special-filter>
+
+    <!-- BORDER -->
+    <!-- <div class="border-container" *ngIf="options.toolbarActions.showMoneyCount">
+        <div class="border"></div>
+    </div> -->
+
+
 </div>

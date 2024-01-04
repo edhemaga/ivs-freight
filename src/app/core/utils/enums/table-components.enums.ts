@@ -239,4 +239,16 @@ export enum ConstantStringTableComponentsEnum {
     NO_ENDPOINT = 'no-endpoint',
     NO_ENDPOINT_2 = 'No Endpoint',
     SLASH = '/',
+
+    //Toolbar
+
+    ALL = 'all',
+    FTL = 'ftl',
+    LTL = 'ltl',
+    ARHIVED_DATA = 'archivedDate',
+    IS_CLOSED = 'isClosed',
+    BAN = 'ban',
+    DNU = 'dnu',
+    TYPE = 'type',
+    STATUS = 'status',
 }

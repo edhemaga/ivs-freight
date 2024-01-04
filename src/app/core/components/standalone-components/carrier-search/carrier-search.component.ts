@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-carrier-search',
@@ -19,11 +20,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
+        NgbTooltipModule,
     ],
     templateUrl: './carrier-search.component.html',
     styleUrls: ['./carrier-search.component.scss'],
 })
 export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
+    @Input() toolbarSearch?: boolean = false;
     @Input() searchType: string = '';
     @Input() selectedTabData: any = {};
     chips: any[] = [];
@@ -57,12 +60,16 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     // Open Search
     toggleSearch() {
-        this.openSearch = !this.openSearch;
+        if (this.chips.length == 3) {
+            this.openSearch = false;
+        } else {
+            this.openSearch = !this.openSearch;
 
-        if (this.openSearch && this.chips.length < 3) {
-            setTimeout(() => {
-                document.getElementById('table-search').focus();
-            }, 100);
+            if (this.openSearch && this.chips.length < 3) {
+                setTimeout(() => {
+                    document.getElementById('table-search').focus();
+                }, 100);
+            }
         }
     }
 
@@ -124,7 +131,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
                 query: this.getChipQuery(this.chips.length - 1),
                 searchType: this.searchType,
             });
-
+            this.chips.length === 3 ? this.toggleSearch() : null;
             this.chipToDelete = -1;
             this.searchText = '';
             this.searchIsActive = false;
@@ -132,7 +139,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // Send Chips For Highlight Search On Typing
-    sendHighlightSearchOnTyping(){
+    sendHighlightSearchOnTyping() {
         this.chipsForHighlightSearch = [];
 
         this.chips.map((chip) => {
@@ -159,6 +166,12 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
         this.tableService.sendChipsForHighlightSearchToTable(
             this.chipsForHighlightSearch
         );
+    }
+
+    public handleClearClick(): void {
+        if (this.searchText) {
+            this.searchText = '';
+        }
     }
 
     // Check If Chips Already Have Search Text
