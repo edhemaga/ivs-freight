@@ -35,7 +35,9 @@
             *ngFor="let viewMode of options.toolbarActions.viewModeOptions"
             class="mode"
             [ngClass]="{
-                'mode-active': viewMode.active
+                'mode-active': viewMode.active,
+                'mode-margin': activeTableData.gridNameTitle == 'Account' || activeTableData.gridNameTitle == 'Contact' || activeTableData.gridNameTitle == 'User'
+
             }"
             (click)="changeModeView(viewMode.name)"
         >

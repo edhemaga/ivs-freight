@@ -62,6 +62,7 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges) {
+        console.log(this.activeTableData);
         if (!changes?.options?.firstChange && changes?.options) {
             this.options = changes.options.currentValue;
         }

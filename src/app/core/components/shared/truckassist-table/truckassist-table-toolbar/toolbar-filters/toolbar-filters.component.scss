@@ -115,11 +115,13 @@
                 transition: 0.25s !important;
             }
         }
-
+        .mode-margin{
+            margin-left: 4px;
+        }
         .mode-active {
             background: $bw2 !important;
             color: $ta-black !important;
-
+           
             &:hover {
                 color: $ta-black !important;
                 transition: 0.25s !important;
@@ -178,7 +180,6 @@
 
     transition: 0.25s;
 }
-
 .table-filter-padding {
     padding-left: 4px;
 }
