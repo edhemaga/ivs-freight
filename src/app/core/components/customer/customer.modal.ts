@@ -2,6 +2,7 @@ import {
     ApplicantResponse,
     BrokerResponse,
     DriverResponse,
+    OwnerResponse,
     ShipperResponse,
     TimeOnly,
 } from 'appcoretruckassist';

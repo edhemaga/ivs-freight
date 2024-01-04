@@ -58,6 +58,7 @@ export enum ConstantStringTableComponentsEnum {
     // Sizes
     SMALL = 'small',
     MEDIUM = 'medium',
+    LARGE = 'large',
 
     // Money
     DOLLAR_SIGN = '$',
@@ -66,6 +67,8 @@ export enum ConstantStringTableComponentsEnum {
     DATE_FORMAT = 'MM/dd/yy',
     HOURS = 'h',
     MINUTES = 'min',
+    PM = 'pm',
+    PM_2 = 'PM',
 
     // Distance
     MILES = 'mi',
@@ -82,6 +85,7 @@ export enum ConstantStringTableComponentsEnum {
     // Separators
     COMA = ', ',
     DOT = '. ',
+    DOT_1 = '.',
     PERCENTS = '%',
     SVG = '.svg',
 
@@ -210,6 +214,50 @@ export enum ConstantStringTableComponentsEnum {
     TRAILER_TABLE_COUNT = 'trailerTableCount',
     TRAILER_TAB_VIEW = 'Trailer-table-view',
 
+    // Repair
+    FAVORITE = 'favorite',
+    FINISH_ORDER = 'finish-order',
+    DELETE_REPAIR = 'delete-repair',
+    EDIT_FO_TRAILER = 'edit-fo-trailer',
+    EDIT_FO_TRUCK = 'edit-fo-truck',
+    REPAIR_SHOP = 'repair-shop',
+    NEW_TRAILER = 'new-trailer',
+    NEW_TRUCK = 'new-truck',
+    REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
+    ORDER = 'Order',
+    DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
+    REPAIR_TRUCK = 'REPAIR_TRUCK',
+    REPAIR_TRAILER = 'REPAIR_TRAILER',
+    REPAIR_TABLE_VIEW = 'Repair-table-view',
+    TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
+    TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
+    NAME = 'name',
+    SERVICE_TYPES = 'serviceTypes',
+
+    // PM
+    PM_TABLE_VIEW = 'PM-table-view',
+    PM_TRUCK = 'PM_TRUCK',
+    PM_TRUCKS = 'pm_trucks',
+    PM_TRAILERS = 'pm_trailers',
+    PM_TRAILER = 'PM_TRAILER',
+    OPEN_GENERAL_PM = 'open-general-pm',
+    NEW = 'new',
+    GENERIC_PM = 'generic-pm',
+    UNIT_PM = 'unit-pm',
+
+    // Owner
+    TRUCK_TYPE_FILTER = 'truckTypeFilter',
+    TRAILER_TYPE_FILTER = 'trailerTypeFilter',
+    SET = 'Set',
+    LOCATION_FILTER = 'locationFilter',
+    OWNER_TABLE_VIEW = `Owner-table-view`,
+    OWNER_TABLE_COUNTE = 'ownerTableCount',
+    OWNER = 'Owner',
+    OWNER_2 = 'OWNER',
+    OWNERS = 'owners',
+    EDIT_OWNER = 'edit-owner',
+    DELETE_OWNER = 'delete-owner',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
@@ -251,4 +299,14 @@ export enum ConstantStringTableComponentsEnum {
     DNU = 'dnu',
     TYPE = 'type',
     STATUS = 'status',
+
+    // Cards
+    INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',
+    CLICK = 'click',
+    CONTAINER_COUNT_TA_FONT_MEDIUM = '.container-count.ta-font-medium',
+    SPAN = 'span',
+    DIV = 'div',
+    SEPARATOR = ' • ',
+    PLUS = '+',
+    REPAIR = 'Repair',
 }

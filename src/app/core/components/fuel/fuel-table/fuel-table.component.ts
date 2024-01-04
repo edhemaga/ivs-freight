@@ -22,6 +22,7 @@ import { DatePipe } from '@angular/common';
 import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
 import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { TableFuel } from 'src/app/core/utils/constants/table-components.constants';
 
 @Component({
     selector: 'app-fuel-table',
@@ -51,23 +52,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     searchValue: string = '';
     locationFilterOn: boolean = false;
 
-    fuelPriceColors: any[] = [
-        '#4CAF4F',
-        '#8AC34A',
-        '#FEC107',
-        '#FF9800',
-        '#EF5350',
-        '#919191',
-    ];
+    fuelPriceColors: string[] = TableFuel.FUEL_PRICE_COLORS;
 
-    fuelPriceHoverColors: any[] = [
-        '#43A047',
-        '#7CB242',
-        '#FFB300',
-        '#FB8C00',
-        '#F34235',
-        '#6C6C6C',
-    ];
+    fuelPriceHoverColors: string[] = TableFuel.FUEL_PRICE_HOVER_COLORS;
 
     resizeObserver: ResizeObserver;
     fuelData: FuelTransactionListResponse | FuelStopListResponse;
@@ -82,10 +69,48 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef
     ) {}
+
+    //-------------------------------NG ON INIT-------------------------------
     ngOnInit(): void {
         this.sendFuelData();
 
-        // Reset Columns
+        this.resetColumns();
+
+        this.resize();
+
+        this.toggleColumns();
+
+        this.search();
+
+        this.deleteSelectedRows();
+
+        this.fuelActions();
+
+        this.sorting();
+
+        // Map
+        this.sortTypes = TableFuel.SORT_TYPES;
+
+        this.activeSortType = this.sortTypes[0];
+    }
+
+    //-------------------------------NG AFTER INIT-------------------------------
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    private sorting(): void {
+        this.sortBy = this.sortDirection
+            ? this.activeSortType.sortName +
+              (this.sortDirection[0]?.toUpperCase() +
+                  this.sortDirection?.substr(1).toLowerCase())
+            : '';
+    }
+
+    // Reset Columns
+    private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
@@ -93,8 +118,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sendFuelData();
                 }
             });
+    }
 
-        // Resize
+    // Resize
+    private resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
@@ -111,8 +138,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    // Toggle Columns
+    private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any) => {
@@ -126,8 +155,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 }
             });
+    }
 
-        // Search
+    // Search
+    private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -162,53 +193,59 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
         // Delete Selected Rows
+    }
+
+    // Delete Selected Rows
+    private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
                 if (response.length) {
                     /* let mappedRes = response.map((item) => {
-            return {
-              id: item.id,
-              data: { ...item.tableData, name: item.tableData?.fullName },
-            };
-          });
-          this.modalService.openModal(
-            ConfirmationModalComponent,
-            { size: 'small' },
-            {
-              data: null,
-              array: mappedRes,
-              template: 'driver',
-              type: 'multiple delete',
-              image: true,
-            }
-          ); */
+             return {
+               id: item.id,
+               data: { ...item.tableData, name: item.tableData?.fullName },
+             };
+           });
+           this.modalService.openModal(
+             ConfirmationModalComponent,
+             { size: 'small' },
+             {
+               data: null,
+               array: mappedRes,
+               template: 'driver',
+               type: 'multiple delete',
+               image: true,
+             }
+           ); */
                 }
             });
+    }
 
-        // Fuel Actions
+    // Fuel Actions
+    private fuelActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 // On Add Driver Active
                 if (res.animation === 'add' && this.selectedTab === 'active') {
                     /* this.viewData.push(this.mapDriverData(res.data));
-
-          this.viewData = this.viewData.map((driver: any) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'add';
-            }
-
-            return driver;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 2300); */
+ 
+           this.viewData = this.viewData.map((driver: any) => {
+             if (driver.id === res.id) {
+               driver.actionAnimation = 'add';
+             }
+ 
+             return driver;
+           });
+ 
+           this.updateDataCount();
+ 
+           const inetval = setInterval(() => {
+             this.viewData = closeAnimationAction(false, this.viewData);
+ 
+             clearInterval(inetval);
+           }, 2300); */
                 }
                 // On Add Driver Inactive
                 else if (
@@ -220,95 +257,69 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 // On Update Driver
                 else if (res.animation === 'update') {
                     /* const updatedDriver = this.mapDriverData(res.data);
-
-          this.viewData = this.viewData.map((driver: any) => {
-            if (driver.id === res.id) {
-              driver = updatedDriver;
-              driver.actionAnimation = 'update';
-            }
-
-            return driver;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000); */
+ 
+           this.viewData = this.viewData.map((driver: any) => {
+             if (driver.id === res.id) {
+               driver = updatedDriver;
+               driver.actionAnimation = 'update';
+             }
+ 
+             return driver;
+           });
+ 
+           const inetval = setInterval(() => {
+             this.viewData = closeAnimationAction(false, this.viewData);
+ 
+             clearInterval(inetval);
+           }, 1000); */
                 }
                 // On Update Driver Status
                 else if (res.animation === 'update-status') {
                     /* let driverIndex: number;
-
-          this.viewData = this.viewData.map((driver: any, index: number) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation =
-                this.selectedTab === 'active' ? 'deactivate' : 'activate';
-              driverIndex = index;
-            }
-
-            return driver;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(driverIndex, 1);
-            clearInterval(inetval);
-          }, 900); */
+ 
+           this.viewData = this.viewData.map((driver: any, index: number) => {
+             if (driver.id === res.id) {
+               driver.actionAnimation =
+                 this.selectedTab === 'active' ? 'deactivate' : 'activate';
+               driverIndex = index;
+             }
+ 
+             return driver;
+           });
+ 
+           this.updateDataCount();
+ 
+           const inetval = setInterval(() => {
+             this.viewData = closeAnimationAction(false, this.viewData);
+ 
+             this.viewData.splice(driverIndex, 1);
+             clearInterval(inetval);
+           }, 900); */
                 }
                 // On Delete Driver
                 else if (res.animation === 'delete') {
                     /* let driverIndex: number;
-
-          this.viewData = this.viewData.map((driver: any, index: number) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'delete';
-              driverIndex = index;
-            }
-
-            return driver;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(driverIndex, 1);
-            clearInterval(inetval);
-          }, 900); */
+ 
+           this.viewData = this.viewData.map((driver: any, index: number) => {
+             if (driver.id === res.id) {
+               driver.actionAnimation = 'delete';
+               driverIndex = index;
+             }
+ 
+             return driver;
+           });
+ 
+           this.updateDataCount();
+ 
+           const inetval = setInterval(() => {
+             this.viewData = closeAnimationAction(false, this.viewData);
+ 
+             this.viewData.splice(driverIndex, 1);
+             clearInterval(inetval);
+           }, 900); */
                 }
             });
-
-        // Map
-        this.sortTypes = [
-            { name: 'Business Name', id: 1, sortName: 'name' },
-            { name: 'Location', id: 2, sortName: 'location', isHidden: true },
-            { name: 'Favorites', id: 8, sortName: 'favorites' },
-            { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
-            { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-            { name: 'Purchase', id: 6, sortName: 'purchase' },
-            { name: 'Total Cost', id: 7, sortName: 'cost' },
-        ];
-
-        this.activeSortType = this.sortTypes[0];
-
-        this.sortBy = this.sortDirection
-            ? this.activeSortType.sortName +
-              (this.sortDirection[0]?.toUpperCase() +
-                  this.sortDirection?.substr(1).toLowerCase())
-            : '';
     }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {

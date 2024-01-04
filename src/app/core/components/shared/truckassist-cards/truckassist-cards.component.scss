@@ -1,15 +1,17 @@
 @import '/src/theme/variables.scss';
 @import '/src/assets/scss/fonts.scss';
+
 //Cards
 .cards-container {
     margin-top: 11px;
+    display: grid;
     gap: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(302px, 1fr));
 }
 .custom-card {
     background: $white;
     border-radius: 3px;
-    flex: 1 0 302px;
-    max-width: 367px;
+
     .body-active {
         background: $ta-gray-02;
     }
@@ -17,29 +19,47 @@
     .body-checked {
         background: $ta-gray-02;
     }
+
     // Main tag of card holding all elements with hover on it
     .card-body {
-        padding: 4px;
-        display: flex;
-        justify-content: space-between;
         border-radius: 2px;
+        margin: 4px;
+        height: calc(100% - 8px);
 
-        &:hover {
-            background: $bw2;
+        .description-container {
+            overflow: hidden;
+            width: 100%;
+            height: 26px;
+            cursor: pointer;
+            z-index: 2;
+            position: absolute;
+        }
+
+        .container-count {
+            background: $dark-2;
+            border-radius: 50px;
+            height: 20px;
+            min-width: 23px;
+            font-size: 11px;
+            width: fit-content;
+            padding: 0 4px;
+            position: relative;
+            top: 3px;
         }
 
         .card-body-left {
-            width: 256px;
+            width: calc(100% - 30px);
 
             .card-header {
                 gap: 10px;
                 position: relative;
-                padding-left: 22px;
+                padding-left: 29px;
+                padding-top: 4px;
 
                 .checkbox-holder {
                     position: absolute;
-                    left: 0;
-                    top: -1px;
+                    left: 5px;
+                    top: 3px;
 
                     .table-checkbox {
                         display: none;
@@ -67,11 +87,26 @@
                     font-size: 14px;
                     line-height: 18px;
                     cursor: pointer;
+                    width: 100%;
 
                     .title {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                    }
+
+                    .finish-order-holder {
+                        width: 100%;
+
+                        .finish-order-action {
+                            color: $ta-blue-18;
+                            font-size: 11px;
+                            padding: 4px 8px;
+                            white-space: nowrap;
+                            border-radius: 2px;
+                            height: 22px;
+                            text-transform: uppercase;
+                        }
                     }
 
                     .title-load {
@@ -99,11 +134,13 @@
                     }
 
                     &:hover {
-                        color: $ta-blue-15;
+                        .title {
+                            color: $ta-blue-15;
+                        }
                     }
 
                     .title {
-                        width: 224px;
+                        width: 100%;
                     }
 
                     .svg-ftl-ltl {
@@ -115,7 +152,7 @@
                             height: 16px;
 
                             path {
-                                fill: $ta-blue-13;
+                                fill: $ta-blue-18;
                             }
                         }
                     }
@@ -148,12 +185,13 @@
                 margin-top: 8px;
 
                 .item-body {
-                    height: 40px;
+                    height: fit-content;
 
                     .top-item-body {
                         font-size: 11px;
                         font-weight: 700;
                         line-height: 20px;
+                        padding: 0 4px;
                     }
 
                     .gap {
@@ -165,8 +203,31 @@
                         overflow: hidden;
                         line-height: 20px;
                         width: 100%;
+                        padding: 0 0 0 4px;
 
-                        // STYLES FOR LOAD PAGE
+                        .items-container-body {
+                            width: 100%;
+                            position: relative;
+                            left: -4px;
+                            padding-left: 4px;
+                            padding-right: 13px;
+
+                            &:hover {
+                                background: rgba(145, 145, 145, 0.2);
+                            }
+
+                            .items-container {
+                                position: relative;
+                                top: 3px;
+                                height: 26px;
+                                width: 100%;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+
+                        // Styles for load page
                         .load-span {
                             width: 18px;
                             height: 18px;
@@ -180,7 +241,7 @@
                         }
 
                         .delivery {
-                            background: $ta-red;
+                            background: $ta-red-10;
                         }
 
                         .muted {
@@ -192,18 +253,18 @@
                         }
 
                         .loaded {
-                            color: $ta-loaded;
+                            color: $ta-green-2;
                         }
 
                         .assigned {
-                            color: $ta-assigned;
+                            color: $ta-green-1;
                         }
 
                         .dispatched {
                             color: $ta-blue-14;
                         }
 
-                        // STYLES FOR CUSTOMER PAGE
+                        // Styles for customer page
                         .rating-holder {
                             gap: 8px;
                             .rating {
@@ -217,11 +278,11 @@
                             }
                         }
 
-                        span {
+                        .checkbox-tooltip {
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
-                            display: block;
+                            width: 100%;
                         }
 
                         svg {
@@ -246,18 +307,85 @@
                             border-radius: 50%;
                             margin-right: 4px;
                         }
+
+                        // Styles repair page
+                        .service-svg {
+                            svg {
+                                height: 18px;
+                                width: 18px;
+                                path {
+                                    fill: $dark-3;
+                                }
+                            }
+                        }
+
+                        .active-svg {
+                            svg {
+                                path {
+                                    fill: $muted;
+                                }
+                            }
+                        }
+
+                        .progresbar-pm {
+                            cursor: pointer;
+                            line-height: 26px;
+                            position: relative;
+                            left: -4px;
+                            padding: 0 4px;
+                            width: 138px;
+
+                            &:hover {
+                                background: $dark-2;
+                            }
+                        }
+
+                        // Styles owner page
+                        .fleet-holder {
+                            gap: 4px;
+
+                            .fleet {
+                                gap: 4px;
+                                font-size: 11px;
+
+                                .svg-holder {
+                                    height: 18px;
+                                    width: 18px;
+                                }
+
+                                .no-count-text {
+                                    color: $muted;
+                                }
+
+                                .no-count {
+                                    svg {
+                                        path {
+                                            fill: $ta-light-grey-6;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .masked-number {
+                            .masked {
+                                color: $bw6-2;
+                                margin-left: 4px;
+                            }
+                        }
                     }
                 }
             }
         }
 
         .card-body-right {
-            height: 218px;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            padding: 4px 4px 0 0;
 
             .top-side {
-                height: 192px;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
@@ -268,6 +396,16 @@
                     height: 26px;
                     cursor: pointer;
                     position: relative;
+                    border-radius: 2px;
+                    top: 2px;
+
+                    &:hover {
+                        background: $dark-2;
+                    }
+
+                    .note-tooltip {
+                        height: 30px;
+                    }
 
                     svg {
                         path {
@@ -320,7 +458,7 @@
                                 fill: $white;
                             }
                             path:nth-child(2) {
-                                fill: $ta-red-2;
+                                fill: $ta-red-10;
                             }
                         }
                     }
@@ -331,12 +469,40 @@
                     }
                 }
 
+                .right-side-svg-favorite {
+                    width: 26px;
+                    height: 26px;
+                    cursor: pointer;
+                    position: relative;
+                    top: 2px;
+
+                    .tooltip-card {
+                        width: 20px;
+                        height: 30px;
+                        position: absolute;
+                    }
+
+                    &:hover {
+                        svg {
+                            g {
+                                path {
+                                    fill: $ta-black;
+                                    transition: fill 0.3s;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 .active-item {
                     background: $ta-black;
                     border-radius: 2px;
                     width: 26px;
                     height: 26px;
-                    transition: all 0.3s;
+
+                    &:hover {
+                        background: $ta-black;
+                    }
 
                     .table-dropdown-container {
                         svg {
@@ -349,10 +515,12 @@
                     }
                 }
             }
+
             .bottom-side {
                 width: 26px;
                 height: 26px;
                 cursor: pointer;
+                position: relative;
 
                 .svg-position {
                     rotate: (0deg);
@@ -363,17 +531,137 @@
 
                     svg {
                         path {
-                            fill: $ta-blue-13;
+                            fill: $ta-blue-18;
                         }
                     }
                 }
+
                 .expand-card {
+                    position: absolute;
+                    bottom: 5px;
+
                     &:hover {
                         svg {
                             path {
                                 fill: $ta-black;
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background: $bw2;
+
+            .finish-order-action {
+                background: $ta-blue-18;
+                color: $white !important;
+
+                transition: color 0.25s, background 0.25s;
+            }
+        }
+    }
+}
+
+// Dropdown for cards
+.card-dropdown-container {
+    cursor: pointer;
+    transform: translateY(-30px);
+
+    .description-titles {
+        background: $ta-black-2;
+        color: $ta-light-grey-6;
+        height: 26px;
+        border-radius: 2px;
+        padding: 4px;
+        font-size: 11px;
+
+        .number-title {
+            font-size: 11px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .dropdown-titles {
+            width: calc(100% - 18px);
+
+            .dropdown-right {
+                padding-right: 4px;
+                font-size: 11px;
+
+                .price-total-title {
+                    font-size: 14px;
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    .description-items {
+        background: $ta-black-2;
+        border-radius: 2px;
+        padding: 4px;
+        margin-top: 4px;
+
+        .description-item {
+            gap: 2px;
+            max-height: 254px;
+            overflow-y: scroll;
+            scrollbar-color: $muted;
+            scrollbar-width: thin !important;
+
+            &::-webkit-scrollbar {
+                width: 2px !important;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $muted !important;
+                border-radius: 1px !important;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: $ta-black-2 !important;
+            }
+
+            .item-description {
+                color: $white;
+
+                &:hover {
+                    background: $ta-black;
+                    border-radius: 3px;
+                }
+
+                .item-index {
+                    width: 18px;
+                    height: 18px;
+                    color: $muted;
+                    margin-right: 4px;
+                }
+
+                .items-holder {
+                    width: 100%;
+
+                    .left-description {
+                        padding: 2px 0;
+
+                        .item-title {
+                            font-size: 11px;
+                            height: 13px;
+                            width: 100%;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        .items-number-items-cost {
+                            font-size: 11px;
+                            height: 13px;
+                            color: $ta-light-grey-6;
+                        }
+                    }
+
+                    .item-total-cost {
+                        margin-right: 4px;
                     }
                 }
             }

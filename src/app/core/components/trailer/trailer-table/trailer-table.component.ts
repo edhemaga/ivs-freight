@@ -52,6 +52,7 @@ import {
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { DisplayTrailerConfiguration } from '../trailer-card-data';
+import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 @Component({
     selector: 'app-trailer-table',
@@ -73,16 +74,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
-    public backFilterQuery: backFilterQueryInterface = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public activeTableData: string;
+    public backFilterQuery: backFilterQueryInterface =
+        TableDropdownTrailerComponentConstants.BACK_FILTER_QUERY;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =
@@ -380,7 +374,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(
+                ConstantStringTableComponentsEnum.TABLE_CONTAINER
+            )
+        );
     }
 
     public initTableOptions(): void {
@@ -500,6 +498,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                   (this.sendDataToCardsBack = this.displayRowsBackActive))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
                   (this.sendDataToCardsBack = this.displayRowsBackInactive));
+
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
@@ -984,6 +984,22 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData(): void {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (table) => table.field === this.selectedTab
+            );
+        }
+    }
+
+    // Show More Data
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+        });
+    }
+
     private changeTrailerStatus(id: number): void {
         this.trailerService
             .changeTrailerStatus(id, this.selectedTab)
@@ -1074,7 +1090,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
+        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
         this.destroy$.next();

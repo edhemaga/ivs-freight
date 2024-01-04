@@ -318,24 +318,24 @@ export class FilterComponent implements OnInit, AfterViewInit {
         {
             id: 1,
             name: 'Test test test',
-            color: '#ff0000'
+            color: '#ff0000',
         },
         {
             id: 2,
             name: 'Test asdadasd',
-            color: '#ff1234'
+            color: '#ff1234',
         },
         {
             id: 3,
             name: 'Test dddd eeee',
-            color: '#ff4442'
+            color: '#ff4442',
         },
         {
             id: 4,
             name: 'Test ttttt tttttt',
-            color: '#ff5858'
-        }
-    ]
+            color: '#ff5858',
+        },
+    ];
 
     unselectedUser: any[] = [
         {
@@ -1443,19 +1443,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
             this.getBackendData(this.type);
         } else if (this.type === 'categoryRepairFilter') {
             this.getBackendData(this.type);
-        } else if ( this.type === 'categoryFuelFilter' ) {
+        } else if (this.type === 'categoryFuelFilter') {
             this.getBackendData(this.type);
-        } else if ( this.type === 'stateFilter' ) {
+        } else if (this.type === 'stateFilter') {
             this.getBackendData(this.type);
-        } else if ( this.type === 'departmentFilter' ) {
+        } else if (this.type === 'departmentFilter') {
             this.getBackendData(this.type);
-        } else if ( this.type === 'userFilter' ) {
+        } else if (this.type === 'userFilter') {
             this.getBackendData(this.type);
-        } else if ( this.type === 'pmFilter' ) {
+        } else if (this.type === 'pmFilter') {
             this.getBackendData(this.type, this.pmSubtype);
-        } else if ( this.type === 'truckFilter' ) {
+        } else if (this.type === 'truckFilter') {
             this.getBackendData(this.type);
-        } else if ( this.type === 'trailerFilter' ) {
+        } else if (this.type === 'trailerFilter') {
             this.getBackendData(this.type);
         }
 
@@ -1944,7 +1944,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (this.type == 'truckTypeFilter') {
-                    if (res.animation == 'truck-type-update') {
+                    if (res?.animation == 'truck-type-update') {
                         let newData = res.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
@@ -1956,7 +1956,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         this.truckTypeArray = newData;
                     }
                 } else if (this.type == 'trailerTypeFilter') {
-                    if (res.animation == 'trailer-type-update') {
+                    if (res?.animation == 'trailer-type-update') {
                         let newData = res.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
@@ -1968,7 +1968,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         this.trailerTypeArray = newData;
                     }
                 } else if (this.type === 'categoryRepairFilter') {
-                    if (res.animation == 'repair-category-update') {
+                    if (res?.animation == 'repair-category-update') {
                         let newData = res.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
@@ -1978,60 +1978,64 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         );
                         this.categoryRepairArray = newData;
                     }
-                } else if ( this.type === 'categoryFuelFilter' ) {
-                    if (res.animation == 'fuel-category-update') {
+                } else if (this.type === 'categoryFuelFilter') {
+                    if (res?.animation == 'fuel-category-update') {
                         this.categoryFuelArray = res.data;
                     }
-                } else if ( this.type === 'stateFilter' ) {
-                    if (res.animation == 'state-data-update') {
-                        
+                } else if (this.type === 'stateFilter') {
+                    if (res?.animation == 'state-data-update') {
                         let usaArray = [];
                         let canadaArray = [];
 
                         res.data.map((state: any, index: number) => {
-                            
-                            if ( state.countryType.name == 'Canada' ) {
+                            if (state.countryType.name == 'Canada') {
                                 canadaArray.push(state);
                             } else {
                                 usaArray.push(state);
                             }
-                        })
-                        
+                        });
+
                         this.usaStates = usaArray;
                         this.canadaStates = canadaArray;
                     }
-                } else if ( this.type === 'departmentFilter' ) {
-                    if (res.animation == 'department-data-update') {
+                } else if (this.type === 'departmentFilter') {
+                    if (res?.animation == 'department-data-update') {
                         this.departmentArray = res.data;
                     }
-                } else if ( this.type === 'pmFilter' && this.pmSubtype === 'truck' ) {
-                    if (res.animation == 'pm-truck-data-update') {
+                } else if (
+                    this.type === 'pmFilter' &&
+                    this.pmSubtype === 'truck'
+                ) {
+                    if (res?.animation == 'pm-truck-data-update') {
                         let newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
-                                    'assets/svg/common/repair-pm/' + type.logoName;
-                                return type;
-                            }
-                        );
-
-                        
-                        this.pmFilterArray = newData;
-                    }
-                } else if ( this.type === 'pmFilter' && this.pmSubtype === 'trailer' ) {
-                    if (res.animation == 'pm-trailer-data-update') {
-
-                        let newData = res.data.pagination.data.map(
-                            (type: any, index: number) => {
-                                type['icon'] =
-                                    'assets/svg/common/repair-pm/' + type.logoName;
+                                    'assets/svg/common/repair-pm/' +
+                                    type.logoName;
                                 return type;
                             }
                         );
 
                         this.pmFilterArray = newData;
                     }
-                } else if ( this.type === 'userFilter' ) {
-                    if ( res.animation == 'dispatch-data-update' ) {
+                } else if (
+                    this.type === 'pmFilter' &&
+                    this.pmSubtype === 'trailer'
+                ) {
+                    if (res?.animation == 'pm-trailer-data-update') {
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] =
+                                    'assets/svg/common/repair-pm/' +
+                                    type.logoName;
+                                return type;
+                            }
+                        );
+
+                        this.pmFilterArray = newData;
+                    }
+                } else if (this.type === 'userFilter') {
+                    if (res?.animation == 'dispatch-data-update') {
                         let newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['name'] = type.fullName;
@@ -2041,9 +2045,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
                         this.unselectedUser = newData;
                     }
-                    
-                } else if ( this.type === 'truckFilter' ) {
-                    if ( res.animation === 'truck-list-update' ) {
+                } else if (this.type === 'truckFilter') {
+                    if (res?.animation === 'truck-list-update') {
                         let newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['name'] = type.truckNumber;
@@ -2052,7 +2055,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         );
                         this.truckArray = newData;
                     }
-                } else if ( this.type === 'trailerFilter' ) {
+                } else if (this.type === 'trailerFilter') {
                     let newData = res.data.pagination.data.map(
                         (type: any, index: number) => {
                             type['name'] = type.trailerNumber;
@@ -2106,7 +2109,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
             } else {
                 mainArray = this.usaStates;
             }
-        } else if ( this.type == 'labelFilter' ) {
+        } else if (this.type == 'labelFilter') {
             mainArray = this.labelArray;
         }
 
@@ -2242,8 +2245,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
-        }
-        else if ( this.type == 'labelFilter' ) {
+        } else if (this.type == 'labelFilter') {
             this.labelArray.map((item) => {
                 if (item.id == id) {
                     item.isSelected = false;
@@ -2615,7 +2617,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 queryParams = {
                     usaArray: this.filterUsaActiveArray,
                     canadaArray: this.filterCanadaActiveArray,
-                }
+                };
             } else if (this.type == 'moneyFilter') {
                 if (this.subType == 'all') {
                     let formActive = 0;
@@ -2810,7 +2812,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 queryParams: queryParams,
                 subType: subType,
             };
-            
+
             if (this.setFilter) {
                 this.setFilter.emit(data);
             }
@@ -3186,59 +3188,47 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.areaFilterSelected = event.name;
     }
 
-    public getBackendData(type: any, subType?: any){
-        
+    public getBackendData(type: any, subType?: any) {
         switch (this.type) {
-            case 'truckTypeFilter' : 
-                {
-                    this.filterService.getTruckType();
-                    break;
-                }
-            case 'trailerTypeFilter' : 
-                {
-                    this.filterService.getTrailerType();
-                    break;
-                }
-            case 'categoryRepairFilter' : 
-                {
-                    this.filterService.getRepairCategory();
-                    break;
-                }
-            case 'categoryFuelFilter' : 
-                {
-                    this.filterService.getFuelCategory();
-                    break; 
-                } 
-            case 'stateFilter' : 
-                {
-                    this.filterService.getStateData();
-                } 
-            case 'departmentFilter' :
-                {
-                    this.filterService.getDepartmentData();
-                    break;
-                }
-            case 'userFilter' :
-                {
-                    this.filterService.getDispatchData();
-                    break;
-                }
-            case 'truckFilter' :
-                {
-                    this.filterService.getTruckData();
-                    break;
-                }         
-            case 'trailerFilter' : 
-                {
-                    this.filterService.getTrailerData();
-                    break;
-                } 
-            case 'pmFilter' : 
-                {
-                    this.filterService.getPmData(subType);
-                    break;
-                }                     
+            case 'truckTypeFilter': {
+                this.filterService.getTruckType();
+                break;
+            }
+            case 'trailerTypeFilter': {
+                this.filterService.getTrailerType();
+                break;
+            }
+            case 'categoryRepairFilter': {
+                this.filterService.getRepairCategory();
+                break;
+            }
+            case 'categoryFuelFilter': {
+                this.filterService.getFuelCategory();
+                break;
+            }
+            case 'stateFilter': {
+                this.filterService.getStateData();
+            }
+            case 'departmentFilter': {
+                this.filterService.getDepartmentData();
+                break;
+            }
+            case 'userFilter': {
+                this.filterService.getDispatchData();
+                break;
+            }
+            case 'truckFilter': {
+                this.filterService.getTruckData();
+                break;
+            }
+            case 'trailerFilter': {
+                this.filterService.getTrailerData();
+                break;
+            }
+            case 'pmFilter': {
+                this.filterService.getPmData(subType);
+                break;
+            }
         }
     }
-
 }

@@ -32,7 +32,7 @@ import {
 import { TruckListResponse, TruckResponse } from 'appcoretruckassist';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
-import { BodyResponseTruck } from '../truck.modal';
+import { BodyResponseTruck, FilterOptions } from '../truck.modal';
 import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 import {
     DataForCardsAndTables,
@@ -47,6 +47,7 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 @Component({
     selector: 'app-truck-table',
@@ -67,17 +68,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = false;
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
-    // TODO type
-    public backFilterQuery = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backFilterQuery: FilterOptions =
+        TableDriverColorsConstants.BACK_FILTER_QUERY;
+
     public resizeObserver: ResizeObserver;
 
     //Data to display from model Truck Active

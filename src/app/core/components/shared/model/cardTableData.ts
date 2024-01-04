@@ -63,7 +63,6 @@ export interface DataUpdate {
     id: string;
 }
 
-
 // TOOLBAR ACTIONS
 export interface ToolbarActions {
     action: string;
@@ -116,11 +115,12 @@ export interface ColumnWidthData {
 }
 // Table Columns end
 export interface SendDataCard {
-    id: number;
+    id?: number;
     data: CardDetails;
     type: string;
 }
 export interface CardDetails {
+    descriptionItems?: string[];
     id: number;
     type: Type;
     isSelected: boolean;
@@ -181,7 +181,15 @@ export interface CardDetails {
     fileCount: number;
     loadTotal: LoadTotal;
     isFlipped: boolean;
-
+    items: {
+        description: string;
+        id: number;
+        pmTrailer: string;
+        pmTruck: string;
+        price: number;
+        quantity: number;
+        subtotal: number;
+    };
     textCommodity: string;
     textMiles: string;
     textWeight: string;
@@ -201,7 +209,10 @@ export interface DropdownItem {
     title?: string;
     name?: string;
     svgUrl?: string;
+    class?: string;
     mutedStyle?: boolean;
+    contentType?: string;
+    text?: string;
     svgStyle?: { width: number; height: number };
     svgClass?: string;
     isDropdown?: boolean;
