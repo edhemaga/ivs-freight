@@ -74,6 +74,7 @@ export interface TableOptionsInterface {
         showLocationFilter?: boolean;
         showStateFilter?: boolean;
         hideSearch?: boolean;
+        showTrailerFilter?: boolean;
         viewModeOptions: ToolbarAction[];
         showTimeFilter?: boolean;
         showDispatcherFilter?: boolean;
