@@ -105,6 +105,7 @@ export * from './companyContactLabelResponse';
 export * from './companyContactModalResponse';
 export * from './companyContactResponse';
 export * from './companyContactResponsePagination';
+export * from './companyContactUser';
 export * from './companyDocumentsStatisticResponse';
 export * from './companyDurationResponse';
 export * from './companyIntegrationProviderListResponse';

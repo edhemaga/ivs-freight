@@ -13,6 +13,7 @@ import { ContactEmailResponse } from './contactEmailResponse';
 import { ContactPhoneResponse } from './contactPhoneResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyContactLabelResponse } from './companyContactLabelResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface CompanyContactResponse { 
@@ -25,6 +26,7 @@ export interface CompanyContactResponse {
     shared?: boolean;
     avatar?: string | null;
     companyContactLabel?: CompanyContactLabelResponse;
+    departmentContacts?: Array<DepartmentResponse> | null;
     contactPhones?: Array<ContactPhoneResponse> | null;
     contactEmails?: Array<ContactEmailResponse> | null;
     createdAt?: string;

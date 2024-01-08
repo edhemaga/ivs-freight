@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
-export interface DepartmentResponse { 
-    id?: number;
-    name?: string | null;
-    count?: number;
-    companyUsers?: Array<CompanyUserShortResponse> | null;
+export interface CompanyContactUser { 
+    departmentId?: number;
+    companyUserIds?: Array<number> | null;
 }
 
