@@ -10,27 +10,18 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import {
-    FormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
-import { MapsAPILoader, AgmCoreModule } from '@agm/core';
+import { FormsModule, UntypedFormGroup } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { RepairTService } from '../../repair/state/repair.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { FuelTService } from '../../fuel/state/fuel.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MapRouteModel } from '../model/map-route';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { ModalService } from './../../shared/ta-modal/modal.service';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -74,9 +65,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     viewData = [];
     @Input() set _viewData(value) {
         // table data (shippers, repair shops)
-
         // var newData = value;
-
         // newData.map((data) => {
         //     if (data.actionAnimation == 'update') {
         //         console.log('newData update', data);
@@ -84,7 +73,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         //             (item) => item.id === data.id
         //         );
         //         if (markerIndex < 0 && !this.clusterDetailedInfo) return false;
-
         //         if (this.mapType == 'repairShop') {
         //             this.getRepairShop(data.id, markerIndex);
         //         } else if (this.mapType == 'shipper') {
@@ -185,15 +173,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(
         private ref: ChangeDetectorRef,
-        private formBuilder: UntypedFormBuilder,
-        private mapsAPILoader: MapsAPILoader,
         private mapsService: MapsService,
         private repairShopService: RepairTService,
         private shipperService: ShipperTService,
         private fuelStopService: FuelTService,
-        private notificationService: NotificationService,
         private routingService: RoutingStateService,
-        private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyTOfficeService,
         private tableService: TruckassistTableService,
@@ -345,11 +329,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation == 'update') {
+                if (res?.animation == 'update') {
                     let markerIndex = this.viewData.findIndex(
                         (item) => item.id === res.data.id
                     );
-    
+
                     if (this.mapType == 'repairShop') {
                         this.getRepairShop(res.data.id, markerIndex);
                     } else if (this.mapType == 'shipper') {
@@ -361,8 +345,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     this.mapListPagination.pageIndex = 1;
                     this.getClusters(true, true);
                 } else if (
-                    res.animation == 'add' ||
-                    res.animation == 'delete'
+                    res?.animation == 'add' ||
+                    res?.animation == 'delete'
                 ) {
                     setTimeout(() => {
                         this.mapListPagination.pageIndex = 1;
@@ -602,7 +586,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         if (action.type == 'view-details') {
             this.mapsService.goToDetails(action.data, this.mapType);
-        } else if ( action.type == 'raiting' ) {
+        } else if (action.type == 'raiting') {
             this.detailsDataService.setNewData(action.data);
             this.callDropDownAction.emit(action);
         } else {
@@ -891,7 +875,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                 : '0',
                         };
 
-                        data.favourite = data.pinned != null ? data.pinned : false;
+                        data.favourite =
+                            data.pinned != null ? data.pinned : false;
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
@@ -1398,7 +1383,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
-                    newData.favourite = newData.pinned != null ? newData.pinned : false;
+                    newData.favourite =
+                        newData.pinned != null ? newData.pinned : false;
 
                     if (index > -1) {
                         this.viewData[index] = {
@@ -1583,8 +1569,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             likeCount: res?.upCount ? res.upCount : '0',
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
-                        
-                        cluster.detailedInfo.favourite = cluster.detailedInfo.pinned != null ? cluster.detailedInfo.pinned : false;
+
+                        cluster.detailedInfo.favourite =
+                            cluster.detailedInfo.pinned != null
+                                ? cluster.detailedInfo.pinned
+                                : false;
 
                         this.clusterDetailedInfo = cluster.detailedInfo;
                         this.mapsService.selectedMarker(
@@ -1787,7 +1776,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.agmMap.fitBounds(bounds);
     }
 
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
 

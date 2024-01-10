@@ -17,6 +17,7 @@ import {
     LoadModalResponse,
     CreateLoadTemplateCommand,
     LoadStopItemAutocompleteDescriptionResponse,
+    CreateWithUploadsResponse,
 } from 'appcoretruckassist';
 
 @Injectable({
@@ -116,10 +117,10 @@ export class LoadTService {
     }
 
     public autocompleteLoadByDescription(
-        desctiption: string
+        description: string
     ): Observable<LoadStopItemAutocompleteDescriptionResponse> {
         return this.loadService.apiLoadStopsAutocompleteDescriptionDescriptionGet(
-            desctiption
+            description
         );
     }
 
@@ -135,7 +136,7 @@ export class LoadTService {
         return this.loadService.apiLoadPost();
     }
 
-    public updateLoad(data: any): Observable<any> {
+    public updateLoad(data: any): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.loadService.apiLoadPut();

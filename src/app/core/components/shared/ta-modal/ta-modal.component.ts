@@ -1,5 +1,3 @@
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -12,14 +10,6 @@ import {
     Output,
     ViewEncapsulation,
 } from '@angular/core';
-import { ModalService } from './modal.service';
-import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import {
-    DropZoneConfig,
-    TaUploadDropzoneComponent,
-} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
-import { AuthGuard } from '../../../guards/authentication.guard';
 import {
     animate,
     state,
@@ -27,14 +17,35 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
-import { CustomScrollbarComponent } from '../custom-scrollbar/custom-scrollbar.component';
+
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
+// bootstrap
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// modules
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// services
+import { ModalService } from './modal.service';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+
+// components
+import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
+import {
+    DropZoneConfig,
+    TaUploadDropzoneComponent,
+} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { CustomScrollbarComponent } from '../custom-scrollbar/custom-scrollbar.component';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+
+// guards
+import { AuthGuard } from '../../../guards/authentication.guard';
 
 @Component({
     selector: 'app-ta-modal',
@@ -44,14 +55,14 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         DragDropModule,
         AngularSvgIconModule,
         NgbModule,
 
-        // Component
+        // components
         CustomScrollbarComponent,
         TaUploadDropzoneComponent,
         AppTooltipComponent,

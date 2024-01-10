@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Input,
@@ -12,11 +13,14 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+
+// modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-load-stop',

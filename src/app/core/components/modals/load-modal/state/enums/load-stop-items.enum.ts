@@ -30,4 +30,6 @@ export enum ConstantStringEnum {
 
     STRAP = 'Strap',
     CHAIN = 'Chain',
+
+    VALID = 'VALID',
 }

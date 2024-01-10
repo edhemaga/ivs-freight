@@ -29,16 +29,17 @@ export interface Load {
         liftgate: boolean;
         driverMessage: string;
     };
-    note: string;
+    stops: LoadStopCommand[];
     baseRate: number;
     adjustedRate: number;
     driverRate: number;
     advancePay: number;
+    additionalBillingRates: LoadBillingAdditionalCommand[];
+    files: Blob[];
+    tags: Tags[];
+    note: string;
+    emptyMiles: number;
     totalMiles: number;
     totalHours: number;
     totalMinutes: number;
-    additionalBillingRates: LoadBillingAdditionalCommand[];
-    stops: LoadStopCommand[];
-    files: Blob[];
-    tags: Tags[];
 }

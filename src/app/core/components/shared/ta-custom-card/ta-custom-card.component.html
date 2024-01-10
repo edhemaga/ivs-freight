@@ -79,12 +79,7 @@
                     ((_isCardOpen && _isCardOpen != 'null') || headerSvgEnabled)
                 "
             >
-                <div
-                    ngbTooltip
-                    [mainTooltip]="tooltipName"
-                    [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
-                    position="top"
-                >
+                <div>
                     <svg-icon
                         [ngClass]="{ 'header-svg-bank': customClassHeaderSvg }"
                         class="header-svg"
@@ -163,13 +158,7 @@
                 *ngIf="hasPlusHeader || stayOpen"
                 class="arrow-down-plus"
             >
-                <div
-                    class="add-custom-card"
-                    ngbTooltip
-                    mainTooltip="Add New Event"
-                    position="top"
-                    tooltipBackground="#536BC2"
-                >
+                <div class="add-custom-card">
                     <svg-icon
                         class="plus-custom-card"
                         src="assets/svg/common/ic_plus.svg"

@@ -4,7 +4,7 @@
         [ngClass]="{
             'first-or-last': firstOrLast && isCardOpen,
             'not-first-or-last': !firstOrLast,
-            'origin-destination-no-filled': !shipper,
+            'origin-destination-no-filled': !shipper || !state,
             'not-active-stop': !isCardOpen
         }"
         (click)="toggleStop($event)"

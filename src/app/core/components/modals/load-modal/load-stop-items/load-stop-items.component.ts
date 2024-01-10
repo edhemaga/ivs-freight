@@ -3,6 +3,7 @@ import {
     EventEmitter,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     Output,
     SimpleChanges,
@@ -14,6 +15,8 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+
+import { Subject, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -52,11 +55,14 @@ import { StopItemsData } from '../state/models/load-stop-items-model/load-stop-i
         TaInputDropdownComponent,
     ],
 })
-export class LoadStopItemsComponent implements OnInit, OnChanges {
+export class LoadStopItemsComponent implements OnInit, OnChanges, OnDestroy {
     @Input() createNewStopItemsRow: boolean = false;
     @Input() stopItemsData: StopItemsData[] = [];
 
     @Output() stopItemsDataValueEmitter = new EventEmitter<StopItemsData[]>();
+    @Output() stopItemsValidStatusEmitter = new EventEmitter<boolean>();
+
+    private destroy$ = new Subject<void>();
 
     public stopItemHeaders: string[] = [];
 
@@ -79,6 +85,8 @@ export class LoadStopItemsComponent implements OnInit, OnChanges {
         this.createForm();
 
         this.getConstantData();
+
+        this.checkForInputChanges();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -210,5 +218,32 @@ export class LoadStopItemsComponent implements OnInit, OnChanges {
                     ...stopItemsData[i],
                 });
         }
+    }
+
+    private checkForInputChanges(): void {
+        this.getStopItems()
+            .valueChanges.pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((res: StopItemsData[]) => {
+                if (res) {
+                    this.getStopItemsDataValue();
+
+                    if (
+                        this.getStopItems().status === ConstantStringEnum.VALID
+                    ) {
+                        this.stopItemsValidStatusEmitter.emit(true);
+                    } else {
+                        this.stopItemsValidStatusEmitter.emit(false);
+                    }
+                }
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

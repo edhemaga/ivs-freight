@@ -9,7 +9,7 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="loadForm.valid && isFormDirty"
+    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid"
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -29,7 +29,6 @@
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
     >
-        <button (click)="createNewLoad()">AAAA</button>
         <div class="m-tab">
             <div
                 class="align-items-center load-ftl-first-row"
@@ -418,12 +417,15 @@
                     [isVisibleNote]="false"
                     [note]="
                         loadForm.get('driverMessage').value &&
-                        loadForm.get('driverMessage').value != 'null'
+                        loadForm.get('driverMessage').value !== 'null'
                             ? loadForm.get('driverMessage').value
                             : ''
                     "
                     [noteLabel]="'Driver Message'"
                     [placeholder]="'Type something...'"
+                    (styledValueEmitter)="
+                        getDriverMessageOrNote($event, 'driverMessage')
+                    "
                 ></app-ta-input-note>
             </div>
 
@@ -693,6 +695,9 @@
                                             $event,
                                             'pickup'
                                         )
+                                    "
+                                    (stopItemsValidStatusEmitter)="
+                                        handleStopItemsValidStatusEmit($event)
                                     "
                                 ></app-load-stop-items>
                             </app-ta-custom-card>
@@ -1102,6 +1107,11 @@
                                                         indx
                                                     )
                                                 "
+                                                (stopItemsValidStatusEmitter)="
+                                                    handleStopItemsValidStatusEmit(
+                                                        $event
+                                                    )
+                                                "
                                             ></app-load-stop-items>
                                         </app-ta-custom-card>
                                     </div>
@@ -1130,7 +1140,10 @@
                                     : (loadForm.get('deliveryTimeTo').value
                                           | loadTimeType)
                         "
-                        [legMile]="loadForm.get('deliverylegMiles').value"
+                        [legMile]="
+                            selectedDeliveryShipper &&
+                            loadForm.get('deliverylegMiles').value
+                        "
                         [isEmptyLoad]="false"
                         [shipperContact]="{
                             fullName: selectedDeliveryShipperContact?.name
@@ -1361,6 +1374,9 @@
                                             $event,
                                             'delivery'
                                         )
+                                    "
+                                    (stopItemsValidStatusEmitter)="
+                                        handleStopItemsValidStatusEmit($event)
                                     "
                                 ></app-load-stop-items>
                             </app-ta-custom-card>
@@ -1673,9 +1689,12 @@
                     [isVisibleNote]="false"
                     [note]="
                         loadForm.get('note').value &&
-                        loadForm.get('note').value != 'null'
+                        loadForm.get('note').value !== 'null'
                             ? loadForm.get('note').value
                             : ''
+                    "
+                    (styledValueEmitter)="
+                        getDriverMessageOrNote($event, 'note')
                     "
                 ></app-ta-input-note>
             </div>

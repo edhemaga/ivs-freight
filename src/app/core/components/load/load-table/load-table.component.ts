@@ -764,6 +764,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private onTableBodyActions(event: { type: string }): void {
+        console.log(event);
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE

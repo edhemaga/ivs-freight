@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     ElementRef,
+    EventEmitter,
     Input,
-    OnInit,
+    Output,
     Self,
     ViewChild,
 } from '@angular/core';
@@ -12,16 +14,29 @@ import {
     NgControl,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { SharedService } from '../../../services/shared/shared.service';
+
+// moment
 import moment from 'moment';
+
+// animations
 import { card_modal_animation } from '../animations/card-modal.animation';
-import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
-import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
-import { CommonModule } from '@angular/common';
+
+// pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
-import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
+import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+
+// services
+import { SharedService } from '../../../services/shared/shared.service';
+import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+
+// models
+import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
     selector: 'app-ta-input-note',
@@ -44,13 +59,9 @@ import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
         SafeHtmlPipe,
     ],
 })
-export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
-    _isVisibleNote: any = 'null';
-    selectionTaken: any;
-    range: any;
-    gotValue: boolean = false;
-    showNote: any;
-    @Input() blankNote: boolean = false;
+export class TaInputNoteComponent implements ControlValueAccessor {
+    @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
+    @ViewChild('noteContainer', { static: true }) noteContainer: any;
 
     @Input() set note(value) {
         if (
@@ -60,33 +71,17 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
             this.showNote = value;
         }
     }
-    value: string = '';
-    savedValue: string = '';
-    saveInterval: any;
-    isFocused: any = false;
-    lastTypeTime: any;
-    saveIntervalStarted: boolean = false;
-    @Input() isVisibleDivider: boolean = true;
-    @Input() public animationsDisabled = false;
-    @Input() noteType: string = '';
-    blurNoteTimeout: any;
-
-    savingNote: boolean = false;
-    @Input() entityId: number = 0;
-    @Input() entityType: string = '';
-    @Input() defArrow: boolean = true;
-    noActive: string;
-
     @Input() set isVisibleNote(value: boolean) {
         this.noActive = value ? 'active' : 'innactive';
         this._isVisibleNote = value ? true : false;
     }
-
-    animationMarginParams = {
-        marginTop: '0px',
-        marginBottom: '0px',
-    };
-
+    @Input() blankNote: boolean = false;
+    @Input() isVisibleDivider: boolean = true;
+    @Input() animationsDisabled = false;
+    @Input() noteType: string = '';
+    @Input() entityId: number = 0;
+    @Input() entityType: string = '';
+    @Input() defArrow: boolean = true;
     @Input() isVisibleArrow: boolean = true;
     @Input() minRows: number = 2;
     @Input() maxRows: number = 5;
@@ -94,8 +89,27 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() placeholder: string = 'Write a note...';
     @Input() isReadOnly: boolean = false;
     @Input() customClass: string = null;
-    @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
-    @ViewChild('noteContainer', { static: true }) noteContainer: any;
+
+    @Output() styledValueEmitter = new EventEmitter<string>();
+
+    _isVisibleNote: any = 'null';
+    selectionTaken: any;
+    range: any;
+    gotValue: boolean = false;
+    showNote: any;
+    value: string = '';
+    savedValue: string = '';
+    saveInterval: any;
+    isFocused: any = false;
+    lastTypeTime: any;
+    saveIntervalStarted: boolean = false;
+    blurNoteTimeout: any;
+    savingNote: boolean = false;
+    noActive: string;
+    animationMarginParams = {
+        marginTop: '0px',
+        marginBottom: '0px',
+    };
 
     constructor(
         @Self() public superControl: NgControl,
@@ -104,8 +118,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     ) {
         this.superControl.valueAccessor = this;
     }
-
-    ngOnInit() {}
 
     get getSuperControl() {
         return this.superControl.control;
@@ -135,6 +147,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
     checkFocus() {
         this.isFocused = true;
+
         if (!this._isVisibleNote) {
             this.sharedService.emitAllNoteOpened.next(false);
             setTimeout(() => {
@@ -188,6 +201,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
             }, 700);
             this.updateNote();
         }
+
+        this.styledValueEmitter.emit(this.noteRef.nativeElement.innerHTML);
     }
 
     stopBlurRemoveTimeout() {
@@ -211,6 +226,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         if (this.savedValue != this.value) {
             this.saveNote(true);
         }
+
+        this.styledValueEmitter.emit(this.noteRef.nativeElement.innerHTML);
     }
 
     updateNote() {
