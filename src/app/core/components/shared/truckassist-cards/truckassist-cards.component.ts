@@ -1,4 +1,10 @@
 import {
+    FormArray,
+    FormControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import {
     Component,
     Input,
     EventEmitter,
@@ -11,6 +17,7 @@ import {
     Renderer2,
     SimpleChanges,
     ViewEncapsulation,
+    OnInit,
 } from '@angular/core';
 
 // Models
@@ -28,7 +35,11 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 // Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
@@ -51,7 +62,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
 
 // Directives
-import { DirectiveCardModule } from './directives/card-directive.module';
+import { TextToggleDirective } from './directives/show-hide-pass.directive';
 
 @Component({
     selector: 'app-truckassist-cards',
@@ -66,6 +77,9 @@ import { DirectiveCardModule } from './directives/card-directive.module';
         AngularSvgIconModule,
         NgbPopoverModule,
         NgbTooltipModule,
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule,
 
         //components
         AppTooltipComponent,
@@ -79,10 +93,10 @@ import { DirectiveCardModule } from './directives/card-directive.module';
         HidePasswordPipe,
 
         // Directives
-        DirectiveCardModule,
+        TextToggleDirective,
     ],
 })
-export class TruckassistCardsComponent {
+export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -90,6 +104,9 @@ export class TruckassistCardsComponent {
     public itemsContainers!: QueryList<ElementRef>;
 
     public containerWidth: number = 0;
+
+    public dropdownSelectionArray = new FormArray([]);
+    public selectedContactLabel = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
@@ -100,9 +117,6 @@ export class TruckassistCardsComponent {
     // Page
     @Input() page: string;
     @Input() selectedTab: string;
-
-    // For Front And back of the cards
-    @Input() deadline: boolean;
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -138,6 +152,10 @@ export class TruckassistCardsComponent {
         private renderer: Renderer2,
         private tableService: TruckassistTableService
     ) {}
+
+    ngOnInit(): void {
+        // this.viewData.length && this.labelDropdown();
+    }
 
     //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
@@ -340,6 +358,18 @@ export class TruckassistCardsComponent {
             type: ConstantStringTableComponentsEnum.FINISH_ORDER,
         });
     }
+
+    // public labelDropdown(): void {
+    //     // return cardItem ? new FormControl() : null;
+    //     for (let card of this.viewData) {
+    //         this.dropdownSelectionArray.push(new FormControl());
+    //         if (card.companyContactLabel) {
+    //             return card.companyContactLabel;
+    //         } else if (card.companyAccountLabel) {
+    //             this.selectedContactLabel.push(card.companyAccountLabel);
+    //         }
+    //     }
+    // }
 
     // Setting count number for each card on page
     public calculateItemsToFit(container: HTMLElement): void {

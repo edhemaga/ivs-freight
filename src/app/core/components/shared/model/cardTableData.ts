@@ -119,10 +119,24 @@ export interface SendDataCard {
     data: CardDetails;
     type: string;
 }
+
+interface CompanyAccountLabel {
+    code: string;
+    color: string;
+    colorId: number;
+    count: number;
+    createdAt: string;
+    hoverCode: string;
+    id: number;
+    name: string;
+    updatedAt: string;
+}
 export interface CardDetails {
     descriptionItems?: string[];
     id: number;
     type: Type;
+    companyContactLabel?: any;
+    companyAccountLabel?: CompanyAccountLabel;
     isSelected: boolean;
     loadNumber: string;
     statusType: StatusType;

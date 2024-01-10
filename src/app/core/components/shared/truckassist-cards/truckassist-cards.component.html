@@ -748,12 +748,60 @@
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Label'"
                                         >
-                                            {{
-                                                getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
+                                            <!-- <app-ta-input-dropdown-label
+                                                [formControl]="
+                                                    dropdownSelectionArray.controls
+                                                "
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown Label',
+                                                    type: 'text',
+                                                    placeholderIcon:
+                                                        'ic_dynamic_label',
+                                                    dropdownLabel: true,
+                                                    dropdownWidthClass:
+                                                        'w-col-' + '200',
+                                                    textTransform: 'lowercase',
+                                                    minLength: 1,
+                                                    blackInput: true,
+                                                    hideClear: true,
+                                                    multiselectDropdown: true,
+                                                    maxLength: 12,
+                                                    showCount: false,
+                                                    customClass:
+                                                        'input-dropdown-table',
+                                                    commands: {
+                                                        active: false,
+                                                        type: 'confirm-cancel',
+                                                        firstCommand: {
+                                                            popup: {
+                                                                name: 'Confirm',
+                                                                backgroundColor:
+                                                                    '#3074d3'
+                                                            },
+                                                            name: 'confirm',
+                                                            svg: 'assets/svg/ic_spec-confirm.svg'
+                                                        },
+                                                        secondCommand: {
+                                                            popup: {
+                                                                name: 'Cancel',
+                                                                backgroundColor:
+                                                                    '#2f2f2f'
+                                                            },
+                                                            name: 'cancel',
+                                                            svg: 'assets/svg/ic_x.svg'
+                                                        }
+                                                    }
+                                                }"
+                                                [colors]="card.colorRes"
+                                                [options]="card.colorLabels"
+                                                [selectedLabel]="
+                                                    selectedContactLabel
+                                                "
+                                                [selectedLabelColor]="
+                                                    selectedContactColor
+                                                "
+                                            >
+                                            </app-ta-input-dropdown-label> -->
                                         </ng-container>
                                     </ng-container>
                                 </div>
