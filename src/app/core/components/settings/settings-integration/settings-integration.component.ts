@@ -217,17 +217,11 @@ export class SettingsIntegrationComponent
         };
     }
 
-    onToolBarAction(event) {
-        console.log(event);
-    }
+    onToolBarAction(event) {}
 
-    onTableBodyActions(event) {
-        console.log(event);
-    }
+    onTableBodyActions(event) {}
 
-    onTableHeadActions(event) {
-        console.log(event);
-    }
+    onTableHeadActions(event) {}
 
     getTabData() {
         this.integrationsActive = this.integrationActiveQuery.getAll();

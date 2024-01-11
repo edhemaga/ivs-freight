@@ -88,13 +88,11 @@ export class DispatcherStoreService {
             .apiDispatchPost(createData)
             .pipe(
                 flatMap((params) => {
-                    console.log('params', params);
                     return this.getDispatchBoardRowById(params.id);
                 })
             )
             .pipe(
                 map((res) => {
-                    console.log('IS THIS OK RES', res);
                     this.dispatchBoardItem = { id: dispatch_id, item: res };
                 })
             );

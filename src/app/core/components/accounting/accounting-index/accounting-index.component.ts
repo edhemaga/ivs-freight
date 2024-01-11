@@ -71,15 +71,10 @@ export class AccountingIndexComponent implements OnInit {
     }
 
     public selectFromList(e) {
-        console.log(e);
         this.selectedUser = undefined;
         setTimeout(() => {
             this.selectedUser = e;
         }, 500);
-    }
-
-    public switchTab(e) {
-        console.log(e);
     }
 
     public getDrivers(): void {}

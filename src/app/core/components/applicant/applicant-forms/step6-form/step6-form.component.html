@@ -1,12 +1,10 @@
 <div class="d-flex flex-column step-form" [formGroup]="contactForm">
-    <button (click)="asd()">A</button>
     <div
         class="d-flex line-container"
         [ngClass]="{
             'inputs-with-background': contactsLength,
             'filled-valid': contactForm.valid,
-            'filled-invalid':
-                contactForm.invalid && contactForm.pristine
+            'filled-invalid': contactForm.invalid && contactForm.pristine
         }"
     >
         <div class="group name-group">

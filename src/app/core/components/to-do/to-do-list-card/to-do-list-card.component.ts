@@ -398,10 +398,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         this.DetailsDataService.setNewData(
             this.scene.children[mainIndx].children[indx]
         );
-        console.log(
-            this.scene.children[mainIndx].children[indx],
-            this.scene.children[mainIndx].children[indx]
-        );
         this.scene.children[mainIndx].children[indx]['commentActive'] =
             !this.scene.children[mainIndx].children[indx]['commentActive'];
     }
@@ -426,7 +422,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     onDrop(dropResult: DropResult) {
         // update item list according to the @dropResult
         //this.items = applyDrag(this.items, dropResult);
-        console.log(dropResult);
     }
 
     onCardDrop(columnId, dropResult) {
@@ -463,7 +458,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     log(...params) {
-        console.log(...params);
         this.DetailsDataService.setNewData(params[1]['payload']);
     }
 
@@ -630,7 +624,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     changeReviewsEvent(event) {
-        console.log(event);
         if (event.action == 'delete') {
             this.commentsService.deleteCommentById(event.data).subscribe({
                 next: () => {
@@ -711,10 +704,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
-    }
-
-    setFilterEvent(event: any) {
-        console.log('--here---', event);
     }
 
     setIndex(mainIndx, indx) {

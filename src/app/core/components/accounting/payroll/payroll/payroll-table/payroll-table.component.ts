@@ -24,12 +24,12 @@ export class PayrollTableComponent implements OnInit {
 
     @Input() expandedTable: boolean;
 
-    @Input() tableType: "none" | "report" = "none";
+    @Input() tableType: 'none' | 'report' = 'none';
 
     _tableData: any[] = [];
     @Input() set tableData(value) {
         if (this.tableSettingsResizable) {
-            if (this.tableType != "report") {
+            if (this.tableType != 'report') {
                 const tableSettingsValue = [...value].reduce(
                     (tbrez, item) => {
                         this.tableSettingsResizable.map((data) => {
@@ -55,30 +55,25 @@ export class PayrollTableComponent implements OnInit {
         this._tableData = value;
     }
 
-
     @Input() set data(value) {
-        
-        if (this.tableType == "report" && value.stops) {
-            
-            const openPayrollIdIndex = this._tableData.map(item => item.payrollId).lastIndexOf(value.id);
+        if (this.tableType == 'report' && value.stops) {
+            const openPayrollIdIndex = this._tableData
+                .map((item) => item.payrollId)
+                .lastIndexOf(value.id);
             let resizableItem = { reorderItem: true };
-            this.tableSettingsResizable.map(
-                (data) => {
-                    if (data.data_field) {
-                        resizableItem[data.data_field] = value[data.data_field]
-                            ? value[data.data_field]
-                            : 0;
-                    }
-                    return data;
+            this.tableSettingsResizable.map((data) => {
+                if (data.data_field) {
+                    resizableItem[data.data_field] = value[data.data_field]
+                        ? value[data.data_field]
+                        : 0;
                 }
-            );
+                return data;
+            });
 
-
-            console.log(this._tableData);
             const newData = [
-                ...this._tableData.slice(0, openPayrollIdIndex +1),
+                ...this._tableData.slice(0, openPayrollIdIndex + 1),
                 resizableItem,
-                ...this._tableData.slice(openPayrollIdIndex+1)
+                ...this._tableData.slice(openPayrollIdIndex + 1),
             ];
             this._tableData = newData;
         }
