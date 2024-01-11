@@ -16,6 +16,10 @@ import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 
 //Pipe
 import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
+import { FilterClassPipe } from 'src/app/core/pipes/filterClass.pipe';
+
+//Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Component({
     selector: 'app-special-filter',
@@ -28,16 +32,18 @@ import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
         AngularSvgIconModule,
         TaSvgPipe,
         CommonModule,
+        FilterClassPipe,
     ],
 })
 export class SpecialFilterComponent implements OnInit, OnChanges {
     constructor() {}
 
-    activeFilter: boolean = false;
-    hoverClose: boolean = false;
+    public activeFilter: boolean = false;
+    public hoverClose: boolean = false;
+    public hoverFilter: boolean = false;
 
-    @Input() type: string = 'userFilter';
-    @Input() icon: string = 'user';
+    @Input() type: string = ConstantStringTableComponentsEnum.USER_FILTER;
+    @Input() icon: string = ConstantStringTableComponentsEnum.USER_1;
     @Input() filterTitle: string = '';
     @Input() dataArray: any = [];
     @Input() selectedFilter: boolean;
@@ -48,13 +54,12 @@ export class SpecialFilterComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.selectedFilter) {
-            this.activeFilter = this.selectedFilter;
-        }
+        if (changes.selectedFilter) this.activeFilter = this.selectedFilter;
     }
 
     public toggleSpecialFilter(): void {
         this.activeFilter = !this.activeFilter;
+
         if (this.activeFilter) {
             this.setFilter.emit(this.dataArray);
         } else {

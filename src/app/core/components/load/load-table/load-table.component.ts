@@ -66,7 +66,7 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    loadTableData: any[] = [];
+    public loadTableData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -140,17 +140,17 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log(res);
                 if (res?.filteredArray) {
                     if (!res.selectedFilter) {
                         this.viewData = this.loadTableData;
-                        this.viewData = this.viewData?.filter((d) =>
-                            res.filteredArray.every((i) => i.id == d.id)
+                        this.viewData = this.viewData?.filter((loadData) =>
+                            res.filteredArray.every(
+                                (filterData) => filterData.id == loadData.id
+                            )
                         );
                     }
-                    if (res.selectedFilter) {
-                        this.viewData = this.loadTableData;
-                    }
+
+                    if (res.selectedFilter) this.viewData = this.loadTableData;
                 }
             });
     }
@@ -405,86 +405,106 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData = [
             {
-                title: 'Template',
-                field: 'template',
+                title: ConstantStringTableComponentsEnum.TEMPLATE_2,
+                field: ConstantStringTableComponentsEnum.TEMPLATE,
                 length: loadCount.templateCount,
                 data: loadTemplateData,
                 extended: false,
-                gridNameTitle: 'Load',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
                 moneyCountSelected: false,
                 ltlArray: checkSpecialFilterArray(
                     loadTemplateData,
                     ConstantStringTableComponentsEnum.LTL,
-                    'type'
+                    ConstantStringTableComponentsEnum.TYPE
                 ),
                 ftlArray: checkSpecialFilterArray(
                     loadTemplateData,
                     ConstantStringTableComponentsEnum.FTL,
-                    'type'
+                    ConstantStringTableComponentsEnum.TYPE
                 ),
-                stateName: 'loads',
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_TEMPLATE',
-                isActive: this.selectedTab === 'template',
-                gridColumns: this.getGridColumns('template', 'LOAD_TEMPLATE'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.TEMPLATE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.TEMPLATE,
+                    'LOAD_TEMPLATE'
+                ),
             },
             {
-                title: 'Pending',
-                field: 'pending',
+                title: ConstantStringTableComponentsEnum.PENDING_2,
+                field: ConstantStringTableComponentsEnum.PENDING,
                 length: loadCount.pendingCount,
                 data: loadPendingData,
                 extended: false,
                 moneyCountSelected: false,
-                gridNameTitle: 'Load',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
                 ltlArray: checkSpecialFilterArray(
                     loadPendingData,
                     ConstantStringTableComponentsEnum.LTL,
-                    'type'
+                    ConstantStringTableComponentsEnum.TYPE
                 ),
                 ftlArray: checkSpecialFilterArray(
                     loadPendingData,
                     ConstantStringTableComponentsEnum.FTL,
-                    'type'
+                    ConstantStringTableComponentsEnum.TYPE
                 ),
-                stateName: 'loads',
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
-                isActive: this.selectedTab === 'pending',
-                gridColumns: this.getGridColumns('pending', 'LOAD_REGULAR'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.PENDING,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.PENDING,
+                    'LOAD_REGULAR'
+                ),
             },
             {
-                title: 'Active',
-                field: 'active',
+                title: ConstantStringTableComponentsEnum.ACTIVE_2,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: loadCount.activeCount,
                 data: loadActiveData,
                 moneyCountSelected: false,
                 ftlArray: checkSpecialFilterArray(
                     loadActiveData,
                     ConstantStringTableComponentsEnum.FTL,
-                    'type'
+                    ConstantStringTableComponentsEnum.TYPE
                 ),
                 extended: false,
-                gridNameTitle: 'Load',
-                stateName: 'loads',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('active', 'LOAD_REGULAR'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                    'LOAD_REGULAR'
+                ),
             },
             {
-                title: 'Closed',
-                field: 'closed',
+                title: ConstantStringTableComponentsEnum.CLOSED_2,
+                field: ConstantStringTableComponentsEnum.CLOSED,
                 length: loadCount.closedCount,
                 moneyCountSelected: false,
                 data: repairClosedData,
                 ftlArray: checkSpecialFilterArray(
                     repairClosedData,
                     ConstantStringTableComponentsEnum.FTL,
-                    'type'
+                    ConstantStringTableComponentsEnum.TYPE
                 ),
                 extended: false,
-                gridNameTitle: 'Load',
-                stateName: 'loads',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_CLOSED',
-                isActive: this.selectedTab === 'closed',
-                gridColumns: this.getGridColumns('closed', 'LOAD_CLOSED'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.CLOSED,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.CLOSED,
+                    'LOAD_CLOSED'
+                ),
             },
         ];
 
@@ -526,6 +546,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+
         this.loadTableData = this.viewData;
     }
 

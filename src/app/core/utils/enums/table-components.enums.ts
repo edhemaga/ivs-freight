@@ -9,8 +9,11 @@ export enum ConstantStringTableComponentsEnum {
     // Tabs
     APPLICANTS = 'applicants',
     TEMPLATE = 'template',
+    TEMPLATE_2 = 'Template',
     CLOSED = 'closed',
+    CLOSED_2 = 'Closed',
     PENDING = 'pending',
+    PENDING_2 = 'Pending',
     MAP = 'Map',
     SHOW_MORE = 'show-more',
 
@@ -22,6 +25,8 @@ export enum ConstantStringTableComponentsEnum {
 
     UPDATE_STATUS = 'update-status',
     DELETE_MULTIPLE = 'delete-multiple',
+    RESET_PASSWORD = 'reset-password',
+    RESEND_INVITATION = 'resend-invitation',
 
     // List or card
     LIST = 'List',
@@ -44,8 +49,11 @@ export enum ConstantStringTableComponentsEnum {
     EDIT_2 = 'Edit',
 
     LOAD = 'load',
+    LOADS = 'loads',
     VIEW_MODE = 'view-mode',
     REGULAR = 'regular',
+    CHECK = 'check',
+
     ADD_NEW = 'add-new',
     ADD_NEW_2 = 'Add New',
 
@@ -215,6 +223,7 @@ export enum ConstantStringTableComponentsEnum {
     TRAILER_TAB_VIEW = 'Trailer-table-view',
 
     // Repair
+    SHOP = 'Shop',
     FAVORITE = 'favorite',
     FINISH_ORDER = 'finish-order',
     DELETE_REPAIR = 'delete-repair',
@@ -225,6 +234,7 @@ export enum ConstantStringTableComponentsEnum {
     NEW_TRUCK = 'new-truck',
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
     ORDER = 'Order',
+    ORDER_2 = 'order',
     DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER = '<div class="description-dot-container"><span class="description-dot"></span></div>',
     REPAIR_TRUCK = 'REPAIR_TRUCK',
     REPAIR_TRAILER = 'REPAIR_TRAILER',
@@ -233,7 +243,7 @@ export enum ConstantStringTableComponentsEnum {
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
     NAME = 'name',
     SERVICE_TYPES = 'serviceTypes',
-
+    REPAIR_TYPE = 'repairType',
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',
@@ -258,6 +268,19 @@ export enum ConstantStringTableComponentsEnum {
     EDIT_OWNER = 'edit-owner',
     DELETE_OWNER = 'delete-owner',
 
+    //Fuel
+    FUEL = 'Fuel',
+    FUEL_1 = 'fuel',
+    FUEL_TRANSACTION = 'FUEL_TRANSACTION',
+    FUEL_STOP = 'FUEL_STOP',
+    STOP = 'Stop',
+    TRANSACTIONS = 'Transactions',
+    REGULAR_TEXT = 'regular-text',
+    DELETE_TEXT = 'delete-text',
+    FUEL_TABLE_COUNT = 'fuelTableCount',
+    FUEL_TABLE_VIEW = 'Fuel-table-view',
+    ASC = 'asc',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
@@ -271,6 +294,11 @@ export enum ConstantStringTableComponentsEnum {
     ACTIVE = 'active',
     ACTIVE_2 = 'Active',
 
+    USER = 'User',
+    USER_1 = 'user',
+    USERS = 'users',
+    USER_2 = 'USER',
+    USER_FILTER = 'userFilter',
     INACTIVE = 'inactive',
     INACTIVE_2 = 'Inactive',
     INCOMPLETE = 'Incomplete',
@@ -299,6 +327,13 @@ export enum ConstantStringTableComponentsEnum {
     DNU = 'dnu',
     TYPE = 'type',
     STATUS = 'status',
+    FTL_ARRAY = 'ftlArray',
+    LTL_ARRAY = 'ltlArray',
+    REPAIR_ARRAY = 'repairArray',
+    FUEL_ARRAY = 'fuelArray',
+    CLOSED_ARRAY = 'closedArray',
+    DRIVER_ARHIVED_ARRAY = 'driverArhivedArray',
+    DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',

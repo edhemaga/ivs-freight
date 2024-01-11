@@ -69,8 +69,10 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { DisplayRepairConfiguration } from '../repair-card-data';
+
+//Helpers
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-repair-table',
@@ -84,6 +86,7 @@ import { DisplayRepairConfiguration } from '../repair-card-data';
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private destroy$ = new Subject<void>();
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
+    public reapirTableData: any[] = [];
 
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
@@ -158,20 +161,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         this.sendRepairData();
         //Table Filter
-        this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res?.filteredArray) {
-                    if (res.selectedFilter) {
-                        this.viewData = this.viewData?.filter((d) =>
-                            res.filteredArray.some((i) => i.id == d.id)
-                        );
-                    }
-                    if (!res.selectedFilter) {
-                        this.sendRepairData();
-                    }
-                }
-            });
+
+        this.setTableFilter();
+
         // Reset Columns
 
         this.resetColumns();
@@ -202,6 +194,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .subscribe((response) => {
                 if (response) {
                     this.sendRepairData();
+                }
+            });
+    }
+
+    public setTableFilter() {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.reapirTableData;
+                        this.viewData = this.viewData?.filter((repairData) =>
+                            res.filteredArray.some(
+                                (filterData) => filterData.id == repairData.id
+                            )
+                        );
+                    }
+
+                    if (!res.selectedFilter) this.sendRepairData();
                 }
             });
     }
@@ -538,7 +549,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.tableData = [
             {
-                title: 'Truck',
+                title: ConstantStringTableComponentsEnum.TRUCK_2,
                 field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: repairTruckTrailerCount.repairTrucks,
                 moneyCount:
@@ -548,11 +559,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         : 0,
                 moneyCountSelected: false,
                 data: repairTruckData,
-                gridNameTitle: 'Repair',
+                gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
                 repairArray: checkSpecialFilterArray(
                     repairTruckData,
-                    'order',
-                    'repairType'
+                    ConstantStringTableComponentsEnum.ORDER_2,
+                    ConstantStringTableComponentsEnum.REPAIR_TYPE
                 ),
                 stateName: 'repair_trucks',
                 tableConfiguration:
@@ -565,7 +576,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ),
             },
             {
-                title: 'Trailer',
+                title: ConstantStringTableComponentsEnum.TRAILER,
                 field: ConstantStringTableComponentsEnum.INACTIVE,
                 length: repairTruckTrailerCount.repairTrailers,
                 moneyCount:
@@ -575,11 +586,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         : 0,
                 moneyCountSelected: false,
                 data: repairTrailerData,
-                gridNameTitle: 'Repair',
+                gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
                 repairArray: checkSpecialFilterArray(
                     repairTrailerData,
-                    'order',
-                    'repairType'
+                    ConstantStringTableComponentsEnum.ORDER_2,
+                    ConstantStringTableComponentsEnum.REPAIR_TYPE
                 ),
                 stateName: 'repair_trailers',
                 tableConfiguration:
@@ -592,13 +603,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ),
             },
             {
-                title: 'Shop',
+                title: ConstantStringTableComponentsEnum.SHOP,
                 field: ConstantStringTableComponentsEnum.REPAIR_SHOP,
                 length: repairTruckTrailerCount.repairShops,
                 data: repairShopData,
-                gridNameTitle: 'Repair',
+                gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
                 stateName: 'repair_shops',
-                closedArray: checkSpecialFilterArray(repairShopData, 'status'),
+                closedArray: checkSpecialFilterArray(
+                    repairShopData,
+                    ConstantStringTableComponentsEnum.STATUS
+                ),
                 tableConfiguration: 'REPAIR_SHOP',
                 isActive:
                     this.selectedTab ===
@@ -734,6 +748,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
             this.viewData = [];
         }
+
+        this.reapirTableData = this.viewData;
     }
 
     // Map Truck And Trailer Data

@@ -1,28 +1,42 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+
+//Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
-import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { UserTService } from '../state/user.service';
+
+//Components
+import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+
+//Utils
+import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
+
+//State
 import { UserQuery } from '../state/user-state/user.query';
 import { UserState } from '../state/user-state/user.store';
+
+//Pipe
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { DatePipe } from '@angular/common';
+
+//Methodes
 import {
     closeAnimationAction,
     tableSearch,
 } from 'src/app/core/utils/methods.globals';
-import { UserTService } from '../state/user.service';
-import { GetCompanyUserListResponse } from 'appcoretruckassist';
-import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+
+//Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+
+//Enum
+import { GetCompanyUserListResponse } from 'appcoretruckassist';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Component({
     selector: 'app-user-table',
@@ -69,96 +83,120 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // ---------------------------  NgOnInit ----------------------------------
     ngOnInit(): void {
         this.sendUserData();
-        this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res?.filteredArray) {
-                    if (res.selectedFilter) {
-                        this.viewData = this.viewData?.filter((d) =>
-                            res.filteredArray.some((i) => i.id == d.id)
-                        );
-                    }
-                    if (!res.selectedFilter) {
-                        this.sendUserData();
-                    }
-                }
-            });
+
+        this.setTableFilter();
+
         // Reset Columns
-        this.tableService.currentResetColumns
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
-                if (response) {
-                    this.sendUserData();
-                }
-            });
+        this.resetColumns();
 
         // Resize
-        this.tableService.currentColumnWidth
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
-                        if (
-                            c.title ===
-                            response.columns[response.event.index].title
-                        ) {
-                            c.width = response.event.width;
-                        }
-
-                        return c;
-                    });
-                }
-            });
+        this.currentColumnWidth();
 
         // Toaggle Columns
-        this.tableService.currentToaggleColumn
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
-                        }
-
-                        return c;
-                    });
-                }
-            });
+        this.currentToaggleColumn();
 
         // Search
-        this.tableService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res) {
-                    this.mapingIndex = 0;
-
-                    this.backFilterQuery.pageIndex = 1;
-
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
-
-                    if (searchEvent) {
-                        if (searchEvent.action === 'api') {
-                            this.userBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
-                            this.sendUserData();
-                        }
-                    }
-                }
-            });
+        this.currentSearchTableData();
 
         // User Actions
+        this.currentActionAnimation();
+
+        // Delete Selected Rows
+        this.currentDeleteSelectedRows();
+
+        // Confirmation Subscribe
+        this.confirmationData();
+    }
+
+    // ---------------------------  NgAfterViewInit ----------------------------------
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case ConstantStringTableComponentsEnum.DELETE: {
+                            if (
+                                res.template ===
+                                ConstantStringTableComponentsEnum.USER_1
+                            ) {
+                                this.deleteUserById(res.id);
+                            }
+                            break;
+                        }
+                        case ConstantStringTableComponentsEnum.ACTIVATE: {
+                            this.changeUserStatus(res.id);
+                            break;
+                        }
+                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
+                            this.changeUserStatus(res.id);
+                            break;
+                        }
+                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
+                            this.multipleDeleteUsers(res.array);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                },
+            });
+    }
+
+    private currentDeleteSelectedRows(): void {
+        this.tableService.currentDeleteSelectedRows
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response.length) {
+                    let mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                                name:
+                                    item.tableData.firstName +
+                                    ' ' +
+                                    item.tableData.lastName,
+                            },
+                        };
+                    });
+
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: ConstantStringTableComponentsEnum.USER,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            image: true,
+                        }
+                    );
+                }
+            });
+    }
+
+    private currentActionAnimation(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 // On Add Driver Active
-                if (res.animation === 'add') {
+                if (res.animation === ConstantStringTableComponentsEnum.ADD) {
                     this.mapingIndex = 0;
 
                     this.viewData.push(this.mapUserData(res.data));
 
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === res.id) {
-                            user.actionAnimation = 'add';
+                            user.actionAnimation =
+                                ConstantStringTableComponentsEnum.ADD;
                         }
 
                         return user;
@@ -176,7 +214,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 2300);
                 }
                 // On Update User
-                else if (res.animation === 'update') {
+                else if (
+                    res.animation === ConstantStringTableComponentsEnum.UPDATE
+                ) {
                     this.mapingIndex = 0;
 
                     const updatedDriver = this.mapUserData(res.data);
@@ -184,7 +224,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === res.id) {
                             user = updatedDriver;
-                            user.actionAnimation = 'update';
+                            user.actionAnimation =
+                                ConstantStringTableComponentsEnum.UPDATE;
                         }
 
                         return user;
@@ -200,7 +241,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 1000);
                 }
                 // On Update User Status
-                else if (res.animation === 'update-status') {
+                else if (
+                    res.animation ===
+                    ConstantStringTableComponentsEnum.UPDATE_STATUS
+                ) {
                     this.mapingIndex = 0;
 
                     const updatedUser = this.mapUserData(res.data);
@@ -208,7 +252,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === res.id) {
                             user = updatedUser;
-                            user.actionAnimation = 'update';
+                            user.actionAnimation =
+                                ConstantStringTableComponentsEnum.UPDATE;
                         }
 
                         return user;
@@ -230,76 +275,95 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 900);
                 }
             });
+    }
 
-        // Delete Selected Rows
-        this.tableService.currentDeleteSelectedRows
+    private currentSearchTableData(): void {
+        this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                if (response.length) {
-                    let mappedRes = response.map((item) => {
-                        return {
-                            id: item.id,
-                            data: {
-                                ...item.tableData,
-                                name:
-                                    item.tableData.firstName +
-                                    ' ' +
-                                    item.tableData.lastName,
-                            },
-                        };
-                    });
+            .subscribe((res) => {
+                if (res) {
+                    this.mapingIndex = 0;
 
-                    this.modalService.openModal(
-                        ConfirmationModalComponent,
-                        { size: 'small' },
-                        {
-                            data: null,
-                            array: mappedRes,
-                            template: 'user',
-                            type: 'multiple delete',
-                            image: true,
-                        }
-                    );
-                }
-            });
+                    this.backFilterQuery.pageIndex = 1;
 
-        // Confirmation Subscribe
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: Confirmation) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'user') {
-                                this.deleteUserById(res.id);
-                            }
-                            break;
-                        }
-                        case 'activate': {
-                            this.changeUserStatus(res.id);
-                            break;
-                        }
-                        case 'deactivate': {
-                            this.changeUserStatus(res.id);
-                            break;
-                        }
-                        case 'multiple delete': {
-                            this.multipleDeleteUsers(res.array);
-                            break;
-                        }
-                        default: {
-                            break;
+                    const searchEvent = tableSearch(res, this.backFilterQuery);
+
+                    if (searchEvent) {
+                        if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.API
+                        ) {
+                            this.userBackFilter(searchEvent.query);
+                        } else if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.STORE
+                        ) {
+                            this.sendUserData();
                         }
                     }
-                },
+                }
             });
     }
 
-    // ---------------------------  NgAfterViewInit ----------------------------------
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
+    private currentToaggleColumn(): void {
+        this.tableService.currentToaggleColumn
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response?.column) {
+                    this.columns = this.columns.map((c) => {
+                        if (c.field === response.column.field) {
+                            c.hidden = response.column.hidden;
+                        }
+
+                        return c;
+                    });
+                }
+            });
+    }
+
+    private currentColumnWidth(): void {
+        this.tableService.currentColumnWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response?.event?.width) {
+                    this.columns = this.columns.map((c) => {
+                        if (
+                            c.title ===
+                            response.columns[response.event.index].title
+                        ) {
+                            c.width = response.event.width;
+                        }
+
+                        return c;
+                    });
+                }
+            });
+    }
+
+    private resetColumns(): void {
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response) this.sendUserData();
+            });
+    }
+
+    private setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.viewData?.filter((dataItem) =>
+                            res.filteredArray.some(
+                                (filterItem) => filterItem.id == dataItem.id
+                            )
+                        );
+                    }
+
+                    if (!res.selectedFilter) this.sendUserData();
+                }
+            });
     }
 
     // Responsive Observer
@@ -323,8 +387,18 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showArhiveCount: true,
                 showCountSelectedInList: false,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ConstantStringTableComponentsEnum.LIST,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.LIST,
+                    },
+                    {
+                        name: ConstantStringTableComponentsEnum.CARD,
+                        active:
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.CARD,
+                    },
                 ],
             },
         };
@@ -358,20 +432,22 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData = [
             {
-                title: 'User',
-                field: 'active',
+                title: ConstantStringTableComponentsEnum.USER,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: userCount.users,
                 arhiveCount: 0,
                 data: userData,
                 deactivatedUserArray: checkSpecialFilterArray(
                     userData,
-                    'status'
+                    ConstantStringTableComponentsEnum.STATUS
                 ),
-                gridNameTitle: 'User',
-                stateName: 'users',
-                tableConfiguration: 'USER',
+                gridNameTitle: ConstantStringTableComponentsEnum.USER,
+                stateName: ConstantStringTableComponentsEnum.USERS,
+                tableConfiguration: ConstantStringTableComponentsEnum.USER_2,
                 isActive: true,
-                gridColumns: this.getGridColumns('USER'),
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.USER_2
+                ),
             },
         ];
 
@@ -406,7 +482,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
-        console.log(this.viewData);
     }
 
     // Map User Data
@@ -485,25 +560,25 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     getDropdownContent(data: any) {
         return [
             {
-                title: 'Edit',
-                name: 'edit',
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 hasBorder: true,
             },
             {
                 title: 'Reset Password',
-                name: 'reset-password',
+                name: ConstantStringTableComponentsEnum.RESET_PASSWORD,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'regular',
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -511,7 +586,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             {
                 title: 'Resend Invitation',
-                name: 'resend-invitation',
+                name: ConstantStringTableComponentsEnum.RESEND_INVITATION,
                 svgUrl: !data.verified
                     ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
                     : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
@@ -519,37 +594,43 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: !data.verified ? 18 : 14,
                     height: !data.verified ? 18 : 14,
                 },
-                svgClass: data.verified ? 'check' : 'regular',
+                svgClass: data.verified
+                    ? ConstantStringTableComponentsEnum.CHECK
+                    : ConstantStringTableComponentsEnum.REGULAR,
                 hasBorder: true,
                 mutedStyle: data.verified,
             },
             {
-                title: data.status ? 'Deactivate' : 'Activate',
-                name: data.status ? 'deactivate' : 'activate',
+                title: data.status
+                    ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+                    : ConstantStringTableComponentsEnum.ACTIVATE_2,
+                name: data.status
+                    ? ConstantStringTableComponentsEnum.DEACTIVATE
+                    : ConstantStringTableComponentsEnum.ACTIVATE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 svgClass: !data.verified
-                    ? 'regular'
+                    ? ConstantStringTableComponentsEnum.REGULAR
                     : data.status
-                    ? 'deactivate'
-                    : 'activate',
+                    ? ConstantStringTableComponentsEnum.DEACTIVATE
+                    : ConstantStringTableComponentsEnum.ACTIVATE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
                 mutedStyle: !data.verified,
             },
             {
-                title: 'Delete',
-                name: 'delete',
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'delete',
+                svgClass: ConstantStringTableComponentsEnum.DELETE,
             },
         ];
     }
@@ -618,7 +699,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: () => {
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === id) {
-                            user.actionAnimation = 'delete';
+                            user.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE;
                         }
 
                         return user;
@@ -693,18 +775,20 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On ToolBar Actions
     onToolBarAction(event: any) {
-        if (event.action === 'open-modal') {
+        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
             this.modalService.openModal(UserModalComponent, {
-                size: 'small',
+                size: ConstantStringTableComponentsEnum.SMALL,
             });
-        } else if (event.action === 'view-mode') {
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
+        ) {
             this.activeViewMode = event.mode;
         }
     }
 
     // On Head Actions
     onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
+        if (event.action === ConstantStringTableComponentsEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
 
@@ -732,45 +816,57 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         // Edit
-        if (event.type === 'edit') {
+        if (event.type === ConstantStringTableComponentsEnum.EDIT) {
             this.modalService.openModal(
                 UserModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,
-                    type: 'edit',
-                    disableButton: event.data?.userType?.name !== 'Owner',
+                    type: ConstantStringTableComponentsEnum.EDIT,
+                    disableButton:
+                        event.data?.userType?.name !==
+                        ConstantStringTableComponentsEnum.OWNER,
                 }
             );
         }
         // Show More (Pagination)
-        else if (event.type === 'show-more') {
+        else if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
 
             this.userBackFilter(this.backFilterQuery, true);
         }
         // Activate Or Deactivate User
-        else if (event.type === 'deactivate' || event.type === 'activate') {
+        else if (
+            event.type === ConstantStringTableComponentsEnum.DEACTIVATE ||
+            event.type === ConstantStringTableComponentsEnum.ACTIVATE
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...confirmationModalData,
-                    template: 'user',
-                    type: event.data.status === 1 ? 'deactivate' : 'activate',
+                    template: ConstantStringTableComponentsEnum.USER_1,
+                    type:
+                        event.data.status === 1
+                            ? ConstantStringTableComponentsEnum.DEACTIVATE
+                            : ConstantStringTableComponentsEnum.ACTIVATE,
                     image: true,
                 }
             );
         }
         // User Reset Password
-        else if (event.type === 'reset-password') {
+        else if (
+            event.type === ConstantStringTableComponentsEnum.RESET_PASSWORD
+        ) {
             this.userService
                 .userResetPassword(event.data.email)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {});
         }
         // User Resend Ivitation
-        else if (event.type === 'resend-invitation') {
+        else if (
+            event.type === ConstantStringTableComponentsEnum.RESEND_INVITATION
+        ) {
             this.userService
                 .userResendIvitation({
                     email: event.data.email,
@@ -780,14 +876,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 .subscribe(() => {});
         }
         // User Delete
-        else if (event.type === 'delete') {
+        else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...confirmationModalData,
-                    template: 'user',
-                    type: 'delete',
+                    template: ConstantStringTableComponentsEnum.USER_1,
+                    type: ConstantStringTableComponentsEnum.DELETE,
                     image: true,
                 }
             );
@@ -803,7 +899,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.viewData = this.viewData.map((tableData: any) => {
                     users.map((userId: any) => {
                         if (tableData.id === userId) {
-                            tableData.actionAnimation = 'delete-multiple';
+                            tableData.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
                         }
                     });
 

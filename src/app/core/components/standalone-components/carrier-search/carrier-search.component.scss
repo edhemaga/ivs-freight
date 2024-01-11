@@ -16,26 +16,29 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            &.icon-disabled{
+
+            &.icon-disabled {
                 svg-icon {
                     svg {
                         path {
-                            fill:$ta-light-grey-6;
+                            fill: $ta-light-grey-6;
                             transition: 0.25s;
                         }
                     }
                 }
-                &:hover{
+
+                &:hover {
                     svg-icon {
                         svg {
                             path {
-                                fill:$ta-light-grey-6;
+                                fill: $ta-light-grey-6;
                                 transition: 0.25s;
                             }
                         }
                     }
                 }
             }
+
             &:hover {
                 svg-icon {
                     svg {
@@ -65,7 +68,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            // padding:  2px 4px 2px 6px;
+
             input {
                 width: 100%;
                 height: 100%;
@@ -79,46 +82,47 @@
 
                 &::selection {
                     color: $white;
-                    background: #ffffff20;
+                    background: $white-5;
                 }
             }
+
             .btn-container {
                 padding-left: 5px;
-    
+
                 .confirm-icon,
                 .clear-icon {
                     cursor: pointer;
                     line-height: 0;
                     transition: transform 0.3s ease;
-    
+
                     &:hover {
                         transform: scale(1.2);
-    
+
                         svg {
                             rect {
                                 fill: $white;
                             }
                         }
                     }
-    
+
                     svg {
                         rect {
                             transition: fill 0.3s ease;
                             fill: $ta-white-3;
                         }
-    
+
                         path {
                             transition: fill 0.3s ease;
                             fill: $ta-black-3;
                         }
                     }
                 }
-    
+
                 .confirm-icon {
                     margin-right: 4px;
                 }
             }
-            
+
             /* Chrome, Firefox, Opera, Safari 10.1+ */
             input::placeholder {
                 color: $ta-light-grey-2;
@@ -149,11 +153,11 @@
 
             &:hover {
                 color: $white;
-                transition: 0.25s;
+                transition: color 0.25s;
 
                 .delete-chip {
                     opacity: 1;
-                    transition: 0.25s;
+                    transition: opacity 0.25s;
                 }
             }
 
@@ -174,7 +178,7 @@
 
                 &:hover {
                     background: $ta-red-2;
-                    transition: 0.25s;
+                    transition: background 0.25s;
                 }
 
                 svg-icon {
@@ -192,20 +196,19 @@
             background: $ta-loaded;
             color: $white;
 
-
             &:hover {
-                background: #007A6E;
-                transition: 0.25s;
+                background: $special-filter-green;
+                transition: background 0.25s;
             }
         }
 
         .second-chip-toolbar-style {
-            background: #9E47EC;
+            background: $special-filter-purple;
             color: $white;
 
             &:hover {
-                background: #7919D0;
-                transition: 0.25s;
+                background: $special-filter-purple-1;
+                transition: background 0.25s;
             }
         }
 
@@ -214,44 +217,44 @@
             color: $white;
 
             &:hover {
-                background: #DE7700;
-                transition: 0.25s;
+                background: $ta-yellow-2;
+                transition: background 0.25s;
             }
         }
 
         .first-chip-style {
-            background: #26a69020;
+            background: $special-filter-green-1;
             color: $ta-review-green-2;
 
             &:hover {
                 background: $ta-review-green-2;
-                transition: 0.25s;
+                transition: background 0.25s;
             }
         }
 
         .second-chip-style {
-            background: #ab47bc20;
-            color: #ab47bc;
+            background: $special-filter-purple-3;
+            color: $special-filter-purple-2;
 
             &:hover {
-                background: #ab47bc;
-                transition: 0.25s;
+                background: $special-filter-purple-2;
+                transition: background 0.25s;
             }
         }
 
         .third-chip-style {
-            background: #ffa72620;
-            color: #ffa726;
+            background: $ta-white-6;
+            color: $special-filter-orange;
 
             &:hover {
-                background: #ffa726;
-                transition: 0.25s;
+                background: $special-filter-orange;
+                transition: background 0.25s;
             }
         }
 
         .delete-chip-style {
             background: $ta-red-2 !important;
-            transition: 0.25s;
+            transition: background 0.25s;
         }
 
         .delete-all-chips {
@@ -266,29 +269,29 @@
             svg {
                 display: flex;
             }
-            
-            &.regular-style{
+
+            &.regular-style {
                 &:hover {
-                    background: #f4433620;
-                    transition: 0.25s;
-    
+                    background: $ta-red-12;
+                    transition: background 0.25s;
+
                     svg {
                         path {
                             fill: $ta-red-3;
-                            transition: 0.25s;
+                            transition: fill 0.25s;
                         }
                     }
                 }
             }
-            &.toolbar-style{
+            &.toolbar-style {
                 &:hover {
                     background: $bw2;
-                    transition: 0.25s;
-    
+                    transition: background 0.25s;
+
                     svg {
                         path {
                             fill: $ta-black;
-                            transition: 0.25s;
+                            transition: fill 0.25s;
                         }
                     }
                 }
@@ -309,7 +312,7 @@
                 svg {
                     path {
                         fill: $bw2 !important;
-                        transition: 0.25s !important;
+                        transition: fill 0.25s !important;
                     }
                 }
             }
@@ -324,24 +327,23 @@
         }
     }
 
-    .icon-border{
+    .icon-border {
         width: 1px;
         height: 100%;
         display: flex;
         align-items: center;
         margin-right: 4px;
 
-        .inner-border{
+        .inner-border {
             width: 100%;
             height: 14px;
-            background: #CCCCCC40;
+            background: $ta-light-grey-8;
         }
     }
 
-
     .search-input {
         width: 147px !important;
-        transition: 0.25s;
+        transition: width 0.25s;
     }
 }
 

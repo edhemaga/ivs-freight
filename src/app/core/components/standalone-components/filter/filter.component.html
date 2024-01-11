@@ -1,7 +1,7 @@
 <div
-    class="user-icon"
+    class="user-icon d-flex justify-content-center align-items-center"
     app-autoclose-popover
-    [customClass]="'filterpopovermain'" 
+    [customClass]="'filterpopovermain'"
     [placement]="'bottom-left'"
     autoClose="outside"
     (closeFilter)="onFilterClose()"
@@ -19,79 +19,100 @@
             minValueSet != minValueRange ||
             singleFormActive
     }"
+    (mouseenter)="
+        filterActiveArray.length > 0 ||
+        filterActiveTime != '' ||
+        rangeValue > 0 ||
+        totalFiltersNum > 0 ||
+        longValueSet != 0 ||
+        maxValueSet != maxValueRange ||
+        minValueSet != minValueRange ||
+        singleFormActive
+            ? (hoverFilter = true)
+            : (hoverFilter = false)
+    "
+    (mouseleave)="hoverFilter = false"
 >
-    <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
     <div
         mainContent
         ngbTooltip
         mainTooltip="{{
             !hoverClose
                 ? totalFiltersNum > 0
-                    ? activeFilter ? 'Close Filter' : filterTitle 
-                    :  activeFilter ? 'Close Filter' : filterTitle
+                    ? activeFilter
+                        ? 'Close Filter'
+                        : filterTitle
+                    : activeFilter
+                    ? 'Close Filter'
+                    : filterTitle
                 : 'Remove Filter'
         }}"
         position="bottom"
-        tooltipBackground="{{ activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F' }}"
-        tooltipColor="{{activeFilter ? '#2F2F2F' : '#FFFFFF'}}"
+        tooltipBackground="{{
+            activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F'
+        }}"
+        tooltipColor="{{ activeFilter ? '#2F2F2F' : '#FFFFFF' }}"
         tooltipTextAlign="center"
-        class="main-icon-holder"
+        class="main-icon-holder d-flex justify-content-center align-items-center"
     >
         <div>
             <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
         </div>
-        <div *ngIf="filterActiveArray.length > 0 || totalFiltersNum > 0" class="filters-selected-value-holder">
-            {{ filterActiveArray.length > 0 ? filterActiveArray.length : totalFiltersNum  }}
-        </div>
-        <div *ngIf="
-           ( filterActiveTime != '' ||
-            longValueSet != 0 ||
-            singleFormActive ||
-            activeFormNum > 0) &&
-            !hoverClose
-            " 
-            class="filters-selected-value-holder conf-icon-holder">
-            <svg-icon
-                src="assets/svg/common/ic_confirm.svg"
-            ></svg-icon> 
-        </div>
-        <div 
-            *ngIf="
-                filterActiveArray.length > 0 ||
-                selectedTimeValue != '' ||
-                totalFiltersNum > 0 ||
-                rangeValue > 0 ||
-                moneyFilterStatus ||
-                longVal != 0 ||
-                maxValueSet != maxValueRange ||
-                minValueSet != minValueRange
-            " 
-            class="filters-selected-value-holder 
-            clear-filter-icon" 
-            (mouseenter)="hoverClose = true"
-            (mouseleave)="hoverClose = false"
-            (click)="clearAll($event, true)"
-            
+        <ng-container
+            *ngIf="filterActiveArray.length > 0 || totalFiltersNum > 0"
+        >
+            <div
+                class="filters-selected-value-holder justify-content-center align-items-center ta-font-extra-bold"
+                [ngClass]="{
+                    'd-flex':
+                        !hoverFilter &&
+                        (filterActiveArray.length > 0 ||
+                            filterActiveTime != '' ||
+                            rangeValue > 0 ||
+                            totalFiltersNum > 0 ||
+                            longValueSet != 0 ||
+                            maxValueSet != maxValueRange ||
+                            minValueSet != minValueRange ||
+                            singleFormActive),
+                    'd-none': hoverFilter
+                }"
             >
-            <svg-icon
-                src="assets/svg/common/ic_cancel_violation.svg"
-            ></svg-icon>  
-        </div>
-        <!--
-        <div *ngIf="totalFiltersNum > 0" class="filters-selected-value-holder">
-            {{ totalFiltersNum }}
-        </div>
-        -->
-        <!-- old filter counter -->
-        <!--
-        <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
-            {{ filterActiveArray.length }}
-        </div>
-        <div *ngIf="totalFiltersNum > 0" class="active-filter-num">
-            {{ totalFiltersNum }}
-        </div>
-        
-        <div
+                {{
+                    filterActiveArray.length > 0
+                        ? filterActiveArray.length
+                        : totalFiltersNum
+                }}
+            </div>
+        </ng-container>
+        <ng-container
+            *ngIf="
+                (filterActiveTime !== '' ||
+                    longValueSet !== 0 ||
+                    singleFormActive ||
+                    activeFormNum > 0) &&
+                !hoverClose
+            "
+        >
+            <div
+                class="filters-selected-value-holder justify-content-center align-items-center conf-icon-holder"
+                [ngClass]="{
+                    'd-flex':
+                        !hoverFilter &&
+                        (filterActiveArray.length > 0 ||
+                            filterActiveTime != '' ||
+                            rangeValue > 0 ||
+                            totalFiltersNum > 0 ||
+                            longValueSet != 0 ||
+                            maxValueSet != maxValueRange ||
+                            minValueSet != minValueRange ||
+                            singleFormActive),
+                    'd-none': hoverFilter
+                }"
+            >
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            </div>
+        </ng-container>
+        <ng-container
             *ngIf="
                 filterActiveArray.length > 0 ||
                 selectedTimeValue != '' ||
@@ -102,16 +123,22 @@
                 maxValueSet != maxValueRange ||
                 minValueSet != minValueRange
             "
-            class="active-filter-num clear-filter"
-            (mouseenter)="hoverClose = true"
-            (mouseleave)="hoverClose = false"
-            (click)="clearAll($event, true)"
         >
-            <svg-icon
-                src="assets/svg/common/ic_cancel_violation.svg"
-            ></svg-icon>
-        </div>
-        -->
+            <div
+                class="filters-selected-value-holder d-flex justify-content-center align-items-center clear-filter-icon"
+                (mouseenter)="hoverClose = true"
+                (mouseleave)="hoverClose = false"
+                (click)="clearAll($event, true)"
+                [ngClass]="{
+                    'd-none': !activeFilter && !hoverFilter,
+                    'd-flex': activeFilter && hoverFilter
+                }"
+            >
+                <svg-icon
+                    src="assets/svg/common/ic_cancel_violation.svg"
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
     <div popoverContent class="main-popover-body">
         <div
@@ -124,15 +151,6 @@
             [class.truck-icon-holder]="largeLeftIcon"
         >
             <div class="filter-header filter-text-part">
-            <!--new filter counter design-->
-            <!--   
-                <div class="user-filter-box" *ngIf="type != 'stateFilter'">
-                    {{ selectedUser.length }}
-                </div>
-                <div class="user-filter-box" *ngIf="type == 'stateFilter'">
-                    {{ canadaSelectedStates.length + usaSelectedStates.length }}
-                </div>
-            -->
                 <div class="user-title-text counter-padd-title">
                     {{ filterTitle }}
                 </div>
@@ -247,24 +265,37 @@
                         class="user-profile-img selected-filter-icon"
                         *ngIf="leftSideIcon"
                     >
-                        <svg-icon *ngIf=" type != 'labelFilter' "
+                        <svg-icon
+                            *ngIf="type != 'labelFilter'"
                             src="{{
                                 item.activeIcon ? item.activeIcon : item.icon
                             }}"
                         ></svg-icon>
-                        
-                        <svg *ngIf="type == 'labelFilter'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+
+                        <svg
+                            *ngIf="type == 'labelFilter'"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                        >
                             <g id="Label" transform="translate(-1084 -362)">
-                                <rect id="Rectangle_63447" data-name="Rectangle 63447" width="18" height="18" transform="translate(1084 362)" opacity="0"/>
-                                <path 
-                                id="tag" 
-                                d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z" 
-                                transform="translate(1084.9 362.9)" 
-                                [attr.fill]="item.color"
+                                <rect
+                                    id="Rectangle_63447"
+                                    data-name="Rectangle 63447"
+                                    width="18"
+                                    height="18"
+                                    transform="translate(1084 362)"
+                                    opacity="0"
+                                />
+                                <path
+                                    id="tag"
+                                    d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z"
+                                    transform="translate(1084.9 362.9)"
+                                    [attr.fill]="item.color"
                                 />
                             </g>
-                            </svg>
-                    
+                        </svg>
                     </div>
                     <div class="selected-user-frame">
                         <div class="selected-name-text">
@@ -275,7 +306,7 @@
                                 src="assets/svg/common/ic_confirm.svg"
                             ></svg-icon>
                         </div>
-                        <div 
+                        <div
                             *ngIf="item.counter"
                             class="counter-holder activeCounter"
                         >
@@ -455,17 +486,29 @@
                         class="user-main-holder"
                     >
                         <div class="user-profile-img labelIcon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                            >
                                 <g id="Label" transform="translate(-1084 -362)">
-                                  <rect id="Rectangle_63447" data-name="Rectangle 63447" width="18" height="18" transform="translate(1084 362)" opacity="0"/>
-                                  <path 
-                                    id="tag" 
-                                    d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z" 
-                                    transform="translate(1084.9 362.9)" 
-                                    [attr.fill]="item.color"
+                                    <rect
+                                        id="Rectangle_63447"
+                                        data-name="Rectangle 63447"
+                                        width="18"
+                                        height="18"
+                                        transform="translate(1084 362)"
+                                        opacity="0"
+                                    />
+                                    <path
+                                        id="tag"
+                                        d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z"
+                                        transform="translate(1084.9 362.9)"
+                                        [attr.fill]="item.color"
                                     />
                                 </g>
-                              </svg>
+                            </svg>
                         </div>
                         <div class="user-frame">
                             <div class="selected-name-text">
@@ -774,10 +817,9 @@
                                 <span> {{ item.name }} </span>
                             </div>
                         </div>
-                        <div 
-                            *ngIf="item.counter"    
-                            class="counter-holder"
-                        >27</div>
+                        <div *ngIf="item.counter" class="counter-holder">
+                            27
+                        </div>
                     </div>
                 </div>
             </div>
@@ -801,10 +843,9 @@
                                 <span> {{ item.name }} </span>
                             </div>
                         </div>
-                        <div 
-                        *ngIf="item.counter" 
-                        class="counter-holder"
-                        >27</div>
+                        <div *ngIf="item.counter" class="counter-holder">
+                            27
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1310,10 +1351,7 @@
                     class="money-main-holder"
                     [@closeForm]="showPart1 ? 'true' : 'false'"
                 >
-                    <div
-                        class="money-value-holder"
-                        
-                    >
+                    <div class="money-value-holder">
                         <app-ta-input
                             [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFromFirstFrom"
@@ -1328,7 +1366,6 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormFirstError"
-                        
                     >
                         <app-ta-input
                             [@showAnimation]="activeFilter ? 'true' : 'false'"
@@ -1388,10 +1425,7 @@
                     class="money-main-holder"
                     [@closeForm]="showPart2 ? 'true' : 'false'"
                 >
-                    <div
-                        class="money-value-holder"
-                        
-                    >
+                    <div class="money-value-holder">
                         <app-ta-input
                             [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFormSecondFrom"
@@ -1406,7 +1440,6 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormSecondError"
-                        
                     >
                         <app-ta-input
                             [@showAnimation]="activeFilter ? 'true' : 'false'"
@@ -1466,10 +1499,7 @@
                     class="money-main-holder"
                     [@closeForm]="showPart3 ? 'true' : 'false'"
                 >
-                    <div
-                        class="money-value-holder"
-                       
-                    >
+                    <div class="money-value-holder">
                         <app-ta-input
                             [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFormThirdFrom"
@@ -1484,10 +1514,9 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormThirdError"
-                        
                     >
                         <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'" 
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFormThirdTo"
                             [inputConfig]="{
                                 name: 'multiFormThirdTo',
@@ -1631,9 +1660,7 @@
                                     placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
-                                (selectedAddress)="
-                                    handleOriginSelect($event)
-                                "
+                                (selectedAddress)="handleOriginSelect($event)"
                             ></app-input-address-dropdown>
                         </div>
                         <div class="area-single-form-holder">
@@ -1688,9 +1715,7 @@
                                 placeholderInsteadOfLabel: true
                             }"
                             [placeholderType]="'shortAddress'"
-                            (selectedAddress)="
-                                handleInputSelect($event)
-                            "
+                            (selectedAddress)="handleInputSelect($event)"
                         ></app-input-address-dropdown>
                     </div>
                     <div
@@ -1699,9 +1724,7 @@
                         [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
                         <div class="range-new-value-holder">
-                            <div class="range-text">
-                                Range
-                            </div>
+                            <div class="range-text">Range</div>
                             <div class="range-flex-holder">
                                 <app-ta-ngx-slider
                                     [sliderOptions]="locationSliderData"

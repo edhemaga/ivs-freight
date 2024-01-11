@@ -6,11 +6,15 @@ import {
     OnInit,
     SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+//Module
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Service
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-carrier-search',
@@ -26,7 +30,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./carrier-search.component.scss'],
 })
 export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() toolbarSearch?: boolean = false;
+    @Input() toolbarSearch?: boolean = true;
     @Input() searchType: string = '';
     @Input() selectedTabData: any = {};
     chips: any[] = [];
@@ -169,9 +173,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public handleClearClick(): void {
-        if (this.searchText) {
-            this.searchText = '';
-        }
+        if (this.searchText) this.searchText = '';
     }
 
     // Check If Chips Already Have Search Text

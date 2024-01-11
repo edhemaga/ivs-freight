@@ -88,7 +88,7 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
     providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    driverTableData: any[] = [];
+    public driverTableData: any[] = [];
     private destroy$ = new Subject<void>();
     public tableOptions: any = {};
     public tableData: any[] = [];
@@ -223,13 +223,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
                         this.viewData = this.driverTableData;
-                        this.viewData = this.viewData?.filter((d) =>
-                            res.filteredArray.some((i) => i.id == d.id)
+                        this.viewData = this.viewData?.filter((driverData) =>
+                            res.filteredArray.some(
+                                (filterData) => filterData.id == driverData.id
+                            )
                         );
                     }
-                    if (!res.selectedFilter) {
-                        this.sendDriverData();
-                    }
+
+                    if (!res.selectedFilter) this.sendDriverData();
                 }
             });
     }

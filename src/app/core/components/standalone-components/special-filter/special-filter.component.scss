@@ -3,49 +3,35 @@
 .user-icon {
     position: relative;
     min-width: 26px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 2px;
     cursor: pointer;
     padding: 4px;
-    .main-icon-holder{
-        display: flex;
-        justify-content: center;
-        align-items: center;    
+
+    .main-icon-holder {
         gap: 4px;
 
-        .filters-selected-value-holder{
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .filters-selected-value-holder {
             width: 14px;
             height: 14px;
-            font-weight: 800; 
             font-size: 11px;
             line-height: 14px;
             color: $muted !important;
-            &.show-number{
-                display: flex;
-            }
-            &.conf-icon-holder{
+
+            &.conf-icon-holder {
                 svg {
                     height: 9.27px;
-                    width: 12px;     
+                    width: 12px;
                 }
             }
-            
-            &.clear-filter-icon{
-                display: none;
+
+            &.clear-filter-icon {
                 svg-icon {
                     svg {
                         width: 14px;
                         height: 14px;
-                        display: flex;
                     }
                 }
             }
-
         }
     }
 
@@ -53,112 +39,113 @@
         svg {
             width: 18px;
             height: 18px;
-            display: flex;
         }
     }
 
-    &.broker-filter{
+    &.broker-filter {
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #ED9292 !important;
+                        fill: $ta-red-13 !important;
                     }
                 }
             }
         }
-        &:hover{
+
+        &:hover {
             background-color: $bw2;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-black !important;
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill: #C20C0C !important;
+                            fill: $ta-red-14 !important;
                         }
                     }
                 }
             }
-        
         }
-        &.zero-filter{
+
+        &.zero-filter {
             pointer-events: none;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-light-grey-6 !important;
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#F4BEBE !important;
+                            fill: $ta-red-15 !important;
                         }
                     }
                 }
             }
         }
     }
+
     &.broker-filter-active {
         background-color: $bw6-2;
+
         .main-icon-holder {
-            .filters-selected-value-holder{
-                color:  $white !important;
+            .filters-selected-value-holder {
+                color: $white !important;
             }
+
             svg-icon {
                 svg {
                     path {
-                        fill: #ED9292 !important;
+                        fill: $ta-red-13 !important;
                     }
                 }
             }
         }
-        &:hover{
-            background-color: $ta-black;
-            .main-icon-holder {
 
-                .filters-selected-value-holder{
-                    color:  $white !important;
-                    &.show-number{
-                        display: none;
-                    }
-                    &.clear-filter-icon{
-                        display: flex;
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
                         height: 14px;
                         width: 14px;
-                            
+
                         svg {
-                            
-                            path{
+                            path {
                                 height: 14px;
                                 width: 14px;
                                 fill: $white !important;
-
                             }
-                            
                         }
-    
-                        &:hover{
-                            .filter-active-colors{
+
+                        &:hover {
+                            .filter-active-colors {
                                 background-color: $white !important;
                             }
                         }
-    
                     }
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill: #ED9292 !important;
+                            fill: $ta-red-13 !important;
                         }
                     }
                 }
             }
-
         }
     }
 
-    &.archive-filter{
+    &.archive-filter {
         .main-icon-holder {
             svg-icon {
                 svg {
@@ -168,90 +155,92 @@
                 }
             }
         }
-        &:hover{
+
+        &:hover {
             background-color: $bw2;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-black !important;
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:$ta-black !important;
+                            fill: $ta-black !important;
                         }
                     }
                 }
             }
-        
         }
-        &.zero-filter{
+
+        &.zero-filter {
             pointer-events: none;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-light-grey-6 !important;
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:$ta-light-grey-6 !important;
+                            fill: $ta-light-grey-6 !important;
                         }
                     }
                 }
             }
         }
     }
+
     &.archive-filter-active {
         background-color: $bw6-2;
-        .main-icon-holder {
-            .filters-selected-value-holder{
-                color:  $white !important;
 
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
             }
+
             svg-icon {
                 svg {
                     path {
-                        fill: #FFFFFFB2 !important;
+                        fill: $white-4 !important;
                     }
                 }
             }
         }
-        &:hover{
-            background-color: $ta-black;
-            .main-icon-holder {
 
-                .filters-selected-value-holder{
-                    color:  $white !important;
-                    &.show-number{
-                        display: none;
-                    }
-                    &.clear-filter-icon{
-                        display: flex;
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
                         height: 14px;
                         width: 14px;
-                            
+
                         svg {
-                            
-                            path{
+                            path {
                                 height: 14px;
                                 width: 14px;
                                 fill: $white !important;
-
                             }
-                            
                         }
-    
-                        &:hover{
-                            .filter-active-colors{
+
+                        &:hover {
+                            .filter-active-colors {
                                 background-color: $white !important;
                             }
                         }
-    
                     }
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill: #FFFFFFB2 !important;
+                            fill: $white-4 !important;
                         }
                     }
                 }
@@ -259,100 +248,102 @@
         }
     }
 
-
-    &.load-filter{
+    &.load-filter {
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #6692F1 !important;
+                        fill: $ta-blue-13 !important;
                     }
                 }
             }
         }
-        &:hover{
+
+        &:hover {
             background-color: $bw2;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-black !important;
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#0B49D1 !important;
+                            fill: $ta-blue-15 !important;
                         }
                     }
                 }
             }
-        
         }
-        &.zero-filter{
+
+        &.zero-filter {
             pointer-events: none;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-light-grey-6 !important;
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#BED0F9 !important;
+                            fill: $ta-blue-17 !important;
                         }
                     }
                 }
             }
         }
     }
+
     &.load-filter-active {
         background-color: $bw6-2;
+
         .main-icon-holder {
-            .filters-selected-value-holder{
-                color:  $white !important
+            .filters-selected-value-holder {
+                color: $white !important;
             }
+
             svg-icon {
                 svg {
                     path {
-                        fill: #92B1F5 !important;
+                        fill: $ta-blue-19 !important;
                     }
                 }
             }
         }
-        &:hover{
-            background-color: $ta-black;
-            .main-icon-holder {
 
-                .filters-selected-value-holder{
-                    color:  $white !important;
-                    &.show-number{
-                        display: none;
-                    }
-                    &.clear-filter-icon{
-                        display: flex;
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
                         height: 14px;
                         width: 14px;
-                            
+
                         svg {
-                            
-                            path{
+                            path {
                                 height: 14px;
                                 width: 14px;
                                 fill: $white !important;
-
                             }
-                            
                         }
-    
-                        &:hover{
-                            .filter-active-colors{
+
+                        &:hover {
+                            .filter-active-colors {
                                 background-color: $white !important;
                             }
                         }
-    
                     }
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill: #92B1F5 !important;
+                            fill: $ta-blue-19 !important;
                         }
                     }
                 }
@@ -360,208 +351,209 @@
         }
     }
 
-    &.repair-filter{
+    &.repair-filter {
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #FAB15C !important;
+                        fill: $ta-yellow-1 !important;
                     }
                 }
             }
         }
-        &:hover{
+
+        &:hover {
             background-color: $bw2;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-black !important;
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#DE7700 !important;
+                            fill: $ta-yellow-2 !important;
                         }
                     }
                 }
             }
-        
         }
-        &.zero-filter{
+
+        &.zero-filter {
             pointer-events: none;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-light-grey-6 !important;
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#FDDEB9 !important;
+                            fill: $ta-yellow-3 !important;
                         }
                     }
                 }
             }
         }
     }
+
     &.repair-filter-active {
         background-color: $bw6-2;
+
         .main-icon-holder {
-            .filters-selected-value-holder{
-                color:  $white !important;
+            .filters-selected-value-holder {
+                color: $white !important;
             }
+
             svg-icon {
                 svg {
                     path {
-                        fill: #FBC88B !important;
+                        fill: $ta-yellow-4 !important;
                     }
                 }
             }
         }
-        &:hover{
-            background-color: $ta-black;
-            .main-icon-holder {
 
-                .filters-selected-value-holder{
-                    color:  $white !important;
-                    &.show-number{
-                        display: none;
-                    }
-                    &.clear-filter-icon{
-                        display: flex;
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
                         height: 14px;
                         width: 14px;
-                            
+
                         svg {
-                            
-                            path{
+                            path {
                                 height: 14px;
                                 width: 14px;
                                 fill: $white !important;
-
                             }
-                            
                         }
-    
-                        &:hover{
-                            .filter-active-colors{
+
+                        &:hover {
+                            .filter-active-colors {
                                 background-color: $white !important;
                             }
                         }
-    
                     }
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill: #FBC88B !important;
+                            fill: $ta-yellow-4 !important;
                         }
                     }
                 }
             }
-            
         }
     }
 
-
-    
-    &.fuel-filter{
+    &.fuel-filter {
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #56B4AC !important;
+                        fill: $ta-green !important;
                     }
                 }
             }
         }
-        &:hover{
+
+        &:hover {
             background-color: $bw2;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-black !important;
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#007A6E !important;
+                            fill: $special-filter-green !important;
                         }
                     }
                 }
             }
-        
         }
-        &.zero-filter{
+
+        &.zero-filter {
             pointer-events: none;
+
             .main-icon-holder {
-                .filters-selected-value-holder{
-                    color:  $ta-light-grey-6 !important;
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill:#B6DFDB !important;
+                            fill: $ta-green-3 !important;
                         }
                     }
                 }
             }
         }
     }
+
     &.fuel-filter-active {
         background-color: $bw6-2;
+
         .main-icon-holder {
-            .filters-selected-value-holder{
-                color:  $white !important;
+            .filters-selected-value-holder {
+                color: $white !important;
             }
+
             svg-icon {
                 svg {
                     path {
-                        fill: #86C9C3 !important;
+                        fill: $ta-green-4 !important;
                     }
                 }
             }
         }
-        &:hover{
-            background-color: $ta-black;
-            .main-icon-holder {
 
-                .filters-selected-value-holder{
-                    color:  $white !important;
-                    &.show-number{
-                        display: none;
-                    }
-                    &.clear-filter-icon{
-                        display: flex;
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
                         height: 14px;
                         width: 14px;
-                            
+
                         svg {
-                            
-                            path{
+                            path {
                                 height: 14px;
                                 width: 14px;
                                 fill: $white !important;
-
                             }
-                            
                         }
-    
-                        &:hover{
-                            .filter-active-colors{
+
+                        &:hover {
+                            .filter-active-colors {
                                 background-color: $white !important;
                             }
                         }
-    
                     }
                 }
+
                 svg-icon {
                     svg {
                         path {
-                            fill: #86C9C3 !important;
+                            fill: $ta-green-4 !important;
                         }
                     }
                 }
             }
         }
     }
-
 }
-

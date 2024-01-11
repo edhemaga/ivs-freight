@@ -109,7 +109,7 @@ export class CustomerTableComponent
     private destroy$ = new Subject<void>();
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
-    customerTableData: any[] = [];
+    public customerTableData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -196,13 +196,15 @@ export class CustomerTableComponent
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
                         this.viewData = this.customerTableData;
-                        this.viewData = this.viewData?.filter((d) =>
-                            res.filteredArray.some((i) => i.id == d.id)
+                        this.viewData = this.viewData?.filter((customerData) =>
+                            res.filteredArray.some(
+                                (filterData) => filterData.id == customerData.id
+                            )
                         );
                     }
-                    if (!res.selectedFilter) {
+
+                    if (!res.selectedFilter)
                         this.viewData = this.customerTableData;
-                    }
                 }
             });
     }
@@ -668,6 +670,7 @@ export class CustomerTableComponent
         } else {
             this.viewData = [];
         }
+
         this.customerTableData = this.viewData;
     }
 

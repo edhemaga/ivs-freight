@@ -7,6 +7,7 @@
     align-items: center;
     background: $white;
     gap: 4px;
+
     // ARHIVE COUNT
     .ahrive-count-container {
         width: fit-content;
@@ -25,12 +26,8 @@
             height: 20px;
             border-radius: 1px;
             background: #3074d315;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: $ta-blue-5;
             font-size: 14px;
-            font-weight: 700;
             padding: 0 6px;
             margin-right: 5px;
         }
@@ -50,81 +47,66 @@
     .count-selected-in-list-container {
         width: fit-content;
         height: 26px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         border-radius: 2px;
         background: $ta-blue-5;
         padding: 0 8px;
         color: $white;
         font-size: 14px;
-        font-weight: 700;
         margin-left: 4px;
     }
 
     // TOTAL MONEY COUNT
     .money-count-container {
         width: 88px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         padding: 4px;
-        .container-money{
+
+        .container-money {
             width: 80px;
             height: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: $ta-blue-18;
             font-size: 14px;
-            font-weight: 700;
             border-radius: 2px;
-            transition: color 0.25s;    
+            transition: color 0.25s;
+
             &::selection {
                 color: $white;
                 background: #ffffff20;
             }
         }
-      
     }
 
     // VIEW MODE SELECT
     .view-mode-container {
         width: fit-content;
-        // height: 34px;
         padding: 4px 0;
-        display: flex;
         gap: 4px;
 
         .mode {
             cursor: pointer;
             width: fit-content;
-            // height: 26px;
             border-radius: 2px;
             padding: 4px 8px;
-            font-weight: 800;
             line-height: 18px;
             font-size: 14px;
             color: $ta-light-grey-2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
 
             &:hover {
                 color: $bw6-2 !important;
-                transition: 0.25s !important;
+                transition: color 0.25s !important;
             }
         }
-        .mode-margin{
+
+        .mode-margin {
             margin-left: 4px;
         }
+
         .mode-active {
             background: $bw2 !important;
             color: $ta-black !important;
-           
+
             &:hover {
                 color: $ta-black !important;
-                transition: 0.25s !important;
+                transition: color 0.25s !important;
             }
         }
     }
@@ -135,9 +117,7 @@
     width: 2px;
     height: 32px;
     background: $white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
     .border {
         width: 2px;
         height: 18px;
@@ -150,22 +130,18 @@
 .no-filter {
     min-height: 18px;
     width: fit-content;
-    // color: $bw6-2;
     color: $ta-light-grey-2;
     font-size: 14px;
-    font-weight: 800;
-    display: flex;
     padding: 4px 8px;
     line-height: 18px;
-    align-items: center;
-    justify-content: center;
-    &:hover{
-        color: #6C6C6C;
+
+    &:hover {
+        color: $bw6-2;
         border-radius: 2px;
         cursor: pointer;
     }
 
-    &.active-options-filter{
+    &.active-options-filter {
         color: $ta-black !important;
         border-radius: 2px;
         background: $bw2 !important;
@@ -175,11 +151,11 @@
 
 // NG CLASS
 .money-count-select-style {
-    background: #E9EFFD;
+    background: #e9effd;
     color: $ta-blue-18;
-
-    transition: 0.25s;
+    transition: color background 0.25s;
 }
+
 .table-filter-padding {
     padding-left: 4px;
 }

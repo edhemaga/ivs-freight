@@ -7,14 +7,15 @@ export function checkSpecialFilterArray(
 ) {
     const filteredArray = !typeName
         ? event == ConstantStringTableComponentsEnum.STATUS
-            ? data?.filter((e: any) => e[event] == 0)
-            : data?.filter((e: any) => e[event])
-        : data?.filter((e: any) => e[typeName].name.toLowerCase() == event);
-    console.log(typeName);
+            ? data?.filter((dataItem) => dataItem[event] == 0)
+            : data?.filter((dataItem) => dataItem[event])
+        : data?.filter(
+              (dataItem) => dataItem[typeName].name.toLowerCase() == event
+          );
     return {
         selectedFilter:
             (filteredArray?.length &&
-                (typeName == 'userType' || typeName == 'type')) ??
+                (typeName === 'userType' || typeName === 'type')) ??
             false,
         filteredArray,
     };
