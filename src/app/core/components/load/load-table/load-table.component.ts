@@ -78,6 +78,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadClosed: LoadClosedState[] = [];
     public loadPanding: LoadPandingState[] = [];
     public loadTemplate: LoadTemplateState[] = [];
+
+    public loadingPage: boolean = false;
     public activeTableData: DataForCardsAndTables;
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownLoadComponentConstants.LOAD_BACK_FILTER;
@@ -235,9 +237,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                if (response.length) {
-                    let mappedRes = response.map((item) => {
+            .subscribe((response) => {
+                if (response.length && !this.loadingPage) {
+                    const mappedRes = response.map((item) => {
                         return {
                             id: item.id,
                             data: {
@@ -246,6 +248,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             },
                         };
                     });
+
                     this.modalService.openModal(
                         ConfirmationModalComponent,
                         { size: 'small' },
@@ -482,10 +485,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontTemplate),
                   (this.sendDataToCardsBack = this.displayRowsBackTemplate),
-                  (this.cardTitle = 'name'))
+                  (this.cardTitle = ConstantStringTableComponentsEnum.NAME_1))
                 : ((this.sendDataToCardsFront = this.displayRowsFront),
                   (this.sendDataToCardsBack = this.displayRowsBack),
-                  (this.cardTitle = 'loadInvoice.invoice'));
+                  (this.cardTitle =
+                      ConstantStringTableComponentsEnum.LOAD_INVOICE));
 
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();

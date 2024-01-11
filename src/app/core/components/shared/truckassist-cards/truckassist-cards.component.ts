@@ -28,6 +28,7 @@ import {
     SendDataCard,
 } from '../model/cardTableData';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
+import { tableBodyColorLabel } from '../model/tableBody';
 
 // Services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -108,7 +109,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     public dropdownSelectionArray = new FormArray([]);
 
-    public selectedContactLabel = [];
+    public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
@@ -160,7 +161,6 @@ export class TruckassistCardsComponent implements OnInit {
         this.viewData.length && this.labelDropdown();
     }
 
-    //---------------------------------------ON CHANGES---------------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (
             this.page === ConstantStringTableComponentsEnum.REPAIR &&
@@ -174,7 +174,6 @@ export class TruckassistCardsComponent implements OnInit {
         }
     }
 
-    //---------------------------------------ON AFTER INIT---------------------------------------
     ngAfterViewInit(): void {
         this.windowResizeUpdateDescriptionDropdown();
 
@@ -375,8 +374,8 @@ export class TruckassistCardsComponent implements OnInit {
             data: this.selectedContactLabel[index],
             id: this.viewData[index].id,
             type:
-                data.data?.action === 'update-lable'
-                    ? 'update-lable'
+                data.data?.action === 'update-label'
+                    ? 'update-label'
                     : 'label-change',
         });
     }
@@ -390,7 +389,7 @@ export class TruckassistCardsComponent implements OnInit {
             {
                 data: {
                     name: this.selectedContactLabel[index].name,
-                    action: 'update-lable',
+                    action: 'update-label',
                 },
             },
             index
@@ -412,14 +411,14 @@ export class TruckassistCardsComponent implements OnInit {
         };
     }
 
-    // Account page color dropdown
-    public labelDropdown(): void {
+    public labelDropdown(): tableBodyColorLabel {
         for (let card of this.viewData) {
             this.dropdownSelectionArray.push(new FormControl());
             if (card.companyContactLabel) {
                 return card.companyContactLabel;
             } else if (card.companyAccountLabel) {
                 this.selectedContactLabel.push(card.companyAccountLabel);
+                console.log(this.selectedContactLabel);
             }
         }
     }

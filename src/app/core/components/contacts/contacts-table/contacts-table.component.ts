@@ -31,7 +31,6 @@ import { ContractComponentEnum } from '../state/enum/contract-string.enum';
 import {
     CompanyAccountLabelResponse,
     CompanyContactResponse,
-    CreateCompanyContactCommand,
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
@@ -382,7 +381,6 @@ export class ContactsTableComponent
     // Get Contact Data From Store Or Via Api Call
     getTabData() {
         this.contacts = this.contactQuery.getAll();
-        console.log(this.contacts);
         return this.contacts?.length ? this.contacts : [];
     }
 

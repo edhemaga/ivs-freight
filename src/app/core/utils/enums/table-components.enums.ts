@@ -112,6 +112,8 @@ export enum ConstantStringTableComponentsEnum {
     TABLE_CONTAINER = '.table-container',
 
     //Load
+    NAME_1 = 'name',
+    LOAD_INVOICE = 'loadInvoice.invoice',
     NEW_LICENCE = 'new-licence',
     NEW_MEDICAL = 'new-medical',
     NEW_MVR = 'new-mvr',
@@ -287,6 +289,7 @@ export enum ConstantStringTableComponentsEnum {
     NO_ENDPOINT = 'no-endpoint',
     NO_ENDPOINT_2 = 'No Endpoint',
     SLASH = '/',
+    UPDATE_LABEL = 'update-label',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',
