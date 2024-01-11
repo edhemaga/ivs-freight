@@ -152,12 +152,6 @@ export class TelematicStateService implements OnDestroy {
                                 //     id: route.id,
                                 // });
 
-                                console.log('assignDevicesToCompany res', res);
-                                console.log(
-                                    'assignDevicesToCompany data',
-                                    data
-                                );
-
                                 subDevice.unsubscribe();
                             },
                         });
@@ -202,9 +196,6 @@ export class TelematicStateService implements OnDestroy {
                             //     id: route.id,
                             // });
 
-                            console.log('assignDeviceToTruck res', res);
-                            console.log('assignDeviceToTruck data', data);
-
                             subDevice.unsubscribe();
                         },
                     });
@@ -248,9 +239,6 @@ export class TelematicStateService implements OnDestroy {
                             //     mapId: data.mapId,
                             //     id: route.id,
                             // });
-
-                            console.log('assignDeviceToTrailer res', res);
-                            console.log('assignDeviceToTrailer data', data);
 
                             subDevice.unsubscribe();
                         },

@@ -56,11 +56,8 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     next: (res: LoadResponse) => {
                         this.detailCongif(res);
                         this.router.navigate([`/list/load/${res.id}/details`]);
-                        
                     },
-                    error: () => {
-                       
-                    },
+                    error: () => {},
                 });
             });
         this.detailCongif(this.activated_route.snapshot.data.loadItem);
@@ -118,7 +115,6 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public initTableOptions(data: any): void {
-        console.log('--data---', data);
         this.dataTest = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -140,7 +136,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     iconName: 'edit',
                 },
                 {
-                    title: 'border'
+                    title: 'border',
                 },
                 {
                     title: 'Create Load',
@@ -148,10 +144,10 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
-                    iconName: 'assets/svg/common/ic_plus.svg'
+                    iconName: 'assets/svg/common/ic_plus.svg',
                 },
                 {
-                    title: 'border'
+                    title: 'border',
                 },
                 {
                     title: 'Share',
@@ -168,7 +164,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     show: data.status == 1 || data.status == 0 ? true : false,
                 },
                 {
-                    title: 'border'
+                    title: 'border',
                 },
                 {
                     title: 'Delete',
@@ -181,24 +177,21 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     show: data.status == 1 || data.status == 0 ? true : false,
                     redIcon: true,
                 },
-                
-            ]
-        }
-
+            ],
+        };
 
         const routes: IStopRoutes[] = [];
-       
-        data.stops.map( (stop: any, index: number) => {
-                routes[index] = {
-                    longitude: stop.shipper.longitude,
-                    latitude: stop.shipper.latitude,
-                    pickup: stop.stopType.name == 'Pickup' ? true : false,
-                    delivery: stop.stopType.name == 'Delivery' ? true : false,
-                    stopNumber: index,
-                }
-            }
-        );
-        
+
+        data.stops.map((stop: any, index: number) => {
+            routes[index] = {
+                longitude: stop.shipper.longitude,
+                latitude: stop.shipper.latitude,
+                pickup: stop.stopType.name == 'Pickup' ? true : false,
+                delivery: stop.stopType.name == 'Delivery' ? true : false,
+                stopNumber: index,
+            };
+        });
+
         this.loadStopRoutes[0] = {
             routeColor: '#919191',
             stops: routes.map((route, index) => {

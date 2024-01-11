@@ -239,8 +239,6 @@ export class CalendarMonthComponent implements OnInit {
     }
 
     openEvenPopover(t2, ev, indx, i) {
-        console.log(indx, i);
-
         this.colorDate = indx;
         this.colorDay = i;
 
@@ -249,7 +247,6 @@ export class CalendarMonthComponent implements OnInit {
             this.colorDate = -1;
             this.colorDay = -1;
         } else {
-            console.log(ev);
             t2.open({ data: ev });
         }
     }

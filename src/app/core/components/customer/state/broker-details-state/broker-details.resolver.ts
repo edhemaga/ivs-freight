@@ -26,11 +26,7 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
         const broker_id = route.paramMap.get('id');
         let ids = parseInt(broker_id);
 
-
-
-        const brokerData$ = this.brokerService.getBrokerById(
-            ids,
-        );
+        const brokerData$ = this.brokerService.getBrokerById(ids);
 
         const brokerLoads$ = this.brokerService.getBrokerLoads(ids);
 
@@ -44,31 +40,6 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
                 this.bls.add(brokerRespone);
                 this.brokerDetailsStore.set([brokerRespone]);
             })
-        );  
-
-
-        /*    
-        if (this.blq.hasEntity(ids)) {
-            return this.blq.selectEntity(ids).pipe(
-                tap((brokerResponse: BrokerResponse) => {
-                    this.brokerDetailsStore.set([brokerResponse]);
-                    console.log('----brokerRespon', brokerResponse);
-                }),
-                take(1)
-            );
-        } else {
-            return this.brokerService.getBrokerById(ids).pipe(
-                catchError(() => {
-                    this.router.navigate(['/customer']);
-                    return of('No broker data for...' + ids);
-                }),
-                tap((brokerRespon: BrokerResponse) => {
-                    console.log('----brokerRespon', brokerRespon);
-                    this.bls.add(brokerRespon);
-                    this.brokerDetailsStore.set([brokerRespon]);
-                })
-            );
-        }
-        */
+        );
     }
 }

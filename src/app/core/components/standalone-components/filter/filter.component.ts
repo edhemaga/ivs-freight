@@ -1436,7 +1436,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        //console.log('---type', this.type)
         if (this.type === 'truckTypeFilter') {
             this.getBackendData(this.type);
         } else if (this.type === 'trailerTypeFilter') {
@@ -3183,7 +3182,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     public onTabChange(event: any, type: string): void {
-        //console.log('event', event.name);
         this.sideAnimation = true;
         this.areaFilterSelected = event.name;
     }

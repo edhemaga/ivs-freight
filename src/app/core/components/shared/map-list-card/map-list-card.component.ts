@@ -42,7 +42,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 
         // Pipes
         formatDatePipe,
-        TaThousandSeparatorPipe
+        TaThousandSeparatorPipe,
     ],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {
@@ -58,7 +58,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Input() type: string = '';
     @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
-    @ViewChild("detailsDropdown") detailsDropdown: any;
+    @ViewChild('detailsDropdown') detailsDropdown: any;
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
     clickedOnDots: boolean = false;
@@ -85,7 +85,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         this.mapsService.markerUpdateChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                if ( item.id == this.item.id ) {
+                if (item.id == this.item.id) {
                     this.item = item;
                     this.getDropdownActions();
                 }
@@ -100,7 +100,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                if (id != this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
@@ -109,7 +109,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                if (id != this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
@@ -164,26 +164,28 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         //     this.bodyActions.emit(action);
         // }
 
-        if ( action.type == 'view-details' ) {
+        if (action.type == 'view-details') {
             this.mapsService.goToDetails(this.item, this.type);
         } else {
-            if ( this.type == 'repairShop' ) {
-                if ( action.type == 'write-review' ){
+            if (this.type == 'repairShop') {
+                if (action.type == 'write-review') {
                     action.type = 'edit';
                     action.openedTab = 'Review';
                 }
-        
-                console.log('---here---', action);
+
                 this.dropdownService.dropActionsHeaderRepair(
                     action,
                     this.item,
-                    action.id,
+                    action.id
                 );
-            } else if ( this.type == 'shipper' ) {
-                console.log('---here---', action);
+            } else if (this.type == 'shipper') {
                 let eventType = '';
-                if ( action.type == 'Contact' || action.type == 'edit' || action.type == 'Review'){
-                    eventType = 'edit'
+                if (
+                    action.type == 'Contact' ||
+                    action.type == 'edit' ||
+                    action.type == 'Review'
+                ) {
+                    eventType = 'edit';
                 } else {
                     eventType = action.type;
                 }
@@ -193,7 +195,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
                     id: action.id,
                     type: eventType,
                     openedTab: action.type,
-                }
+                };
                 setTimeout(() => {
                     this.dropdownService.dropActionsHeaderShipperBroker(
                         eventObject,
@@ -269,7 +271,10 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     }
 
     getDropdownActions() {
-        this.dropdownActions = this.mapsService.getDropdownActions(this.item, this.type);
+        this.dropdownActions = this.mapsService.getDropdownActions(
+            this.item,
+            this.type
+        );
     }
 
     ngOnDestroy(): void {

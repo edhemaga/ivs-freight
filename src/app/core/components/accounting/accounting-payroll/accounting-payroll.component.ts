@@ -68,10 +68,6 @@ export class AccountingPayrollComponent implements OnInit {
         }
     }
 
-    public changeScreen(e) {
-        console.log('ddd', e);
-    }
-
     ngOnInit(): void {
         /*  if (this.router.url.includes('/fuel')) {
        this.selectedTab = 'fuel';

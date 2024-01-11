@@ -53,7 +53,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         TaInputComponent,
         TaTabSwitchComponent,
         TaInputDropdownComponent,
-        TaCheckboxComponent
+        TaCheckboxComponent,
     ],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -486,7 +486,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             routeName: 'Route 0' + (this.activeTableData.length + 1),
         };
 
-        if ( this.activeTableData.length < 8 ) {
+        if (this.activeTableData.length < 8) {
             this.modalService.openModal(
                 MapRouteModalComponent,
                 { size: 'small' },
@@ -790,8 +790,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     setFilterEvent(event) {
-        console.log('setFilterEvent event', event);
-
         // this.toolBarAction.emit({
         //     action: 'activate-filter',
         //     data: filter

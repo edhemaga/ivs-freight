@@ -13,7 +13,13 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerTService } from '../state/trailer.service';
-import { animate, style, transition, trigger, state } from '@angular/animations';
+import {
+    animate,
+    style,
+    transition,
+    trigger,
+    state,
+} from '@angular/animations';
 import { TrailerItemStore } from '../state/trailer-details-state/trailer-details.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageBase64Service } from '../../../utils/base64.image';
@@ -23,27 +29,29 @@ import { ImageBase64Service } from '../../../utils/base64.image';
     templateUrl: './trailer-details-card.component.html',
     styleUrls: ['./trailer-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody'),
-    trigger('ownerDetailsAnimation', [
-      state(
-        'true',
-        style({
-          height: '*',
-          overflow: 'hidden',
-          opacity: 1,
-        })
-      ),
-      state(
-        'false',
-        style({
-          height: '0px',
-          overflow: 'hidden',
-          opacity: 0,
-        })
-      ),
-      transition('false <=> true', [animate('0.2s ease')]),
-      transition('true <=> false', [animate('0.2s ease')]), 
-    ]),],
+    animations: [
+        card_component_animation('showHideCardBody'),
+        trigger('ownerDetailsAnimation', [
+            state(
+                'true',
+                style({
+                    height: '*',
+                    overflow: 'hidden',
+                    opacity: 1,
+                })
+            ),
+            state(
+                'false',
+                style({
+                    height: '0px',
+                    overflow: 'hidden',
+                    opacity: 0,
+                })
+            ),
+            transition('false <=> true', [animate('0.2s ease')]),
+            transition('true <=> false', [animate('0.2s ease')]),
+        ]),
+    ],
 })
 export class TrailerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
@@ -68,7 +76,7 @@ export class TrailerDetailsCardComponent
         private trailerService: TrailerTService,
         private trailerItemStore: TrailerItemStore,
         private activated_route: ActivatedRoute,
-        public imageBase64Service: ImageBase64Service,
+        public imageBase64Service: ImageBase64Service
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -84,18 +92,16 @@ export class TrailerDetailsCardComponent
         this.initTableOptions();
         this.getTrailerDropdown();
 
-
-        setTimeout(()=>{
+        setTimeout(() => {
             let currentIndex = this.trailerDropDowns.findIndex(
                 (trailer) => trailer.id === this.trailer.id
             );
-            
+
             this.trailerIndex = currentIndex;
-        }, 300)
+        }, 300);
     }
 
     public getTrailerById(id: number) {
-        //console.log('--trailer details called api--')
         /*
         this.trailerService
             .getTrailerById(id, true)
@@ -150,7 +156,6 @@ export class TrailerDetailsCardComponent
     }
 
     public getTrailerDropdown() {
-
         this.trailerDropDowns = this.trailerMinimalQuery
             .getAll()
             .map((item) => {
@@ -169,8 +174,7 @@ export class TrailerDetailsCardComponent
         );
     }
     public onSelectedTrailer(event: any) {
-        
-        if ( event && event.id !== this.trailer.id) {
+        if (event && event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
                 .map((item) => {
@@ -191,7 +195,6 @@ export class TrailerDetailsCardComponent
         }
     }
     public onChangeTrailer(action: string) {
-        
         let currentIndex = this.trailerDropDowns.findIndex(
             (trailer) => trailer.id === this.trailer.id
         );
@@ -237,14 +240,14 @@ export class TrailerDetailsCardComponent
         return a.value.id > b.value.id ? -1 : 1;
     };
 
-    public onOpenCloseCard(mod: any){
+    public onOpenCloseCard(mod: any) {
         this.ownerCardOpened = mod;
     }
 
-    getLastSixChars(mod){
+    getLastSixChars(mod) {
         var lastSixChars = mod;
 
-        if ( mod.length > 6 ) {
+        if (mod.length > 6) {
             lastSixChars = mod.slice(-6);
 
             let stringLength = mod.length;

@@ -176,8 +176,6 @@ export class DispatchTableComponent implements OnInit {
     ngOnInit(): void {}
 
     public onSelectDropdown(event: any, action: string, test: string) {
-        console.log('WHAT IS EVENT', event, test);
-
         this.selectedColor = event;
         switch (test) {
             case 'truck':
@@ -257,14 +255,11 @@ export class DispatchTableComponent implements OnInit {
     }
 
     addParking(e) {
-        console.log('ADD PARKING HERE', e);
-
         this.openParkingDropdown = -1;
     }
 
     handleInputSelect(e: any) {
-        console.log("WHAT IS ADDRESS", e);
-       // return;
+        // return;
         if (e.valid) {
             this.updateOrAddDispatchBoardAndSend(
                 'location',
@@ -484,7 +479,6 @@ export class DispatchTableComponent implements OnInit {
             return item;
         });
 
-        console.log(this.openedHosData);
         this.updateOrAddDispatchBoardAndSend(
             'hoursOfService',
             this.openedHosData,
@@ -506,7 +500,6 @@ export class DispatchTableComponent implements OnInit {
     changeHosDataPositions(event, index) {
         const nextHos = index + 1;
         if (this.openedHosData[nextHos]) {
-            console.log('CHANGING DATA');
             this.openedHosData[nextHos].start = this.openedHosData[index].end;
         }
     }
@@ -566,10 +559,6 @@ export class DispatchTableComponent implements OnInit {
     // CDL DRAG AND DROP
 
     dropList(event) {
-        console.log(event.previousIndex, event.currentIndex);
-        console.log(this.dData.dispatches[event.previousIndex].order);
-        console.log(this.dData.dispatches[event.currentIndex].order);
-
         const firstOrder = this.dData.dispatches[event.previousIndex].order;
         const secondOrder = this.dData.dispatches[event.currentIndex].order;
 
@@ -737,18 +726,12 @@ export class DispatchTableComponent implements OnInit {
         popup.open();
     }
 
-    dropHosList(event: any, data: any) {
-        console.log(event);
-        console.log(data);
-    }
-
     // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
     trailerPositionPrediction = (
         index: number,
         drag: CdkDrag,
         drop: CdkDropList
     ) => {
-        // console.log('trailerPred', drop.element);
         return true;
     };
 }

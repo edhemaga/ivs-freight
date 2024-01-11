@@ -7,7 +7,6 @@ import {
     EventEmitter,
     ChangeDetectorRef,
     ViewEncapsulation,
-    OnChanges,
     SimpleChanges,
 } from '@angular/core';
 import {
@@ -69,22 +68,18 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
         MapMarkerDropdownComponent,
     ],
 })
-export class MapsComponent implements OnInit, OnDestroy, OnChanges {
+export class MapsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     viewData = [];
     @Input() set _viewData(value) {
         // table data (shippers, repair shops)
-
         // var newData = value;
-
         // newData.map((data) => {
         //     if (data.actionAnimation == 'update') {
-        //         console.log('newData update', data);
         //         let markerIndex = this.viewData.findIndex(
         //             (item) => item.id === data.id
         //         );
         //         if (markerIndex < 0 && !this.clusterDetailedInfo) return false;
-
         //         if (this.mapType == 'repairShop') {
         //             this.getRepairShop(data.id, markerIndex);
         //         } else if (this.mapType == 'shipper') {
@@ -211,12 +206,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         if (this.darkMode) {
             this.styles = AppConst.GOOGLE_MAP_DARK_STYLES;
-        }
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.routes) {
-            //console.log('ngOnChanges changes', changes);
         }
     }
 
@@ -349,7 +338,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     let markerIndex = this.viewData.findIndex(
                         (item) => item.id === res.data.id
                     );
-    
+
                     if (this.mapType == 'repairShop') {
                         this.getRepairShop(res.data.id, markerIndex);
                     } else if (this.mapType == 'shipper') {
@@ -602,7 +591,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         if (action.type == 'view-details') {
             this.mapsService.goToDetails(action.data, this.mapType);
-        } else if ( action.type == 'raiting' ) {
+        } else if (action.type == 'raiting') {
             this.detailsDataService.setNewData(action.data);
             this.callDropDownAction.emit(action);
         } else {
@@ -891,7 +880,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                 : '0',
                         };
 
-                        data.favourite = data.pinned != null ? data.pinned : false;
+                        data.favourite =
+                            data.pinned != null ? data.pinned : false;
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
@@ -1398,7 +1388,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
-                    newData.favourite = newData.pinned != null ? newData.pinned : false;
+                    newData.favourite =
+                        newData.pinned != null ? newData.pinned : false;
 
                     if (index > -1) {
                         this.viewData[index] = {
@@ -1583,8 +1574,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             likeCount: res?.upCount ? res.upCount : '0',
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
-                        
-                        cluster.detailedInfo.favourite = cluster.detailedInfo.pinned != null ? cluster.detailedInfo.pinned : false;
+
+                        cluster.detailedInfo.favourite =
+                            cluster.detailedInfo.pinned != null
+                                ? cluster.detailedInfo.pinned
+                                : false;
 
                         this.clusterDetailedInfo = cluster.detailedInfo;
                         this.mapsService.selectedMarker(
