@@ -11,6 +11,7 @@ import { DirectiveConstants } from '../utils/constants/directive.constants';
 
 @Directive({
     selector: '[appTextToggle]',
+    standalone: true,
 })
 export class TextToggleDirective {
     private hiddenText: string;

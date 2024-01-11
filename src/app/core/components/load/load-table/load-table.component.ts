@@ -56,6 +56,7 @@ import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constant
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-load-table',
@@ -77,22 +78,33 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadClosed: LoadClosedState[] = [];
     public loadPanding: LoadPandingState[] = [];
     public loadTemplate: LoadTemplateState[] = [];
+
+    public loadingPage: boolean = false;
     public activeTableData: DataForCardsAndTables;
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownLoadComponentConstants.LOAD_BACK_FILTER;
 
     //Data to display from model
+    public displayRowsFrontTemplate: CardRows[] =
+        DisplayLoadConfiguration.displayRowsFrontTemplate;
+
+    public displayRowsBackTemplate: CardRows[] =
+        DisplayLoadConfiguration.displayRowsBackTemplate;
+
     public displayRowsFront: CardRows[] =
         DisplayLoadConfiguration.displayRowsFront;
 
     public displayRowsBack: CardRows[] =
         DisplayLoadConfiguration.displayRowsBack;
 
-    public cardTitle: string = DisplayLoadConfiguration.cardTitle;
-
     public page: string = DisplayLoadConfiguration.page;
 
     public rows: number = DisplayLoadConfiguration.rows;
+
+    public cardTitle: string;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -221,29 +233,33 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Delete Selected Rows Currently is commented out i need to check why // TODO check why is this commented out
+    // TODO check why is this commented out
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                if (response.length) {
-                    // let mappedRes = response.map((item) => {
-                    //   return {
-                    //     id: item.id,
-                    //     data: { ...item.tableData, name: item.tableData?.fullName },
-                    //   };
-                    // });
-                    /* this.modalService.openModal(
-            ConfirmationModalComponent,
-            { size: 'small' },
-            {
-              data: null,
-              array: mappedRes,
-              template: 'driver',
-              type: 'multiple delete',
-              image: true,
-            }
-            ); */
+            .subscribe((response) => {
+                if (response.length && !this.loadingPage) {
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                                name: item.tableData?.fullName,
+                            },
+                        };
+                    });
+
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: 'small' },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: 'driver',
+                            type: 'multiple delete',
+                            image: true,
+                        }
+                    );
                 }
             });
     }
@@ -465,6 +481,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return this.mapLoadData(data);
             });
 
+            // Set data for active tab
+            this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
+                ? ((this.sendDataToCardsFront = this.displayRowsFrontTemplate),
+                  (this.sendDataToCardsBack = this.displayRowsBackTemplate),
+                  (this.cardTitle = ConstantStringTableComponentsEnum.NAME_1))
+                : ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack),
+                  (this.cardTitle =
+                      ConstantStringTableComponentsEnum.LOAD_INVOICE));
+
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
         } else {
@@ -635,7 +661,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadPanding?.length ? this.loadPanding : [];
         } else if (dataType === ConstantStringTableComponentsEnum.TEMPLATE) {
             this.loadTemplate = this.loadTemplateQuery.getAll();
-
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
     }

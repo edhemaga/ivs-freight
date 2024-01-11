@@ -894,8 +894,8 @@ export class TruckassistTableBodyComponent
             data: this.selectedContactLabel[index],
             id: this.viewData[index].id,
             type:
-                data.data?.action == 'update-lable'
-                    ? 'update-lable'
+                data.data?.action == 'update-label'
+                    ? 'update-label'
                     : 'label-change',
         });
     }
@@ -910,7 +910,7 @@ export class TruckassistTableBodyComponent
             {
                 data: {
                     name: this.selectedContactLabel[index].name,
-                    action: 'update-lable',
+                    action: 'update-label',
                 },
             },
             index
