@@ -18,7 +18,7 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
 
     resolve(): Observable<any> {
         return forkJoin([
-            this.loadService.getLoadList(
+            this.loadService.getLoadTemplateList(
                 undefined,
                 undefined,
                 undefined,
@@ -28,37 +28,32 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
                 undefined,
                 undefined,
                 undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
+                undefined
             ),
             this.tableService.getTableConfig(1),
-        ])
-            .pipe(
-                tap(([loadPagination, tableConfig]) => {
+        ]).pipe(
+            tap(([loadPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'loadTableCount',
+                    JSON.stringify({
+                        pendingCount: loadPagination.pendingCount,
+                        activeCount: loadPagination.activeCount,
+                        closedCount: loadPagination.closedCount,
+                        templateCount: loadPagination.templateCount,
+                    })
+                );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
                     localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.templateCount,
-                        })
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
+                }
 
-                    if (tableConfig) {
-                        const config = JSON.parse(tableConfig.config);
-
-                        localStorage.setItem(
-                            `table-${tableConfig.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-
-                    this.loadTemplateStore.set(loadPagination.pagination.data);
-                })
-            )
+                this.loadTemplateStore.set(loadPagination.pagination.data);
+            })
+        );
     }
 }

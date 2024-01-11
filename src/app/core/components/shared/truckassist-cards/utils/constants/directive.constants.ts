@@ -1,4 +1,4 @@
-import { SvgStyles, TooltipStyles } from '../../model/directive.modal';
+import { SvgStyles, TooltipStyles } from '../../modal/directive.modal';
 
 export class DirectiveConstants {
     static TOOLTIP_STYLES: TooltipStyles = {

@@ -82,7 +82,7 @@ export enum ComponentsTableEnum {
     COPY_PASSWORD = 'copy-password',
     COPY_USERNAME = 'copy-username',
     LABLE_CHANGE = 'label-change',
-    UPDATE_LABLE = 'update-lable',
+    UPDATE_LABLE = 'update-label',
     OPEN_MODAL = 'open-modal',
     VIEW_MODE = 'view-mode',
     TAB_SELECTED = 'tab-selected',
