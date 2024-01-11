@@ -64,13 +64,29 @@
                                                 : 'assets/svg/detail-cards/shuffle.svg'
                                         "
                                     ></svg-icon>
+
                                     <span class="title">
-                                        INV-{{
-                                            getValueByStringPath(
-                                                card,
-                                                cardTitle
-                                            )
-                                        }}
+                                        <ng-container
+                                            *ngIf="cardTitle !== 'name'"
+                                        >
+                                            INV-{{
+                                                getValueByStringPath(
+                                                    card,
+                                                    cardTitle
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="cardTitle === 'name'"
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    cardTitle
+                                                )
+                                            }}
+                                        </ng-container>
                                     </span>
                                 </div>
                             </ng-container>
@@ -231,13 +247,37 @@
                                     <!-- Load page body -->
 
                                     <ng-container *ngIf="page === 'Load'">
+                                        <ng-container
+                                            *ngIf="
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                ) === 'Hazardous'
+                                            "
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/common/load/ic_hazardous_triangle.svg'
+                                                "
+                                            >
+                                            </svg-icon>
+                                            <span>
+                                                {{
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                }}</span
+                                            >
+                                        </ng-container>
+
                                         <!-- If STATUS title this will be aplied in body -->
 
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Status'"
                                         >
                                             <span
-                                                class="ta-font-bold status"
+                                                class="ta-font-black status"
                                                 [ngClass]="{
                                                     assigned:
                                                         getValueByStringPath(
@@ -268,7 +308,13 @@
                                         <!-- If not STATUS title this will be in body -->
 
                                         <ng-container
-                                            *ngIf="rowsFront.title !== 'Status'"
+                                            *ngIf="
+                                                rowsFront.title !== 'Status' &&
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                ) !== 'Hazardous'
+                                            "
                                         >
                                             <span
                                                 class="d-flex justify-content-center align-items-center"
@@ -748,60 +794,83 @@
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Label'"
                                         >
-                                            <!-- <app-ta-input-dropdown-label
-                                                [formControl]="
-                                                    dropdownSelectionArray.controls
-                                                "
-                                                [inputConfig]="{
-                                                    name: 'Input Dropdown Label',
-                                                    type: 'text',
-                                                    placeholderIcon:
-                                                        'ic_dynamic_label',
-                                                    dropdownLabel: true,
-                                                    dropdownWidthClass:
-                                                        'w-col-' + '200',
-                                                    textTransform: 'lowercase',
-                                                    minLength: 1,
-                                                    blackInput: true,
-                                                    hideClear: true,
-                                                    multiselectDropdown: true,
-                                                    maxLength: 12,
-                                                    showCount: false,
-                                                    customClass:
-                                                        'input-dropdown-table',
-                                                    commands: {
-                                                        active: false,
-                                                        type: 'confirm-cancel',
-                                                        firstCommand: {
-                                                            popup: {
-                                                                name: 'Confirm',
-                                                                backgroundColor:
-                                                                    '#3074d3'
-                                                            },
-                                                            name: 'confirm',
-                                                            svg: 'assets/svg/ic_spec-confirm.svg'
-                                                        },
-                                                        secondCommand: {
-                                                            popup: {
-                                                                name: 'Cancel',
-                                                                backgroundColor:
-                                                                    '#2f2f2f'
-                                                            },
-                                                            name: 'cancel',
-                                                            svg: 'assets/svg/ic_x.svg'
-                                                        }
-                                                    }
-                                                }"
-                                                [colors]="card.colorRes"
-                                                [options]="card.colorLabels"
-                                                [selectedLabel]="
-                                                    selectedContactLabel
-                                                "
-                                                [selectedLabelColor]="
-                                                    selectedContactColor
-                                                "
+                                            <div
+                                                [style.width.px]="elementWidth"
                                             >
-                                            </app-ta-input-dropdown-label> -->
+                                                <app-ta-input-dropdown-label
+                                                    [formControl]="
+                                                        dropdownSelectionArray
+                                                            .controls[i]
+                                                    "
+                                                    [inputConfig]="{
+                                                        name: 'Input Dropdown Label',
+                                                        type: 'text',
+                                                        placeholderIcon:
+                                                            'ic_dynamic_label',
+                                                        dropdownLabel: true,
+                                                        dropdownWidthClass:
+                                                            'w-col-' +
+                                                            elementWidth,
+                                                        textTransform:
+                                                            'lowercase',
+                                                        minLength: 1,
+                                                        blackInput: true,
+                                                        hideClear: true,
+                                                        hideDropdownArrow: true,
+                                                        multiselectDropdown: true,
+                                                        maxLength: 12,
+                                                        showCount: false,
+                                                        customClass:
+                                                            'input-dropdown-table',
+                                                        commands: {
+                                                            active: false,
+                                                            type: 'confirm-cancel',
+                                                            firstCommand: {
+                                                                popup: {
+                                                                    name: 'Confirm',
+                                                                    backgroundColor:
+                                                                        '#3074d3'
+                                                                },
+                                                                name: 'confirm',
+                                                                svg: 'assets/svg/ic_spec-confirm.svg'
+                                                            },
+                                                            secondCommand: {
+                                                                popup: {
+                                                                    name: 'Cancel',
+                                                                    backgroundColor:
+                                                                        '#2f2f2f'
+                                                                },
+                                                                name: 'cancel',
+                                                                svg: 'assets/svg/ic_x.svg'
+                                                            }
+                                                        }
+                                                    }"
+                                                    [colors]="card.colorRes"
+                                                    [options]="card.colorLabels"
+                                                    [selectedLabel]="
+                                                        selectedContactLabel[i]
+                                                    "
+                                                    [selectedLabelColor]="
+                                                        selectedContactColor
+                                                    "
+                                                    (pickExistLabel)="
+                                                        onPickExistLabel(
+                                                            $event,
+                                                            i
+                                                        )
+                                                    "
+                                                    (pickColorLabel)="
+                                                        onSelectColorLabel(
+                                                            $event,
+                                                            i
+                                                        )
+                                                    "
+                                                    (saveLabel)="
+                                                        onSaveLabel($event, i)
+                                                    "
+                                                >
+                                                </app-ta-input-dropdown-label>
+                                            </div>
                                         </ng-container>
                                     </ng-container>
                                 </div>

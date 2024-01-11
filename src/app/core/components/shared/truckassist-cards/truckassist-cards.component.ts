@@ -27,6 +27,7 @@ import {
     CardDetails,
     SendDataCard,
 } from '../model/cardTableData';
+import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 
 // Services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -46,7 +47,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 import { ProgresBarComponent } from './progres-bar/progres-bar.component';
-import { TaInputComponent } from '../ta-input/ta-input.component';
+import { TaInputDropdownLabelComponent } from '../ta-input-dropdown-label/ta-input-dropdown-label.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -85,7 +86,7 @@ import { TextToggleDirective } from './directives/show-hide-pass.directive';
         AppTooltipComponent,
         TaNoteComponent,
         ProgresBarComponent,
-        TaInputComponent,
+        TaInputDropdownLabelComponent,
 
         //pipes
         formatDatePipe,
@@ -106,6 +107,7 @@ export class TruckassistCardsComponent implements OnInit {
     public containerWidth: number = 0;
 
     public dropdownSelectionArray = new FormArray([]);
+
     public selectedContactLabel = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
@@ -133,6 +135,7 @@ export class TruckassistCardsComponent implements OnInit {
     public descriptionIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
+    public selectedContactColor: CompanyAccountLabelResponse;
 
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
@@ -154,7 +157,7 @@ export class TruckassistCardsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        // this.viewData.length && this.labelDropdown();
+        this.viewData.length && this.labelDropdown();
     }
 
     //---------------------------------------ON CHANGES---------------------------------------
@@ -359,17 +362,67 @@ export class TruckassistCardsComponent implements OnInit {
         });
     }
 
-    // public labelDropdown(): void {
-    //     // return cardItem ? new FormControl() : null;
-    //     for (let card of this.viewData) {
-    //         this.dropdownSelectionArray.push(new FormControl());
-    //         if (card.companyContactLabel) {
-    //             return card.companyContactLabel;
-    //         } else if (card.companyAccountLabel) {
-    //             this.selectedContactLabel.push(card.companyAccountLabel);
-    //         }
-    //     }
-    // }
+    public onSaveLabel(
+        data: { data: { name: string; action: string } },
+        index: number
+    ): void {
+        this.selectedContactLabel[index] = {
+            ...this.selectedContactLabel[index],
+            name: data.data.name,
+        };
+
+        this.bodyActions.emit({
+            data: this.selectedContactLabel[index],
+            id: this.viewData[index].id,
+            type:
+                data.data?.action === 'update-lable'
+                    ? 'update-lable'
+                    : 'label-change',
+        });
+    }
+
+    public onPickExistLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
+        this.selectedContactLabel[index] = event;
+        this.onSaveLabel(
+            {
+                data: {
+                    name: this.selectedContactLabel[index].name,
+                    action: 'update-lable',
+                },
+            },
+            index
+        );
+    }
+
+    public onSelectColorLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
+        this.selectedContactColor = event;
+
+        this.selectedContactLabel[index] = {
+            ...this.selectedContactLabel[index],
+            colorId: this.selectedContactColor.id,
+            color: this.selectedContactColor.name,
+            code: this.selectedContactColor.code,
+            hoverCode: this.selectedContactColor.hoverCode,
+        };
+    }
+
+    // Account page color dropdown
+    public labelDropdown(): void {
+        for (let card of this.viewData) {
+            this.dropdownSelectionArray.push(new FormControl());
+            if (card.companyContactLabel) {
+                return card.companyContactLabel;
+            } else if (card.companyAccountLabel) {
+                this.selectedContactLabel.push(card.companyAccountLabel);
+            }
+        }
+    }
 
     // Setting count number for each card on page
     public calculateItemsToFit(container: HTMLElement): void {
