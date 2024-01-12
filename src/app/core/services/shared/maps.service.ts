@@ -47,7 +47,7 @@ export class MapsService implements OnDestroy {
         private mapService: MapService,
         private notificationService: NotificationService,
         private router: Router,
-        private detailsDataService: DetailsDataService,
+        private detailsDataService: DetailsDataService
     ) {
         this.sortCategoryChange
             .pipe(takeUntil(this.destroy$))
@@ -84,10 +84,8 @@ export class MapsService implements OnDestroy {
     }
 
     createMap(data: CreateMapCommand) {
-        console.log('createMap data', data);
         this.mapService.apiMapPost(data).pipe(
             tap((res: any) => {
-                console.log('createMap res', res);
                 const subMap = this.getMapById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -114,8 +112,6 @@ export class MapsService implements OnDestroy {
                             //   data: shipper,
                             //   id: shipper.id,
                             // });
-
-                            console.log('mapResponse', map);
 
                             subMap.unsubscribe();
                         },
@@ -165,7 +161,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     iconName: 'edit',
-                    disabled: data.status == 0 || data.isClosed
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'border',
@@ -183,7 +179,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
                     iconName: 'add-contact',
-                    disabled: data.status == 0 || data.isClosed
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'Write Review',
@@ -191,7 +187,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review',
-                    disabled: data.status == 0 || data.isClosed
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'border',
@@ -214,13 +210,22 @@ export class MapsService implements OnDestroy {
                     title: 'border',
                 },
                 {
-                    title: data.status == 0 || data.isClosed ? 'Open Business' : 'Close Business',
-                    name: data.status == 0 || data.isClosed ? 'open-business' : 'close-business',
+                    title:
+                        data.status == 0 || data.isClosed
+                            ? 'Open Business'
+                            : 'Close Business',
+                    name:
+                        data.status == 0 || data.isClosed
+                            ? 'open-business'
+                            : 'close-business',
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: data.status != 0 && !data.isClosed,
                     greenIcon: data.status == 0 || data.isClosed,
                     show: true,
-                    iconName: data.status == 0 || data.isClosed ? 'mark-as-done' : 'close-business',
+                    iconName:
+                        data.status == 0 || data.isClosed
+                            ? 'mark-as-done'
+                            : 'close-business',
                 },
                 {
                     title: 'Delete',
@@ -239,7 +244,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     iconName: 'edit',
-                    disabled: data.status == 0 || data.isClosed
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'border',
@@ -258,19 +263,22 @@ export class MapsService implements OnDestroy {
                     show: true,
                     blueIcon: true,
                     iconName: 'ic_plus',
-                    disabled: data.status == 0 || data.isClosed
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: data.favourite
                         ? 'Remove from Favourite'
                         : 'Move to Favourite',
-                    name: data.favourite ? 'remove-from-favourite' : 'move-to-favourite',
+                    name: data.favourite
+                        ? 'remove-from-favourite'
+                        : 'move-to-favourite',
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
                     blueIcon: data.favourite,
                     show: true,
                     iconName: 'ic_star',
-                    disabled: data.companyOwned || data.status == 0 || data.isClosed
+                    disabled:
+                        data.companyOwned || data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'Write Review',
@@ -278,7 +286,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review',
-                    disabled: data.status == 0 || data.isClosed
+                    disabled: data.status == 0 || data.isClosed,
                 },
                 {
                     title: 'border',
@@ -301,13 +309,22 @@ export class MapsService implements OnDestroy {
                     title: 'border',
                 },
                 {
-                    title: data.status == 0 || data.isClosed ? 'Reopen Business' : 'Close Business',
-                    name: data.status == 0 || data.isClosed ? 'open-business' : 'close-business',
+                    title:
+                        data.status == 0 || data.isClosed
+                            ? 'Reopen Business'
+                            : 'Close Business',
+                    name:
+                        data.status == 0 || data.isClosed
+                            ? 'open-business'
+                            : 'close-business',
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: data.status != 0 && !data.isClosed,
                     greenIcon: data.status == 0 || data.isClosed,
                     show: true,
-                    iconName: data.status == 0 || data.isClosed ? 'mark-as-done' : 'close-business',
+                    iconName:
+                        data.status == 0 || data.isClosed
+                            ? 'mark-as-done'
+                            : 'close-business',
                 },
                 {
                     title: 'Delete',
@@ -331,25 +348,22 @@ export class MapsService implements OnDestroy {
         var linkEnd = '';
         var doesNotHaveRout = false;
 
-        if ( type == 'shipper' ) {
+        if (type == 'shipper') {
             linkStart = '/list/customer/';
             linkEnd = '/shipper-details';
-        } else if ( type == 'repairShop' ) {
+        } else if (type == 'repairShop') {
             linkStart = '/list/repair/';
             linkEnd = '/shop-details';
-        } else if ( type == 'fuelStop' ) {
+        } else if (type == 'fuelStop') {
             doesNotHaveRout = true;
-        } else if ( type == 'accident' ) {
+        } else if (type == 'accident') {
             doesNotHaveRout = true;
         } else {
             doesNotHaveRout = true;
         }
 
-        if ( !doesNotHaveRout ) {
-            const link =
-                linkStart +
-                data['id'] +
-                linkEnd;
+        if (!doesNotHaveRout) {
+            const link = linkStart + data['id'] + linkEnd;
 
             this.detailsDataService.setNewData(data);
             this.selectedMarker(0);

@@ -764,7 +764,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     setCalendarOptions(ev, type, headerInfo) {
-        console.log(ev, type, headerInfo, 'setcalendaroptions');
         this.calendarOptions = {
             plugins: [dayGridPlugin, timeGridPlugin],
             initialView: type,
@@ -816,11 +815,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             moreLinkContent: function (args) {
                 return args.num + ' More Events';
             },
-            eventResize: this.resizeEvent.bind(this),
             dayMaxEventRows: true,
-            eventMouseEnter: function (info) {
-                console.log(info['event'], '-------hover--------');
-            },
         };
         this.changeViewCalendar(type);
     }
@@ -832,8 +827,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         } else {
             calendar.prev();
         }
-
-        console.log(calendar, 'allcalendarinfo');
 
         this.checkCalendarTitle();
     }
@@ -859,14 +852,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         //         calendarApi.currentData.currentDate
         //     ).format('YYYY');
         // }
-    }
-
-    resizeEvent(mod) {
-        console.log(mod, 'resized');
-    }
-
-    hoverEvent(mod) {
-        console.log(mod, 'hovered');
     }
 
     changeCalendarView(view) {
@@ -896,7 +881,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
                   };
 
         this.headerBarInfo = headerInfo;
-        console.log(this.calendarGridView, this.headerBarInfo);
         this.setCalendarOptions(
             this.currentEvents,
             this.calendarGridView,
@@ -933,8 +917,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     openEvenPopover(t2, ev, indx, i) {
-        console.log(indx, i);
-
         this.colorIndx1 = indx;
         this.colorIndx2 = i;
 
@@ -943,7 +925,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
             this.colorIndx1 = '-1';
             this.colorIndx2 = '-1';
         } else {
-            console.log(ev);
             t2.open({ data: ev });
         }
     }

@@ -17,9 +17,7 @@ export class GpsServiceService {
                 filter((route) => route instanceof NavigationEnd),
                 takeUntil(this.destroy$)
             )
-            .subscribe((route: NavigationEnd) => {
-                /* console.log('WHAT IS ROUTE', route.url); */
-            });
+            .subscribe((route: NavigationEnd) => {});
     }
 
     public startConnection = () => {
@@ -34,7 +32,6 @@ export class GpsServiceService {
                 .build();
 
             this.hubConnection.on('GpsData', (gps) => {
-                console.log(gps);
                 this.gpsStatusChange.next(gps);
             });
 
@@ -52,5 +49,5 @@ export class GpsServiceService {
 
     public closeConnection = () => {
         this.hubConnection?.stop();
-    }
+    };
 }

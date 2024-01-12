@@ -418,7 +418,6 @@ export class TruckassistCardsComponent implements OnInit {
                 return card.companyContactLabel;
             } else if (card.companyAccountLabel) {
                 this.selectedContactLabel.push(card.companyAccountLabel);
-                console.log(this.selectedContactLabel);
             }
         }
     }

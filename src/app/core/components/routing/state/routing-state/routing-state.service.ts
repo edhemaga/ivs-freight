@@ -100,8 +100,6 @@ export class RoutingStateService implements OnDestroy {
                                 id: data.id,
                             });
 
-                            console.log('updateMap response', map);
-
                             subMap.unsubscribe();
                         },
                     });
@@ -173,8 +171,6 @@ export class RoutingStateService implements OnDestroy {
                                 id: route.id,
                             });
 
-                            console.log('addRoute', route);
-
                             subRoute.unsubscribe();
                         },
                     });
@@ -189,12 +185,16 @@ export class RoutingStateService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (updatedRoute: RouteResponse | any) => {
-                            const route = {...updatedRoute};
-                            const storeRoutes: any = this.routingStateStore.getValue().entities;
+                            const route = { ...updatedRoute };
+                            const storeRoutes: any =
+                                this.routingStateStore.getValue().entities;
 
                             var mapId;
                             Object.keys(storeRoutes).forEach((key: any) => {
-                                if ( storeRoutes[key].id == route.id && storeRoutes[key].type == 'route' ) {
+                                if (
+                                    storeRoutes[key].id == route.id &&
+                                    storeRoutes[key].type == 'route'
+                                ) {
                                     mapId = storeRoutes[key].mapId;
                                 }
                             });
@@ -207,15 +207,25 @@ export class RoutingStateService implements OnDestroy {
                                     ', ' +
                                     stop.address.stateShortName +
                                     ' ' +
-                                    (stop.address.zipCode ? stop.address.zipCode : '');
+                                    (stop.address.zipCode
+                                        ? stop.address.zipCode
+                                        : '');
 
-                                stop.lat = stop.latitude; 
+                                stop.lat = stop.latitude;
                                 stop.long = stop.longitude;
                             });
 
-                            const routeData = {...route, type: 'route', mapId: mapId, fakeId: parseInt([2, route.id].join(''))};
-                            this.routingStateStore.update(routeData.fakeId, routeData);
-                            
+                            const routeData = {
+                                ...route,
+                                type: 'route',
+                                mapId: mapId,
+                                fakeId: parseInt([2, route.id].join('')),
+                            };
+                            this.routingStateStore.update(
+                                routeData.fakeId,
+                                routeData
+                            );
+
                             // this.trailerActiveStore.remove(({ id }) => id === data.id);
 
                             // this.trailerActiveStore.add(trailer);
@@ -231,8 +241,6 @@ export class RoutingStateService implements OnDestroy {
                                 data: routeData,
                                 id: route.id,
                             });
-
-                            console.log('updateRoute response', route);
 
                             subMap.unsubscribe();
                         },
@@ -266,14 +274,11 @@ export class RoutingStateService implements OnDestroy {
                     type: 'delete-route',
                     id: routeId,
                 });
-
-                console.log('deleteRouteById', routeId);
             })
         );
     }
 
     deleteStopById(stopId: number, routeId: number): Observable<any> {
-        console.log('deleteStopById', stopId, routeId);
         return this.stopService.apiStopIdDelete(stopId).pipe(
             tap(() => {
                 this.sendUpdatedData({
@@ -281,8 +286,6 @@ export class RoutingStateService implements OnDestroy {
                     id: stopId,
                     routeId: routeId,
                 });
-
-                console.log('deleteStopById', routeId);
             })
         );
     }
@@ -304,19 +307,13 @@ export class RoutingStateService implements OnDestroy {
                 loadWeight,
                 hazMat
             )
-            .pipe(
-                tap(() => {
-                    console.log('getRouteShape', locations);
-                })
-            );
+            .pipe(tap(() => {}));
     }
 
     decodeRouteShape(routeId: any) {
-        return this.routingService.apiRoutingDecodeGet(routeId).pipe(
-            tap(() => {
-                console.log('decodeRouteShape', routeId);
-            })
-        );
+        return this.routingService
+            .apiRoutingDecodeGet(routeId)
+            .pipe(tap(() => {}));
     }
 
     public sendUpdatedData(data: any) {

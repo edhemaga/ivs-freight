@@ -84,7 +84,6 @@ export class TaNoteContainerComponent implements OnInit {
         }
         document.execCommand('styleWithCSS', false, 'true');
         if (this.range) {
-            console.log("RANGE ON INPUT");
             this.selectionTaken.removeAllRanges();
             this.selectionTaken.addRange(this.range);
         }

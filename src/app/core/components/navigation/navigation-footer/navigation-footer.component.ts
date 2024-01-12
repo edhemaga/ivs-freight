@@ -108,18 +108,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
                 this.settingsRouteActivated = false;
             }
         }
-        // this.navigationService.getValue().subscribe((value) => {
-        //     this.notificationsActive = value;
-        //     console.log(value, 'footer');
-        // });
-        // ----------------------- PRODUCSTION MODE ----------------------------
-        // if(this.authQuery.getEntity(1)) {
-        //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
-
-        //   if (currentUser.token) {
-        //     return true;
-        //   }
-        // }
 
         // ----------------------- DEVELOP MODE ----------------------------
 
@@ -218,11 +206,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
                 return;
             }
         }
-        // this.navigationService.navigationDropdownActivation$.subscribe(
-        //     (res) => {
-        //         console.log(res);
-        //     }
-        // );
     }
 
     public isActiveFooterRoute(item: FooterData): boolean {

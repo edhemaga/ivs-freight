@@ -90,22 +90,31 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    if ( res.type === 'delete' ) {
+                    if (res.type === 'delete') {
                         if (res.template === 'repair shop') {
                             this.deleteRepairShopById(res?.id);
                         }
-                    } else if ( res.type === 'activate' ) {
-                        if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                    } else if (res.type === 'activate') {
+                        if (
+                            res.template === 'repair shop' ||
+                            res.template === 'Repair Shop'
+                        ) {
                             this.openRepairShop(res?.id);
                         }
-                    } else if ( res.type === 'deactivate' ) {
-                        if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                    } else if (res.type === 'deactivate') {
+                        if (
+                            res.template === 'repair shop' ||
+                            res.template === 'Repair Shop'
+                        ) {
                             this.closeRepairShop(res?.id);
                         }
-                    } else if ( res.type === 'info' ) {
-                        if ( res.subType === 'favorite' ) {
-                            if ( res.subTypeStatus === 'move' || res.subTypeStatus === 'remove' ) {
-                                this.changePinnedStatus(res?.id)
+                    } else if (res.type === 'info') {
+                        if (res.subType === 'favorite') {
+                            if (
+                                res.subTypeStatus === 'move' ||
+                                res.subTypeStatus === 'remove'
+                            ) {
+                                this.changePinnedStatus(res?.id);
                             }
                         }
                     }
@@ -145,7 +154,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     shop.id ===
                     (id ? id : +this.act_route.snapshot.params['id'])
             );
-        
+
         this.repairDQuery.repairShop$
             .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
             .subscribe((items: RepairShopResponse[]) => {
@@ -181,7 +190,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -192,7 +201,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
-                    iconName: 'ic_plus'
+                    iconName: 'ic_plus',
                 },
                 {
                     title: 'Mark as favorite',
@@ -200,14 +209,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
                     show: true,
-                    iconName: 'ic_star'
+                    iconName: 'ic_star',
                 },
                 {
                     title: 'Write Review',
                     name: 'write-review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
-                    iconName: 'write-review'
+                    iconName: 'write-review',
                 },
                 {
                     title: 'border',
@@ -217,14 +226,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -235,7 +244,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'close-business'
+                    iconName: 'close-business',
                 },
                 {
                     title: 'Delete',
@@ -246,42 +255,39 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
             export: true,
         };
     }
     public dropActionRepair(event: any) {
-        if ( event.type == 'write-review' ){
+        if (event.type == 'write-review') {
             event.type = 'edit';
             event.openedTab = 'Review';
         }
 
-        console.log('---here---', event)
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairObject,
-            event.id,
+            event.id
         );
     }
 
-    public onModalAction(event: any){
+    public onModalAction(event: any) {
         let eventType = '';
-       if ( event == 'Contact' || event == 'Review'){
-            eventType = 'edit'
-       } else {
+        if (event == 'Contact' || event == 'Review') {
+            eventType = 'edit';
+        } else {
             eventType = event;
-       }
+        }
         let eventObject = {
             id: this.repairObject.id,
             type: eventType,
             openedTab: event,
-        }
+        };
 
-        this.dropDownService.dropActionsHeaderRepair(
-            eventObject
-        );
+        this.dropDownService.dropActionsHeaderRepair(eventObject);
     }
 
     public deleteRepairShopById(id: number) {
@@ -325,7 +331,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     public shopConf(data?: RepairShopResponse) {
         this.repairObject = data;
         this.DetailsDataService.setNewData(data);
-        
+
         if (data?.openHoursToday === 'Closed') {
             this.togglerWorkTime = false;
         } else {
@@ -410,15 +416,15 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public closeRepairShop(shopId){
+    public closeRepairShop(shopId) {
         this.shopService.changeShopStatus(shopId);
     }
 
-    public openRepairShop(shopId){
+    public openRepairShop(shopId) {
         this.shopService.changeShopStatus(shopId);
     }
 
-    public changePinnedStatus(shopId){
+    public changePinnedStatus(shopId) {
         this.shopService.changePinnedStatus(shopId);
     }
 

@@ -1080,8 +1080,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.selectedPickupShipper = event;
 
-                    console.log(this.selectedPickupShipper);
-
                     // Draw Stop on map
                     this.drawStopOnMap();
 
@@ -2563,7 +2561,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    console.log('load modal: ', res);
                     this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
@@ -2586,7 +2583,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     );
 
                     // OVO TREBA PROVERITI, JA SAM USER KOJI JE POZVAN U OVU KOMPANIJU I JA SE NE NALAZIM UNUTAR DISPATCHER LISTE A OVDE SE TRAZI UNUTAR DISPATCHER LISTE KO JE COMPANY OWNER PA PUCA
-                    if( !initialDispatcher ) initialDispatcher = this.labelsDispatcher[0];
+                    if (!initialDispatcher)
+                        initialDispatcher = this.labelsDispatcher[0];
 
                     this.loadForm
                         .get('dispatcherId')
@@ -3687,7 +3685,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     modalColumns: any[] = [];
     modalViewData: any[] = [];
-    
+
     public createNewRowInStopItems(action: string, loadStopIndex?: number) {
         // switch (action) {
         //     case 'pickup': {

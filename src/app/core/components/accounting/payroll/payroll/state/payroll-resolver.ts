@@ -10,14 +10,10 @@ export class PayrolldResolver implements Resolve<any> {
     constructor(private payrollStoreService: PayrollStoreService) {}
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         return this.payrollStoreService.getPayrollList().pipe(
-            tap(
-                result => {
-                    console.log("HELLO");
-                    console.log(result);
-                    this.payrollStoreService.payrollList = result;
-                }
-            )
-        )
+            tap((result) => {
+                this.payrollStoreService.payrollList = result;
+            })
+        );
 
         return of(true);
     }

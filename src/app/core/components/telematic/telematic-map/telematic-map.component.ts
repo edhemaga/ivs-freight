@@ -393,7 +393,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .getAllGpsData({})
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
-                console.log('getGpsData', gpsData);
                 gpsData.data.map((data, index) => {
                     data.speed = Math.round(data.speed);
                     data.motionStatus =
@@ -440,7 +439,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .getCompanyUnassignedGpsData({})
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
-                console.log('getUnassignedGpsData', gpsData);
                 gpsData.data.map((data) => {
                     data.speed = Math.round(data.speed);
                     data.motionStatus =
@@ -502,7 +500,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .getDeviceData(deviceId)
             .pipe(takeUntil(this.destroy$))
             .subscribe((deviceData: any) => {
-                console.log('getDataByDeviceId deviceData', deviceData);
                 deviceData.transform =
                     'translate(-3309.177px, 10942px) rotate(' +
                     deviceData.heading +
@@ -680,18 +677,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
                     this.onSearchUnassigned();
                 } else if (changes.truckUnit) {
-                    console.log('truckUnit changes', changes.truckUnit);
                     this.detailsDataService.setUnitValue(changes.truckUnit);
                 } else if (changes.trailerUnit) {
-                    console.log('trailerUnit changes', changes.trailerUnit);
                     this.detailsDataService.setUnitValue(changes.trailerUnit);
-                } else if (changes.truckDeviceId) {
-                    console.log('truckDeviceId changes', changes.truckDeviceId);
-                } else if (changes.trailerDeviceId) {
-                    console.log(
-                        'trailerDeviceId changes',
-                        changes.trailerDeviceId
-                    );
                 }
             });
     }
@@ -701,8 +689,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .assignDeviceToTruck({ deviceId: deviceId, truckId: truckId })
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                console.log('assignDeviceToTruck res', res);
-
                 this.getDataByDeviceId(deviceId, true);
             });
     }
@@ -712,8 +698,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .assignDeviceToTrailer({ deviceId: deviceId, trailerId: trailerId })
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                console.log('assignDeviceToTrailer res', res);
-
                 this.getDataByDeviceId(deviceId, true);
             });
     }
@@ -722,9 +706,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDevicesToCompany(devices)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                console.log('assignDevicesToCompany res', res);
-            });
+            .subscribe((res: any) => {});
     }
 
     onToolBarAction(event: any) {
@@ -795,7 +777,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .getTruckList(1, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trucks: TruckListResponse) => {
-                console.log('getTrucks', trucks);
                 var unassignedTrucks = [];
                 var allTrucks = [];
                 trucks.pagination.data.map((truck) => {
@@ -834,8 +815,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .getTrailers(1, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trailers: TrailerListResponse) => {
-                console.log('getTrailers', trailers);
-
                 var unassignedTrailers = [];
                 var allTrailers = [];
                 trailers.pagination.data.map((trailer) => {
@@ -953,9 +932,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     saveDeviceSelection(event, location, column) {
-        console.log('saveDeviceSelection event', event);
-        console.log('saveDeviceSelection location', location);
-        console.log('saveDeviceSelection column', column);
         // if (event.action === 'cancel') {
         //     this.selectedDeviceUnit = {};
         //     this.searchForm.get('truckUnit').patchValue(null);
@@ -998,11 +974,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     filterUnassignedDevices() {
         this.filteredUnassignedDevices = this.gpsUnassignedData.filter((item) =>
             item?.deviceId?.includes(this.searchUnassignedText)
-        );
-
-        console.log(
-            'filteredUnassignedDevices',
-            this.filteredUnassignedDevices
         );
     }
 
@@ -1163,7 +1134,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.gpsService.gpsStatusChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
-                console.log('gpsStatusChange data', data);
                 data.speed = Math.round(data.speed);
                 data.motionStatus =
                     data.motionStatus === 1
@@ -1283,9 +1253,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .getDeviceHistory(deviceId, date)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((gpsData: any) => {
-                console.log('getGpsHistory gpsData', gpsData);
-            });
+            .subscribe((gpsData: any) => {});
     }
 
     showHideDevice(event, device) {
@@ -1422,7 +1390,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         // )
         // .pipe(takeUntil(this.destroy$))
         // .subscribe((clustersResponse: any) => {
-        //     console.log('clustersResponse', clustersResponse);
         // });
 
         this.companyOfficeService
@@ -1532,30 +1499,40 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     assignUnitFromMarker(item) {
-        console.log('assignUnitFromMarker item', item);
         this.showHideUnassigned(true);
         this.showTruckDropdown(item);
     }
 
     sortByColumn(column) {
-        console.log('sortByColumn column', column);
         this.sortColumn = column;
         this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
         this.filteredAssignedDevices.sort((a, b) => {
-            if ( this.sortDirection == 'asc' ) {
-                if(a[column.value] < b[column.value]) { return 1; }
-                if(a[column.value] > b[column.value]) { return -1; }
+            if (this.sortDirection == 'asc') {
+                if (a[column.value] < b[column.value]) {
+                    return 1;
+                }
+                if (a[column.value] > b[column.value]) {
+                    return -1;
+                }
                 return 0;
             } else {
-                if(a[column.value] < b[column.value]) { return -1; }
-                if(a[column.value] > b[column.value]) { return 1; }
+                if (a[column.value] < b[column.value]) {
+                    return -1;
+                }
+                if (a[column.value] > b[column.value]) {
+                    return 1;
+                }
                 return 0;
             }
         });
     }
 
     findLinkedDevices() {
-        if ( !this.filteredAssignedDevices.length || !this.filteredUnassignedDevices.length ) return;
+        if (
+            !this.filteredAssignedDevices.length ||
+            !this.filteredUnassignedDevices.length
+        )
+            return;
 
         this.filteredAssignedDevices.map((device) => {
             let linkedDevice = this.filteredAssignedDevices.find(
@@ -1565,14 +1542,19 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     device.deviceId != device2.deviceId
             );
 
-            if ( linkedDevice ) {
-                if ( device.unitType == 1 ) {
+            if (linkedDevice) {
+                if (device.unitType == 1) {
                     device.linkedDevice = true;
                     device.trailerDeviceId = linkedDevice.deviceId;
 
-                    const distance = this.calculateDistanceBetweenDevices(device, linkedDevice);
+                    const distance = this.calculateDistanceBetweenDevices(
+                        device,
+                        linkedDevice
+                    );
 
-                    const hideMarker = (device.motionStatus == 'MOTION' && distance <= 5000) || (device.motionStatus !== 'MOTION' && distance <= 50);
+                    const hideMarker =
+                        (device.motionStatus == 'MOTION' && distance <= 5000) ||
+                        (device.motionStatus !== 'MOTION' && distance <= 50);
 
                     linkedDevice.linkedDevice = true;
                     linkedDevice.hideLinkedDevice = true;
@@ -1591,7 +1573,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     marker2.linkedDevice = true;
                     marker2.truckDeviceId = marker1.deviceId;
 
-                    if ( hideMarker ) {
+                    if (hideMarker) {
                         marker2.hideLinkedDevice = true;
                     }
 
@@ -1600,8 +1582,10 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     );
 
                     if (gpsAssignedIndex > -1) {
-                        this.gpsAssignedData[gpsAssignedIndex].linkedDevice = true;
-                        this.gpsAssignedData[gpsAssignedIndex].trailerDeviceId = marker2.deviceId;
+                        this.gpsAssignedData[gpsAssignedIndex].linkedDevice =
+                            true;
+                        this.gpsAssignedData[gpsAssignedIndex].trailerDeviceId =
+                            marker2.deviceId;
                     }
 
                     let gpsAssignedIndex2 = this.gpsAssignedData.findIndex(
@@ -1609,9 +1593,13 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     );
 
                     if (gpsAssignedIndex2 > -1) {
-                        this.gpsAssignedData[gpsAssignedIndex2].linkedDevice = true;
-                        this.gpsAssignedData[gpsAssignedIndex2].hideLinkedDevice = true;
-                        this.gpsAssignedData[gpsAssignedIndex].truckDeviceId = marker1.deviceId;
+                        this.gpsAssignedData[gpsAssignedIndex2].linkedDevice =
+                            true;
+                        this.gpsAssignedData[
+                            gpsAssignedIndex2
+                        ].hideLinkedDevice = true;
+                        this.gpsAssignedData[gpsAssignedIndex].truckDeviceId =
+                            marker1.deviceId;
                     }
 
                     this.mapsService.markerUpdate(device);
@@ -1674,24 +1662,18 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             };
         });
 
-        var trailerArr = devicesArr.filter(
-            (device) => device.unitType === 2
-        );
+        var trailerArr = devicesArr.filter((device) => device.unitType === 2);
 
         var truckArr = devicesArr.filter(
             (device) => !device.unitType || device.unitType === 1
         );
 
-        this.trailerDevicesList = [
-            ...this.trailerDevicesList,
-            ...trailerArr,
-        ];
+        this.trailerDevicesList = [...this.trailerDevicesList, ...trailerArr];
         this.gpsDevicesList = [...this.gpsDevicesList, ...truckArr];
 
         this.hasTrailerDevices =
             this.trailerDevicesList.length > 0 ? true : false;
 
-            
         this.driverLocations = [
             ...this.driverLocations,
             ...gpsData.data,
