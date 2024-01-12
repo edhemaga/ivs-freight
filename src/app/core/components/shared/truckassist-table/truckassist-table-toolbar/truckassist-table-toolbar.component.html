@@ -425,9 +425,7 @@
                             class="column-text"
                             [ngClass]="{ 'selectable-text': !column.isPined }"
                         >
-                            {{
-                                column.name !== '' ? column.name : column.title
-                            }}
+                            {{ column.name || column.title }}
                         </div>
                     </div>
 
