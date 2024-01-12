@@ -73,12 +73,15 @@ export interface TableOptionsInterface {
         showMoneyFilter?: boolean;
         showLocationFilter?: boolean;
         showStateFilter?: boolean;
+        showBrokerFilterClosed?: boolean;
         hideSearch?: boolean;
+        showRepairShop?: boolean;
         viewModeOptions: ToolbarAction[];
         showTimeFilter?: boolean;
         showDispatcherFilter?: boolean;
         showStatusFilter?: boolean;
         showLtlFilter?: boolean;
+        showBrokerFilter?: boolean;
         showPMFilter?: boolean;
         showCategoryRepairFilter?: boolean;
         hideMoneySubType?: boolean;

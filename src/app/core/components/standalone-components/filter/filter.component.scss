@@ -1,3 +1,4 @@
+@import 'src/theme/variables';
 
 @keyframes itemAnimation {
     0% {
@@ -35,66 +36,55 @@
 .user-icon {
     position: relative;
     min-width: 26px;
-    height: 26px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     border-radius: 2px;
     cursor: pointer;
+    padding: 4px;
 
+    .main-icon-holder {
+        gap: 4px;
 
-    .main-icon-holder{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .filters-selected-value-holder{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0px 7px;
-            width: 10px;
-            font-weight: 700;
+        .filters-selected-value-holder {
+            width: 14px;
+            height: 14px;
             font-size: 11px;
-            line-height: 13px;
-            color: #FFFFFF;
+            line-height: 14px;
+            color: $white;
 
-            
-            &.conf-icon-holder{
+            &.diferent-color {
+                color: $muted !important;
+            }
+
+            &.conf-icon-holder {
                 svg {
                     height: 9.27px;
-                    width: 12px;     
-                    path{
-                        
+                    width: 12px;
+                    path {
                     }
-                    
                 }
             }
-            
-            &.clear-filter-icon{
+
+            &.clear-filter-icon {
                 display: none;
             }
-
         }
     }
 
     svg-icon {
         svg {
-            width: 14.4px;
-            height: 16.2px;
+            width: 18px;
+            height: 18px;
             display: flex;
         }
     }
 
     &:hover {
-        background-color: #eeeeee;
+        background-color: $bw2;
 
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #424242 !important;
+                        fill: $ta-black !important;
                     }
                 }
             }
@@ -105,30 +95,28 @@
         svg-icon {
             svg {
                 path {
-                    fill: #919191 !important;
+                    fill: $muted !important;
                 }
             }
         }
     }
 
     &.active-options {
-        background-color: #424242;
+        background-color: $ta-black;
 
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #FFFFFF70 !important;
+                        fill: $white-3 !important;
                     }
                 }
             }
         }
 
         &.filter-active-colors {
-            //background-color: #536bc220 !important;
-
             .active-filter-num {
-                background-color: #536bc2 !important;
+                background-color: $ta-blue !important;
             }
         }
 
@@ -136,12 +124,12 @@
             display: none !important;
         }
 
-        &:hover{
+        &:hover {
             .main-icon-holder {
                 svg-icon {
                     svg {
                         path {
-                            fill: #FFFFFF !important;
+                            fill: $white !important;
                         }
                     }
                 }
@@ -150,15 +138,13 @@
     }
 
     &.filter-active-colors {
-        background-color: #3074D3;
+        background-color: $ta-blue-13;
 
         .main-icon-holder {
-            padding-left: 5px;
-
             svg-icon {
                 svg {
                     path {
-                        fill: #FFFFFF70 !important;
+                        fill: $white-3 !important;
                     }
                 }
             }
@@ -176,26 +162,26 @@
             justify-content: center;
             align-items: center;
 
-            color: #fff;
+            color: $white;
             font-size: 8px;
             font-weight: 700;
 
             border-radius: 100%;
-            background-color: #3074d3;
-            border: 2px solid #fff;
+            background-color: $ta-blue-5;
+            border: 2px solid $white;
 
             user-select: none;
         }
 
         .clear-filter {
             display: none;
-            background-color: #ef5350 !important;
+            background-color: $ta-red-2 !important;
             svg-icon {
                 svg {
                     height: 6px !important;
                     width: 6px !important;
                     path {
-                        fill: #ffffff;
+                        fill: $white;
                     }
                 }
             }
@@ -205,64 +191,51 @@
             }
 
             &:hover {
-                background-color: #f44336 !important;
+                background-color: $ta-red-3 !important;
 
                 .clear-colors {
-                    background-color: #ef5350;
+                    background: $ta-blue-15 !important;
                 }
             }
         }
 
         .main-icon-holder {
             svg-icon {
-                &:hover{
+                &:hover {
                     svg {
                         path {
-                            fill: #ffffff !important;
+                            fill: $white !important;
                         }
-                    } 
+                    }
                 }
             }
         }
 
         &:hover {
-            background-color: #255BB9 !important;
+            background-color: $ta-blue-15 !important;
             transition: 0.2s all;
+
             .main-icon-holder {
-               
-                .filters-selected-value-holder{
+                .filters-selected-value-holder {
                     display: none;
-                    &.clear-filter-icon{
+
+                    &.clear-filter-icon {
                         display: flex;
-                        height: 10px;
-                        width: 10px;
-                            
-                        svg {
-                            
-                            path{
-                                height: 10px;
-                                width: 10px;
+                        height: 14px;
+                        width: 14px;
+                        svg-icon {
+                            svg {
+                                width: 14px;
+                                height: 14px;
+                                display: flex;
                             }
-                            
                         }
-
-                        &:hover{
-                            
-                                .filter-active-colors{
-                                    background-color: #EF5350 !important;
-                                }
-                                
-                            
-                            
-                        }
-
                     }
                 }
-                
             }
 
             .active-filter-num {
-                background-color: #536bc2;
+                background-color: $ta-blue;
             }
 
             .clear-filter {
@@ -273,10 +246,10 @@
     }
 
     &.clear-colors {
-        background-color: #ef5350 !important;
+        background: $ta-blue-14 !important;
 
         &:hover {
-            background-color: #ef5350 !important;
+            background: $ta-blue-15 !important;
         }
     }
 }
@@ -287,7 +260,7 @@
     width: 260px;
     padding: 7px 8px 6px 8px;
     border-radius: 3px;
-    background-color: #2f2f2f;
+    background-color: $ta-black-2;
     box-shadow: 0 0 4px #00000026;
     display: flex;
     justify-content: flex-start;
@@ -298,7 +271,6 @@
     .filter-header {
         position: relative;
         width: 100%;
-        //padding-left: 1px;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-start;
@@ -307,7 +279,6 @@
 
         &.activeHeader {
             display: flex;
-
             animation-name: showHeaderAnimation;
             animation-delay: 0s;
             animation-duration: 0.2s;
@@ -317,7 +288,6 @@
 
         &.inactiveHeader {
             display: flex;
-
             animation-name: hideHeaderAnimation;
             animation-delay: 0s;
             animation-duration: 0.2s;
@@ -346,22 +316,20 @@
         .user-filter-box {
             width: 22px;
             height: 22px;
-            
+
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 4px;
-            
-            border-radius: 60px;
-            //transform: matrix(1, 0, 0, -1, 0, 0);
-            background-color: #424242;
 
+            border-radius: 60px;
+            background-color: $ta-black;
 
             font-size: 14px;
             font-weight: 800;
 
-            color: #fff;
+            color: $white;
             line-height: 24px;
         }
 
@@ -372,7 +340,7 @@
             line-height: 18px;
             font-size: 14px;
             font-weight: 800;
-            color: #ffffff;
+            color: $white;
             padding: 0px 4px;
             box-sizing: border-box;
 
@@ -401,7 +369,7 @@
                     display: flex;
 
                     path {
-                        fill: #aaaaaa;
+                        fill: $ta-light-grey-2;
                     }
                 }
             }
@@ -410,7 +378,7 @@
                 svg-icon {
                     svg {
                         path {
-                            fill: #6c6c6c;
+                            fill: $bw6-2;
                         }
                     }
                 }
@@ -435,7 +403,7 @@
                     display: flex;
 
                     path {
-                        fill: #aaaaaa;
+                        fill: $ta-light-grey-2;
                     }
                 }
             }
@@ -444,7 +412,7 @@
                 svg-icon {
                     svg {
                         path {
-                            fill: #6c6c6c;
+                            fill: $bw6-2;
                         }
                     }
                 }
@@ -454,7 +422,6 @@
         &.search-input-header {
             position: absolute;
             width: 248px;
-            //display: none;
             transition: 0.3s all;
             .input-form-holder {
                 .input-custom-group {
@@ -545,7 +512,7 @@
                     height: 9.63px;
 
                     path {
-                        fill: #eeeeee;
+                        fill: $bw2;
                     }
                 }
             }
@@ -555,7 +522,6 @@
                 svg-icon {
                     svg {
                         path {
-                            //fill: #fff;
                         }
                     }
                 }
@@ -568,7 +534,7 @@
         height: 2px;
         border-radius: 1px;
         margin: 5px 0px 6px 0px;
-        background-color: #aaa;
+        background-color: $ta-light-grey-2;
         opacity: 0.2;
     }
 
@@ -583,14 +549,13 @@
     .search-holder {
         position: relative;
         width: 100%;
-        //padding: 6px 6px 8px 6px;
         box-sizing: border-box;
 
         .search-user-holder {
             width: 100%;
             height: 28px;
             border-radius: 2px;
-            background-color: #f7f7f7;
+            background-color: $ta-light-grey-5;
             border: none;
             outline: none;
             padding-left: 36px;
@@ -599,13 +564,13 @@
             align-items: center;
             font-size: 14px;
             font-weight: 400;
-            color: #6c6c6c;
+            color: $bw6-2;
             line-height: 28px;
 
             &::placeholder {
                 font-size: 14px;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: $bw6-2;
                 line-height: 18px;
             }
         }
@@ -638,7 +603,6 @@
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
-        //padding: 2px 2px 0px 2px;
         box-sizing: border-box;
         transition: all 0.2s linear;
 
@@ -708,28 +672,25 @@
         }
 
         .selected-user-frame {
-
             position: relative;
             display: flex;
             align-items: center;
-            
+
             width: 100%;
             height: 26px;
             padding-right: 8px;
             padding-left: 30px;
             border-radius: 2px;
-            
-            
+
             box-sizing: border-box;
             font-size: 14px;
             font-weight: 700;
-            color: #fff;
+            color: $white;
             line-height: 26px;
             margin-bottom: 2px;
             user-select: none;
 
             .selected-icon {
-                //position: absolute;
                 width: 18px;
                 height: 18px;
                 display: flex;
@@ -745,14 +706,13 @@
                         height: 9.85px !important;
 
                         path {
-                            fill: #6f9ee0 !important;
+                            fill: $ta-blue-7 !important;
                         }
                     }
                 }
             }
 
             .icon-delete {
-                //position: absolute;
                 width: 21px;
                 height: 23px;
                 border-radius: 1px;
@@ -777,7 +737,6 @@
                 }
 
                 &:hover {
-                    //top: 3px;
                     svg-icon {
                         svg {
                             path {
@@ -793,11 +752,11 @@
 
             &::-moz-selection {
                 background: #536bc233;
-                color: #536bc2;
+                color: $ta-blue;
             }
             &::selection {
                 background: #536bc233;
-                color: #536bc2;
+                color: $ta-blue;
             }
         }
 
@@ -816,8 +775,7 @@
         position: relative;
         width: 100%;
         max-height: 224px;
-        background-color: #2f2f2f;
-        //overflow: auto;
+        background-color: $ta-black-2;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -834,7 +792,6 @@
         }
 
         &::-webkit-scrollbar-thumb {
-            //background-color: #aaaaaa !important;
             border: 4px solid #dadada !important;
             border-radius: 1px;
         }
@@ -859,16 +816,13 @@
                 justify-content: center;
                 padding-right: 6px;
                 transition: all 0.2s linear;
-                //animation: itemAnimation 0.3s;
                 &:hover {
                     cursor: pointer;
-                    background-color: #1d1d1d;
+                    background-color: $ta-black-3;
 
                     .user-profile-img {
                         svg {
                             path {
-                                // new design, no hover on icon
-                                //fill: #dadada;
                             }
                         }
                     }
@@ -890,17 +844,17 @@
                 box-sizing: border-box;
                 font-size: 14px;
                 font-weight: 400;
-                color: #fff;
+                color: $white;
                 line-height: 18px;
                 margin-bottom: 2px;
 
                 &::-moz-selection {
                     background: #6c6c6c33;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
                 &::selection {
                     background: #6c6c6c33;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
             }
 
@@ -954,23 +908,23 @@
             width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: #424242;
+            background-color: $ta-black;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            color: #6c6c6c;
+            color: $bw6-2;
             line-height: 28px;
 
             &.active {
                 cursor: pointer;
-                color: #fff;
+                color: $white;
                 background-color: rgb(255 255 255 / 20%);
                 &:hover {
                     cursor: pointer;
                     background-color: rgb(255 255 255 / 40%);
-                    color: #fff;
+                    color: $white;
                 }
             }
         }
@@ -979,13 +933,13 @@
             width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: #424242;
+            background-color: $ta-black;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #919191;
+            color: $muted;
             line-height: 28px;
 
             &.active {
@@ -996,7 +950,7 @@
                 &:hover {
                     cursor: pointer;
                     background-color: #98b9ea;
-                    color: #fff;
+                    color: $white;
                 }
             }
         }
@@ -1071,9 +1025,7 @@
                     width: 16.65px;
 
                     path {
-                        // new design color
-                        //fill: #aaaaaa;
-                        fill: #6F9EE0;
+                        fill: #6f9ee0;
                     }
                 }
             }
@@ -1084,7 +1036,6 @@
         display: flex;
         align-items: center;
         top: 0px !important;
-        //State filter, short name problem
         height: 26px;
 
         svg {
@@ -1092,15 +1043,14 @@
             width: 16.65px;
 
             path {
-                fill: #aaaaaa;
+                fill: $ta-light-grey-2;
             }
         }
     }
 
-    .labelIcon{
+    .labelIcon {
         svg {
             path {
-                //fill: #ff0000;
             }
         }
     }
@@ -1130,7 +1080,7 @@
                 width: 42px;
 
                 path {
-                    fill: #919191;
+                    fill: $muted;
                 }
             }
         }
@@ -1219,15 +1169,14 @@
             justify-content: center;
             align-items: center;
             font-size: 14px;
-            //font-weight: 600;
-            color: #aaaaaa;
+            color: $ta-light-grey-2;
             transition: all 0.59s ease-in-out;
             .invalid-message {
                 position: absolute;
                 top: 18px;
                 right: 12px;
                 font-size: 11px;
-                color: #ef5350;
+                color: $ta-red-2;
             }
         }
 
@@ -1240,7 +1189,7 @@
                 .input-icon {
                     svg {
                         path {
-                            fill: #ef5350 !important;
+                            fill: $ta-red-2 !important;
                         }
                     }
                 }
@@ -1282,7 +1231,7 @@
             line-height: 18px;
             font-size: 14px;
             font-weight: 800;
-            color: #fff;
+            color: $white;
         }
 
         .hide-money-form {
@@ -1332,7 +1281,7 @@
         height: 20px;
         width: 54px;
 
-        color: #fff;
+        color: $white;
 
         font-size: 11px;
         font-weight: bold;
@@ -1343,7 +1292,7 @@
 
         &:hover {
             background-color: rgb(255 255 255 / 40%);
-            color: #fff;
+            color: $white;
         }
     }
 }
@@ -1364,7 +1313,7 @@
         padding-bottom: 6px;
         font-size: 11px;
         font-weight: 600;
-        color: #aaaaaa;
+        color: $ta-light-grey-2;
     }
 
     .sticky-head-title {
@@ -1373,7 +1322,7 @@
         top: 0;
         width: 100%;
 
-        background-color: #2f2f2f;
+        background-color: $ta-black-2;
         z-index: 2;
     }
 
@@ -1390,7 +1339,7 @@
         height: 28px !important;
         &.active {
             .state-short-holder {
-                color: #536bc2;
+                color: $ta-blue;
             }
         }
     }
@@ -1407,7 +1356,7 @@
 
         font-size: 11px;
         font-weight: 800;
-        color: #6c6c6c;
+        color: $bw6-2;
 
         border-radius: 1px;
     }
@@ -1501,7 +1450,7 @@
                 }
 
                 .ngx-slider-selection {
-                    background-color: #6c6c6c !important;
+                    background-color: $bw6-2 !important;
                 }
 
                 .ngx-slider-bubble {
@@ -1513,7 +1462,7 @@
                     width: 36px;
                     height: 24px;
 
-                    color: #6c6c6c !important;
+                    color: $bw6-2 !important;
                     font-size: 12px !important;
 
                     background-color: #ffffff;
@@ -1564,40 +1513,36 @@
 
     .button-set {
         width: 140px !important;
-    }   
+    }
 
-    .areaFilterHolder{
+    .areaFilterHolder {
         padding: 6px 4px;
         width: 100%;
 
-        .tab-switch-holder{
-
+        .tab-switch-holder {
             &.type2-modal-popup {
-                background-color: #1D1D1D;
+                background-color: #1d1d1d;
 
                 .tab-switch-items-holder {
                     &.active {
-                        div{
-                            color: #FFFFFF !important;    
+                        div {
+                            color: $white !important;
                         }
-                        
                     }
-        
+
                     &:hover:not(.active) {
-                        //background-color: #f3f3f3;
-                        color: #AAAAAA;
+                        color: $ta-light-grey-2;
                     }
                 }
 
                 .slide-active-holder {
-                    background-color: #424242 !important;
+                    background-color: $ta-black !important;
                 }
             }
-            
         }
     }
 
-    .area-all-holder{
+    .area-all-holder {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
@@ -1605,19 +1550,18 @@
         padding: 0px 4px;
         overflow: hidden;
 
-        .main-part-holder{
+        .main-part-holder {
             position: relative;
             width: 100%;
-         
-            .area-forms-holder{
-                .area-single-form-holder{
+
+            .area-forms-holder {
+                .area-single-form-holder {
                     padding: 16px 0px 10px 0px;
                     overflow: hidden;
                 }
             }
         }
     }
-    
 
     .filter-middle-holder {
         padding-top: 10px;
@@ -1638,30 +1582,28 @@
             }
         }
 
-        .range-new-value-holder{
+        .range-new-value-holder {
             display: flex;
             justify-content: flex-start;
             align-items: center;
         }
 
-        .range-text{
+        .range-text {
             padding-left: 6px;
             padding-right: 12px;
             font-weight: 400;
             font-size: 14px;
             line-height: 17px;
-            color: #FFFFFF;
+            color: $white;
         }
 
-        .range-flex-holder{
+        .range-flex-holder {
             width: 100%;
-
 
             .ta-ngx-slider,
             .custom-slider-commission {
                 margin-top: 8px;
                 margin-bottom: 8px;
-
 
                 .custom-slider-text {
                     margin-bottom: 0px !important;
@@ -1672,7 +1614,7 @@
 
                     .ngx-slider-bar {
                         border-radius: 4px;
-                        background: #424242 !important;
+                        background: $ta-black !important;
                     }
 
                     .ngx-slider-pointer {
@@ -1684,7 +1626,7 @@
                     }
 
                     .ngx-slider-selection {
-                        background-color: #255BB9 !important;
+                        background-color: $ta-blue-9 !important;
                     }
 
                     .ngx-slider-bubble {
@@ -1696,10 +1638,10 @@
                         justify-content: center;
                         align-items: center;
 
-                        color: #FFFFFF !important;
+                        color: $white !important;
                         font-size: 12px !important;
 
-                        background-color: #6C6C6C;
+                        background-color: $bw6-2;
                         font-weight: bold !important;
 
                         border-radius: 2px;
@@ -1714,7 +1656,6 @@
                     }
 
                     .ngx-slider-combined {
-                        //display: none !important;
                         opacity: 0 !important;
                         width: 0px !important;
                         padding: 0px !important;
@@ -1722,8 +1663,6 @@
                 }
             }
         }
-
-        
 
         &.slider-two-holder {
             padding-top: 22px;
@@ -1747,13 +1686,13 @@
                 }
 
                 .ngx-slider-pointer-min {
-                    background-color: #fff !important;
+                    background-color: $white !important;
                     border-radius: 2px !important;
                     box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
                 }
 
                 .ngx-slider-pointer-max {
-                    background-color: #fff !important;
+                    background-color: $white !important;
                     border-radius: 2px !important;
                     box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
                 }
@@ -1773,7 +1712,7 @@
             }
         }
 
-        &.areaFilterPadding{
+        &.areaFilterPadding {
             padding-bottom: 10px;
         }
     }
@@ -1814,7 +1753,7 @@
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            color: #aaaaaa;
+            color: $ta-light-grey-2;
 
             .input-custom-group {
                 .input-control {
@@ -1827,7 +1766,7 @@
                 top: 18px;
                 right: 12px;
                 font-size: 11px;
-                color: #ef5350;
+                color: $ta-red-2;
             }
         }
 
@@ -1836,7 +1775,7 @@
                 .input-icon {
                     svg {
                         path {
-                            fill: #ef5350 !important;
+                            fill: $ta-red-2 !important;
                         }
                     }
                 }
@@ -1849,7 +1788,7 @@
     padding: 10px 6px 6px 6px;
     width: 260px;
     border-radius: 3px;
-    background-color: #2f2f2f;
+    background-color: $ta-black-2;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -1864,7 +1803,7 @@
         box-sizing: border-box;
         font-size: 14px;
         font-weight: 800;
-        color: #fff;
+        color: $white;
         line-height: 18px;
         user-select: none;
 
@@ -1886,7 +1825,7 @@
                     display: flex;
 
                     path {
-                        fill: #aaaaaa;
+                        fill: $ta-light-grey-2;
                     }
                 }
             }
@@ -1895,7 +1834,7 @@
                 svg-icon {
                     svg {
                         path {
-                            fill: #6c6c6c;
+                            fill: $bw6-2;
                         }
                     }
                 }
@@ -1908,10 +1847,8 @@
         height: 2px;
         border-radius: 1px;
         margin: 8px 0px 6px 0px;
-        background-color: #aaa;
+        background-color: $ta-light-grey-2;
         opacity: 0.2;
-
-        //animation: bordersAnimation 0.3s;
     }
 
     .time-data-border {
@@ -1921,12 +1858,11 @@
     .time-items-holder {
         padding: 0px 0px;
         width: 100%;
-        background-color: #2f2f2f;
+        background-color: $ta-black-2;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
-        //padding: 2px 2px 0px 2px;
         box-sizing: border-box;
 
         .time-items {
@@ -1939,23 +1875,22 @@
             box-sizing: border-box;
             font-size: 14px;
             font-weight: 400;
-            color: #fff;
+            color: $white;
             line-height: 26px;
             margin-bottom: 4px;
-            //animation: itemAnimation 2.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
             &:hover {
                 cursor: pointer;
                 background-color: #1d1d1d;
-                color: #fff !important;
+                color: $white !important;
             }
 
             &::-moz-selection {
                 background: #6c6c6c33;
-                color: #6c6c6c;
+                color: $bw6-2;
             }
             &::selection {
                 background: #6c6c6c33;
-                color: #6c6c6c;
+                color: $bw6-2;
             }
 
             .selected-icon {
@@ -2006,8 +1941,6 @@
                 }
 
                 &:hover {
-                    //top: 3px;
-
                     svg-icon {
                         svg {
                             path {
@@ -2020,7 +1953,7 @@
         }
 
         .active {
-            color: #fff !important;
+            color: $white !important;
             font-weight: 700;
 
             .selected-icon {
@@ -2028,7 +1961,7 @@
             }
 
             &:hover {
-                color: #fff !important;
+                color: $white !important;
 
                 .selected-icon {
                     display: none;
@@ -2054,24 +1987,24 @@
             width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: #424242;
+            background-color: $ta-black;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            color: #919191;
+            color: $muted;
             line-height: 28px;
 
             &.active {
                 cursor: pointer;
                 background-color: rgb(255 255 255 / 20%);
-                color: #fff;
+                color: $white;
 
                 &:hover {
                     cursor: pointer;
                     background-color: rgb(255 255 255 / 40%);
-                    color: #fff;
+                    color: $white;
                 }
             }
         }
@@ -2080,13 +2013,13 @@
             width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: #424242;
+            background-color: $ta-black;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #919191;
+            color: $muted;
             line-height: 28px;
 
             &.active {
@@ -2096,8 +2029,8 @@
 
                 &:hover {
                     cursor: pointer;
-                    background-color: #536bc2;
-                    color: #fff;
+                    background-color: $ta-blue;
+                    color: $white;
                 }
             }
         }
@@ -2107,7 +2040,7 @@
 .dispatcher-holder {
     width: 260px;
     border-radius: 3px;
-    background-color: #fff;
+    background-color: $white;
     box-shadow: 0 0 4px #00000029;
     display: flex;
     justify-content: flex-start;
@@ -2134,14 +2067,14 @@
             align-items: center;
             font-size: 14px;
             font-weight: 800;
-            color: #6c6c6c;
+            color: $bw6-2;
             line-height: 24px;
         }
 
         .dispatcher-title-text {
             font-size: 18px;
             font-weight: 800;
-            color: #6c6c6c;
+            color: $bw6-2;
             padding-left: 4px;
             box-sizing: border-box;
         }
@@ -2164,7 +2097,7 @@
                     display: flex;
 
                     path {
-                        fill: #aaaaaa;
+                        fill: $ta-light-grey-2;
                     }
                 }
             }
@@ -2173,7 +2106,7 @@
                 svg-icon {
                     svg {
                         path {
-                            fill: #6c6c6c;
+                            fill: $bw6-2;
                         }
                     }
                 }
@@ -2216,12 +2149,12 @@
             align-items: center;
             font-size: 14px;
             font-weight: 400;
-            color: #6c6c6c;
+            color: $bw6-2;
 
             &::placeholder {
                 font-size: 14px;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: $bw6-2;
             }
         }
 
@@ -2274,7 +2207,7 @@
             box-sizing: border-box;
             font-size: 14px;
             font-weight: 400;
-            color: #536bc2;
+            color: $ta-blue;
             line-height: 26px;
             margin-bottom: 2px;
 
@@ -2285,7 +2218,7 @@
             .dispatcher-selected {
                 font-size: 14px;
                 font-weight: 400;
-                color: #536bc2;
+                color: $ta-blue;
             }
 
             .selected-icon {
@@ -2328,7 +2261,7 @@
                         height: 12.38px;
 
                         path {
-                            fill: #919191;
+                            fill: $muted;
                         }
                     }
                 }
@@ -2338,14 +2271,14 @@
                     width: 24px;
                     height: 24px;
                     border-radius: 1px;
-                    background-color: #6c6c6c;
+                    background-color: $bw6-2;
                     top: 2px;
                     right: 2px;
 
                     svg-icon {
                         svg {
                             path {
-                                fill: #fff;
+                                fill: $white;
                             }
                         }
                     }
@@ -2367,11 +2300,11 @@
 
             &::-moz-selection {
                 background: #536bc233;
-                color: #536bc2;
+                color: $ta-blue;
             }
             &::selection {
                 background: #536bc233;
-                color: #536bc2;
+                color: $ta-blue;
             }
         }
     }
@@ -2379,7 +2312,7 @@
     .dispatcher-user-holder {
         width: 100%;
         height: 224px;
-        background-color: #fff;
+        background-color: $white;
         overflow: auto;
         display: flex;
         justify-content: flex-start;
@@ -2406,7 +2339,7 @@
                 box-sizing: border-box;
                 font-size: 14px;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: $bw6-2;
                 line-height: 26px;
                 margin-bottom: 2px;
 
@@ -2417,7 +2350,7 @@
                 .unselecter-dispatcher {
                     font-size: 14px;
                     font-weight: 400;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
 
                 &:hover {
@@ -2427,11 +2360,11 @@
 
                 &::-moz-selection {
                     background: #6c6c6c33;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
                 &::selection {
                     background: #6c6c6c33;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
             }
         }
@@ -2456,16 +2389,16 @@
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #919191;
+            color: $muted;
             line-height: 32px;
 
             &.active {
                 cursor: pointer;
-                color: #6c6c6c;
+                color: $bw6-2;
 
                 &:hover {
-                    background-color: #6c6c6c;
-                    color: #fff;
+                    background-color: $bw6-2;
+                    color: $white;
                 }
             }
         }
@@ -2480,16 +2413,16 @@
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #919191;
+            color: $muted;
             line-height: 32px;
 
             &.active {
                 cursor: pointer;
                 background-color: #6d82c7;
-                color: #fff;
+                color: $white;
 
                 &:hover {
-                    background-color: #536bc2;
+                    background-color: $ta-blue;
                 }
             }
         }
@@ -2521,8 +2454,7 @@
     //animation: filterOpacityAnimation 0.1s !important;
 }
 
-
-.counter-holder{
+.counter-holder {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2531,17 +2463,17 @@
     font-weight: 500;
     font-size: 11px;
     line-height: 13px;
-    color: #CCCCCC;
-    
-    background-color: #CCCCCC20;
+    color: $ta-light-grey-6;
+
+    background-color: $ta-light-grey-9;
     border-radius: 100%;
 
-    &.activeCounter{
-        background-color: #6F9EE020;
-        color: #6F9EE0;
+    &.activeCounter {
+        background-color: $ta-blue-20;
+        color: $ta-blue-7;
     }
 }
 
-.counterMargin{
+.counterMargin {
     margin-left: 8px;
 }

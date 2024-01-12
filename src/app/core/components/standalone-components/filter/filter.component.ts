@@ -305,6 +305,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
     ],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
+    public hoverFilter: boolean = false;
     private destroy$ = new Subject<void>();
     autoCloseComponent: QueryList<AutoclosePopoverComponent>;
 
