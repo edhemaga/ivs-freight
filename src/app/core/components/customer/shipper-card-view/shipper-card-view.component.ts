@@ -155,7 +155,11 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.note.patchValue(changes?.shipper.currentValue.note);
             this.shipper = changes.shipper.currentValue;
-            this.getShipperChartData(changes.shipper.currentValue.id, this.shipperCall.chartType, false);
+            this.getShipperChartData(
+                changes.shipper.currentValue.id,
+                this.shipperCall.chartType,
+                false
+            );
             this.getShipperDropdown();
         }
     }
@@ -213,7 +217,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         ];
     }
     public onSelectedShipper(event: any) {
-        if ( event && event.id !== this.shipper.id) {
+        if (event && event.id !== this.shipper.id) {
             this.shipperList = this.shipperMinimalListQuery
                 .getAll()
                 .map((item) => {
@@ -394,7 +398,6 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         timeArr = JSON.parse(timeArr).split('.');
         if (timeArr.length > 1) {
             const days = Number(timeArr[0]);
-            console.log(days, 'timeArr');
             let hoursAndMinutes = timeArr[1].split(':');
             const hours = Number(hoursAndMinutes[0]) + days * 24;
             const minutes = Number([hoursAndMinutes[1]]);

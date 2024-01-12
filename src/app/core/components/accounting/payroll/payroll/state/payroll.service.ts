@@ -34,12 +34,11 @@ export class PayrollStoreService {
         return this.ps.apiPayrollOwnerIdGet(id);
     }
 
-
-    getPayrollCommisionDriverOpenReport(id: number){
+    getPayrollCommisionDriverOpenReport(id: number) {
         return this.ps.apiPayrollDriverCommissionIdGet(id);
     }
 
-    getPayrollMileageDriverOpenReport(id: number){
+    getPayrollMileageDriverOpenReport(id: number) {
         return this.ps.apiPayrollDriverMileageIdGet(id);
     }
 
@@ -63,7 +62,6 @@ export class PayrollStoreService {
             }
         });
 
-        console.log("WHAT IS DATA", payrollData);
         this.payrollStore.set({ ...payrollData }); // NEVEROVATNO ALI SAMO OVAKO RADI :)
     }
 

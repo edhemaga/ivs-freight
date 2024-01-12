@@ -26,7 +26,7 @@ import { formatCurrency } from '../../../pipes/formatCurrency.pipe';
         FilterComponent,
         RouterModule,
         NgbPopoverModule,
-        formatCurrency
+        formatCurrency,
     ],
 })
 export class TaCommonHeaderComponent implements OnInit {
@@ -107,7 +107,6 @@ export class TaCommonHeaderComponent implements OnInit {
     }
 
     toggleDropdownActions() {
-        //console.log('--mainData---', this.mainData);
         let itemData = this.mainData?.data;
         let diasbleClosedArray;
 
@@ -223,44 +222,40 @@ export class TaCommonHeaderComponent implements OnInit {
                 });
 
                 break;
-            
-            case 'Shipper Detail': 
-                    this.options?.actions.map((action, index) => {
 
-                        if (
-                            diasbleClosedArray &&
-                            diasbleClosedArray.indexOf(index) > -1
-                        ) {
-                            action.disabled = true;
+            case 'Shipper Detail':
+                this.options?.actions.map((action, index) => {
+                    if (
+                        diasbleClosedArray &&
+                        diasbleClosedArray.indexOf(index) > -1
+                    ) {
+                        action.disabled = true;
+                    } else {
+                        action.disabled = false;
+                    }
+
+                    if (index == 8) {
+                        if (itemData.status != 1) {
+                            action.title = 'Reopen Business';
+                            action.greenIcon = true;
+                            action.redIcon = false;
+                            action.name = 'open-business';
+                            action.iconName = 'mark-as-done';
                         } else {
-                            action.disabled = false;
+                            action.title = 'Close Business';
+                            action.greenIcon = false;
+                            action.redIcon = true;
+                            action.name = 'close-business';
+                            action.iconName = 'close-business';
                         }
-
-                        if (index == 8) {
-                            if (itemData.status != 1) {
-                                action.title = 'Reopen Business';
-                                action.greenIcon = true;
-                                action.redIcon = false;
-                                action.name = 'open-business';
-                                action.iconName = 'mark-as-done';
-                            } else {
-                                action.title = 'Close Business';
-                                action.greenIcon = false;
-                                action.redIcon = true;
-                                action.name = 'close-business';
-                                action.iconName = 'close-business';
-                            }
-                        }
-                        
-
-                    })
+                    }
+                });
                 break;
         }
     }
 
-    showDropdown(tooltip: any){
-        if ( this.brokerLoadDrop ) {
-
+    showDropdown(tooltip: any) {
+        if (this.brokerLoadDrop) {
             this.tooltip = tooltip;
             if (tooltip.isOpen()) {
                 //tooltip.close();
@@ -271,11 +266,7 @@ export class TaCommonHeaderComponent implements OnInit {
         }
     }
 
-    dropdownClosed(){
+    dropdownClosed() {
         this.dropOpened = false;
-    }
-
-    setLoadType(mod){
-        console.log('mooood---', mod);
     }
 }

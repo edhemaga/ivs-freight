@@ -1,4 +1,10 @@
 import {
+    FormArray,
+    FormControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import {
     Component,
     Input,
     EventEmitter,
@@ -11,6 +17,7 @@ import {
     Renderer2,
     SimpleChanges,
     ViewEncapsulation,
+    OnInit,
 } from '@angular/core';
 
 // Models
@@ -20,6 +27,8 @@ import {
     CardDetails,
     SendDataCard,
 } from '../model/cardTableData';
+import { CompanyAccountLabelResponse } from 'appcoretruckassist';
+import { tableBodyColorLabel } from '../model/tableBody';
 
 // Services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -28,14 +37,18 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 // Modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 import { ProgresBarComponent } from './progres-bar/progres-bar.component';
-import { TaInputComponent } from '../ta-input/ta-input.component';
+import { TaInputDropdownLabelComponent } from '../ta-input-dropdown-label/ta-input-dropdown-label.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -51,7 +64,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
 
 // Directives
-import { DirectiveCardModule } from './directives/card-directive.module';
+import { TextToggleDirective } from './directives/show-hide-pass.directive';
 
 @Component({
     selector: 'app-truckassist-cards',
@@ -66,12 +79,15 @@ import { DirectiveCardModule } from './directives/card-directive.module';
         AngularSvgIconModule,
         NgbPopoverModule,
         NgbTooltipModule,
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule,
 
         //components
         AppTooltipComponent,
         TaNoteComponent,
         ProgresBarComponent,
-        TaInputComponent,
+        TaInputDropdownLabelComponent,
 
         //pipes
         formatDatePipe,
@@ -79,10 +95,10 @@ import { DirectiveCardModule } from './directives/card-directive.module';
         HidePasswordPipe,
 
         // Directives
-        DirectiveCardModule,
+        TextToggleDirective,
     ],
 })
-export class TruckassistCardsComponent {
+export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -90,6 +106,10 @@ export class TruckassistCardsComponent {
     public itemsContainers!: QueryList<ElementRef>;
 
     public containerWidth: number = 0;
+
+    public dropdownSelectionArray = new FormArray([]);
+
+    public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
@@ -100,9 +120,6 @@ export class TruckassistCardsComponent {
     // Page
     @Input() page: string;
     @Input() selectedTab: string;
-
-    // For Front And back of the cards
-    @Input() deadline: boolean;
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -119,6 +136,7 @@ export class TruckassistCardsComponent {
     public descriptionIsOpened: number;
     public cardData: CardDetails;
     public dropDownActive: number;
+    public selectedContactColor: CompanyAccountLabelResponse;
 
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
@@ -139,7 +157,10 @@ export class TruckassistCardsComponent {
         private tableService: TruckassistTableService
     ) {}
 
-    //---------------------------------------ON CHANGES---------------------------------------
+    ngOnInit(): void {
+        this.viewData.length && this.labelDropdown();
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (
             this.page === ConstantStringTableComponentsEnum.REPAIR &&
@@ -153,7 +174,6 @@ export class TruckassistCardsComponent {
         }
     }
 
-    //---------------------------------------ON AFTER INIT---------------------------------------
     ngAfterViewInit(): void {
         this.windowResizeUpdateDescriptionDropdown();
 
@@ -339,6 +359,67 @@ export class TruckassistCardsComponent {
             data: card,
             type: ConstantStringTableComponentsEnum.FINISH_ORDER,
         });
+    }
+
+    public onSaveLabel(
+        data: { data: { name: string; action: string } },
+        index: number
+    ): void {
+        this.selectedContactLabel[index] = {
+            ...this.selectedContactLabel[index],
+            name: data.data.name,
+        };
+
+        this.bodyActions.emit({
+            data: this.selectedContactLabel[index],
+            id: this.viewData[index].id,
+            type:
+                data.data?.action === 'update-label'
+                    ? 'update-label'
+                    : 'label-change',
+        });
+    }
+
+    public onPickExistLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
+        this.selectedContactLabel[index] = event;
+        this.onSaveLabel(
+            {
+                data: {
+                    name: this.selectedContactLabel[index].name,
+                    action: 'update-label',
+                },
+            },
+            index
+        );
+    }
+
+    public onSelectColorLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
+        this.selectedContactColor = event;
+
+        this.selectedContactLabel[index] = {
+            ...this.selectedContactLabel[index],
+            colorId: this.selectedContactColor.id,
+            color: this.selectedContactColor.name,
+            code: this.selectedContactColor.code,
+            hoverCode: this.selectedContactColor.hoverCode,
+        };
+    }
+
+    public labelDropdown(): tableBodyColorLabel {
+        for (let card of this.viewData) {
+            this.dropdownSelectionArray.push(new FormControl());
+            if (card.companyContactLabel) {
+                return card.companyContactLabel;
+            } else if (card.companyAccountLabel) {
+                this.selectedContactLabel.push(card.companyAccountLabel);
+            }
+        }
     }
 
     // Setting count number for each card on page

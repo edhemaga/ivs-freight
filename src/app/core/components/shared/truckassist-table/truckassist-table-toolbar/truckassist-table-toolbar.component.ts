@@ -9,26 +9,35 @@ import {
     OnDestroy,
     ChangeDetectorRef,
 } from '@angular/core';
-import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import {
     UntypedFormControl,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+//Type
+import { TableType } from 'appcoretruckassist';
+
+//Services
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { ModalService } from '../../ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+
+//Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
+
+//Components
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { CommonModule } from '@angular/common';
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
+import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 
 @Titles()
 @Component({
@@ -37,6 +46,7 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
     styleUrls: ['./truckassist-table-toolbar.component.scss'],
     standalone: true,
     imports: [
+        AppTooltipComponent,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -192,7 +202,7 @@ export class TruckassistTableToolbarComponent
             .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
 
-                if (this.options.toolbarActions.showMoneyCount) {
+                if (this.options.toolbarActions.showMoneyFilter) {
                     this.activeTableData.moneyCountSelected = this
                         .tableRowsSelected.length
                         ? true

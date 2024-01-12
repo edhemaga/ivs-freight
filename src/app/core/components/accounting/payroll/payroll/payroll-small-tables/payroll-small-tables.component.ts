@@ -3,7 +3,10 @@ import { PayrollCreditBonusComponent } from '../../../../modals/payroll-modals/p
 import { PayrollBonusModalComponent } from '../../../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '../../../../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { small_table_config, small_table_config_resize } from '../state/table-settings/small-tables-config';
+import {
+    small_table_config,
+    small_table_config_resize,
+} from '../state/table-settings/small-tables-config';
 
 @Component({
     selector: 'app-payroll-small-tables',
@@ -18,13 +21,12 @@ export class PayrollSmallTablesComponent implements OnInit {
 
     tableConfig: any = small_table_config;
     tableConfigResizable: any = small_table_config_resize;
-    
+
     constructor(private modalService: ModalService) {}
 
     ngOnInit(): void {}
 
     public openAddNew() {
-        console.log('type: ', this.type);
         const driverId = this.reportMainData.driver.id;
 
         switch (this.type) {

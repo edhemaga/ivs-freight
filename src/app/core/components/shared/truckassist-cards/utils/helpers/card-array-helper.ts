@@ -14,9 +14,6 @@ export class CardArrayHelper {
         if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
             return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
 
-        // Value is obj key
-        const value = obj[ObjKey];
-
         const isValueOfKey = !ObjKey.split(
             ConstantStringTableComponentsEnum.DOT_1
         ).reduce((acc, part) => acc && acc[part], obj);

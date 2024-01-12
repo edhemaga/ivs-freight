@@ -31,7 +31,6 @@ import { ContractComponentEnum } from '../state/enum/contract-string.enum';
 import {
     CompanyAccountLabelResponse,
     CompanyContactResponse,
-    CreateCompanyContactCommand,
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
@@ -176,7 +175,7 @@ export class ContactsTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // Add Contact
-                if (res.animation === ComponentsTableEnum.ADD) {
+                if (res?.animation === ComponentsTableEnum.ADD) {
                     this.viewData.push(this.mapContactData(res.data));
 
                     this.viewData = this.viewData.map(
@@ -202,7 +201,7 @@ export class ContactsTableComponent
                     this.updateDataCount();
                 }
                 // Update Contact
-                else if (res.animation === ComponentsTableEnum.UPDATE) {
+                else if (res?.animation === ComponentsTableEnum.UPDATE) {
                     const updatedContact = this.mapContactData(res.data, true);
 
                     this.viewData = this.viewData.map(
@@ -227,7 +226,7 @@ export class ContactsTableComponent
                     }, 1000);
                 }
                 // Delete Contact
-                else if (res.animation === ComponentsTableEnum.DELETE) {
+                else if (res?.animation === ComponentsTableEnum.DELETE) {
                     let contactIndex: number;
 
                     this.viewData = this.viewData.map(

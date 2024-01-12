@@ -1839,7 +1839,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     if (route.isFocused) {
                         this.focusedRouteIndex = i;
 
-                        if (this.routeHiddenPolylines[route.id] && this.previousFocusedRouteId != route.id) {
+                        if (
+                            this.routeHiddenPolylines[route.id] &&
+                            this.previousFocusedRouteId != route.id
+                        ) {
                             this.zoomToObject(
                                 this.routeHiddenPolylines[route.id]
                             );
@@ -2024,17 +2027,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             } else {
                 this.agmMap.setOptions({ draggableCursor: '' });
             }
-        } else if (
-            event.action == 'open-route-compare' &&
-            this.tableData[this.selectedMapIndex].routes.length > 1
-        ) {
-            console.log('onToolbarAction open-route-compare');
-        } else if (event.action == 'open-keyboard-controls') {
-            console.log('onToolbarAction open-keyboard-controls');
-        } else if (event.action == 'open-route-info') {
-            console.log('onToolbarAction open-route-info');
-        } else if (event.action == 'open-layers') {
-            console.log('onToolbarAction open-layers');
         } else if (event.action == 'toggle-toll-roads') {
             this.toggleTollRoads();
         } else if (event.action == 'toggle-time-zones') {
@@ -3090,7 +3082,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                     this.routePolylines[route.id].setMap(this.agmMap);
                     this.routeHiddenPolylines[route.id].setMap(this.agmMap);
-                    if (zoomToRoute && this.previousFocusedRouteId != route.id) {
+                    if (
+                        zoomToRoute &&
+                        this.previousFocusedRouteId != route.id
+                    ) {
                         this.zoomToObject(this.routeHiddenPolylines[route.id]);
                         this.previousFocusedRouteId = route.id;
                     }

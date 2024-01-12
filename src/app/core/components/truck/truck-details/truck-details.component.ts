@@ -197,7 +197,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckTService.changeActiveStatus(id);
         /*
         let status = this.truckObject.status == 0 ? 'inactive' : 'active';
-        console.log('--status--', status);
         this.truckTService
             .changeTruckStatus(id, status)
             .pipe(takeUntil(this.destroy$))
@@ -209,7 +208,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             });
         */
     }
-    
+
     public optionsDrop(event: any) {
         this.dropService.dropActionHeaderTruck(
             event,

@@ -76,6 +76,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public rows: number = DisplayAccountConfiguration.ROWS;
 
     public sendDataToCardsFront: CardRows[];
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,

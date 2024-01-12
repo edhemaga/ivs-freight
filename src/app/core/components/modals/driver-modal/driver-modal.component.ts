@@ -1930,7 +1930,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log('driver res: ', res);
                     this.driverForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
