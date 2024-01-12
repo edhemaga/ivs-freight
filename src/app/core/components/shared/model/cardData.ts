@@ -75,6 +75,7 @@ export interface TableOptionsInterface {
         showStateFilter?: boolean;
         showBrokerFilterClosed?: boolean;
         hideSearch?: boolean;
+        showTrailerFilter?: boolean;
         showRepairShop?: boolean;
         viewModeOptions: ToolbarAction[];
         showTimeFilter?: boolean;

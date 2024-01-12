@@ -384,6 +384,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showTrailerFilter: true,
                 viewModeOptions: [
                     {
                         name: ConstantStringTableComponentsEnum.LIST,
