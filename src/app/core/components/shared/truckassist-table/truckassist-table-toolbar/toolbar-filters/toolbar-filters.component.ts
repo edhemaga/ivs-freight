@@ -148,7 +148,7 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (this.activeTableData?.driverArhivedArray)
             this.activeTableData.driverArhivedArray.selectedFilter =
                 data ==
-                    ConstantStringTableComponentsEnum.DRIVER_ARHIVED_ARRAY ??
+                    ConstantStringTableComponentsEnum.DRIVER_ARCHIVED_ARRAY ??
                 false;
 
         if (this.activeTableData?.deactivatedUserArray)

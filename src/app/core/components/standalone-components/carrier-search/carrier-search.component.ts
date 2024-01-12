@@ -64,7 +64,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     // Open Search
     toggleSearch() {
-        if (this.chips.length == 3) {
+        if (this.chips.length === 3) {
             this.openSearch = false;
         } else {
             this.openSearch = !this.openSearch;

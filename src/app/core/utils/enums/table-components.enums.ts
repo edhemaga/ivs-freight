@@ -324,7 +324,7 @@ export enum ConstantStringTableComponentsEnum {
     ALL = 'all',
     FTL = 'ftl',
     LTL = 'ltl',
-    ARHIVED_DATA = 'archivedDate',
+    ARCHIVED_DATA = 'archivedDate',
     IS_CLOSED = 'isClosed',
     BAN = 'ban',
     DNU = 'dnu',
@@ -335,7 +335,7 @@ export enum ConstantStringTableComponentsEnum {
     REPAIR_ARRAY = 'repairArray',
     FUEL_ARRAY = 'fuelArray',
     CLOSED_ARRAY = 'closedArray',
-    DRIVER_ARHIVED_ARRAY = 'driverArhivedArray',
+    DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
 
     // Cards

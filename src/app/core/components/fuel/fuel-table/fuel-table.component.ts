@@ -40,6 +40,7 @@ import { FuelQuery } from '../state/fule-state/fuel-state.query';
 
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { SortTypes } from 'src/app/core/model/fuel';
 
 @Component({
     selector: 'app-fuel-table',
@@ -62,10 +63,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
     public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
 
-    public sortTypes: any[] = [];
+    public sortTypes: SortTypes[] = [];
     public sortDirection: string = ConstantStringTableComponentsEnum.ASC;
-    public activeSortType: any = {};
-    public sortBy: any;
+    public activeSortType: SortTypes;
+    public sortBy: string;
     public searchValue: string = '';
     public locationFilterOn: boolean = false;
 
@@ -181,10 +182,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        this.viewData = this.fuelTableData;
-                        this.viewData = this.viewData?.filter((fuelData) =>
+                        this.viewData = this.fuelTableData?.filter((fuelData) =>
                             res.filteredArray.some(
-                                (filterData) => filterData.id == fuelData.id
+                                (filterData) => filterData.id === fuelData.id
                             )
                         );
                     }
@@ -379,7 +379,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 gridNameTitle: ConstantStringTableComponentsEnum.FUEL,
                 fuelArray: checkSpecialFilterArray(
                     this.fuelData,
-                    ConstantStringTableComponentsEnum.ARHIVED_DATA
+                    ConstantStringTableComponentsEnum.ARCHIVED_DATA
                 ),
                 tableConfiguration:
                     ConstantStringTableComponentsEnum.FUEL_TRANSACTION,

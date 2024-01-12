@@ -47,7 +47,10 @@ export class SpecialFilterComponent implements OnInit, OnChanges {
     @Input() filterTitle: string = '';
     @Input() dataArray: any = [];
     @Input() selectedFilter: boolean;
-    @Output() setFilter = new EventEmitter<any>();
+    @Output() setFilter = new EventEmitter<{
+        data?: any;
+        selectedFilter?: boolean;
+    }>();
 
     ngOnInit(): void {
         this.activeFilter = this.selectedFilter;

@@ -41,7 +41,9 @@
         </div>
 
         <!-- Search Input -->
-        <div class="search-input">
+        <div
+            class="search-input d-flex justify-content-between align-items-center"
+        >
             <input
                 *ngIf="openSearch"
                 [disabled]="chips.length >= 3"
@@ -87,32 +89,36 @@
 
     <div class="chips-container" *ngIf="chips.length">
         <ng-container *ngIf="!toolbarSearch; else chipContainer">
-            <div
-                class="chip"
-                *ngFor="let chip of chips; let i = index"
-                [ngClass]="{
-                    'first-chip-animation': i === 0 && chips[0].canDoAnimation,
-                    'second-chip-animation': i === 1 && chips[1].canDoAnimation,
-                    'third-chip-animation': i === 2 && chips[2].canDoAnimation,
-                    'first-chip-style': i === 0,
-                    'second-chip-style': i === 1,
-                    'third-chip-style': i === 2,
-                    'delete-chip-style': chipToDelete === i
-                }"
-            >
-                {{ chip.searchText }}
+            <ng-container *ngFor="let chip of chips; let i = index">
                 <div
-                    class="delete-chip"
-                    (mouseenter)="chipToDelete = i"
-                    (mouseleave)="chipToDelete = -1"
-                    (click)="onDeleteChip(i)"
+                    class="chip"
+                    [ngClass]="{
+                        'first-chip-animation':
+                            i === 0 && chips[0].canDoAnimation,
+                        'second-chip-animation':
+                            i === 1 && chips[1].canDoAnimation,
+                        'third-chip-animation':
+                            i === 2 && chips[2].canDoAnimation,
+                        'first-chip-style': i === 0,
+                        'second-chip-style': i === 1,
+                        'third-chip-style': i === 2,
+                        'delete-chip-style': chipToDelete === i
+                    }"
                 >
-                    <svg-icon
-                        [svgStyle]="{ 'width.px': 6, 'height.px': 6 }"
-                        [src]="'assets/svg/truckassist-table/x.svg'"
-                    ></svg-icon>
+                    {{ chip.searchText }}
+                    <div
+                        class="delete-chip"
+                        (mouseenter)="chipToDelete = i"
+                        (mouseleave)="chipToDelete = -1"
+                        (click)="onDeleteChip(i)"
+                    >
+                        <svg-icon
+                            [svgStyle]="{ 'width.px': 6, 'height.px': 6 }"
+                            [src]="'assets/svg/truckassist-table/x.svg'"
+                        ></svg-icon>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
         </ng-container>
         <ng-template #chipContainer>
             <ng-container *ngFor="let chip of chips; let i = index">

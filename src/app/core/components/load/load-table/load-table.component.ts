@@ -54,9 +54,11 @@ import { tableSearch } from 'src/app/core/utils/methods.globals';
 // Constants
 import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
+//Helpers
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
@@ -154,10 +156,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (!res.selectedFilter) {
-                        this.viewData = this.loadTableData;
-                        this.viewData = this.viewData?.filter((loadData) =>
+                        this.viewData = this.loadTableData?.filter((loadData) =>
                             res.filteredArray.every(
-                                (filterData) => filterData.id == loadData.id
+                                (filterData) => filterData.id === loadData.id
                             )
                         );
                     }

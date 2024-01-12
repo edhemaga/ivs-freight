@@ -706,7 +706,7 @@
                         height: 9.85px !important;
 
                         path {
-                            fill: #6f9ee0 !important;
+                            fill: $ta-blue-7 !important;
                         }
                     }
                 }
@@ -818,7 +818,7 @@
                 transition: all 0.2s linear;
                 &:hover {
                     cursor: pointer;
-                    background-color: #1d1d1d;
+                    background-color: $ta-black-3;
 
                     .user-profile-img {
                         svg {
@@ -1626,7 +1626,7 @@
                     }
 
                     .ngx-slider-selection {
-                        background-color: #255bb9 !important;
+                        background-color: $ta-blue-9 !important;
                     }
 
                     .ngx-slider-bubble {
@@ -2463,14 +2463,14 @@
     font-weight: 500;
     font-size: 11px;
     line-height: 13px;
-    color: #cccccc;
+    color: $ta-light-grey-6;
 
-    background-color: #cccccc20;
+    background-color: $ta-light-grey-9;
     border-radius: 100%;
 
     &.activeCounter {
-        background-color: #6f9ee020;
-        color: #6f9ee0;
+        background-color: $ta-blue-20;
+        color: $ta-blue-7;
     }
 }
 

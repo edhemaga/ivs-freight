@@ -195,11 +195,12 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        this.viewData = this.customerTableData;
-                        this.viewData = this.viewData?.filter((customerData) =>
-                            res.filteredArray.some(
-                                (filterData) => filterData.id == customerData.id
-                            )
+                        this.viewData = this.customerTableData?.filter(
+                            (customerData) =>
+                                res.filteredArray.some(
+                                    (filterData) =>
+                                        filterData.id === customerData.id
+                                )
                         );
                     }
 

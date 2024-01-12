@@ -70,7 +70,7 @@
 
             &::selection {
                 color: $white;
-                background: #ffffff20;
+                background: $white-5;
             }
         }
     }
@@ -151,7 +151,7 @@
 
 // NG CLASS
 .money-count-select-style {
-    background: #e9effd;
+    background: $ta-blue-16;
     color: $ta-blue-18;
     transition: color background 0.25s;
 }

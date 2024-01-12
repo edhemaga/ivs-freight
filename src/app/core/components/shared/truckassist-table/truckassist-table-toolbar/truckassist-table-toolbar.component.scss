@@ -120,7 +120,7 @@
                 transition: color 0.25s;
                 &::selection {
                     color: $white;
-                    background: #ffffff20;
+                    background: $white-5;
                 }
             }
 

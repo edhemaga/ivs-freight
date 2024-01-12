@@ -86,29 +86,21 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.setTableFilter();
 
-        // Reset Columns
         this.resetColumns();
 
-        // Resize
         this.currentColumnWidth();
 
-        // Toaggle Columns
         this.currentToaggleColumn();
 
-        // Search
         this.currentSearchTableData();
 
-        // User Actions
         this.currentActionAnimation();
 
-        // Delete Selected Rows
         this.currentDeleteSelectedRows();
 
-        // Confirmation Subscribe
         this.confirmationData();
     }
 
-    // ---------------------------  NgAfterViewInit ----------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
@@ -155,7 +147,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length) {
-                    let mappedRes = response.map((item) => {
+                    const mappedRes = response.map((item) => {
                         return {
                             id: item.id,
                             data: {
@@ -310,12 +302,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
+                    this.columns = this.columns.map((columnData) => {
+                        if (columnData.field === response.column.field) {
+                            columnData.hidden = response.column.hidden;
                         }
 
-                        return c;
+                        return columnData;
                     });
                 }
             });
@@ -326,15 +318,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
+                    this.columns = this.columns.map((columnData) => {
                         if (
-                            c.title ===
+                            columnData.title ===
                             response.columns[response.event.index].title
                         ) {
-                            c.width = response.event.width;
+                            columnData.width = response.event.width;
                         }
 
-                        return c;
+                        return columnData;
                     });
                 }
             });

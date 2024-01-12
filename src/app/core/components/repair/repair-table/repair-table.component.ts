@@ -160,11 +160,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.sendRepairData();
-        //Table Filter
 
         this.setTableFilter();
-
-        // Reset Columns
 
         this.resetColumns();
 
@@ -204,11 +201,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        this.viewData = this.reapirTableData;
-                        this.viewData = this.viewData?.filter((repairData) =>
-                            res.filteredArray.some(
-                                (filterData) => filterData.id == repairData.id
-                            )
+                        this.viewData = this.reapirTableData?.filter(
+                            (repairData) =>
+                                res.filteredArray.some(
+                                    (filterData) =>
+                                        filterData.id === repairData.id
+                                )
                         );
                     }
 

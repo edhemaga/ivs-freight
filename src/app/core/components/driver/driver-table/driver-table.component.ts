@@ -222,11 +222,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        this.viewData = this.driverTableData;
-                        this.viewData = this.viewData?.filter((driverData) =>
-                            res.filteredArray.some(
-                                (filterData) => filterData.id == driverData.id
-                            )
+                        this.viewData = this.driverTableData?.filter(
+                            (driverData) =>
+                                res.filteredArray.some(
+                                    (filterData) =>
+                                        filterData.id === driverData.id
+                                )
                         );
                     }
 
@@ -575,7 +576,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
                 driverArhivedArray: checkSpecialFilterArray(
                     applicantsData,
-                    ConstantStringTableComponentsEnum.ARHIVED_DATA
+                    ConstantStringTableComponentsEnum.ARCHIVED_DATA
                 ),
                 isActive:
                     this.selectedTab ===

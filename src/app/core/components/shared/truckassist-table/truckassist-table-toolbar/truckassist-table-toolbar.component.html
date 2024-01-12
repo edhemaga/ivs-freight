@@ -27,50 +27,53 @@
         <div class="tab-wrapper d-flex align-items-center">
             <ng-container *ngFor="let data of tableData; let i = index">
                 <ng-container [ngSwitch]="data.type">
-                    <div
-                        *ngSwitchCase="'dropdown'"
-                        class="tab-container d-flex tab-margin"
-                    >
-                        <app-ta-input-dropdown
-                            [formControl]="dropdownSelection"
-                            [template]="data.template"
-                            [inputConfig]="data.inputConfig"
-                            [options]="data.dropdownData"
-                            [activeItem]="data.selectedDispatcher"
-                            (selectedItem)="onToolBarSelectAction($event)"
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div
-                        *ngSwitchDefault
-                        class="tab-container d-flex"
-                        [ngClass]="{
-                            'tab-inactive': selectedTab !== data.field,
-                            'tab-active': selectedTab === data.field
-                        }"
-                        (click)="onSelectTab(data)"
-                    >
-                        <div class="tab d-flex align-items-center">
-                            <ng-container *ngIf="!data.iconLink">
-                                <div
-                                    class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold"
-                                >
-                                    {{ data.title | titlecase }}
-                                </div>
-                            </ng-container>
-                            <svg-icon
-                                *ngIf="data.iconLink"
-                                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                                [src]="data.iconLink"
-                            ></svg-icon>
-                            <ng-container *ngIf="!data.hideDataCount">
-                                <div
-                                    class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold"
-                                >
-                                    {{ data.length }}
-                                </div>
-                            </ng-container>
+                    <ng-container *ngSwitchCase="'dropdown'">
+                        <div class="tab-container d-flex tab-margin">
+                            <app-ta-input-dropdown
+                                [formControl]="dropdownSelection"
+                                [template]="data.template"
+                                [inputConfig]="data.inputConfig"
+                                [options]="data.dropdownData"
+                                [activeItem]="data.selectedDispatcher"
+                                (selectedItem)="onToolBarSelectAction($event)"
+                            ></app-ta-input-dropdown>
                         </div>
-                    </div>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <div
+                            class="tab-container d-flex"
+                            [ngClass]="{
+                                'tab-inactive': selectedTab !== data.field,
+                                'tab-active': selectedTab === data.field
+                            }"
+                            (click)="onSelectTab(data)"
+                        >
+                            <div class="tab d-flex align-items-center">
+                                <ng-container *ngIf="!data.iconLink">
+                                    <div
+                                        class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold"
+                                    >
+                                        {{ data.title | titlecase }}
+                                    </div>
+                                </ng-container>
+                                <svg-icon
+                                    *ngIf="data.iconLink"
+                                    [svgStyle]="{
+                                        'width.px': 20,
+                                        'height.px': 20
+                                    }"
+                                    [src]="data.iconLink"
+                                ></svg-icon>
+                                <ng-container *ngIf="!data.hideDataCount">
+                                    <div
+                                        class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold"
+                                    >
+                                        {{ data.length }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
                 </ng-container>
             </ng-container>
         </div>
@@ -100,16 +103,17 @@
         </ng-container>
 
         <div class="selected-container-wrapper d-flex align-items-center">
-            <div
-                class="selected-container-count ta-font-bold d-flex justify-content-center align-items-center"
-                [ngClass]="{
-                    'selected-container-count-select-style':
-                        tableRowsSelected.length
-                }"
-                *ngIf="tableRowsSelected.length"
-            >
-                {{ tableRowsSelected.length }} Selected
-            </div>
+            <ng-container *ngIf="tableRowsSelected.length">
+                <div
+                    class="selected-container-count ta-font-bold d-flex justify-content-center align-items-center"
+                    [ngClass]="{
+                        'selected-container-count-select-style':
+                            tableRowsSelected.length
+                    }"
+                >
+                    {{ tableRowsSelected.length }} Selected
+                </div>
+            </ng-container>
         </div>
     </div>
 
@@ -173,12 +177,13 @@
             </ng-container>
 
             <!-- BORDER -->
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-                *ngIf="tableRowsSelected.length"
-            >
-                <div class="border"></div>
-            </div>
+            <ng-container *ngIf="tableRowsSelected.length">
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+            </ng-container>
 
             <!-- Options -->
             <ng-container *ngIf="!options.toolbarActions.hideListColumn">
