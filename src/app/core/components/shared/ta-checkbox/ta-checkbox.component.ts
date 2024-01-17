@@ -52,7 +52,7 @@ export class TaCheckboxComponent implements ControlValueAccessor {
     public writeValue(_: any): void {}
 
     public registerOnChange(fn: any): void {
-        /* this.onChange = fn; */
+        this.onChange = fn;
     }
 
     public onChange(_: any): void {}
