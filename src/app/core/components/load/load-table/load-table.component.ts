@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // Compoenents
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
@@ -84,14 +84,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //Data to display from model
     public displayRowsFront: CardRows[] =
         DisplayLoadConfiguration.displayRowsFront;
-
     public displayRowsBack: CardRows[] =
         DisplayLoadConfiguration.displayRowsBack;
-
     public cardTitle: string = DisplayLoadConfiguration.cardTitle;
-
     public page: string = DisplayLoadConfiguration.page;
-
     public rows: number = DisplayLoadConfiguration.rows;
 
     constructor(
@@ -107,7 +103,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         public datePipe: DatePipe
     ) {}
 
-    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
 
@@ -126,7 +121,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.driverActions();
     }
 
-    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
@@ -153,7 +147,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Reset Columns
     private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -164,7 +157,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Toogle Columns
     private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
@@ -181,7 +173,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Search
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
@@ -248,7 +239,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Driver Actions
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -330,6 +320,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public getStatusLabelStyle(status: string | undefined): string {
         const styles = ConstantStringTableComponentsEnum.STYLES;
+
         if (status === ConstantStringTableComponentsEnum.ASSIGNED) {
             return styles + ConstantStringTableComponentsEnum.ASSIGNED_COLOR;
         } else if (status === ConstantStringTableComponentsEnum.LOADED) {
@@ -639,7 +630,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
     }
-    // Load Back Filter Query
+
     private loadBackFilter(
         filter: {
             loadType: number | undefined;
@@ -763,8 +754,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private onTableBodyActions(event: { type: string }): void {
-        console.log(event);
+    private onTableBodyActions(event: { type: string; id?: number }): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
@@ -776,44 +766,55 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       ConstantStringTableComponentsEnum.CLOSED
                     ? 3
                     : 1;
+
             this.backLoadFilterQuery.pageIndex++;
+
             this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
-            this.modalService.openModal(
-                LoadModalComponent,
-                { size: ConstantStringTableComponentsEnum.LOAD },
-                {
-                    ...event,
-                    disableButton: true,
-                }
-            );
+            this.loadServices
+                .getLoadById(event.id)
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap((load) => {
+                        const editData = {
+                            data: {
+                                ...load,
+                            },
+                            type: event.type,
+                        };
+
+                        this.modalService.openModal(
+                            LoadModalComponent,
+                            { size: ConstantStringTableComponentsEnum.LOAD },
+                            {
+                                ...editData,
+                                disableButton: false,
+                            }
+                        );
+                    })
+                )
+                .subscribe();
         }
     }
 
-    // Get Tab Table Data For Selected Tab
     private getSelectedTabTableData(): void {
-        if (this.tableData?.length) {
+        if (this.tableData?.length)
             this.activeTableData = this.tableData.find(
                 (table) => table.field === this.selectedTab
             );
-        }
     }
 
-    // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
             type: ConstantStringTableComponentsEnum.SHOW_MORE,
         });
     }
 
-    // ---------------------------- ngOnDestroy ------------------------------
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
     }
 }

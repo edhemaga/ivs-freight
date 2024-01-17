@@ -75,7 +75,6 @@ export class TaCustomCardComponent {
     @Input() controlName: UntypedFormControl;
 
     @Input() tooltipName: string = '';
-    noActive: string;
     @Input() textBottomPossiton: string;
     @Input() stayOpen: boolean = false;
     @Input() disabledCard: boolean = false;
@@ -87,22 +86,23 @@ export class TaCustomCardComponent {
     @Input() has24Hours: boolean = false;
     @Input() is24Hours: boolean = false;
     @Input() disableAnimation: boolean = false; // forward true for disable
+    @Input() set isCardOpen(value: boolean) {
+        this.noActive = value ? 'active' : 'innactive';
+        this._isCardOpen = value;
+    }
+
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
     @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
         false
     );
+
     public zoneTriger: boolean = false;
     public isHeaderHover: boolean = false;
+    public noActive: string;
+    public _isCardOpen: string | boolean = 'null';
 
     constructor(private uploadFileService: TaUploadFileService) {}
-
-    _isCardOpen: any = 'null';
-
-    @Input() set isCardOpen(value: boolean) {
-        this.noActive = value ? 'active' : 'innactive';
-        this._isCardOpen = value;
-    }
 
     public isCardOpenEvent(event: any) {
         if (!this.disabledCard) {

@@ -246,7 +246,11 @@
                     <!-- Convert to Template -->
 
                     <ng-container
-                        *ngIf="loadModalTemplate && !isConvertedToTemplate"
+                        *ngIf="
+                            loadModalTemplate &&
+                            !isConvertedToTemplate &&
+                            !editData
+                        "
                     >
                         <button
                             (click)="onAction('convert-to-template')"

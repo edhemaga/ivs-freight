@@ -30,6 +30,8 @@
         class="form-container form-container-without-mb"
     >
         <div class="m-tab">
+            <!-- FTL - LTL, Dispatcher, Company -->
+
             <div
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{ 'template-row': isConvertedToTemplate }"
@@ -406,6 +408,8 @@
                             [label]="'Lifgate'"
                         ></app-ta-checkbox>
                     </div>
+
+                    <button (click)="asd()">ASD</button>
                 </div>
             </div>
 
@@ -414,7 +418,10 @@
             <div class="load-modal-row">
                 <app-ta-input-note
                     formControlName="driverMessage"
-                    [isVisibleNote]="false"
+                    [isVisibleNote]="
+                        loadForm.get('driverMessage').value &&
+                        loadForm.get('driverMessage').value !== 'null'
+                    "
                     [note]="
                         loadForm.get('driverMessage').value &&
                         loadForm.get('driverMessage').value !== 'null'
@@ -658,7 +665,9 @@
                                     placeholderIcon: 'time',
                                     isDropdown: true,
                                     isRequired: true,
-                                    isDisabled: selectedStopTimePickup === 6,
+                                    isDisabled:
+                                        selectedStopTimePickup === 6 ||
+                                        selectedStopTimePickup === 2,
                                     customClass: 'datetimeclass'
                                 }"
                                 (blurInput)="
@@ -1310,7 +1319,8 @@
                                     name: 'timepicker',
                                     type: 'text',
                                     label:
-                                        selectedStopTimeDelivery === 8
+                                        selectedStopTimeDelivery === 8 ||
+                                        selectedStopTimeDelivery === 2
                                             ? 'At'
                                             : 'From',
                                     placeholderIcon: 'time',
@@ -1686,7 +1696,10 @@
             <div class="load-modal-row">
                 <app-ta-input-note
                     formControlName="note"
-                    [isVisibleNote]="false"
+                    [isVisibleNote]="
+                        loadForm.get('note').value &&
+                        loadForm.get('note').value !== 'null'
+                    "
                     [note]="
                         loadForm.get('note').value &&
                         loadForm.get('note').value !== 'null'

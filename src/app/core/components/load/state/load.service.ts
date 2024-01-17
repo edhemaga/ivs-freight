@@ -108,7 +108,7 @@ export class LoadTService {
         );
     }
 
-    public deleteLoadById(id: number): Observable<any> {
+    public deleteLoadById(id: number): Observable<void> {
         return this.loadService.apiLoadIdDelete(id);
     }
 
