@@ -280,7 +280,7 @@
             &:hover {
                 svg {
                     path {
-                        fill: $ta-red-13;
+                        fill: $ta-red-14;
                     }
                 }
             }
@@ -421,7 +421,7 @@
 
         &.invalid {
             .load-stop-header-bar {
-                background: $ta-red-13 !important;
+                background: $ta-red-14 !important;
 
                 .load-stop-header-remove-btn {
                     svg {
