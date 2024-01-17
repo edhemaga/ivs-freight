@@ -31,7 +31,6 @@ export class SignalRService {
                 .start()
                 .then(() => {
                     resolve('success');
-                    console.log(this.hubConnection);
                 })
                 .catch((err) =>
                     console.log('Error while starting connection: ' + err)
@@ -47,7 +46,6 @@ export class SignalRService {
     public broadcastDbStatusData = (data?) => {
         const newData = JSON.parse(JSON.stringify(data));
         newData.map((item) => {
-            console.log(item);
             if (item.hosJson) {
                 item.hosJson = JSON.stringify(item.hosJson);
             }
@@ -76,7 +74,6 @@ export class SignalRService {
                     console.log('SUccess');
                 })
                 .catch((err) => {
-                    console.log('ERRORR');
                     console.log(err);
                 });
         }
@@ -84,10 +81,6 @@ export class SignalRService {
 
     public addBroadcastDbStatusDataListener = () => {
         this.hubConnection.on('dbstatusdata', (data) => {
-            console.log(
-                'receive data < dbstatusdata < addBroadcastDbStatusDataListener ',
-                data
-            );
             // data.map(item => {
             //     item.statusId = item.status;
             //     return item;
@@ -103,10 +96,6 @@ export class SignalRService {
         this.hubConnection
             .invoke('dbtabledata', this.data)
             .catch((err) => console.error(err));
-        console.log(
-            'send data > broadcastDbTableData > dbtabledata',
-            this.data
-        );
     };
 
     public addBroadcastDBTableDataListener = () => {
@@ -116,10 +105,6 @@ export class SignalRService {
             //     return item;
             //   });
             // this.data = data;
-            console.log(
-                'receive data < dbtabledata < addBroadcastDBTableDataListener ',
-                data
-            );
         });
     };
 
@@ -128,10 +113,6 @@ export class SignalRService {
         this.hubConnection
             .invoke('dbtableswitchrow', this.data)
             .catch((err) => console.error(err));
-        console.log(
-            'send data > broadcastDbTableSwitchRow > dbtableswitchrow',
-            this.data
-        );
     };
 
     public addBroadcastDBTableSwitchRowListener = () => {
@@ -141,10 +122,6 @@ export class SignalRService {
             //     return item;
             //   });
             // this.data = data;
-            console.log(
-                'receive data < dbtableswitchrow < addBroadcastDBTableSwitchRowDataListener ',
-                data
-            );
         });
     };
 
@@ -160,17 +137,12 @@ export class SignalRService {
         this.hubConnection
             .invoke('gpslastdata', this.gps)
             .catch((err) => console.error(err));
-        console.log('send data > broadcastGpsLastData > gpslastdata', this.gps);
     };
 
     public addBroadcastGpsLastDataListener = () => {
         this.hubConnection.on('gpslastdata', (gps) => {
             this.gps = gps;
             /* this.gpsData.next(gps); */
-            console.log(
-                'receive data < gpslastdata < addBroadcastGpsLastDataListener ',
-                gps
-            );
         });
     };
 }

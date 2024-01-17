@@ -7,7 +7,6 @@ import {
     EventEmitter,
     ChangeDetectorRef,
     ViewEncapsulation,
-    OnChanges,
     SimpleChanges,
 } from '@angular/core';
 import { FormsModule, UntypedFormGroup } from '@angular/forms';
@@ -60,7 +59,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
         MapMarkerDropdownComponent,
     ],
 })
-export class MapsComponent implements OnInit, OnDestroy, OnChanges {
+export class MapsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     viewData = [];
     @Input() set _viewData(value) {
@@ -68,7 +67,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         // var newData = value;
         // newData.map((data) => {
         //     if (data.actionAnimation == 'update') {
-        //         console.log('newData update', data);
         //         let markerIndex = this.viewData.findIndex(
         //             (item) => item.id === data.id
         //         );
@@ -195,12 +193,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         if (this.darkMode) {
             this.styles = AppConst.GOOGLE_MAP_DARK_STYLES;
-        }
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.routes) {
-            //console.log('ngOnChanges changes', changes);
         }
     }
 

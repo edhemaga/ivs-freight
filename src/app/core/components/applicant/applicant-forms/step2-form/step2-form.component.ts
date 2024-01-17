@@ -15,7 +15,12 @@ import {
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormArray } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+    UntypedFormArray,
+} from '@angular/forms';
 
 import {
     Subscription,
@@ -337,8 +342,6 @@ export class Step2FormComponent
                 changes.markFormInvalid?.previousValue !==
                 changes.markFormInvalid?.currentValue
             ) {
-                console.log('USLO');
-
                 this.inputService.markInvalid(this.workExperienceForm);
 
                 this.markInvalidEmitter.emit(false);
@@ -389,7 +392,9 @@ export class Step2FormComponent
     }
 
     public get classesOfEquipment(): UntypedFormArray {
-        return this.workExperienceForm?.get('classesOfEquipment') as UntypedFormArray;
+        return this.workExperienceForm?.get(
+            'classesOfEquipment'
+        ) as UntypedFormArray;
     }
 
     public trackByIdentity = (_: number, item: any): any => item;
@@ -517,7 +522,6 @@ export class Step2FormComponent
     }
 
     public patchClassOfEquipment(equipmentValue: any): void {
-        console.log('equipmentValue', equipmentValue);
         if (equipmentValue.length) {
             this.classesOfEquipment.clear();
 
@@ -1359,9 +1363,6 @@ export class Step2FormComponent
                 newFormValues.classesOfEquipment = JSON.stringify(
                     updatedClassesOfEquipment
                 );
-
-                console.log('prev', previousFormValues);
-                console.log('new', newFormValues);
 
                 if (isFormValueEqual(previousFormValues, newFormValues)) {
                     this.isWorkExperienceEdited = false;

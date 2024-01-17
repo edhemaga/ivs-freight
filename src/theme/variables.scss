@@ -11,6 +11,10 @@ $dispatch-status-colors: '919191', '008496', '6C6C6C', 'F276EF', 'FF9800',
 // Color variables
 $white: #ffffff;
 $white-2: #ffffff66;
+$white-3: #ffffff70;
+$white-4: #ffffffb2;
+$white-5: #ffffff20;
+
 $black: #000000;
 $primary: #536bc2;
 $primary-light: #7690be;
@@ -102,6 +106,14 @@ $tb-border: #cfcfcf;
 $th-start-date: #b93636;
 
 $trash-icon-color: #ff5d5d;
+$special-filter-green: #007a6e;
+$special-filter-green-1: #26a69020;
+
+$special-filter-purple: #9e47ec;
+$special-filter-purple-1: #7919d0;
+$special-filter-purple-2: #ab47bc;
+$special-filter-purple-3: #ab47bc20;
+$special-filter-orange: #ffa726;
 
 // Applicant
 $confirm: #24c1a1;
@@ -112,6 +124,8 @@ $ta-light-grey-4: #f3f3f3;
 $ta-light-grey-5: #f7f7f7;
 $ta-light-grey-6: #cccccc;
 $ta-light-grey-7: #fbfbfb;
+$ta-light-grey-8: #cccccc40;
+$ta-light-grey-9: #cccccc20;
 $ta-blue: #536bc2;
 $ta-blue-2: #3551b7;
 $ta-blue-3: #97a8dc;
@@ -124,7 +138,10 @@ $ta-blue-9: #255bb9;
 $ta-blue-10: #6f9ee033;
 $ta-blue-11: #6f9ee066;
 $ta-blue-12: #3074d366;
+$ta-blue-13: #3b73ed;
+$ta-blue-20: #6f9ee020;
 
+// $ta-blue-14: #0B49D1;
 $dark-blue-07: #5673aa70;
 $ta-red: #e57373;
 $ta-red-2: #ef5350;
@@ -137,8 +154,10 @@ $ta-red-8: #ef53504d;
 $ta-red-9: #e5737366;
 $ta-red-10: #e66767;
 $ta-red-11: #df3c3c;
-$ta-red-12: #f4bebe;
-$ta-red-13: #c20c0c;
+$ta-red-12: #f4433620;
+$ta-red-13: #ed9292;
+$ta-red-14: #c20c0c;
+$ta-red-15: #f4bebe;
 
 $ta-review-green: #4db6a2;
 $ta-review-green-2: #26a690;
@@ -160,17 +179,32 @@ $ta-blue-15: #0b49d1;
 $ta-blue-16: #e9effd;
 $ta-blue-17: #bed0f9;
 $ta-blue-18: #3b73ed;
+$ta-blue-19: #92b1f5;
 
 $ta-white-2: #ffffff1a;
 $ta-white-3: #ffffffb3;
 $ta-white-4: #ffffff33;
 $ta-white-5: #f7f7f780;
+$ta-white-6: #ffa72620;
 
+$ta-yellow-1: #fab15c;
+$ta-yellow-2: #de7700;
+$ta-yellow-3: #fddeb9;
+$ta-yellow-4: #fbc88b;
+
+$ta-black-3: #1d1d1d;
 // Cards
 $ta-green: #56b4ac;
 $ta-green-1: #50ac25;
 $ta-green-2: #259f94;
+$ta-green-3: #b6dfdb;
+$ta-green-4: #86c9c3;
 
+$ta-loaded: #259f94;
+$ta-assigned: #50ac25;
+$ta-red: #e66767;
+$ta-deadline-red: #df3c3c;
+$ta-deadline-yellow: #f89b2e;
 $ta-orange-1: #f89b2e;
 $ta-orange-2: #f77d3b;
 

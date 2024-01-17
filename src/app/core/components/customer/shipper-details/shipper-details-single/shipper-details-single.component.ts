@@ -1,7 +1,6 @@
 import {
     Component,
     Input,
-    OnInit,
     ViewEncapsulation,
     OnChanges,
     SimpleChanges,
@@ -19,33 +18,26 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
     styleUrls: ['./shipper-details-single.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
+export class ShipperDetailsSingleComponent implements OnChanges {
     @Input() shipper: any = null;
     public shipperContacts: any;
     public shipperLikes: number;
     public shipperDislike: number;
     public reviewsRepair: any = [];
     private destroy$ = new Subject<void>();
-    constructor(private reviewRatingService: ReviewsRatingService,) {}
+    constructor(private reviewRatingService: ReviewsRatingService) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.shipper = changes.shipper.currentValue;
 
             this.shipperContacts =
                 changes.shipper.currentValue[0].data.shipperContacts;
-            this.shipperLikes =
-                changes.shipper.currentValue[0].data.upCount;
+            this.shipperLikes = changes.shipper.currentValue[0].data.upCount;
             this.shipperDislike =
                 changes.shipper.currentValue[0].data.downCount;
-        
+
             this.getReviews(changes.shipper.currentValue[0].data);
         }
-    }
-    ngOnInit(): void {
-
-
-        console.log('----shipperData?.data?.loadStops?', this.shipper[0].data.loadStops)
-
     }
 
     /**Function return id */
@@ -71,21 +63,21 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
     public changeReviewsEvent(reviews: ReviewCommentModal) {
         switch (reviews.action) {
             case 'delete': {
-              this.deleteReview(reviews);
-              break;
+                this.deleteReview(reviews);
+                break;
             }
             case 'add': {
-              //this.addReview(reviews);
-              break;
+                //this.addReview(reviews);
+                break;
             }
             case 'update': {
-              this.updateReview(reviews);
-              break;
+                this.updateReview(reviews);
+                break;
             }
             default: {
-             break;
-             }
-         }
+                break;
+            }
+        }
     }
 
     private updateReview(reviews: ReviewCommentModal) {

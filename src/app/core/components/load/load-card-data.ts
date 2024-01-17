@@ -4,7 +4,44 @@ export class DisplayLoadConfiguration {
     static rows: number = 4;
 
     static page: string = 'Load';
-    static cardTitle: string = 'loadInvoice.invoice';
+
+    static displayRowsFrontTemplate: CardRows[] = [
+        {
+            title: 'Comodity',
+            endpoint: 'generalCommodity.name',
+        },
+        {
+            title: 'Broker',
+            endpoint: 'broker.count',
+        },
+        {
+            title: 'Contact Name',
+            endpoint: 'brokerContact.contactName',
+        },
+        {
+            title: 'Contact Phone',
+            endpoint: 'brokerContact.phone',
+        },
+    ];
+
+    static displayRowsBackTemplate: CardRows[] = [
+        {
+            title: 'Dispatcher',
+            endpoint: 'dispatcher.fullName',
+        },
+        {
+            title: 'Broker',
+            endpoint: 'broker.businessName',
+        },
+        {
+            title: 'Ref. Number',
+            endpoint: 'referenceNumber',
+        },
+        {
+            title: 'Total Miles',
+            endpoint: 'totalMiles',
+        },
+    ];
 
     static displayRowsFront: CardRows[] = [
         {

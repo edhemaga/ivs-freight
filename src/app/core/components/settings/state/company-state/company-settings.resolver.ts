@@ -20,16 +20,13 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
                 return of('error');
             }),
             tap((companyResponse: CompanyResponse) => {
-
                 localStorage.setItem(
                     'companiesCount',
                     JSON.stringify({
                         numberOfCompany: companyResponse.divisions.length,
                     })
                 );
-                
-                console.log("WHAT IS COMPANY RESPONSE");
-                console.log(companyResponse);
+
                 this.companyStore.set([companyResponse]);
             })
         );

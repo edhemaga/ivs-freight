@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import {
     ActivatedRouteSnapshot,
@@ -24,7 +23,7 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
         private trailerDetailListStore: TrailerDetailsListStore,
         private router: Router
     ) {}
-    
+
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
@@ -32,49 +31,37 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
         const trailer_id = route.paramMap.get('id');
         let trid = parseInt(trailer_id);
 
+        const trailerData$ = this.trailerService.getTrailerById(trid);
 
-        const trailerData$ = this.trailerService.getTrailerById(
-            trid,
-        );
+        const trailerRegistration$ =
+            this.trailerService.getTrailerRegistrationsById(trid);
 
-        const trailerRegistration$ = this.trailerService.getTrailerRegistrationsById(
-            trid,
-        );
+        const trailerInspection$ =
+            this.trailerService.getTrailerInspectionsById(trid);
 
-        const trailerInspection$ = this.trailerService.getTrailerInspectionsById(
-            trid,
-        );
-
-        const trailerTitles$ = this.trailerService.getTrailerTitlesById(
-            trid,
-        );
-        
+        const trailerTitles$ = this.trailerService.getTrailerTitlesById(trid);
 
         return forkJoin({
-                trailerData: trailerData$,
-                trailerRegistrations: trailerRegistration$,
-                trailerInspection: trailerInspection$,
-                trailerTitles: trailerTitles$,
-            }).pipe(
-                tap((data) => {
-                    //console.log('---data--', data);
-                    let trailerData = data.trailerData;
-                    trailerData.registrations = data.trailerRegistrations;
-                    trailerData.inspections = data.trailerInspection;
-                    trailerData.titles = data.trailerTitles;
-                    this.trailerDetailListStore.add(trailerData);
-                    this.trailerDetailStore.set([trailerData]);
-                    
-                })
-            );        
+            trailerData: trailerData$,
+            trailerRegistrations: trailerRegistration$,
+            trailerInspection: trailerInspection$,
+            trailerTitles: trailerTitles$,
+        }).pipe(
+            tap((data) => {
+                let trailerData = data.trailerData;
+                trailerData.registrations = data.trailerRegistrations;
+                trailerData.inspections = data.trailerInspection;
+                trailerData.titles = data.trailerTitles;
+                this.trailerDetailListStore.add(trailerData);
+                this.trailerDetailStore.set([trailerData]);
+            })
+        );
 
         /*
 
         if (this.trailerDetailListQuery.hasEntity(trid)) {
-            console.log("-iffff--")
             return this.trailerDetailListQuery.selectEntity(trid).pipe(
                 tap((trailerResponse: any) => {
-                    console.log('trailerResponse---', trailerResponse);
                     this.trailerDetailListStore.add(trailerResponse);
                     this.trailerDetailStore.set([trailerResponse]);
                 }),
@@ -85,11 +72,9 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
             return this.trailerService.getTrailerById(trid).pipe(
                 catchError((error) => {
                     this.router.navigate(['/trailer']);
-                    console.log('--here-----')
                     return of('No trailer data for...' + trailer_id);
                 }),
                 tap((trailerReponse: any) => {
-                    console.log('--here-----')
                     this.trailerDetailListStore.add(trailerReponse);
                     this.trailerDetailStore.set([trailerReponse]);
                 })

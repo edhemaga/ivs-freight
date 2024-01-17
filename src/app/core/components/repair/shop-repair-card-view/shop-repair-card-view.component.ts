@@ -357,7 +357,6 @@ export class ShopRepairCardViewComponent
             .getRepairShopChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                console.log(item, 'item');
                 this.barChartConfig.dataLabels = [];
                 this.barChartConfig.chartValues = [item.repair, item.cost];
                 this.barChartLegend[0].value = item.repair;

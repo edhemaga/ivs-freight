@@ -48,19 +48,15 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         private brokerMinimalStore: BrokerMinimalListStore,
         private bdlq: BrokerDetailsListQuery,
         private DetailsDataService: DetailsDataService,
-        private BrokerItemStore: BrokerDetailsStore,
+        private BrokerItemStore: BrokerDetailsStore
     ) {
-
-        let storeData$ = this.BrokerItemStore._select(state => state);
-        storeData$.subscribe(state => {
-
-            let newBrokerData = {...state.entities[this.newBrokerId]};
-            if ( !this.isEmpty(newBrokerData) ) {  
+        let storeData$ = this.BrokerItemStore._select((state) => state);
+        storeData$.subscribe((state) => {
+            let newBrokerData = { ...state.entities[this.newBrokerId] };
+            if (!this.isEmpty(newBrokerData)) {
                 this.brokerInitConfig(newBrokerData);
             }
-           
-        })
-
+        });
     }
 
     ngOnInit(): void {
@@ -92,10 +88,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'activate':
-                            case 'deactivate': {
-                                this.changeBrokerStatus(res?.id);
-                                break;
-                            }
+                        case 'deactivate': {
+                            this.changeBrokerStatus(res?.id);
+                            break;
+                        }
                         default: {
                             break;
                         }
@@ -115,7 +111,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((id) => {
                 let query;
 
-            
                 if (this.bdlq.hasEntity(id)) {
                     query = this.bdlq.selectEntity(id).pipe(take(1));
                     query.pipe(takeUntil(this.destroy$)).subscribe({
@@ -126,31 +121,26 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                                 `/customer/${res.id}/broker-details`,
                             ]);
                             this.cdRef.detectChanges();
-                        }
+                        },
                     });
-
                 } else {
                     //query = this.brokerService.getBrokerById(id);
                     this.newBrokerId = id;
-                    this.router.navigate([
-                        `/customer/${id}/broker-details`,
-                    ]);
+                    this.router.navigate([`/customer/${id}/broker-details`]);
                     this.cdRef.detectChanges();
                 }
-               
-                
             });
-        
-        let brokerId = this.activated_route.snapshot.params.id;   
+
+        let brokerId = this.activated_route.snapshot.params.id;
         let brokerData = {
             ...this.BrokerItemStore?.getValue()?.entities[brokerId],
-        };    
+        };
         this.brokerInitConfig(brokerData);
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
-      }
+    }
 
     public deleteBrokerById(id: number) {
         let last = this.brokerList.at(-1);
@@ -174,7 +164,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                             }/broker-details`,
                         ]);
                     }
-                }
+                },
             });
     }
 
@@ -186,9 +176,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.initTableOptions(data);
         //calling api every time data is loaded
         //this.getBrokerById(data.id);
-        
-        this.businessOpen = data?.status ? true : false;    
-        
+
+        this.businessOpen = data?.status ? true : false;
+
         let totalCost;
         this.DetailsDataService.setNewData(data);
         if (data?.loads?.length) {
@@ -215,7 +205,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 template: 'load',
                 icon: true,
                 hasArrowDown: true,
-                length: data?.loadStops?.loads?.data?.length ? data?.loadStops?.loads?.data?.length : 0,
+                length: data?.loadStops?.loads?.data?.length
+                    ? data?.loadStops?.loads?.data?.length
+                    : 0,
                 hasCost: true,
                 hide: false,
                 hasArrow: true,
@@ -290,8 +282,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             },
         ];
         this.brokerId = data?.id ? data.id : null;
-
-        console.log('---conf', this.brokerConfig)
     }
     public getBrokerById(id: number) {
         this.brokerService
@@ -330,21 +320,21 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
-                    iconName: 'ic_plus'
+                    iconName: 'ic_plus',
                 },
                 {
                     title: 'Add Contact',
                     name: 'Contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
-                    iconName: 'add-contact'
+                    iconName: 'add-contact',
                 },
                 {
                     title: 'Write Review',
                     name: 'Review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
-                    iconName: 'write-review'
+                    iconName: 'write-review',
                 },
                 {
                     title: data?.ban
@@ -353,7 +343,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     name: data?.ban ? 'remove-from-ban' : 'move-to-ban',
                     svg: 'assets/svg/common/ic_disable-status.svg',
                     show: true,
-                    iconName: 'change-status'
+                    iconName: 'change-status',
                 },
                 {
                     title: data?.dnu ? 'Remove from DNU' : 'Move to DNU List',
@@ -362,7 +352,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     deactivate: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'change-status'
+                    iconName: 'change-status',
                 },
                 {
                     title: 'border',
@@ -372,7 +362,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
@@ -390,7 +380,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'close-business'
+                    iconName: 'close-business',
                 },
                 {
                     title: 'Delete',
@@ -401,7 +391,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
                 /*
         {
@@ -420,12 +410,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .changeBanStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public moveRemoveBrokerToDnu(id: number) {
@@ -433,31 +419,32 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .changeDnuStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public onDropActions(event: any) {
-
-       let eventType = '';
-       if ( event.type == 'Contact' || event.type == 'edit' || event.type == 'Review'){
-            eventType = 'edit'
-       } else {
+        let eventType = '';
+        if (
+            event.type == 'Contact' ||
+            event.type == 'edit' ||
+            event.type == 'Review'
+        ) {
+            eventType = 'edit';
+        } else {
             eventType = event.type;
-       }
+        }
 
         let eventObject = {
             data: undefined,
             id: this.brokerId,
             type: eventType,
             openedTab: event.type,
-        }
+        };
 
-        let brokerData = this.brokerObject ? this.brokerObject : this.brokerConfData;
+        let brokerData = this.brokerObject
+            ? this.brokerObject
+            : this.brokerConfData;
 
         this.dropDownService.dropActionsHeaderShipperBroker(
             eventObject,
@@ -466,8 +453,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(event: any){
-        if ( event == 'Load' ){
+    public onModalAction(event: any) {
+        if (event == 'Load') {
             return false;
         }
         let eventObject = {
@@ -475,7 +462,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             id: this.brokerId,
             type: 'edit',
             openedTab: event,
-        }
+        };
 
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
@@ -491,7 +478,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public changeBrokerStatus(id: any){
+    public changeBrokerStatus(id: any) {
         this.brokerService.changeBrokerStatus(id);
     }
 
