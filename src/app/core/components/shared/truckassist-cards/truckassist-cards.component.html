@@ -341,16 +341,45 @@
                                         <!-- If there is seccond endpoint  -->
 
                                         <ng-container
-                                            *ngIf="rowsFront.secondEndpoint"
+                                            *ngIf="
+                                                rowsFront.secondEndpoint &&
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.secondEndpoint
+                                                ) !== '/'
+                                            "
                                         >
-                                            <span>
+                                            <!-- If phone extension exist -->
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsFront.secondEndpoint ===
+                                                    'brokerContact.extensionPhone'
+                                                "
+                                            >
+                                                <span class="muted">x</span>
+                                                <span class="muted">
+                                                    {{
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsFront.secondEndpoint !==
+                                                    'brokerContact.extensionPhone'
+                                                "
+                                            >
                                                 {{
                                                     getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
                                                 }}
-                                            </span>
+                                            </ng-container>
                                         </ng-container>
 
                                         <!-- If there is third endpoint -->
@@ -899,12 +928,79 @@
                                     {{ rowsBack.title }}
                                 </div>
                                 <div
-                                    class="bottom-item-body d-flex align-items-center"
+                                    class="bottom-item-body d-flex align-items-center gap"
                                 >
                                     <!-- Load Page Body -->
 
                                     <ng-container *ngIf="page === 'Load'">
-                                        <ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                    'loadPickup.count' ||
+                                                rowsBack.endpoint ===
+                                                    'loadDelivery.count'
+                                            "
+                                        >
+                                            <span
+                                                class="d-flex justify-content-center align-items-center mr-4"
+                                                [ngClass]="
+                                                    rowsBack.endpoint ===
+                                                    'loadPickup.count'
+                                                        ? 'load-span pickup ta-font-bold'
+                                                        : '' ||
+                                                          rowsBack.endpoint ===
+                                                              'loadDelivery.count'
+                                                        ? 'load-span delivery ta-font-bold'
+                                                        : ''
+                                                "
+                                            >
+                                                {{
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                }}
+                                            </span>
+
+                                            <!-- If there is seccond endpoint  -->
+
+                                            <ng-container
+                                                *ngIf="rowsBack.secondEndpoint"
+                                            >
+                                                <span>
+                                                    {{
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsBack.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <!-- If there is third endpoint -->
+
+                                            <ng-container
+                                                *ngIf="rowsBack.thirdEndpoint"
+                                            >
+                                                <span class="muted">
+                                                    {{
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsBack.thirdEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint !==
+                                                    'loadPickup.count' &&
+                                                rowsBack.endpoint !==
+                                                    'loadDelivery.count'
+                                            "
+                                        >
                                             {{
                                                 getValueByStringPath(
                                                     card,
@@ -1401,7 +1497,7 @@
 
                         <!-- Atachemnts element -->
 
-                        <ng-container *ngIf="thirdLabelRightSide?.count > 0">
+                        <ng-container *ngIf="card.fileCount">
                             <div
                                 class="right-side-svg d-flex align-items-center justify-content-center flex-column"
                             >
