@@ -122,7 +122,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         public datePipe: DatePipe
     ) {}
 
-    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
 
@@ -143,7 +142,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setTableFilter();
     }
 
-    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
@@ -188,7 +186,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Reset Columns
     private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -199,7 +196,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Toogle Columns
     private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
@@ -216,7 +212,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Search
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
@@ -256,7 +251,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // TODO check why is this commented out
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -271,15 +265,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             },
                         };
                     });
-
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: ConstantStringTableComponentsEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: 'driver',
-                            type: 'multiple delete',
+                            template: ConstantStringTableComponentsEnum.LOAD,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
                             image: true,
                         }
                     );
@@ -287,7 +280,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Driver Actions
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -743,7 +735,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
     }
-    // Load Back Filter Query
+
     private loadBackFilter(
         filter: {
             loadType: number | undefined;
