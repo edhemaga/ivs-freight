@@ -1,0 +1,559 @@
+@import 'src/theme/variables';
+
+.user-icon {
+    position: relative;
+    min-width: 26px;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 4px;
+
+    .main-icon-holder {
+        gap: 4px;
+
+        .filters-selected-value-holder {
+            width: 14px;
+            height: 14px;
+            font-size: 11px;
+            line-height: 14px;
+            color: $muted !important;
+
+            &.conf-icon-holder {
+                svg {
+                    height: 9.27px;
+                    width: 12px;
+                }
+            }
+
+            &.clear-filter-icon {
+                svg-icon {
+                    svg {
+                        width: 14px;
+                        height: 14px;
+                    }
+                }
+            }
+        }
+    }
+
+    svg-icon {
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    &.broker-filter {
+        .main-icon-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-red-13 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-14 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-15 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.broker-filter-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-red-13 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-13 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.archive-filter {
+        .main-icon-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: $muted !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-black !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.archive-filter-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $white-4 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $white-4 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.load-filter {
+        .main-icon-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-blue-13 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-15 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-17 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.load-filter-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-blue-19 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-19 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.repair-filter {
+        .main-icon-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-yellow-1 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-yellow-2 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-yellow-3 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.repair-filter-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-yellow-4 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-yellow-4 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.fuel-filter {
+        .main-icon-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-green !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $special-filter-green !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-green-3 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.fuel-filter-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-green-4 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-green-4 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

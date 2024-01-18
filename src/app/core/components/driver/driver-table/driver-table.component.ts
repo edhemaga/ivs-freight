@@ -79,6 +79,7 @@ import {
     TableDriverColorsConstants,
     TableDropdownDriverComponentConstants,
 } from 'src/app/core/utils/constants/table-components.constants';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-driver-table',
@@ -87,6 +88,7 @@ import {
     providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
+    public driverTableData: any[] = [];
     private destroy$ = new Subject<void>();
     public tableOptions: any = {};
     public tableData: any[] = [];
@@ -149,6 +151,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.sendDriverData();
 
+        this.setTableFilter();
+
         this.confiramtionSubscribe();
 
         this.getSelectedTabTableData();
@@ -208,6 +212,27 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 },
+            });
+    }
+
+    // Reset Columns
+    private setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.driverTableData?.filter(
+                            (driverData) =>
+                                res.filteredArray.some(
+                                    (filterData) =>
+                                        filterData.id === driverData.id
+                                )
+                        );
+                    }
+
+                    if (!res.selectedFilter) this.sendDriverData();
+                }
             });
     }
 
@@ -549,6 +574,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
                 stateName: ConstantStringTableComponentsEnum.APPLICANTS,
                 tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
+                driverArhivedArray: checkSpecialFilterArray(
+                    applicantsData,
+                    ConstantStringTableComponentsEnum.ARCHIVED_DATA
+                ),
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.APPLICANTS,
@@ -658,6 +687,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.driverTableData = this.viewData;
     }
 
     // TODO find model for this data
