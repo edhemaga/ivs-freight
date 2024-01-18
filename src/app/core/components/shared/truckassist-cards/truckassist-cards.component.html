@@ -9,7 +9,7 @@
                 class="card-body d-flex justify-content-between"
                 [ngClass]="{
                     'body-active': isCardFlipped.includes(i),
-                    'body-checked': isCardChecked.includes(i)
+                    'body-checked': card.isSelected
                 }"
             >
                 <!-- Left side of the card -->
@@ -41,6 +41,7 @@
                                     class="table-checkbox"
                                     type="checkbox"
                                     id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
                                     (change)="onCheckboxSelect(i, card)"
                                 />
                                 <label

@@ -639,6 +639,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
+                content: this.getDropdownTrailerContent(),
             },
         };
     }
