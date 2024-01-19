@@ -879,7 +879,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ConfirmationModalComponent,
                 { size: ConstantStringTableComponentsEnum.DELETE },
                 {
-                    type: 'delete',
+                    type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
         } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
