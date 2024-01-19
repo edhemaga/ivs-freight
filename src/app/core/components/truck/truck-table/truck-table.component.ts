@@ -45,9 +45,13 @@ import { DisplayTruckConfiguration } from '../truck-card-data';
 import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
+//Constants
+import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
+
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
+import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 
 @Component({
     selector: 'app-truck-table',
@@ -531,11 +535,31 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    private setTruckTooltipColor(truckName: string): string {
+        if (truckName === TruckName.SEMI_TRUCK) {
+            return TooltipColors.LIGHT_GREEN;
+        } else if (truckName === TruckName.SEMI_SLEEPER) {
+            return TooltipColors.YELLOW;
+        } else if (truckName === TruckName.BOX_TRUCK) {
+            return TooltipColors.RED;
+        } else if (truckName === TruckName.CARGO_VAN) {
+            return TooltipColors.BLUE;
+        } else if (truckName === TruckName.CAR_HAULER) {
+            return TooltipColors.PINK;
+        } else if (truckName === TruckName.TOW_TRUCK) {
+            return TooltipColors.PURPLE;
+        } else if (truckName === TruckName.SPOTTER) {
+            return TooltipColors.BROWN;
+        }
+    }
+
     // TODO any type
     private mapTruckData(data: any): void {
         return {
             ...data,
             truckTypeIcon: data.truckType.logoName,
+            tableTruckName: data.truckType.name,
+            tableTruckColor: this.setTruckTooltipColor(data.truckType.name),
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
