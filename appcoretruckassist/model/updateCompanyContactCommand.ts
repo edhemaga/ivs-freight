@@ -11,6 +11,7 @@
  */
 import { UpdateContactEmailCommand } from './updateContactEmailCommand';
 import { UpdateContactPhoneCommand } from './updateContactPhoneCommand';
+import { CompanyContactUser } from './companyContactUser';
 import { AddressEntity } from './addressEntity';
 
 
@@ -24,5 +25,7 @@ export interface UpdateCompanyContactCommand {
     companyContactLabelId?: number | null;
     contactPhones?: Array<UpdateContactPhoneCommand> | null;
     contactEmails?: Array<UpdateContactEmailCommand> | null;
+    companyContactUsers?: Array<CompanyContactUser> | null;
+    isSharedWithAllDepartments?: boolean;
 }
 

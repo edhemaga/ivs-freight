@@ -4,19 +4,20 @@ import {
     EventEmitter,
     Input,
     Output,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { PayrollStatusesComponent } from '../payroll-statuses/payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -34,14 +35,16 @@ import { ChangeDetectionStrategy } from '@angular/core';
         NgbModule,
 
         // Component
-        AppTooltipComponent,
         TaCheckboxComponent,
         TaCounterComponent,
         PayrollStatusesComponent,
         TaLikeDislikeComponent,
+        TaNoteContainerComponent,
     ],
 })
 export class TaCustomCardComponent {
+    @ViewChild('noteContainer') noteContainer: any;
+
     @Input() animationsDisabled = true;
     @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
     @Input() cardName: string = null;
@@ -57,6 +60,7 @@ export class TaCustomCardComponent {
     @Input() hasDivider: boolean = true;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
+    @Input() hasScrollBodyXAxis: boolean = false;
     @Input() hasBodyData: boolean = true;
     @Input() hasCheckbox: boolean = false;
     @Input() hasPlusHeader: boolean = false;
@@ -65,14 +69,12 @@ export class TaCustomCardComponent {
     @Input() customTextAction: string = null;
     @Input() hasDeleteAction: boolean = false;
     @Input() hasPayrollStatus: boolean = false;
-    @Input() bottomCollapseArrow: boolean = false;
     @Input() customClass: string;
+    @Input() hasFormatTextActionButtons: boolean = false;
 
     @Input() controlName: UntypedFormControl;
 
     @Input() tooltipName: string = '';
-    noActive: string;
-    @Input() isCommentData: boolean = false;
     @Input() textBottomPossiton: string;
     @Input() stayOpen: boolean = false;
     @Input() disabledCard: boolean = false;
@@ -84,22 +86,23 @@ export class TaCustomCardComponent {
     @Input() has24Hours: boolean = false;
     @Input() is24Hours: boolean = false;
     @Input() disableAnimation: boolean = false; // forward true for disable
+    @Input() set isCardOpen(value: boolean) {
+        this.noActive = value ? 'active' : 'innactive';
+        this._isCardOpen = value;
+    }
+
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
     @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
         false
     );
+
     public zoneTriger: boolean = false;
     public isHeaderHover: boolean = false;
+    public noActive: string;
+    public _isCardOpen: string | boolean = 'null';
 
     constructor(private uploadFileService: TaUploadFileService) {}
-
-    _isCardOpen: any = 'null';
-
-    @Input() set isCardOpen(value: boolean) {
-        this.noActive = value ? 'active' : 'innactive';
-        this._isCardOpen = value;
-    }
 
     public isCardOpenEvent(event: any) {
         if (!this.disabledCard) {

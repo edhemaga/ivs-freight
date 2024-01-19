@@ -1,5 +1,7 @@
 <div
-    class="ta-counter {{ customClass }}"
+    class="d-flex align-items-center justify-content-center ta-counter {{
+        customClass
+    }}"
     [class.morePaddingNum]="count > 9"
     [ngStyle]="{
         color: countColor,
@@ -11,7 +13,7 @@
         'margin-left': marginLeft
     }"
 >
-    <p [ngStyle]="{ bottom: countTextBottomPosition }">
+    <p class="m-0 ta-font-bold" [ngStyle]="{ bottom: countTextBottomPosition }">
         {{ count > 0 ? (count | taThousandSeparator) : 0 }}
     </p>
 </div>

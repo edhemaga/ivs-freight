@@ -1,9 +1,19 @@
 <div class="note-container {{ customClass }}">
-    <div *ngIf="isVisibleDivider" class="divider"></div>
+    <ng-container *ngIf="isVisibleDivider">
+        <div class="divider"></div>
+    </ng-container>
+
+    <!-- Header -->
+
     <div class="note-header" [class.pointer]="isVisibleArrow">
-        <div class="note-label" (click)="isVisibleArrow ? openNote() : ''">
-            Note
+        <div
+            class="d-flex align-items-center note-label"
+            [ngStyle]="{ color: _isVisibleNote ? '#424242' : '#6C6C6C' }"
+            (click)="isVisibleArrow ? openNote() : ''"
+        >
+            {{ noteLabel }}
         </div>
+
         <div
             class="note_tools_container"
             (click)="isVisibleArrow && !_isVisibleNote ? openNote() : ''"
@@ -20,6 +30,7 @@
                 (stopBlurRemoveTimeout)="stopBlurRemoveTimeout()"
             ></app-ta-note-container>
         </div>
+
         <div class="note_upper_hold" *ngIf="isVisibleArrow">
             <svg-icon
                 class="note-arrow"
@@ -35,6 +46,9 @@
             ></svg-icon>
         </div>
     </div>
+
+    <!-- Body -->
+
     <div
         class="note-body"
         [ngClass]="noActive"
@@ -47,21 +61,26 @@
         <div
             #main_editor
             id="main_editor"
-            placeholder="Write a note..."
             class="note-textarea"
             [class.details_textarea]="noteType == 'details-card'"
             contenteditable="true"
+            [attr.data-text]="placeholder"
             spellcheck="false"
             (input)="changeValue($event.target.innerHTML)"
-            (focus)="checkFocus($event)"
+            (focus)="checkFocus()"
             (blur)="prepareForTextRange()"
             [innerHTML]="showNote | safeHtml"
         ></div>
-        <div class="spinner" *ngIf="savingNote && noteType == 'details-card'">
-            <app-ta-spinner
-                [size]="'small'"
-                [color]="'blueDark'"
-            ></app-ta-spinner>
-        </div>
+
+        <!-- Spinner -->
+
+        <ng-container *ngIf="savingNote && noteType == 'details-card'">
+            <div class="spinner">
+                <app-ta-spinner
+                    [size]="'small'"
+                    [color]="'blueDark'"
+                ></app-ta-spinner>
+            </div>
+        </ng-container>
     </div>
 </div>

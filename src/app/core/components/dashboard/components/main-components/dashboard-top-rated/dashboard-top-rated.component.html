@@ -1,7 +1,7 @@
 <div
     class="dashboard-top-rated"
     [ngClass]="{
-        'd-flex flex-column justify-content-center': topRatedList.length
+        'd-flex flex-column': topRatedList.length
     }"
 >
     <!-- Header -->
@@ -98,7 +98,7 @@
                     ></app-ta-input-dropdown>
                 </div>
 
-                <div class="dashboard-top-rated-header-border"></div>
+                <div class="dashboard-top-rated-header-dropdown-border"></div>
 
                 <div
                     class="dropdown-right-container"
@@ -294,7 +294,7 @@
                                             class="d-flex align-items-center top-rated-item-name-box"
                                         >
                                             <p
-                                                class="m-0 ta-font-extra-bold"
+                                                class="m-0 ta-font-extra-bold d-inline-block text-truncate"
                                                 [innerHTML]="
                                                     highlightSearchValue(
                                                         topRatedListItem.name,

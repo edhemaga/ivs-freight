@@ -34,7 +34,7 @@ export class LoatItemResolver implements Resolve<LoadResponse[]> {
             );
         } else {
             return this.loadService.getLoadById(id).pipe(
-                catchError((error) => {
+                catchError(() => {
                     this.router.navigate(['/load']);
                     return of('No Load data for...' + id);
                 }),
