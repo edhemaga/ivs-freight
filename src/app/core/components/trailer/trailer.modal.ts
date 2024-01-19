@@ -1,5 +1,6 @@
 import { TrailerResponse } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
+import { DropdownItem } from '../shared/model/cardTableData';
 
 export interface BodyResponseTrailer {
     data?: TrailerResponse;
@@ -113,6 +114,8 @@ export interface MappedTrailer extends TraillerData {
         regularText: string;
         boldText: string;
     };
+    tableTrailerName: string;
+    tableTrailerColor: string;
     tableTrailerTypeClass: string;
     tableMake: string;
     tableModel: string;
@@ -158,5 +161,6 @@ export interface MappedTrailer extends TraillerData {
     fileCount: number | undefined;
     tableDropdownContent: {
         hasContent: boolean;
+        content: DropdownItem[];
     };
 }

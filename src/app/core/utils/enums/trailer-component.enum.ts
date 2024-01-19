@@ -1,0 +1,30 @@
+export enum TrailerName {
+    REEFER = 'Reefer',
+    DRY_VAN = 'Dry Van',
+    DUMPER = 'Dumper',
+    TANKER = 'Tanker',
+    PNEUMATIC_TANKER = 'Pneumatic Tanker',
+    CAR_HAULER = 'Car Hauler',
+    CAR_HAULER_STINGER = 'Car Hauler Stinger',
+    CHASSIS = 'Chassis',
+    LOW_BOY_RGN = 'Low Boy - RGN',
+    STEP_DECK = 'Step Deck',
+    FLAT_BED = 'Flat Bed',
+    SIDE_KIT = 'Side Kit',
+    CONESTOGA = 'Conestoga',
+    CONTAINER = 'Container',
+}
+
+export enum TooltipColors {
+    YELLOW = '#F89B2E',
+    GREEN = '#50AC25',
+    RED = '#DF3C3C',
+    BLUE = '#3B73ED',
+    PURPLE = '#9E47EC',
+    ORANGE = '#FF7043',
+    BROWN = '#865E3A',
+    DARK_BLUE = '#5755DF',
+    LIGHT_GREEN = '#259F94',
+    PINK = '#DF3D85',
+    GOLD = '#CF961D',
+}

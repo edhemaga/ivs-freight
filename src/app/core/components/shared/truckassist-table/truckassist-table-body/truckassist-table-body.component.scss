@@ -61,88 +61,84 @@ table {
                         height: 100%;
                         align-items: center;
 
-                        svg-icon #Group_102994{
+                        svg-icon #Group_102994 {
                             display: none;
-
                         }
                         //nput dropdown label
-                        app-ta-input-dropdown-label{
-
-                            .input-custom-group .input-icon::after{
+                        app-ta-input-dropdown-label {
+                            .input-custom-group .input-icon::after {
                                 content: none;
                             }
 
-                            &:hover{
-
+                            &:hover {
                                 //Input
-                                input{
+                                input {
                                     background-color: $dark-2;
-                                    
-                                    &:active:hover{
+
+                                    &:active:hover {
                                         background-color: $ta-black-3 !important;
                                         color: $white !important;
                                     }
 
-                                    &:focus:hover{
+                                    &:focus:hover {
                                         background-color: $ta-black-3 !important;
                                         color: $white !important;
                                     }
 
-                                    &:hover{
+                                    &:hover {
                                         background-color: $dark-2;
                                     }
                                 }
 
-                                .input-pen-container{
+                                .input-pen-container {
                                     right: 25px;
 
-                                    .input-pen svg{
-                                    
-                                        #Rectangle_88310{
-                                            fill: rgba(145, 145, 145, 0)
+                                    .input-pen svg {
+                                        #Rectangle_88310 {
+                                            fill: rgba(145, 145, 145, 0);
                                         }
-                                    
-                                        #Edit{
-                                            #Path_7775{
-                                                fill: $muted;
-                                            }
-                                    
-                                            #Path_7776{
-                                                fill: $muted;
-                                            }
-                                        }
-                                    } 
-                                } 
 
-                                svg-icon #Group_102994{
-                                    path{
+                                        #Edit {
+                                            #Path_7775 {
+                                                fill: $muted;
+                                            }
+
+                                            #Path_7776 {
+                                                fill: $muted;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                svg-icon #Group_102994 {
+                                    path {
                                         fill: $muted;
                                     }
-                                    display: flex!important;     
-                                    
-                                    &:hover{
-                                        path{
+                                    display: flex !important;
+
+                                    &:hover {
+                                        path {
                                             fill: $muted;
                                         }
-                                    }   
+                                    }
                                 }
                             }
                         }
 
                         //Input
-                        input  {
+                        input {
                             padding-left: 25px;
-                            &:hover{
+                            &:hover {
                                 cursor: pointer;
-                                
-                                svg-icon #Group_102994{
-                                    display: flex!important;        
+
+                                svg-icon #Group_102994 {
+                                    display: flex !important;
                                 }
                             }
                         }
-                                                    
+
                         //Input icon
-                        .input-icon{
+                        .input-icon {
                             left: 0px;
                         }
 
@@ -1002,6 +998,7 @@ table {
                         .truckassist-icon {
                             svg-icon {
                                 display: flex;
+                                cursor: pointer;
                                 svg {
                                     path {
                                         fill: #aaaaaa;
@@ -1606,91 +1603,86 @@ table {
                                 margin-right: 4px;
                                 height: 21px;
                             }
-                           
-                            svg-icon #Group_102994{
-                                display: none;
 
+                            svg-icon #Group_102994 {
+                                display: none;
                             }
 
                             //Input dropdown label
-                            app-ta-input-dropdown-label{
-
-                                .input-custom-group .input-icon::after{
+                            app-ta-input-dropdown-label {
+                                .input-custom-group .input-icon::after {
                                     content: none;
                                 }
 
-                                &:hover{
-
+                                &:hover {
                                     //Input
-                                    input{
+                                    input {
                                         background-color: $dark-2;
 
-                                        &:active:hover{
+                                        &:active:hover {
                                             background-color: $ta-black-3 !important;
                                             color: $white !important;
                                         }
 
-                                        &:focus:hover{
-                                            background-color:  $ta-black-3!important;
+                                        &:focus:hover {
+                                            background-color: $ta-black-3 !important;
                                             color: $white !important;
                                         }
 
-                                        &:hover{
+                                        &:hover {
                                             background-color: $dark-2;
                                         }
                                     }
 
-                                    .input-pen-container{
+                                    .input-pen-container {
                                         right: 25px;
-                                        
-                                        .input-pen svg{
-                                                
-                                            #Rectangle_88310{
-                                                fill: rgba(145, 145, 145, 0)
+
+                                        .input-pen svg {
+                                            #Rectangle_88310 {
+                                                fill: rgba(145, 145, 145, 0);
                                             }
 
-                                            #Edit{
-                                                #Path_7775{
+                                            #Edit {
+                                                #Path_7775 {
                                                     fill: $muted;
                                                 }
-                                                #Path_7776{
+                                                #Path_7776 {
                                                     fill: $muted;
                                                 }
                                             }
-                                        } 
-                                    } 
+                                        }
+                                    }
 
-                                    svg-icon #Group_102994{
-
-                                        path{
+                                    svg-icon #Group_102994 {
+                                        path {
                                             fill: $muted;
                                         }
-                                        
-                                        display: flex!important;   
 
-                                        &:hover{
-                                            path{
+                                        display: flex !important;
+
+                                        &:hover {
+                                            path {
                                                 fill: $muted;
                                             }
-                                        }   
+                                        }
                                     }
                                 }
                             }
 
                             //Input
-                            input  {
+                            input {
                                 padding-left: 25px;
 
-                                &:hover{
+                                &:hover {
                                     cursor: pointer;
-                                    
-                                    svg-icon #Group_102994{
-                                        display: flex!important;        
+
+                                    svg-icon #Group_102994 {
+                                        display: flex !important;
                                     }
                                 }
                             }
 
-                            .input-icon{
+                            .input-icon {
                                 left: 0px;
                             }
                             .lable-name {
@@ -2754,16 +2746,16 @@ table {
             // Hover
             &:hover {
                 .columns-container {
-                    .td-content{
-                            input{
-                                background-color: $ta-light-grey ;
-                            }
+                    .td-content {
+                        input {
+                            background-color: $ta-light-grey;
+                        }
                     }
                     background-color: $ta-light-grey !important;
                     .lable-container {
-                            input{
-                                background-color: $ta-light-grey ;
-                            }
+                        input {
+                            background-color: $ta-light-grey;
+                        }
                     }
                     .table-text,
                     .table-name-link,
@@ -2834,14 +2826,12 @@ table {
         .selected-row {
             .columns-container {
                 background: $ta-light-grey;
-                    input  
-                    {
-                        background-color: $ta-light-grey !important;
-                        color: $bw6-2 !important;
-                    }
+                input {
+                    background-color: $ta-light-grey !important;
+                    color: $bw6-2 !important;
+                }
                 .lable-container {
-                    input  
-                    {
+                    input {
                         background-color: $ta-light-grey !important;
                         color: $bw6-2 !important;
                     }
@@ -2857,7 +2847,7 @@ table {
                             background: #6c6c6c20 !important;
                         }
                     }
-                  
+
                     .contact-avatar {
                         background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
                     }
@@ -3135,14 +3125,14 @@ table {
 .update-animation {
     background: orange !important;
     transition: 0.4s;
-    .columns-container{
+    .columns-container {
         .lable-container {
-            app-ta-input-dropdown-label{
-                input{
+            app-ta-input-dropdown-label {
+                input {
                     background: orange !important;
                     transition: 0.4s;
                 }
-            } 
+            }
         }
     }
 }
