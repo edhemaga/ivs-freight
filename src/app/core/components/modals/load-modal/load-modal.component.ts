@@ -80,7 +80,6 @@ import { ConstantStringEnum } from './state/enums/load-modal.enum';
 // models
 import {
     CreateCommentCommand,
-    RoutingService,
     SignInResponse,
     UpdateCommentCommand,
     LoadModalResponse,
@@ -97,6 +96,9 @@ import { StopRoutes } from './state/models/load-modal-model/stop-routes.model';
 import { LoadModalTab } from './state/models/load-modal-model/load-modal-tab';
 import { Load } from './state/models/load-modal-model/load.model';
 import { Tags } from './state/models/load-modal-model/tags.model';
+import { CommentCompanyUser } from './state/models/load-modal-model/comment-company-user';
+import { CommentData } from 'src/app/core/model/comment-data';
+
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -314,7 +316,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private inputService: TaInputService,
         private formService: FormService,
         private commentsService: CommentsService,
-        private routingService: RoutingService,
         private loadService: LoadTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
@@ -373,7 +374,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             doorType: [null],
             suspension: [null],
             year: [null],
-            liftgate: [true],
+            liftgate: [false],
 
             // diver Message
             driverMessage: [null],
@@ -470,9 +471,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case 'ftl-ltl':
                 this.selectedTab = event.id;
 
+                this.tabs = this.tabs.map((tab) => {
+                    return {
+                        ...tab,
+                        checked: tab.name === event.name,
+                    };
+                });
+
                 break;
             case 'stop-tab':
-                this.selectExtraStopType[indx] = event.id;
+                this.selectExtraStopType[indx] = this.editData
+                    ? event.id === 1
+                        ? 3000 + indx
+                        : 4000 + indx
+                    : event.id;
+
+                this.typeOfExtraStops[indx] = this.typeOfExtraStops[indx].map(
+                    (typeOfExtraStop) => {
+                        return {
+                            ...typeOfExtraStop,
+                            checked: typeOfExtraStop.name === event.name,
+                        };
+                    }
+                );
 
                 this.loadExtraStops()
                     .at(indx)
@@ -517,6 +538,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case 'stop-time-pickup':
                 this.selectedStopTimePickup = event.id;
 
+                this.stopTimeTabsPickup = this.stopTimeTabsPickup.map((tab) => {
+                    return {
+                        ...tab,
+                        checked:
+                            tab.name.toLowerCase() === event.name.toLowerCase(),
+                    };
+                });
+
                 if (
                     this.selectedStopTimePickup === 6 ||
                     this.selectedStopTimePickup === 2
@@ -534,6 +563,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case 'stop-time-delivery':
                 this.selectedStopTimeDelivery = event.id;
+
+                this.stopTimeTabsDelivery = this.stopTimeTabsDelivery.map(
+                    (tab) => {
+                        return {
+                            ...tab,
+                            checked:
+                                tab.name.toLowerCase() ===
+                                event.name.toLowerCase(),
+                        };
+                    }
+                );
 
                 if (
                     this.selectedStopTimeDelivery === 8 ||
@@ -553,8 +593,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case 'extra-stops-time':
                 this.selectedExtraStopTime[indx] = event?.id ? event.id : event;
 
+                this.stopTimeTabsExtraStops[indx] = this.stopTimeTabsExtraStops[
+                    indx
+                ].map((tab) => {
+                    return {
+                        ...tab,
+                        checked:
+                            tab.name.toLowerCase() === event.name.toLowerCase(),
+                    };
+                });
+
                 if (
-                    this.selectedExtraStopTime[indx].toString().startsWith('9')
+                    this.selectedExtraStopTime[indx]
+                        .toString()
+                        .startsWith('9') ||
+                    this.selectedExtraStopTime[indx] === 2
                 ) {
                     this.inputService.changeValidators(
                         this.loadExtraStops().at(indx).get('timeTo'),
@@ -2248,6 +2301,27 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadExtraStopsDateRange.splice(index, 1);
         this.selectedExtraStopTime.splice(index, 1);
 
+        if (this.loadExtraStops().length) {
+            this.typeOfExtraStops.splice(index, 1);
+            this.stopTimeTabsExtraStops.splice(index, 1);
+        } else {
+            this.typeOfExtraStops[0] = this.typeOfExtraStops[0].map((type) => {
+                return {
+                    ...type,
+                    checked: type.name === 'Pickup',
+                };
+            });
+
+            this.stopTimeTabsExtraStops[0] = this.stopTimeTabsExtraStops[0].map(
+                (tab) => {
+                    return {
+                        ...tab,
+                        checked: tab.name.toLowerCase() === 'work hours',
+                    };
+                }
+            );
+        }
+
         this.drawStopOnMap();
     }
 
@@ -2327,8 +2401,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         if (routes.length > 1) {
-            this.routingService
-                .apiRoutingGet(
+            this.loadService
+                .getRouting(
                     JSON.stringify(
                         routes.map((item) => {
                             return {
@@ -2878,6 +2952,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMinutes: this.totalLegMinutes,
         };
 
+        console.log('newData', newData);
+
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
@@ -2935,7 +3011,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
 
         const editedTruck = this.originLabelsDispatches.find(
-            (dispatches) => dispatches.id === dispatch.id
+            (dispatches) => dispatches.id === dispatch?.id
         );
 
         const editedPickupShipper = {
@@ -2958,7 +3034,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadForm.patchValue({
             referenceNumber: referenceNumber,
             weight: weight,
-            /*  liftgate: loadRequirements?.liftgate, */
+            liftgate: loadRequirements?.liftgate,
             driverMessage: loadRequirements?.driverMessage,
             note: note,
 
@@ -3003,43 +3079,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // documents
         this.documents = files;
 
-        // tabs
-        this.tabs = this.tabs.map((tab) => {
-            return {
-                ...tab,
-                checked: tab.name === type.name,
-            };
-        });
-
-        this.stopTimeTabsPickup = this.stopTimeTabsPickup.map((tab) => {
-            return {
-                ...tab,
-                checked:
-                    tab.name.toLowerCase() ===
-                    pickupStop.timeType.name.toLowerCase(),
-            };
-        });
-
-        this.stopTimeTabsDelivery = this.stopTimeTabsDelivery.map((tab) => {
-            return {
-                ...tab,
-                checked:
-                    tab.name.toLowerCase() ===
-                    deliveryStop.timeType.name.toLowerCase(),
-            };
-        });
-
-        // dropdowns & selected
+        // dropdowns
         this.onSelectDropdown(editedBroker, 'broker');
         this.onSelectDropdown(editedTruck, 'dispatches');
         this.onSelectDropdown(editedPickupShipper, 'shipper-pickup');
-        setTimeout(() => {
-            this.onSelectDropdown(editedDeliveryShipper, 'shipper-delivery');
-        }, 50);
+        this.onSelectDropdown(editedDeliveryShipper, 'shipper-delivery');
 
+        // tabs
+        this.onTabChange(type, 'ftl-ltl');
         this.onTabChange(pickupStop.timeType, 'stop-time-pickup');
         this.onTabChange(deliveryStop.timeType, 'stop-time-delivery');
 
+        // selected
         this.selectedCompany = company;
         this.selectedDispatcher = editedDispatcher;
         this.selectedGeneralCommodity = generalCommodity;
@@ -3095,20 +3146,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         openClose: false,
                     });
 
-                this.typeOfExtraStops[index] = this.typeOfExtraStops[index].map(
-                    (typeOfExtraStop) => {
-                        return {
-                            ...typeOfExtraStop,
-                            checked:
-                                typeOfExtraStop.name ===
-                                extraStop.stopType.name,
-                        };
-                    }
-                );
-
-                this.selectExtraStopType[index] =
-                    extraStop.stopType.id === 1 ? 3000 + index : 4000 + index;
-
                 this.loadExtraStopsDateRange[index] = extraStop.dateTo
                     ? true
                     : false;
@@ -3119,6 +3156,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     index
                 );
 
+                this.onTabChange(extraStop.stopType, 'stop-tab', index);
                 this.onTabChange(extraStop.timeType, 'extra-stops-time', index);
             });
         }
@@ -3134,16 +3172,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         }); 
         */
-    }
-
-    asd() {
-        console.log(this.loadForm);
-
-        this.loadForm.get('liftgate').patchValue(false);
-
-        console.log(this.loadForm);
-
-        this.cdRef.detectChanges();
     }
 
     private loadModalData() {
@@ -3220,6 +3248,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private updateLoad(id: number): void {}
+    // TODO: tip u servisu
 
     private saveLoadTemplate(): void {
         const {
@@ -3464,9 +3493,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createComment(): void {
-        if (this.comments.some((item) => item.isNewReview)) {
-            return;
-        }
+        if (this.comments.some((comment) => comment.isCommenting)) return;
+
+        const newComment: CommentCompanyUser = {
+            companyUser: {
+                name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
+                avatar: this.companyUser.avatar,
+            },
+            commentContent: null,
+            isCommenting: true,
+        };
+
+        this.comments = [...this.comments, newComment];
+
+        /*  if (this.comments.some((item) => item.isNewReview))  return;
+        
 
         this.comments.unshift({
             companyUser: {
@@ -3480,7 +3521,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             isNewReview: true,
-        });
+        }); */
     }
 
     public addComment(comments: ReviewCommentModal): void {
@@ -3532,6 +3573,30 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // ********************** Load Stop Items **********************
+
+    public handleCommentActionEmit(commentData: CommentData): void {
+        switch (commentData.btnType) {
+            case ConstantStringEnum.CANCEL:
+                if (!commentData.isEditCancel)
+                    this.comments.splice(commentData.commentIndex, 1);
+
+                break;
+            case ConstantStringEnum.CONFIRM:
+                this.comments[commentData.commentIndex] = {
+                    ...this.comments[commentData.commentIndex],
+                    commentContent: commentData.commentContent,
+                    isCommenting: false,
+                };
+
+                break;
+            case ConstantStringEnum.DELETE:
+                this.comments.splice(commentData.commentIndex, 1);
+
+                break;
+            default:
+                break;
+        }
+    }
 
     public isCreatedNewStopItemsRow = {
         pickup: false,
@@ -3600,7 +3665,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public handleStopItemsValidStatusEmit(validStatus: boolean) {
+    public handleStopItemsValidStatusEmit(validStatus: boolean): void {
         this.isEachStopItemsRowValid = validStatus;
     }
 

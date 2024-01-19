@@ -10,10 +10,16 @@
         <div class="d-flex align-items-center comment-header-left">
             <img
                 src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
+                [src]="
+                    commentAvatar ??
+                    'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                "
                 alt="User Profile Image"
             />
 
-            <p class="m-0 ta-font-semi-bold">Angelo Trotter</p>
+            <p class="m-0 ta-font-semi-bold">
+                {{ commentData.companyUser.name }}
+            </p>
 
             <ng-container *ngIf="!isCommenting">
                 <ng-container *ngIf="isMe">

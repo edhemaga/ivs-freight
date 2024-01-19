@@ -18,7 +18,10 @@ import {
     CreateLoadTemplateCommand,
     LoadStopItemAutocompleteDescriptionResponse,
     CreateWithUploadsResponse,
+    RoutingService,
+    RoutingResponse,
 } from 'appcoretruckassist';
+import { Load } from '../../modals/load-modal/state/models/load-modal-model/load.model';
 
 @Injectable({
     providedIn: 'root',
@@ -26,7 +29,8 @@ import {
 export class LoadTService {
     constructor(
         private loadService: LoadService,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private routingService: RoutingService
     ) {}
 
     // table operations
@@ -112,8 +116,8 @@ export class LoadTService {
         return this.loadService.apiLoadIdDelete(id);
     }
 
-    public getLoadById(loadId: number): Observable<LoadResponse> {
-        return this.loadService.apiLoadIdGet(loadId);
+    public getLoadById(id: number): Observable<LoadResponse> {
+        return this.loadService.apiLoadIdGet(id);
     }
 
     public autocompleteLoadByDescription(
@@ -126,11 +130,15 @@ export class LoadTService {
 
     // modal operations
 
-    public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
+    public getLoadDropdowns(id: number): Observable<LoadModalResponse> {
         return this.loadService.apiLoadModalGet(id);
     }
 
-    public createLoad(data: any): Observable<CreateResponse> {
+    public getRouting(location: string): Observable<RoutingResponse> {
+        return this.routingService.apiRoutingGet(location);
+    }
+
+    public createLoad(data: Load): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.loadService.apiLoadPost();

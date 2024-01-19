@@ -5,9 +5,11 @@ import {
     ElementRef,
     EventEmitter,
     Input,
+    OnInit,
     Output,
     ViewChild,
 } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -15,11 +17,15 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // moment
 import moment from 'moment';
 
+// services
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
 // enums
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
 // models
-import { SignInResponse } from 'appcoretruckassist';
+import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
+import { CommentData } from 'src/app/core/model/comment-data';
 
 @Component({
     selector: 'app-ta-comment',
@@ -28,48 +34,67 @@ import { SignInResponse } from 'appcoretruckassist';
     standalone: true,
     imports: [CommonModule, AngularSvgIconModule],
 })
-export class TaCommentComponent implements AfterViewInit {
+export class TaCommentComponent implements OnInit, AfterViewInit {
     @ViewChild('commentInput') public commentInput: ElementRef;
 
-    @Input() companyUser: SignInResponse;
+    @Input() commentData: CommentCompanyUser;
+    @Input() commentIndex: number;
+    @Input() isMe?: boolean = false;
 
-    @Output() btnActionEmitter = new EventEmitter<string>();
+    @Output() btnActionEmitter = new EventEmitter<CommentData>();
 
     private placeholder: string =
         ConstantStringCommentEnum.WRITE_COMMENT_PLACEHOLDER;
+    public commentAvatar: SafeResourceUrl;
 
     public isCommenting: boolean = true;
     public isDisabled: boolean = true;
-    public isMe: boolean = false;
     public isEditing: boolean = false;
     public isEdited: boolean = false;
 
     public commentDate: string;
     private commentBeforeEdit: string;
 
-    constructor() {}
+    constructor(private imageBase64Service: ImageBase64Service) {}
+
+    ngOnInit(): void {
+        this.sanitazeAvatar();
+    }
 
     ngAfterViewInit(): void {
         this.setCommentPlaceholder();
     }
 
-    private setCommentPlaceholder(): void {
-        const div = this.commentInput.nativeElement as HTMLDivElement;
+    private sanitazeAvatar(): void {
+        this.commentAvatar = this.commentData.companyUser.avatar
+            ? this.imageBase64Service.sanitizer(
+                  this.commentData.companyUser.avatar
+              )
+            : null;
+    }
 
-        if (!div.textContent.trim()) div.textContent = this.placeholder;
+    private setCommentPlaceholder(): void {
+        const commentInputDiv = this.commentInput
+            .nativeElement as HTMLDivElement;
+
+        if (!commentInputDiv.textContent.trim())
+            commentInputDiv.textContent = this.placeholder;
     }
 
     public handleCommentBlur(): void {
-        const div = this.commentInput.nativeElement as HTMLDivElement;
+        const commentInputDiv = this.commentInput
+            .nativeElement as HTMLDivElement;
 
-        if (!div.textContent.trim()) div.textContent = this.placeholder;
+        if (!commentInputDiv.textContent.trim())
+            commentInputDiv.textContent = this.placeholder;
     }
 
     public handleCommentChange(): void {
-        const div = this.commentInput.nativeElement as HTMLDivElement;
+        const commentInputDiv = this.commentInput
+            .nativeElement as HTMLDivElement;
 
-        if (div.textContent.trim() === this.placeholder)
-            div.textContent =
+        if (commentInputDiv.textContent.trim() === this.placeholder)
+            commentInputDiv.textContent =
                 ConstantStringCommentEnum.EMPTY_STRING_PLACEHOLDER;
 
         this.checkIfCommentIsEmpty();
@@ -104,17 +129,42 @@ export class TaCommentComponent implements AfterViewInit {
                 }
 
                 const dateAndTimeNow = moment().format(
+                    ConstantStringCommentEnum.COMMENT_DATE_TIME_FORMAT
+                );
+                const dateNow = moment().format(
                     ConstantStringCommentEnum.COMMENT_DATE_FORMAT
                 );
+                const timeNow = moment().format(
+                    ConstantStringCommentEnum.COMMENT_TIME_FORMAT
+                );
+                const commentData: CommentData = {
+                    commentDate: dateNow,
+                    commentTime: timeNow,
+                    commentContent: this.commentInput.nativeElement.textContent,
+                    commentIndex: this.commentIndex,
+                    btnType,
+                };
 
                 this.commentDate = dateAndTimeNow;
 
                 this.isCommenting = false;
 
+                this.btnActionEmitter.emit(commentData);
+
                 break;
             case ConstantStringCommentEnum.CANCEL:
             case ConstantStringCommentEnum.DELETE:
-                this.btnActionEmitter.emit(btnType);
+                const emitData: CommentData = {
+                    commentContent: this.commentInput.nativeElement.textContent,
+                    commentIndex: this.commentIndex,
+                    isEditCancel: this.isEditing,
+                    btnType,
+                };
+
+                this.btnActionEmitter.emit(emitData);
+
+                this.isEditing = false;
+                this.isCommenting = false;
 
                 break;
             case ConstantStringCommentEnum.EDIT:
@@ -122,7 +172,6 @@ export class TaCommentComponent implements AfterViewInit {
                     this.commentInput.nativeElement.textContent.trim();
 
                 this.isEditing = true;
-
                 this.isCommenting = true;
 
                 break;

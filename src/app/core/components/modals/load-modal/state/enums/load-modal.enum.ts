@@ -7,4 +7,8 @@ export enum ConstantStringEnum {
 
     DRIVER_MESSAGE = 'driverMessage',
     NOTE = 'note',
+
+    CANCEL = 'Cancel',
+    CONFIRM = 'Confirm',
+    DELETE = 'Delete',
 }

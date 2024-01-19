@@ -59,14 +59,6 @@
                         popoverClass="popover-main"
                         placement="bottom-start"
                         container="body"
-                        ngbTooltip
-                        [mainTooltip]="
-                            popover.isOpen() ? 'Close' : 'Select Template'
-                        "
-                        [tooltipBackground]="
-                            popover.isOpen() ? '#CCCCCC' : '#424242'
-                        "
-                        bottom="top"
                     >
                         <svg-icon
                             class="load-template-switcher-icon"
@@ -408,8 +400,6 @@
                             [label]="'Lifgate'"
                         ></app-ta-checkbox>
                     </div>
-
-                    <button (click)="asd()">ASD</button>
                 </div>
             </div>
 
@@ -447,7 +437,7 @@
                             : null
                     "
                     [isCardOpen]="true"
-                    [hasCounter]="2"
+                    [hasCounter]="loadExtraStops().length + 2"
                     [hasActionSvg]="true"
                     [hasBodyData]="true"
                     [animationMarginParams]="{
@@ -601,10 +591,6 @@
                                     [ngClass]="{
                                         disabled: selectedStopTimePickup === 6
                                     }"
-                                    ngbTooltip
-                                    mainTooltip="Date Range"
-                                    tooltipBackground="#424242"
-                                    bottom="top"
                                     (click)="pickupDateRange = true"
                                 >
                                     <svg-icon
@@ -984,10 +970,6 @@
                                                             ?.toString()
                                                             ?.startsWith('9')
                                                 }"
-                                                ngbTooltip
-                                                mainTooltip="Date Range"
-                                                tooltipBackground="#424242"
-                                                bottom="top"
                                                 (click)="
                                                     loadExtraStopsDateRange[
                                                         indx
@@ -1064,7 +1046,10 @@
                                                 isDisabled:
                                                     selectedExtraStopTime[indx]
                                                         ?.toString()
-                                                        ?.startsWith('9'),
+                                                        ?.startsWith('9') ||
+                                                    selectedExtraStopTime[
+                                                        indx
+                                                    ] === 2,
                                                 customClass: 'datetimeclass'
                                             }"
                                             (blurInput)="
@@ -1278,10 +1263,6 @@
                                     [ngClass]="{
                                         disabled: selectedStopTimeDelivery === 8
                                     }"
-                                    ngbTooltip
-                                    mainTooltip="Date Range"
-                                    tooltipBackground="#424242"
-                                    bottom="top"
                                     (click)="deliveryDateRange = true"
                                 >
                                     <svg-icon
@@ -1319,8 +1300,7 @@
                                     name: 'timepicker',
                                     type: 'text',
                                     label:
-                                        selectedStopTimeDelivery === 8 ||
-                                        selectedStopTimeDelivery === 2
+                                        selectedStopTimeDelivery === 8
                                             ? 'At'
                                             : 'From',
                                     placeholderIcon: 'time',
@@ -1345,7 +1325,9 @@
                                     placeholderIcon: 'time',
                                     isDropdown: true,
                                     isRequired: true,
-                                    isDisabled: selectedStopTimeDelivery === 8,
+                                    isDisabled:
+                                        selectedStopTimeDelivery === 8 ||
+                                        selectedStopTimeDelivery === 2,
                                     customClass: 'datetimeclass'
                                 }"
                                 (blurInput)="
@@ -1649,24 +1631,30 @@
             <div class="load-modal-row">
                 <app-ta-custom-card
                     [cardName]="'Comment'"
-                    [isCardOpen]="comments.length > 0"
+                    [isCardOpen]="comments.length"
                     [hasCounter]="comments.length"
-                    [hasActionSvg]="true"
-                    [hasScrollBody]="comments.length > 4"
-                    [hasBodyData]="comments.length > 0"
+                    [hasActionSvg]="editData"
+                    [hasScrollBody]="comments.length"
+                    [hasBodyData]="true"
                     [animationMarginParams]="{
                         marginTop: '10px',
                         marginBottom: '12px'
                     }"
+                    [disabledCard]="!editData"
                     (onActionEvent)="createComment()"
                 >
                     <ng-container
                         *ngFor="
                             let comment of comments;
+                            let i = index;
                             trackBy: trackByIdentity
                         "
                     >
-                        <app-ta-comment></app-ta-comment>
+                        <app-ta-comment
+                            [commentData]="comment"
+                            [commentIndex]="i"
+                            (btnActionEmitter)="handleCommentActionEmit($event)"
+                        ></app-ta-comment>
                     </ng-container>
                 </app-ta-custom-card>
             </div>
