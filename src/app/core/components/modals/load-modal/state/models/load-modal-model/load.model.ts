@@ -1,18 +1,21 @@
 import {
     LoadBillingAdditionalCommand,
+    LoadStatus,
     LoadStopCommand,
     LoadType,
 } from 'appcoretruckassist';
 import { Tags } from './tags.model';
 
 export interface Load {
-    type: LoadType;
-    loadNumber: string;
-    loadTemplateId: number;
+    id?: number;
+    type?: LoadType;
+    loadNumber?: string;
+    loadTemplateId?: number;
     dispatcherId: number;
-    companyId: number;
+    companyId?: number;
     dispatchId: number;
     dateCreated: string;
+    status?: LoadStatus;
     brokerId: number;
     brokerContactId: number;
     referenceNumber: string;
@@ -33,12 +36,13 @@ export interface Load {
     baseRate: number;
     adjustedRate: number;
     driverRate: number;
-    advancePay: number;
+    advancePay?: number;
     additionalBillingRates: LoadBillingAdditionalCommand[];
     files: Blob[];
     tags: Tags[];
+    filesForDeleteIds?: number[];
     note: string;
-    emptyMiles: number;
+    emptyMiles?: number;
     totalMiles: number;
     totalHours: number;
     totalMinutes: number;

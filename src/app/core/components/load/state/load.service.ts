@@ -144,7 +144,31 @@ export class LoadTService {
         return this.loadService.apiLoadPost();
     }
 
-    public updateLoad(data: any): Observable<CreateWithUploadsResponse> {
+    public updateLoad(data: Load): Observable<CreateWithUploadsResponse> {
+        /*  
+        revisedRate?: number,
+        tonuRate?: number,
+        invoicedDate?: string, 
+        pays?: Array<LoadPaymentPayCommand>, 
+        splitLoadPreviousStopOrder?: number, 
+        splitLoadNextStopOrder?: number,
+        splitLoadSplitDate?: string,
+        splitLoadSplitTime?: string,
+        splitLoadSplitLocationCity?: string,
+        splitLoadSplitLocationState?: string,
+        splitLoadSplitLocationCounty?: string, 
+        splitLoadSplitLocationAddress?: string,
+        splitLoadSplitLocationStreet?: string, 
+        splitLoadSplitLocationStreetNumber?: string,
+        splitLoadSplitLocationCountry?: string, 
+        splitLoadSplitLocationZipCode?: string, 
+        splitLoadSplitLocationStateShortName?: string, 
+        splitLoadSplitLocationAddressUnit?: string,
+        splitLoadNewDispatchId?: number,
+        splitLoadRateFirstLoad?: number, 
+        splitLoadRateSecondLoad?: number,
+        splitLoadFirstLegMiles?: number,
+        splitLoadSecondLegMiles?: number, */
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.loadService.apiLoadPut();
