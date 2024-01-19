@@ -119,7 +119,6 @@ export class TruckassistCardsComponent implements OnInit {
 
     // Page
     @Input() page: string;
-    @Input() selectedTab: string;
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -128,7 +127,6 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() displayRowsBack: CardRows;
 
     public isCardFlipped: Array<number> = [];
-    public isCardChecked: Array<number> = [];
     public tooltip;
     public dropdownActions;
     public dropdownOpenedId: number;
@@ -162,6 +160,7 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        this.resetCheckedCardsOnTabSwitch();
         if (
             this.page === ConstantStringTableComponentsEnum.REPAIR &&
             !changes.firstChange
@@ -178,6 +177,12 @@ export class TruckassistCardsComponent implements OnInit {
         this.windowResizeUpdateDescriptionDropdown();
 
         this.windownResizeUpdateCountNumberInCards();
+    }
+
+    public resetCheckedCardsOnTabSwitch(): void {
+        this.isCardFlipped = [];
+        this.mySelection = [];
+        this.tableService.sendRowsSelected([]);
     }
 
     // On window resize update width of description popup
@@ -238,14 +243,17 @@ export class TruckassistCardsComponent implements OnInit {
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
+        this.viewData[index].isSelected = !this.viewData[index].isSelected;
         const indexSelected = this.isCheckboxCheckedArray.indexOf(index);
-        this.mySelection.push({ id: card.id, tableData: card });
+
         if (indexSelected !== -1) {
+            this.mySelection = this.mySelection.filter(
+                (item) => item.id !== card.id
+            );
             this.isCheckboxCheckedArray.splice(indexSelected, 1);
-            this.isCardChecked = this.isCheckboxCheckedArray;
         } else {
+            this.mySelection.push({ id: card.id, tableData: card });
             this.isCheckboxCheckedArray.push(index);
-            this.isCardChecked = this.isCheckboxCheckedArray;
         }
 
         this.tableService.sendRowsSelected(this.mySelection);
@@ -361,6 +369,7 @@ export class TruckassistCardsComponent implements OnInit {
         });
     }
 
+    // Colors label on account page
     public onSaveLabel(
         data: { data: { name: string; action: string } },
         index: number
@@ -380,6 +389,7 @@ export class TruckassistCardsComponent implements OnInit {
         });
     }
 
+    // Colors label on account page
     public onPickExistLabel(
         event: CompanyAccountLabelResponse,
         index: number
@@ -396,6 +406,7 @@ export class TruckassistCardsComponent implements OnInit {
         );
     }
 
+    // Colors label on account page
     public onSelectColorLabel(
         event: CompanyAccountLabelResponse,
         index: number
