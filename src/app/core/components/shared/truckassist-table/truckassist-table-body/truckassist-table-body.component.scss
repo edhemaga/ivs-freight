@@ -61,7 +61,7 @@ table {
                         height: 100%;
                         align-items: center;
 
-                        svg-icon #Group_102994 {
+                        .input-dropdown-arrow svg {
                             display: none;
                         }
                         //nput dropdown label
@@ -94,23 +94,23 @@ table {
                                     right: 25px;
 
                                     .input-pen svg {
-                                        #Rectangle_88310 {
+                                        rect {
                                             fill: rgba(145, 145, 145, 0);
                                         }
 
-                                        #Edit {
-                                            #Path_7775 {
+                                        g {
+                                            path {
                                                 fill: $muted;
                                             }
 
-                                            #Path_7776 {
+                                            path {
                                                 fill: $muted;
                                             }
                                         }
                                     }
                                 }
 
-                                svg-icon #Group_102994 {
+                                .input-dropdown-arrow svg {
                                     path {
                                         fill: $muted;
                                     }
@@ -131,7 +131,7 @@ table {
                             &:hover {
                                 cursor: pointer;
 
-                                svg-icon #Group_102994 {
+                                .input-dropdown-arrow svg {
                                     display: flex !important;
                                 }
                             }
@@ -1604,7 +1604,7 @@ table {
                                 height: 21px;
                             }
 
-                            svg-icon #Group_102994 {
+                            .input-dropdown-arrow svg {
                                 display: none;
                             }
 
@@ -1638,22 +1638,23 @@ table {
                                         right: 25px;
 
                                         .input-pen svg {
-                                            #Rectangle_88310 {
+                                            rect {
                                                 fill: rgba(145, 145, 145, 0);
                                             }
 
-                                            #Edit {
-                                                #Path_7775 {
+                                            g {
+                                                path {
                                                     fill: $muted;
                                                 }
-                                                #Path_7776 {
+
+                                                path {
                                                     fill: $muted;
                                                 }
                                             }
                                         }
                                     }
 
-                                    svg-icon #Group_102994 {
+                                    .input-dropdown-arrow svg {
                                         path {
                                             fill: $muted;
                                         }
@@ -1676,7 +1677,7 @@ table {
                                 &:hover {
                                     cursor: pointer;
 
-                                    svg-icon #Group_102994 {
+                                    .input-dropdown-arrow svg {
                                         display: flex !important;
                                     }
                                 }

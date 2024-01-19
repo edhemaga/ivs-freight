@@ -49,10 +49,14 @@ import {
     tableSearch,
 } from '../../../utils/methods.globals';
 
+//Constants
+import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+//Configuration
+import { DisplayTrailerConfiguration } from '../trailer-card-data';
+
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { DisplayTrailerConfiguration } from '../trailer-card-data';
-import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 import {
     TooltipColors,
     TrailerName,

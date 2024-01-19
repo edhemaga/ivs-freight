@@ -45,9 +45,11 @@ import { DisplayTruckConfiguration } from '../truck-card-data';
 import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
+//Constants
+import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
+
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 
