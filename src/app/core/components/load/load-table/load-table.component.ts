@@ -882,6 +882,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     disableButton: true,
                 }
             );
+        } else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
+                {
+                    type: 'delete',
+                }
+            );
         }
     }
 

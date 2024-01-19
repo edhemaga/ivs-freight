@@ -190,6 +190,7 @@ $ta-yellow-1: #fab15c;
 $ta-yellow-2: #de7700;
 $ta-yellow-3: #fddeb9;
 $ta-yellow-4: #fbc88b;
+$ta-yellow-5: #f89b2e;
 
 $ta-black-3: #1d1d1d;
 // Cards
@@ -199,12 +200,6 @@ $ta-green-2: #259f94;
 $ta-green-3: #b6dfdb;
 $ta-green-4: #86c9c3;
 
-$ta-loaded: #259f94;
-$ta-assigned: #50ac25;
-$ta-red: #e66767;
-$ta-deadline-red: #df3c3c;
-$ta-deadline-yellow: #f89b2e;
-$ta-orange-1: #f89b2e;
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
     border-#{$direction}: $width $style $color;

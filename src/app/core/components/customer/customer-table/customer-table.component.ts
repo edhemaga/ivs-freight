@@ -79,6 +79,7 @@ import {
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 interface PaginationFilter {
     companyId?: number | undefined;
@@ -995,7 +996,8 @@ export class CustomerTableComponent
                         null,
                         null,
                         1,
-                        25
+                        25,
+                        1
                     ),
                     this.tableService.getTableConfig(5),
                 ])
@@ -1105,34 +1107,13 @@ export class CustomerTableComponent
         }
         // Delete Call
         else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
-            businessName = this.getBusinessName(event, businessName);
-
-            // Delete Broker Call
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
-                this.brokerService
-                    .deleteBrokerById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.deleteDataById(event.id);
-                        },
-                        error: () => {},
-                    });
-            }
-            // Delete Shipper Call
-            else {
-                businessName = this.getBusinessName(event, businessName);
-
-                this.shipperService
-                    .deleteShipperById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.deleteDataById(event.id);
-                        },
-                        error: () => {},
-                    });
-            }
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
+                {
+                    type: 'delete',
+                }
+            );
         }
         // Raiting
         else if (event.type === ConstantStringTableComponentsEnum.RATING) {

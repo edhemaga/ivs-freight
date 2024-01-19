@@ -1,19 +1,29 @@
+import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewEncapsulation,
+} from '@angular/core';
+
+// service
 import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
 } from './ta-like-dislike.service';
-import {
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewEncapsulation,
-} from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// modal
+import { SendDataCard } from '../model/cardTableData';
+
+// enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Component({
     selector: 'app-ta-like-dislike',
@@ -31,12 +41,24 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 })
 export class TaLikeDislikeComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    @Input() taLikes: number = 0;
-    @Input() taDislikes: number = 0;
+
+    @Output() likesDislakes: EventEmitter<SendDataCard> = new EventEmitter();
+
+    @Input() taLikes: number;
+    @Input() taDislikes: number;
+
     @Input() customClass: string = null;
+
+    @Input() isCard: boolean = false;
+
+    @Input() isTaLiked: boolean;
+    @Input() isTaDisliked: boolean;
 
     public isLiked: boolean = false;
     public isDisliked: boolean = false;
+
+    public numLikes: number = 0;
+    public numDislikes: number = 0;
 
     constructor(
         private taLikeDislikeService: TaLikeDislikeService,
@@ -56,52 +78,75 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onAction(type: string, event: any) {
+    ngOnChanges(): void {
+        this.numLikes = this.taLikes;
+        this.numDislikes = this.taDislikes;
+    }
+
+    public onAction(type: string, event: PointerEvent): void {
         event.preventDefault();
         event.stopPropagation();
-        if (type === 'liked') {
-            this.isLiked = !this.isLiked;
-            if (this.isDisliked) {
-                this.taDislikes--;
-                this.isDisliked = false;
+
+        if (this.isCard) {
+            this.likesDislakes.emit({
+                type: ConstantStringTableComponentsEnum.RATING,
+                subType: type,
+            });
+        } else {
+            if (type === ConstantStringTableComponentsEnum.LIKED) {
+                this.isLiked = !this.isLiked;
+
+                if (this.isDisliked) {
+                    this.taDislikes--;
+                    this.isDisliked = false;
+                    this.DetailsDataService.changeRateStatus(
+                        ConstantStringTableComponentsEnum.DISLIKE,
+                        this.isDisliked
+                    );
+                }
+
+                if (this.isLiked) {
+                    this.taLikes++;
+                } else {
+                    this.taLikes--;
+                }
+
+                this.taLikeDislikeService.likeDislikeEvent({
+                    action: type,
+                    likeDislike: 1,
+                });
+
                 this.DetailsDataService.changeRateStatus(
-                    'dislike',
+                    ConstantStringTableComponentsEnum.LIKE,
+                    this.isLiked
+                );
+            } else {
+                this.isDisliked = !this.isDisliked;
+                if (this.isLiked) {
+                    this.taLikes--;
+                    this.isLiked = false;
+                    this.DetailsDataService.changeRateStatus(
+                        ConstantStringTableComponentsEnum.LIKE,
+                        this.isLiked
+                    );
+                }
+
+                if (this.isDisliked) {
+                    this.taDislikes++;
+                } else {
+                    this.taDislikes--;
+                }
+
+                this.taLikeDislikeService.likeDislikeEvent({
+                    action: type,
+                    likeDislike: -1,
+                });
+
+                this.DetailsDataService.changeRateStatus(
+                    ConstantStringTableComponentsEnum.DISLIKE,
                     this.isDisliked
                 );
             }
-
-            if (this.isLiked) {
-                this.taLikes++;
-            } else {
-                this.taLikes--;
-            }
-
-            this.taLikeDislikeService.likeDislikeEvent({
-                action: type,
-                likeDislike: 1,
-            });
-            this.DetailsDataService.changeRateStatus('like', this.isLiked);
-        } else {
-            this.isDisliked = !this.isDisliked;
-            if (this.isLiked) {
-                this.taLikes--;
-                this.isLiked = false;
-                this.DetailsDataService.changeRateStatus('like', this.isLiked);
-            }
-            if (this.isDisliked) {
-                this.taDislikes++;
-            } else {
-                this.taDislikes--;
-            }
-
-            this.taLikeDislikeService.likeDislikeEvent({
-                action: type,
-                likeDislike: -1,
-            });
-            this.DetailsDataService.changeRateStatus(
-                'dislike',
-                this.isDisliked
-            );
         }
     }
 

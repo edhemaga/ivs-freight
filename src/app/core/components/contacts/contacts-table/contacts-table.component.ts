@@ -44,6 +44,7 @@ import {
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
+import { resolve } from 'dns';
 
 @Component({
     selector: 'app-contacts-table',
@@ -359,6 +360,7 @@ export class ContactsTableComponent
         );
 
         const contactData = this.getTabData();
+        console.log(contactData);
         this.tableData = [
             {
                 title: ContractComponentEnum.CONTACTS,

@@ -286,7 +286,7 @@ export class TableDropdownCustomerComponentConstants {
         },
 
         {
-            title: 'delete',
+            title: 'Delete',
             name: 'delete',
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
             svgStyle: {
@@ -395,7 +395,7 @@ export class TableDropdownCustomerComponentConstants {
         },
 
         {
-            title: 'delete',
+            title: 'Delete',
             name: 'delete',
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
             svgStyle: {

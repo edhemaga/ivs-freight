@@ -117,8 +117,9 @@ export interface ColumnWidthData {
 // Table Columns end
 export interface SendDataCard {
     id?: number;
-    data: CardDetails;
+    data?: CardDetails;
     type: string;
+    subType?: string;
 }
 
 export interface CardDetails {
