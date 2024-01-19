@@ -121,7 +121,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private sorting(): void {
         this.sortBy = this.sortDirection
-            ? this.activeSortType.sortName +
+            ? this.activeSortType?.sortName +
               (this.sortDirection[0]?.toUpperCase() +
                   this.sortDirection?.substr(1).toLowerCase())
             : '';
@@ -211,7 +211,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res: any) => {
                 // On Add Driver Active
                 if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.ACTIVE
                 ) {
@@ -219,7 +219,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // On Add Driver Inactive
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.INACTIVE
                 ) {
@@ -227,20 +227,20 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // On Update Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.UPDATE
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
                 ) {
                 }
 
                 // On Update Driver Status
                 else if (
-                    res.animation ===
+                    res?.animation ===
                     ConstantStringTableComponentsEnum.UPDATE_STATUS
                 ) {
                 }
 
                 // On Delete Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.DELETE
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
                 ) {
                 }
             });
@@ -411,7 +411,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
-
         this.setFuelData(td);
     }
 
@@ -468,15 +467,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.fuelQuery.fuelStops$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((data) => {
-                    this.fuelData = data.pagination.data;
+                    this.fuelData = data.pagination?.data;
                 });
         }
     }
 
     setFuelData(td: any) {
         this.columns = td.gridColumns;
-
-        if (td.data.length) {
+        if (td.data?.length) {
             this.viewData = [...td.data];
 
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));

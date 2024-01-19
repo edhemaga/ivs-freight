@@ -37,6 +37,8 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 //Enum
 import { GetCompanyUserListResponse } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { DisplayUserConfiguration } from '../user-card-data';
+import { CardRows } from '../../shared/model/cardData';
 
 @Component({
     selector: 'app-user-table',
@@ -51,11 +53,25 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     tableData: any[] = [];
     viewData: any[] = [];
     columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
+    selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
+    activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
     users: UserState[] = [];
+
+    //Data to display from model
+    public displayRowsFront: CardRows[] =
+        DisplayUserConfiguration.displayRowsFront;
+
+    public displayRowsBack: CardRows[] =
+        DisplayUserConfiguration.displayRowsBack;
+
+    public page: string = DisplayUserConfiguration.page;
+
+    public rows: number = DisplayUserConfiguration.rows;
+
+    public cardTitle: string = DisplayUserConfiguration.cardTitle;
+
     backFilterQuery = {
         active: 1,
         pageIndex: 1,
@@ -180,7 +196,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // On Add Driver Active
-                if (res.animation === ConstantStringTableComponentsEnum.ADD) {
+                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
                     this.mapingIndex = 0;
 
                     this.viewData.push(this.mapUserData(res.data));
@@ -207,7 +223,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update User
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.UPDATE
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
                 ) {
                     this.mapingIndex = 0;
 
@@ -234,7 +250,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update User Status
                 else if (
-                    res.animation ===
+                    res?.animation ===
                     ConstantStringTableComponentsEnum.UPDATE_STATUS
                 ) {
                     this.mapingIndex = 0;

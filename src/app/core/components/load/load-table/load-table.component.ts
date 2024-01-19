@@ -874,6 +874,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backLoadFilterQuery.pageIndex++;
 
             this.loadBackFilter(this.backLoadFilterQuery, true);
+        } else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
+                {
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                }
+            );
         } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
             this.loadServices
                 .getLoadById(event.id)
@@ -897,6 +905,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     })
                 )
+
                 .subscribe();
         }
     }

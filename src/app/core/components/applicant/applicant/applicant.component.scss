@@ -173,7 +173,7 @@
                 pointer-events: none !important;
 
                 .bullet {
-                    background: $ta-red !important;
+                    background: $ta-red-10 !important;
 
                     &::before {
                         display: none !important;
@@ -192,7 +192,7 @@
                 .step-text {
                     visibility: visible !important;
                     opacity: 1 !important;
-                    color: $ta-red !important;
+                    color: $ta-red-10 !important;
                 }
             }
 
@@ -353,14 +353,14 @@
                             display: inline-flex;
                             visibility: visible;
                             opacity: 1;
-                            color: $ta-red;
+                            color: $ta-red-10;
                         }
                     }
 
                     &:hover + .step-text {
                         visibility: visible;
                         opacity: 1;
-                        color: $ta-red;
+                        color: $ta-red-10;
                     }
                 }
 
@@ -437,7 +437,7 @@
                     }
 
                     &:hover {
-                        background: $ta-red;
+                        background: $ta-red-10;
 
                         &::before {
                             display: none;
@@ -455,7 +455,7 @@
                     &:hover + .step-text {
                         visibility: visible;
                         opacity: 1;
-                        color: $ta-red;
+                        color: $ta-red-10;
                     }
                 }
 

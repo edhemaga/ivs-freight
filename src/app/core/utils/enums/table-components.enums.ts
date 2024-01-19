@@ -150,6 +150,8 @@ export enum ConstantStringTableComponentsEnum {
     BROKER_SHIPPER_TABLE_COUNT = 'brokerShipperTableCount',
     RATING = 'raiting',
     LIKE = 'like',
+    LIKED = 'liked',
+    DISLIKE = 'dislike',
 
     BROKER = 'broker',
     BROKER_2 = 'Broker ',
@@ -318,6 +320,7 @@ export enum ConstantStringTableComponentsEnum {
     NO_ENDPOINT_2 = 'No Endpoint',
     SLASH = '/',
     UPDATE_LABEL = 'update-label',
+    LABEL_CHANGE = 'label-change',
 
     //Toolbar
 

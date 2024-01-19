@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 // Components
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -31,7 +32,7 @@ import { BrokerState } from '../state/broker-state/broker.store';
 import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperStore } from '../state/shipper-state/shipper.store';
 
-// Models
+// Modals
 import {
     BrokerResponse,
     GetBrokerListResponse,
@@ -55,6 +56,14 @@ import {
     getShipperColumnDefinition,
 } from '../../../../../assets/utils/settings/customer-columns';
 import { DisplayCustomerConfiguration } from '../customer-card-data';
+import {
+    FilterOptionBroker,
+    FilterOptionshipper,
+} from '../../shared/model/table-components/customer.modals';
+import {
+    DataForCardsAndTables,
+    TableColumnConfig,
+} from '../../shared/model/table-components/all-tables.modal';
 
 // Globals
 import {
@@ -70,14 +79,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // Constants
 import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import {
-    FilterOptionBroker,
-    FilterOptionshipper,
-} from '../../shared/model/table-components/customer.modals';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from '../../shared/model/table-components/all-tables.modal';
+
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 interface PaginationFilter {
@@ -995,7 +997,8 @@ export class CustomerTableComponent
                         null,
                         null,
                         1,
-                        25
+                        25,
+                        1
                     ),
                     this.tableService.getTableConfig(5),
                 ])
@@ -1105,34 +1108,13 @@ export class CustomerTableComponent
         }
         // Delete Call
         else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
-            businessName = this.getBusinessName(event, businessName);
-
-            // Delete Broker Call
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
-                this.brokerService
-                    .deleteBrokerById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.deleteDataById(event.id);
-                        },
-                        error: () => {},
-                    });
-            }
-            // Delete Shipper Call
-            else {
-                businessName = this.getBusinessName(event, businessName);
-
-                this.shipperService
-                    .deleteShipperById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.deleteDataById(event.id);
-                        },
-                        error: () => {},
-                    });
-            }
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
+                {
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                }
+            );
         }
         // Raiting
         else if (event.type === ConstantStringTableComponentsEnum.RATING) {

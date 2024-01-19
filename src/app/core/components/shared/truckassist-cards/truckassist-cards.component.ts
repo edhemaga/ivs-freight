@@ -49,6 +49,7 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { TaInputDropdownLabelComponent } from '../ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -88,6 +89,7 @@ import { TextToggleDirective } from './directives/show-hide-pass.directive';
         TaNoteComponent,
         ProgresBarComponent,
         TaInputDropdownLabelComponent,
+        TaLikeDislikeComponent,
 
         //pipes
         formatDatePipe,
@@ -161,6 +163,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetCheckedCardsOnTabSwitch();
+
         if (
             this.page === ConstantStringTableComponentsEnum.REPAIR &&
             !changes.firstChange
@@ -353,11 +356,25 @@ export class TruckassistCardsComponent implements OnInit {
         return CardArrayHelper.getValueByStringPath(obj, ObjKey);
     }
 
-    // Add favorite repairshop
-    public onFavorite(card: CardDetails): void {
+    public likeDislake(
+        event: { type: string; subType: string },
+        card: CardDetails
+    ): void {
+        this.detailsDataService.setNewData(card);
         this.bodyActions.emit({
             data: card,
-            type: ConstantStringTableComponentsEnum.FAVORITE,
+            type: event.type,
+            subType: event.subType,
+        });
+    }
+
+    // Customer rating
+    public onLike(card: CardDetails): void {
+        this.detailsDataService.setNewData(card);
+        this.bodyActions.emit({
+            data: card,
+            type: ConstantStringTableComponentsEnum.RATING,
+            subType: ConstantStringTableComponentsEnum.LIKE,
         });
     }
 
@@ -383,9 +400,10 @@ export class TruckassistCardsComponent implements OnInit {
             data: this.selectedContactLabel[index],
             id: this.viewData[index].id,
             type:
-                data.data?.action === 'update-label'
-                    ? 'update-label'
-                    : 'label-change',
+                data.data?.action ===
+                ConstantStringTableComponentsEnum.UPDATE_LABEL
+                    ? ConstantStringTableComponentsEnum.UPDATE_LABEL
+                    : ConstantStringTableComponentsEnum.LABEL_CHANGE,
         });
     }
 
@@ -399,7 +417,7 @@ export class TruckassistCardsComponent implements OnInit {
             {
                 data: {
                     name: this.selectedContactLabel[index].name,
-                    action: 'update-label',
+                    action: ConstantStringTableComponentsEnum.UPDATE_LABEL,
                 },
             },
             index
