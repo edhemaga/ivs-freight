@@ -9,27 +9,18 @@ import {
     ViewEncapsulation,
     SimpleChanges,
 } from '@angular/core';
-import {
-    FormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
-import { MapsAPILoader, AgmCoreModule } from '@agm/core';
+import { FormsModule, UntypedFormGroup } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { RepairTService } from '../../repair/state/repair.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { FuelTService } from '../../fuel/state/fuel.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MapRouteModel } from '../model/map-route';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { ModalService } from './../../shared/ta-modal/modal.service';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -180,15 +171,11 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     constructor(
         private ref: ChangeDetectorRef,
-        private formBuilder: UntypedFormBuilder,
-        private mapsAPILoader: MapsAPILoader,
         private mapsService: MapsService,
         private repairShopService: RepairTService,
         private shipperService: ShipperTService,
         private fuelStopService: FuelTService,
-        private notificationService: NotificationService,
         private routingService: RoutingStateService,
-        private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyTOfficeService,
         private tableService: TruckassistTableService,
@@ -334,7 +321,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation == 'update') {
+                if (res?.animation == 'update') {
                     let markerIndex = this.viewData.findIndex(
                         (item) => item.id === res.data.id
                     );
@@ -350,8 +337,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                     this.mapListPagination.pageIndex = 1;
                     this.getClusters(true, true);
                 } else if (
-                    res.animation == 'add' ||
-                    res.animation == 'delete'
+                    res?.animation == 'add' ||
+                    res?.animation == 'delete'
                 ) {
                     setTimeout(() => {
                         this.mapListPagination.pageIndex = 1;
@@ -1781,7 +1768,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.agmMap.fitBounds(bounds);
     }
 
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
 

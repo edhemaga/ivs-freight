@@ -2,7 +2,11 @@
     <div class="invisible-mainual-trigger" style="display: none">
         {{ _isCardOpen }}
     </div>
-    <div *ngIf="hasDivider" class="divider"></div>
+
+    <ng-container *ngIf="hasDivider">
+        <div class="divider"></div>
+    </ng-container>
+
     <div
         [ngClass]="{ 'has-counter': hasCounter }"
         class="ta-card-header"
@@ -16,33 +20,40 @@
         (click)="isCardOpenEvent($event)"
     >
         <!-- Left side of header -->
+
         <div class="header-content">
             <!-- Checkbox -->
-            <app-ta-checkbox
-                *ngIf="hasCheckbox"
-                [formControl]="controlName"
-                [label]="''"
-            >
-            </app-ta-checkbox>
+            <ng-container *ngIf="hasCheckbox">
+                <app-ta-checkbox [formControl]="controlName" [label]="''">
+                </app-ta-checkbox>
+            </ng-container>
 
             <!-- Payroll left Counter -->
-            <div *ngIf="hasLeftCounter !== -1" class="payroll-left-counter">
-                {{ hasLeftCounter }}
-            </div>
+
+            <ng-container *ngIf="hasLeftCounter !== -1">
+                <div class="payroll-left-counter">
+                    {{ hasLeftCounter }}
+                </div>
+            </ng-container>
 
             <!-- Name -->
-            <span class="header-text">
+
+            <span
+                class="header-text"
+                [ngStyle]="{ color: _isCardOpen ? '#424242' : '#6C6C6C' }"
+            >
                 {{ cardName }}
             </span>
 
             <!-- Counter -->
+
             <app-ta-counter
                 *ngIf="hasCounter !== -1"
                 [count]="hasCounter"
-                [countBackground]="'#424242'"
+                [countBackground]="'#6C6C6C'"
                 [countColor]="'#ffffff'"
-                [countHeight]="'22px'"
-                [countWidth]="'22px'"
+                [countHeight]="'18px'"
+                [countWidth]="'18px'"
                 [countBorderRadius]="'50%'"
                 [marginLeft]="'4px'"
                 [countTextBottomPosition]="textBottomPossiton"
@@ -50,30 +61,36 @@
 
             <!-- Capsula Text -->
 
-            <div *ngIf="capsulaText" class="capsula-wrapper">
-                <p class="capsula-text">{{ capsulaText }}</p>
-            </div>
+            <ng-container *ngIf="capsulaText">
+                <div
+                    class="d-flex align-items-center justify-content-center capsula-wrapper"
+                >
+                    <p class="m-0 ta-font-bold">
+                        {{ capsulaText }}
+                    </p>
+                </div>
+            </ng-container>
 
             <!-- Svg near name -->
-            <div
+
+            <ng-container
                 *ngIf="
                     hasHeaderSvg &&
                     ((_isCardOpen && _isCardOpen != 'null') || headerSvgEnabled)
                 "
-                ngbTooltip
-                [mainTooltip]="tooltipName"
-                [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
-                position="top"
             >
-                <svg-icon
-                    [ngClass]="{ 'header-svg-bank': customClassHeaderSvg }"
-                    class="header-svg"
-                    src="{{ hasHeaderSvg }}"
-                ></svg-icon>
-            </div>
+                <div>
+                    <svg-icon
+                        [ngClass]="{ 'header-svg-bank': customClassHeaderSvg }"
+                        class="header-svg"
+                        src="{{ hasHeaderSvg }}"
+                    ></svg-icon>
+                </div>
+            </ng-container>
         </div>
 
         <!-- Right Side (action side) of header -->
+
         <div
             class="header-actions"
             [ngClass]="{
@@ -82,134 +99,130 @@
             }"
         >
             <!-- Payroll status -->
-            <div class="payroll-status d-flex" *ngIf="hasPayrollStatus">
-                <!-- <app-payroll-statuses
-                    [active]="_isCardOpen && _isCardOpen != 'null'"
-                    [options]="{ value: '$4,146.92 DEBT', type: 'next' }"
-                ></app-payroll-statuses> -->
-                <app-payroll-statuses
-                    [active]="_isCardOpen && _isCardOpen != 'null'"
-                    [options]="{ value: '$4,146.92 DEBT', type: 'dept' }"
-                ></app-payroll-statuses>
 
-                <app-payroll-statuses
-                    [active]="_isCardOpen && _isCardOpen != 'null'"
-                    [options]="{ value: 'EVERY MONDAY', type: 'normal' }"
-                ></app-payroll-statuses>
-            </div>
+            <ng-container *ngIf="hasPayrollStatus">
+                <div class="payroll-status d-flex">
+                    <app-payroll-statuses
+                        [active]="_isCardOpen && _isCardOpen != 'null'"
+                        [options]="{ value: '$4,146.92 DEBT', type: 'dept' }"
+                    ></app-payroll-statuses>
+
+                    <app-payroll-statuses
+                        [active]="_isCardOpen && _isCardOpen != 'null'"
+                        [options]="{ value: 'EVERY MONDAY', type: 'normal' }"
+                    ></app-payroll-statuses>
+                </div>
+            </ng-container>
 
             <!-- Like & Dislike -->
+
             <app-ta-like-dislike *ngIf="hasLikeDislike"></app-ta-like-dislike>
 
-            <div
-                *ngIf="customTextAction"
-                class="header-custom-text-action"
-                (click)="onAction($event, 'custom', customTextAction)"
-            >
-                <p class="header-action-text">{{ customTextAction }}</p>
-            </div>
+            <ng-container *ngIf="customTextAction">
+                <div
+                    class="header-custom-text-action"
+                    (click)="onAction($event, 'custom', customTextAction)"
+                >
+                    <p class="header-action-text">{{ customTextAction }}</p>
+                </div>
+            </ng-container>
 
             <!-- Download -->
-            <svg-icon
-                class="header-action-download"
-                *ngIf="hasDownload"
-                (click)="onAction($event, 'download')"
-                [src]="hasDownload"
-            ></svg-icon>
+
+            <ng-container *ngIf="hasDownload">
+                <svg-icon
+                    class="header-action-download"
+                    (click)="onAction($event, 'download')"
+                    [src]="hasDownload"
+                ></svg-icon>
+            </ng-container>
 
             <!-- Plus Add New Things -->
-            <div
-                *ngIf="hasActionSvg && !disableMultipleReviews"
-                class="header-action-container"
-                [class.hovered]="isHeaderHover"
-                [class.data]="
-                    (hasBodyData &&
-                        _isCardOpen &&
-                        _isCardOpen != 'null' &&
-                        hasArrow) ||
-                    (isHeaderHover &&
-                        hasBodyData &&
-                        (!_isCardOpen || _isCardOpen == 'null') &&
-                        hasArrow)
-                "
-                [class.comment]="
-                    hasBodyData &&
-                    _isCardOpen &&
-                    _isCardOpen != 'null' &&
-                    isCommentData
-                "
-                (click)="onAction($event, 'add')"
-            >
-                <svg-icon
-                    *ngIf="!hasBodyData && !isHeaderHover"
-                    class="header-action-svg"
-                    [ngClass]="{ 'new-position': !hasArrow || !hasBodyData }"
-                    src="{{ hasActionSvg }}"
-                ></svg-icon>
-                <p
-                    *ngIf="
-                        isHeaderHover ||
-                        (hasBodyData && _isCardOpen && _isCardOpen != 'null')
-                    "
-                    class="header-action-text"
+
+            <ng-container *ngIf="hasActionSvg && !disableMultipleReviews">
+                <div
+                    class="d-flex align-items-center justify-content-center action-plus-icon-container"
                 >
-                    {{ actionText ? actionText : 'ADD NEW' }}
-                </p>
-            </div>
+                    <svg-icon
+                        class="action-plus-icon"
+                        [src]="'assets/svg/common/ic_plus.svg'"
+                        [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                        (click)="onAction($event, 'add')"
+                    ></svg-icon>
+                </div>
+            </ng-container>
 
             <!-- Header (Details page, Calendar...) -->
 
-            <div *ngIf="hasPlusHeader || stayOpen" class="arrow-down-plus">
-                <div
-                    class="add-custom-card"
-                    ngbTooltip
-                    mainTooltip="Add New Event"
-                    position="top"
-                    tooltipBackground="#536BC2"
-                >
+            <ng-container
+                *ngIf="hasPlusHeader || stayOpen"
+                class="arrow-down-plus"
+            >
+                <div class="add-custom-card">
                     <svg-icon
                         class="plus-custom-card"
                         src="assets/svg/common/ic_plus.svg"
                         (click)="onAction($event, 'add')"
                     ></svg-icon>
                 </div>
-            </div>
+            </ng-container>
 
             <!-- 24/7 button -->
-            <div
-                *ngIf="has24Hours"
-                class="_24-7-status"
-                [ngClass]="{ active: is24Hours }"
-                (click)="onAction($event, 'hours-24')"
-            >
-                <p>24/7</p>
-            </div>
+
+            <ng-container *ngIf="has24Hours">
+                <div
+                    class="_24-7-status"
+                    [ngClass]="{ active: is24Hours }"
+                    (click)="onAction($event, 'hours-24')"
+                >
+                    <p>24/7</p>
+                </div>
+            </ng-container>
 
             <!-- Weekly status -->
-            <div
-                *ngIf="hasWeeklyStatus"
-                class="weekly-status"
-                [class.disabledWeeklyStatus]="disabledCard"
-            >
-                <div class="weekly-status-value">
-                    {{ hasWeeklyStatus }}
+
+            <ng-container *ngIf="hasWeeklyStatus">
+                <div
+                    class="weekly-status"
+                    [class.disabledWeeklyStatus]="disabledCard"
+                >
+                    <div class="weekly-status-value">
+                        {{ hasWeeklyStatus }}
+                    </div>
                 </div>
-            </div>
+            </ng-container>
 
             <!-- Edit & Delete Actions -->
-            <div *ngIf="hasDeleteAction" class="edit-delete-actions">
-                <svg-icon
-                    class="delete-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                    [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                    }"
-                    (click)="onAction($event, 'delete')"
-                ></svg-icon>
-            </div>
+
+            <svg-icon
+                *ngIf="hasDeleteAction"
+                class="edit-delete-actions"
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+                (click)="onAction($event, 'delete')"
+            ></svg-icon>
+
+            <!-- Format Text Actions -->
+
+            <app-ta-note-container
+                *ngIf="_isCardOpen && hasFormatTextActionButtons"
+                #noteContainer
+                [isExpanded]="true"
+                [range]="range"
+                [selectionTaken]="selectionTaken"
+                [value]="value"
+                [parking]="parking"
+                [popoverNote]="true"
+                [selectedEditor]="main_editor?.nativeElement"
+                [type]="type"
+            ></app-ta-note-container>
 
             <!-- Arrow -->
+
             <svg-icon
                 *ngIf="hasArrow && hasBodyData"
                 class="header-arrow"
@@ -219,10 +232,14 @@
         </div>
     </div>
 
-    <!-- BODY -->
+    <!-- Body -->
+
     <div
         class="ta-card-body"
-        [ngClass]="{ scroll: hasScrollBody }"
+        [ngClass]="{
+            scroll: hasScrollBody,
+            'scroll-x-axis': hasScrollBodyXAxis && _isCardOpen
+        }"
         [@.disabled]="disableAnimation"
     >
         <div
@@ -233,16 +250,9 @@
                 value: _isCardOpen.toString(),
                 params: animationMarginParams
             }"
-            class="content-holder {{customClass}}"
+            class="content-holder {{ customClass }}"
         >
             <ng-content></ng-content>
         </div>
     </div>
-    <svg-icon
-        *ngIf="bottomCollapseArrow && hasBodyData"
-        class="bottom-collapse-arrow"
-        [ngClass]="{ rotate: _isCardOpen && _isCardOpen != 'null' }"
-        src="assets/svg/common/ic_arrow_down_updated.svg"
-        (click)="isCardOpenEvent($event)"
-    ></svg-icon>
 </div>

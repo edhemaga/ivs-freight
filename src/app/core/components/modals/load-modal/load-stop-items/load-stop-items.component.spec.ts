@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableModalComponent } from './table-modal.component';
+import { LoadStopItemsComponent } from './load-stop-items.component';
 
-describe('TableModalComponent', () => {
-  let component: TableModalComponent;
-  let fixture: ComponentFixture<TableModalComponent>;
+describe('LoadStopItemsComponent', () => {
+  let component: LoadStopItemsComponent;
+  let fixture: ComponentFixture<LoadStopItemsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TableModalComponent ]
+      declarations: [ LoadStopItemsComponent ]
     })
     .compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TableModalComponent);
+    fixture = TestBed.createComponent(LoadStopItemsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

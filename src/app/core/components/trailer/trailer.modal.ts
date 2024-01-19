@@ -114,6 +114,8 @@ export interface MappedTrailer extends TraillerData {
         regularText: string;
         boldText: string;
     };
+    tableTrailerName: string;
+    tableTrailerColor: string;
     tableTrailerTypeClass: string;
     tableMake: string;
     tableModel: string;

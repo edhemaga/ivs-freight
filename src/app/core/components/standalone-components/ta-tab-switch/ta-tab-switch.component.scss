@@ -20,8 +20,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 
     .tab-switch-items-holder {
         .tab-switch-text {
-            display: flex;
-            align-items: center;
+            pointer-events: none;
 
             .tab-counter {
                 display: flex;
@@ -114,7 +113,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         color: #fff;
         border-radius: 2px;
         height: calc(100% - 8px);
-        left: 2px;
         transition: all 0.25s ease-out;
         pointer-events: none;
 
@@ -135,11 +133,10 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             font-weight: 700;
 
             &.active {
-                color: #536bc2 !important;
+                color: #3b73ed !important;
             }
 
             &:hover:not(.active) {
-                //background-color: #f3f3f3;
                 color: #6c6c6c;
             }
         }
@@ -171,11 +168,10 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             font-weight: 700;
 
             &.active {
-                color: #536bc2 !important;
+                color: #3b73ed !important;
             }
 
             &:hover:not(.active) {
-                //background-color: #f3f3f3;
                 color: #6c6c6c;
             }
         }
@@ -203,7 +199,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             font-weight: 800;
 
             &.active {
-                color: #536bc2 !important;
+                color: #3b73ed !important;
             }
 
             &:hover:not(.active) {
@@ -240,9 +236,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 
 @each $col in $tab-colors {
     .tab-switch-#{$col}.active {
-        & ~ .slide-active-holder {
-            background-color: unquote('#' + $col + '33') !important;
-        }
         .tab-switch-text {
             .tab-switch-name {
                 color: unquote('#' + $col) !important;

@@ -175,6 +175,7 @@ model/companyContactLabelResponse.ts
 model/companyContactModalResponse.ts
 model/companyContactResponse.ts
 model/companyContactResponsePagination.ts
+model/companyContactUser.ts
 model/companyDocumentsStatisticResponse.ts
 model/companyDurationResponse.ts
 model/companyIntegrationProviderListResponse.ts
