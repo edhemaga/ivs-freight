@@ -68,6 +68,8 @@ export function getTruckColumnDefinition() {
             isNumeric: true,
             index: 6,
             sortable: true,
+            tooltipColor: 'tableTruckColor',
+            tooltipTitle: 'tableTruckName',
             isActionColumn: false,
             isSelectColumn: false,
             avatar: null,

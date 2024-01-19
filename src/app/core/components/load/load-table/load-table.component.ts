@@ -249,7 +249,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // TODO check why is this commented out
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -264,15 +263,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             },
                         };
                     });
-
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: ConstantStringTableComponentsEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: 'driver',
-                            type: 'multiple delete',
+                            template: ConstantStringTableComponentsEnum.LOAD,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
                             image: true,
                         }
                     );
