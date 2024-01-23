@@ -39,6 +39,9 @@ import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.compo
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 
+//Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
 @Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
@@ -313,52 +316,82 @@ export class TruckassistTableToolbarComponent
             hasMinWidth = false;
 
         this.columnsOptions = [];
-
-        this.columns.map((c) => {
-            if (!c.hidden) {
-                columnsSumWidth += c.width < c.minWidth ? c.minWidth : c.width;
-
-                if (
-                    c.ngTemplate !== 'checkbox' &&
-                    c.ngTemplate !== 'attachments' &&
-                    c.ngTemplate !== 'media' &&
-                    c.ngTemplate !== 'insurance' &&
-                    c.ngTemplate !== 'comment' &&
-                    c.ngTemplate !== 'hire' &&
-                    c.ngTemplate !== 'favorite' &&
-                    c.ngTemplate !== 'note' &&
-                    c.ngTemplate !== 'actions' &&
-                    c.ngTemplate !== 'user-checkbox'
-                ) {
-                    columnsSumWidth += 6;
-                }
-            }
-
-            if (c.minWidth) {
-                hasMinWidth = true;
-            }
-
+        let activeCard = false;
+        this.options.toolbarActions.viewModeOptions.filter((viewMode) => {
             if (
-                c.ngTemplate !== 'checkbox' &&
-                c.ngTemplate !== 'attachments' &&
-                c.ngTemplate !== 'media' &&
-                c.ngTemplate !== 'insurance' &&
-                c.ngTemplate !== 'comment' &&
-                c.ngTemplate !== 'hire' &&
-                c.ngTemplate !== 'favorite' &&
-                c.ngTemplate !== 'note' &&
-                c.ngTemplate !== 'actions' &&
-                c.ngTemplate !== 'user-checkbox'
+                viewMode.name === ConstantStringTableComponentsEnum.CARD &&
+                viewMode.active
             ) {
-                this.columnsOptions.push(c);
+                activeCard = true;
             }
         });
 
-        this.setColumnsOptionsGroups();
+        if (activeCard) {
+            this.toolbarWidth = ConstantStringTableComponentsEnum.NUMBER_100;
+        } else {
+            this.columns.map((c) => {
+                if (!c.hidden) {
+                    columnsSumWidth +=
+                        c.width < c.minWidth ? c.minWidth : c.width;
+                    if (
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.CHECKBOX &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.ATTACHMENTS &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.MEDIA &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.INSURANCE &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.COMMENT &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.HIRE &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.FAVORITE &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.NOTE &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.ACTIONS &&
+                        c.ngTemplate !==
+                            ConstantStringTableComponentsEnum.USER_CHECKBOX
+                    ) {
+                        columnsSumWidth += 6;
+                    }
+                }
 
-        this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 26 + 'px'
-            : 100 + '%';
+                if (c.minWidth) {
+                    hasMinWidth = true;
+                }
+
+                if (
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.CHECKBOX &&
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.ATTACHMENTS &&
+                    c.ngTemplate !== ConstantStringTableComponentsEnum.MEDIA &&
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.INSURANCE &&
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.COMMENT &&
+                    c.ngTemplate !== ConstantStringTableComponentsEnum.HIRE &&
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.FAVORITE &&
+                    c.ngTemplate !== ConstantStringTableComponentsEnum.NOTE &&
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.ACTIONS &&
+                    c.ngTemplate !==
+                        ConstantStringTableComponentsEnum.USER_CHECKBOX
+                ) {
+                    this.columnsOptions.push(c);
+                }
+            });
+
+            this.setColumnsOptionsGroups();
+
+            this.toolbarWidth = hasMinWidth
+                ? columnsSumWidth + 26 + ConstantStringTableComponentsEnum.PX
+                : 100 + '%';
+        }
     }
 
     // Set Columns Options Groups
