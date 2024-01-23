@@ -92,15 +92,16 @@
                                 </div>
                             </ng-container>
 
-                            <!-- If Driver page -->
+                            <!-- If Driver or User page-->
 
                             <ng-container
                                 *ngIf="
-                                    page === 'Driver' &&
-                                    selectedTab !== 'applicant'
+                                    (page === 'Driver' &&
+                                        selectedTab !== 'applicant') ||
+                                    page === 'User'
                                 "
                             >
-                                <!-- If driver has image -->
+                                <!-- If driver/user has image -->
 
                                 <ng-container *ngIf="card.avatarImg">
                                     <div class="image-holder">
@@ -121,9 +122,36 @@
                                         </ng-container>
                                     </div>
                                 </ng-container>
+
+                                <!-- If user doesen't have image -->
+
+                                <ng-container
+                                    *ngIf="!card.avatarImg && page !== 'Driver'"
+                                >
+                                    <div class="image-holder">
+                                        <span
+                                            class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                            [style.background]="
+                                                card.tableAvatar.avatarColor
+                                                    .background
+                                            "
+                                            [style.color]="
+                                                card.tableAvatar.avatarColor
+                                                    .color
+                                            "
+                                        >
+                                            {{
+                                                card.tableAvatar.textShortName
+                                            }}</span
+                                        >
+                                    </div>
+                                </ng-container>
+
                                 <!-- If driver doesen't have image -->
 
-                                <ng-container *ngIf="!card.avatarImg">
+                                <ng-container
+                                    *ngIf="!card.avatarImg && page !== 'User'"
+                                >
                                     <div class="image-holder">
                                         <span
                                             class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
@@ -149,6 +177,7 @@
                                         </ng-container>
                                     </div>
                                 </ng-container>
+
                                 <span class="title">
                                     {{ getValueByStringPath(card, cardTitle) }}
                                 </span>
@@ -173,13 +202,14 @@
                                     </ng-container>
                                 </div>
                             </ng-container>
-                            <!-- Rest of the pages -->
+                            <!-- Rest of the pages titles-->
 
                             <ng-container
                                 *ngIf="
                                     page !== 'Load' &&
                                     page !== 'Driver' &&
-                                    page !== 'Repair'
+                                    page !== 'Repair' &&
+                                    page !== 'User'
                                 "
                             >
                                 <span class="title">
@@ -445,42 +475,37 @@
                                             "
                                         >
                                             <div class="rating-holder d-flex">
-                                                <span
-                                                    class="rating ta-font-semi-bold d-flex align-items-center"
+                                                <app-ta-like-dislike
+                                                    [taLikes]="
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.endpoint
+                                                        )
+                                                    "
+                                                    [taDislikes]="
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    "
+                                                    [isTaLiked]="
+                                                        card.tableRaiting
+                                                            .hasLiked
+                                                    "
+                                                    [isTaDisliked]="
+                                                        card.tableRaiting
+                                                            .hasDislike
+                                                    "
+                                                    [isCard]="true"
+                                                    [card]="card"
+                                                    (likesDislakes)="
+                                                        likeDislake(
+                                                            $event,
+                                                            card
+                                                        )
+                                                    "
                                                 >
-                                                    <svg-icon
-                                                        class="svg-like"
-                                                        [src]="
-                                                            'assets/svg/common/ic_like.svg'
-                                                        "
-                                                    ></svg-icon>
-                                                    <span>
-                                                        {{
-                                                            getValueByStringPath(
-                                                                card,
-                                                                rowsFront.endpoint
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </span>
-                                                <span
-                                                    class="rating ta-font-semi-bold d-flex align-items-center"
-                                                >
-                                                    <svg-icon
-                                                        class="svg-dislike"
-                                                        [src]="
-                                                            'assets/svg/common/ic_dislike.svg'
-                                                        "
-                                                    ></svg-icon>
-                                                    <span>
-                                                        {{
-                                                            getValueByStringPath(
-                                                                card,
-                                                                rowsFront.secondEndpoint
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </span>
+                                                </app-ta-like-dislike>
                                             </div>
                                         </ng-container>
                                     </ng-container>
@@ -902,6 +927,16 @@
                                                 </app-ta-input-dropdown-label>
                                             </div>
                                         </ng-container>
+                                    </ng-container>
+
+                                    <!-- User page body -->
+                                    <ng-container *ngIf="page === 'User'">
+                                        {{
+                                            getValueByStringPath(
+                                                card,
+                                                rowsFront.endpoint
+                                            )
+                                        }}
                                     </ng-container>
                                 </div>
                             </div>
@@ -1372,6 +1407,16 @@
                                                 "
                                             ></span>
                                         </ng-container>
+                                    </ng-container>
+
+                                    <!-- User Page Body -->
+                                    <ng-container *ngIf="page === 'User'">
+                                        {{
+                                            getValueByStringPath(
+                                                card,
+                                                rowsBack.endpoint
+                                            )
+                                        }}
                                     </ng-container>
                                 </div>
                             </div>

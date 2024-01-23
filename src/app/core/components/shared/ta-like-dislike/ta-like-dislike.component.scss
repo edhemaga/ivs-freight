@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .ta-like-dislike {
     display: flex;
     gap: 2px;
@@ -8,10 +10,10 @@
         width: 18px;
         height: 18px;
         border-radius: 2px;
-        background-color: #f3f3f3;
+        background-color: $ta-light-grey-4;
         min-width: 18px !important;
         margin: 0px !important;
-        color: #919191;
+        color: $muted;
         font-size: 11px;
         font-weight: 700;
         text-align: center;
@@ -29,7 +31,7 @@
         &:hover {
             svg {
                 path {
-                    fill: #b7b7b7;
+                    fill: $bw4;
                 }
             }
         }
@@ -37,14 +39,14 @@
         &.liked {
             svg {
                 path {
-                    fill: #4db6a2;
+                    fill: $ta-green;
                 }
             }
         }
         &.disliked {
             svg {
                 path {
-                    fill: #ef9a9a;
+                    fill: $ta-red-10;
                 }
             }
         }
