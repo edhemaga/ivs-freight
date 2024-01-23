@@ -832,29 +832,6 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <!-- <app-ta-input-dropdown
-                                                formControlName="ownerFleet"
-                                                [template]="'svgtext-template'"
-                                                [inputConfig]="{
-                                                    name: 'Input Dropdown',
-                                                    type: 'dropdown',
-                                                    label: 'Owner',
-                                                    isDropdown: true,
-                                                    blackInput: true,
-                                                    isRequired: true,
-                                                    textTransform: 'capitalize',
-                                                    dropdownWidthClass:
-                                                        'w-col-256'
-                                                }"
-                                                [options]="labelsDriver"
-                                                [activeItem]="selectedDriver"
-                                                (selectedItem)="
-                                                    onSelectDropdown(
-                                                        $event,
-                                                        'driver'
-                                                    )
-                                                "
-                                            ></app-ta-input-dropdown> -->
                                         </ng-container>
 
                                         <ng-container
@@ -1350,26 +1327,34 @@
 
                                     <!-- Repair Page Body -->
                                     <ng-container *ngIf="page === 'Repair'">
-
                                         <!-- Odometer -->
-                                        <ng-container *ngIf="rowsBack.endpoint === 'odometer'">
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint === 'odometer'
+                                            "
+                                        >
                                             {{
                                                 getValueByStringPath(
                                                     card,
                                                     rowsBack.endpoint,
                                                     'miles'
-                                                    )
-                                                }} <span class="muted">mi</span>
+                                                )
+                                            }}
+                                            <span class="muted">mi</span>
                                         </ng-container>
 
                                         <!-- Rest of items in repair page body -->
-                                        <ng-container *ngIf="rowsBack.endpoint !== 'odometer'">
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint !== 'odometer'
+                                            "
+                                        >
                                             {{
                                                 getValueByStringPath(
                                                     card,
                                                     rowsBack.endpoint
-                                                    )
-                                                }}
+                                                )
+                                            }}
                                         </ng-container>
 
                                         <ng-container
