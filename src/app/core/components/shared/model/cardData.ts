@@ -74,6 +74,7 @@ export interface TableOptionsInterface {
         showLocationFilter?: boolean;
         showStateFilter?: boolean;
         showBrokerFilterClosed?: boolean;
+        showTruckFilter?: boolean;
         hideSearch?: boolean;
         showTrailerFilter?: boolean;
         showRepairShop?: boolean;
