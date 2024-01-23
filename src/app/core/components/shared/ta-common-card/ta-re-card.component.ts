@@ -28,7 +28,7 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         DetailsDropdownComponent,
         AngularSvgIconModule,
         NgbModule,
-        NgbPopoverModule
+        NgbPopoverModule,
     ],
     animations: [
         card_component_animation('showHideCardBody'),
@@ -44,7 +44,7 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
             state(
                 'false',
                 style({
-                    'height': '0px',
+                    height: '0px',
                     //overflow: 'hidden',
                     opacity: 0,
                 })
@@ -162,7 +162,6 @@ export class TaReCardComponent implements OnInit {
     }
 
     public sendData(data: any) {
-        console.log('--sendData function---', data);
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
         if (this.mainData?.id) {

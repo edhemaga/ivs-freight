@@ -7,12 +7,14 @@
     <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
         <div class="modal-original-part {{ partClass }}">
             <!-- Modal Header -->
+
             <div cdkDragHandle class="modal-header">
                 <div
                     class="modal-header-leftside"
                     [ngClass]="{ 'confirmation-modal': confirmationData }"
                 >
                     <!-- Haeder tabs -->
+
                     <div
                         *ngIf="tabChange"
                         class="modal-header-tab-change"
@@ -27,7 +29,9 @@
                             [type]="'type2-modal-popup'"
                         ></app-ta-tab-switch>
                     </div>
+
                     <!-- Header svg -->
+
                     <svg-icon
                         *ngIf="headerSvg"
                         src="assets/svg/common/confirmation/ic_confirmation_{{
@@ -35,9 +39,13 @@
                         }}.svg"
                         class="modal-header-svg"
                     ></svg-icon>
+
                     <!-- Header title -->
+
                     <h5 class="modal-title">{{ modalTitle }}</h5>
+
                     <!-- Header name -->
+
                     <h5
                         class="edit-name"
                         *ngIf="
@@ -49,46 +57,65 @@
                         {{ editName }}
                     </h5>
                 </div>
+
                 <div class="modal-header-rightside">
                     <!-- Hazardous Logo -->
-                    <svg-icon
-                        *ngIf="isVisibleHazardous"
-                        src="assets/svg/common/ic_hazardous.svg"
-                        class="modal-hazardous-logo"
-                        (click)="toggleAdditionalPart('hazardous')"
-                    ></svg-icon>
-                    <!-- Load Map Button -->
-                    <div
-                        *ngIf="isVisibleMap"
-                        class="modal-header-load-map-button"
-                        [ngClass]="{ active: mapVisibility }"
-                        (click)="toggleAdditionalPart('map')"
-                    >
+
+                    <ng-container *ngIf="isVisibleHazardous">
                         <svg-icon
-                            src="../../../../../assets/svg/common/load/ic_load_map.svg"
+                            src="assets/svg/common/ic_hazardous.svg"
+                            class="modal-hazardous-logo"
+                            (click)="toggleAdditionalPart('hazardous')"
                         ></svg-icon>
-                    </div>
+                    </ng-container>
+
+                    <!-- Load Map Button -->
+
+                    <ng-container *ngIf="isVisibleMap">
+                        <div
+                            class="d-flex align-items-center justify-content-center modal-header-load-map-button"
+                            [ngClass]="{ active: mapVisibility }"
+                            (click)="toggleAdditionalPart('map')"
+                        >
+                            <svg-icon
+                                src="../../../../../assets/svg/common/load/ic_load_map.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
                     <!-- Header close -->
-                    <svg-icon
+
+                    <ng-container
                         *ngIf="
                             this.editData?.type !== 'edit-company-first-login'
                         "
-                        class="modal-close"
-                        src="assets/svg/ic_x.svg"
-                        (click)="onAction('close')"
-                    ></svg-icon>
+                    >
+                        <svg-icon
+                            class="modal-close"
+                            src="assets/svg/ic_x.svg"
+                            (click)="onAction('close')"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
             </div>
+
             <!-- Divider top -->
+
             <div *ngIf="topDivider" class="divider"></div>
             <!-- Modal body -->
+
             <div class="modal-body">
                 <!-- Modal content -->
+
                 <ng-content select="[origin]"></ng-content>
+
                 <!-- Divider bottom -->
+
                 <div *ngIf="bottomDivider" class="divider"></div>
             </div>
+
             <!-- Modal footer Normal -->
+
             <div
                 *ngIf="!disableFooter && !confirmationData"
                 class="modal-footer"
@@ -100,6 +127,7 @@
                 }"
             >
                 <!-- Footer Left Side -->
+
                 <div
                     class="ta-modal-footer-left-side"
                     *ngIf="
@@ -110,7 +138,8 @@
                     "
                 >
                     <!-- Delete -->
-                    <button
+
+                    <ng-container
                         *ngIf="
                             !disableDelete &&
                             !resendEmail &&
@@ -118,117 +147,130 @@
                             !mapSettingsModal &&
                             !mapRouteModal
                         "
-                        (click)="onAction('delete')"
-                        class="modal-delete-btn"
-                        type="button"
                     >
-                        Delete
-                    </button>
+                        <button
+                            (click)="onAction('delete')"
+                            class="modal-delete-btn"
+                            type="button"
+                        >
+                            Delete
+                        </button>
+                    </ng-container>
+
                     <!-- Map Settings Reset -->
-                    <button
+
+                    <ng-container
                         *ngIf="
                             (mapSettingsModal || mapRouteModal) &&
                             resetMapVisibility
                         "
-                        (click)="onAction('reset-map-routing')"
-                        class="modal-map-settings-reset-btn"
-                        type="button"
                     >
-                        Reset
-                    </button>
-
-                    <!-- Load Template -->
-                    <button
-                        *ngIf="loadModalTemplate"
-                        (click)="onAction('load-template')"
-                        class="modal-load-template-btn"
-                        type="button"
-                    >
-                        {{
-                            loadTemplateSpinnerVisibility
-                                ? 'Saving'
-                                : 'Save as Template'
-                        }}
-                        <div
-                            *ngIf="loadTemplateSpinnerVisibility"
-                            class="modal-spinner"
+                        <button
+                            (click)="onAction('reset-map-routing')"
+                            class="modal-map-settings-reset-btn"
+                            type="button"
                         >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
+                            Reset
+                        </button>
+                    </ng-container>
 
                     <!-- Resend Email -->
-                    <button
-                        *ngIf="resendEmail"
-                        (click)="onAction('resend email')"
-                        class="modal-resend-email-btn"
-                        type="button"
-                    >
-                        {{
-                            resendEmailSpinnerVisibility
-                                ? 'Sending'
-                                : 'Resend Application Email'
-                        }}
-                        <div
-                            *ngIf="resendEmailSpinnerVisibility"
-                            class="modal-spinner"
+
+                    <ng-container *ngIf="resendEmail">
+                        <button
+                            (click)="onAction('resend email')"
+                            class="modal-resend-email-btn"
+                            type="button"
                         >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
+                            {{
+                                resendEmailSpinnerVisibility
+                                    ? 'Sending'
+                                    : 'Resend Application Email'
+                            }}
+                            <div
+                                *ngIf="resendEmailSpinnerVisibility"
+                                class="modal-spinner"
+                            >
+                                <app-ta-spinner
+                                    [size]="'small'"
+                                    [color]="'white'"
+                                ></app-ta-spinner>
+                            </div>
+                        </button>
+                    </ng-container>
 
                     <!-- Deactivated -->
-                    <button
-                        *ngIf="editData?.disableButton"
-                        (click)="onAction('deactivate')"
-                        class="modal-deactivate-btn"
-                        type="button"
-                    >
-                        {{ isDeactivated ? 'Activate' : 'Deactivate' }}
-                    </button>
+
+                    <ng-container *ngIf="editData?.disableButton">
+                        <button
+                            (click)="onAction('deactivate')"
+                            class="modal-deactivate-btn"
+                            type="button"
+                        >
+                            {{ isDeactivated ? 'Activate' : 'Deactivate' }}
+                        </button>
+                    </ng-container>
 
                     <!-- DNU -->
-                    <button
-                        *ngIf="editData?.dnuButton"
-                        (click)="onAction('dnu')"
-                        class="modal-deactivate-btn"
-                        type="button"
-                        ngbTooltip
-                        mainTooltip="Do Not Use List"
-                        tooltipBackground="#6c6c6c"
-                        position="top"
-                    >
-                        {{ isDNU ? 'Remove from DNU' : 'Move to DNU' }}
-                    </button>
+
+                    <ng-container *ngIf="editData?.dnuButton">
+                        <button
+                            (click)="onAction('dnu')"
+                            class="modal-deactivate-btn"
+                            type="button"
+                            ngbTooltip
+                            mainTooltip="Do Not Use List"
+                            tooltipBackground="#6c6c6c"
+                            position="top"
+                        >
+                            {{ isDNU ? 'Remove from DNU' : 'Move to DNU' }}
+                        </button>
+                    </ng-container>
 
                     <!-- BFB -->
-                    <button
-                        *ngIf="editData?.bfbButton"
-                        (click)="onAction('bfb')"
-                        class="modal-deactivate-btn"
-                        type="button"
-                        ngbTooltip
-                        mainTooltip="Banned from Broker List"
-                        tooltipBackground="#6c6c6c"
-                        position="top"
+
+                    <ng-container *ngIf="editData?.bfbButton">
+                        <button
+                            (click)="onAction('bfb')"
+                            class="modal-deactivate-btn"
+                            type="button"
+                            ngbTooltip
+                            mainTooltip="Banned from Broker List"
+                            tooltipBackground="#6c6c6c"
+                            position="top"
+                        >
+                            {{ isBFB ? 'Remove from BFB' : 'Move to BFB' }}
+                        </button>
+                    </ng-container>
+
+                    <!-- Convert to Template -->
+
+                    <ng-container
+                        *ngIf="
+                            loadModalTemplate &&
+                            !isConvertedToTemplate &&
+                            !editData
+                        "
                     >
-                        {{ isBFB ? 'Remove from BFB' : 'Move to BFB' }}
-                    </button>
+                        <button
+                            (click)="onAction('convert-to-template')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-convert-to-template-btn"
+                            type="button"
+                        >
+                            Convert to Template
+                        </button>
+                    </ng-container>
                 </div>
 
                 <!-- Footer right side -->
+
                 <div class="ta-modal-footer-right-side">
                     <!-- Save and Add New button -->
+
                     <button
                         *ngIf="saveAndAddNew"
                         (click)="onAction('save and add new')"
-                        class="modal-save-btn modal-save-btn-add-new"
+                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
@@ -237,7 +279,7 @@
                                 ? 'Saving'
                                 : customTextSaveAndAddNew
                                 ? customTextSaveAndAddNew
-                                : 'Save & Add New'
+                                : 'Save and Add New'
                         }}
                         <div
                             *ngIf="saveAddNewSpinnerVisibility"
@@ -251,10 +293,11 @@
                     </button>
 
                     <!-- Set Map Settings -->
+
                     <button
                         *ngIf="mapSettingsModal"
                         (click)="onAction('set-map-settings')"
-                        class="modal-save-btn"
+                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
@@ -273,10 +316,11 @@
                     </button>
 
                     <!-- Create Map Route -->
+
                     <button
                         *ngIf="mapRouteModal"
                         (click)="onAction('create-map-route')"
-                        class="modal-save-btn"
+                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
@@ -299,44 +343,47 @@
                     </button>
 
                     <!-- Save button -->
-                    <button
-                        *ngIf="!mapSettingsModal && !mapRouteModal"
-                        (click)="onAction('save')"
-                        class="modal-save-btn"
-                        [ngClass]="{ valid: isModalValid }"
-                        type="button"
-                    >
-                        {{
-                            profileUpdateText
-                                ? saveSpinnerVisibility
-                                    ? 'Saving'
-                                    : 'Save Changes'
-                                : applicantText
-                                ? saveSpinnerVisibility
-                                    ? 'Inviting'
-                                    : 'Invite'
-                                : saveSpinnerVisibility
-                                ? 'Saving'
-                                : editData?.type?.includes('edit')
-                                ? editData?.type?.includes('fo')
-                                    ? 'Save'
-                                    : 'Save Changes'
-                                : 'Save'
-                        }}
-                        <div
-                            *ngIf="saveSpinnerVisibility"
-                            class="modal-spinner"
+
+                    <ng-container *ngIf="!mapSettingsModal && !mapRouteModal">
+                        <button
+                            (click)="onAction('save')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            [ngClass]="{ valid: isModalValid }"
+                            type="button"
                         >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
+                            {{
+                                profileUpdateText
+                                    ? saveSpinnerVisibility
+                                        ? 'Saving'
+                                        : 'Save Changes'
+                                    : applicantText
+                                    ? saveSpinnerVisibility
+                                        ? 'Inviting'
+                                        : 'Invite'
+                                    : saveSpinnerVisibility
+                                    ? 'Saving'
+                                    : editData?.type?.includes('edit')
+                                    ? editData?.type?.includes('fo')
+                                        ? 'Save'
+                                        : 'Save Changes'
+                                    : 'Save'
+                            }}
+
+                            <ng-container *ngIf="saveSpinnerVisibility">
+                                <div class="modal-spinner">
+                                    <app-ta-spinner
+                                        [size]="'small'"
+                                        [color]="'white'"
+                                    ></app-ta-spinner>
+                                </div>
+                            </ng-container>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
 
             <!-- Modal Footer Confirmation Modal -->
+
             <div
                 *ngIf="confirmationData"
                 class="modal-footer"
@@ -345,6 +392,7 @@
                 }"
             >
                 <!-- Cancel -->
+
                 <button
                     *ngIf="confirmationData.subType !== 'cdl void'"
                     (click)="onAction('close')"
@@ -353,7 +401,9 @@
                 >
                     Cancel
                 </button>
+
                 <!-- Delete -->
+
                 <button
                     *ngIf="
                         ['delete', 'multiple delete'].includes(
@@ -372,11 +422,13 @@
                 >
                     Delete
                 </button>
+
                 <!-- Activate -->
+
                 <button
                     *ngIf="confirmationData?.type === 'activate'"
                     (click)="onAction('activate')"
-                    class="modal-save-btn valid modal-confirmation-btn"
+                    class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn valid modal-confirmation-btn"
                     type="button"
                 >
                     Activate
@@ -387,7 +439,9 @@
                             confirmationData?.template.substring(1)
                     }}
                 </button>
+
                 <!-- Deactivate -->
+
                 <button
                     *ngIf="confirmationData?.type === 'deactivate'"
                     (click)="onAction('deactivate')"
@@ -396,16 +450,20 @@
                 >
                     Deactivate {{ confirmationData?.template }}
                 </button>
+
                 <!-- Hire -->
+
                 <button
                     *ngIf="confirmationData?.type === 'hire'"
                     (click)="onAction('hire')"
-                    class="modal-save-btn active valid modal-confirmation-btn"
+                    class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn active valid modal-confirmation-btn"
                     type="button"
                 >
                     Hire
                 </button>
+
                 <!-- Archive -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'archive'"
                     (click)="onAction('archive')"
@@ -418,7 +476,9 @@
                             : 'Archive' + ' ' + confirmationData?.template
                     }}
                 </button>
+
                 <!-- Void CDL -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'cdl void'"
                     (click)="onAction('cdl-void')"
@@ -427,7 +487,9 @@
                 >
                     Void Current CDL
                 </button>
+
                 <!-- DNU -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'dnu'"
                     (click)="onAction('dnu')"
@@ -447,7 +509,9 @@
                     }}
                     DNU
                 </button>
+
                 <!-- DNU -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'ban list'"
                     (click)="onAction('bfb')"
@@ -467,7 +531,9 @@
                     }}
                     Ban List
                 </button>
-                <!-- FAVORITE -->
+
+                <!-- Favourite -->
+
                 <button
                     *ngIf="confirmationData?.subType === 'favorite'"
                     (click)="onAction('favorite')"
@@ -481,9 +547,11 @@
                     }}
                 </button>
             </div>
+
             <!-- End Confirmation Modal -->
 
             <!-- Modal DropZone -->
+
             <div
                 class="drop-zone-active"
                 [class.drop-zone-active-hovered]="hoverZone"
@@ -499,7 +567,9 @@
                 ></app-ta-upload-dropzone>
             </div>
         </div>
+
         <!-- Modal Additional Part -->
+
         <div
             *ngIf="
                 modalAdditionalPart && (mapVisibility || hazardousVisibility)

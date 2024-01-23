@@ -54,7 +54,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         }, 10);
     }
 
-    expandTable(data: any){
+    expandTable(data: any) {
         this.reportTableData = data;
         this.tableExpanded = !this.tableExpanded;
     }
@@ -73,11 +73,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         this.initTableOptions();
 
         this.payrollData = this.pquery.payrolldata$;
-
-        this.pquery.payrolldata$.subscribe(data => {
-            console.log("WHAT IS DATA");
-            console.log(data);
-        });
 
         const driverCount = JSON.parse(
             localStorage.getItem('driverTableCount')
@@ -148,8 +143,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         if (dataType === 'active') {
             this.driversActive = this.driversActiveQuery.getAll();
 
-            console.log('WHAT IS FINDING DATA');
-            console.log(this.driversActive);
             return this.driversActive?.length ? this.driversActive : [];
         } else if (dataType === 'inactive') {
             this.driversInactive = this.driversInactiveQuery.getAll();
@@ -175,7 +168,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
             toolbarActions: {
                 showMoneyFilter: true,
                 hideOpenModalButton: true,
-                hideWidth: true
+                hideWidth: true,
             },
             actions: this.getTableActions(),
         };

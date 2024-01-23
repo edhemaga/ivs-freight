@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 .search-chips-container {
     display: flex;
 
@@ -15,12 +17,33 @@
             align-items: center;
             cursor: pointer;
 
+            &.icon-disabled {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6;
+                            transition: fill 0.25s;
+                        }
+                    }
+                }
+
+                &:hover {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: $ta-light-grey-6;
+                            }
+                        }
+                    }
+                }
+            }
+
             &:hover {
                 svg-icon {
                     svg {
                         path {
-                            fill: #6c6c6c;
-                            transition: 0.25s;
+                            fill: $bw6-2;
+                            transition: fill 0.25s;
                         }
                     }
                 }
@@ -40,8 +63,8 @@
 
         .search-input {
             height: 26px;
-            width: 0;
             transition: 0.25s;
+
             input {
                 width: 100%;
                 height: 100%;
@@ -49,19 +72,56 @@
                 background: transparent;
                 padding: 0;
                 outline: none;
-                color: #ffffff;
+                color: $white;
                 font-size: 14px;
                 font-weight: 400;
 
                 &::selection {
-                    color: #ffffff;
-                    background: #ffffff20;
+                    color: $white;
+                    background: $white-5;
+                }
+            }
+
+            .btn-container {
+                padding-left: 5px;
+
+                .confirm-icon,
+                .clear-icon {
+                    cursor: pointer;
+                    line-height: 0;
+                    transition: transform 0.3s ease;
+
+                    &:hover {
+                        transform: scale(1.2);
+
+                        svg {
+                            rect {
+                                fill: $white;
+                            }
+                        }
+                    }
+
+                    svg {
+                        rect {
+                            transition: fill 0.3s ease;
+                            fill: $ta-white-3;
+                        }
+
+                        path {
+                            transition: fill 0.3s ease;
+                            fill: $ta-black-3;
+                        }
+                    }
+                }
+
+                .confirm-icon {
+                    margin-right: 4px;
                 }
             }
 
             /* Chrome, Firefox, Opera, Safari 10.1+ */
             input::placeholder {
-                color: #aaaaaa;
+                color: $ta-light-grey-2;
             }
         }
     }
@@ -71,7 +131,7 @@
         height: 26px;
         display: flex;
         gap: 4px;
-        background: #ffffff;
+        background: $white;
         padding-left: 4px;
 
         .chip {
@@ -88,12 +148,12 @@
             position: relative;
 
             &:hover {
-                color: white;
-                transition: 0.25s;
+                color: $white;
+                transition: color 0.25s;
 
                 .delete-chip {
                     opacity: 1;
-                    transition: 0.25s;
+                    transition: opacity 0.25s;
                 }
             }
 
@@ -103,7 +163,7 @@
                 top: -6px;
                 width: 14px;
                 height: 14px;
-                background: #aaaaaa;
+                background: $ta-light-grey-2;
                 border: 2px solid #f1f1f1;
                 border-radius: 50%;
                 display: flex;
@@ -113,57 +173,87 @@
                 transition: background 0.25s, opacity 0.25s;
 
                 &:hover {
-                    background: #ef5350;
-                    transition: 0.25s;
+                    background: $ta-red-2;
+                    transition: background 0.25s;
                 }
 
                 svg-icon {
                     display: flex;
                     svg {
                         path {
-                            fill: #ffffff;
+                            fill: $white;
                         }
                     }
                 }
             }
         }
 
-        .first-chip-style {
-            background: #26a69020;
-            color: #26a690;
+        .first-chip-toolbar-style {
+            background: $ta-green-2;
+            color: $white;
 
             &:hover {
-                background: #26a690;
-                transition: 0.25s;
+                background: $special-filter-green;
+                transition: background 0.25s;
+            }
+        }
+
+        .second-chip-toolbar-style {
+            background: $special-filter-purple;
+            color: $white;
+
+            &:hover {
+                background: $special-filter-purple-1;
+                transition: background 0.25s;
+            }
+        }
+
+        .third-chip-toolbar-style {
+            background: $ta-yellow-5;
+            color: $white;
+
+            &:hover {
+                background: $ta-yellow-2;
+                transition: background 0.25s;
+            }
+        }
+
+        .first-chip-style {
+            background: $special-filter-green-1;
+            color: $ta-review-green-2;
+
+            &:hover {
+                background: $ta-review-green-2;
+                transition: background 0.25s;
             }
         }
 
         .second-chip-style {
-            background: #ab47bc20;
-            color: #ab47bc;
+            background: $special-filter-purple-3;
+            color: $special-filter-purple-2;
 
             &:hover {
-                background: #ab47bc;
-                transition: 0.25s;
+                background: $special-filter-purple-2;
+                transition: background 0.25s;
             }
         }
 
         .third-chip-style {
-            background: #ffa72620;
-            color: #ffa726;
+            background: $ta-white-6;
+            color: $special-filter-orange;
 
             &:hover {
-                background: #ffa726;
-                transition: 0.25s;
+                background: $special-filter-orange;
+                transition: background 0.25s;
             }
         }
 
         .delete-chip-style {
-            background: #ef5350 !important;
-            transition: 0.25s;
+            background: $ta-red-2 !important;
+            transition: background 0.25s;
         }
 
-        .delete-all-schips {
+        .delete-all-chips {
             cursor: pointer;
             width: 26px;
             height: 26px;
@@ -176,14 +266,29 @@
                 display: flex;
             }
 
-            &:hover {
-                background: #f4433620;
-                transition: 0.25s;
+            &.regular-style {
+                &:hover {
+                    background: $ta-red-12;
+                    transition: background 0.25s;
 
-                svg {
-                    path {
-                        fill: #f44336;
-                        transition: 0.25s;
+                    svg {
+                        path {
+                            fill: $ta-red-3;
+                            transition: fill 0.25s;
+                        }
+                    }
+                }
+            }
+            &.toolbar-style {
+                &:hover {
+                    background: $bw2;
+                    transition: background 0.25s;
+
+                    svg {
+                        path {
+                            fill: $ta-black;
+                            transition: fill 0.25s;
+                        }
                     }
                 }
             }
@@ -193,7 +298,7 @@
 
 /* NG Class */
 .search-input-active {
-    background: #1d1d1d !important;
+    background: $ta-black-3 !important;
     border-radius: 2px;
     transition: background 0.25s !important;
 
@@ -202,8 +307,8 @@
             svg-icon {
                 svg {
                     path {
-                        fill: #eeeeee !important;
-                        transition: 0.25s !important;
+                        fill: $bw2 !important;
+                        transition: fill 0.25s !important;
                     }
                 }
             }
@@ -212,42 +317,41 @@
         svg-icon {
             svg {
                 path {
-                    fill: #b7b7b7 !important;
+                    fill: $bw4 !important;
                 }
             }
         }
     }
 
-    .icon-border{
+    .icon-border {
         width: 1px;
         height: 100%;
         display: flex;
         align-items: center;
         margin-right: 4px;
 
-        .inner-border{
+        .inner-border {
             width: 100%;
             height: 14px;
-            background: #CCCCCC40;
+            background: $ta-light-grey-8;
         }
     }
 
-
     .search-input {
         width: 147px !important;
-        transition: 0.25s;
+        transition: width 0.25s;
     }
 }
 
-.first-chip-animation {
+.first-chip-toolbar-animation {
     animation: searchOneAnimation 0.2s ease-in-out;
 }
 
-.second-chip-animation {
+.second-chip-toolbar-animation {
     animation: searchTwoAnimation 0.2s ease-in-out;
 }
 
-.third-chip-animation {
+.third-chip-toolbar-animation {
     animation: searchThreeAnimation 0.2s ease-in-out;
 }
 

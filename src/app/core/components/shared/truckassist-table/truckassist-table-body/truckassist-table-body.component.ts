@@ -11,29 +11,61 @@ import {
     Output,
     SimpleChanges,
     ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
+import {
+    FormArray,
+    FormControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
+//scrolling
 import {
     CdkVirtualScrollViewport,
     VIRTUAL_SCROLL_STRATEGY,
 } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+
+//strategy
 import { TableStrategy } from './table_strategy';
 import { Subject, takeUntil } from 'rxjs';
+
+//services
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-import { Titles } from 'src/app/core/utils/application.decorators';
 import { FilesService } from 'src/app/core/services/shared/files.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//decorators
+import { Titles } from 'src/app/core/utils/application.decorators';
+
+//components
 import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
+import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
+
+//modul
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+//sanitizer
 import { DomSanitizer } from '@angular/platform-browser';
+
+//pipes
 import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
+
+//models
+import { CompanyAccountLabelResponse } from 'appcoretruckassist';
+import {
+    tableBodyColorLabel,
+    tableBodyColumns,
+    tableBodyOptions,
+} from '../../model/tableBody';
 
 @Titles()
 @Component({
@@ -41,6 +73,7 @@ import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight
     templateUrl: './truckassist-table-body.component.html',
     styleUrls: ['./truckassist-table-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
         CommonModule,
@@ -52,6 +85,11 @@ import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight
         TaUploadFilesComponent,
         NgbPopoverModule,
         TableHighlightSearchTextPipe,
+        TaInputDropdownLabelComponent,
+        TaInputDropdownComponent,
+        NgbPopoverModule,
+        NgbModule,
+        AppTooltipComponent,
     ],
     providers: [
         {
@@ -66,17 +104,19 @@ export class TruckassistTableBodyComponent
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
     public virtualScrollViewport: CdkVirtualScrollViewport;
+    public selectedContactColor: CompanyAccountLabelResponse;
 
     @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    public dropdownSelectionArray = new FormArray([]);
 
     @Input() viewData: any[];
-    @Input() columns: any[];
-    @Input() options: any;
+    @Input() columns: tableBodyColumns[];
+    @Input() options: tableBodyOptions;
     @Input() tableData: any[];
     @Input() selectedTab: string;
-
+    public selectedContactLabel: tableBodyColorLabel[] = [];
     pinedColumns: any = [];
     pinedWidth: number = 0;
     notPinedColumns: any = [];
@@ -129,17 +169,14 @@ export class TruckassistTableBodyComponent
     ngOnInit(): void {
         // Get Selected Tab Data
         this.getSelectedTabTableData();
-
         this.viewDataEmpty = this.viewData.length ? false : true;
 
         this.viewDataLength = this.viewData.length;
-
         // Get Table Sections(Pined, Not Pined, Actions)
         this.getTableSections();
-
+        this.viewData.length && this.labelDropdown();
         // Set Dropdown Content
         this.setDropContent();
-
         // For Rendering One By One
         this.renderOneByOne();
 
@@ -356,7 +393,16 @@ export class TruckassistTableBodyComponent
     trackTableActionsColumns(item: any) {
         return item.columnId;
     }
-
+    public labelDropdown(): void {
+        for (let row of this.viewData) {
+            this.dropdownSelectionArray.push(new FormControl());
+            if (row['companyContactLabel']) {
+                this.selectedContactLabel.push(row['companyContactLabel']);
+            } else if (row['companyAccountLabel']) {
+                this.selectedContactLabel.push(row['companyAccountLabel']);
+            }
+        }
+    }
     // Attachment Update
     checkAttachmentUpdate() {
         if (this.activeAttachment !== -1) {
@@ -378,7 +424,6 @@ export class TruckassistTableBodyComponent
                                 data.fileCount = res.length;
                             }
                         });
-
                         this.viewData = [...newViewData];
                     }
                 });
@@ -836,6 +881,56 @@ export class TruckassistTableBodyComponent
         });
     }
 
+    public onSaveLabel(
+        data: { data: { name: string; action: string } },
+        index: number
+    ): void {
+        this.selectedContactLabel[index] = {
+            ...this.selectedContactLabel[index],
+            name: data.data.name,
+        };
+
+        this.bodyActions.emit({
+            data: this.selectedContactLabel[index],
+            id: this.viewData[index].id,
+            type:
+                data.data?.action == 'update-label'
+                    ? 'update-label'
+                    : 'label-change',
+        });
+    }
+
+    public onPickExistLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
+        this.selectedContactLabel[index] = event;
+
+        this.onSaveLabel(
+            {
+                data: {
+                    name: this.selectedContactLabel[index].name,
+                    action: 'update-label',
+                },
+            },
+            index
+        );
+    }
+
+    public onSelectColorLabel(
+        event: CompanyAccountLabelResponse,
+        index: number
+    ): void {
+        this.selectedContactColor = event;
+
+        this.selectedContactLabel[index] = {
+            ...this.selectedContactLabel[index],
+            colorId: this.selectedContactColor.id,
+            color: this.selectedContactColor.name,
+            code: this.selectedContactColor.code,
+            hoverCode: this.selectedContactColor.hoverCode,
+        };
+    }
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {
         this.destroy$.next();

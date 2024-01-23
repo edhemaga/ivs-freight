@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 // Components
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -9,6 +10,7 @@ import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -32,7 +34,7 @@ import {
 import { TruckListResponse, TruckResponse } from 'appcoretruckassist';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
-import { BodyResponseTruck } from '../truck.modal';
+import { BodyResponseTruck, FilterOptions } from '../truck.modal';
 import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 import {
     DataForCardsAndTables,
@@ -45,8 +47,13 @@ import { DisplayTruckConfiguration } from '../truck-card-data';
 import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
+//Constants
+import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
+
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
+import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 
 @Component({
     selector: 'app-truck-table',
@@ -67,17 +74,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = false;
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
-    // TODO type
-    public backFilterQuery = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backFilterQuery: FilterOptions =
+        TableDriverColorsConstants.BACK_FILTER_QUERY;
+
     public resizeObserver: ResizeObserver;
 
     //Data to display from model Truck Active
@@ -100,6 +99,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private modalService: ModalService,
+        private router: Router,
         private tableService: TruckassistTableService,
         private truckService: TruckTService,
         private confirmationService: ConfirmationService,
@@ -418,6 +418,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 showMoneyFilter: true,
+                showTruckFilter: true,
                 viewModeOptions: [
                     {
                         name: ConstantStringTableComponentsEnum.LIST,
@@ -538,11 +539,31 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    private setTruckTooltipColor(truckName: string): string {
+        if (truckName === TruckName.SEMI_TRUCK) {
+            return TooltipColors.LIGHT_GREEN;
+        } else if (truckName === TruckName.SEMI_SLEEPER) {
+            return TooltipColors.YELLOW;
+        } else if (truckName === TruckName.BOX_TRUCK) {
+            return TooltipColors.RED;
+        } else if (truckName === TruckName.CARGO_VAN) {
+            return TooltipColors.BLUE;
+        } else if (truckName === TruckName.CAR_HAULER) {
+            return TooltipColors.PINK;
+        } else if (truckName === TruckName.TOW_TRUCK) {
+            return TooltipColors.PURPLE;
+        } else if (truckName === TruckName.SPOTTER) {
+            return TooltipColors.BROWN;
+        }
+    }
+
     // TODO any type
     private mapTruckData(data: any): void {
         return {
             ...data,
             truckTypeIcon: data.truckType.logoName,
+            tableTruckName: data.truckType.name,
+            tableTruckColor: this.setTruckTooltipColor(data.truckType.name),
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
@@ -1031,6 +1052,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             case ConstantStringTableComponentsEnum.ADD_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
+                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    {
+                        ...event,
+                        modal: ConstantStringTableComponentsEnum.TRUCK,
+                        tabSelected: this.selectedTab,
+                    }
+                );
+                break;
+            }
+            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/truck/${event.id}/details`]);
+                break;
+            }
+            case ConstantStringTableComponentsEnum.ADD_REPAIR: {
+                this.modalService.openModal(
+                    TtTitleModalComponent,
                     { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,

@@ -1,5 +1,5 @@
 <div
-    class="toolbar-container"
+    class="toolbar-container d-flex align-items-center"
     [ngClass]="{ mapToolbarStyle: isMapShowning }"
     [ngStyle]="{
         width: !options.toolbarActions.hideWidth ? toolbarWidth : 'auto',
@@ -8,159 +8,216 @@
 >
     <!-- LIST NAME -->
     <div
-        class="list-name"
+        class="list-name d-flex justify-content-center align-items-center ta-font-black"
         *ngIf="listName && !options.toolbarActions.hideListName"
     >
-        {{ listName }}
+        {{ listName | titlecase }}
     </div>
 
     <!-- ONE TAB -->
     <div
-        class="one-tab-container"
+        class="one-tab-container ta-font-black"
         *ngIf="tableData.length === 1 && !options.toolbarActions.hideDataCount"
     >
-        {{ tableData[0].length }}
+        ({{ tableData[0].length }})
     </div>
 
     <!-- TABS -->
-    <div class="tab-wrapper" *ngIf="tableData.length > 1">
-        <ng-container *ngFor="let data of tableData; let i = index">
-            <ng-container [ngSwitch]="data.type">
-                <div
-                    *ngSwitchCase="'dropdown'"
-                    class="tab-container tab-margin"
-                >
-                    <app-ta-input-dropdown
-                        [formControl]="dropdownSelection"
-                        [template]="data.template"
-                        [inputConfig]="data.inputConfig"
-                        [options]="data.dropdownData"
-                        [activeItem]="data.selectedDispatcher"
-                        (selectedItem)="onToolBarSelectAction($event)"
-                    ></app-ta-input-dropdown>
-                </div>
-                <div
-                    *ngSwitchDefault
-                    class="tab-container"
-                    [ngClass]="{
-                        'tab-inactive': selectedTab !== data.field,
-                        'tab-active': selectedTab === data.field,
-                        'tab-margin': i !== tableData.length - 1
-                    }"
-                    (click)="onSelectTab(data)"
-                >
-                    <div class="tab">
-                        <div class="data-count" *ngIf="!data.hideDataCount">
-                            {{ data.length }}
+    <ng-container *ngIf="tableData.length > 1">
+        <div class="tab-wrapper d-flex align-items-center">
+            <ng-container *ngFor="let data of tableData; let i = index">
+                <ng-container [ngSwitch]="data.type">
+                    <ng-container *ngSwitchCase="'dropdown'">
+                        <div class="tab-container d-flex tab-margin">
+                            <app-ta-input-dropdown
+                                [formControl]="dropdownSelection"
+                                [template]="data.template"
+                                [inputConfig]="data.inputConfig"
+                                [options]="data.dropdownData"
+                                [activeItem]="data.selectedDispatcher"
+                                (selectedItem)="onToolBarSelectAction($event)"
+                            ></app-ta-input-dropdown>
                         </div>
-                        <svg-icon
-                            *ngIf="data.iconLink"
-                            [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                            [src]="data.iconLink"
-                        ></svg-icon>
-                        <div class="tab-title">{{ data.title }}</div>
-                    </div>
-                </div>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <div
+                            class="tab-container d-flex"
+                            [ngClass]="{
+                                'tab-inactive': selectedTab !== data.field,
+                                'tab-active': selectedTab === data.field
+                            }"
+                            (click)="onSelectTab(data)"
+                        >
+                            <div class="tab d-flex align-items-center">
+                                <ng-container *ngIf="!data.iconLink">
+                                    <div
+                                        class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold"
+                                    >
+                                        {{ data.title | titlecase }}
+                                    </div>
+                                </ng-container>
+                                <svg-icon
+                                    *ngIf="data.iconLink"
+                                    [svgStyle]="{
+                                        'width.px': 20,
+                                        'height.px': 20
+                                    }"
+                                    [src]="data.iconLink"
+                                ></svg-icon>
+                                <ng-container *ngIf="!data.hideDataCount">
+                                    <div
+                                        class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold"
+                                    >
+                                        {{ data.length }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
             </ng-container>
-        </ng-container>
-    </div>
-
+        </div>
+    </ng-container>
     <!-- TOOLBAR FILTERS AND OTHER -->
+    <ng-container *ngIf="tableData.length > 1">
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
     <app-toolbar-filters
         [activeTableData]="activeTableData"
         [options]="options"
         (toolbarFilter)="changeModeView($event)"
     ></app-toolbar-filters>
 
+    <div class="selected-container d-flex align-items-center">
+        <ng-container *ngIf="tableRowsSelected.length">
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
+        </ng-container>
+
+        <div class="selected-container-wrapper d-flex align-items-center">
+            <ng-container *ngIf="tableRowsSelected.length">
+                <div
+                    class="selected-container-count ta-font-bold d-flex justify-content-center align-items-center"
+                    [ngClass]="{
+                        'selected-container-count-select-style':
+                            tableRowsSelected.length
+                    }"
+                >
+                    {{ tableRowsSelected.length }} Selected
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
     <!-- TOOLBAR ACTIONS -->
     <div
-        class="table-actions"
+        class="table-actions d-flex justify-content-end align-items-center"
         [class.m-0]="options.toolbarActions.hideOpenModalButton"
     >
-        <div class="actions-container">
+        <div
+            class="actions-container d-flex justify-content-center align-items-center"
+        >
             <!-- Activation -->
-            <div
+            <ng-container
                 *ngIf="
                     tableRowsSelected.length &&
                     !options.toolbarActions.hideActivationButton
                 "
-                class="action-div"
             >
-                <svg-icon
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    [src]="'assets/svg/truckassist-table/activation-icon.svg'"
-                ></svg-icon>
-            </div>
-
-            <!-- BORDER -->
-            <div
-                class="border-container"
-                *ngIf="
-                    tableRowsSelected.length &&
-                    !options.toolbarActions.hideDeleteButton
-                "
-            >
-                <div class="border"></div>
-            </div>
+                <div
+                    class="action-div d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        class="action-div-icon"
+                        [src]="
+                            'assets/svg/truckassist-table/activation-icon.svg'
+                        "
+                    ></svg-icon>
+                </div>
+            </ng-container>
 
             <!-- Delete -->
-            <div
+            <ng-container
                 *ngIf="
                     tableRowsSelected.length &&
                     !options.toolbarActions.hideDeleteButton
                 "
-                (click)="deleteSelectedRows()"
-                class="action-div"
             >
-                <svg-icon
-                    [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
-                    [src]="'assets/svg/truckassist-table/trash-icon.svg'"
-                ></svg-icon>
-            </div>
-
-            <!-- BORDER -->
-            <div
-                class="border-container"
-                *ngIf="
-                    tableRowsSelected.length &&
-                    !options.toolbarActions.hideActivationButton
-                "
-            >
-                <div class="border"></div>
-            </div>
+                <div
+                    (click)="deleteSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/truckassist-table/trash-icon.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
 
             <!-- Print -->
-            <div *ngIf="tableRowsSelected.length" class="action-div">
-                <svg-icon
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="'assets/svg/truckassist-table/print-icon.svg'"
-                ></svg-icon>
-            </div>
+            <ng-container *ngIf="tableRowsSelected.length">
+                <div
+                    class="action-div d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        class="action-div-icon"
+                        [src]="'assets/svg/truckassist-table/print-icon.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
 
             <!-- BORDER -->
-            <div class="border-container" *ngIf="tableRowsSelected.length">
-                <div class="border"></div>
-            </div>
+            <ng-container *ngIf="tableRowsSelected.length">
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+            </ng-container>
 
             <!-- Options -->
-            <div
-                *ngIf="!options.toolbarActions.hideListColumn"
-                #op="ngbPopover"
-                (click)="onShowOptions(op)"
-                [ngbPopover]="optionsPopover"
-                [placement]="'bottom-right'"
-                [autoClose]="'outside'"
-                popoverClass="toolbar-options-popover"
-                [ngClass]="{ 'active-options': optionsPopupOpen }"
-                triggers="manual"
-                (hidden)="optionsPopupOpen = false"
-                class="action-div"
-            >
-                <svg-icon
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="'assets/svg/truckassist-table/burger-icon.svg'"
-                ></svg-icon>
-            </div>
+            <ng-container *ngIf="!options.toolbarActions.hideListColumn">
+                <div ngbTooltip>
+                    <div
+                        #op="ngbPopover"
+                        (click)="onShowOptions(op)"
+                        [ngbPopover]="optionsPopover"
+                        [placement]="'bottom-right'"
+                        [autoClose]="'outside'"
+                        popoverClass="toolbar-options-popover"
+                        triggers="manual"
+                        (hidden)="optionsPopupOpen = false"
+                        class="action-div active-options d-flex align-items-center"
+                        mainTooltip="Tooltip"
+                        [tooltipBackground]="
+                            optionsPopupOpen ? '#CCCCCC' : '#424242'
+                        "
+                        [tooltipColor]="
+                            optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
+                        "
+                        position="bottom"
+                    >
+                        <svg-icon
+                            class="d-flex justify-content-center align-items-center"
+                            [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                            [src]="
+                                'assets/svg/truckassist-table/burger-icon.svg'
+                            "
+                        ></svg-icon>
+                    </div>
+                </div>
+            </ng-container>
 
             <!-- Dispatchboard table options -->
             <div
@@ -177,28 +234,45 @@
                 ></svg-icon>
             </div>
             <!-- BORDER -->
-            <div
-                class="border-container"
-                *ngIf="options.toolbarActions.showDispatchSettings"
-            >
-                <div class="border"></div>
-            </div>
-            <div
-                class="settings-dispatch"
-                *ngIf="options.toolbarActions.showDispatchSettings"
-            >
-                <svg-icon
-                    [src]="'assets/svg/common/ic_settings.svg'"
-                ></svg-icon>
-            </div>
-            <div
-                class="new-load"
-                *ngIf="options.toolbarActions.showDispatchAdd"
-            >
-                <svg-icon
-                    [src]="'assets/svg/dispatchboard/add-load.svg'"
-                ></svg-icon>
-            </div>
+            <ng-container *ngIf="options.toolbarActions.showDispatchSettings">
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="options.toolbarActions.showDispatchSettings">
+                <div class="settings-dispatch">
+                    <svg-icon
+                        [src]="'assets/svg/common/ic_settings.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="options.toolbarActions.showDispatchAdd">
+                <div class="new-load">
+                    <svg-icon
+                        [src]="'assets/svg/dispatchboard/add-load.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!options.toolbarActions.hideOpenModalButton">
+                <div
+                    class="modal2 d-flex justify-content-center align-items-center"
+                >
+                    <div
+                        class="modal-open-container"
+                        (click)="onToolBarAction('open-modal')"
+                    >
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': 17.78,
+                                'height.px': 17.78
+                            }"
+                            [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 
@@ -215,16 +289,6 @@
     </div>
 
     <!-- OPEN MODAL BUTTON -->
-    <div
-        class="modal-open-container"
-        (click)="onToolBarAction('open-modal')"
-        *ngIf="!options.toolbarActions.hideOpenModalButton"
-    >
-        <svg-icon
-            [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-            [src]="'assets/svg/truckassist-table/plus-icon.svg'"
-        ></svg-icon>
-    </div>
 </div>
 
 <ng-template #optionsPopover let-data="data" data-toggle="popover">
@@ -361,9 +425,7 @@
                             class="column-text"
                             [ngClass]="{ 'selectable-text': !column.isPined }"
                         >
-                            {{
-                                column.title !== '' ? column.title : column.name
-                            }}
+                            {{ column.name || column.title }}
                         </div>
                     </div>
 

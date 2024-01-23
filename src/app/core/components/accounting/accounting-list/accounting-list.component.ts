@@ -1196,7 +1196,6 @@ export class AccountingListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {}
 
     searchInsideList(chip: any) {
-        /* console.log(chip); */
         if (!chip) {
             return;
         }

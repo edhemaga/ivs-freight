@@ -1,5 +1,12 @@
 import { Subject } from 'rxjs';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { noteColors } from '../../../../../const';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
@@ -33,7 +40,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         ]),
     ],
 })
-export class TaNoteContainerComponent implements OnInit {
+export class TaNoteContainerComponent implements OnInit, OnDestroy {
     @Input() value: any;
     @Input() range: any;
     @Input() selectionTaken: any;
@@ -69,7 +76,7 @@ export class TaNoteContainerComponent implements OnInit {
     ngOnInit(): void {}
 
     filterContainersColor() {
-        this.containerColors.sort((a, b) => {
+        this.containerColors.sort((a) => {
             if (a['color'] != this.selectedColorName.color) {
                 return 1;
             }
@@ -82,9 +89,8 @@ export class TaNoteContainerComponent implements OnInit {
         if (indx || indx === 0) {
             this.selectedColorName = this.containerColors[indx];
         }
-        document.execCommand('styleWithCSS', false, 'true');
+
         if (this.range) {
-            console.log("RANGE ON INPUT");
             this.selectionTaken.removeAllRanges();
             this.selectionTaken.addRange(this.range);
         }
@@ -150,7 +156,7 @@ export class TaNoteContainerComponent implements OnInit {
             this.containerColors.map((col, indx) => {
                 if (col.color == this.selectedPaternColor) {
                     this.selectedColorName = this.containerColors[indx];
-                    document.execCommand('styleWithCSS', false, 'true');
+
                     if (this.lastSavedIndex != indx) {
                         this.filterContainersColor();
                     }

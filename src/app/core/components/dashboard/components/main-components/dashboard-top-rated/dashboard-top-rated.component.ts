@@ -370,6 +370,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         this.currentActiveTab = activeTab;
 
+        this.isShowingMore = false;
+
         if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
             this.getTopRatedListData(this.selectedCustomPeriodRange);
         } else {

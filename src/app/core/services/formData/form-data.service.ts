@@ -17,27 +17,23 @@ export class FormDataService {
                         element instanceof Object &&
                         !(item[1][0] instanceof Blob)
                     ) {
-                        
-                        Object.entries(element).map((it, indx) => {
-                            if(it[1] instanceof Array){
-                                it[1].map(ita => {
+                        Object.entries(element).map((it) => {
+                            if (it[1] instanceof Array) {
+                                it[1].map((ita) => {
                                     this.formData.append(
                                         `${item[0]}[${ind}].${it[0]}`,
                                         ita as any
                                     );
                                 });
-                            }
-                            else if (it[1] instanceof Object) {
-                                Object.entries(it[1]).map((at, indx) => {
+                            } else if (it[1] instanceof Object) {
+                                Object.entries(it[1]).map((at) => {
                                     at[1] &&
                                         this.formData.append(
                                             `${item[0]}[${ind}].${it[0]}.${at[0]}`,
                                             at[1] as any
                                         );
                                 });
-                            } 
-                            else {
-                                
+                            } else {
                                 it[1] &&
                                     this.formData.append(
                                         `${item[0]}[${ind}].${it[0]}`,
@@ -53,7 +49,7 @@ export class FormDataService {
                 item[1] instanceof Object &&
                 !(item[1][0] instanceof Blob)
             ) {
-                Object.entries(item[1]).map((it, indx) => {
+                Object.entries(item[1]).map((it) => {
                     const insideData =
                         it[1] instanceof Object
                             ? JSON.stringify(it[1])

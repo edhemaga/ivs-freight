@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // Compoenents
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
@@ -30,7 +30,7 @@ import {
 } from '../../shared/model/cardData';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
-    FilterOptions,
+    FilterOptionsLoad,
     LoadModel,
 } from '../../shared/model/table-components/load-modal';
 
@@ -54,8 +54,12 @@ import { tableSearch } from 'src/app/core/utils/methods.globals';
 // Constants
 import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
+//Helpers
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-load-table',
@@ -65,7 +69,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-
+    public loadTableData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -77,41 +81,31 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadClosed: LoadClosedState[] = [];
     public loadPanding: LoadPandingState[] = [];
     public loadTemplate: LoadTemplateState[] = [];
+
+    public loadingPage: boolean = false;
     public activeTableData: DataForCardsAndTables;
-    public backLoadFilterQuery: FilterOptions = {
-        loadType: undefined,
-        statusType: 1,
-        status: undefined,
-        dispatcherId: undefined,
-        dispatchId: undefined,
-        brokerId: undefined,
-        shipperId: undefined,
-        dateFrom: undefined,
-        dateTo: undefined,
-        revenueFrom: undefined,
-        revenueTo: undefined,
-        truckId: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backLoadFilterQuery: FilterOptionsLoad =
+        TableDropdownLoadComponentConstants.LOAD_BACK_FILTER;
 
     //Data to display from model
+    public displayRowsFrontTemplate: CardRows[] =
+        DisplayLoadConfiguration.displayRowsFrontTemplate;
+
+    public displayRowsBackTemplate: CardRows[] =
+        DisplayLoadConfiguration.displayRowsBackTemplate;
+
     public displayRowsFront: CardRows[] =
         DisplayLoadConfiguration.displayRowsFront;
-
     public displayRowsBack: CardRows[] =
         DisplayLoadConfiguration.displayRowsBack;
 
-    public cardTitle: string = DisplayLoadConfiguration.cardTitle;
-
     public page: string = DisplayLoadConfiguration.page;
-
     public rows: number = DisplayLoadConfiguration.rows;
+
+    public cardTitle: string;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -126,7 +120,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         public datePipe: DatePipe
     ) {}
 
-    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
 
@@ -143,13 +136,32 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRows();
 
         this.driverActions();
+
+        this.setTableFilter();
     }
 
-    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (!res.selectedFilter) {
+                        this.viewData = this.loadTableData?.filter((loadData) =>
+                            res.filteredArray.every(
+                                (filterData) => filterData.id === loadData.id
+                            )
+                        );
+                    }
+
+                    if (res.selectedFilter) this.viewData = this.loadTableData;
+                }
+            });
     }
 
     // Resize
@@ -172,7 +184,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Reset Columns
     private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -183,7 +194,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Toogle Columns
     private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
@@ -200,7 +210,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Search
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
@@ -240,34 +249,35 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Delete Selected Rows Currently is commented out i need to check why // TODO check why is this commented out
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                if (response.length) {
-                    // let mappedRes = response.map((item) => {
-                    //   return {
-                    //     id: item.id,
-                    //     data: { ...item.tableData, name: item.tableData?.fullName },
-                    //   };
-                    // });
-                    /* this.modalService.openModal(
-            ConfirmationModalComponent,
-            { size: 'small' },
-            {
-              data: null,
-              array: mappedRes,
-              template: 'driver',
-              type: 'multiple delete',
-              image: true,
-            }
-            ); */
+            .subscribe((response) => {
+                if (response.length && !this.loadingPage) {
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                                name: item.tableData?.fullName,
+                            },
+                        };
+                    });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: ConstantStringTableComponentsEnum.LOAD,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            image: true,
+                        }
+                    );
                 }
             });
     }
 
-    // Driver Actions
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -275,25 +285,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 // On Add Driver Active
 
                 if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.ACTIVE
                 ) {
                 }
                 // On Update Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.UPDATE
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
                 ) {
                 }
                 // On Update Driver Status
                 else if (
-                    res.animation ===
+                    res?.animation ===
                     ConstantStringTableComponentsEnum.UPDATE_STATUS
                 ) {
                 }
                 // On Delete Driver
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.DELETE
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
                 ) {
                 }
             });
@@ -349,6 +359,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public getStatusLabelStyle(status: string | undefined): string {
         const styles = ConstantStringTableComponentsEnum.STYLES;
+
         if (status === ConstantStringTableComponentsEnum.ASSIGNED) {
             return styles + ConstantStringTableComponentsEnum.ASSIGNED_COLOR;
         } else if (status === ConstantStringTableComponentsEnum.LOADED) {
@@ -402,52 +413,106 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData = [
             {
-                title: 'Template',
-                field: 'template',
+                title: ConstantStringTableComponentsEnum.TEMPLATE_2,
+                field: ConstantStringTableComponentsEnum.TEMPLATE,
                 length: loadCount.templateCount,
                 data: loadTemplateData,
                 extended: false,
-                gridNameTitle: 'Load',
-                stateName: 'loads',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                moneyCountSelected: false,
+                ltlArray: checkSpecialFilterArray(
+                    loadTemplateData,
+                    ConstantStringTableComponentsEnum.LTL,
+                    ConstantStringTableComponentsEnum.TYPE
+                ),
+                ftlArray: checkSpecialFilterArray(
+                    loadTemplateData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    ConstantStringTableComponentsEnum.TYPE
+                ),
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_TEMPLATE',
-                isActive: this.selectedTab === 'template',
-                gridColumns: this.getGridColumns('template', 'LOAD_TEMPLATE'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.TEMPLATE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.TEMPLATE,
+                    'LOAD_TEMPLATE'
+                ),
             },
             {
-                title: 'Pending',
-                field: 'pending',
+                title: ConstantStringTableComponentsEnum.PENDING_2,
+                field: ConstantStringTableComponentsEnum.PENDING,
                 length: loadCount.pendingCount,
                 data: loadPendingData,
                 extended: false,
-                gridNameTitle: 'Load',
-                stateName: 'loads',
+                moneyCountSelected: false,
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                ltlArray: checkSpecialFilterArray(
+                    loadPendingData,
+                    ConstantStringTableComponentsEnum.LTL,
+                    ConstantStringTableComponentsEnum.TYPE
+                ),
+                ftlArray: checkSpecialFilterArray(
+                    loadPendingData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    ConstantStringTableComponentsEnum.TYPE
+                ),
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
-                isActive: this.selectedTab === 'pending',
-                gridColumns: this.getGridColumns('pending', 'LOAD_REGULAR'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.PENDING,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.PENDING,
+                    'LOAD_REGULAR'
+                ),
             },
             {
-                title: 'Active',
-                field: 'active',
+                title: ConstantStringTableComponentsEnum.ACTIVE_2,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: loadCount.activeCount,
                 data: loadActiveData,
+                moneyCountSelected: false,
+                ftlArray: checkSpecialFilterArray(
+                    loadActiveData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    ConstantStringTableComponentsEnum.TYPE
+                ),
                 extended: false,
-                gridNameTitle: 'Load',
-                stateName: 'loads',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('active', 'LOAD_REGULAR'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                    'LOAD_REGULAR'
+                ),
             },
             {
-                title: 'Closed',
-                field: 'closed',
+                title: ConstantStringTableComponentsEnum.CLOSED_2,
+                field: ConstantStringTableComponentsEnum.CLOSED,
                 length: loadCount.closedCount,
+                moneyCountSelected: false,
                 data: repairClosedData,
+                ftlArray: checkSpecialFilterArray(
+                    repairClosedData,
+                    ConstantStringTableComponentsEnum.FTL,
+                    ConstantStringTableComponentsEnum.TYPE
+                ),
                 extended: false,
-                gridNameTitle: 'Load',
-                stateName: 'loads',
+                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                stateName: ConstantStringTableComponentsEnum.LOADS,
                 tableConfiguration: 'LOAD_CLOSED',
-                isActive: this.selectedTab === 'closed',
-                gridColumns: this.getGridColumns('closed', 'LOAD_CLOSED'),
+                isActive:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.CLOSED,
+                gridColumns: this.getGridColumns(
+                    ConstantStringTableComponentsEnum.CLOSED,
+                    'LOAD_CLOSED'
+                ),
             },
         ];
 
@@ -484,11 +549,23 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return this.mapLoadData(data);
             });
 
+            // Set data for active tab
+            this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
+                ? ((this.sendDataToCardsFront = this.displayRowsFrontTemplate),
+                  (this.sendDataToCardsBack = this.displayRowsBackTemplate),
+                  (this.cardTitle = ConstantStringTableComponentsEnum.NAME_1))
+                : ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack),
+                  (this.cardTitle =
+                      ConstantStringTableComponentsEnum.LOAD_INVOICE));
+
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
+
+        this.loadTableData = this.viewData;
     }
 
     private mapLoadData(data: LoadModel): LoadModel {
@@ -654,11 +731,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadPanding?.length ? this.loadPanding : [];
         } else if (dataType === ConstantStringTableComponentsEnum.TEMPLATE) {
             this.loadTemplate = this.loadTemplateQuery.getAll();
-
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
     }
-    // Load Back Filter Query
+
     private loadBackFilter(
         filter: {
             loadType: number | undefined;
@@ -782,7 +858,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private onTableBodyActions(event: { type: string }): void {
+    private onTableBodyActions(event: { type: string; id?: number }): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
@@ -794,44 +870,64 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       ConstantStringTableComponentsEnum.CLOSED
                     ? 3
                     : 1;
+
             this.backLoadFilterQuery.pageIndex++;
+
             this.loadBackFilter(this.backLoadFilterQuery, true);
-        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        } else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
             this.modalService.openModal(
-                LoadModalComponent,
-                { size: ConstantStringTableComponentsEnum.LOAD },
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
                 {
-                    ...event,
-                    disableButton: true,
+                    type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
+        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+            this.loadServices
+                .getLoadById(event.id)
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap((load) => {
+                        const editData = {
+                            data: {
+                                ...load,
+                            },
+                            type: event.type,
+                        };
+
+                        this.modalService.openModal(
+                            LoadModalComponent,
+                            { size: ConstantStringTableComponentsEnum.LOAD },
+                            {
+                                ...editData,
+                                disableButton: false,
+                            }
+                        );
+                    })
+                )
+
+                .subscribe();
         }
     }
 
-    // Get Tab Table Data For Selected Tab
     private getSelectedTabTableData(): void {
-        if (this.tableData?.length) {
+        if (this.tableData?.length)
             this.activeTableData = this.tableData.find(
                 (table) => table.field === this.selectedTab
             );
-        }
     }
 
-    // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
             type: ConstantStringTableComponentsEnum.SHOW_MORE,
         });
     }
 
-    // ---------------------------- ngOnDestroy ------------------------------
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
     }
 }

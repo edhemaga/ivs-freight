@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ContactTService } from '../contact.service';
 import { ContactState, ContactStore } from './contact.store';
+import { ContactsTableData } from 'src/app/core/model/contact';
 
 @Injectable({
     providedIn: 'root',
@@ -19,26 +20,46 @@ export class ContactResolver implements Resolve<ContactState> {
         return forkJoin([
             this.contactService.getContacts(null, 1, 25),
             this.tableService.getTableConfig(19),
+            this.contactService.companyContactLabelsColorList(),
+            this.contactService.getCompanyContactModal(),
         ]).pipe(
-            tap(([contactPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'contactTableCount',
-                    JSON.stringify({
-                        contact: contactPagination.count,
-                    })
-                );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
+            tap(
+                ([
+                    contactPagination,
+                    tableConfig,
+                    colorRes,
+                    contractLabels,
+                ]) => {
                     localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'contactTableCount',
+                        JSON.stringify({
+                            contact: contactPagination.count,
+                        })
                     );
-                }
 
-                this.contactStore.set(contactPagination.pagination.data);
-            })
+                    if (tableConfig) {
+                        const config = JSON.parse(tableConfig.config);
+
+                        localStorage.setItem(
+                            `table-${tableConfig.tableType}-Configuration`,
+                            JSON.stringify(config)
+                        );
+                    }
+
+                    const contactLabels = contractLabels.labels.map((item) => {
+                        return { ...item, dropLabel: true };
+                    });
+
+                    const contractTableData = contactPagination.pagination.data;
+                    contractTableData.map(
+                        (e: ContactsTableData) => (
+                            (e.colorRes = colorRes),
+                            (e.colorLabels = contactLabels)
+                        )
+                    );
+                    this.contactStore.set(contractTableData);
+                }
+            )
         );
     }
 }

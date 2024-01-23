@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 // Components
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -31,7 +32,7 @@ import { BrokerState } from '../state/broker-state/broker.store';
 import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperStore } from '../state/shipper-state/shipper.store';
 
-// Models
+// Modals
 import {
     BrokerResponse,
     GetBrokerListResponse,
@@ -55,6 +56,14 @@ import {
     getShipperColumnDefinition,
 } from '../../../../../assets/utils/settings/customer-columns';
 import { DisplayCustomerConfiguration } from '../customer-card-data';
+import {
+    FilterOptionBroker,
+    FilterOptionshipper,
+} from '../../shared/model/table-components/customer.modals';
+import {
+    DataForCardsAndTables,
+    TableColumnConfig,
+} from '../../shared/model/table-components/all-tables.modal';
 
 // Globals
 import {
@@ -70,14 +79,8 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // Constants
 import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import {
-    FilterOptionBroker,
-    FilterOptionshipper,
-} from '../../shared/model/table-components/customer.modals';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from '../../shared/model/table-components/all-tables.modal';
+
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 interface PaginationFilter {
     companyId?: number | undefined;
@@ -108,7 +111,7 @@ export class CustomerTableComponent
     private destroy$ = new Subject<void>();
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
-
+    public customerTableData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -120,37 +123,10 @@ export class CustomerTableComponent
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
-    public backBrokerFilterQuery: FilterOptionBroker = {
-        ban: null,
-        dnu: null,
-        invoiceAgeingFrom: undefined,
-        invoiceAgeingTo: undefined,
-        availableCreditFrom: undefined,
-        availableCreditTo: undefined,
-        revenueFrom: undefined,
-        revenueTo: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
-
-    public backShipperFilterQuery: FilterOptionshipper = {
-        stateIds: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backBrokerFilterQuery: FilterOptionBroker =
+        TableDropdownCustomerComponentConstants.BROKER_BACK_FILTER;
+    public backShipperFilterQuery: FilterOptionshipper =
+        TableDropdownCustomerComponentConstants.SHIPPER_BACK_FILTER;
     public mapListData = [];
 
     //Data to display from model Broker
@@ -204,6 +180,8 @@ export class CustomerTableComponent
         this.deleleteSelectedRows();
 
         this.search();
+
+        this.setTableFilter();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -211,6 +189,27 @@ export class CustomerTableComponent
         setTimeout(() => {
             this.observeTableContainer();
         }, 10);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.customerTableData?.filter(
+                            (customerData) =>
+                                res.filteredArray.some(
+                                    (filterData) =>
+                                        filterData.id === customerData.id
+                                )
+                        );
+                    }
+
+                    if (!res.selectedFilter)
+                        this.viewData = this.customerTableData;
+                }
+            });
     }
 
     // Reset Columns
@@ -269,7 +268,7 @@ export class CustomerTableComponent
                 // <------------------ Broker ------------------->
                 // Add Broker
                 if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     res.tab === ConstantStringTableComponentsEnum.BROKER
                 ) {
                     this.viewData.push(this.mapBrokerData(res.data));
@@ -278,7 +277,7 @@ export class CustomerTableComponent
                 }
                 // Update Broker
                 else if (
-                    res.animation ===
+                    res?.animation ===
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.BROKER
                 ) {
@@ -290,7 +289,7 @@ export class CustomerTableComponent
                 // <------------------ Shipper ------------------->
                 // Add Shipper
                 else if (
-                    res.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
                     res.tab === ConstantStringTableComponentsEnum.SHIPPER
                 ) {
                     this.viewData.push(this.mapShipperData(res.data));
@@ -299,7 +298,7 @@ export class CustomerTableComponent
                 }
                 // Update Shipper
                 else if (
-                    res.animation ===
+                    res?.animation ===
                         ConstantStringTableComponentsEnum.UPDATE &&
                     res.tab === ConstantStringTableComponentsEnum.SHIPPER
                 ) {
@@ -449,6 +448,12 @@ export class CustomerTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showBrokerFilter:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE,
+                showBrokerFilterClosed:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.INACTIVE,
                 showMoneyFilter:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE,
@@ -545,10 +550,23 @@ export class CustomerTableComponent
                 length: brokerShipperCount.broker,
                 data: this.brokers,
                 extended: false,
+                moneyCountSelected: false,
                 isCustomer: true,
                 gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
                 stateName: ConstantStringTableComponentsEnum.BROKER_3,
                 tableConfiguration: ConstantStringTableComponentsEnum.BROKER,
+                bannedArray: checkSpecialFilterArray(
+                    this.brokers,
+                    ConstantStringTableComponentsEnum.BAN
+                ),
+                dnuArray: checkSpecialFilterArray(
+                    this.brokers,
+                    ConstantStringTableComponentsEnum.DNU
+                ),
+                closedArray: checkSpecialFilterArray(
+                    this.brokers,
+                    ConstantStringTableComponentsEnum.STATUS
+                ),
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.ACTIVE,
@@ -561,8 +579,13 @@ export class CustomerTableComponent
                 field: ConstantStringTableComponentsEnum.INACTIVE,
                 length: brokerShipperCount.shipper,
                 data: this.shipper,
+                moneyCountSelected: false,
                 extended: false,
                 isCustomer: true,
+                closedArray: checkSpecialFilterArray(
+                    this.shipper,
+                    ConstantStringTableComponentsEnum.STATUS
+                ),
                 gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
                 stateName: ConstantStringTableComponentsEnum.SHIPPER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.SHIPPER,
@@ -627,7 +650,6 @@ export class CustomerTableComponent
 
         if (td.data.length) {
             this.viewData = td.data;
-
             this.viewData = this.viewData.map(
                 (data: ShipperResponse | BrokerResponse) => {
                     return this.selectedTab ===
@@ -651,6 +673,8 @@ export class CustomerTableComponent
         } else {
             this.viewData = [];
         }
+
+        this.customerTableData = this.viewData;
     }
 
     // Map Broker Data
@@ -973,7 +997,8 @@ export class CustomerTableComponent
                         null,
                         null,
                         1,
-                        25
+                        25,
+                        1
                     ),
                     this.tableService.getTableConfig(5),
                 ])
@@ -1083,34 +1108,13 @@ export class CustomerTableComponent
         }
         // Delete Call
         else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
-            businessName = this.getBusinessName(event, businessName);
-
-            // Delete Broker Call
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
-                this.brokerService
-                    .deleteBrokerById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.deleteDataById(event.id);
-                        },
-                        error: () => {},
-                    });
-            }
-            // Delete Shipper Call
-            else {
-                businessName = this.getBusinessName(event, businessName);
-
-                this.shipperService
-                    .deleteShipperById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.deleteDataById(event.id);
-                        },
-                        error: () => {},
-                    });
-            }
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
+                {
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                }
+            );
         }
         // Raiting
         else if (event.type === ConstantStringTableComponentsEnum.RATING) {

@@ -118,10 +118,6 @@ export class Step6FormComponent
         this.createForm();
     }
 
-    asd() {
-        console.log(this.contactForm);
-    }
-
     ngAfterViewInit(): void {
         if (
             this.selectedMode === SelectedMode.APPLICANT ||

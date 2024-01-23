@@ -1,29 +1,19 @@
-.load-financial-card {
-    display: flex;
-    flex-direction: column;
+@import 'src/theme/variables';
 
+.load-financial-card {
     .load-financial-card-header {
         display: grid;
         grid-template-columns: 192px 193px 187px;
         -moz-column-gap: 16px;
         column-gap: 16px;
-        align-items: center;
-        justify-content: center;
         padding: 0 5px;
         margin: 4px 0px;
 
         .load-financial-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
             .load-financial-title {
-                margin: 0;
-                padding: 0;
                 font-size: 14px;
-                font-weight: 800;
                 line-height: 18px;
-                color: #424242;
+
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 -ms-user-select: none;
@@ -31,61 +21,47 @@
             }
 
             .load-financial-value-action-container {
-                align-self: flex-end;
-                display: flex;
-                align-items: center;
-                gap: 6px;
+                gap: 8px;
 
                 .load-financial-value {
-                    margin: 0;
-                    padding: 0;
-                    font-size: 14px;
-                    font-weight: 600;
-                    line-height: 18px;
-                    color: #919191;
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $bw5;
+
                     -webkit-user-select: none;
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
 
                     &.active {
-                        color: #2f2f2f;
+                        color: $ta-black;
                     }
 
                     &.minus {
-                        color: #ef5350;
+                        color: $ta-red-11;
                     }
                 }
 
-                .load-financial-action {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 4px;
-                    width: 26px;
-                    height: 26px;
-                    background-color: #eeeeee;
+                .load-financial-action-button {
                     cursor: pointer;
 
-                    .load-financial-action-svg {
-                        width: 18px;
-                        height: 18px;
-                        line-height: 16px;
+                    .load-financial-action-icon {
+                        line-height: 0;
+
                         svg {
                             path {
-                                fill: #3074d3;
+                                fill: $ta-blue-13;
                             }
                         }
                     }
 
                     &.disabled {
-                        background-color: #eeeeee !important;
                         pointer-events: none !important;
 
-                        .load-financial-action-svg {
+                        .load-financial-action-icon {
                             svg {
                                 path {
-                                    fill: #919191 !important;
+                                    fill: $bw5;
                                 }
                             }
                         }
@@ -93,34 +69,10 @@
                 }
 
                 .with-adjusted {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-end;
-
-                    .load-financial-value {
-                        margin: 0;
-                        padding: 0;
-                        font-size: 11px;
-                        font-weight: 800;
-                        line-height: 14px;
-                        color: #2f2f2f;
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
-                    }
-
                     .load-financial-adjusted {
-                        margin: 0;
-                        padding: 0;
                         font-size: 11px;
-                        font-weight: 500;
                         line-height: 14px;
-                        color: #ab47bc;
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
+                        color: $ta-orange-1;
                     }
                 }
             }
@@ -181,6 +133,8 @@
         }
 
         .content-holder {
+            margin-top: 8px !important;
+
             &.innactive {
                 height: 0px !important;
                 overflow: hidden !important;

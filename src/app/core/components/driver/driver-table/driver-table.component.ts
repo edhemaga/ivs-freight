@@ -79,6 +79,7 @@ import {
     TableDriverColorsConstants,
     TableDropdownDriverComponentConstants,
 } from 'src/app/core/utils/constants/table-components.constants';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-driver-table',
@@ -87,6 +88,7 @@ import {
     providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
+    public driverTableData: any[] = [];
     private destroy$ = new Subject<void>();
     public tableOptions: any = {};
     public tableData: any[] = [];
@@ -101,31 +103,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public applicantTabActive: boolean = false;
     public activeTableData: DataForCardsAndTables;
-    public driverBackFilterQuery: FilterOptionDriver = {
-        active: 1,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
-    public applicantBackFilterQuery: FilterOptionApplicant = {
-        applicantSpecParamsArchived: undefined,
-        applicantSpecParamsHired: undefined,
-        applicantSpecParamsFavourite: undefined,
-        applicantSpecParamsPageIndex: 1,
-        applicantSpecParamsPageSize: 25,
-        applicantSpecParamsCompanyId: undefined,
-        applicantSpecParamsSort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public driverBackFilterQuery: FilterOptionDriver =
+        TableDropdownDriverComponentConstants.DRIVER_BACK_FILTER;
+    public applicantBackFilterQuery: FilterOptionApplicant =
+        TableDropdownDriverComponentConstants.APPLICANT_BACK_FILTER;
     public resizeObserver: ResizeObserver;
     public mapingIndex: number = 0;
 
@@ -169,6 +150,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.modalTestInitialization();
 
         this.sendDriverData();
+
+        this.setTableFilter();
 
         this.confiramtionSubscribe();
 
@@ -229,6 +212,27 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 },
+            });
+    }
+
+    // Reset Columns
+    private setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filteredArray) {
+                    if (res.selectedFilter) {
+                        this.viewData = this.driverTableData?.filter(
+                            (driverData) =>
+                                res.filteredArray.some(
+                                    (filterData) =>
+                                        filterData.id === driverData.id
+                                )
+                        );
+                    }
+
+                    if (!res.selectedFilter) this.sendDriverData();
+                }
             });
     }
 
@@ -570,6 +574,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
                 stateName: ConstantStringTableComponentsEnum.APPLICANTS,
                 tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
+                driverArhivedArray: checkSpecialFilterArray(
+                    applicantsData,
+                    ConstantStringTableComponentsEnum.ARCHIVED_DATA
+                ),
                 isActive:
                     this.selectedTab ===
                     ConstantStringTableComponentsEnum.APPLICANTS,
@@ -655,11 +663,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setDriverData(td: DataForCardsAndTables): void {
-        this.columns = td.gridColumns;
+    private setDriverData(tdata: DataForCardsAndTables): void {
+        this.columns = tdata.gridColumns;
 
-        if (td.data.length) {
-            this.viewData = td.data;
+        if (tdata.data.length) {
+            this.viewData = tdata.data;
 
             this.viewData = this.viewData.map((data: any) => {
                 return this.selectedTab ===
@@ -679,6 +687,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.driverTableData = this.viewData;
     }
 
     // TODO find model for this data

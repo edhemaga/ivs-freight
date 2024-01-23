@@ -9,26 +9,38 @@ import {
     OnDestroy,
     ChangeDetectorRef,
 } from '@angular/core';
-import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import {
     UntypedFormControl,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+//Type
+import { TableType } from 'appcoretruckassist';
+
+//Services
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { ModalService } from '../../ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+
+//Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
+
+//Components
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { CommonModule } from '@angular/common';
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
+import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
+
+//Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 @Titles()
 @Component({
@@ -37,6 +49,7 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
     styleUrls: ['./truckassist-table-toolbar.component.scss'],
     standalone: true,
     imports: [
+        AppTooltipComponent,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -192,7 +205,7 @@ export class TruckassistTableToolbarComponent
             .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
 
-                if (this.options.toolbarActions.showMoneyCount) {
+                if (this.options.toolbarActions.showMoneyFilter) {
                     this.activeTableData.moneyCountSelected = this
                         .tableRowsSelected.length
                         ? true
@@ -304,51 +317,85 @@ export class TruckassistTableToolbarComponent
 
         this.columnsOptions = [];
 
-        this.columns.map((c) => {
-            if (!c.hidden) {
-                columnsSumWidth += c.width < c.minWidth ? c.minWidth : c.width;
+        let activeCard = false;
 
-                if (
-                    c.ngTemplate !== 'checkbox' &&
-                    c.ngTemplate !== 'attachments' &&
-                    c.ngTemplate !== 'media' &&
-                    c.ngTemplate !== 'insurance' &&
-                    c.ngTemplate !== 'comment' &&
-                    c.ngTemplate !== 'hire' &&
-                    c.ngTemplate !== 'favorite' &&
-                    c.ngTemplate !== 'note' &&
-                    c.ngTemplate !== 'actions' &&
-                    c.ngTemplate !== 'user-checkbox'
-                ) {
-                    columnsSumWidth += 6;
-                }
-            }
-
-            if (c.minWidth) {
-                hasMinWidth = true;
-            }
-
+        this.options.toolbarActions.viewModeOptions.filter((viewMode) => {
             if (
-                c.ngTemplate !== 'checkbox' &&
-                c.ngTemplate !== 'attachments' &&
-                c.ngTemplate !== 'media' &&
-                c.ngTemplate !== 'insurance' &&
-                c.ngTemplate !== 'comment' &&
-                c.ngTemplate !== 'hire' &&
-                c.ngTemplate !== 'favorite' &&
-                c.ngTemplate !== 'note' &&
-                c.ngTemplate !== 'actions' &&
-                c.ngTemplate !== 'user-checkbox'
-            ) {
-                this.columnsOptions.push(c);
-            }
+                viewMode.name === ConstantStringTableComponentsEnum.CARD &&
+                viewMode.active
+            )
+                activeCard = true;
         });
 
-        this.setColumnsOptionsGroups();
+        if (activeCard) {
+            this.toolbarWidth = ConstantStringTableComponentsEnum.NUMBER_100;
+        } else {
+            this.columns.map((column) => {
+                if (!column.hidden) {
+                    columnsSumWidth +=
+                        column.width < column.minWidth
+                            ? column.minWidth
+                            : column.width;
+                    if (
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.CHECKBOX &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.ATTACHMENTS &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.MEDIA &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.INSURANCE &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.COMMENT &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.HIRE &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.FAVORITE &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.NOTE &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.ACTIONS &&
+                        column.ngTemplate !==
+                            ConstantStringTableComponentsEnum.USER_CHECKBOX
+                    ) {
+                        columnsSumWidth += 6;
+                    }
+                }
 
-        this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 26 + 'px'
-            : 100 + '%';
+                if (column.minWidth) hasMinWidth = true;
+
+                if (
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.CHECKBOX &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.ATTACHMENTS &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.MEDIA &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.INSURANCE &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.COMMENT &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.HIRE &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.FAVORITE &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.NOTE &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.ACTIONS &&
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.USER_CHECKBOX
+                ) {
+                    this.columnsOptions.push(column);
+                }
+            });
+
+            this.setColumnsOptionsGroups();
+
+            this.toolbarWidth = hasMinWidth
+                ? columnsSumWidth + 26 + ConstantStringTableComponentsEnum.PX
+                : 100 + '%';
+        }
     }
 
     // Set Columns Options Groups

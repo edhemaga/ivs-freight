@@ -16,20 +16,23 @@
 
 <ng-template #dropdownPopover>
     <div class="popover-container">
-        <div
+        <ng-container
             *ngFor="let dropdownItem of dropdownList; trackBy: trackByIdentity"
-            class="popover-item"
-            [ngClass]="{ active: dropdownItem.isActive }"
-            (click)="handleSwitchDropdownItemClick(dropdownItem)"
         >
-            <p class="m-0">{{ dropdownItem.name }}</p>
+            <div
+                class="popover-item"
+                [ngClass]="{ active: dropdownItem.isActive }"
+                (click)="handleSwitchDropdownItemClick(dropdownItem)"
+            >
+                <p class="m-0">{{ dropdownItem.name }}</p>
 
-            <div class="popover-icon-container">
-                <svg-icon
-                    src="assets/svg/common/ic_confirm.svg"
-                    [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                ></svg-icon>
+                <div class="popover-icon-container">
+                    <svg-icon
+                        src="assets/svg/common/ic_confirm.svg"
+                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                    ></svg-icon>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </div>
 </ng-template>

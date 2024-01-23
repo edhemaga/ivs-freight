@@ -385,8 +385,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
 
     private updateAccident(id: number) {
-        console.log('update: ', id);
-
         this.modalService.setModalSpinner({
             action: null,
             status: true,

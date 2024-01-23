@@ -69,14 +69,24 @@ interface ToolbarAction {
 
 export interface TableOptionsInterface {
     toolbarActions: {
+        showRepairOrderFilter?: boolean;
         showMoneyFilter?: boolean;
         showLocationFilter?: boolean;
         showStateFilter?: boolean;
+        showBrokerFilterClosed?: boolean;
+        showTruckFilter?: boolean;
         hideSearch?: boolean;
+        showTrailerFilter?: boolean;
+        showRepairShop?: boolean;
         viewModeOptions: ToolbarAction[];
         showTimeFilter?: boolean;
         showDispatcherFilter?: boolean;
         showStatusFilter?: boolean;
         showLtlFilter?: boolean;
+        showBrokerFilter?: boolean;
+        showPMFilter?: boolean;
+        showCategoryRepairFilter?: boolean;
+        hideMoneySubType?: boolean;
+        showMoneyCount?: boolean;
     };
 }

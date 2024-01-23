@@ -1,20 +1,49 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { GetCompanyContactListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 
+//components
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
+
+//service
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactQuery } from '../state/contact-state/contact.query';
-import { ContactState } from '../state/contact-state/contact.store';
 import { ContactTService } from '../state/contact.service';
-import { NameInitialsPipe } from '../../../pipes/nameinitials';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+//store
+import { ContactState } from '../state/contact-state/contact.store';
+import { ContactQuery } from '../state/contact-state/contact.query';
+import { NameInitialsPipe } from '../../../pipes/nameinitials';
+
+//methods
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
+
+//utils
 import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
+
+//enums
+import { ContractComponentEnum } from '../state/enum/contract-string.enum';
+
+//model
+import {
+    CompanyAccountLabelResponse,
+    CompanyContactResponse,
+    GetCompanyContactListResponse,
+    UpdateCompanyContactCommand,
+} from 'appcoretruckassist';
+import {
+    ContactEmail,
+    ContactPhone,
+} from '../state/interface/contract-inteface';
+import { ComponentsTableEnum } from 'src/app/core/model/enums';
+import {
+    TableBodyActionsContract,
+    TableHeadActionContract,
+    TableToolBarActionActionsContract,
+} from 'src/app/core/model/contact';
 
 @Component({
     selector: 'app-contacts-table',
@@ -59,19 +88,33 @@ export class ContactsTableComponent
     ngOnInit(): void {
         this.sendContactData();
 
-        // Reset Columns
+        this.contractResetColumns();
+
+        this.contractResize();
+
+        this.contractCurrentToaggleColumn();
+
+        this.contractCurrentSearchTableData();
+
+        this.contractCurrentActionAnimation();
+
+        this.contractCurrentDeleteSelectedRows();
+    }
+
+    private contractResetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
+            .subscribe((response) => {
                 if (response) {
                     this.sendContactData();
                 }
             });
+    }
 
-        // Resize
+    private contractResize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.event?.width) {
                     this.columns = this.columns.map((c) => {
                         if (
@@ -85,11 +128,12 @@ export class ContactsTableComponent
                     });
                 }
             });
+    }
 
-        // Toaggle Columns
+    private contractCurrentToaggleColumn(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
+            .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((c) => {
                         if (c.field === response.column.field) {
@@ -100,11 +144,12 @@ export class ContactsTableComponent
                     });
                 }
             });
+    }
 
-        // Search
+    private contractCurrentSearchTableData(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res) {
                     this.mapingIndex = 0;
 
@@ -113,30 +158,36 @@ export class ContactsTableComponent
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (searchEvent.action === 'api') {
+                        if (searchEvent.action === ComponentsTableEnum.API) {
                             this.contactBackFilter(searchEvent.query);
-                        } else if (searchEvent.action === 'store') {
+                        } else if (
+                            searchEvent.action === ComponentsTableEnum.STORE
+                        ) {
                             this.sendContactData();
                         }
                     }
                 }
             });
+    }
 
-        // Contact Actions
+    private contractCurrentActionAnimation(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 // Add Contact
-                if (res.animation === 'add') {
+                if (res?.animation === ComponentsTableEnum.ADD) {
                     this.viewData.push(this.mapContactData(res.data));
 
-                    this.viewData = this.viewData.map((contact: any) => {
-                        if (contact.id === res.id) {
-                            contact.actionAnimation = 'add';
-                        }
+                    this.viewData = this.viewData.map(
+                        (contact: CompanyContactResponse) => {
+                            // if (contact.id === res.id) {
+                            //     contact.actionAnimation =
+                            //         ComponentsTableEnum.ADD;
+                            // }
 
-                        return contact;
-                    });
+                            return contact;
+                        }
+                    );
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -150,17 +201,20 @@ export class ContactsTableComponent
                     this.updateDataCount();
                 }
                 // Update Contact
-                else if (res.animation === 'update') {
+                else if (res?.animation === ComponentsTableEnum.UPDATE) {
                     const updatedContact = this.mapContactData(res.data, true);
 
-                    this.viewData = this.viewData.map((contact: any) => {
-                        if (contact.id === res.id) {
-                            contact = updatedContact;
-                            contact.actionAnimation = 'update';
-                        }
+                    this.viewData = this.viewData.map(
+                        (contact: CompanyContactResponse) => {
+                            // if (contact.id === res.id) {
+                            //     contact = updatedContact;
+                            //     contact.actionAnimation =
+                            //         ComponentsTableEnum.UPDATE;
+                            // }
 
-                        return contact;
-                    });
+                            return contact;
+                        }
+                    );
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -172,15 +226,16 @@ export class ContactsTableComponent
                     }, 1000);
                 }
                 // Delete Contact
-                else if (res.animation === 'delete') {
+                else if (res?.animation === ComponentsTableEnum.DELETE) {
                     let contactIndex: number;
 
                     this.viewData = this.viewData.map(
-                        (contact: any, index: number) => {
-                            if (contact.id === res.id) {
-                                contact.actionAnimation = 'delete';
-                                contact = index;
-                            }
+                        (contact: CompanyContactResponse, index: number) => {
+                            // if (contact.id === res.id) {
+                            //     contact.actionAnimation =
+                            //         ComponentsTableEnum.DELETE;
+                            //     contactIndex = index;
+                            // }
 
                             return contact;
                         }
@@ -199,23 +254,24 @@ export class ContactsTableComponent
                     this.updateDataCount();
                 }
             });
+    }
 
-        // Delete Selected Rows
+    private contractCurrentDeleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length) {
                     this.contactService
                         .deleteAccountList(response)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe(() => {
                             this.viewData = this.viewData.map(
-                                (contact: any) => {
-                                    response.map((r: any) => {
-                                        if (contact.id === r.id) {
-                                            contact.actionAnimation =
-                                                'deletemultiple';
-                                        }
+                                (contact: CompanyContactResponse) => {
+                                    response.map((res) => {
+                                        // if (contact.id === res.id) {
+                                        //     contact.actionAnimation =
+                                        //         ComponentsTableEnum.DELETE_MULTIPLE;
+                                        // }
                                     });
 
                                     return contact;
@@ -256,7 +312,9 @@ export class ContactsTableComponent
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(ComponentsTableEnum.TABLE_CONTAINER)
+        );
     }
 
     // Table Options
@@ -266,8 +324,16 @@ export class ContactsTableComponent
                 hideActivationButton: true,
                 showLabelFilter: true,
                 viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
+                    {
+                        name: ComponentsTableEnum.LIST,
+                        active:
+                            this.activeViewMode === ComponentsTableEnum.LIST,
+                    },
+                    {
+                        name: ComponentsTableEnum.CARD,
+                        active:
+                            this.activeViewMode === ComponentsTableEnum.CARD,
+                    },
                 ],
             },
         };
@@ -276,7 +342,7 @@ export class ContactsTableComponent
     // Send Contact Data
     sendContactData() {
         const tableView = JSON.parse(
-            localStorage.getItem(`Contact-table-view`)
+            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -289,22 +355,22 @@ export class ContactsTableComponent
         this.initTableOptions();
 
         const contactCount = JSON.parse(
-            localStorage.getItem('contactTableCount')
+            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
         );
 
         const contactData = this.getTabData();
         this.tableData = [
             {
-                title: 'Contacts',
-                field: 'active',
+                title: ContractComponentEnum.CONTACTS,
+                field: ComponentsTableEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
-                gridNameTitle: 'Contact',
-                stateName: 'contacts',
-                tableConfiguration: 'CONTACT',
+                gridNameTitle: ContractComponentEnum.CONTACT_2,
+                stateName: ContractComponentEnum.CONTACTS_2,
+                tableConfiguration: ContractComponentEnum.CONTACT,
                 isActive: true,
-                gridColumns: this.getGridColumns('CONTACT'),
+                gridColumns: this.getGridColumns(ContractComponentEnum.CONTACT),
             },
         ];
 
@@ -321,7 +387,7 @@ export class ContactsTableComponent
     // Update Contact Count
     updateDataCount() {
         const contactCount = JSON.parse(
-            localStorage.getItem('contactTableCount')
+            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -348,13 +414,11 @@ export class ContactsTableComponent
 
         if (td.data.length) {
             this.viewData = td.data;
-            this.viewData = this.viewData.map((data: any) => {
-                return this.mapContactData(data);
-            });
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
+            this.viewData = this.viewData.map(
+                (data: CompanyContactResponse) => {
+                    return this.mapContactData(data);
+                }
+            );
         } else {
             this.viewData = [];
         }
@@ -365,7 +429,6 @@ export class ContactsTableComponent
         if (!data?.avatar && !dontMapIndex) {
             this.mapingIndex++;
         }
-
         return {
             ...data,
             isSelected: false,
@@ -558,13 +621,77 @@ export class ContactsTableComponent
             });
     }
 
+    private saveContractLabel(data: CompanyAccountLabelResponse): void {
+        this.contactService
+            .updateCompanyContactLabel({
+                id: data.id,
+                name: data.name,
+                colorId: data.colorId,
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private updateCompanyContactLabel(event: TableBodyActionsContract): void {
+        // const companyContractData = this.viewData.find(
+        //     (e: CreateCompanyContactCommand) => e.id === event.id
+        // );
+
+        const newdata: UpdateCompanyContactCommand = {
+            // id: companyContractData.id ?? null,
+            // name: companyContractData.name ?? null,
+            // companyContactLabelId: event.data ? event.data.id : null,
+            // avatar: companyContractData.avatar ?? null,
+            // address: companyContractData.address ?? null,
+            // shared: companyContractData.shared ?? null,
+            // note: companyContractData.note ?? null,
+            // contactEmails: companyContractData.contactEmails
+            //     ? this.createContactEmails(companyContractData.contactEmails[0])
+            //     : null,
+            // contactPhones: companyContractData.contactPhones
+            //     ? this.createContactPhones(companyContractData.contactPhones[0])
+            //     : null,
+        };
+
+        this.contactService
+            .updateCompanyContact(
+                newdata
+                // companyContractData.colorRes,
+                // companyContractData.colorLabels
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    public createContactPhones(element: ContactPhone) {
+        return [
+            {
+                id: element.id ?? 0,
+                phone: element.phone ?? null,
+                phoneExt: element.phoneExt ?? null,
+                contactPhoneType: element.contactPhoneType.name ?? null,
+                primary: element.primary ?? false,
+            },
+        ];
+    }
+
+    public createContactEmails(element: ContactEmail) {
+        return [
+            {
+                id: element.id ?? 0,
+                email: element.email ?? null,
+                contactEmailType: element.contactEmailType.name ?? null,
+                primary: element.primary ?? false,
+            },
+        ];
+    }
     // On Toolbar Actions
-    onToolBarAction(event: any) {
-        if (event.action === 'open-modal') {
+    onToolBarAction(event: TableToolBarActionActionsContract) {
+        if (event.action === ComponentsTableEnum.OPEN_MODAL) {
             this.modalService.openModal(ContactModalComponent, {
-                size: 'small',
+                size: ComponentsTableEnum.SMALL,
             });
-        } else if (event.action === 'tab-selected') {
+        } else if (event.action === ComponentsTableEnum.TAB_SELECTED) {
             this.mapingIndex = 0;
 
             this.selectedTab = event.tabData.field;
@@ -572,7 +699,7 @@ export class ContactsTableComponent
             this.backFilterQuery.pageIndex = 1;
 
             this.setContactData(event.tabData);
-        } else if (event.action === 'view-mode') {
+        } else if (event.action === ComponentsTableEnum.VIEW_MODE) {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;
@@ -580,8 +707,8 @@ export class ContactsTableComponent
     }
 
     // On Head Actions
-    onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
+    public onTableHeadActions(event: TableHeadActionContract) {
+        if (event.action === ComponentsTableEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
 
@@ -597,24 +724,28 @@ export class ContactsTableComponent
     }
 
     // On Body Actions
-    onTableBodyActions(event: any) {
-        if (event.type === 'show-more') {
+    public onTableBodyActions(event: TableBodyActionsContract): void {
+        if (event.type === ComponentsTableEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
-        } else if (event.type === 'edit-contact') {
+        } else if (event.type === ContractComponentEnum.EDIT_CONTACT) {
             this.modalService.openModal(
                 ContactModalComponent,
-                { size: 'small' },
+                { size: ComponentsTableEnum.SMALL },
                 {
                     ...event,
-                    type: 'edit',
+                    type: ComponentsTableEnum.EDIT,
                 }
             );
-        } else if (event.type === 'delete-contact') {
+        } else if (event.type === ContractComponentEnum.DELETE_CONTACT) {
             this.contactService
                 .deleteCompanyContactById(event.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
+        } else if (event.type === ComponentsTableEnum.LABLE_CHANGE) {
+            this.saveContractLabel(event.data);
+        } else if (event.type === ComponentsTableEnum.UPDATE_LABLE) {
+            this.updateCompanyContactLabel(event);
         }
     }
 

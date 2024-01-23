@@ -1,5 +1,5 @@
 <div class="progress-bar-parent d-flex align-items-center">
-    <ng-container *ngIf="percents !== null">
+    <ng-container *ngIf="text !== '/'">
         <div class="progress-bar-holder">
             <div
                 class="progress-child-back"
@@ -7,7 +7,7 @@
                     expired: percents === 0,
                     'back-gray': percents > 50,
                     'back-yellow': percents > 20 && percents <= 50,
-                    'back-red': percents <= 20 && percents > 0
+                    'back-red': percents <= 20 && percents > 0 && text !== '/'
                 }"
             ></div>
             <div
@@ -36,7 +36,7 @@
             days ago
         </span>
     </ng-container>
-    <ng-container *ngIf="percents === null">
+    <ng-container *ngIf="text === '/'">
         <span> / </span>
     </ng-container>
 </div>

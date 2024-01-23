@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './calendar-days.component.html',
     styleUrls: ['./calendar-days.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule]
+    imports: [CommonModule, FormsModule],
 })
 export class CalendarDaysComponent implements OnInit {
     currentYear: any = new Date().getFullYear();
@@ -39,9 +39,6 @@ export class CalendarDaysComponent implements OnInit {
             ...Array.from({ length: fillerCount }).map(() => ''),
             ...Array.from({ length: daysCount }).map((_, i) => i + 1),
         ];
-
-        // console.log("WHAT ARE DAYS");
-        // console.log(this.days);
     }
 
     ngOnInit(): void {

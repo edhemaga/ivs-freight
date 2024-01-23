@@ -134,9 +134,6 @@ export class MilesComponent implements OnInit, AfterViewInit {
             this.viewData = this.viewData.map((data: any) => {
                 return this.mapMilesData(data);
             });
-
-            console.log('WHAT IS DATA');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -145,7 +142,9 @@ export class MilesComponent implements OnInit, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -216,14 +215,6 @@ export class MilesComponent implements OnInit, AfterViewInit {
             this.selectedTab = event.tabData.field;
             this.sendMilesData();
         }
-    }
-
-    onTableHeadActions(event: any) {
-        console.log(event);
-    }
-
-    onTableBodyActions(event: any) {
-        console.log(event);
     }
 
     ngOnDestroy(): void {

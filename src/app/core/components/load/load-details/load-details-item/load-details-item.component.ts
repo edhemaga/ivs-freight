@@ -43,7 +43,6 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
         // this.getLegMilesLegTime(this.loadData[0].data);
         this.getActivePertange(this.loadData[0]?.data.pendingPercentage);
-        console.log('--loadItem---', this.loadData);
     }
     public getActivePertange(data: any) {
         this.activePercntage = data;
@@ -75,16 +74,6 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
             this.status = null;
         }
     }
-    // public getLegMilesLegTime(load: LoadResponse) {
-    //   let total = load.stops.map((item) => {
-    //     this.totalLegMiles = item.legMiles;
-    //     this.totalLegTime = item.legHours + item.legMinutes;
-    //     console.log(this.totalLegMiles);
-    //     console.log(this.totalLegTime);
-    //   });
-
-    //   return total;
-    // }
 
     /**Function retrun id */
     public identity(index: number, item: any): number {
@@ -112,12 +101,8 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
             .deleteCommentById(comments.data)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -133,22 +118,17 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
-    private formatLoadPickupDay(mod: any){
-        
+    private formatLoadPickupDay(mod: any) {
         let day;
         let dayValue = 'days';
-        if ( mod < 0 ) {
+        if (mod < 0) {
             day = Math.abs(mod);
-        } else if ( mod == 1 ) {
+        } else if (mod == 1) {
             dayValue = 'day';
         } else {
             day = mod;
@@ -157,14 +137,14 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
         return day + ' ' + dayValue;
     }
 
-    private formatLoadPickupTime(mod: any){
+    private formatLoadPickupTime(mod: any) {
         let hours;
         let hoursValue = 'hours';
 
-        if ( mod < 0 ) {
+        if (mod < 0) {
             hours = Math.abs(mod);
-            hoursValue = 'hours ago'; 
-        } else if ( mod == 1 ) {
+            hoursValue = 'hours ago';
+        } else if (mod == 1) {
             hoursValue = 'hour';
         } else {
             hours = mod;

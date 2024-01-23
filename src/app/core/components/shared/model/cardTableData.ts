@@ -1,6 +1,7 @@
 import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { DataForCardsAndTables } from './table-components/all-tables.modal';
+import { tableBodyColorLabel } from './tableBody';
 
 export interface MappedShipperBroker extends ShipperResponse {
     isSelected?: boolean;
@@ -63,7 +64,6 @@ export interface DataUpdate {
     id: string;
 }
 
-
 // TOOLBAR ACTIONS
 export interface ToolbarActions {
     action: string;
@@ -116,81 +116,94 @@ export interface ColumnWidthData {
 }
 // Table Columns end
 export interface SendDataCard {
-    id: number;
-    data: CardDetails;
+    id?: number;
+    data?: CardDetails;
     type: string;
+    subType?: string;
 }
-export interface CardDetails {
-    id: number;
-    type: Type;
-    isSelected: boolean;
-    loadNumber: string;
-    statusType: StatusType;
-    status: Status;
-    tableDropdownContent: tableDropdownContent;
-    dispatcher: Dispatcher;
-    company: Company;
-    dateCreated: string;
-    dispatch: Dispatch;
-    broker: Broker;
-    brokerContact: BrokerContact;
-    referenceNumber: string;
-    generalCommodity: GeneralCommodity;
-    weight: number;
-    loadRequirements: LoadRequirements;
-    stops: Stop[];
-    splitLoad: SplitLoad;
-    note: string;
-    baseRate: number;
-    adjustedRate: number;
-    revisedRate: number;
-    tonuRate: number;
-    driverRate: number;
-    additionalBillingRatesTotal: number;
-    additionalBillingRates: AdditionalBillingRate[];
-    totalRate: number;
-    totalAdjustedRate: number;
-    advancePay: number;
-    pays: Pay[];
-    statusHistory: StatusHistory[];
-    commentsCount: number;
-    comments: Comment[];
-    totalPaid: number;
-    totalDue: number;
-    loadedMiles: number;
-    totalMiles: number;
-    totalTimeDays: number;
-    totalTimeHours: number;
-    paidDate: string;
-    invoicedDate: string;
-    shortPaid: number;
-    age: number;
-    daysToPay: number;
-    totalLoadTime: TotalLoadTime;
-    firstPickupTime: FirstPickupTime;
-    lastDeliveryTime: LastDeliveryTime;
-    currentLocation: CurrentLocation;
-    nextStop: NextStop;
-    completedPercentage: number;
-    pendingPercentage: number;
-    closedPercentage: number;
-    progressBar: ProgressBar[];
-    createdAt: string;
-    updatedAt: string;
-    files: File[];
-    fileCount: number;
-    loadTotal: LoadTotal;
-    isFlipped: boolean;
 
-    textCommodity: string;
-    textMiles: string;
-    textWeight: string;
-    textBase: string;
-    textAdditional: string;
-    textAdvance: string;
-    textPayTerms: string;
-    textDriver: string;
-    tableAttachments: File[];
+export interface CardDetails {
+    descriptionItems?: string[];
+    id?: number;
+    type?: Type;
+    companyContactLabel?: tableBodyColorLabel;
+    companyAccountLabel?: tableBodyColorLabel;
+    isSelected?: boolean;
+    loadNumber?: string;
+    statusType?: StatusType;
+    status?: Status;
+    tableDropdownContent?: tableDropdownContent;
+    dispatcher?: Dispatcher;
+    company?: Company;
+    dateCreated?: string;
+    dispatch?: Dispatch;
+    broker?: Broker;
+    brokerContact?: BrokerContact;
+    referenceNumber?: string;
+    generalCommodity?: GeneralCommodity;
+    weight?: number;
+    loadRequirements?: LoadRequirements;
+    stops?: Stop[];
+    splitLoad?: SplitLoad;
+    note?: string;
+    baseRate?: number;
+    adjustedRate?: number;
+    revisedRate?: number;
+    tonuRate?: number;
+    driverRate?: number;
+    additionalBillingRatesTotal?: number;
+    additionalBillingRates?: AdditionalBillingRate[];
+    totalRate?: number;
+    totalAdjustedRate?: number;
+    advancePay?: number;
+    pays?: Pay[];
+    statusHistory?: StatusHistory[];
+    commentsCount?: number;
+    comments?: Comment[];
+    totalPaid?: number;
+    totalDue?: number;
+    loadedMiles?: number;
+    totalMiles?: number;
+    totalTimeDays?: number;
+    totalTimeHours?: number;
+    paidDate?: string;
+    invoicedDate?: string;
+    shortPaid?: number;
+    age?: number;
+    daysToPay?: number;
+    totalLoadTime?: TotalLoadTime;
+    firstPickupTime?: FirstPickupTime;
+    lastDeliveryTime?: LastDeliveryTime;
+    currentLocation?: CurrentLocation;
+    nextStop?: NextStop;
+    completedPercentage?: number;
+    pendingPercentage?: number;
+    closedPercentage?: number;
+    progressBar?: ProgressBar[];
+    createdAt?: string;
+    updatedAt?: string;
+    files?: File[];
+    fileCount?: number;
+    loadTotal?: LoadTotal;
+    isFlipped?: boolean;
+    items?: {
+        description?: string;
+        id?: number;
+        pmTrailer?: string;
+        pmTruck?: string;
+        price?: number;
+        quantity?: number;
+        subtotal?: number;
+    };
+    textCommodity?: string;
+    textMiles?: string;
+    textWeight?: string;
+    textBase?: string;
+    textAdditional?: string;
+    textAdvance?: string;
+    textPayTerms?: string;
+    textDriver?: string;
+    tableAttachments?: File[];
 }
 
 export interface tableDropdownContent {
@@ -201,7 +214,10 @@ export interface DropdownItem {
     title?: string;
     name?: string;
     svgUrl?: string;
+    class?: string;
     mutedStyle?: boolean;
+    contentType?: string;
+    text?: string;
     svgStyle?: { width: number; height: number };
     svgClass?: string;
     isDropdown?: boolean;

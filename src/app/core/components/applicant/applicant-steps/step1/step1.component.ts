@@ -1979,9 +1979,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             files: documents,
         };
 
-        console.log('address', this.selectedAddresses);
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&

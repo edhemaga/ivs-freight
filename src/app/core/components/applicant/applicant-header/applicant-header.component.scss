@@ -67,7 +67,7 @@
                 &.tab-active-review-incorrect {
                     a {
                         color: $white !important;
-                        background: $ta-red !important;
+                        background: $ta-red-10 !important;
 
                         .nav-icon {
                             svg {
@@ -137,13 +137,13 @@
 
                 &.reviewed-incorrect-answer {
                     a {
-                        color: $ta-red;
+                        color: $ta-red-10;
                         background: transparent;
 
                         .nav-icon {
                             svg {
                                 path {
-                                    fill: $ta-red;
+                                    fill: $ta-red-10;
                                 }
                             }
                         }
@@ -156,7 +156,7 @@
 
                 &.feedback-incorrect-answer {
                     a {
-                        color: $ta-red;
+                        color: $ta-red-10;
                         background: transparent;
 
                         .nav-icon {

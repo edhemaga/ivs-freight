@@ -1,0 +1,113 @@
+<div
+    class="d-flex flex-column comment-container"
+    [ngClass]="{ inactive: !isCommenting }"
+>
+    <!-- Comment Header -->
+
+    <div
+        class="d-flex align-items-start justify-content-between comment-header"
+    >
+        <div class="d-flex align-items-center comment-header-left">
+            <img
+                src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
+                [src]="
+                    commentAvatar ??
+                    'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                "
+                alt="User Profile Image"
+            />
+
+            <p class="m-0 ta-font-semi-bold">
+                {{ commentData.companyUser.name }}
+            </p>
+
+            <ng-container *ngIf="!isCommenting">
+                <ng-container *ngIf="isMe">
+                    <div class="me-container">
+                        <span class="m-0 ta-font-bold">(Me)</span>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="commentDate">
+                    <div class="date-container">
+                        <span class="m-0 ta-font-medium">
+                            • {{ commentDate }}
+                        </span>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="isEdited">
+                    <div class="edited-container">
+                        <span class="m-0 ta-font-medium"> • </span>
+
+                        <span class="m-0 ta-font-medium">Edited</span>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+
+        <div
+            class="d-flex align-items-center justify-content-center comment-header-right"
+        >
+            <ng-container *ngIf="isCommenting">
+                <svg-icon
+                    class="confirm-icon"
+                    [ngClass]="{
+                        disabled: isDisabled
+                    }"
+                    src="assets/svg/ic_spec-confirm.svg"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="handleBtnActionClick('Confirm')"
+                ></svg-icon>
+
+                <svg-icon
+                    class="cancel-icon"
+                    src="assets/svg/ic_x.svg"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="handleBtnActionClick('Cancel')"
+                ></svg-icon>
+            </ng-container>
+
+            <ng-container *ngIf="!isCommenting">
+                <div
+                    class="d-flex justify-content-center align-items-center edit-icon-container"
+                >
+                    <svg-icon
+                        class="icon"
+                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                        [svgStyle]="{ 'width.px': 13, 'height.px': 13 }"
+                        (click)="handleBtnActionClick('Edit')"
+                    ></svg-icon>
+                </div>
+
+                <div
+                    class="d-flex justify-content-center align-items-center delete-icon-container"
+                >
+                    <svg-icon
+                        class="icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [svgStyle]="{ 'width.px': 11, 'height.px': 13 }"
+                        (click)="handleBtnActionClick('Delete')"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <!-- Comment Body -->
+
+    <div class="d-flex align-items-center comment-body">
+        <div
+            #commentInput
+            class="comment-input"
+            [ngClass]="{
+                'no-value': commentInput?.textContent === 'Write Comment...'
+            }"
+            [attr.contenteditable]="isCommenting ? true : false"
+            spellcheck="false"
+            (focus)="handleCommentChange()"
+            (input)="handleCommentChange()"
+            (blur)="handleCommentBlur()"
+        ></div>
+    </div>
+</div>

@@ -18,12 +18,12 @@
         .note-label {
             font-weight: 800;
             font-size: 14px;
-            color: #424242;
+            flex: 1;
+
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            flex: 1;
         }
 
         .note_upper_hold {
@@ -68,6 +68,7 @@
         overflow: hidden;
         padding: 0 6px;
         cursor: text;
+        max-width: 607px;
 
         &.innactive {
             height: 0px !important;
@@ -89,7 +90,7 @@
             padding-bottom: 12px;
             padding-top: 5px;
             max-height: 75px;
-            font-size: 12px;
+            font-size: 14px;
 
             width: 100%;
             resize: none;
@@ -167,6 +168,10 @@
                 content: attr(placeholder);
                 color: #aaaaaa;
             }
+        }
+
+        [contentEditable='true']:empty:not(:focus):before {
+            content: attr(data-text);
         }
 
         .spinner {

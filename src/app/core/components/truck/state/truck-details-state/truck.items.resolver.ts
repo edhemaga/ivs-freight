@@ -30,24 +30,16 @@ export class TruckItemResolver implements Resolve<TruckItemState> {
         const truck_id = route.paramMap.get('id');
         let trid = parseInt(truck_id);
 
+        const truckData$ = this.truckService.getTruckById(trid);
 
-        const truckData$ = this.truckService.getTruckById(
-            trid,
-        );
+        const truckRegistration$ =
+            this.truckService.getTruckRegistrationsById(trid);
 
-        const truckRegistration$ = this.truckService.getTruckRegistrationsById(
-            trid,
-        );
+        const truckInspection$ =
+            this.truckService.getTruckInspectionsById(trid);
 
-        const truckInspection$ = this.truckService.getTruckInspectionsById(
-            trid,
-        );
+        const truckTitles$ = this.truckService.getTruckTitlesById(trid);
 
-        const truckTitles$ = this.truckService.getTruckTitlesById(
-            trid,
-        );
-        
-         
         return forkJoin({
             truckData: truckData$,
             truckRegistrations: truckRegistration$,
@@ -55,17 +47,14 @@ export class TruckItemResolver implements Resolve<TruckItemState> {
             truckTitles: truckTitles$,
         }).pipe(
             tap((data) => {
-                //console.log('---data--', data);
                 let truckData = data.truckData;
                 truckData.registrations = data.truckRegistrations;
                 truckData.inspections = data.truckInspection;
                 truckData.titles = data.truckTitles;
                 this.truckDetailsListStore.add(truckData);
                 this.truckDetailsStore.set([truckData]);
-                
             })
-        ); 
-
+        );
 
         /*
         if (this.truckDetailsListQuery.hasEntity(trid)) {

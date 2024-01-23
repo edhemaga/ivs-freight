@@ -1,5 +1,6 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Components
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
@@ -49,9 +50,18 @@ import {
     tableSearch,
 } from '../../../utils/methods.globals';
 
+//Constants
+import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+//Configuration
+import { DisplayTrailerConfiguration } from '../trailer-card-data';
+
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { DisplayTrailerConfiguration } from '../trailer-card-data';
+import {
+    TooltipColors,
+    TrailerName,
+} from 'src/app/core/utils/enums/trailer-component.enum';
 
 @Component({
     selector: 'app-trailer-table',
@@ -73,16 +83,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
-    public backFilterQuery: backFilterQueryInterface = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public activeTableData: string;
+    public backFilterQuery: backFilterQueryInterface =
+        TableDropdownTrailerComponentConstants.BACK_FILTER_QUERY;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =
@@ -108,6 +111,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerService: TrailerTService,
         public datePipe: DatePipe,
+        private router: Router,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
         private trailerInactiveStore: TrailerInactiveStore
@@ -380,12 +384,17 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(
+                ConstantStringTableComponentsEnum.TABLE_CONTAINER
+            )
+        );
     }
 
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showTrailerFilter: true,
                 viewModeOptions: [
                     {
                         name: ConstantStringTableComponentsEnum.LIST,
@@ -500,8 +509,42 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                   (this.sendDataToCardsBack = this.displayRowsBackActive))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
                   (this.sendDataToCardsBack = this.displayRowsBackInactive));
+
+            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
+        }
+    }
+
+    private setTrailerTooltipColor(trailerName: string): string {
+        if (trailerName === TrailerName.REEFER) {
+            return TooltipColors.BLUE;
+        } else if (trailerName === TrailerName.DRY_VAN) {
+            return TooltipColors.DARK_BLUE;
+        } else if (trailerName === TrailerName.DUMPER) {
+            return TooltipColors.PURPLE;
+        } else if (trailerName === TrailerName.TANKER) {
+            return TooltipColors.GREEN;
+        } else if (trailerName === TrailerName.PNEUMATIC_TANKER) {
+            return TooltipColors.LIGHT_GREEN;
+        } else if (trailerName === TrailerName.CAR_HAULER) {
+            return TooltipColors.PINK;
+        } else if (trailerName === TrailerName.CAR_HAULER_STINGER) {
+            return TooltipColors.PINK;
+        } else if (trailerName === TrailerName.CHASSIS) {
+            return TooltipColors.BROWN;
+        } else if (trailerName === TrailerName.LOW_BOY_RGN) {
+            return TooltipColors.RED;
+        } else if (trailerName === TrailerName.STEP_DECK) {
+            return TooltipColors.RED;
+        } else if (trailerName === TrailerName.FLAT_BED) {
+            return TooltipColors.RED;
+        } else if (trailerName === TrailerName.SIDE_KIT) {
+            return TooltipColors.ORANGE;
+        } else if (trailerName === TrailerName.CONESTOGA) {
+            return TooltipColors.GOLD;
+        } else if (trailerName === TrailerName.CONTAINER) {
+            return TooltipColors.YELLOW;
         }
     }
 
@@ -510,6 +553,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             isSelected: false,
             tableTrailerTypeIcon: data.trailerType.logoName,
+            tableTrailerName: data.trailerType.name,
+            tableTrailerColor: this.setTrailerTooltipColor(
+                data.trailerType.name
+            ),
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
@@ -638,6 +685,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
+                content: this.getDropdownTrailerContent(),
             },
         };
     }
@@ -912,6 +960,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.trailerBackFilter(this.backFilterQuery, true);
                 break;
             }
+            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/trailer/${event.id}/details`]);
+                break;
+            }
             case ConstantStringTableComponentsEnum.EDIT_TRAILER: {
                 this.modalService.openModal(
                     TrailerModalComponent,
@@ -982,6 +1034,22 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    // Get Tab Table Data For Selected Tab
+    private getSelectedTabTableData(): void {
+        if (this.tableData?.length) {
+            this.activeTableData = this.tableData.find(
+                (table) => table.field === this.selectedTab
+            );
+        }
+    }
+
+    // Show More Data
+    public onShowMore(): void {
+        this.onTableBodyActions({
+            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+        });
     }
 
     private changeTrailerStatus(id: number): void {
@@ -1074,7 +1142,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
+        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
         this.destroy$.next();

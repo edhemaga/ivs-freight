@@ -3,6 +3,7 @@
 //------------------------ Form Container Classes ---------------------------------------------------
 .form-container {
     margin-top: 26px;
+    width: 640px !important;
 
     // Specific Classes to add on settings/location/modals
     &.form-container-mt-12 {
@@ -889,42 +890,132 @@
 .load-ftl-first-row {
     display: grid;
     grid-template-columns: 94px 26px repeat(2, 230px);
-    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
 
     margin-top: 26px;
     margin-bottom: 32px;
 
-    .load-template-switcher {
+    &.template-row {
+        grid-template-columns: 94px repeat(2, 249px);
+
+        .company-template-name-container {
+            order: 2;
+        }
+    }
+
+    .tabs-container {
+        order: 1;
+    }
+
+    .load-template-switcher-container {
+        border: 0;
+        outline: 0;
         width: 26px;
-        aspect-ratio: 1;
+        height: 26px;
         border-radius: 2px;
-        background-color: #eeeeee;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-bottom: 1px;
+        background: $bw2;
+        transition: background 0.3s ease-in-out;
+        order: 2;
 
         &:hover {
-            cursor: pointer;
+            background: $bw-9;
+
+            .load-template-switcher-icon {
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+            }
         }
+
+        &.active {
+            background: $ta-black;
+
+            &:hover {
+                .load-template-switcher-icon {
+                    svg {
+                        path {
+                            fill: $white;
+                        }
+                    }
+                }
+            }
+
+            .load-template-switcher-icon {
+                svg {
+                    path {
+                        fill: $ta-white-3;
+                    }
+                }
+            }
+        }
+
+        &.valid {
+            background: $ta-blue-16;
+
+            &:hover {
+                background: $ta-red-15;
+
+                .load-template-switcher-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-14;
+                        }
+                    }
+                }
+            }
+
+            .load-template-switcher-icon {
+                svg {
+                    path {
+                        fill: $ta-blue-13;
+                    }
+                }
+            }
+        }
+
+        .load-template-switcher-icon {
+            line-height: 0;
+
+            svg {
+                path {
+                    transition: fill 0.3s ease-in-out;
+                }
+            }
+        }
+    }
+
+    .dispatcher-container {
+        order: 3;
+    }
+
+    .company-template-name-container {
+        order: 4;
     }
 }
 
-.load-ftl-third-row {
+.load-ftl-second-row {
     display: grid;
-    grid-template-columns: 172px 432px;
+    grid-template-columns: 234px 370px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
     margin-bottom: 32px;
 }
 
-.load-ftl-fourth-row,
-.load-shipper-contact-row {
+.load-ftl-third-row {
     display: grid;
-    grid-template-columns: 330px 152px 110px;
+    grid-template-columns: 234px 200px 158px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.load-ftl-fourth-row {
+    width: 616px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
@@ -933,16 +1024,16 @@
 
 .load-shipper-contact-row {
     display: grid;
-    grid-template-columns: 1fr 330px;
+    grid-template-columns: 1fr 370px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
     margin-bottom: 32px;
 }
 
-.load-requirements-load-second-row {
+.load-requirements-load-first-row {
     display: grid;
-    grid-template-columns: 100px 120px 150px 90px 1fr;
+    grid-template-columns: 302px 302px;
     grid-template-rows: 26;
     align-items: center;
     -moz-column-gap: 12px;
@@ -950,13 +1041,32 @@
     margin-bottom: 32px;
 }
 
-.stop-load-date-time {
+.load-requirements-load-second-row {
     display: grid;
-    grid-template-columns: 182px 26px repeat(2, 181px);
+    grid-template-columns: 100px 120px 150px 117px 81px;
+    grid-template-rows: 26;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 22px;
+}
+
+.load-modal-row {
+    max-width: 616px;
+    width: 100%;
+}
+
+.stop-load-date-time {
+    display: grid;
+    grid-template-columns: 1fr 26px repeat(2, 1fr);
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 22px;
+
+    .load-plus-button {
+        margin-left: -8px !important;
+    }
 
     &.date-range-active {
         grid-template-columns: repeat(4, 1fr);
@@ -969,24 +1079,39 @@
 .load-plus-button {
     width: 26px;
     height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #eeeeee;
-
-    cursor: pointer;
+    background: $bw2;
     border-radius: 2px;
-    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
 
-    svg-icon {
-        width: 14px;
-        height: 14px;
-        line-height: 12px;
-        svg {
-            width: 14px;
-            height: 14px;
+    &:hover {
+        background: $bw-9;
+
+        .plus-icon {
             path {
-                fill: #919191;
+                fill: $ta-black;
+            }
+        }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        background: $ta-light-grey-5;
+
+        .plus-icon {
+            path {
+                fill: $ta-light-grey-6;
+            }
+        }
+    }
+
+    .plus-icon {
+        line-height: 0;
+
+        svg {
+            path {
+                fill: $bw5;
+                transition: fill 0.3s ease-in-out;
             }
         }
     }

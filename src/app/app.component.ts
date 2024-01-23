@@ -66,10 +66,6 @@ export class AppComponent implements OnInit {
         // Logout
     }
 
-    public testFnc() {
-        console.log("TESTTTTTT");
-    }
-
     /**
      * Top function
      */

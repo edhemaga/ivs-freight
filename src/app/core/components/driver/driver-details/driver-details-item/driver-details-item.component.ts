@@ -130,29 +130,25 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
-        
+
         this.dataMvr = this.drivers[0].data.mvrs;
         this.dataMedical = this.drivers[0].data.medicals;
-        this.dataTest = this.drivers[0].data.dataTest; 
+        this.dataTest = this.drivers[0].data.dataTest;
 
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log('confirmation service: ', res);
-                    console.log('confirmation service: ', this.drivers);
                     let driverData = this.drivers[0].data;
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'cdl') {
                                 this.deleteCdlByIdFunction(res.id);
-                                if ( res?.data?.newCdlID ) {
-
-                                    setTimeout(()=>{
-                                        this.activateCdl(res?.data?.newCdlID); 
-                                    }, 1000)
-                                   
+                                if (res?.data?.newCdlID) {
+                                    setTimeout(() => {
+                                        this.activateCdl(res?.data?.newCdlID);
+                                    }, 1000);
                                 }
                             } else if (res.template === 'medical') {
                                 this.deleteMedicalByIdFunction(res.id);
@@ -202,7 +198,7 @@ export class DriverDetailsItemComponent
     public getExpireDate() {
         this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
             let endDate = moment(ele.expDate);
-          
+
             if (
                 moment(ele.expDate).isBefore(moment()) ||
                 endDate.diff(moment(), 'days') <= 365
@@ -239,10 +235,8 @@ export class DriverDetailsItemComponent
         this.cdlService
             .activateCdlById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-            });
+            .subscribe({});
     }
-
 
     /**Function for dots in cards */
     public initTableOptions(data: any): void {
@@ -253,7 +247,7 @@ export class DriverDetailsItemComponent
             let endDate = moment(item.expDate);
             let daysDiff = endDate.diff(moment(), 'days');
             if (moment(item.expDate).isBefore(moment())) {
-                 this.expiredCard.push(true);
+                this.expiredCard.push(true);
             } else {
                 this.expiredCard.push(false);
             }
@@ -269,7 +263,7 @@ export class DriverDetailsItemComponent
                 this.arrayOfRenewCdl.push(false);
             }
         });
-        
+
         this.dataDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -440,7 +434,6 @@ export class DriverDetailsItemComponent
     }
 
     public getCdlById(id: number) {
-        console.log('--here--getCdlById', id);
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -448,7 +441,6 @@ export class DriverDetailsItemComponent
     }
 
     public getMedicalById(id: number) {
-        console.log('--here--getMedicalById');
         this.medicalService
             .getMedicalById(id)
             .pipe(takeUntil(this.destroy$))
@@ -456,7 +448,6 @@ export class DriverDetailsItemComponent
     }
 
     public getMvrById(id: number) {
-        console.log('--here--getMvrById');
         this.mvrService
             .getMvrById(id)
             .pipe(takeUntil(this.destroy$))
@@ -464,21 +455,20 @@ export class DriverDetailsItemComponent
     }
 
     public getTestById(id: number) {
-        console.log('--here--getTestById');
         this.testService
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.dataTest = item));
     }
 
-    public preloadData(data: any, title?: any){
-        if ( title == 'cdl' ) {
+    public preloadData(data: any, title?: any) {
+        if (title == 'cdl') {
             this.dataCdl = data;
-        } else if ( title == 'test' ) {
+        } else if (title == 'test') {
             this.dataTest = data;
-        } else if ( title == 'med' ) {
+        } else if (title == 'med') {
             this.dataMedical = data;
-        } else if ( title == 'mvr' ) {
+        } else if (title == 'mvr') {
             this.dataMvr = data;
         }
     }
@@ -487,22 +477,29 @@ export class DriverDetailsItemComponent
         const name = dropActionNameDriver(eventData, action);
         let driverId = this.drivers[0].data.id;
         let dataCdls: any = [];
-      
-        if ( this.activeCdl.length && this.activeCdl[0].id == eventData.id && ( eventData.type == 'deactivate-item' || eventData.type == 'delete-item' ) ) {
-            this.mvrService
-            .getMvrModal(driverId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: GetMvrModalResponse) => {
-                    res?.cdls?.map((item) => {
-                        if ( item.id != eventData.id ) {
-                            dataCdls.push({...item, name: item.cdlNumber});
-                        }
-                    })
-                },
-            });
-        }
 
+        if (
+            this.activeCdl.length &&
+            this.activeCdl[0].id == eventData.id &&
+            (eventData.type == 'deactivate-item' ||
+                eventData.type == 'delete-item')
+        ) {
+            this.mvrService
+                .getMvrModal(driverId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: GetMvrModalResponse) => {
+                        res?.cdls?.map((item) => {
+                            if (item.id != eventData.id) {
+                                dataCdls.push({
+                                    ...item,
+                                    name: item.cdlNumber,
+                                });
+                            }
+                        });
+                    },
+                });
+        }
 
         let dataForCdl;
         if (
@@ -510,14 +507,10 @@ export class DriverDetailsItemComponent
             eventData.type === 'deactivate-item'
         ) {
             dataForCdl = this.activeCdl;
-            
-            
         } else {
             dataForCdl = this.dataCdl;
         }
 
-      
-        
         setTimeout(() => {
             this.dropDownService.dropActions(
                 eventData,
@@ -529,10 +522,10 @@ export class DriverDetailsItemComponent
                 this.drivers[0].data.id,
                 null,
                 null,
-                this.drivers[0].data, 
+                this.drivers[0].data,
                 null,
                 null,
-                dataCdls,
+                dataCdls
             );
         }, 200);
     }
@@ -649,10 +642,9 @@ export class DriverDetailsItemComponent
         onFileActionMethods(action);
     }
 
-    public formatDate(mod){
+    public formatDate(mod) {
         return convertDateFromBackend(mod);
     }
-
 
     ngOnDestroy(): void {
         this.destroy$.next();
