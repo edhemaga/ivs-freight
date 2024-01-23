@@ -324,14 +324,6 @@
     >
     </app-filter>
 
-    <ng-container *ngIf="options.toolbarActions.showMoneyFilter">
-        <div
-            class="border-container d-flex justify-content-center align-items-center"
-        >
-            <div class="border"></div>
-        </div>
-    </ng-container>
-
     <!-- FILTER -->
     <ng-container *ngIf="options.toolbarActions.showLtlFilter">
         <ng-container *ngFor="let filterData of loadFilterData">
