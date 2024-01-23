@@ -13,12 +13,14 @@ import { Router } from '@angular/router';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { RepairTService } from '../state/repair.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { MapsService } from '../../../services/shared/maps.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // Modals
 import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
@@ -155,7 +157,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private ref: ChangeDetectorRef,
         private mapsService: MapsService,
         private repairTrailerStore: RepairTrailerStore,
-        private shopStore: ShopStore
+        private shopStore: ShopStore,
+        private confiramtionService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -419,6 +422,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
     }
+
     // Observ Table Container
     private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
@@ -1258,19 +1262,62 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_REPAIR
         ) {
-            if (
-                this.selectedTab !==
-                ConstantStringTableComponentsEnum.REPAIR_SHOP
-            ) {
-                this.repairService
-                    .deleteRepairById(event.id, this.selectedTab)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
-            } else {
-                this.repairService
-                    .deleteRepairShopById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
+            switch (this.selectedTab) {
+                case ConstantStringTableComponentsEnum.ACTIVE:
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.DELETE },
+                        {
+                            type: ConstantStringTableComponentsEnum.DELETE,
+                        }
+                    );
+                    this.confiramtionService.confirmationData$.subscribe(
+                        (response) => {
+                            switch (response.type) {
+                                case ConstantStringTableComponentsEnum.DELETE:
+                                    this.repairService
+                                        .deleteRepairById(
+                                            event?.id,
+                                            this.selectedTab
+                                        )
+                                        .pipe(takeUntil(this.destroy$))
+                                        .subscribe();
+                                    break;
+                            }
+                        }
+                    );
+                    break;
+
+                case ConstantStringTableComponentsEnum.INACTIVE:
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.DELETE },
+                        {
+                            type: ConstantStringTableComponentsEnum.DELETE,
+                        }
+                    );
+
+                    this.repairService
+                        .deleteRepairById(event.id, this.selectedTab)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe();
+
+                    break;
+
+                case ConstantStringTableComponentsEnum.REPAIR_SHOP:
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.DELETE },
+                        {
+                            type: ConstantStringTableComponentsEnum.DELETE,
+                        }
+                    );
+
+                    this.repairService
+                        .deleteRepairById(event.id, this.selectedTab)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe();
+                    break;
             }
         }
 

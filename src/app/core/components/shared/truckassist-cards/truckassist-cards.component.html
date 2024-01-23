@@ -278,6 +278,7 @@
                                     <!-- Load page body -->
 
                                     <ng-container *ngIf="page === 'Load'">
+                                        <!-- If Comodity is Hazardous-->
                                         <ng-container
                                             *ngIf="
                                                 getValueByStringPath(
@@ -401,15 +402,43 @@
                                             <ng-container
                                                 *ngIf="
                                                     rowsFront.secondEndpoint !==
-                                                    'brokerContact.extensionPhone'
+                                                        'brokerContact.extensionPhone' &&
+                                                    rowsFront.secondEndpoint !==
+                                                        'adjustedRate'
                                                 "
                                             >
-                                                {{
-                                                    getValueByStringPath(
-                                                        card,
-                                                        rowsFront.secondEndpoint
-                                                    )
-                                                }}
+                                                <span
+                                                    [ngClass]="{
+                                                        'subtotal ta-font-medium':
+                                                            rowsFront.secondEndpoint ===
+                                                            'loadTotal.subTotal'
+                                                    }"
+                                                >
+                                                    {{
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <!-- If it is adjustedrate -->
+
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsFront.secondEndpoint ===
+                                                    'adjustedRate'
+                                                "
+                                            >
+                                                <span>
+                                                    {{
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
                                             </ng-container>
                                         </ng-container>
 
@@ -461,7 +490,8 @@
                                             {{
                                                 getValueByStringPath(
                                                     card,
-                                                    rowsFront.endpoint
+                                                    rowsFront.endpoint,
+                                                    'money'
                                                 )
                                             }}
                                         </ng-container>
@@ -745,6 +775,7 @@
                                     <!-- Owner page body -->
                                     <ng-container *ngIf="page === 'Owner'">
                                         <!-- Fleet -->
+
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Fleet'"
                                         >
@@ -801,6 +832,29 @@
                                                     </span>
                                                 </div>
                                             </div>
+                                            <!-- <app-ta-input-dropdown
+                                                formControlName="ownerFleet"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'dropdown',
+                                                    label: 'Owner',
+                                                    isDropdown: true,
+                                                    blackInput: true,
+                                                    isRequired: true,
+                                                    textTransform: 'capitalize',
+                                                    dropdownWidthClass:
+                                                        'w-col-256'
+                                                }"
+                                                [options]="labelsDriver"
+                                                [activeItem]="selectedDriver"
+                                                (selectedItem)="
+                                                    onSelectDropdown(
+                                                        $event,
+                                                        'driver'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown> -->
                                         </ng-container>
 
                                         <ng-container
@@ -1087,44 +1141,32 @@
                                                 'tableRaiting.likeCount'
                                             "
                                         >
-                                            <div class="rating-holder d-flex">
-                                                <span
-                                                    class="rating ta-font-semi-bold d-flex align-items-center"
-                                                >
-                                                    <svg-icon
-                                                        class="svg-like"
-                                                        [src]="
-                                                            'assets/svg/common/ic_like.svg'
-                                                        "
-                                                    ></svg-icon>
-                                                    <span>
-                                                        {{
-                                                            getValueByStringPath(
-                                                                card,
-                                                                rowsBack.endpoint
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </span>
-                                                <span
-                                                    class="rating ta-font-semi-bold d-flex align-items-center"
-                                                >
-                                                    <svg-icon
-                                                        class="svg-dislike"
-                                                        [src]="
-                                                            'assets/svg/common/ic_dislike.svg'
-                                                        "
-                                                    ></svg-icon>
-                                                    <span>
-                                                        {{
-                                                            getValueByStringPath(
-                                                                card,
-                                                                rowsBack.secondEndpoint
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </span>
-                                            </div>
+                                            <app-ta-like-dislike
+                                                [taLikes]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                                [taDislikes]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [isTaLiked]="
+                                                    card.tableRaiting.hasLiked
+                                                "
+                                                [isTaDisliked]="
+                                                    card.tableRaiting.hasDislike
+                                                "
+                                                [isCard]="true"
+                                                [card]="card"
+                                                (likesDislakes)="
+                                                    likeDislake($event, card)
+                                                "
+                                            >
+                                            </app-ta-like-dislike>
                                         </ng-container>
 
                                         <!-- Format revanue -->
@@ -1137,7 +1179,8 @@
                                             {{
                                                 getValueByStringPath(
                                                     card,
-                                                    rowsBack.endpoint
+                                                    rowsBack.endpoint,
+                                                    'money'
                                                 )
                                             }}
                                         </ng-container>
@@ -1156,7 +1199,8 @@
                                             {{
                                                 getValueByStringPath(
                                                     card,
-                                                    rowsBack.endpoint
+                                                    rowsBack.endpoint,
+                                                    'date'
                                                 )
                                             }}
                                         </ng-container>
@@ -1306,12 +1350,27 @@
 
                                     <!-- Repair Page Body -->
                                     <ng-container *ngIf="page === 'Repair'">
-                                        {{
-                                            getValueByStringPath(
-                                                card,
-                                                rowsBack.endpoint
-                                            )
-                                        }}
+
+                                        <!-- Odometer -->
+                                        <ng-container *ngIf="rowsBack.endpoint === 'odometer'">
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint,
+                                                    'miles'
+                                                    )
+                                                }} <span class="muted">mi</span>
+                                        </ng-container>
+
+                                        <!-- Rest of items in repair page body -->
+                                        <ng-container *ngIf="rowsBack.endpoint !== 'odometer'">
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                    )
+                                                }}
+                                        </ng-container>
 
                                         <ng-container
                                             *ngIf="
@@ -1471,23 +1530,14 @@
                         <div
                             class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
                         >
-                            <span
-                                class="note-tooltip d-flex align-items-center"
-                                type="button"
-                                ngbTooltip
-                                mainTooltip="View Note"
-                                tooltipBackground="#424242"
-                                position="bottom"
+                            <app-ta-note
+                                [note]="card.note"
+                                [mainData]="card"
+                                [entityId]="card.id"
+                                [openedAll]="false"
+                                [parking]="false"
                             >
-                                <app-ta-note
-                                    [note]="card.note"
-                                    [mainData]="card"
-                                    [entityId]="card.id"
-                                    [openedAll]="false"
-                                    [parking]="false"
-                                >
-                                </app-ta-note>
-                            </span>
+                            </app-ta-note>
                         </div>
 
                         <!-- Comments element -->

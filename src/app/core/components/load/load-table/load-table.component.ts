@@ -60,6 +60,7 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @Component({
     selector: 'app-load-table',
@@ -117,7 +118,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
         private thousandSeparator: TaThousandSeparatorPipe,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private confiramtionService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -882,6 +884,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
+
+            this.confiramtionService.confirmationData$.subscribe((response) => {
+                switch (response.type) {
+                    case ConstantStringTableComponentsEnum.DELETE:
+                        this.loadServices
+                            .deleteLoadById(event.id)
+                            .pipe(takeUntil(this.destroy$))
+
+                            .subscribe();
+                        break;
+                }
+            });
         } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
             this.loadServices
                 .getLoadById(event.id)
