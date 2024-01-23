@@ -316,73 +316,77 @@ export class TruckassistTableToolbarComponent
             hasMinWidth = false;
 
         this.columnsOptions = [];
+
         let activeCard = false;
+
         this.options.toolbarActions.viewModeOptions.filter((viewMode) => {
             if (
                 viewMode.name === ConstantStringTableComponentsEnum.CARD &&
                 viewMode.active
-            ) {
+            )
                 activeCard = true;
-            }
         });
 
         if (activeCard) {
             this.toolbarWidth = ConstantStringTableComponentsEnum.NUMBER_100;
         } else {
-            this.columns.map((c) => {
-                if (!c.hidden) {
+            this.columns.map((column) => {
+                if (!column.hidden) {
                     columnsSumWidth +=
-                        c.width < c.minWidth ? c.minWidth : c.width;
+                        column.width < column.minWidth
+                            ? column.minWidth
+                            : column.width;
                     if (
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.CHECKBOX &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.ATTACHMENTS &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.MEDIA &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.INSURANCE &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.COMMENT &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.HIRE &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.FAVORITE &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.NOTE &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.ACTIONS &&
-                        c.ngTemplate !==
+                        column.ngTemplate !==
                             ConstantStringTableComponentsEnum.USER_CHECKBOX
                     ) {
                         columnsSumWidth += 6;
                     }
                 }
 
-                if (c.minWidth) {
-                    hasMinWidth = true;
-                }
+                if (column.minWidth) hasMinWidth = true;
 
                 if (
-                    c.ngTemplate !==
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.CHECKBOX &&
-                    c.ngTemplate !==
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.ATTACHMENTS &&
-                    c.ngTemplate !== ConstantStringTableComponentsEnum.MEDIA &&
-                    c.ngTemplate !==
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.MEDIA &&
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.INSURANCE &&
-                    c.ngTemplate !==
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.COMMENT &&
-                    c.ngTemplate !== ConstantStringTableComponentsEnum.HIRE &&
-                    c.ngTemplate !==
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.HIRE &&
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.FAVORITE &&
-                    c.ngTemplate !== ConstantStringTableComponentsEnum.NOTE &&
-                    c.ngTemplate !==
+                    column.ngTemplate !==
+                        ConstantStringTableComponentsEnum.NOTE &&
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.ACTIONS &&
-                    c.ngTemplate !==
+                    column.ngTemplate !==
                         ConstantStringTableComponentsEnum.USER_CHECKBOX
                 ) {
-                    this.columnsOptions.push(c);
+                    this.columnsOptions.push(column);
                 }
             });
 
