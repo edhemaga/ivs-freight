@@ -52,7 +52,10 @@
                 <ng-container *ngIf="!isConvertedToTemplate">
                     <button
                         class="d-flex align-items-center justify-content-center load-template-switcher-container"
-                        [ngClass]="{ active: popover.isOpen() }"
+                        [ngClass]="{
+                            active: popover.isOpen(),
+                            valid: !popover.isOpen() && isTemplateSelected
+                        }"
                         #popover="ngbPopover"
                         autoClose="outside"
                         [ngbPopover]="dropdownPopover"
@@ -71,17 +74,20 @@
                         <div
                             class="popover-container load-template-switcher-popover-container"
                         >
-                            <div class="popover-item">
-                                <p class="m-0">Walmart Monthly Route</p>
-                            </div>
-
-                            <div class="popover-item">
-                                <p class="m-0">Walmart Monthly Route</p>
-                            </div>
-
-                            <div class="popover-item">
-                                <p class="m-0">Walmart Monthly Route</p>
-                            </div>
+                            <ng-container
+                                *ngFor="
+                                    let template of labelsTemplate;
+                                    index as i;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="popover-item"
+                                    (click)="handleTemplateSelect(template.id)"
+                                >
+                                    <p class="m-0">{{ template.name }}</p>
+                                </div>
+                            </ng-container>
                         </div>
                     </ng-template>
                 </ng-container>

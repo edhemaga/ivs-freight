@@ -24,7 +24,11 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // bootstrap
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbActiveModal,
+    NgbModule,
+    NgbPopover,
+} from '@ng-bootstrap/ng-bootstrap';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -137,6 +141,7 @@ import { CommentData } from 'src/app/core/model/comment-data';
 })
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
+    @ViewChild('popover') popover: NgbPopover;
 
     @Input() editData: any;
 
@@ -150,6 +155,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     // modal
     public loadModalSize: string = ConstantStringEnum.MODAL_SIZE;
     public isConvertedToTemplate: boolean = false;
+    public isTemplateSelected: boolean = false;
 
     public loadNumber: string;
 
@@ -2664,6 +2670,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
+                    console.log('RES', res);
                     this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
@@ -3758,6 +3765,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         if (type === ConstantStringEnum.NOTE)
             this.loadForm.get(ConstantStringEnum.NOTE).patchValue(text);
+    }
+
+    public handleTemplateSelect(templateId: number): void {
+        this.selectedTemplate = templateId;
+
+        this.isTemplateSelected = true;
+
+        this.popover.close();
     }
 
     ngOnDestroy(): void {
