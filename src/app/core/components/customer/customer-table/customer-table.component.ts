@@ -1137,14 +1137,15 @@ export class CustomerTableComponent
             } else {
                 this.confiramtionService.confirmationData$.subscribe(
                     (response) => {
-                        switch (response.type) {
-                            case ConstantStringTableComponentsEnum.DELETE:
-                                this.shipperService
-                                    .deleteShipperById(event.id)
-                                    .pipe(takeUntil(this.destroy$))
+                        if (
+                            response.type ===
+                            ConstantStringTableComponentsEnum.DELETE
+                        ) {
+                            this.shipperService
+                                .deleteShipperById(event.id)
+                                .pipe(takeUntil(this.destroy$))
 
-                                    .subscribe();
-                                break;
+                                .subscribe();
                         }
                     }
                 );
