@@ -26,5 +26,6 @@ export interface CreateCompanyContactCommand {
     contactEmails?: Array<CreateContactEmailCommand> | null;
     companyContactUsers?: Array<CompanyContactUser> | null;
     isSharedWithAllDepartments?: boolean;
+    companyName?: string | null;
 }
 

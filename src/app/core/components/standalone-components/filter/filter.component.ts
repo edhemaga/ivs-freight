@@ -1,9 +1,5 @@
 import { Subject, takeUntil } from 'rxjs';
-import {
-    NgbDropdownConfig,
-    NgbModule,
-    NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     Input,

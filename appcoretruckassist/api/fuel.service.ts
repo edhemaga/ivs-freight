@@ -2959,130 +2959,135 @@ export class FuelService {
     }
 
     /**
-     * @param fuelTransactionSpecParamsFuelStopStoreIds 
-     * @param fuelTransactionSpecParamsTruckIds 
-     * @param fuelTransactionSpecParamsCategoryIds 
-     * @param fuelTransactionSpecParamsDateFrom 
-     * @param fuelTransactionSpecParamsDateTo 
-     * @param fuelTransactionSpecParamsLong 
-     * @param fuelTransactionSpecParamsLat 
-     * @param fuelTransactionSpecParamsDistance 
-     * @param fuelTransactionSpecParamsLastFrom 
-     * @param fuelTransactionSpecParamsLastTo 
-     * @param fuelTransactionSpecParamsCostFrom 
-     * @param fuelTransactionSpecParamsCostTo 
-     * @param fuelTransactionSpecParamsPpgFrom 
-     * @param fuelTransactionSpecParamsPpgTo 
-     * @param fuelTransactionSpecParamsTruckId 
-     * @param fuelTransactionSpecParamsPageIndex 
-     * @param fuelTransactionSpecParamsPageSize 
-     * @param fuelTransactionSpecParamsCompanyId 
-     * @param fuelTransactionSpecParamsSort 
-     * @param fuelTransactionSpecParamsSearch 
-     * @param fuelTransactionSpecParamsSearch1 
-     * @param fuelTransactionSpecParamsSearch2 
+     * @param fuelStopStoreIds 
+     * @param truckIds 
+     * @param categoryIds 
+     * @param dateFrom 
+     * @param dateTo 
+     * @param _long 
+     * @param lat 
+     * @param distance 
+     * @param lastFrom 
+     * @param lastTo 
+     * @param costFrom 
+     * @param costTo 
+     * @param ppgFrom 
+     * @param ppgTo 
+     * @param truckId 
+     * @param driverId 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<FuelTransactionListResponse>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<FuelTransactionListResponse>>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<FuelTransactionListResponse>>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelTransactionListGet(fuelStopStoreIds?: Array<number>, truckIds?: Array<number>, categoryIds?: Array<number>, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, lastFrom?: number, lastTo?: number, costFrom?: number, costTo?: number, ppgFrom?: number, ppgTo?: number, truckId?: number, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<FuelTransactionListResponse>;
+    public apiFuelTransactionListGet(fuelStopStoreIds?: Array<number>, truckIds?: Array<number>, categoryIds?: Array<number>, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, lastFrom?: number, lastTo?: number, costFrom?: number, costTo?: number, ppgFrom?: number, ppgTo?: number, truckId?: number, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<FuelTransactionListResponse>>;
+    public apiFuelTransactionListGet(fuelStopStoreIds?: Array<number>, truckIds?: Array<number>, categoryIds?: Array<number>, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, lastFrom?: number, lastTo?: number, costFrom?: number, costTo?: number, ppgFrom?: number, ppgTo?: number, truckId?: number, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<FuelTransactionListResponse>>;
+    public apiFuelTransactionListGet(fuelStopStoreIds?: Array<number>, truckIds?: Array<number>, categoryIds?: Array<number>, dateFrom?: string, dateTo?: string, _long?: number, lat?: number, distance?: number, lastFrom?: number, lastTo?: number, costFrom?: number, costTo?: number, ppgFrom?: number, ppgTo?: number, truckId?: number, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (fuelTransactionSpecParamsFuelStopStoreIds) {
-            fuelTransactionSpecParamsFuelStopStoreIds.forEach((element) => {
+        if (fuelStopStoreIds) {
+            fuelStopStoreIds.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'FuelTransactionSpecParams.FuelStopStoreIds');
+                  <any>element, 'FuelStopStoreIds');
             })
         }
-        if (fuelTransactionSpecParamsTruckIds) {
-            fuelTransactionSpecParamsTruckIds.forEach((element) => {
+        if (truckIds) {
+            truckIds.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'FuelTransactionSpecParams.TruckIds');
+                  <any>element, 'TruckIds');
             })
         }
-        if (fuelTransactionSpecParamsCategoryIds) {
-            fuelTransactionSpecParamsCategoryIds.forEach((element) => {
+        if (categoryIds) {
+            categoryIds.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'FuelTransactionSpecParams.CategoryIds');
+                  <any>element, 'CategoryIds');
             })
         }
-        if (fuelTransactionSpecParamsDateFrom !== undefined && fuelTransactionSpecParamsDateFrom !== null) {
+        if (dateFrom !== undefined && dateFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsDateFrom, 'FuelTransactionSpecParams.DateFrom');
+            <any>dateFrom, 'DateFrom');
         }
-        if (fuelTransactionSpecParamsDateTo !== undefined && fuelTransactionSpecParamsDateTo !== null) {
+        if (dateTo !== undefined && dateTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsDateTo, 'FuelTransactionSpecParams.DateTo');
+            <any>dateTo, 'DateTo');
         }
-        if (fuelTransactionSpecParamsLong !== undefined && fuelTransactionSpecParamsLong !== null) {
+        if (_long !== undefined && _long !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsLong, 'FuelTransactionSpecParams.Long');
+            <any>_long, 'Long');
         }
-        if (fuelTransactionSpecParamsLat !== undefined && fuelTransactionSpecParamsLat !== null) {
+        if (lat !== undefined && lat !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsLat, 'FuelTransactionSpecParams.Lat');
+            <any>lat, 'Lat');
         }
-        if (fuelTransactionSpecParamsDistance !== undefined && fuelTransactionSpecParamsDistance !== null) {
+        if (distance !== undefined && distance !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsDistance, 'FuelTransactionSpecParams.Distance');
+            <any>distance, 'Distance');
         }
-        if (fuelTransactionSpecParamsLastFrom !== undefined && fuelTransactionSpecParamsLastFrom !== null) {
+        if (lastFrom !== undefined && lastFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsLastFrom, 'FuelTransactionSpecParams.LastFrom');
+            <any>lastFrom, 'LastFrom');
         }
-        if (fuelTransactionSpecParamsLastTo !== undefined && fuelTransactionSpecParamsLastTo !== null) {
+        if (lastTo !== undefined && lastTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsLastTo, 'FuelTransactionSpecParams.LastTo');
+            <any>lastTo, 'LastTo');
         }
-        if (fuelTransactionSpecParamsCostFrom !== undefined && fuelTransactionSpecParamsCostFrom !== null) {
+        if (costFrom !== undefined && costFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsCostFrom, 'FuelTransactionSpecParams.CostFrom');
+            <any>costFrom, 'CostFrom');
         }
-        if (fuelTransactionSpecParamsCostTo !== undefined && fuelTransactionSpecParamsCostTo !== null) {
+        if (costTo !== undefined && costTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsCostTo, 'FuelTransactionSpecParams.CostTo');
+            <any>costTo, 'CostTo');
         }
-        if (fuelTransactionSpecParamsPpgFrom !== undefined && fuelTransactionSpecParamsPpgFrom !== null) {
+        if (ppgFrom !== undefined && ppgFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsPpgFrom, 'FuelTransactionSpecParams.PpgFrom');
+            <any>ppgFrom, 'PpgFrom');
         }
-        if (fuelTransactionSpecParamsPpgTo !== undefined && fuelTransactionSpecParamsPpgTo !== null) {
+        if (ppgTo !== undefined && ppgTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsPpgTo, 'FuelTransactionSpecParams.PpgTo');
+            <any>ppgTo, 'PpgTo');
         }
-        if (fuelTransactionSpecParamsTruckId !== undefined && fuelTransactionSpecParamsTruckId !== null) {
+        if (truckId !== undefined && truckId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsTruckId, 'FuelTransactionSpecParams.TruckId');
+            <any>truckId, 'TruckId');
         }
-        if (fuelTransactionSpecParamsPageIndex !== undefined && fuelTransactionSpecParamsPageIndex !== null) {
+        if (driverId !== undefined && driverId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsPageIndex, 'FuelTransactionSpecParams.PageIndex');
+            <any>driverId, 'DriverId');
         }
-        if (fuelTransactionSpecParamsPageSize !== undefined && fuelTransactionSpecParamsPageSize !== null) {
+        if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsPageSize, 'FuelTransactionSpecParams.PageSize');
+            <any>pageIndex, 'PageIndex');
         }
-        if (fuelTransactionSpecParamsCompanyId !== undefined && fuelTransactionSpecParamsCompanyId !== null) {
+        if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsCompanyId, 'FuelTransactionSpecParams.CompanyId');
+            <any>pageSize, 'PageSize');
         }
-        if (fuelTransactionSpecParamsSort !== undefined && fuelTransactionSpecParamsSort !== null) {
+        if (companyId !== undefined && companyId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsSort, 'FuelTransactionSpecParams.Sort');
+            <any>companyId, 'CompanyId');
         }
-        if (fuelTransactionSpecParamsSearch !== undefined && fuelTransactionSpecParamsSearch !== null) {
+        if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsSearch, 'FuelTransactionSpecParams.Search');
+            <any>sort, 'Sort');
         }
-        if (fuelTransactionSpecParamsSearch1 !== undefined && fuelTransactionSpecParamsSearch1 !== null) {
+        if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsSearch1, 'FuelTransactionSpecParams.Search1');
+            <any>search, 'Search');
         }
-        if (fuelTransactionSpecParamsSearch2 !== undefined && fuelTransactionSpecParamsSearch2 !== null) {
+        if (search1 !== undefined && search1 !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelTransactionSpecParamsSearch2, 'FuelTransactionSpecParams.Search2');
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;

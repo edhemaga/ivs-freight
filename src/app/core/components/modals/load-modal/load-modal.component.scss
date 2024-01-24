@@ -1,6 +1,30 @@
 @import 'src/theme/variables';
 
-// Requirement
+// switcher
+.remove-template-btn {
+    border: 0;
+    outline: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 2px;
+    background: $ta-blue-16;
+    transition: background 0.3s ease-in-out;
+    order: 2;
+
+    &:hover {
+        background: $ta-red-15;
+
+        .switcher-icon {
+            svg {
+                path {
+                    fill: $ta-red-14;
+                }
+            }
+        }
+    }
+}
+
+// requirement
 .requirement-container {
     border-top: 1px solid $bw-9;
 
@@ -21,7 +45,7 @@
     }
 }
 
-// Stops
+// stops
 .stops-header-bar {
     display: grid;
     grid-template-columns: 11px 1fr;
@@ -86,7 +110,7 @@
     }
 }
 
-// Billing
+// billing
 .load-financial-container {
     display: grid;
     grid-template-columns: 198px 196px 1fr;
@@ -102,7 +126,7 @@
     }
 }
 
-// Map
+// map
 .load-map-container {
     width: 640px;
     height: 100%;
