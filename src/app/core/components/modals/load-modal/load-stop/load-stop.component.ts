@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Input,
@@ -12,11 +13,14 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+
+// modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-load-stop',
@@ -40,7 +44,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                 'true',
                 style({
                     height: '*',
-                    overflow: 'visible',
                     opacity: '1',
                     'margin-top': '{{marginTop}}',
                     'margin-bottom': '{{marginBottom}}',
@@ -56,7 +59,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                 'false',
                 style({
                     height: '0px',
-                    overflow: 'hidden',
                     opacity: '0',
                     'margin-top': '0px',
                     'margin-bottom': '0px',
@@ -84,8 +86,8 @@ export class LoadStopComponent {
     @Input() state: 'valid' | 'invalid';
 
     @Input() animationMarginParams = {
-        marginTop: '32px',
-        marginBottom: '22px',
+        marginTop: '12px',
+        marginBottom: '4px',
     };
 
     @Input() isCardOpen: boolean;
@@ -96,7 +98,7 @@ export class LoadStopComponent {
     @Output('delete') deleteEvent: EventEmitter<void> =
         new EventEmitter<void>();
 
-    public toggleStop(event: any) {
+    public toggleStop(event: Event): void {
         if (!this.disabledCard) {
             event.preventDefault();
             event.stopPropagation();
@@ -107,7 +109,7 @@ export class LoadStopComponent {
         }
     }
 
-    public deleteStop() {
+    public deleteStop(): void {
         this.deleteEvent.emit();
     }
 }

@@ -1,0 +1,260 @@
+@import 'src/theme/variables';
+
+.comment-container {
+    background: $ta-black-3;
+    border-radius: 2px;
+    padding: 2px;
+    margin-bottom: 4px;
+    width: 100%;
+    max-width: 624px;
+    transition: background 0.3s ease-in;
+
+    &.inactive {
+        background: $white;
+
+        &:hover {
+            background: $bw2;
+
+            .comment-header {
+                &-right {
+                    .edit-icon-container,
+                    .delete-icon-container {
+                        visibility: visible;
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .comment-body {
+                .comment-input {
+                    background: $bw2;
+                }
+            }
+        }
+
+        .comment-header {
+            &-left {
+                p {
+                    color: #2f2f2f;
+
+                    &::-moz-selection {
+                        color: #2f2f2f;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+
+                    &::selection {
+                        color: #2f2f2f;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+                }
+            }
+        }
+
+        .comment-body {
+            .comment-input {
+                color: $ta-black-2;
+                background: $white;
+
+                &::-moz-selection {
+                    color: #2f2f2f;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: #2f2f2f;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+            }
+        }
+    }
+
+    /* Comment Header */
+
+    .comment-header {
+        padding: 2px 4px;
+
+        &-left {
+            img {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                margin-right: 4px;
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                color: $white;
+                margin-right: 4px !important;
+
+                &::-moz-selection {
+                    color: $white;
+                    background: rgb(255, 255, 255, 0.2);
+                }
+
+                &::selection {
+                    color: $white;
+                    background: rgb(255, 255, 255, 0.2);
+                }
+            }
+
+            span {
+                font-size: 14px;
+                line-height: 18px;
+                margin-right: 4px !important;
+            }
+
+            .me-container {
+                span {
+                    color: $ta-yellow-5;
+
+                    &::-moz-selection {
+                        color: $ta-yellow-5;
+                        background: rgb(247, 125, 59, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-yellow-5;
+                        background: rgb(247, 125, 59, 0.2);
+                    }
+                }
+            }
+
+            .date-container {
+                span {
+                    color: $bw5;
+
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+                }
+            }
+
+            .edited-container {
+                span {
+                    color: $ta-blue-14;
+
+                    &::-moz-selection {
+                        color: $ta-blue-14;
+                        background: rgb(59, 115, 237, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-blue-14;
+                        background: rgb(59, 115, 237, 0.2);
+                    }
+                }
+            }
+        }
+
+        &-right {
+            .confirm-icon,
+            .cancel-icon {
+                cursor: pointer;
+                line-height: 0;
+                transition: transform 0.3s ease-in;
+
+                &:hover {
+                    transform: scale(1.2);
+
+                    svg {
+                        rect {
+                            fill: $white;
+                        }
+                    }
+                }
+
+                svg {
+                    path {
+                        fill: $ta-black-3;
+                    }
+                }
+            }
+
+            .confirm-icon {
+                margin-right: 4px;
+
+                &.disabled {
+                    pointer-events: none;
+                }
+            }
+
+            .edit-icon-container,
+            .delete-icon-container {
+                width: 18px;
+                height: 18px;
+                border-radius: 2px;
+                background: transparent;
+                cursor: pointer;
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0.3s ease-in, opacity 0.3s ease-in,
+                    background 0.3s ease-in;
+
+                &:hover {
+                    background: $dark-2;
+
+                    .icon {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
+                    }
+                }
+
+                .icon {
+                    svg {
+                        path {
+                            fill: $bw5;
+                            transition: fill 0.3s ease-in;
+                        }
+                    }
+                }
+            }
+
+            .edit-icon-container {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    /* Comment Body */
+
+    .comment-body {
+        transition: background 0.3s ease-in;
+
+        .comment-input {
+            outline: none;
+            border: none;
+            width: 100%;
+            max-width: 624px;
+            font-size: 14px;
+            line-height: 18px;
+            color: $white;
+            background: $ta-black-3;
+            padding: 4px;
+            transition: background 0.3s ease-in;
+
+            &.no-value {
+                color: $bw5;
+            }
+
+            &::-moz-selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+
+            &::selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+        }
+    }
+}

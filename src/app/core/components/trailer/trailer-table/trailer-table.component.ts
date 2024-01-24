@@ -1,5 +1,6 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Components
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
@@ -49,10 +50,18 @@ import {
     tableSearch,
 } from '../../../utils/methods.globals';
 
+//Constants
+import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+//Configuration
+import { DisplayTrailerConfiguration } from '../trailer-card-data';
+
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { DisplayTrailerConfiguration } from '../trailer-card-data';
-import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import {
+    TooltipColors,
+    TrailerName,
+} from 'src/app/core/utils/enums/trailer-component.enum';
 
 @Component({
     selector: 'app-trailer-table',
@@ -102,6 +111,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerService: TrailerTService,
         public datePipe: DatePipe,
+        private router: Router,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
         private trailerInactiveStore: TrailerInactiveStore
@@ -506,11 +516,47 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    private setTrailerTooltipColor(trailerName: string): string {
+        if (trailerName === TrailerName.REEFER) {
+            return TooltipColors.BLUE;
+        } else if (trailerName === TrailerName.DRY_VAN) {
+            return TooltipColors.DARK_BLUE;
+        } else if (trailerName === TrailerName.DUMPER) {
+            return TooltipColors.PURPLE;
+        } else if (trailerName === TrailerName.TANKER) {
+            return TooltipColors.GREEN;
+        } else if (trailerName === TrailerName.PNEUMATIC_TANKER) {
+            return TooltipColors.LIGHT_GREEN;
+        } else if (trailerName === TrailerName.CAR_HAULER) {
+            return TooltipColors.PINK;
+        } else if (trailerName === TrailerName.CAR_HAULER_STINGER) {
+            return TooltipColors.PINK;
+        } else if (trailerName === TrailerName.CHASSIS) {
+            return TooltipColors.BROWN;
+        } else if (trailerName === TrailerName.LOW_BOY_RGN) {
+            return TooltipColors.RED;
+        } else if (trailerName === TrailerName.STEP_DECK) {
+            return TooltipColors.RED;
+        } else if (trailerName === TrailerName.FLAT_BED) {
+            return TooltipColors.RED;
+        } else if (trailerName === TrailerName.SIDE_KIT) {
+            return TooltipColors.ORANGE;
+        } else if (trailerName === TrailerName.CONESTOGA) {
+            return TooltipColors.GOLD;
+        } else if (trailerName === TrailerName.CONTAINER) {
+            return TooltipColors.YELLOW;
+        }
+    }
+
     private mapTrailerData(data: TraillerData): MappedTrailer {
         return {
             ...data,
             isSelected: false,
             tableTrailerTypeIcon: data.trailerType.logoName,
+            tableTrailerName: data.trailerType.name,
+            tableTrailerColor: this.setTrailerTooltipColor(
+                data.trailerType.name
+            ),
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
@@ -639,6 +685,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
+                content: this.getDropdownTrailerContent(),
             },
         };
     }
@@ -911,6 +958,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.backFilterQuery.pageIndex++;
 
                 this.trailerBackFilter(this.backFilterQuery, true);
+                break;
+            }
+            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/trailer/${event.id}/details`]);
                 break;
             }
             case ConstantStringTableComponentsEnum.EDIT_TRAILER: {

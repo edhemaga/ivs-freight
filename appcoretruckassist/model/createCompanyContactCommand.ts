@@ -11,6 +11,7 @@
  */
 import { CreateContactPhoneCommand } from './createContactPhoneCommand';
 import { CreateContactEmailCommand } from './createContactEmailCommand';
+import { CompanyContactUser } from './companyContactUser';
 import { AddressEntity } from './addressEntity';
 
 
@@ -23,5 +24,8 @@ export interface CreateCompanyContactCommand {
     companyContactLabelId?: number | null;
     contactPhones?: Array<CreateContactPhoneCommand> | null;
     contactEmails?: Array<CreateContactEmailCommand> | null;
+    companyContactUsers?: Array<CompanyContactUser> | null;
+    isSharedWithAllDepartments?: boolean;
+    companyName?: string | null;
 }
 

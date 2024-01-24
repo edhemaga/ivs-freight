@@ -115,7 +115,7 @@ $special-filter-purple-2: #ab47bc;
 $special-filter-purple-3: #ab47bc20;
 $special-filter-orange: #ffa726;
 
-//Applicant
+// Applicant
 $confirm: #24c1a1;
 $ta-light-grey: #e5e5e5;
 $ta-light-grey-2: #aaaaaa;
@@ -164,6 +164,7 @@ $ta-review-green-2: #26a690;
 $ta-review-green-3: #00967e;
 $ta-black: #424242;
 $ta-black-2: #2f2f2f;
+$ta-black-3: #1d1d1d;
 
 // Authentication
 $ta-blue: #536bc2;
@@ -190,6 +191,7 @@ $ta-yellow-1: #fab15c;
 $ta-yellow-2: #de7700;
 $ta-yellow-3: #fddeb9;
 $ta-yellow-4: #fbc88b;
+$ta-yellow-5: #f89b2e;
 
 $ta-black-3: #1d1d1d;
 // Cards
@@ -199,12 +201,8 @@ $ta-green-2: #259f94;
 $ta-green-3: #b6dfdb;
 $ta-green-4: #86c9c3;
 
-$ta-loaded: #259f94;
-$ta-assigned: #50ac25;
-$ta-red: #e66767;
-$ta-deadline-red: #df3c3c;
-$ta-deadline-yellow: #f89b2e;
-$ta-orange-1: #f89b2e;
+$ta-orange-2: #f77d3b;
+
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
     border-#{$direction}: $width $style $color;

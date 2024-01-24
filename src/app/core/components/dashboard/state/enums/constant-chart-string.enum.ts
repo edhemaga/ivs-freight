@@ -15,7 +15,7 @@ export enum ConstantChartStringEnum {
     LINE = 'line',
     NUMBER = 'number',
 
-    DOUGHNUT_1800_DIMENSION = '350',
+    DOUGHNUT_1800_DIMENSION = '300',
 
     BAR_1800_WIDTH = '750',
     BAR_1800_HEIGHT = '200',

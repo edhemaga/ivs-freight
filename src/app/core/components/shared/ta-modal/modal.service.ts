@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { ModalOptions } from './modal.options';
 import { EncryptionDecryptionService } from '../../../services/encryption-decryption/EncryptionDecryption.service';
@@ -119,7 +119,7 @@ export class ModalService {
         editData?: any,
         backdropClass?: string,
         keyboardEsc: boolean = true
-    ) {
+    ): NgbModalRef {
         options = {
             ...options,
             backdrop: 'static' as any,

@@ -12,7 +12,7 @@ export class DisplayLoadConfiguration {
         },
         {
             title: 'Broker',
-            endpoint: 'broker.count',
+            endpoint: 'broker.businessName',
         },
         {
             title: 'Contact Name',
@@ -21,25 +21,30 @@ export class DisplayLoadConfiguration {
         {
             title: 'Contact Phone',
             endpoint: 'brokerContact.phone',
+            secondEndpoint: 'brokerContact.extensionPhone',
         },
     ];
 
     static displayRowsBackTemplate: CardRows[] = [
         {
-            title: 'Dispatcher',
-            endpoint: 'dispatcher.fullName',
+            title: 'Pickup',
+            endpoint: 'loadPickup.count',
+            secondEndpoint: 'loadPickup.location',
+            thirdEndpoint: 'loadPickup.date',
         },
         {
-            title: 'Broker',
-            endpoint: 'broker.businessName',
-        },
-        {
-            title: 'Ref. Number',
-            endpoint: 'referenceNumber',
+            title: 'Delivery',
+            endpoint: 'loadDelivery.count',
+            secondEndpoint: 'loadDelivery.location',
+            thirdEndpoint: 'loadDelivery.date',
         },
         {
             title: 'Total Miles',
             endpoint: 'totalMiles',
+        },
+        {
+            title: 'Rate',
+            endpoint: 'textBase',
         },
     ];
 
@@ -62,7 +67,8 @@ export class DisplayLoadConfiguration {
         },
         {
             title: 'Rate',
-            endpoint: 'textBase',
+            endpoint: 'loadTotal.total',
+            secondEndpoint: 'loadTotal.subTotal',
         },
     ];
 

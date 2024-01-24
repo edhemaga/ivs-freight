@@ -1,35 +1,67 @@
-.load-map-container {
-    width: 640px;
-    height: 100%;
-    padding: 0px;
+@import 'src/theme/variables';
 
-    &.load-hazardous-container {
-        padding: 12px !important;
-        padding-left: 0px !important;
-        height: 781px;
+// switcher
+.remove-template-btn {
+    border: 0;
+    outline: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 2px;
+    background: $ta-blue-16;
+    transition: background 0.3s ease-in-out;
+    order: 2;
+
+    &:hover {
+        background: $ta-red-15;
+
+        .switcher-icon {
+            svg {
+                path {
+                    fill: $ta-red-14;
+                }
+            }
+        }
     }
 }
 
-// Stops
+// requirement
+.requirement-container {
+    border-top: 1px solid $bw-9;
+
+    &-header {
+        margin-bottom: 26px;
+        padding-top: 8px;
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black;
+
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+    }
+}
+
+// stops
 .stops-header-bar {
     display: grid;
-    grid-template-columns: 23px 224px 273px 1fr;
-    align-items: center;
+    grid-template-columns: 11px 1fr;
+    grid-gap: 13px;
     padding: 0 18px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 
     p {
-        margin: 0;
-        padding: 0;
         font-size: 11px;
-        font-weight: 700;
         line-height: 14px;
-        color: #919191;
+        color: $bw5;
+
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        pointer-events: none;
     }
 }
 
@@ -38,33 +70,22 @@
         .divider {
             width: 606px !important;
             height: 1px !important;
-            background-color: rgb(145, 145, 145, 0.4) !important;
+            background: $bw2 !important;
         }
     }
 }
 
 .stops-footer-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 18px;
-    padding: 0px 10px;
-    padding-top: 10px;
+    padding: 4px 12px 0 12px;
 
     &-left-side,
     &-right-side {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        height: 18px;
-
         .stops-footer-bar-text {
-            margin: 0;
-            padding: 0;
             font-size: 11px;
-            font-weight: 700;
             line-height: 14px;
-            color: #919191;
+            color: $bw5;
+            margin-right: 8px !important;
+
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -73,26 +94,23 @@
 
         .loaded-miles-value,
         .total-miles-value {
-            margin: 0;
-            padding: 0;
             font-size: 11px;
-            font-weight: 600;
-            line-height: 18px;
-            color: #2f2f2f;
-            height: 100%;
+            line-height: 14px;
+            color: $ta-black;
+
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-        }
 
-        .total-miles-value {
-            font-size: 14px;
+            span {
+                color: $bw5;
+            }
         }
     }
 }
 
-// Billing
+// billing
 .load-financial-container {
     display: grid;
     grid-template-columns: 198px 196px 1fr;
@@ -105,5 +123,18 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+    }
+}
+
+// map
+.load-map-container {
+    width: 640px;
+    height: 100%;
+    padding: 0px;
+
+    &.load-hazardous-container {
+        padding: 12px !important;
+        padding-left: 0px !important;
+        height: 781px;
     }
 }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 // Compoenents
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
@@ -9,6 +9,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // Models
 import {
@@ -96,12 +97,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public displayRowsFront: CardRows[] =
         DisplayLoadConfiguration.displayRowsFront;
-
     public displayRowsBack: CardRows[] =
         DisplayLoadConfiguration.displayRowsBack;
 
     public page: string = DisplayLoadConfiguration.page;
-
     public rows: number = DisplayLoadConfiguration.rows;
 
     public cardTitle: string;
@@ -119,10 +118,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
         private thousandSeparator: TaThousandSeparatorPipe,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private confiramtionService: ConfirmationService
     ) {}
 
-    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.sendLoadData();
 
@@ -143,7 +142,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setTableFilter();
     }
 
-    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
@@ -188,7 +186,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Reset Columns
     private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -199,7 +196,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Toogle Columns
     private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
@@ -216,7 +212,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Search
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
@@ -256,7 +251,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // TODO check why is this commented out
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -271,15 +265,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             },
                         };
                     });
-
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: ConstantStringTableComponentsEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: 'driver',
-                            type: 'multiple delete',
+                            template: ConstantStringTableComponentsEnum.LOAD,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
                             image: true,
                         }
                     );
@@ -287,7 +280,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Driver Actions
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -369,6 +361,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public getStatusLabelStyle(status: string | undefined): string {
         const styles = ConstantStringTableComponentsEnum.STYLES;
+
         if (status === ConstantStringTableComponentsEnum.ASSIGNED) {
             return styles + ConstantStringTableComponentsEnum.ASSIGNED_COLOR;
         } else if (status === ConstantStringTableComponentsEnum.LOADED) {
@@ -743,7 +736,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
     }
-    // Load Back Filter Query
+
     private loadBackFilter(
         filter: {
             loadType: number | undefined;
@@ -867,7 +860,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private onTableBodyActions(event: { type: string }): void {
+    private onTableBodyActions(event: { type: string; id?: number }): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
@@ -879,44 +872,76 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       ConstantStringTableComponentsEnum.CLOSED
                     ? 3
                     : 1;
+
             this.backLoadFilterQuery.pageIndex++;
+
             this.loadBackFilter(this.backLoadFilterQuery, true);
-        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        } else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
             this.modalService.openModal(
-                LoadModalComponent,
-                { size: ConstantStringTableComponentsEnum.LOAD },
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.DELETE },
                 {
-                    ...event,
-                    disableButton: true,
+                    type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
+
+            this.confiramtionService.confirmationData$.subscribe((response) => {
+                if (
+                    response.type === ConstantStringTableComponentsEnum.DELETE
+                ) {
+                    this.loadServices
+                        .deleteLoadById(event.id)
+                        .pipe(takeUntil(this.destroy$))
+
+                        .subscribe();
+                }
+            });
+        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+            this.loadServices
+                .getLoadById(event.id)
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap((load) => {
+                        const editData = {
+                            data: {
+                                ...load,
+                            },
+                            type: event.type,
+                        };
+
+                        this.modalService.openModal(
+                            LoadModalComponent,
+                            { size: ConstantStringTableComponentsEnum.LOAD },
+                            {
+                                ...editData,
+                                disableButton: false,
+                            }
+                        );
+                    })
+                )
+
+                .subscribe();
         }
     }
 
-    // Get Tab Table Data For Selected Tab
     private getSelectedTabTableData(): void {
-        if (this.tableData?.length) {
+        if (this.tableData?.length)
             this.activeTableData = this.tableData.find(
                 (table) => table.field === this.selectedTab
             );
-        }
     }
 
-    // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
             type: ConstantStringTableComponentsEnum.SHOW_MORE,
         });
     }
 
-    // ---------------------------- ngOnDestroy ------------------------------
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
     }
 }

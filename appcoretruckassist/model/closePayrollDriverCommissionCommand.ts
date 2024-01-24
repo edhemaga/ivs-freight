@@ -14,6 +14,9 @@ import { PayrollPaymentCommand } from './payrollPaymentCommand';
 
 export interface ClosePayrollDriverCommissionCommand { 
     id?: number;
+    selectedLoadIds?: Array<number> | null;
+    selectedCreditIds?: Array<number> | null;
+    selectedDeducionIds?: Array<number> | null;
     pay?: PayrollPaymentCommand;
 }
 

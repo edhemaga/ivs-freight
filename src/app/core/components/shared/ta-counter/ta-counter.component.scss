@@ -1,29 +1,26 @@
+@import 'src/theme/variables';
+
 .ta-counter {
-    text-align: center;
     margin-right: 4px;
+
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     &.circle_counter {
         border-radius: 100% !important;
-        color: #ffffff !important;
         margin-left: 4px !important;
     }
 
     p {
-        margin: 0 !important;
         position: relative;
-        line-height: 18px;
-        font-size: 14px;
-        padding: 0 4px;
+        line-height: 14px;
+        font-size: 11px;
+        color: $white;
     }
 
-    &.morePaddingNum{
+    &.morePaddingNum {
         p {
             padding: 0px 6px;
         }

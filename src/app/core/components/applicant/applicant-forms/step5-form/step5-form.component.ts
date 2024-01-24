@@ -43,7 +43,6 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {

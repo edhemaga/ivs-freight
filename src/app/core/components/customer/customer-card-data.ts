@@ -76,11 +76,11 @@ export class DisplayCustomerConfiguration {
     static displayRowsBackShipper: CardRows[] = [
         {
             title: 'Shipping Hours',
-            endpoint: 'no-endpoint',
+            endpoint: 'tableAvailableHoursShipping',
         },
         {
             title: 'Receiving Hours',
-            endpoint: 'no-endpoint',
+            endpoint: 'tableAvailableHoursReceiving',
         },
         {
             title: 'Avg. Pickup Time',
