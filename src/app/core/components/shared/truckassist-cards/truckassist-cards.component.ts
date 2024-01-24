@@ -3,6 +3,7 @@ import {
     FormControl,
     FormsModule,
     ReactiveFormsModule,
+    UntypedFormControl,
 } from '@angular/forms';
 import {
     Component,
@@ -20,7 +21,6 @@ import {
     OnInit,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
 
 // Models
 import { CardRows, LoadTableData } from '../model/cardData';
@@ -52,7 +52,6 @@ import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.
 import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { TaInputDropdownLabelComponent } from '../ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -99,7 +98,6 @@ import { TextToggleDirective } from './directives/show-hide-pass.directive';
         ProgresBarComponent,
         TaInputDropdownLabelComponent,
         TaLikeDislikeComponent,
-        TaInputDropdownComponent,
 
         //pipes
         formatDatePipe,
@@ -148,6 +146,7 @@ export class TruckassistCardsComponent implements OnInit {
     public cardData: CardDetails;
     public dropDownActive: number;
     public selectedContactColor: CompanyAccountLabelResponse;
+    public ownerFormControl: UntypedFormControl = new UntypedFormControl();
 
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
@@ -173,6 +172,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     ngOnInit(): void {
         this.viewData.length && this.labelDropdown();
+        console.log(this.viewData);
     }
 
     ngOnChanges(changes: SimpleChanges): void {

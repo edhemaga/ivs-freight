@@ -9,6 +9,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // Models
 import {
@@ -60,7 +61,6 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @Component({
     selector: 'app-load-table',
@@ -886,14 +886,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             this.confiramtionService.confirmationData$.subscribe((response) => {
-                switch (response.type) {
-                    case ConstantStringTableComponentsEnum.DELETE:
-                        this.loadServices
-                            .deleteLoadById(event.id)
-                            .pipe(takeUntil(this.destroy$))
+                if (
+                    response.type === ConstantStringTableComponentsEnum.DELETE
+                ) {
+                    this.loadServices
+                        .deleteLoadById(event.id)
+                        .pipe(takeUntil(this.destroy$))
 
-                            .subscribe();
-                        break;
+                        .subscribe();
                 }
             });
         } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {

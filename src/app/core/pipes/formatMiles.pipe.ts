@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatNumberMiPipe implements PipeTransform {
     transform(value: number): string {
-        if (value !== null && value !== undefined) {
+        if (value) {
             const formattedNumber = value.toLocaleString() as string;
 
             return formattedNumber;

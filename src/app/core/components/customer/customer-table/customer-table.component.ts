@@ -1119,39 +1119,35 @@ export class CustomerTableComponent
                     type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
+            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+                this.confiramtionService.confirmationData$.subscribe(
+                    (response) => {
+                        if (
+                            response.type ===
+                            ConstantStringTableComponentsEnum.DELETE
+                        ) {
+                            this.brokerService
+                                .deleteBrokerById(event.id)
+                                .pipe(takeUntil(this.destroy$))
 
-            switch (this.selectedTab) {
-                case ConstantStringTableComponentsEnum.ACTIVE:
-                    this.confiramtionService.confirmationData$.subscribe(
-                        (response) => {
-                            switch (response.type) {
-                                case ConstantStringTableComponentsEnum.DELETE:
-                                    this.brokerService
-                                        .deleteBrokerById(event.id)
-                                        .pipe(takeUntil(this.destroy$))
-
-                                        .subscribe();
-                                    break;
-                            }
+                                .subscribe();
                         }
-                    );
-                    break;
+                    }
+                );
+            } else {
+                this.confiramtionService.confirmationData$.subscribe(
+                    (response) => {
+                        switch (response.type) {
+                            case ConstantStringTableComponentsEnum.DELETE:
+                                this.shipperService
+                                    .deleteShipperById(event.id)
+                                    .pipe(takeUntil(this.destroy$))
 
-                case ConstantStringTableComponentsEnum.INACTIVE:
-                    this.confiramtionService.confirmationData$.subscribe(
-                        (response) => {
-                            switch (response.type) {
-                                case ConstantStringTableComponentsEnum.DELETE:
-                                    this.shipperService
-                                        .deleteShipperById(event.id)
-                                        .pipe(takeUntil(this.destroy$))
-
-                                        .subscribe();
-                                    break;
-                            }
+                                    .subscribe();
+                                break;
                         }
-                    );
-                    break;
+                    }
+                );
             }
         }
         // Raiting
