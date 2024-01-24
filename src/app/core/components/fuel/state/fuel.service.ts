@@ -71,8 +71,9 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch1?: string,
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
-        return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreIds,
+        return this.fuelService
+            .apiFuelTransactionListGet
+            /* fuelTransactionSpecParamsFuelStopStoreIds,
             fuelTransactionSpecParamsTruckIds,
             fuelTransactionSpecParamsCategoryIds,
             fuelTransactionSpecParamsDateFrom,
@@ -93,8 +94,8 @@ export class FuelTService {
             fuelTransactionSpecParamsSort,
             fuelTransactionSpecParamsSearch,
             fuelTransactionSpecParamsSearch1,
-            fuelTransactionSpecParamsSearch2
-        );
+            fuelTransactionSpecParamsSearch2 */
+            ();
     }
 
     public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {

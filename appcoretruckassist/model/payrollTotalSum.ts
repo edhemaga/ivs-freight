@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollPaymentCommand } from './payrollPaymentCommand';
 
 
-export interface ClosePayrollDriverCommissionCommand { 
-    id?: number;
-    selectedLoadIds?: Array<number> | null;
-    selectedCreditIds?: Array<number> | null;
-    selectedDeducionIds?: Array<number> | null;
-    pay?: PayrollPaymentCommand;
+export interface PayrollTotalSum { 
+    totalEmptyMiles?: number | null;
+    totalLoadedMiles?: number | null;
+    totalMiles?: number | null;
+    totalRevenue?: number | null;
+    totalSubtotal?: number | null;
 }
 
