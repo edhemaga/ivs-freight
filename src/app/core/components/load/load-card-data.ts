@@ -67,7 +67,8 @@ export class DisplayLoadConfiguration {
         },
         {
             title: 'Rate',
-            endpoint: 'textBase',
+            endpoint: 'loadTotal.total',
+            secondEndpoint: 'loadTotal.subTotal',
         },
     ];
 

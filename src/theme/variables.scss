@@ -201,6 +201,8 @@ $ta-green-2: #259f94;
 $ta-green-3: #b6dfdb;
 $ta-green-4: #86c9c3;
 
+$ta-orange-2: #f77d3b;
+
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
     border-#{$direction}: $width $style $color;

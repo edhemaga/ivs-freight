@@ -106,15 +106,15 @@
 
             .me-container {
                 span {
-                    color: $ta-orange-2;
+                    color: $ta-yellow-5;
 
                     &::-moz-selection {
-                        color: $ta-orange-2;
+                        color: $ta-yellow-5;
                         background: rgb(247, 125, 59, 0.2);
                     }
 
                     &::selection {
-                        color: $ta-orange-2;
+                        color: $ta-yellow-5;
                         background: rgb(247, 125, 59, 0.2);
                     }
                 }

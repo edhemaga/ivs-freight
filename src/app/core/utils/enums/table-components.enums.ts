@@ -85,6 +85,7 @@ export enum ConstantStringTableComponentsEnum {
     // Distance
     MILES = 'mi',
     MILES_2 = ' mi',
+    MILES_3 = 'miles',
 
     // Weights
     POUNDS = 'lbs',
@@ -363,4 +364,6 @@ export enum ConstantStringTableComponentsEnum {
     SEPARATOR = ' • ',
     PLUS = '+',
     REPAIR = 'Repair',
+    MONEY = 'money',
+    DATE = 'date',
 }
