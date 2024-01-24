@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollPaymentCommand } from './payrollPaymentCommand';
 
 
-export interface ClosePayrollDriverCommissionCommand { 
+export interface PayrollDeductionMinimalResponse { 
     id?: number;
-    selectedLoadIds?: Array<number> | null;
-    selectedCreditIds?: Array<number> | null;
-    selectedDeducionIds?: Array<number> | null;
-    pay?: PayrollPaymentCommand;
+    description?: string | null;
+    subtotal?: number;
+    date?: string;
+    recurring?: boolean;
+    currentRecurrance?: number | null;
 }
 

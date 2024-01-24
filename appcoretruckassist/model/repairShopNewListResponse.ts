@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollPaymentCommand } from './payrollPaymentCommand';
+import { RepairShopListDtoPagination } from './repairShopListDtoPagination';
 
 
-export interface ClosePayrollDriverCommissionCommand { 
-    id?: number;
-    selectedLoadIds?: Array<number> | null;
-    selectedCreditIds?: Array<number> | null;
-    selectedDeducionIds?: Array<number> | null;
-    pay?: PayrollPaymentCommand;
+export interface RepairShopNewListResponse { 
+    pagination?: RepairShopListDtoPagination;
+    repairShopCount?: number;
+    truckCount?: number | null;
+    trailerCount?: number | null;
 }
 

@@ -29,6 +29,7 @@ export interface CompanyContactResponse {
     departmentContacts?: Array<DepartmentResponse> | null;
     contactPhones?: Array<ContactPhoneResponse> | null;
     contactEmails?: Array<ContactEmailResponse> | null;
+    companyName?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }
