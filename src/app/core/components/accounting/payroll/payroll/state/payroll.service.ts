@@ -35,7 +35,7 @@ export class PayrollStoreService {
     }
 
     getPayrollCommisionDriverOpenReport(id: number) {
-        return this.ps.apiPayrollDriverCommissionIdGet(id);
+        return this.ps.apiPayrollDriverCommissionGet(id);
     }
 
     getPayrollMileageDriverOpenReport(id: number) {
