@@ -9,6 +9,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // Models
 import {
@@ -117,7 +118,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
         private thousandSeparator: TaThousandSeparatorPipe,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private confiramtionService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -882,6 +884,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
+
+            this.confiramtionService.confirmationData$.subscribe((response) => {
+                if (
+                    response.type === ConstantStringTableComponentsEnum.DELETE
+                ) {
+                    this.loadServices
+                        .deleteLoadById(event.id)
+                        .pipe(takeUntil(this.destroy$))
+
+                        .subscribe();
+                }
+            });
         } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
             this.loadServices
                 .getLoadById(event.id)

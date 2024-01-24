@@ -65,6 +65,9 @@ import {
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
 
+// Services
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+
 // Globals
 import {
     tableSearch,
@@ -160,7 +163,8 @@ export class CustomerTableComponent
         private shipperQuery: ShipperQuery,
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
-        private shipperStore: ShipperStore
+        private shipperStore: ShipperStore,
+        private confiramtionService: ConfirmationService
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -1115,6 +1119,37 @@ export class CustomerTableComponent
                     type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
+            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+                this.confiramtionService.confirmationData$.subscribe(
+                    (response) => {
+                        if (
+                            response.type ===
+                            ConstantStringTableComponentsEnum.DELETE
+                        ) {
+                            this.brokerService
+                                .deleteBrokerById(event.id)
+                                .pipe(takeUntil(this.destroy$))
+
+                                .subscribe();
+                        }
+                    }
+                );
+            } else {
+                this.confiramtionService.confirmationData$.subscribe(
+                    (response) => {
+                        if (
+                            response.type ===
+                            ConstantStringTableComponentsEnum.DELETE
+                        ) {
+                            this.shipperService
+                                .deleteShipperById(event.id)
+                                .pipe(takeUntil(this.destroy$))
+
+                                .subscribe();
+                        }
+                    }
+                );
+            }
         }
         // Raiting
         else if (event.type === ConstantStringTableComponentsEnum.RATING) {
