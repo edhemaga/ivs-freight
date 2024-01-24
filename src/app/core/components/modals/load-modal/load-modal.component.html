@@ -31,7 +31,6 @@
     >
         <div class="m-tab">
             <!-- FTL - LTL, Dispatcher, Company -->
-
             <div
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{ 'template-row': isConvertedToTemplate }"
@@ -50,46 +49,79 @@
                 <!-- Load Template Picker -->
 
                 <ng-container *ngIf="!isConvertedToTemplate">
-                    <button
-                        class="d-flex align-items-center justify-content-center load-template-switcher-container"
-                        [ngClass]="{
-                            active: popover.isOpen(),
-                            valid: !popover.isOpen() && isTemplateSelected
-                        }"
-                        #popover="ngbPopover"
-                        autoClose="outside"
-                        [ngbPopover]="dropdownPopover"
-                        popoverClass="popover-main"
-                        placement="bottom-start"
-                        container="body"
-                    >
-                        <svg-icon
-                            class="load-template-switcher-icon"
-                            src="assets/svg/common/load/ic_load_template_btn.svg"
-                            [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                        ></svg-icon>
-                    </button>
-
-                    <ng-template #dropdownPopover>
-                        <div
-                            class="popover-container load-template-switcher-popover-container"
+                    <ng-container *ngIf="!isTemplateSelected">
+                        <button
+                            class="d-flex align-items-center justify-content-center load-template-switcher-container"
+                            [ngClass]="{
+                                active: popover.isOpen(),
+                                valid: !popover.isOpen() && isTemplateSelected
+                            }"
+                            #popover="ngbPopover"
+                            autoClose="outside"
+                            [ngbPopover]="dropdownPopover"
+                            popoverClass="popover-main"
+                            placement="bottom-start"
+                            container="body"
+                            ngbTooltip
+                            [mainTooltip]="
+                                !popover.isOpen() ? 'Select Template' : null
+                            "
+                            position="bottom"
+                            tooltipBackground="#424242"
                         >
-                            <ng-container
-                                *ngFor="
-                                    let template of labelsTemplate;
-                                    index as i;
-                                    trackBy: trackByIdentity
-                                "
+                            <svg-icon
+                                class="load-template-switcher-icon"
+                                src="assets/svg/common/load/ic_load_template_btn.svg"
+                                [svgStyle]="{
+                                    'width.px': '16',
+                                    'height.px': '16'
+                                }"
+                            ></svg-icon>
+                        </button>
+
+                        <ng-template #dropdownPopover>
+                            <div
+                                class="popover-container load-template-switcher-popover-container"
                             >
-                                <div
-                                    class="popover-item"
-                                    (click)="handleTemplateSelect(template.id)"
+                                <ng-container
+                                    *ngFor="
+                                        let template of labelsTemplate;
+                                        index as i;
+                                        trackBy: trackByIdentity
+                                    "
                                 >
-                                    <p class="m-0">{{ template.name }}</p>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </ng-template>
+                                    <div
+                                        class="popover-item"
+                                        (click)="
+                                            handleTemplateSelectClick(template.id)
+                                        "
+                                    >
+                                        <p class="m-0">{{ template.name }}</p>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+
+                    <ng-container *ngIf="isTemplateSelected">
+                        <button
+                            class="d-flex align-items-center justify-content-center remove-template-btn"
+                            ngbTooltip
+                            mainTooltip="Remove Template"
+                            position="bottom"
+                            tooltipBackground="#424242"
+                            (click)="handleRemoveTemplateClick()"
+                        >
+                            <svg-icon
+                                class="switcher-icon"
+                                src="assets/svg/common/load/ic_load_template_btn.svg"
+                                [svgStyle]="{
+                                    'width.px': '16',
+                                    'height.px': '16'
+                                }"
+                            ></svg-icon>
+                        </button>
+                    </ng-container>
                 </ng-container>
 
                 <!-- Dispatcher -->
@@ -1669,9 +1701,9 @@
 
             <div class="load-modal-row">
                 <app-ta-custom-card
-                    [hasCounter]="documents.length"
+                    [hasCounter]="documents?.length"
                     [cardName]="'Document'"
-                    [isCardOpen]="documents.length > 0"
+                    [isCardOpen]="documents?.length > 0"
                 >
                     <app-ta-upload-files
                         [files]="documents"

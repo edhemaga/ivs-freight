@@ -91,6 +91,7 @@ import {
     RoutingResponse,
     LoadStopCommand,
     LoadType,
+    LoadResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 import { IBilling, IPayment } from './load-financial/load-financial.component';
@@ -512,31 +513,33 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 const obj = this.numberOfLoadExtraStops();
 
-                if (event.id.toString().startsWith('4')) {
-                    this.previousDeliveryStopOrder =
-                        this.loadForm.get('deliveryStopOrder').value;
+                if (!this.editData) {
+                    if (event.id.toString().startsWith('4')) {
+                        this.previousDeliveryStopOrder =
+                            this.loadForm.get('deliveryStopOrder').value;
 
-                    this.loadExtraStops()
-                        .at(indx)
-                        .get('stopOrder')
-                        .patchValue(obj.numberOfDeliveries);
+                        this.loadExtraStops()
+                            .at(indx)
+                            .get('stopOrder')
+                            .patchValue(obj.numberOfDeliveries);
 
-                    this.loadForm
-                        .get('deliveryStopOrder')
-                        .patchValue(obj.numberOfDeliveries + 1);
-                } else {
-                    this.loadExtraStops()
-                        .at(indx)
-                        .get('stopOrder')
-                        .patchValue(obj.numberOfPickups);
-
-                    if (this.previousDeliveryStopOrder)
                         this.loadForm
                             .get('deliveryStopOrder')
-                            .patchValue(this.previousDeliveryStopOrder);
-                }
+                            .patchValue(obj.numberOfDeliveries + 1);
+                    } else {
+                        this.loadExtraStops()
+                            .at(indx)
+                            .get('stopOrder')
+                            .patchValue(obj.numberOfPickups);
 
-                this.calculateStopOrder();
+                        if (this.previousDeliveryStopOrder)
+                            this.loadForm
+                                .get('deliveryStopOrder')
+                                .patchValue(this.previousDeliveryStopOrder);
+                    }
+
+                    this.calculateStopOrder();
+                }
 
                 if (this.selectedExtraStopShipper[indx]) this.drawStopOnMap();
 
@@ -862,7 +865,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         logoName: null,
                                         isProgressBar:
                                             this.selectedBroker
-                                                .availableCreditType.name !==
+                                                .availableCreditType?.name !==
                                             'Unlimited',
                                     },
                                     {
@@ -2670,7 +2673,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    console.log('RES', res);
                     this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
@@ -2955,7 +2957,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalAdditionalBillingTypes =
                         this.additionalBillingTypes;
 
-                    if (this.editData) this.populateLoadModalData();
+                    if (this.editData)
+                        this.populateLoadModalData(this.editData.data);
                 },
 
                 error: () => {},
@@ -2979,7 +2982,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         let documents: Blob[] = [];
         let tagsArray: Tags[] = [];
 
-        this.documents.map((item) => {
+        this.documents?.map((item) => {
             if (item.tagId?.length)
                 tagsArray.push({
                     fileName: item.realFile.name,
@@ -3276,8 +3279,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 next: () => {
                     this.modalService.setModalSpinner({
                         action: 'load-template',
-                        status: false,
-                        close: false,
+                        status: true,
+                        close: true,
                     });
                 },
                 error: () => {
@@ -3290,7 +3293,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
     }
 
-    private populateLoadModalData(): void {
+    private populateLoadModalData(loadModalData: LoadResponse): void {
+        console.log('loadModalData', loadModalData);
         const {
             loadNumber,
             type,
@@ -3308,7 +3312,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadedMiles,
             totalMiles,
             totalTimeHours,
-        } = this.editData.data;
+        } = loadModalData;
 
         const pickupStop = stops[0];
         const deliveryStop = stops[stops.length - 1];
@@ -3387,7 +3391,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         });
 
         // load number
-        this.loadNumber = loadNumber;
+        this.loadNumber = loadNumber ?? this.loadNumber;
 
         // documents
         this.documents = files;
@@ -3767,12 +3771,35 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.loadForm.get(ConstantStringEnum.NOTE).patchValue(text);
     }
 
-    public handleTemplateSelect(templateId: number): void {
+    public handleTemplateSelectClick(templateId: number): void {
         this.selectedTemplate = templateId;
 
         this.isTemplateSelected = true;
 
         this.popover.close();
+
+        this.loadService
+            .getLoadTemplateById(templateId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((templateData) => {
+                if (templateData) this.populateLoadModalData(templateData);
+            });
+    }
+
+    public handleRemoveTemplateClick(): void {
+        this.selectedTemplate = null;
+
+        this.isTemplateSelected = false;
+
+        this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            close: true,
+        });
+
+        this.modalService.openModal(LoadModalComponent, {
+            size: 'load',
+        });
     }
 
     ngOnDestroy(): void {

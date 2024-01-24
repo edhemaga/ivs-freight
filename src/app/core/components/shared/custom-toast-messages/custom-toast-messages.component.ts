@@ -17,10 +17,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-const routeSpecify = {
-    '/api/account/login': 'Driver',
-};
-
 @Component({
     selector: 'app-custom-toast-messages',
     templateUrl: './custom-toast-messages.component.html',
@@ -384,10 +380,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 break;
             case 'LOAD':
                 let loadNum = '';
-                if (this.httpRequest.body?.has('referenceNumber')) {
-                    loadNum =
-                        this.httpRequest.body.getAll('referenceNumber')[0];
-                }
+                if (this.httpRequest.body?.referenceNumber)
+                    loadNum = this.httpRequest.body.referenceNumber;
 
                 this.message = loadNum;
                 break;
