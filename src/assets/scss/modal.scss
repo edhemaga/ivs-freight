@@ -404,7 +404,7 @@ ngb-modal-window[aria-hidden='true'] {
 
                 &.mutliple-buttons {
                     display: flex;
-                    justify-content: space-between;
+                    gap: 12px;
                 }
 
                 &.load-template,
@@ -449,10 +449,10 @@ ngb-modal-window[aria-hidden='true'] {
                     background: $ta-light-grey-5;
                     color: $ta-light-grey-6;
                     font-size: 14px;
-                    min-width: 128px;
+                    flex: 1;
                     height: 32px;
                     margin: 0;
-                    padding: 6px 12px;
+                    padding: 0;
                     position: relative;
                     pointer-events: none;
                     transition: background 0.3s ease-in-out;
@@ -524,7 +524,7 @@ ngb-modal-window[aria-hidden='true'] {
                 }
 
                 .modal-confirmation-btn {
-                    min-width: 150px;
+                    flex: 1;
                 }
 
                 .modal-cancel-btn {
@@ -538,7 +538,7 @@ ngb-modal-window[aria-hidden='true'] {
                 }
 
                 .modal-red-btn {
-                    background-color: #f44336;
+                    background-color: $ta-red-11;
                     color: #ffffff;
                 }
 

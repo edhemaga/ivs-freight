@@ -7,7 +7,7 @@ export enum TrailerName {
     CAR_HAULER = 'Car Hauler',
     CAR_HAULER_STINGER = 'Car Hauler Stinger',
     CHASSIS = 'Chassis',
-    LOW_BOY_RGN = 'Low Boy - RGN',
+    LOW_BOY_RGN = 'Low Boy / RGN',
     STEP_DECK = 'Step Deck',
     FLAT_BED = 'Flat Bed',
     SIDE_KIT = 'Side Kit',

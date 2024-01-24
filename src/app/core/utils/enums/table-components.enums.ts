@@ -1,10 +1,14 @@
 export enum ConstantStringTableComponentsEnum {
     // Number
     NUMBER_0 = '0',
+    NUMBER_100 = '100%',
 
     // Days
     DAY = ' days',
     MONTHS = ' months',
+
+    //PX
+    PX = 'px',
 
     // Tabs
     APPLICANTS = 'applicants',
@@ -81,6 +85,7 @@ export enum ConstantStringTableComponentsEnum {
     // Distance
     MILES = 'mi',
     MILES_2 = ' mi',
+    MILES_3 = 'miles',
 
     // Weights
     POUNDS = 'lbs',
@@ -324,6 +329,15 @@ export enum ConstantStringTableComponentsEnum {
 
     //Toolbar
 
+    CHECKBOX = 'checkbox',
+    ATTACHMENTS = 'attachments',
+    MEDIA = 'media',
+    INSURANCE = 'insurance',
+    COMMENT = 'comment',
+    HIRE = 'hire',
+    NOTE = 'note',
+    ACTIONS = 'actions',
+    USER_CHECKBOX = 'user-checkbox',
     ALL = 'all',
     FTL = 'ftl',
     LTL = 'ltl',
@@ -350,4 +364,6 @@ export enum ConstantStringTableComponentsEnum {
     SEPARATOR = ' • ',
     PLUS = '+',
     REPAIR = 'Repair',
+    MONEY = 'money',
+    DATE = 'date',
 }

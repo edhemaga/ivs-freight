@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 // Components
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -9,6 +10,7 @@ import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -97,6 +99,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private modalService: ModalService,
+        private router: Router,
         private tableService: TruckassistTableService,
         private truckService: TruckTService,
         private confirmationService: ConfirmationService,
@@ -415,6 +418,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 showMoneyFilter: true,
+                showTruckFilter: true,
                 viewModeOptions: [
                     {
                         name: ConstantStringTableComponentsEnum.LIST,
@@ -1048,6 +1052,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             case ConstantStringTableComponentsEnum.ADD_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
+                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    {
+                        ...event,
+                        modal: ConstantStringTableComponentsEnum.TRUCK,
+                        tabSelected: this.selectedTab,
+                    }
+                );
+                break;
+            }
+            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/truck/${event.id}/details`]);
+                break;
+            }
+            case ConstantStringTableComponentsEnum.ADD_REPAIR: {
+                this.modalService.openModal(
+                    TtTitleModalComponent,
                     { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,

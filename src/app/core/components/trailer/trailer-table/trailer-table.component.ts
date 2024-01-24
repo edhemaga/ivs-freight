@@ -1,5 +1,6 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Components
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
@@ -110,6 +111,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerService: TrailerTService,
         public datePipe: DatePipe,
+        private router: Router,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
         private trailerInactiveStore: TrailerInactiveStore
@@ -956,6 +958,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.backFilterQuery.pageIndex++;
 
                 this.trailerBackFilter(this.backFilterQuery, true);
+                break;
+            }
+            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/trailer/${event.id}/details`]);
                 break;
             }
             case ConstantStringTableComponentsEnum.EDIT_TRAILER: {

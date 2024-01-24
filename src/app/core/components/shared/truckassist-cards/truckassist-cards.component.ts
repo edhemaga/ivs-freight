@@ -3,6 +3,7 @@ import {
     FormControl,
     FormsModule,
     ReactiveFormsModule,
+    UntypedFormControl,
 } from '@angular/forms';
 import {
     Component,
@@ -18,6 +19,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
     OnInit,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 
 // Models
@@ -56,6 +58,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { MaskNumberPipe } from './pipes/maskNumber.pipe';
+import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
 
 // Helpers
 import { CardArrayHelper } from './utils/helpers/card-array-helper';
@@ -66,14 +69,19 @@ import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
 
 // Directives
 import { TextToggleDirective } from './directives/show-hide-pass.directive';
-
 @Component({
     selector: 'app-truckassist-cards',
     templateUrl: './truckassist-cards.component.html',
     styleUrls: ['./truckassist-cards.component.scss'],
     standalone: true,
-    providers: [formatCurrency, formatDatePipe, TaThousandSeparatorPipe],
+    providers: [
+        formatCurrency,
+        formatDatePipe,
+        TaThousandSeparatorPipe,
+        FormatNumberMiPipe,
+    ],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         //modules
         CommonModule,
@@ -95,6 +103,7 @@ import { TextToggleDirective } from './directives/show-hide-pass.directive';
         formatDatePipe,
         MaskNumberPipe,
         HidePasswordPipe,
+        FormatNumberMiPipe,
 
         // Directives
         TextToggleDirective,
@@ -137,6 +146,7 @@ export class TruckassistCardsComponent implements OnInit {
     public cardData: CardDetails;
     public dropDownActive: number;
     public selectedContactColor: CompanyAccountLabelResponse;
+    public ownerFormControl: UntypedFormControl = new UntypedFormControl();
 
     // Array holding id of fliped cards
     public isCardFlippedArray: number[] = [];
@@ -154,7 +164,10 @@ export class TruckassistCardsComponent implements OnInit {
         private detailsDataService: DetailsDataService,
         private ngZone: NgZone,
         private renderer: Renderer2,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private formatCurrencyPipe: formatCurrency,
+        private formatDatePipe: formatDatePipe,
+        private formatNumberMi: FormatNumberMiPipe
     ) {}
 
     ngOnInit(): void {
@@ -163,7 +176,6 @@ export class TruckassistCardsComponent implements OnInit {
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetCheckedCardsOnTabSwitch();
-
         if (
             this.page === ConstantStringTableComponentsEnum.REPAIR &&
             !changes.firstChange
@@ -290,6 +302,8 @@ export class TruckassistCardsComponent implements OnInit {
                 tooltip.open({ data: this.dropdownActions });
             }
 
+            this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+            this.cardData = card;
             tooltip.open({ data: this.dropdownActions });
             this.detailsDataService.setNewData(card);
         }
@@ -311,12 +325,13 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // Dropdown Actions
-    public onDropAction(action: DropdownItem, card: CardDetails): void {
+    public onDropAction(action: DropdownItem): void {
         if (!action?.mutedStyle) {
             // Send Drop Action
+
             this.bodyActions.emit({
                 id: this.dropDownActive,
-                data: card,
+                data: this.cardData,
                 type: action.name,
             });
         }
@@ -349,11 +364,55 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     //Remove quotes from string to convert into endpoint
-    public getValueByStringPath(obj: CardDetails, ObjKey: string): string {
-        if (ObjKey === ConstantStringTableComponentsEnum.SERVICE_TYPES) {
-            CardArrayHelper.getValueByStringPath(obj, ObjKey);
+    public getValueByStringPath(
+        obj: CardDetails,
+        ObjKey: string,
+        format?: string
+    ): string {
+        if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
+            return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
+
+        const isValueOfKey = !ObjKey.split(
+            ConstantStringTableComponentsEnum.DOT_1
+        ).reduce((acc, part) => acc && acc[part], obj);
+
+        const isNotZeroValueOfKey =
+            ObjKey.split(ConstantStringTableComponentsEnum.DOT_1).reduce(
+                (acc, part) => acc && acc[part],
+                obj
+            ) !== 0;
+
+        switch (format) {
+            case ConstantStringTableComponentsEnum.MONEY:
+                return this.formatCurrencyPipe.transform(
+                    ObjKey.split(
+                        ConstantStringTableComponentsEnum.DOT_1
+                    ).reduce((acc, part) => acc && acc[part], obj)
+                );
+
+            case ConstantStringTableComponentsEnum.DATE:
+                return this.formatDatePipe.transform(
+                    ObjKey.split(
+                        ConstantStringTableComponentsEnum.DOT_1
+                    ).reduce((acc, part) => acc && acc[part], obj)
+                );
+
+            case ConstantStringTableComponentsEnum.MILES_3:
+                const test = this.formatNumberMi.transform(
+                    ObjKey.split(
+                        ConstantStringTableComponentsEnum.DOT_1
+                    ).reduce((acc, part) => acc && acc[part], obj)
+                );
+                return test;
+
+            default:
+                if (isValueOfKey && isNotZeroValueOfKey)
+                    return ConstantStringTableComponentsEnum.SLASH;
+
+                return ObjKey.split(
+                    ConstantStringTableComponentsEnum.DOT_1
+                ).reduce((acc, part) => acc && acc[part], obj);
         }
-        return CardArrayHelper.getValueByStringPath(obj, ObjKey);
     }
 
     public likeDislake(
@@ -365,16 +424,6 @@ export class TruckassistCardsComponent implements OnInit {
             data: card,
             type: event.type,
             subType: event.subType,
-        });
-    }
-
-    // Customer rating
-    public onLike(card: CardDetails): void {
-        this.detailsDataService.setNewData(card);
-        this.bodyActions.emit({
-            data: card,
-            type: ConstantStringTableComponentsEnum.RATING,
-            subType: ConstantStringTableComponentsEnum.LIKE,
         });
     }
 

@@ -192,6 +192,16 @@
                         font-weight: 700;
                         line-height: 20px;
                         padding: 0 4px;
+                        color: $ta-black-2;
+
+                        &::-moz-selection {
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
+                        }
+                        &::selection {
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
+                        }
                     }
 
                     .gap {
@@ -203,7 +213,23 @@
                         overflow: hidden;
                         line-height: 20px;
                         width: 100%;
+                        height: 20px;
                         padding: 0 0 0 4px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        .subtotal {
+                            color: $ta-yellow-5;
+                        }
 
                         .items-container-body {
                             width: 100%;
@@ -213,7 +239,7 @@
                             padding-right: 13px;
 
                             &:hover {
-                                background: rgba(145, 145, 145, 0.2);
+                                background: $dark-2;
                             }
 
                             .items-container {
