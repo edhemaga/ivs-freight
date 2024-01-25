@@ -21,6 +21,8 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule } from '@angular/forms';
 import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
+import { Axis } from './models/chart-models';
+import { AxisPositionEnum } from './enums/chart-enums';
 
 @Component({
     selector: 'app-ta-chart',
@@ -1112,16 +1114,16 @@ export class TaChartComponent implements OnInit, OnChanges {
             : 1;
     }
 
-    private setChartAxis() {
+    private setChartAxis(): Axis[] {
         let yAxes = [];
-        let leftAxesTemplate = {
+        const leftAxesTemplate = {
             stacked: this.chartConfig['stacked']
                 ? this.chartConfig['stacked']
                 : false,
             display: this.axesProperties['verticalLeftAxes']
                 ? this.axesProperties['verticalLeftAxes']['visible']
                 : false,
-            position: 'left',
+            position: AxisPositionEnum.LEFT,
             gridLines: {
                 display: false,
                 drawBorder: false,
@@ -1191,7 +1193,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     ? this.axesProperties['verticalRightAxes']['showGridLines']
                     : false,
             },
-            position: 'right',
+            position: AxisPositionEnum.RIGHT,
             ticks: {
                 display: false,
                 beginAtZero: true,
