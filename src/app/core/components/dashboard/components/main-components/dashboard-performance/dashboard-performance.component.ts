@@ -103,6 +103,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         loadRatePerMileValues: [],
     };
 
+    private axisNumber: number = -1;
+    public multipleVerticalLeftAxes: number[];
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dashboardService: DashboardService,
@@ -388,6 +391,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         ];
 
         this.isLoading = true;
+        this.axisNumber = -1;
 
         this.resetSelectedValues();
 
@@ -622,22 +626,22 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             this.barChartLabels
         ) as string[][];
 
-        // line max value
         const performanceDataLineChartValues = this.performanceData.map(
-            (performanceDataItem) => performanceDataItem.lineChartDataValues
+            (performanceDataItem) => {
+                const lineChartMaxValue =
+                    DashboardArrayHelper.findLargestNumberInArrayOfArrays([
+                        performanceDataItem.lineChartDataValues,
+                    ]);
+
+                return lineChartMaxValue;
+            }
         );
 
-        const lineChartMaxValue =
-            DashboardArrayHelper.findLargestNumberInArrayOfArrays(
-                performanceDataLineChartValues
-            );
-
-        // line axes
         this.lineChartAxes = {
             verticalLeftAxes: {
                 visible: false,
                 minValue: 0,
-                maxValue: lineChartMaxValue,
+                maxValue: 10,
                 stepSize: 10,
                 showGridLines: false,
             },
@@ -647,6 +651,8 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 showGridLines: false,
             },
         };
+
+        this.multipleVerticalLeftAxes = performanceDataLineChartValues;
     }
 
     private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
@@ -750,7 +756,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         const selectedLineChartDataValues =
             performanceDataItem.lineChartDataValues;
         const selectedLineChartDataTitle = performanceDataItem.title;
-
+        this.axisNumber++;
         return {
             defaultConfig: {
                 type: ConstantChartStringEnum.LINE,
@@ -769,6 +775,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 id: selectedLineChartDataTitle,
                 hidden: true,
                 label: selectedLineChartDataTitle,
+                yAxisID: `y-axis-${this.axisNumber}`,
             },
         };
     }
