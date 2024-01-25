@@ -7,11 +7,11 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { card_modal_animation } from '../../../shared/animations/card-modal.animation';
-import { convertThousanSepInNumber } from '../../../../utils/methods.calculations';
+import { card_modal_animation } from '../../../../shared/animations/card-modal.animation';
+import { convertThousanSepInNumber } from '../../../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from '../../../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -31,20 +31,20 @@ export interface IPayment {
 }
 
 @Component({
-    selector: 'app-load-financial',
-    templateUrl: './load-financial.component.html',
-    styleUrls: ['./load-financial.component.scss'],
+    selector: 'app-load-modal-financial',
+    templateUrl: './load-modal-financial.component.html',
+    styleUrls: ['./load-modal-financial.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
         NgbModule,
 
-        // Component
+        // components
         AppTooltipComponent,
     ],
 })

@@ -23,26 +23,26 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 // validations
-import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
-import { LoadStopItemsConstants } from '../state/utils/constants/load-stop-items.constants';
+import { LoadStopItemsConstants } from '../../state/utils/constants/load-stop-items.constants';
 
 // enums
-import { ConstantStringEnum } from '../state/enums/load-stop-items.enum';
+import { ConstantStringEnum } from '../../state/enums/load-stop-items.enum';
 
 // models
-import { DropdownListItem } from '../state/models/load-stop-items-model/dropdown-list-item.model';
-import { StopItemsData } from '../state/models/load-stop-items-model/load-stop-items-data.model';
+import { DropdownListItem } from '../../state/models/load-stop-items-model/dropdown-list-item.model';
+import { StopItemsData } from '../../state/models/load-stop-items-model/load-stop-items-data.model';
 
 @Component({
-    selector: 'app-load-stop-items',
-    templateUrl: './load-stop-items.component.html',
-    styleUrls: ['./load-stop-items.component.scss'],
+    selector: 'app-load-modal-stop-items',
+    templateUrl: './load-modal-stop-items.component.html',
+    styleUrls: ['./load-modal-stop-items.component.scss'],
     standalone: true,
     imports: [
         // modules
@@ -55,7 +55,9 @@ import { StopItemsData } from '../state/models/load-stop-items-model/load-stop-i
         TaInputDropdownComponent,
     ],
 })
-export class LoadStopItemsComponent implements OnInit, OnChanges, OnDestroy {
+export class LoadModalStopItemsComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() createNewStopItemsRow: boolean = false;
     @Input() stopItemsData: StopItemsData[] = [];
 

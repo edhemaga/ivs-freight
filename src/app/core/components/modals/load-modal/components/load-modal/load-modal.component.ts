@@ -34,52 +34,52 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
-import { LoadFinancialComponent } from './load-financial/load-financial.component';
-import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
-import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
-import { LoadStopComponent } from './load-stop/load-stop.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { MapsComponent } from '../../shared/maps/maps.component';
-import { TaCommentComponent } from '../../standalone-components/ta-comment/ta-comment.component';
-import { LoadStopItemsComponent } from './load-stop-items/load-stop-items.component';
+import { ReviewCommentModal } from '../../../../shared/ta-user-review/ta-user-review.component';
+import { LoadFinancialComponent } from '../load-modal-financial/load-modal-financial.component';
+import { BrokerModalComponent } from '../../../broker-modal/broker-modal.component';
+import { ShipperModalComponent } from '../../../shipper-modal/shipper-modal.component';
+import { AppTooltipComponent } from '../../../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '../../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../shared/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../../../shared/ta-checkbox/ta-checkbox.component';
+import { LoadStopComponent } from '../load-modal-stop/load-modal-stop.component';
+import { TaUploadFilesComponent } from '../../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../shared/ta-input-note/ta-input-note.component';
+import { MapsComponent } from '../../../../shared/maps/maps.component';
+import { TaCommentComponent } from '../../../../standalone-components/ta-comment/ta-comment.component';
+import { LoadModalStopItemsComponent } from '../load-modal-stop-items/load-modal-stop-items.component';
 
 // services
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from '../../../services/form/form.service';
-import { LoadTService } from '../../load/state/load.service';
-import { CommentsService } from '../../../services/comments/comments.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { FormService } from '../../../../../services/form/form.service';
+import { LoadTService } from '../../../../load/state/load.service';
+import { CommentsService } from '../../../../../services/comments/comments.service';
 
 // animations
-import { fadeInAnimation } from './state/utils/animations/fade-in.animation';
+import { fadeInAnimation } from '../../state/utils/animations/fade-in.animation';
 
 // helpers
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertThousanSepInNumber,
-} from '../../../utils/methods.calculations';
+} from '../../../../../utils/methods.calculations';
 
 // pipes
-import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
-import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
-import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
+import { FinancialCalculationPipe } from '../../state/pipes/financialCalculation.pipe';
+import { LoadDatetimeRangePipe } from '../../state/pipes/load-datetime-range.pipe';
+import { LoadTimeTypePipe } from '../../state/pipes/load-time-type.pipe';
 
 // constants
-import { LoadModalConstants } from './state/utils/constants/load-modal.constants';
-import { LoadModalConfigConstants } from './state/utils/constants/load-modal-config.constants';
+import { LoadModalConstants } from '../../state/utils/constants/load-modal.constants';
+import { LoadModalConfigConstants } from '../../state/utils/constants/load-modal-config.constants';
 
 // enums
-import { ConstantStringEnum } from './state/enums/load-modal.enum';
+import { ConstantStringEnum } from '../../state/enums/load-modal.enum';
 
 // models
 import {
@@ -93,15 +93,18 @@ import {
     LoadType,
     LoadResponse,
 } from 'appcoretruckassist';
-import { ITaInput } from '../../shared/ta-input/ta-input.config';
-import { IBilling, IPayment } from './load-financial/load-financial.component';
-import { MapRouteModel } from '../../shared/model/map-route';
-import { StopItemsData } from './state/models/load-stop-items-model/load-stop-items-data.model';
-import { StopRoutes } from './state/models/load-modal-model/stop-routes.model';
-import { LoadModalTab } from './state/models/load-modal-model/load-modal-tab';
-import { Load } from './state/models/load-modal-model/load.model';
-import { Tags } from './state/models/load-modal-model/tags.model';
-import { CommentCompanyUser } from './state/models/load-modal-model/comment-company-user';
+import { ITaInput } from '../../../../shared/ta-input/ta-input.config';
+import {
+    IBilling,
+    IPayment,
+} from '../load-modal-financial/load-modal-financial.component';
+import { MapRouteModel } from '../../../../shared/model/map-route';
+import { StopItemsData } from '../../state/models/load-stop-items-model/load-stop-items-data.model';
+import { StopRoutes } from '../../state/models/load-modal-model/stop-routes.model';
+import { LoadModalTab } from '../../state/models/load-modal-model/load-modal-tab';
+import { Load } from '../../state/models/load-modal-model/load.model';
+import { Tags } from '../../state/models/load-modal-model/tags.model';
+import { CommentCompanyUser } from '../../state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
 
 @Component({
@@ -130,7 +133,7 @@ import { CommentData } from 'src/app/core/model/comment-data';
         TaInputNoteComponent,
         MapsComponent,
         TaCommentComponent,
-        LoadStopItemsComponent,
+        LoadModalStopItemsComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -1235,24 +1238,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.selectedDeliveryShipper = event;
 
-                    const existLoadStop =
-                        this.selectedDeliveryShipper?.id ===
-                        this.selectedPickupShipper?.id;
-
-                    if (existLoadStop) {
-                        setTimeout(() => {
-                            this.loadForm
-                                .get('deliveryShipper')
-                                .patchValue(null);
-                            this.selectedDeliveryShipper = null;
-                            this.loadDeliveryShipperInputConfig = {
-                                ...this.loadDeliveryShipperInputConfig,
-                                multipleInputValues: null,
-                            };
-                            return;
-                        }, 30);
-                    }
-
                     // Draw Stop on map
                     this.drawStopOnMap();
 
@@ -1448,32 +1433,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.selectedExtraStopShipper[index] = event;
 
                     this.drawStopOnMap();
-
-                    // 4. If Load Stop Exist (shipper), just return
-                    const existLoadStop = this.selectedExtraStopShipper.find(
-                        (item) => {
-                            return (
-                                item?.id === this.selectedPickupShipper?.id ||
-                                item?.id === this.selectedDeliveryShipper?.id
-                            );
-                        }
-                    );
-
-                    if (existLoadStop) {
-                        setTimeout(() => {
-                            this.loadExtraStops()
-                                .at(index)
-                                .get('shipperId')
-                                .patchValue(null);
-                            this.selectedExtraStopShipper[index] = null;
-
-                            this.loadExtraStopsShipperInputConfig[index] = {
-                                ...this.loadExtraStopsShipperInputConfig[index],
-                                multipleInputValues: null,
-                            };
-                            return;
-                        }, 30);
-                    }
 
                     // Select Extra Stop Shipper
                     if (this.selectedExtraStopShipper[index]) {
@@ -3791,15 +3750,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.isTemplateSelected = false;
 
-        this.modalService.setModalSpinner({
-            action: null,
-            status: true,
-            close: true,
-        });
+        this.ngbActiveModal.close();
 
-        this.modalService.openModal(LoadModalComponent, {
-            size: 'load',
-        });
+        setTimeout(() => {
+            this.modalService.openModal(LoadModalComponent, {
+                size: 'load',
+            });
+        }, 200);
     }
 
     ngOnDestroy(): void {

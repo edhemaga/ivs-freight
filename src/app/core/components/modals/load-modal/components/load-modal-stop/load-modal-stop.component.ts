@@ -20,12 +20,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from '../../../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
-    selector: 'app-load-stop',
-    templateUrl: './load-stop.component.html',
-    styleUrls: ['./load-stop.component.scss'],
+    selector: 'app-load-modal-stop',
+    templateUrl: './load-modal-stop.component.html',
+    styleUrls: ['./load-modal-stop.component.scss'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
