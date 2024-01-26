@@ -123,6 +123,8 @@ export interface SendDataCard {
 }
 
 export interface CardDetails {
+    truckCount?: number;
+    trailerCount?: number;
     descriptionItems?: string[];
     id?: number;
     type?: Type;

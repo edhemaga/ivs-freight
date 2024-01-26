@@ -8,7 +8,10 @@ import {
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// models
 import { CardDetails } from '../../shared/model/cardTableData';
+import { DropdownData } from '../../../model/input-dropdown.model';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -24,7 +27,7 @@ import { CardDetails } from '../../shared/model/cardTableData';
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent implements OnInit {
-    @Input() data;
+    @Input() data: DropdownData;
 
     public tooltip: NgbTooltip;
     public dropDownActive: number;
@@ -40,11 +43,8 @@ export class TaInputDropdownTableComponent implements OnInit {
     ): void {
         this.tooltip = tooltip;
 
-        if (tooltip.isOpen()) {
-        } else {
-            this.dropDownActive = tooltip.isOpen() ? card.id : -1;
-            tooltip.open({ data: card });
-        }
+        this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+        tooltip.open({ data: card });
 
         return;
     }

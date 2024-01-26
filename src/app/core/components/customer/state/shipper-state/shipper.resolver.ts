@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, forkJoin, tap } from 'rxjs';
+
+// store
 import { ShipperState, ShipperStore } from './shipper.store';
+
+// service
 import { ShipperTService } from './shipper.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
@@ -10,9 +14,12 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 })
 export class ShipperResolver implements Resolve<ShipperState> {
     constructor(
+        // store
+        private shipperStore: ShipperStore,
+
+        // service
         private shipperService: ShipperTService,
-        private tableService: TruckassistTableService,
-        private shipperStore: ShipperStore
+        private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
         return forkJoin([

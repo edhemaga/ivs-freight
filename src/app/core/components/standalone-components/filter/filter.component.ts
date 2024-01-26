@@ -401,7 +401,7 @@ export class FilterComponent implements OnInit {
                         );
                     }
 
-                    if (changes.rangeTo === null || rangeToNum > maxRangeNum) {
+                    if (!changes.rangeTo || rangeToNum > maxRangeNum) {
                         this.rangeForm
                             ?.get('rangeTo')
                             ?.setValue(this.maxValueRange);
@@ -411,7 +411,7 @@ export class FilterComponent implements OnInit {
                         this.rangeForm
                             ?.get('rangeFrom')
                             ?.setValue(maxRangeNum - 1);
-                    } else if (changes.rangeFrom === null) {
+                    } else if (!changes.rangeTo) {
                         this.rangeForm?.get('rangeFrom')?.setValue('0');
                     }
 
@@ -526,7 +526,7 @@ export class FilterComponent implements OnInit {
                         this.moneyFilterStatus = true;
                     } else {
                         this.setButtonAvailable = false;
-                        if (to === 0 && from === 0) {
+                        if (!to && !from) {
                             this.moneyFilterStatus = false;
                         }
                     }

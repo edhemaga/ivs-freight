@@ -592,7 +592,7 @@ export class CustomerTableComponent
         this.setCustomerData(td);
     }
 
-    private getTabData(dataType: string) {
+    private getTabData(dataType: string): BrokerResponse[] {
         if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
             this.brokerActive = this.brokerQuery.getAll();
 

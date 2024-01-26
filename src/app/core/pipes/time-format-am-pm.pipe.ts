@@ -7,9 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeFormatPipe implements PipeTransform {
     transform(timeRange: string): string {
-        if (!timeRange) {
-            return ''; // or handle it as you see fit
-        }
+        if (!timeRange) return '';
 
         const [startTime, endTime] = timeRange.split(' - ');
 
@@ -21,21 +19,17 @@ export class TimeFormatPipe implements PipeTransform {
 
     private formatTime(time: string): string {
         if (!time) {
-            return ''; // or handle it as you see fit
+            return '';
         }
 
         const [hour, minute] = time.split(':');
 
-        if (hour === undefined || minute === undefined) {
-            return ''; // or handle it as you see fit
-        }
+        if (!hour || !minute) return '';
 
         const numericHour = +hour;
         const numericMinute = +minute;
 
-        if (isNaN(numericHour) || isNaN(numericMinute)) {
-            return ''; // or handle it as you see fit
-        }
+        if (isNaN(numericHour) || isNaN(numericMinute)) return '';
 
         const period = numericHour < 12 ? 'AM' : 'PM';
 
