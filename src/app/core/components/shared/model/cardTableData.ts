@@ -176,6 +176,7 @@ export interface CardDetails {
     lastDeliveryTime?: LastDeliveryTime;
     currentLocation?: CurrentLocation;
     nextStop?: NextStop;
+    trucks?: string[];
     completedPercentage?: number;
     pendingPercentage?: number;
     closedPercentage?: number;

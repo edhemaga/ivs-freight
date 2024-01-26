@@ -1,0 +1,100 @@
+@import '/src/theme/variables.scss';
+@import '/src/assets/scss/fonts.scss';
+
+.owner-dropdown-opened {
+    background: $ta-black-2;
+    position: relative;
+    left: -4px;
+    padding: 4px;
+    border-radius: 2px;
+    transition: background 0.3s;
+
+    span {
+        color: $white;
+    }
+}
+
+.fleet-holder {
+    gap: 4px;
+    cursor: pointer;
+
+    .fleet {
+        gap: 4px;
+        font-size: 11px;
+
+        .svg-holder {
+            height: 18px;
+            width: 18px;
+        }
+
+        .no-count-text {
+            color: $muted;
+        }
+
+        .no-count {
+            svg {
+                path {
+                    fill: $ta-light-grey-6;
+                }
+            }
+        }
+    }
+}
+
+// dropdown
+.table-list-dropdown {
+    width: 180px !important;
+    right: 4px !important;
+
+    // Head of dropdown
+    .description-titles {
+        padding-left: 4px;
+        font-size: 11px;
+        line-height: 18px;
+        margin-bottom: 4px;
+    }
+
+    // search input
+    .input-holder {
+        margin-bottom: 4px;
+
+        input {
+            background: $ta-black;
+        }
+    }
+
+    // Body of dropdown
+    .trucks-fleet-container {
+        gap: 2px;
+
+        .body-item-title {
+            line-height: 26px;
+            padding: 0 4px;
+        }
+
+        .table-list-dropdown-content {
+            line-height: 26px;
+        }
+    }
+}
+
+// Shared classes
+.text-white {
+    color: $white;
+}
+
+.gap {
+    gap: 4px;
+}
+
+.muted {
+    color: $ta-light-grey-2;
+    font-size: 11px;
+}
+
+.count {
+    border-radius: 50%;
+    background: $ta-black;
+    font-size: 11px;
+    padding: 1px 5px 1px 5px;
+}

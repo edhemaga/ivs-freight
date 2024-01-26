@@ -295,7 +295,7 @@ export class FilterComponent implements OnInit {
     private createForm(): void {
         this.rangeForm = this.formBuilder.group({
             rangeFrom: '0',
-            rangeTo: this.type == 'payFilter' ? '20,000' : '5,000',
+            rangeTo: this.type === 'payFilter' ? '20,000' : '5,000',
         });
 
         this.searchForm = this.formBuilder.group({
@@ -351,16 +351,16 @@ export class FilterComponent implements OnInit {
     }
 
     private timeAndPayFilter(): void {
-        if (this.type == 'timeFilter') {
-            let d = new Date();
-            let pastYear = d.getFullYear() - 1;
-            let past2Year = d.getFullYear() - 2;
+        if (this.type === 'timeFilter') {
+            const d = new Date();
+            const pastYear = d.getFullYear() - 1;
+            const past2Year = d.getFullYear() - 2;
 
             this.lastYear = pastYear;
             this.last2Years = past2Year;
         }
 
-        if (this.type == 'payFilter') {
+        if (this.type === 'payFilter') {
             this.maxValueRange = '20,000';
             this.maxValueSet = '20,000';
         }
@@ -401,7 +401,7 @@ export class FilterComponent implements OnInit {
                         );
                     }
 
-                    if (changes.rangeTo == null || rangeToNum > maxRangeNum) {
+                    if (changes.rangeTo === null || rangeToNum > maxRangeNum) {
                         this.rangeForm
                             ?.get('rangeTo')
                             ?.setValue(this.maxValueRange);
@@ -411,7 +411,7 @@ export class FilterComponent implements OnInit {
                         this.rangeForm
                             ?.get('rangeFrom')
                             ?.setValue(maxRangeNum - 1);
-                    } else if (changes.rangeFrom == null) {
+                    } else if (changes.rangeFrom === null) {
                         this.rangeForm?.get('rangeFrom')?.setValue('0');
                     }
 
@@ -430,9 +430,9 @@ export class FilterComponent implements OnInit {
             .subscribe((changes) => {
                 if (changes.singleFrom || changes.singleTo) {
                     if (changes.singleTo) {
-                        let to = parseInt(changes.singleTo);
-                        let from = parseInt(changes.singleFrom);
-                        if (from > to || from == to) {
+                        const to = parseInt(changes.singleTo);
+                        const from = parseInt(changes.singleFrom);
+                        if (from > to || from === to) {
                             this.singleFormError = true;
                         } else {
                             this.singleFormError = false;
@@ -446,10 +446,10 @@ export class FilterComponent implements OnInit {
 
                 if (changes.multiFromFirstFrom || changes.multiFromFirstTo) {
                     if (changes.multiFromFirstTo) {
-                        let to = parseInt(changes.multiFromFirstTo);
-                        let from = parseInt(changes.multiFromFirstFrom);
+                        const to = parseInt(changes.multiFromFirstTo);
+                        const from = parseInt(changes.multiFromFirstFrom);
 
-                        if (from > to || from == to) {
+                        if (from > to || from === to) {
                             this.multiFormFirstError = true;
                         } else {
                             this.multiFormFirstError = false;
@@ -463,10 +463,10 @@ export class FilterComponent implements OnInit {
 
                 if (changes.multiFormSecondFrom || changes.multiFormSecondTo) {
                     if (changes.multiFormSecondTo) {
-                        let to = parseInt(changes.multiFormSecondTo);
-                        let from = parseInt(changes.multiFormSecondFrom);
+                        const to = parseInt(changes.multiFormSecondTo);
+                        const from = parseInt(changes.multiFormSecondFrom);
 
-                        if (from > to || from == to) {
+                        if (from > to || from === to) {
                             this.multiFormSecondError = true;
                         } else {
                             this.multiFormSecondError = false;
@@ -478,9 +478,9 @@ export class FilterComponent implements OnInit {
 
                 if (changes.multiFormThirdFrom || changes.multiFormThirdTo) {
                     if (changes.multiFormThirdTo) {
-                        let to = parseInt(changes.multiFormThirdTo);
-                        let from = parseInt(changes.multiFormThirdFrom);
-                        if (from > to || from == to) {
+                        const to = parseInt(changes.multiFormThirdTo);
+                        const from = parseInt(changes.multiFormThirdFrom);
+                        if (from > to || from === to) {
                             this.multiFormThirdError = true;
                         } else {
                             this.multiFormThirdError = false;
@@ -494,11 +494,11 @@ export class FilterComponent implements OnInit {
                     let toValueChanged = true;
                     let fromValueChanged = true;
 
-                    let fromActive =
+                    const fromActive =
                         this.singleFromActive && this.singleFromActive != 'null'
                             ? this.singleFromActive
                             : 0;
-                    let toActive =
+                    const toActive =
                         this.singleToActive && this.singleToActive != 'null'
                             ? this.singleToActive
                             : 0;
@@ -513,11 +513,11 @@ export class FilterComponent implements OnInit {
                         from = parseInt(changes.singleFrom);
                     }
 
-                    if (toActive == to) {
+                    if (toActive === to) {
                         toValueChanged = false;
                     }
 
-                    if (fromActive == from) {
+                    if (fromActive === from) {
                         fromValueChanged = false;
                     }
 
@@ -526,7 +526,7 @@ export class FilterComponent implements OnInit {
                         this.moneyFilterStatus = true;
                     } else {
                         this.setButtonAvailable = false;
-                        if (to == 0 && from == 0) {
+                        if (to === 0 && from === 0) {
                             this.moneyFilterStatus = false;
                         }
                     }
@@ -593,10 +593,10 @@ export class FilterComponent implements OnInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
                 if (changes.search) {
-                    let inputValue = changes.search;
+                    const inputValue = changes.search;
                     this.searchInputValue = inputValue;
 
-                    if (this.type == 'userFilter') {
+                    if (this.type === 'userFilter') {
                         this.unselectedUser.map((item) => {
                             item.hidden = true;
                             if (
@@ -608,7 +608,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'statusFilter') {
+                    } else if (this.type === 'statusFilter') {
                         this.pendingStatusArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -644,7 +644,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'truckFilter') {
+                    } else if (this.type === 'truckFilter') {
                         this.truckArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -656,7 +656,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'fuelStopFilter') {
+                    } else if (this.type === 'fuelStopFilter') {
                         this.fuelStopArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -668,7 +668,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'trailerFilter') {
+                    } else if (this.type === 'trailerFilter') {
                         this.trailerArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -680,7 +680,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'brokerFilter') {
+                    } else if (this.type === 'brokerFilter') {
                         this.brokerArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -692,7 +692,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'driverFilter') {
+                    } else if (this.type === 'driverFilter') {
                         this.driverArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -704,7 +704,7 @@ export class FilterComponent implements OnInit {
                             }
                             return item;
                         });
-                    } else if (this.type == 'stateFilter') {
+                    } else if (this.type === 'stateFilter') {
                         this.usaStates.map((item) => {
                             item.hidden = true;
                             if (
@@ -730,11 +730,11 @@ export class FilterComponent implements OnInit {
                         });
                     }
                 } else {
-                    if (this.type == 'userFilter') {
+                    if (this.type === 'userFilter') {
                         this.unselectedUser.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'statusFilter') {
+                    } else if (this.type === 'statusFilter') {
                         this.pendingStatusArray.map((item) => {
                             item.hidden = false;
                         });
@@ -746,27 +746,27 @@ export class FilterComponent implements OnInit {
                         this.closedStatusArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'truckFilter') {
+                    } else if (this.type === 'truckFilter') {
                         this.truckArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'trailerFilter') {
+                    } else if (this.type === 'trailerFilter') {
                         this.trailerArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'fuelStopFilter') {
+                    } else if (this.type === 'fuelStopFilter') {
                         this.fuelStopArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'brokerFilter') {
+                    } else if (this.type === 'brokerFilter') {
                         this.brokerArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'driverFilter') {
+                    } else if (this.type === 'driverFilter') {
                         this.driverArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type == 'stateFilter') {
+                    } else if (this.type === 'stateFilter') {
                         this.usaStates.map((item) => {
                             item.hidden = false;
                         });
@@ -785,9 +785,9 @@ export class FilterComponent implements OnInit {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (this.type == 'truckTypeFilter') {
-                    if (res?.animation == 'truck-type-update') {
-                        let newData = res.data.map(
+                if (this.type === 'truckTypeFilter') {
+                    if (res?.animation === 'truck-type-update') {
+                        const newData = res.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
                                     'assets/svg/common/trucks/' + type.logoName;
@@ -797,9 +797,9 @@ export class FilterComponent implements OnInit {
 
                         this.truckTypeArray = newData;
                     }
-                } else if (this.type == 'trailerTypeFilter') {
-                    if (res?.animation == 'trailer-type-update') {
-                        let newData = res.data.map(
+                } else if (this.type === 'trailerTypeFilter') {
+                    if (res?.animation === 'trailer-type-update') {
+                        const newData = res.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
                                     'assets/svg/common/trailers/' +
@@ -810,8 +810,8 @@ export class FilterComponent implements OnInit {
                         this.trailerTypeArray = newData;
                     }
                 } else if (this.type === 'categoryRepairFilter') {
-                    if (res?.animation == 'repair-category-update') {
-                        let newData = res.data.map(
+                    if (res?.animation === 'repair-category-update') {
+                        const newData = res.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
                                     'assets/svg/common/category/' + type.logo;
@@ -821,13 +821,13 @@ export class FilterComponent implements OnInit {
                         this.categoryRepairArray = newData;
                     }
                 } else if (this.type === 'categoryFuelFilter') {
-                    if (res?.animation == 'fuel-category-update') {
+                    if (res?.animation === 'fuel-category-update') {
                         this.categoryFuelArray = res.data;
                     }
                 } else if (this.type === 'stateFilter') {
-                    if (res?.animation == 'state-data-update') {
-                        let usaArray = [];
-                        let canadaArray = [];
+                    if (res?.animation === 'state-data-update') {
+                        const usaArray = [];
+                        const canadaArray = [];
 
                         res.data.map((state: any, index: number) => {
                             if (state.countryType.name == 'Canada') {
@@ -841,15 +841,15 @@ export class FilterComponent implements OnInit {
                         this.canadaStates = canadaArray;
                     }
                 } else if (this.type === 'departmentFilter') {
-                    if (res?.animation == 'department-data-update') {
+                    if (res?.animation === 'department-data-update') {
                         this.departmentArray = res.data;
                     }
                 } else if (
                     this.type === 'pmFilter' &&
                     this.pmSubtype === 'truck'
                 ) {
-                    if (res?.animation == 'pm-truck-data-update') {
-                        let newData = res.data.pagination.data.map(
+                    if (res?.animation === 'pm-truck-data-update') {
+                        const newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
                                     'assets/svg/common/repair-pm/' +
@@ -864,8 +864,8 @@ export class FilterComponent implements OnInit {
                     this.type === 'pmFilter' &&
                     this.pmSubtype === 'trailer'
                 ) {
-                    if (res?.animation == 'pm-trailer-data-update') {
-                        let newData = res.data.pagination.data.map(
+                    if (res?.animation === 'pm-trailer-data-update') {
+                        const newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
                                     'assets/svg/common/repair-pm/' +
@@ -877,8 +877,8 @@ export class FilterComponent implements OnInit {
                         this.pmFilterArray = newData;
                     }
                 } else if (this.type === 'userFilter') {
-                    if (res?.animation == 'dispatch-data-update') {
-                        let newData = res.data.pagination.data.map(
+                    if (res?.animation === 'dispatch-data-update') {
+                        const newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['name'] = type.fullName;
                                 return type;
@@ -889,7 +889,7 @@ export class FilterComponent implements OnInit {
                     }
                 } else if (this.type === 'truckFilter') {
                     if (res?.animation === 'truck-list-update') {
-                        let newData = res.data.pagination.data.map(
+                        const newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['name'] = type.truckNumber;
                                 return type;
@@ -898,7 +898,7 @@ export class FilterComponent implements OnInit {
                         this.truckArray = newData;
                     }
                 } else if (this.type === 'trailerFilter') {
-                    let newData = res.data.pagination.data.map(
+                    const newData = res.data.pagination.data.map(
                         (type: any, index: number) => {
                             type['name'] = type.trailerNumber;
                             return type;
@@ -955,52 +955,52 @@ export class FilterComponent implements OnInit {
 
     public addToSelectedUser(item, indx, subType?): void {
         let mainArray: any[] = [];
-        if (this.type == 'departmentFilter') {
+        if (this.type === 'departmentFilter') {
             mainArray = this.departmentArray;
-        } else if (this.type == 'statusFilter') {
-            if (subType == 'pending') {
+        } else if (this.type === 'statusFilter') {
+            if (subType === 'pending') {
                 mainArray = this.pendingStatusArray;
-            } else if (subType == 'active') {
+            } else if (subType === 'active') {
                 mainArray = this.activeStatusArray;
             } else {
                 mainArray = this.closedStatusArray;
             }
-        } else if (this.type == 'pmFilter') {
+        } else if (this.type === 'pmFilter') {
             mainArray = this.pmFilterArray;
-        } else if (this.type == 'categoryFuelFilter') {
+        } else if (this.type === 'categoryFuelFilter') {
             mainArray = this.categoryFuelArray;
-        } else if (this.type == 'categoryRepairFilter') {
+        } else if (this.type === 'categoryRepairFilter') {
             mainArray = this.categoryRepairArray;
-        } else if (this.type == 'truckFilter') {
+        } else if (this.type === 'truckFilter') {
             mainArray = this.truckArray;
-        } else if (this.type == 'trailerFilter') {
+        } else if (this.type === 'trailerFilter') {
             mainArray = this.trailerArray;
-        } else if (this.type == 'fuelStopFilter') {
+        } else if (this.type === 'fuelStopFilter') {
             mainArray = this.fuelStopArray;
-        } else if (this.type == 'brokerFilter') {
+        } else if (this.type === 'brokerFilter') {
             mainArray = this.brokerArray;
-        } else if (this.type == 'driverFilter') {
+        } else if (this.type === 'driverFilter') {
             mainArray = this.driverArray;
-        } else if (this.type == 'truckTypeFilter') {
+        } else if (this.type === 'truckTypeFilter') {
             mainArray = this.truckTypeArray;
-        } else if (this.type == 'userFilter') {
+        } else if (this.type === 'userFilter') {
             mainArray = this.unselectedUser;
-        } else if (this.type == 'trailerTypeFilter') {
+        } else if (this.type === 'trailerTypeFilter') {
             mainArray = this.trailerTypeArray;
-        } else if (this.type == 'stateFilter') {
-            if (subType == 'canada') {
+        } else if (this.type === 'stateFilter') {
+            if (subType === 'canada') {
                 mainArray = this.canadaStates;
             } else {
                 mainArray = this.usaStates;
             }
-        } else if (this.type == 'labelFilter') {
+        } else if (this.type === 'labelFilter') {
             mainArray = this.labelArray;
         }
 
         mainArray[indx].isSelected = true;
 
-        if (this.type == 'stateFilter') {
-            if (subType == 'canada') {
+        if (this.type === 'stateFilter') {
+            if (subType === 'canada') {
                 this.canadaSelectedStates.push(item);
             } else {
                 this.usaSelectedStates.push(item);
@@ -1014,25 +1014,26 @@ export class FilterComponent implements OnInit {
     public removeFromSelectedUser(item, indx, subType?): void {
         this.selectedUser.splice(indx, 1);
 
-        if (this.type == 'stateFilter') {
-            if (subType == 'canada') {
+        if (this.type === 'stateFilter') {
+            if (subType === 'canada') {
                 this.canadaSelectedStates.splice(indx, 1);
             } else {
                 this.usaSelectedStates.splice(indx, 1);
             }
         }
 
-        let id = item.id;
+        const id = item.id;
 
-        if (this.type == 'departmentFilter') {
+        if (this.type === 'departmentFilter') {
             this.departmentArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'statusFilter') {
-            let checkActiveStatusArray = this.activeStatusArray.indexOf(item);
-            let checkPendingStatusArray = this.pendingStatusArray.indexOf(item);
+        } else if (this.type === 'statusFilter') {
+            const checkActiveStatusArray = this.activeStatusArray.indexOf(item);
+            const checkPendingStatusArray =
+                this.pendingStatusArray.indexOf(item);
 
             let mainArray: any[] = [];
 
@@ -1045,93 +1046,93 @@ export class FilterComponent implements OnInit {
             }
 
             mainArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'pmFilter') {
+        } else if (this.type === 'pmFilter') {
             this.pmFilterArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'categoryFuelFilter') {
+        } else if (this.type === 'categoryFuelFilter') {
             this.categoryFuelArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'categoryRepairFilter') {
+        } else if (this.type === 'categoryRepairFilter') {
             this.categoryRepairArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'truckFilter') {
+        } else if (this.type === 'truckFilter') {
             this.truckArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'trailerFilter') {
+        } else if (this.type === 'trailerFilter') {
             this.trailerArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'fuelStopFilter') {
+        } else if (this.type === 'fuelStopFilter') {
             this.fuelStopArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'brokerFilter') {
+        } else if (this.type === 'brokerFilter') {
             this.brokerArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'driverFilter') {
+        } else if (this.type === 'driverFilter') {
             this.driverArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'truckTypeFilter') {
+        } else if (this.type === 'truckTypeFilter') {
             this.truckTypeArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'trailerTypeFilter') {
+        } else if (this.type === 'trailerTypeFilter') {
             this.trailerTypeArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'userFilter') {
+        } else if (this.type === 'userFilter') {
             this.unselectedUser.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
-        } else if (this.type == 'stateFilter') {
-            if (subType == 'canada') {
+        } else if (this.type === 'stateFilter') {
+            if (subType === 'canada') {
                 this.canadaStates.map((item) => {
-                    if (item.id == id) {
+                    if (item.id === id) {
                         item.isSelected = false;
                     }
                 });
             } else {
                 this.usaStates.map((item) => {
-                    if (item.id == id) {
+                    if (item.id === id) {
                         item.isSelected = false;
                     }
                 });
             }
-        } else if (this.type == 'labelFilter') {
+        } else if (this.type === 'labelFilter') {
             this.labelArray.map((item) => {
-                if (item.id == id) {
+                if (item.id === id) {
                     item.isSelected = false;
                 }
             });
@@ -1147,7 +1148,7 @@ export class FilterComponent implements OnInit {
         const element = event.target;
         if (!element.classList.contains('active') && !mod) false;
 
-        if (this.type == 'timeFilter') {
+        if (this.type === 'timeFilter') {
             this.selectedTimeValue = '';
             this.filterActiveTime = '';
         } else {
@@ -1289,7 +1290,7 @@ export class FilterComponent implements OnInit {
                 case 'milesFilter':
                 case 'payFilter':
                     //this.rangeForm.reset();
-                    let maxNum = this.thousandSeparator.transform(
+                    const maxNum = this.thousandSeparator.transform(
                         this.maxValueRange
                     );
                     this.rangeForm.get('rangeFrom')?.setValue('0');
@@ -1308,7 +1309,7 @@ export class FilterComponent implements OnInit {
         this.autoClose.tooltip.close();
         this.totalFiltersNum = 0;
         this.singleFormActive = false;
-        let data = {
+        const data = {
             action: 'Clear',
             type: this.type,
             filterType: this.type,
@@ -1331,13 +1332,13 @@ export class FilterComponent implements OnInit {
     }
 
     public setTimeValue(mod): void {
-        if (this.selectedTimeValue == mod) {
+        if (this.selectedTimeValue === mod) {
             this.selectedTimeValue = '';
         } else {
             this.selectedTimeValue = mod;
         }
 
-        if (this.filterActiveTime == mod) {
+        if (this.filterActiveTime === mod) {
             this.setButtonAvailable = false;
         } else {
             this.setButtonAvailable = true;
@@ -1350,8 +1351,8 @@ export class FilterComponent implements OnInit {
     }
 
     public showSearch(mod?): void {
-        let filterSearchHead = document.querySelector('.search-input-header');
-        let filterTextHead = document.querySelector('.filter-text-part');
+        const filterSearchHead = document.querySelector('.search-input-header');
+        const filterTextHead = document.querySelector('.filter-text-part');
 
         if (mod) {
             this.expandSearch = false;
@@ -1371,9 +1372,9 @@ export class FilterComponent implements OnInit {
     }
 
     public hideFormPart(mod): void {
-        if (mod == 'part1') {
+        if (mod === 'part1') {
             this.showPart1 = !this.showPart1;
-        } else if (mod == 'part2') {
+        } else if (mod === 'part2') {
             this.showPart2 = !this.showPart2;
         } else {
             this.showPart3 = !this.showPart3;
@@ -1467,7 +1468,7 @@ export class FilterComponent implements OnInit {
 
             this.setButtonAvailable = false;
 
-            if (this.type == 'timeFilter') {
+            if (this.type === 'timeFilter') {
                 this.filterActiveTime = this.selectedTimeValue;
 
                 if (!this.selectedTimeValue) {
@@ -1480,11 +1481,11 @@ export class FilterComponent implements OnInit {
                 };
             } else if (this.swipeFilter) {
                 this.swipeActiveRange = this.rangeValue;
-            } else if (this.type == 'stateFilter') {
+            } else if (this.type === 'stateFilter') {
                 this.filterUsaActiveArray = [...this.usaSelectedStates];
                 this.filterCanadaActiveArray = [...this.canadaSelectedStates];
 
-                let totalStatesSelected =
+                const totalStatesSelected =
                     this.filterUsaActiveArray.length +
                     this.filterCanadaActiveArray.length;
                 this.totalFiltersNum = totalStatesSelected;
@@ -1493,9 +1494,9 @@ export class FilterComponent implements OnInit {
                     usaArray: this.filterUsaActiveArray,
                     canadaArray: this.filterCanadaActiveArray,
                 };
-            } else if (this.type == 'moneyFilter') {
-                if (this.subType == 'all') {
-                    let formActive = 0;
+            } else if (this.type === 'moneyFilter') {
+                if (this.subType === 'all') {
+                    const formActive = 0;
 
                     this.multiFromFirstFromActive = (
                         ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
@@ -1583,10 +1584,13 @@ export class FilterComponent implements OnInit {
                             : '',
                     };
                 }
-            } else if (this.type == 'milesFilter' || this.type == 'payFilter') {
+            } else if (
+                this.type === 'milesFilter' ||
+                this.type === 'payFilter'
+            ) {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
-            } else if (this.type == 'locationFilter') {
+            } else if (this.type === 'locationFilter') {
                 if (this.areaFilterSelected != 'Location') {
                     queryParams = {
                         originLatValue: this.originLatVal,
@@ -1614,7 +1618,7 @@ export class FilterComponent implements OnInit {
                 }
             } else {
                 this.filterActiveArray = [...this.selectedUser];
-                let selectedUsersIdArray: any = [];
+                const selectedUsersIdArray: any = [];
                 this.totalFiltersNum = this.filterActiveArray.length;
 
                 let mainArray: any[] = [];
@@ -1662,7 +1666,7 @@ export class FilterComponent implements OnInit {
                     }
                 });
 
-                if (this.type == 'pmFilter') {
+                if (this.type === 'pmFilter') {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
                     });
@@ -1672,7 +1676,7 @@ export class FilterComponent implements OnInit {
                     });
                 }
 
-                if (selectedUsersIdArray.length == 0) {
+                if (selectedUsersIdArray.length === 0) {
                     this.clearAll(event);
                     return false;
                 }
@@ -1681,7 +1685,7 @@ export class FilterComponent implements OnInit {
                 subType = this.toDoSubType ? this.toDoSubType : '';
             }
 
-            let data = {
+            const data = {
                 filterType: this.type,
                 action: 'Set',
                 queryParams: queryParams,
@@ -1723,10 +1727,10 @@ export class FilterComponent implements OnInit {
                 return a.id - b.id;
             });
 
-            let usaStringfy = JSON.stringify(arrayUsaSelected);
-            let usaActiveStringify = JSON.stringify(arrayUsaActive);
-            let canadaStringfy = JSON.stringify(arrayCanadaSelected);
-            let canadaActiveStringify = JSON.stringify(arrayCanadaActive);
+            const usaStringfy = JSON.stringify(arrayUsaSelected);
+            const usaActiveStringify = JSON.stringify(arrayUsaActive);
+            const canadaStringfy = JSON.stringify(arrayCanadaSelected);
+            const canadaActiveStringify = JSON.stringify(arrayCanadaActive);
 
             if (usaStringfy === usaActiveStringify) {
                 usaArrayChanged = false;
@@ -1734,7 +1738,7 @@ export class FilterComponent implements OnInit {
                 usaArrayChanged = true;
             }
 
-            if (canadaStringfy == canadaActiveStringify) {
+            if (canadaStringfy === canadaActiveStringify) {
                 canadaArrayChanged = false;
             } else {
                 canadaArrayChanged = true;
@@ -1746,8 +1750,8 @@ export class FilterComponent implements OnInit {
                 this.setButtonAvailable = false;
             }
         } else {
-            let array1 = [...this.selectedUser];
-            let array2 = [...this.filterActiveArray];
+            const array1 = [...this.selectedUser];
+            const array2 = [...this.filterActiveArray];
 
             array1.sort((a, b) => {
                 return a.id - b.id;
@@ -1757,10 +1761,10 @@ export class FilterComponent implements OnInit {
                 return a.id - b.id;
             });
 
-            let stringfy1 = JSON.stringify(array1);
-            let stringfy2 = JSON.stringify(array2);
+            const stringfy1 = JSON.stringify(array1);
+            const stringfy2 = JSON.stringify(array2);
 
-            if (stringfy1 == stringfy2) {
+            if (stringfy1 === stringfy2) {
                 this.setButtonAvailable = false;
             } else {
                 this.setButtonAvailable = true;
@@ -1773,60 +1777,60 @@ export class FilterComponent implements OnInit {
         let secondFormChanged = 'none';
         let thirdFormChanged = 'none';
 
-        let firstFromActive =
+        const firstFromActive =
             this.multiFromFirstFromActive &&
             this.multiFromFirstFromActive != 'null'
                 ? this.multiFromFirstFromActive
                 : 0;
-        let firstToActive =
+        const firstToActive =
             this.multiFromFirstToActive && this.multiFromFirstToActive != 'null'
                 ? this.multiFromFirstToActive
                 : 0;
 
-        let secFromActive =
+        const secFromActive =
             this.multiFormSecondFromActive &&
             this.multiFormSecondFromActive != 'null'
                 ? this.multiFormSecondFromActive
                 : 0;
-        let secToActive =
+        const secToActive =
             this.multiFormSecondToActive &&
             this.multiFormSecondToActive != 'null'
                 ? this.multiFormSecondToActive
                 : 0;
 
-        let thirdFromActive =
+        const thirdFromActive =
             this.multiFormThirdFromActive &&
             this.multiFormThirdFromActive != 'null'
                 ? this.multiFormThirdFromActive
                 : 0;
-        let thirdToActive =
+        const thirdToActive =
             this.multiFormThirdToActive && this.multiFormThirdToActive != 'null'
                 ? this.multiFormThirdToActive
                 : 0;
 
-        let firstFrom =
+        const firstFrom =
             data.multiFromFirstFrom && data.multiFromFirstFrom != 'null'
                 ? parseInt(data.multiFromFirstFrom)
                 : 0;
-        let firstTo =
+        const firstTo =
             data.multiFromFirstTo && data.multiFromFirstTo != 'null'
                 ? parseInt(data.multiFromFirstTo)
                 : 0;
 
-        let secFrom =
+        const secFrom =
             data.multiFormSecondFrom && data.multiFormSecondFrom != 'null'
                 ? parseInt(data.multiFormSecondFrom)
                 : 0;
-        let secTo =
+        const secTo =
             data.multiFormSecondTo && data.multiFormSecondTo != 'null'
                 ? parseInt(data.multiFormSecondTo)
                 : 0;
 
-        let thirdFrom =
+        const thirdFrom =
             data.multiFormThirdFrom && data.multiFormThirdFrom != 'null'
                 ? parseInt(data.multiFormThirdFrom)
                 : 0;
-        let thirdTo =
+        const thirdTo =
             data.multiFormThirdTo && data.multiFormThirdTo != 'null'
                 ? parseInt(data.multiFormThirdTo)
                 : 0;
@@ -1844,9 +1848,9 @@ export class FilterComponent implements OnInit {
         }
 
         if (
-            firstFormChanged == 'changed' ||
-            secondFormChanged == 'changed' ||
-            thirdFormChanged == 'changed'
+            firstFormChanged === 'changed' ||
+            secondFormChanged === 'changed' ||
+            thirdFormChanged === 'changed'
         ) {
             this.setButtonAvailable = true;
         } else {
@@ -1867,19 +1871,19 @@ export class FilterComponent implements OnInit {
     }
 
     public setRangeSliderValue(mod): void {
-        let fromValue = this.thousandSeparator.transform(mod.value);
-        let toValue = this.thousandSeparator.transform(mod.highValue);
+        const fromValue = this.thousandSeparator.transform(mod.value);
+        const toValue = this.thousandSeparator.transform(mod.highValue);
         this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
         this.rangeForm?.get('rangeTo')?.setValue(toValue);
     }
 
     public setMinValueRange(mod): void {
-        let fromValue = this.thousandSeparator.transform(mod);
+        const fromValue = this.thousandSeparator.transform(mod);
         this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
     }
 
     public setMaxValueRange(mod): void {
-        let toValue = this.thousandSeparator.transform(mod);
+        const toValue = this.thousandSeparator.transform(mod);
         this.rangeForm?.get('rangeTo')?.setValue(toValue);
     }
 
@@ -1889,7 +1893,7 @@ export class FilterComponent implements OnInit {
 
         let mainElementHolder;
 
-        if (this.type == 'timeFilter') {
+        if (this.type === 'timeFilter') {
             mainElementHolder = document.querySelector('.time-filter-holder');
         } else {
             mainElementHolder = document.querySelector('.filter-holder');
@@ -1939,26 +1943,26 @@ export class FilterComponent implements OnInit {
                     (item.isSelected && !item.currentSet) ||
                     (!item.isSelected && item.currentSet)
                 ) {
-                    let indexNum = this.selectedUser.indexOf(item);
+                    const indexNum = this.selectedUser.indexOf(item);
                     if (indexNum > -1) {
                         this.removeFromSelectedUser(item, indexNum);
                     } else {
-                        let inactiveIndexNum = mainArray.indexOf(item);
+                        const inactiveIndexNum = mainArray.indexOf(item);
                         this.addToSelectedUser(item, inactiveIndexNum);
                     }
                 }
             });
-        } else if (this.type == 'timeFilter') {
+        } else if (this.type === 'timeFilter') {
             this.selectedTimeValue = this.filterActiveTime;
-        } else if (this.type == 'moneyFilter') {
+        } else if (this.type === 'moneyFilter') {
             if (this.subType != 'all') {
-                let setFromValue =
+                const setFromValue =
                     this.singleFromActive != 'null' && this.singleFromActive
                         ? this.singleFromActive
                         : '';
                 this.moneyForm.get('singleFrom')?.setValue(setFromValue);
 
-                let setToValue =
+                const setToValue =
                     this.singleToActive != 'null' && this.singleToActive
                         ? this.singleToActive
                         : '';
@@ -1967,12 +1971,12 @@ export class FilterComponent implements OnInit {
                     this.setButtonAvailable = false;
                 }
             } else {
-                let firstFromActive =
+                const firstFromActive =
                     this.multiFromFirstFromActive &&
                     this.multiFromFirstFromActive != 'null'
                         ? this.multiFromFirstFromActive
                         : '';
-                let firstToActive =
+                const firstToActive =
                     this.multiFromFirstToActive &&
                     this.multiFromFirstToActive != 'null'
                         ? this.multiFromFirstToActive
@@ -1983,12 +1987,12 @@ export class FilterComponent implements OnInit {
                     .get('multiFromFirstFrom')
                     ?.setValue(firstFromActive);
 
-                let secFromActive =
+                const secFromActive =
                     this.multiFormSecondFromActive &&
                     this.multiFormSecondFromActive != 'null'
                         ? this.multiFormSecondFromActive
                         : '';
-                let secToActive =
+                const secToActive =
                     this.multiFormSecondToActive &&
                     this.multiFormSecondToActive != 'null'
                         ? this.multiFormSecondToActive
@@ -1999,12 +2003,12 @@ export class FilterComponent implements OnInit {
                     ?.setValue(secFromActive);
                 this.moneyForm.get('multiFormSecondTo')?.setValue(secToActive);
 
-                let thirdFromActive =
+                const thirdFromActive =
                     this.multiFormThirdFromActive &&
                     this.multiFormThirdFromActive != 'null'
                         ? this.multiFormThirdFromActive
                         : '';
-                let thirdToActive =
+                const thirdToActive =
                     this.multiFormThirdToActive &&
                     this.multiFormThirdToActive != 'null'
                         ? this.multiFormThirdToActive
@@ -2015,12 +2019,12 @@ export class FilterComponent implements OnInit {
                     ?.setValue(thirdFromActive);
                 this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
             }
-        } else if (this.type == 'locationFilter') {
+        } else if (this.type === 'locationFilter') {
             this.locationForm.setValue({ address: this.loactionNameSet });
             this.longVal = this.longValueSet;
             this.latVal = this.latValSet;
             this.locationRange = this.locationRangeSet;
-        } else if (this.type == 'stateFilter') {
+        } else if (this.type === 'stateFilter') {
             this.usaSelectedStates = [...this.filterUsaActiveArray];
             this.canadaSelectedStates = [...this.filterCanadaActiveArray];
             this.setButtonAvailable = false;
@@ -2032,8 +2036,8 @@ export class FilterComponent implements OnInit {
     public onFilterShown(): void {
         this.activeFilter = true;
         this.isAnimated = true;
-        let filterSearchHead = document.querySelector('.search-input-header');
-        let filterTextHead = document.querySelector('.filter-text-part');
+        const filterSearchHead = document.querySelector('.search-input-header');
+        const filterTextHead = document.querySelector('.filter-text-part');
         filterSearchHead?.classList.remove('activeSearch');
         filterSearchHead?.classList.remove('inactiveSearch');
 

@@ -17,7 +17,6 @@ import {
     ViewChildren,
     Renderer2,
     SimpleChanges,
-    ViewEncapsulation,
     OnInit,
     ChangeDetectionStrategy,
 } from '@angular/core';
@@ -52,6 +51,7 @@ import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.
 import { ProgresBarComponent } from './progres-bar/progres-bar.component';
 import { TaInputDropdownLabelComponent } from '../ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
+import { TaInputDropdownTableComponent } from '../../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 
 // Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -59,6 +59,7 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { MaskNumberPipe } from './pipes/maskNumber.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
+import { TimeFormatPipe } from 'src/app/core/pipes/time-format-am-pm.pipe';
 
 // Helpers
 import { CardArrayHelper } from './utils/helpers/card-array-helper';
@@ -79,8 +80,8 @@ import { TextToggleDirective } from './directives/show-hide-pass.directive';
         formatDatePipe,
         TaThousandSeparatorPipe,
         FormatNumberMiPipe,
+        TimeFormatPipe,
     ],
-    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         //modules
@@ -98,12 +99,14 @@ import { TextToggleDirective } from './directives/show-hide-pass.directive';
         ProgresBarComponent,
         TaInputDropdownLabelComponent,
         TaLikeDislikeComponent,
+        TaInputDropdownTableComponent,
 
         //pipes
         formatDatePipe,
         MaskNumberPipe,
         HidePasswordPipe,
         FormatNumberMiPipe,
+        TimeFormatPipe,
 
         // Directives
         TextToggleDirective,
@@ -167,7 +170,8 @@ export class TruckassistCardsComponent implements OnInit {
         private tableService: TruckassistTableService,
         private formatCurrencyPipe: formatCurrency,
         private formatDatePipe: formatDatePipe,
-        private formatNumberMi: FormatNumberMiPipe
+        private formatNumberMi: FormatNumberMiPipe,
+        private timeFormatPipe: TimeFormatPipe
     ) {}
 
     ngOnInit(): void {
@@ -390,6 +394,7 @@ export class TruckassistCardsComponent implements OnInit {
                     ).reduce((acc, part) => acc && acc[part], obj)
                 );
 
+            // Transform to date format
             case ConstantStringTableComponentsEnum.DATE:
                 return this.formatDatePipe.transform(
                     ObjKey.split(
@@ -397,13 +402,21 @@ export class TruckassistCardsComponent implements OnInit {
                     ).reduce((acc, part) => acc && acc[part], obj)
                 );
 
+            // Transform to miles format
             case ConstantStringTableComponentsEnum.MILES_3:
-                const test = this.formatNumberMi.transform(
+                return this.formatNumberMi.transform(
                     ObjKey.split(
                         ConstantStringTableComponentsEnum.DOT_1
                     ).reduce((acc, part) => acc && acc[part], obj)
                 );
-                return test;
+
+            // Transform 24h time to am-pm
+            case ConstantStringTableComponentsEnum.AM_PM:
+                return this.timeFormatPipe.transform(
+                    ObjKey.split(
+                        ConstantStringTableComponentsEnum.DOT_1
+                    ).reduce((acc, part) => acc && acc[part], obj)
+                );
 
             default:
                 if (isValueOfKey && isNotZeroValueOfKey)

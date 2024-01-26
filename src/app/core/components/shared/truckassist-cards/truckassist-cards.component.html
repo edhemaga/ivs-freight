@@ -272,7 +272,9 @@
                                     #parentElement
                                     class="bottom-item-body d-flex align-items-center"
                                     [ngClass]="{
-                                        gap: rowsFront.title !== 'VIN No.'
+                                        gap: rowsFront.title !== 'VIN No.',
+                                        'line-height':
+                                            rowsFront.title === 'Fleet'
                                     }"
                                 >
                                     <!-- Load page body -->
@@ -773,66 +775,16 @@
                                     </ng-container>
 
                                     <!-- Owner page body -->
+
                                     <ng-container *ngIf="page === 'Owner'">
-                                        <!-- Fleet -->
+                                        <!-- Owner Fleet -->
 
                                         <ng-container
                                             *ngIf="rowsFront.title === 'Fleet'"
                                         >
-                                            <div class="fleet-holder d-flex">
-                                                <div
-                                                    class="ta-font-semi-bold d-flex fleet align-items-center"
-                                                >
-                                                    <svg-icon
-                                                        class="d-flex justify-content-center svg-holder"
-                                                        [src]="
-                                                            'assets/svg/common/dropdown-truck.svg'
-                                                        "
-                                                        [ngClass]="{
-                                                            'no-count':
-                                                                card.truckCount ===
-                                                                0
-                                                        }"
-                                                    ></svg-icon>
-
-                                                    <span
-                                                        [ngClass]="{
-                                                            'no-count-text':
-                                                                card.truckCount ===
-                                                                0
-                                                        }"
-                                                    >
-                                                        {{ card.truckCount }}
-                                                    </span>
-                                                </div>
-
-                                                <div
-                                                    class="ta-font-semi-bold d-flex fleet align-items-center"
-                                                >
-                                                    <svg-icon
-                                                        class="d-flex justify-content-center svg-holder"
-                                                        [src]="
-                                                            'assets/svg/common/dropdown-trailer.svg'
-                                                        "
-                                                        [ngClass]="{
-                                                            'no-count':
-                                                                card.trailerCount ===
-                                                                0
-                                                        }"
-                                                    ></svg-icon>
-
-                                                    <span
-                                                        [ngClass]="{
-                                                            'no-count-text':
-                                                                card.trailerCount ===
-                                                                0
-                                                        }"
-                                                    >
-                                                        {{ card.trailerCount }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            
+                                            <app-ta-input-dropdown-table
+                                                [data]="{card}"
+                                            ></app-ta-input-dropdown-table>
                                         </ng-container>
 
                                         <ng-container
@@ -1098,9 +1050,9 @@
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint !==
-                                                    'revenue' &&
+                                                    'tableAvailableHoursReceiving' &&
                                                 rowsBack.endpoint !==
-                                                    'tableRaiting.likeCount'
+                                                    'tableAvailableHoursShipping'
                                             "
                                         >
                                             {{
@@ -1109,6 +1061,32 @@
                                                     rowsBack.endpoint
                                                 )
                                             }}
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                    'tableAvailableHoursShipping' ||
+                                                rowsBack.endpoint ===
+                                                    'tableAvailableHoursReceiving'
+                                            "
+                                        >
+                                            <div class="d-flex gap">
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/truckassist-table/customer/calendar.svg'
+                                                    "
+                                                ></svg-icon>
+
+                                                <span class="align-span">
+                                                    {{
+                                                        getValueByStringPath(
+                                                            card,
+                                                            rowsBack.endpoint,
+                                                            'am-pm'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </div>
                                         </ng-container>
 
                                         <!-- Rating & Review -->

@@ -366,4 +366,5 @@ export enum ConstantStringTableComponentsEnum {
     REPAIR = 'Repair',
     MONEY = 'money',
     DATE = 'date',
+    AM_PM = 'am-pm',
 }

@@ -1,0 +1,110 @@
+<!-- Owner fleet dropdown -->
+<div
+    [ngbPopover]="dropdownOwnerFleet"
+    #ownerDropdown="ngbPopover"
+    [autoClose]="'outside'"
+    class="table-dropdown-container"
+    [placement]="['bottom-left']"
+    popoverClass="table-dropdown-popover"
+    triggers="manual"
+    (click)="toggleDropdownOwnerFleet(ownerDropdown, data.card)"
+    [ngClass]="ownerDropdown.isOpen() ? 'owner-dropdown-opened' : ''"
+>
+    <div class="fleet-holder d-flex">
+        <div class="ta-font-semi-bold d-flex fleet align-items-center">
+            <svg-icon
+                class="d-flex justify-content-center svg-holder"
+                [src]="'assets/svg/common/dropdown-truck.svg'"
+                [ngClass]="{
+                    'no-count': data.card.truckCount === 0
+                }"
+            ></svg-icon>
+
+            <span
+                [ngClass]="{
+                    'no-count-text': data.card.truckCount === 0
+                }"
+            >
+                {{ data.card.truckCount }}
+            </span>
+        </div>
+
+        <div class="ta-font-semi-bold d-flex fleet align-items-center">
+            <svg-icon
+                class="d-flex justify-content-center svg-holder"
+                [src]="'assets/svg/common/dropdown-trailer.svg'"
+                [ngClass]="{
+                    'no-count': data.card.trailerCount === 0
+                }"
+            ></svg-icon>
+
+            <span
+                [ngClass]="{
+                    'no-count-text': data.card.trailerCount === 0
+                }"
+            >
+                {{ data.card.trailerCount }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Owner fleet dropdown -->
+<ng-template #dropdownOwnerFleet let-ownerFleet="data">
+    <div class="table-list-dropdown">
+        <!-- Head of dropdown -->
+        <div class="description-titles d-flex justify-content-between">
+            <div class="d-flex gap">
+                <p
+                    class="dropdown-left m-0 ta-font-extra-bold d-flex align-items-center text-white"
+                >
+                    FLEET
+                </p>
+
+                <span
+                    class="total-number-fleet ta-font-extra-bold text-white count"
+                    >{{ ownerFleet.truckCount + ownerFleet.trailerCount }}</span
+                >
+            </div>
+
+            <div class="d-flex gap">
+                <p
+                    class="dropdown-right m-0 ta-font-bold d-flex align-items-center text-white"
+                >
+                    Unit No.
+                </p>
+
+                <svg-icon
+                    [src]="'assets/svg/common/dropdown-sort.svg'"
+                ></svg-icon>
+            </div>
+        </div>
+
+        <!-- Input Search -->
+        <div class="input-holder">
+            <input placeholder="Search" />
+        </div>
+
+        <!-- Body of dropdown -->
+        <div class="trucks-fleet-container d-flex flex-column">
+            <div class="d-flex align-items-center gap">
+                <span class="ta-font-bold muted body-item-title">TRUCK</span>
+                <span class="ta-font-bold text-white count">{{
+                    ownerFleet.truckCount
+                }}</span>
+            </div>
+            <div
+                class="table-list-dropdown-content-container"
+                [ngClass]="{
+                    'table-list-dropdown-inner-dropdown-active':
+                        ownerFleet?.isInnerDropActive
+                }"
+                *ngFor="let truck of ownerFleet.trucks; let i = index"
+            >
+                <div class="table-list-dropdown-content text-white">
+                    {{ truck?.truckNumber }}
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
