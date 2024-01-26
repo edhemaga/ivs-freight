@@ -979,6 +979,39 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // Change View Mode
         else if (event.action === ConstantStringTableComponentsEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
+        ) {
+            let status = false;
+            let mappedEvent = [];
+            this.viewData.map((data) => {
+                event.tabData.data.map((e) => {
+                    if (data.id === e) {
+                        status = data.status === 0 ? false : true;
+                        mappedEvent.push({
+                            ...data,
+                            data: {
+                                ...data,
+                                number: data.truckNumber,
+                                avatar: `assets/svg/common/trucks/${data?.truckType?.logoName}`,
+                            },
+                        });
+                    }
+                });
+            });
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    data: null,
+                    array: mappedEvent,
+                    template: ConstantStringTableComponentsEnum.TRUCK,
+                    type: status
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
         }
     }
 
