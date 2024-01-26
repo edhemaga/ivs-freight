@@ -1,8 +1,8 @@
 // enums
-import { ConstantStringEnum } from '../../enums/load-stop-items.enum';
+import { ConstantStringEnum } from '../../enums/load-modal-stop-items.enum';
 
 // models
-import { DropdownListItem } from '../../models/load-stop-items-model/dropdown-list-item.model';
+import { IsCreatedNewStopItemsRow } from '../../models/load-modal-stop-items-model/is-created-new-stop-items-row.model';
 
 export class LoadStopItemsConstants {
     static STOP_ITEM_HEADERS: string[] = [
@@ -22,63 +22,6 @@ export class LoadStopItemsConstants {
         ConstantStringEnum.CODE,
     ];
 
-    static QUANTITY_DROPDOWN_LIST: DropdownListItem[] = [
-        {
-            id: 1,
-            name: ConstantStringEnum.BAG,
-        },
-        {
-            id: 2,
-            name: ConstantStringEnum.BALE,
-        },
-        {
-            id: 3,
-            name: ConstantStringEnum.BARREL,
-        },
-        {
-            id: 4,
-            name: ConstantStringEnum.BOX,
-        },
-        {
-            id: 5,
-            name: ConstantStringEnum.BULK,
-        },
-        {
-            id: 6,
-            name: ConstantStringEnum.CASE,
-        },
-        {
-            id: 7,
-            name: ConstantStringEnum.PALLET,
-        },
-        {
-            id: 8,
-            name: ConstantStringEnum.PIECE,
-        },
-    ];
-
-    static STACK_DROPDOWN_LIST: DropdownListItem[] = [
-        {
-            id: 1,
-            name: ConstantStringEnum.YES,
-        },
-        {
-            id: 2,
-            name: ConstantStringEnum.NO,
-        },
-    ];
-
-    static SECURE_DROPDOWN_LIST: DropdownListItem[] = [
-        {
-            id: 1,
-            name: ConstantStringEnum.STRAP,
-        },
-        {
-            id: 2,
-            name: ConstantStringEnum.CHAIN,
-        },
-    ];
-
     static IS_INPUT_HOVER_ROW: boolean[] = [
         false,
         false,
@@ -94,4 +37,10 @@ export class LoadStopItemsConstants {
         false,
         false,
     ];
+
+    static IS_CREATED_NEW_STOP_ITEMS_ROW: IsCreatedNewStopItemsRow = {
+        pickup: false,
+        delivery: false,
+        extraStops: [],
+    };
 }

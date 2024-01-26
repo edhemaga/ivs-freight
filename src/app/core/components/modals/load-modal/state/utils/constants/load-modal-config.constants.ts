@@ -92,7 +92,7 @@ export class LoadModalConfigConstants {
             customClass: 'load-shipper-contact',
         },
         isDropdown: true,
-        isDisabled: false,
+        isDisabled: true,
         blackInput: true,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-330',
