@@ -21,6 +21,8 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule } from '@angular/forms';
 import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
+import { Axis } from './models/chart-models';
+import { AxisPositionEnum } from './enums/chart-enums';
 
 @Component({
     selector: 'app-ta-chart',
@@ -39,6 +41,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     @Input() chartConfig: any;
     @Input() axesProperties: any;
     @Input() legendAttributes: any;
+    @Input() multipleVerticalLeftAxes: number[];
     @ViewChild(BaseChartDirective) chart: BaseChartDirective;
     lineChartData: ChartDataSets[] = [];
     @ViewChild('hoverDataHolder') hoverDataHolder: ElementRef;
@@ -260,168 +263,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 },
             },
             scales: {
-                yAxes: [
-                    {
-                        stacked: this.chartConfig['stacked']
-                            ? this.chartConfig['stacked']
-                            : false,
-                        display: this.axesProperties['verticalLeftAxes']
-                            ? this.axesProperties['verticalLeftAxes']['visible']
-                            : false,
-                        position: 'left',
-                        gridLines: {
-                            display: false,
-                            drawBorder: false,
-                            borderDash: [2, 3],
-                            color: '#DADADA',
-                            zeroLineBorderDash: [2, 3],
-                            zeroLineColor: '#DADADA',
-                        },
-                        ticks: {
-                            display: false,
-                            beginAtZero: true,
-                            stepSize:
-                                this.axesProperties['verticalLeftAxes'] &&
-                                this.axesProperties['verticalLeftAxes'][
-                                    'stepSize'
-                                ]
-                                    ? this.axesProperties['verticalLeftAxes'][
-                                          'stepSize'
-                                      ]
-                                    : 1000,
-                            max:
-                                this.axesProperties['verticalLeftAxes'] &&
-                                this.axesProperties['verticalLeftAxes'][
-                                    'maxValue'
-                                ]
-                                    ? this.axesProperties['verticalLeftAxes'][
-                                          'maxValue'
-                                      ]
-                                    : 4000,
-                            min:
-                                this.axesProperties['verticalLeftAxes'] &&
-                                this.axesProperties['verticalLeftAxes'][
-                                    'minValue'
-                                ]
-                                    ? this.axesProperties['verticalLeftAxes'][
-                                          'minValue'
-                                      ]
-                                    : 0,
-                            fontColor: '#AAAAAA',
-                            fontSize: 11,
-                            fontFamily: 'Montserrat',
-                            padding: 10,
-                            callback: (value: any) => {
-                                if (
-                                    this.axesProperties['verticalLeftAxes'] &&
-                                    this.axesProperties['verticalLeftAxes'][
-                                        'decimal'
-                                    ]
-                                ) {
-                                    if (value % 1 === 0) {
-                                        value = value + '.0';
-                                    }
-                                    return value;
-                                } else {
-                                    let ranges = [
-                                        { divider: 1e6, suffix: 'M' },
-                                        { divider: 1e3, suffix: 'K' },
-                                    ];
-                                    function formatNumber(n) {
-                                        for (
-                                            let i = 0;
-                                            i < ranges.length;
-                                            i++
-                                        ) {
-                                            if (n >= ranges[i].divider) {
-                                                return (
-                                                    (
-                                                        n / ranges[i].divider
-                                                    ).toString() +
-                                                    ranges[i].suffix
-                                                );
-                                            }
-                                        }
-                                        return n;
-                                    }
-                                    return formatNumber(value);
-                                }
-                            },
-                        },
-                    },
-                    {
-                        stacked: this.chartConfig['stacked']
-                            ? this.chartConfig['stacked']
-                            : false,
-                        display: this.axesProperties['verticalRightAxes']
-                            ? this.axesProperties['verticalRightAxes'][
-                                  'visible'
-                              ]
-                            : false,
-                        gridLines: {
-                            display: this.axesProperties['verticalRightAxes']
-                                ? this.axesProperties['verticalRightAxes'][
-                                      'showGridLines'
-                                  ]
-                                : false,
-                        },
-                        position: 'right',
-                        ticks: {
-                            display: false,
-                            beginAtZero: true,
-                            stepSize:
-                                this.axesProperties['verticalRightAxes'] &&
-                                this.axesProperties['verticalRightAxes'][
-                                    'stepSize'
-                                ]
-                                    ? this.axesProperties['verticalRightAxes'][
-                                          'stepSize'
-                                      ]
-                                    : 700,
-                            max:
-                                this.axesProperties['verticalRightAxes'] &&
-                                this.axesProperties['verticalRightAxes'][
-                                    'maxValue'
-                                ]
-                                    ? this.axesProperties['verticalRightAxes'][
-                                          'maxValue'
-                                      ]
-                                    : 2800,
-                            min:
-                                this.axesProperties['verticalRightAxes'] &&
-                                this.axesProperties['verticalRightAxes'][
-                                    'minValue'
-                                ]
-                                    ? this.axesProperties['verticalRightAxes'][
-                                          'minValue'
-                                      ]
-                                    : 0,
-                            fontColor: '#AAAAAA',
-                            fontFamily: 'Montserrat',
-                            fontSize: 11,
-                            padding: -4,
-                            callback: function (value: any) {
-                                let ranges = [
-                                    { divider: 1e6, suffix: 'M' },
-                                    { divider: 1e3, suffix: 'K' },
-                                ];
-                                function formatNumber(n) {
-                                    for (let i = 0; i < ranges.length; i++) {
-                                        if (n >= ranges[i].divider) {
-                                            return (
-                                                (
-                                                    n / ranges[i].divider
-                                                ).toString() + ranges[i].suffix
-                                            );
-                                        }
-                                    }
-                                    return n;
-                                }
-                                return formatNumber(value);
-                            },
-                        },
-                    },
-                ],
+                yAxes: this.setChartAxis(),
                 xAxes: [
                     {
                         type: 'category',
@@ -1173,7 +1015,10 @@ export class TaChartComponent implements OnInit, OnChanges {
                 this.updateHoverData(value);
                 let oversizedHover = false;
                 this.hoverColumnWidth = elWidth + 1;
-                this.hoverChartLeft = xAxis['_gridLineItems'][value]['x2'] - 1;
+                this.hoverChartLeft =
+                    xAxis['_gridLineItems'][value]['x2'] -
+                    1 -
+                    this.hoverColumnWidth / 2;
 
                 let clientWidth = this.hoverDataHolder
                     ? this.hoverDataHolder.nativeElement.offsetWidth + 16
@@ -1203,9 +1048,15 @@ export class TaChartComponent implements OnInit, OnChanges {
                     oversizedHover = true;
                 }
                 if (oversizedHover) {
-                    this.hoverDataPosition = xPos - clientWidth - elWidth - 4;
+                    this.hoverDataPosition =
+                        xPos -
+                        clientWidth -
+                        elWidth -
+                        this.hoverColumnWidth / 2 +
+                        3;
                 } else {
-                    this.hoverDataPosition = xPos + 4;
+                    this.hoverDataPosition =
+                        xPos - this.hoverColumnWidth / 2 + 4;
                 }
             }
         }
@@ -1261,5 +1112,141 @@ export class TaChartComponent implements OnInit, OnChanges {
             : name == 'ALL'
             ? 6
             : 1;
+    }
+
+    private setChartAxis(): Axis[] {
+        let yAxes = [];
+        const leftAxesTemplate = {
+            stacked: this.chartConfig['stacked']
+                ? this.chartConfig['stacked']
+                : false,
+            display: this.axesProperties['verticalLeftAxes']
+                ? this.axesProperties['verticalLeftAxes']['visible']
+                : false,
+            position: AxisPositionEnum.LEFT,
+            gridLines: {
+                display: false,
+                drawBorder: false,
+                borderDash: [2, 3],
+                color: '#DADADA',
+                zeroLineBorderDash: [2, 3],
+                zeroLineColor: '#DADADA',
+            },
+            ticks: {
+                display: false,
+                beginAtZero: true,
+                stepSize: this.axesProperties['verticalLeftAxes']
+                    ? this.axesProperties['verticalLeftAxes']['stepSize']
+                    : 1000,
+                max:
+                    this.axesProperties['verticalLeftAxes'] &&
+                    this.axesProperties['verticalLeftAxes']['maxValue']
+                        ? this.axesProperties['verticalLeftAxes']['maxValue']
+                        : 4000,
+                min: this.axesProperties['verticalLeftAxes']
+                    ? this.axesProperties['verticalLeftAxes']['minValue']
+                    : 0,
+                fontColor: '#AAAAAA',
+                fontSize: 11,
+                fontFamily: 'Montserrat',
+                padding: 10,
+                callback: (value: number | string) => {
+                    if (
+                        this.axesProperties['verticalLeftAxes'] &&
+                        this.axesProperties['verticalLeftAxes']['decimal']
+                    ) {
+                        if (typeof value == 'number' && value % 1 === 0) {
+                            value = value + '.0';
+                        }
+                        return value;
+                    } else {
+                        let ranges = [
+                            { divider: 1e6, suffix: 'M' },
+                            { divider: 1e3, suffix: 'K' },
+                        ];
+                        function formatNumber(n) {
+                            for (let i = 0; i < ranges.length; i++) {
+                                if (n >= ranges[i].divider) {
+                                    return (
+                                        (n / ranges[i].divider).toString() +
+                                        ranges[i].suffix
+                                    );
+                                }
+                            }
+                            return n;
+                        }
+                        return formatNumber(value);
+                    }
+                },
+            },
+        };
+
+        const rightAxesTemplate = {
+            stacked: this.chartConfig['stacked']
+                ? this.chartConfig['stacked']
+                : false,
+            display: this.axesProperties['verticalRightAxes']
+                ? this.axesProperties['verticalRightAxes']['visible']
+                : false,
+            gridLines: {
+                display: this.axesProperties['verticalRightAxes']
+                    ? this.axesProperties['verticalRightAxes']['showGridLines']
+                    : false,
+            },
+            position: AxisPositionEnum.RIGHT,
+            ticks: {
+                display: false,
+                beginAtZero: true,
+                stepSize: this.axesProperties['verticalRightAxes']
+                    ? this.axesProperties['verticalRightAxes']['stepSize']
+                    : 700,
+                max: this.axesProperties['verticalRightAxes']
+                    ? this.axesProperties['verticalRightAxes']['maxValue']
+                    : 2800,
+                min: this.axesProperties['verticalRightAxes']
+                    ? this.axesProperties['verticalRightAxes']['minValue']
+                    : 0,
+                fontColor: '#AAAAAA',
+                fontFamily: 'Montserrat',
+                fontSize: 11,
+                padding: -4,
+                callback: function (value: string) {
+                    let ranges = [
+                        { divider: 1e6, suffix: 'M' },
+                        { divider: 1e3, suffix: 'K' },
+                    ];
+                    function formatNumber(n) {
+                        for (let i = 0; i < ranges.length; i++) {
+                            if (n >= ranges[i].divider) {
+                                return (
+                                    (n / ranges[i].divider).toString() +
+                                    ranges[i].suffix
+                                );
+                            }
+                        }
+                        return n;
+                    }
+                    return formatNumber(value);
+                },
+            },
+        };
+        if (
+            !this.multipleVerticalLeftAxes ||
+            !this.multipleVerticalLeftAxes?.length
+        ) {
+            yAxes.push(leftAxesTemplate);
+            yAxes.push(rightAxesTemplate);
+        } else {
+            yAxes = this.multipleVerticalLeftAxes?.map((value) => {
+                const updatedAxe = JSON.parse(JSON.stringify(leftAxesTemplate));
+                updatedAxe.ticks.max = value + 0.1 * value;
+              
+                return updatedAxe;
+              });
+              
+              yAxes.push(rightAxesTemplate);
+        }
+
+        return yAxes;
     }
 }

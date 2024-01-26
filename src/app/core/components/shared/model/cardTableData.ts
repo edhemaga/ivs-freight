@@ -123,6 +123,8 @@ export interface SendDataCard {
 }
 
 export interface CardDetails {
+    truckCount?: number;
+    trailerCount?: number;
     descriptionItems?: string[];
     id?: number;
     type?: Type;
@@ -176,6 +178,7 @@ export interface CardDetails {
     lastDeliveryTime?: LastDeliveryTime;
     currentLocation?: CurrentLocation;
     nextStop?: NextStop;
+    trucks?: string[];
     completedPercentage?: number;
     pendingPercentage?: number;
     closedPercentage?: number;

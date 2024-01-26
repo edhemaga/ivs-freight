@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaUploadDropzoneComponent } from './ta-upload-dropzone/ta-upload-dropzone.component';
+import { FileEvent } from 'src/app/core/model/file-event.model';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -61,17 +62,8 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() dropzoneFocus: boolean = false;
     @Input() onlyOneTagFile: boolean = false;
 
-    @Output() onFileEvent: EventEmitter<{
-        files: UploadFile[] | UploadFile | any;
-        action: string;
-        deleteId?: number;
-        index?: number;
-    }> = new EventEmitter<{
-        files: UploadFile[] | UploadFile | any;
-        action: string;
-        deleteId?: number;
-        index?: number;
-    }>(null);
+    @Output() onFileEvent: EventEmitter<FileEvent> =
+        new EventEmitter<FileEvent>(null);
 
     // Review
     @Input() isReview: boolean;

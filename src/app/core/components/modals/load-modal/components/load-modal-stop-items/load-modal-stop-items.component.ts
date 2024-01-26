@@ -23,26 +23,27 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 // validations
-import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
-import { LoadStopItemsConstants } from '../state/utils/constants/load-stop-items.constants';
+import { LoadStopItemsConstants } from '../../state/utils/constants/load-stop-items.constants';
 
 // enums
-import { ConstantStringEnum } from '../state/enums/load-stop-items.enum';
+import { ConstantStringEnum } from '../../state/enums/load-modal-stop-items.enum';
 
-// models
-import { DropdownListItem } from '../state/models/load-stop-items-model/dropdown-list-item.model';
-import { StopItemsData } from '../state/models/load-stop-items-model/load-stop-items-data.model';
+// model
+import { StopItemsData } from '../../state/models/load-modal-stop-items-model/load-stop-items-data.model';
+import { StopItemDropdownLists } from '../../state/models/load-modal-stop-items-model/load-stop-item-dropdowns.model';
+import { EnumValue } from 'appcoretruckassist';
 
 @Component({
-    selector: 'app-load-stop-items',
-    templateUrl: './load-stop-items.component.html',
-    styleUrls: ['./load-stop-items.component.scss'],
+    selector: 'app-load-modal-stop-items',
+    templateUrl: './load-modal-stop-items.component.html',
+    styleUrls: ['./load-modal-stop-items.component.scss'],
     standalone: true,
     imports: [
         // modules
@@ -55,36 +56,33 @@ import { StopItemsData } from '../state/models/load-stop-items-model/load-stop-i
         TaInputDropdownComponent,
     ],
 })
-export class LoadStopItemsComponent implements OnInit, OnChanges, OnDestroy {
+export class LoadModalStopItemsComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() createNewStopItemsRow: boolean = false;
     @Input() stopItemsData: StopItemsData[] = [];
+    @Input() stopItemDropdownLists: StopItemDropdownLists;
 
     @Output() stopItemsDataValueEmitter = new EventEmitter<StopItemsData[]>();
     @Output() stopItemsValidStatusEmitter = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
-    public stopItemHeaders: string[] = [];
+    public stopItemHeaders: string[] = LoadStopItemsConstants.STOP_ITEM_HEADERS;
 
     public stopItemsForm: UntypedFormGroup;
 
     public isInputHoverRows: boolean[][] = [];
 
     // dropdowns
-    public quantityDropdownList: DropdownListItem[] = [];
-    public stackDropdownList: DropdownListItem[] = [];
-    public secureDropdownList: DropdownListItem[] = [];
-
-    public selectedQuantity: DropdownListItem[] = [];
-    public selectedStack: DropdownListItem[] = [];
-    public selectedSecure: DropdownListItem[] = [];
+    public selectedQuantity: EnumValue[] = [];
+    public selectedStack: EnumValue[] = [];
+    public selectedSecure: EnumValue[] = [];
 
     constructor(private formBuilder: UntypedFormBuilder) {}
 
     ngOnInit(): void {
         this.createForm();
-
-        this.getConstantData();
 
         this.checkForInputChanges();
     }
@@ -94,6 +92,7 @@ export class LoadStopItemsComponent implements OnInit, OnChanges, OnDestroy {
             this.updateStopItems(changes.stopItemsData.currentValue);
 
         if (
+            changes.createNewStopItemsRow &&
             !changes.createNewStopItemsRow.firstChange &&
             changes.createNewStopItemsRow.currentValue
         ) {
@@ -112,7 +111,7 @@ export class LoadStopItemsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public handleInputSelect(
-        dropdownListItem: DropdownListItem,
+        dropdownListItem: EnumValue,
         action: string,
         stopItemsRowId: number
     ): void {
@@ -152,15 +151,6 @@ export class LoadStopItemsComponent implements OnInit, OnChanges, OnDestroy {
         return this.stopItemsForm.get(
             ConstantStringEnum.STOP_ITEMS
         ) as UntypedFormArray;
-    }
-
-    private getConstantData(): void {
-        this.stopItemHeaders = LoadStopItemsConstants.STOP_ITEM_HEADERS;
-
-        this.quantityDropdownList =
-            LoadStopItemsConstants.QUANTITY_DROPDOWN_LIST;
-        this.stackDropdownList = LoadStopItemsConstants.STACK_DROPDOWN_LIST;
-        this.secureDropdownList = LoadStopItemsConstants.SECURE_DROPDOWN_LIST;
     }
 
     private getStopItemsDataValue(): void {

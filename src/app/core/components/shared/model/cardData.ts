@@ -71,6 +71,7 @@ export interface TableOptionsInterface {
     toolbarActions: {
         showRepairOrderFilter?: boolean;
         showMoneyFilter?: boolean;
+        hideActivationButton?: boolean;
         showLocationFilter?: boolean;
         showStateFilter?: boolean;
         showBrokerFilterClosed?: boolean;
