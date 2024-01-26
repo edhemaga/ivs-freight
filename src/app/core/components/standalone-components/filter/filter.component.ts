@@ -6,10 +6,7 @@ import {
     OnInit,
     ViewEncapsulation,
     ViewChild,
-    ElementRef,
-    ChangeDetectorRef,
     QueryList,
-    AfterViewInit,
     EventEmitter,
     Output,
 } from '@angular/core';
@@ -17,1393 +14,101 @@ import {
     FormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
+    ReactiveFormsModule,
 } from '@angular/forms';
+
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import {
-    animate,
-    style,
-    transition,
-    trigger,
-    state,
-    keyframes,
-} from '@angular/animations';
-import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { CommonModule } from '@angular/common';
+
+// pipes
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
+
+// validators
+import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
-import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
 import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FilterStateService } from './state/filter-state.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 
+// services
+import { FilterStateService } from './state/filter-state.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// constants
+import { DirectiveConstants } from './state/constants/filter.constants';
+import { filterConfig } from './state/constants/filter_config.constants';
+
+// animations
+import {
+    area_left_side_animation,
+    area_right_side_animation,
+    close_form,
+    in_out_animation,
+    show_animation,
+    state_header,
+} from './state/animations/filter.animation';
+
+// models
+import { ArrayStatus } from './state/model/filter.models';
 @Component({
     selector: 'app-filter',
     standalone: true,
     imports: [
+        // modules
         CommonModule,
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
+        NgbModule,
+        NgxSliderModule,
+
+        // compoenents
         AutoclosePopoverComponent,
         AppTooltipComponent,
-        TaSvgPipe,
         ProfileImagesComponent,
         TaInputComponent,
         InputAddressDropdownComponent,
         TaNgxSliderComponent,
-        NgbModule,
         AutoclosePopoverComponent,
         TaTabSwitchComponent,
-        NgxSliderModule,
+
+        // pipes
+        TaSvgPipe,
     ],
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
     providers: [NgbDropdownConfig, TaThousandSeparatorPipe, TaSvgPipe],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        trigger('closeForm', [
-            state(
-                'true',
-                style({
-                    height: '*',
-                    //overflow: 'visible',
-                    opacity: 1,
-                })
-            ),
-            state(
-                'false',
-                style({
-                    height: '0px',
-                    //overflow: 'hidden',
-                    'margin-top': '0px',
-                    opacity: 0,
-                })
-            ),
-            state(
-                'null',
-                style({
-                    height: '*',
-                })
-            ),
-            transition('false <=> true', [animate('0.1s linear')]),
-            transition('true <=> false', [animate('0.1s ease-in-out')]),
-        ]),
-        trigger('inOutAnimation', [
-            state('in', style({ opacity: 1, scale: 1, height: '28px' })),
-            transition(':enter', [
-                animate(
-                    150,
-                    keyframes([
-                        style({
-                            opacity: 0,
-                            offset: 0,
-                            scale: 0.6,
-                            height: '0px',
-                        }),
-                        style({
-                            opacity: 0.25,
-                            offset: 0.25,
-                            scale: 0.7,
-                            height: '10px',
-                        }),
-                        style({
-                            opacity: 0.5,
-                            offset: 0.5,
-                            scale: 0.8,
-                            height: '15px',
-                        }),
-                        style({
-                            opacity: 0.75,
-                            offset: 0.75,
-                            scale: 0.9,
-                            height: '20px',
-                        }),
-                        style({
-                            opacity: 1,
-                            offset: 1,
-                            scale: 1,
-                            height: '28px',
-                        }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    150,
-                    keyframes([
-                        style({
-                            opacity: 1,
-                            offset: 0,
-                            scale: 1,
-                            height: '28px',
-                        }),
-                        style({
-                            opacity: 1,
-                            offset: 0.25,
-                            scale: 0.9,
-                            height: '20px',
-                        }),
-                        style({
-                            opacity: 0.75,
-                            offset: 0.5,
-                            scale: 0.8,
-                            height: '15px',
-                        }),
-                        style({
-                            opacity: 0.25,
-                            offset: 0.75,
-                            scale: 0.7,
-                            height: '10px',
-                        }),
-                        style({
-                            opacity: 0,
-                            offset: 1,
-                            scale: 0.6,
-                            height: '0px',
-                        }),
-                    ])
-                ),
-            ]),
-        ]),
-        trigger('stateHeader', [
-            state('in', style({ opacity: 1, height: '*' })),
-            transition(':enter', [
-                animate(
-                    150,
-                    keyframes([
-                        style({ opacity: 0, offset: 0, height: '0px' }),
-                        style({ opacity: 1, offset: 1, height: '*' }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    150,
-                    keyframes([
-                        style({ opacity: 1, offset: 0 }),
-                        style({ opacity: 0, offset: 1, height: '0px' }),
-                    ])
-                ),
-            ]),
-        ]),
-        trigger('showAnimation', [
-            state(
-                'true',
-                style({
-                    height: '*',
-                    overflow: 'visible',
-                    opacity: 1,
-                })
-            ),
-            state(
-                'false',
-                style({
-                    height: '10px',
-                    overflow: 'hidden',
-                    opacity: '0.5',
-                })
-            ),
-            state(
-                'null',
-                style({
-                    height: '10px',
-                    overflow: 'hidden',
-                    opacity: '0.5',
-                })
-            ),
-            transition('false => true', [
-                animate('150ms cubic-bezier(0, 0, 0.60, 1.99)'),
-            ]),
-            transition('true => false', [animate('150ms ease')]),
-        ]),
-        trigger('areaRightSideAnimation', [
-            state('in', style({ width: '100%', position: 'relative' })),
-            transition(':enter', [
-                animate(
-                    200,
-                    keyframes([
-                        style({
-                            width: '0%',
-                            right: '0px',
-                            //overflow: 'hidden',
-                        }),
-                        style({
-                            width: '100%',
-                            right: '0px',
-                            //overflow: 'hidden'
-                        }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    200,
-                    keyframes([
-                        style({
-                            width: '100%',
-                            right: '0px',
-                            //overflow: 'hidden'
-                        }),
-                        style({
-                            width: '0%',
-                            right: '0px',
-                            //overflow: 'hidden',
-                        }),
-                    ])
-                ),
-            ]),
-        ]),
-        trigger('areaLeftSideAnimation', [
-            state('in', style({ width: '100%', position: 'relative' })),
-            transition(':enter', [
-                animate(
-                    200,
-                    keyframes([
-                        style({
-                            width: '0%',
-                            position: 'relative',
-                            left: '0px',
-                            //overflow: 'hidden',
-                        }),
-                        style({
-                            width: '100%',
-                            left: '0px',
-                            //overflow: 'hidden'
-                        }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    200,
-                    keyframes([
-                        style({
-                            width: '100%',
-                            left: '0px',
-                            //overflow: 'hidden'
-                        }),
-                        style({
-                            width: '0%',
-                            left: '0px',
-                            //overflow: 'hidden',
-                        }),
-                    ])
-                ),
-            ]),
-        ]),
+        close_form('closeForm'),
+        in_out_animation('inOutAnimation'),
+        state_header('stateHeader'),
+        show_animation('showAnimation'),
+        area_right_side_animation('areaRightSideAnimation'),
+        area_left_side_animation('areaLeftSideAnimation'),
     ],
 })
-export class FilterComponent implements OnInit, AfterViewInit {
-    public hoverFilter: boolean = false;
-    private destroy$ = new Subject<void>();
-    autoCloseComponent: QueryList<AutoclosePopoverComponent>;
-
-    @ViewChild(AutoclosePopoverComponent)
-    autoClose: AutoclosePopoverComponent;
-
+export class FilterComponent implements OnInit {
     @ViewChild('t2') t2: any;
     @ViewChild('mainFilter') mainFilter: any;
-
-    labelArray: any[] = [
-        {
-            id: 1,
-            name: 'Test test test',
-            color: '#ff0000',
-        },
-        {
-            id: 2,
-            name: 'Test asdadasd',
-            color: '#ff1234',
-        },
-        {
-            id: 3,
-            name: 'Test dddd eeee',
-            color: '#ff4442',
-        },
-        {
-            id: 4,
-            name: 'Test ttttt tttttt',
-            color: '#ff5858',
-        },
-    ];
-
-    unselectedUser: any[] = [
-        {
-            name: 'Aleksandar Djordjevic',
-            id: 1,
-            avatar: 'https://www.gradprijepolje.com/wp-content/uploads/2021/09/Divac.jpg',
-        },
-        {
-            name: 'Denis Rodman',
-            id: 2,
-        },
-        {
-            name: 'Eric Halpert',
-            id: 3,
-        },
-        {
-            name: 'Jacob Forman',
-            id: 4,
-        },
-        {
-            name: 'James Robertson',
-            id: 5,
-        },
-        {
-            name: 'Kevin Malone',
-            id: 6,
-        },
-        {
-            name: 'Michael Tollbert',
-            id: 7,
-        },
-        {
-            name: 'Michael Rodman',
-            id: 8,
-        },
-        {
-            name: 'James Halpert',
-            id: 9,
-        },
-        {
-            name: 'Anna Beasley',
-            id: 10,
-        },
-        {
-            name: 'Denis Halpert',
-            id: 11,
-        },
-        {
-            name: 'Eric James',
-            id: 12,
-        },
-        {
-            name: 'Michael Forman',
-            id: 13,
-        },
-        {
-            name: 'James Lopez',
-            id: 14,
-        },
-    ];
-
-    selectedUser: any[] = [];
-
-    unselectedDispatcher: any[] = [
-        {
-            name: 'Angelo Trotter',
-        },
-        {
-            name: 'Aleksandra Djordjevic',
-        },
-        {
-            name: 'Alex Midleman',
-        },
-        {
-            name: 'Ban Dover',
-        },
-        {
-            name: 'Carlos Huanito',
-        },
-        {
-            name: 'Chirs Griffin',
-        },
-        {
-            name: 'Eric Forman',
-        },
-        {
-            name: 'Glan Danzig',
-        },
-        {
-            name: 'Denis Rodman',
-        },
-        {
-            name: 'Michael Scott',
-        },
-        {
-            name: 'Marko Martinovic',
-        },
-    ];
-
-    departmentArray: any[] = [
-        {
-            name: 'Accounting',
-            id: 1,
-        },
-        {
-            name: 'Dispatch',
-            id: 2,
-        },
-        {
-            name: 'Recruitment',
-            id: 3,
-        },
-        {
-            name: 'Repair',
-            id: 4,
-        },
-        {
-            name: 'Safety',
-            id: 5,
-        },
-        {
-            name: 'Other',
-            id: 6,
-        },
-    ];
-
-    pendingStatusArray: any[] = [
-        {
-            id: 1,
-            name: 'BOOKED',
-            color: '#C1C1C1',
-        },
-        {
-            id: 2,
-            name: 'UNASSIGNED',
-            color: '#C1C1C1',
-        },
-        {
-            id: 3,
-            name: 'ASSIGNED',
-            color: '#9F9F9F',
-        },
-    ];
-
-    activeStatusArray: any[] = [
-        {
-            id: 1,
-            name: 'LOADED',
-            color: '#74BF97',
-        },
-        {
-            id: 2,
-            name: 'DISPATCHED',
-            color: '#7FA2E6',
-        },
-    ];
-
-    closedStatusArray: any[] = [
-        {
-            id: 1,
-            name: 'CANCELED',
-            color: '#E27579',
-        },
-        {
-            id: 2,
-            name: 'CANCELED - LOADED',
-            color: '#E27579',
-        },
-        {
-            id: 3,
-            name: 'DELIVERED',
-            color: '#FFCB86',
-        },
-        {
-            id: 4,
-            name: 'HOLD',
-            color: '#D6D6D6',
-        },
-        {
-            id: 5,
-            name: 'HOLD - INVOICED',
-            color: '#D6D6D6',
-        },
-        {
-            id: 6,
-            name: 'INVOICED',
-            color: '#D2CBA6',
-        },
-        {
-            id: 7,
-            name: 'PAID',
-            color: '#BCB8A2',
-        },
-        {
-            id: 8,
-            name: 'SHORT-PAID',
-            color: '#A6A293',
-        },
-    ];
-
-    pmFilterArray: any[] = [
-        {
-            id: 1,
-            name: 'Engine Oil & Filter',
-            icon: 'assets/svg/common/repair-pm/ic_oil_pump.svg',
-        },
-        {
-            id: 2,
-            name: 'Air Filter',
-            icon: 'assets/svg/common/repair-pm/ic_air_filter.svg',
-        },
-        {
-            id: 3,
-            name: 'Belts',
-            icon: 'assets/svg/common/repair-pm/ic_fuel_pump.svg',
-        },
-        {
-            id: 4,
-            name: 'Transmission Fluid',
-            icon: 'assets/svg/common/repair-pm/ic_air_compressor.svg',
-        },
-        {
-            id: 5,
-            name: 'Engine Tune-Up',
-            icon: 'assets/svg/common/repair-pm/ic_ac_compressor.svg',
-        },
-        {
-            id: 6,
-            name: 'Alignment',
-            icon: 'assets/svg/common/repair-pm/ic_alignment.svg',
-        },
-        {
-            id: 7,
-            name: 'Battery',
-            icon: 'assets/svg/common/repair-pm/ic_battery.svg',
-        },
-        {
-            id: 8,
-            name: 'Brake Chamber',
-            icon: 'assets/svg/common/repair-pm/ic_brake_filter.svg',
-        },
-        {
-            id: 9,
-            name: 'Engine Oil & Filter',
-            icon: 'assets/svg/common/repair-pm/ic_oil_pump.svg',
-        },
-    ];
-
-    categoryFuelArray: any[] = [
-        {
-            name: 'Diesel',
-            id: 1,
-        },
-        {
-            name: 'Reefer',
-            id: 2,
-        },
-        {
-            name: 'DEF',
-            id: 3,
-        },
-        {
-            name: 'Scale Ticket',
-            id: 4,
-        },
-        {
-            name: 'Oil',
-            id: 5,
-        },
-        {
-            name: 'Truckwash',
-            id: 6,
-        },
-        {
-            name: 'Parking',
-            id: 7,
-        },
-        {
-            name: 'Other',
-            id: 8,
-        },
-    ];
-
-    categoryRepairArray: any[] = [
-        {
-            id: 1,
-            name: 'Mobile',
-            icon: 'assets/svg/common/repair-services/ic_mobile.svg',
-        },
-        {
-            id: 2,
-            name: 'Shop',
-            icon: 'assets/svg/common/repair-services/ic_shop.svg',
-            activeIcon: 'assets/svg/common/ic_shop_cart.svg',
-        },
-        {
-            id: 3,
-            name: 'Towing',
-            icon: 'assets/svg/common/ic_towing.svg',
-        },
-        {
-            id: 4,
-            name: 'Parts',
-            icon: 'assets/svg/common/repair-services/ic_parts.svg',
-        },
-        {
-            id: 5,
-            name: 'Tire',
-            icon: 'assets/svg/common/repair-services/ic_tire.svg',
-        },
-        {
-            id: 6,
-            name: 'Dealer',
-            icon: 'assets/svg/common/repair-services/ic_dealer.svg',
-        },
-    ];
-
-    truckArray: any[] = [
-        {
-            id: 1,
-            name: '12345',
-        },
-        {
-            id: 2,
-            name: '231C1',
-        },
-        {
-            id: 3,
-            name: '111A2',
-        },
-        {
-            id: 4,
-            name: '245A5',
-        },
-        {
-            id: 5,
-            name: '5AC21',
-        },
-        {
-            id: 6,
-            name: '44A56',
-        },
-        {
-            id: 7,
-            name: '625C1',
-        },
-        {
-            id: 8,
-            name: '441C1',
-        },
-        {
-            id: 9,
-            name: '1231C',
-        },
-    ];
-
-    trailerArray: any[] = [
-        {
-            id: 1,
-            name: 'TRAILER',
-        },
-        {
-            id: 2,
-            name: 'TRAILER1',
-        },
-        {
-            id: 3,
-            name: 'TRAILER2',
-        },
-        {
-            id: 4,
-            name: 'TRAILER2',
-        },
-        {
-            id: 5,
-            name: 'TRAILER3',
-        },
-        {
-            id: 6,
-            name: 'TRAILER4',
-        },
-        {
-            id: 7,
-            name: 'TRAILER',
-        },
-        {
-            id: 8,
-            name: 'TRAILER',
-        },
-        {
-            id: 9,
-            name: 'TRAILER',
-        },
-    ];
-
-    fuelStopArray: any[] = [
-        {
-            id: 1,
-            name: '7-11 Store',
-        },
-        {
-            id: 2,
-            name: 'Pilot Travel Stop',
-        },
-        {
-            id: 3,
-            name: 'RR HICKORY HILLS',
-        },
-        {
-            id: 4,
-            name: 'Sheetz',
-        },
-        {
-            id: 5,
-            name: 'QUIK TRIP',
-        },
-        {
-            id: 6,
-            name: 'Corner Store Gas',
-        },
-        {
-            id: 7,
-            name: 'Fuel Proposition',
-        },
-        {
-            id: 8,
-            name: 'Behemoth Gas Station',
-        },
-    ];
-
-    brokerArray: any[] = [
-        {
-            id: 1,
-            name: 'R2 Logistics',
-        },
-        {
-            id: 2,
-            name: 'Webiz Conference',
-        },
-        {
-            id: 3,
-            name: 'Anthym Logistics, LLC',
-        },
-        {
-            id: 4,
-            name: 'LOGY Supply chain',
-        },
-        {
-            id: 5,
-            name: 'Everyone on time safelyaaaasdasd asdsad asdadaaa',
-        },
-        {
-            id: 6,
-            name: 'R2 Logistics',
-        },
-        {
-            id: 7,
-            name: 'LOGY Supply chain',
-        },
-        {
-            id: 8,
-            name: 'LOGY Supply chain 2',
-        },
-    ];
-
-    driverArray: any[] = [
-        {
-            id: 1,
-            name: 'Angelo Trotter',
-            image: '',
-        },
-        {
-            id: 2,
-            name: 'Aleksandra Djordjevic',
-            image: '',
-        },
-        {
-            id: 3,
-            name: 'Alex Midleman',
-            image: '',
-        },
-        {
-            id: 4,
-            name: 'Ben Dover',
-            image: '',
-        },
-        {
-            id: 5,
-            name: 'Carlos Huanito',
-            image: '',
-        },
-        {
-            id: 6,
-            name: 'Chirs Griffin',
-            image: '',
-        },
-        {
-            id: 7,
-            name: 'Erica Forman',
-            image: '',
-        },
-        {
-            id: 8,
-            name: 'Glan Danzig',
-            image: '',
-        },
-    ];
-
-    truckTypeArray: any[] = [
-        {
-            id: 1,
-            name: 'Semi Truck',
-            icon: 'assets/svg/common/trucks/ic_truck_semi-truck.svg',
-        },
-        {
-            id: 2,
-            name: 'Semi Sleeper',
-            icon: 'assets/svg/common/trucks/ic_truck_semi-wSleeper.svg',
-        },
-        {
-            id: 3,
-            name: 'Box Truck',
-            icon: 'assets/svg/common/trucks/ic_truck_box-truck.svg',
-        },
-        {
-            id: 4,
-            name: 'Cargo Van',
-            icon: 'assets/svg/common/trucks/ic_truck_cargo-van.svg',
-        },
-        {
-            id: 5,
-            name: 'Tow Truck',
-            icon: 'assets/svg/common/trucks/ic_truck_tow-truck.svg',
-        },
-        {
-            id: 6,
-            name: 'Car Hauler',
-            icon: 'assets/svg/common/trucks/ic_truck_car-hauler.svg',
-        },
-        {
-            id: 7,
-            name: 'Spotter',
-            icon: 'assets/svg/common/trucks/ic_truck_spotter.svg',
-        },
-    ];
-
-    trailerTypeArray: any[] = [
-        {
-            id: 1,
-            name: 'Reefer',
-            icon: 'assets/svg/common/trailers/ic_trailer_reefer.svg',
-        },
-        {
-            id: 2,
-            name: 'Dry Van',
-            icon: 'assets/svg/common/trailers/ic_trailer_dryvan.svg',
-        },
-        {
-            id: 3,
-            name: 'Side Kit',
-            icon: 'assets/svg/common/trailers/ic_trailer_side-kit.svg',
-        },
-        {
-            id: 4,
-            name: 'Conestoga',
-            icon: 'assets/svg/common/trailers/ic_trailer_conestoga.svg',
-        },
-        {
-            id: 5,
-            name: 'Dumper',
-            icon: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
-        },
-        {
-            id: 6,
-            name: 'Container',
-            icon: 'assets/svg/common/trailers/ic_trailer_container.svg',
-        },
-        {
-            id: 7,
-            name: 'Tanker',
-            icon: 'assets/svg/common/trailers/ic_trailer_tanker-liquid.svg',
-        },
-        {
-            id: 8,
-            name: 'Car Hauler',
-            icon: 'assets/svg/common/trailers/ic_trailer_carhauler.svg',
-        },
-        {
-            id: 9,
-            name: 'Flat Bed',
-            icon: 'assets/svg/common/trailers/ic_trailer_flatbed.svg',
-        },
-        {
-            id: 10,
-            name: 'Low Boy/RGN',
-            icon: 'assets/svg/common/trailers/ic_trailer_low-boy.svg',
-        },
-        {
-            id: 11,
-            name: 'Chassis',
-            icon: 'assets/svg/common/trailers/ic_trailer_chassis.svg',
-        },
-        {
-            id: 12,
-            name: 'Step Deck',
-            icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
-        },
-    ];
-
-    usaStates: any[] = [
-        {
-            id: 1,
-            name: 'Alabama',
-            short: 'AL',
-        },
-        {
-            id: 2,
-            name: 'Alaska',
-            short: 'AK',
-        },
-        {
-            id: 3,
-            name: 'American Samoa',
-            short: 'AS',
-        },
-        {
-            id: 4,
-            name: 'Arizona',
-            short: 'AZ',
-        },
-        {
-            id: 5,
-            name: 'Arkansas',
-            short: 'AR',
-        },
-        {
-            id: 6,
-            name: 'California',
-            short: 'CA',
-        },
-        {
-            id: 7,
-            name: 'Colorado',
-            short: 'CO',
-        },
-        {
-            id: 8,
-            name: 'Connecticut',
-            short: 'CT',
-        },
-        {
-            id: 9,
-            name: 'Delaware',
-            short: 'DE',
-        },
-        {
-            id: 10,
-            name: 'District Of Columbia',
-            short: 'DC',
-        },
-        {
-            id: 11,
-            name: 'Federated States Of Micronesia',
-            short: 'FM',
-        },
-        {
-            id: 12,
-            name: 'Florida',
-            short: 'FL',
-        },
-        {
-            id: 13,
-            name: 'Georgia',
-            short: 'GA',
-        },
-        {
-            id: 14,
-            name: 'Guam',
-            short: 'GU',
-        },
-        {
-            id: 15,
-            name: 'Hawaii',
-            short: 'HI',
-        },
-
-        {
-            id: 16,
-            name: 'Idaho',
-            short: 'ID',
-        },
-        {
-            id: 17,
-            name: 'Illinois',
-            short: 'IL',
-        },
-        {
-            id: 18,
-            name: 'Indiana',
-            short: 'IN',
-        },
-        {
-            id: 19,
-            name: 'Iowa',
-            short: 'IA',
-        },
-        {
-            id: 20,
-            name: 'Kansas',
-            short: 'KS',
-        },
-        {
-            id: 21,
-            name: 'Kentucky',
-            short: 'KY',
-        },
-        {
-            id: 22,
-            name: 'Louisiana',
-            short: 'LA',
-        },
-        {
-            id: 23,
-            name: 'Maine',
-            short: 'ME',
-        },
-        {
-            id: 24,
-            name: 'Marshall Islands',
-            short: 'MH',
-        },
-        {
-            id: 25,
-            name: 'Maryland',
-            short: 'MD',
-        },
-        {
-            id: 26,
-            name: 'Massachusetts',
-            short: 'MA',
-        },
-        {
-            id: 27,
-            name: 'Michigan',
-            short: 'MI',
-        },
-        {
-            id: 28,
-            name: 'Minnesota',
-            short: 'MN',
-        },
-        {
-            id: 29,
-            name: 'Mississippi',
-            short: 'MS',
-        },
-        {
-            id: 30,
-            name: 'Missouri',
-            short: 'MO',
-        },
-        {
-            id: 31,
-            name: 'Montana',
-            short: 'MT',
-        },
-        {
-            id: 32,
-            name: 'Nebraska',
-            short: 'NE',
-        },
-        {
-            id: 33,
-            name: 'Nevada',
-            short: 'NV',
-        },
-        {
-            id: 34,
-            name: 'New Hampshire',
-            short: 'NH',
-        },
-        {
-            id: 35,
-            name: 'New Jersey',
-            short: 'NJ',
-        },
-        {
-            id: 36,
-            name: 'New Mexico',
-            short: 'NM',
-        },
-        {
-            id: 37,
-            name: 'New York',
-            short: 'NY',
-        },
-        {
-            id: 38,
-            name: 'North Carolina',
-            short: 'NC',
-        },
-        {
-            id: 39,
-            name: 'North Dakota',
-            short: 'ND',
-        },
-        {
-            id: 40,
-            name: 'Mississippi',
-            short: 'MS',
-        },
-        {
-            id: 41,
-            name: 'Northern Mariana Islands',
-            short: 'MP',
-        },
-        {
-            id: 42,
-            name: 'Ohio',
-            short: 'OH',
-        },
-        {
-            id: 43,
-            name: 'Oklahoma',
-            short: 'OK',
-        },
-        {
-            id: 44,
-            name: 'Oregon',
-            short: 'OR',
-        },
-        {
-            id: 45,
-            name: 'Palau',
-            short: 'PW',
-        },
-        {
-            id: 46,
-            name: 'Pennsylvania',
-            short: 'PA',
-        },
-        {
-            id: 47,
-            name: 'Puerto Rico',
-            short: 'PR',
-        },
-        {
-            id: 48,
-            name: 'Rhode Island',
-            short: 'RI',
-        },
-        {
-            id: 49,
-            name: 'South Carolina',
-            short: 'SC',
-        },
-        {
-            id: 50,
-            name: 'South Dakota',
-            short: 'SD',
-        },
-        {
-            id: 51,
-            name: 'Tennessee',
-            short: 'TN',
-        },
-        {
-            id: 52,
-            name: 'Texas',
-            short: 'TX',
-        },
-        {
-            id: 53,
-            name: 'Utah',
-            short: 'UT',
-        },
-        {
-            id: 54,
-            name: 'Vermont',
-            short: 'VT',
-        },
-        {
-            id: 55,
-            name: 'Virgin Islands',
-            short: 'VI',
-        },
-        {
-            id: 56,
-            name: 'Virginia',
-            short: 'VA',
-        },
-        {
-            id: 57,
-            name: 'Washington',
-            short: 'WA',
-        },
-        {
-            id: 58,
-            name: 'West Virginia',
-            short: 'WV',
-        },
-        {
-            id: 59,
-            name: 'Wisconsin',
-            short: 'WI',
-        },
-        {
-            id: 60,
-            name: 'Wyoming',
-            short: 'WY',
-        },
-    ];
-
-    canadaStates: any[] = [
-        {
-            id: 1,
-            name: 'British Columbia',
-            short: 'BC',
-        },
-        {
-            id: 2,
-            name: 'State 1',
-            short: 'S1',
-        },
-        {
-            id: 3,
-            name: 'STATE 2',
-            short: 'S2',
-        },
-    ];
-
-    selectedDispatcher: any[] = [];
-    selectedTimeValue: any = '';
-    expandSearch: boolean = false;
-    searchInputValue: any = '';
-    showPart1: any = true;
-    showPart2: any = true;
-    showPart3: any = true;
-    public searchForm!: UntypedFormGroup;
-    public moneyForm!: UntypedFormGroup;
-    public locationForm!: UntypedFormGroup;
-    public payForm!: UntypedFormGroup;
-    public sliderForm!: UntypedFormGroup;
-    public rangeForm!: UntypedFormGroup;
-    public areaForm!: UntypedFormGroup;
-
-    rangeValue: any = 0;
-    usaSelectedStates: any[] = [];
-    canadaSelectedStates: any[] = [];
-    locationState: any = '';
-    originState: any = '';
-    destinationState: any = '';
-    singleFormError: any = '';
-    multiFormFirstError: any = '';
-    multiFormSecondError: any = '';
-    multiFormThirdError: any = '';
-    moneyFilterStatus: any = false;
-    setButtonAvailable: boolean = false;
-    filterActiveArray: any[] = [];
-    filterUsaActiveArray: any[] = [];
-    filterCanadaActiveArray: any[] = [];
-    filterActiveTime: any = '';
-    swipeActiveRange: any = 0;
-    singleFromActive: any = 0;
-    singleToActive: any = 0;
-    multiFromFirstFromActive: any = 0;
-    multiFromFirstToActive: any = 0;
-    multiFormSecondFromActive: any = 0;
-    multiFormSecondToActive: any = 0;
-    multiFormThirdFromActive: any = 0;
-    multiFormThirdToActive: any = 0;
-    locationRange: any = 25;
-    hoverClose: any = false;
-    areaFilterSelected: any = 'Location';
-
-    public sliderData: Options = {
-        floor: 0,
-        ceil: 10,
-        step: 0,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
-
-    public locationSliderData: Options = {
-        floor: 25,
-        ceil: 500,
-        step: 5,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
-
-    public paySliderData: Options = {
-        floor: 0,
-        ceil: 20000,
-        step: 1,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-        noSwitching: true,
-        pushRange: true,
-        minRange: 2000,
-    };
-
-    public milesSliderData: Options = {
-        floor: 0,
-        ceil: 5000,
-        step: 1,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-        noSwitching: true,
-        pushRange: true,
-        minRange: 10,
-    };
-
-    minValueRange: any = '0';
-    maxValueRange: any = '5,000';
-
-    minValueSet: any = '0';
-    maxValueSet: any = '5,000';
-
-    minValueDragged: number = 0;
-    maxValueDragged: number = 20000;
-
-    rangeDiffNum: number = 0;
-
-    activeFilter: boolean = false;
-    longVal: any = 0;
-    latVal: any = 0;
-
-    originLongVal: any = 0;
-    originLatVal: any = 0;
-
-    destLongVal: any = 0;
-    destLatVal: any = 0;
-
-    longValueSet: any = 0;
-    latValSet: any = 0;
-
-    originLongValSet: any = 0;
-    originLatValSet: any = 0;
-
-    destLongValSet: any = 0;
-    destLatValSet: any = 0;
-
-    locationRangeSet: any = 25;
-    loactionNameSet: any = '';
-
-    activeFormNum: any = 0;
-    lastYear: any = '';
-    last2Years: any = '';
-    totalFiltersNum: any = 0;
-    singleFormActive: any = false;
-    sideAnimation: any = false;
-
-    areBoxTab: any[] = [
-        {
-            id: 1,
-            name: 'Location',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Route',
-        },
-    ];
+    @ViewChild(AutoclosePopoverComponent)
+    public hoverFilter: boolean = false;
 
     @Input() type: string = 'userFilter';
     @Input() icon: string = 'user';
     @Input() subType: string = 'pendingStatus';
     @Input() pmSubtype: string = '';
     @Input() searchState: boolean = false;
-    @Input() filterTitle: string = '';
+    @Input() filterTitle: any = '';
     @Input() defFilterHolder: boolean = false;
     @Input() noLeftIcon: boolean = false;
     @Input() leftSideIcon: boolean = false;
@@ -1419,56 +124,175 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     @Output() setFilter = new EventEmitter<any>();
 
-    resizeObserver: ResizeObserver;
+    private destroy$ = new Subject<void>();
+    public autoCloseComponent: QueryList<AutoclosePopoverComponent>;
 
-    isAnimated: any = false;
+    public autoClose: AutoclosePopoverComponent;
+
+    public labelArray: ArrayStatus[] = DirectiveConstants.LABEL_ARRAY;
+    public unselectedUser: ArrayStatus[] = DirectiveConstants.UNSELECTED_USER;
+    public selectedUser: ArrayStatus[] = [];
+    public unselectedDispatcher: ArrayStatus[] =
+        DirectiveConstants.UNSELECTED_DISPATCHER;
+    public departmentArray: ArrayStatus[] = DirectiveConstants.DEPARTMANT_ARRAY;
+    public pendingStatusArray: ArrayStatus[] =
+        DirectiveConstants.PENDING_STATUS_ARRAY;
+    public activeStatusArray: ArrayStatus[] =
+        DirectiveConstants.ACTIVE_STATUS_ARRAY;
+    public closedStatusArray: ArrayStatus[] =
+        DirectiveConstants.CLOSED_STATUS_ARRAY;
+    public pmFilterArray: ArrayStatus[] = DirectiveConstants.PM_FILTER_ARRAY;
+    public categoryFuelArray: ArrayStatus[] =
+        DirectiveConstants.CATEGORY_FUEL_ARRAY;
+    public categoryRepairArray: ArrayStatus[] =
+        DirectiveConstants.CATEGORY_REPAIR_ARRAY;
+    public truckArray: ArrayStatus[] = DirectiveConstants.TRUCK_ARRAY;
+    public trailerArray: ArrayStatus[] = DirectiveConstants.TRAILER_ARRAY;
+    public fuelStopArray: ArrayStatus[] = DirectiveConstants.FUEL_STOP_ARRAY;
+    public brokerArray: ArrayStatus[] = DirectiveConstants.BROKER_ARRAY;
+    public driverArray: ArrayStatus[] = DirectiveConstants.DRIVER_ARRAY;
+    public truckTypeArray: ArrayStatus[] = DirectiveConstants.TRUCK_TYPE_ARRAY;
+    public trailerTypeArray: ArrayStatus[] =
+        DirectiveConstants.TRAILER_TYPE_ARRAY;
+    public usaStates: ArrayStatus[] = DirectiveConstants.USA_STATES;
+    public canadaStates: ArrayStatus[] = DirectiveConstants.CANADA_STATES;
+
+    public selectedDispatcher: any[] = [];
+    public selectedTimeValue: any = '';
+    public expandSearch: boolean = false;
+    public searchInputValue: any = '';
+    public showPart1: any = true;
+    public showPart2: any = true;
+    public showPart3: any = true;
+    public searchForm!: UntypedFormGroup;
+    public moneyForm!: UntypedFormGroup;
+    public locationForm!: UntypedFormGroup;
+    public payForm!: UntypedFormGroup;
+    public sliderForm!: UntypedFormGroup;
+    public rangeForm!: UntypedFormGroup;
+    public areaForm!: UntypedFormGroup;
+
+    public rangeValue: number = 0;
+    public usaSelectedStates: any[] = [];
+    public canadaSelectedStates: any[] = [];
+    public locationState: string = '';
+    public originState: string = '';
+    public destinationState: string = '';
+    public singleFormError: any = '';
+    public multiFormFirstError: any = '';
+    public multiFormSecondError: any = '';
+    public multiFormThirdError: any = '';
+    public moneyFilterStatus: boolean = false;
+    public setButtonAvailable: boolean = false;
+    public filterActiveArray: any[] = [];
+    public filterUsaActiveArray: any[] = [];
+    public filterCanadaActiveArray: any[] = [];
+    public filterActiveTime: string = '';
+    public swipeActiveRange: number = 0;
+    public singleFromActive: number | string = 0;
+    public singleToActive: number | string = 0;
+    public multiFromFirstFromActive: number | string = 0;
+    public multiFromFirstToActive: number | string = 0;
+    public multiFormSecondFromActive: number | string = 0;
+    public multiFormSecondToActive: number | string = 0;
+    public multiFormThirdFromActive: any = 0;
+    public multiFormThirdToActive: any = 0;
+    public locationRange: number = 25;
+    public hoverClose: any = false;
+    public areaFilterSelected: any = 'Location';
+
+    public sliderData: Options = filterConfig.SLIDER_DATA;
+
+    public locationSliderData: Options = filterConfig.LOACTION_SLIDER_DATA;
+
+    public paySliderData: Options = filterConfig.PAY_SLIDER_DATA;
+
+    public milesSliderData: Options = filterConfig.MILES_SLIDER_DATA;
+
+    public minValueRange: string = '0';
+    public maxValueRange: string = '5,000';
+
+    public minValueSet: string = '0';
+    public maxValueSet: string = '5,000';
+
+    public minValueDragged: number = 0;
+    public maxValueDragged: number = 20000;
+
+    public rangeDiffNum: number = 0;
+
+    public activeFilter: boolean = false;
+    public longVal: number = 0;
+    public latVal: number = 0;
+
+    public originLongVal: number = 0;
+    public originLatVal: number = 0;
+
+    public destLongVal: number = 0;
+    public destLatVal: number = 0;
+
+    public longValueSet: number = 0;
+    public latValSet: number = 0;
+
+    public originLongValSet: number = 0;
+    public originLatValSet: number = 0;
+
+    public destLongValSet: number = 0;
+    public destLatValSet: number = 0;
+
+    public locationRangeSet: number = 25;
+    public loactionNameSet: string = '';
+
+    public activeFormNum: number = 0;
+    public lastYear: any = '';
+    public last2Years: any = '';
+    public totalFiltersNum: number = 0;
+    public singleFormActive: boolean = false;
+    public sideAnimation: boolean = false;
+
+    public areBoxTab: any[] = [
+        {
+            id: 1,
+            name: 'Location',
+            checked: true,
+        },
+        {
+            id: 2,
+            name: 'Route',
+        },
+    ];
+
+    public resizeObserver: ResizeObserver;
+
+    public isAnimated: any = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private elementRef: ElementRef,
-        private cdRef: ChangeDetectorRef,
         private filterService: FilterStateService,
         private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
-        if (this.type === 'truckTypeFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'trailerTypeFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'categoryRepairFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'categoryFuelFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'stateFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'departmentFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'userFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'pmFilter') {
-            this.getBackendData(this.type, this.pmSubtype);
-        } else if (this.type === 'truckFilter') {
-            this.getBackendData(this.type);
-        } else if (this.type === 'trailerFilter') {
-            this.getBackendData(this.type);
-        }
+        this.checkForType();
 
-        if (this.type == 'timeFilter') {
-            var d = new Date();
-            var pastYear = d.getFullYear() - 1;
-            var past2Year = d.getFullYear() - 2;
+        this.createForm();
 
-            this.lastYear = pastYear;
-            this.last2Years = past2Year;
-        }
+        this.timeAndPayFilter();
 
-        if (this.type == 'payFilter') {
-            this.maxValueRange = '20,000';
-            this.maxValueSet = '20,000';
-        }
+        this.watchLocationFormValueChanges();
 
+        this.watchAreaFormValueChanges();
+
+        this.watchRangeFormValueChanges();
+
+        this.watchMoneyFormValueChanges();
+
+        this.watchSearchFormValueChanges();
+
+        this.watchTableServiceValueChanges();
+    }
+
+    private createForm(): void {
         this.rangeForm = this.formBuilder.group({
             rangeFrom: '0',
             rangeTo: this.type == 'payFilter' ? '20,000' : '5,000',
@@ -1506,37 +330,53 @@ export class FilterComponent implements OnInit, AfterViewInit {
             payFrom: '',
             payTo: '',
         });
+    }
 
+    private watchLocationFormValueChanges(): void {
         this.locationForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
-                if (changes.address == null) {
-                    this.locationState = '';
-                }
+                if (!changes.address) this.locationState = '';
             });
+    }
 
+    private watchAreaFormValueChanges(): void {
         this.areaForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
-                if (changes.origin == null) {
-                    this.originState = '';
-                }
+                if (!changes.origin) this.originState = '';
 
-                if (changes.destination == null) {
-                    this.destinationState = '';
-                }
+                if (!changes.destination) this.destinationState = '';
             });
+    }
 
+    private timeAndPayFilter(): void {
+        if (this.type == 'timeFilter') {
+            let d = new Date();
+            let pastYear = d.getFullYear() - 1;
+            let past2Year = d.getFullYear() - 2;
+
+            this.lastYear = pastYear;
+            this.last2Years = past2Year;
+        }
+
+        if (this.type == 'payFilter') {
+            this.maxValueRange = '20,000';
+            this.maxValueSet = '20,000';
+        }
+    }
+
+    private watchRangeFormValueChanges(): void {
         this.rangeForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
                 if (changes) {
-                    var rangeFromNum = 0;
-                    var rangeToNum = parseInt(
+                    let rangeFromNum = 0;
+                    let rangeToNum = parseInt(
                         this.maxValueRange.replace(/,/g, ''),
                         10
                     );
-                    var maxRangeNum = parseInt(
+                    let maxRangeNum = parseInt(
                         this.maxValueRange.replace(/,/g, ''),
                         10
                     );
@@ -1582,7 +422,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         this.maxValueDragged - this.minValueDragged;
                 }
             });
+    }
 
+    private watchMoneyFormValueChanges(): void {
         this.moneyForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
@@ -1744,7 +586,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 if (this.moneyFilterStatus) {
                 }
             });
+    }
 
+    private watchSearchFormValueChanges(): void {
         this.searchForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
@@ -1935,7 +779,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     this.searchInputValue = '';
                 }
             });
+    }
 
+    private watchTableServiceValueChanges(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -2063,9 +909,51 @@ export class FilterComponent implements OnInit, AfterViewInit {
             });
     }
 
-    ngAfterViewInit(): void {}
+    public checkForType(): void {
+        switch (this.type) {
+            case 'truckTypeFilter':
+                this.getBackendData(this.type);
+                break;
 
-    addToSelectedUser(item, indx, subType?) {
+            case 'trailerTypeFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'categoryRepairFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'categoryFuelFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'stateFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'departmentFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'userFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'pmFilter':
+                this.getBackendData(this.type, this.pmSubtype);
+                break;
+
+            case 'truckFilter':
+                this.getBackendData(this.type);
+                break;
+
+            case 'trailerFilter':
+                this.getBackendData(this.type);
+                break;
+        }
+    }
+
+    public addToSelectedUser(item, indx, subType?): void {
         let mainArray: any[] = [];
         if (this.type == 'departmentFilter') {
             mainArray = this.departmentArray;
@@ -2123,7 +1011,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.checkFilterActiveValue();
     }
 
-    removeFromSelectedUser(item, indx, subType?) {
+    public removeFromSelectedUser(item, indx, subType?): void {
         this.selectedUser.splice(indx, 1);
 
         if (this.type == 'stateFilter') {
@@ -2251,19 +1139,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.checkFilterActiveValue();
     }
 
-    clearAll(e?, mod?) {
-        if (e) {
-            e.stopPropagation();
-        }
+    public clearAll(event?, mod?): void {
+        if (event) event.stopPropagation();
 
-        if (mod) {
-            this.hoverClose = false;
-        }
+        if (mod) this.hoverClose = false;
 
-        const element = e.target;
-        if (!element.classList.contains('active') && !mod) {
-            return false;
-        }
+        const element = event.target;
+        if (!element.classList.contains('active') && !mod) false;
 
         if (this.type == 'timeFilter') {
             this.selectedTimeValue = '';
@@ -2437,8 +1319,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    filterUser(e: any) {
-        const inputValue = e.target.value;
+    public filterUser(event: any): void {
+        const inputValue = event.target.value;
         this.unselectedUser.filter((item) => {
             item.hidden = true;
             if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
@@ -2448,7 +1330,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         });
     }
 
-    setTimeValue(mod) {
+    public setTimeValue(mod): void {
         if (this.selectedTimeValue == mod) {
             this.selectedTimeValue = '';
         } else {
@@ -2462,12 +1344,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    removeTimeValue(e) {
-        e.stopPropagation();
+    public removeTimeValue(event): void {
+        event.stopPropagation();
         this.selectedTimeValue = '';
     }
 
-    showSearch(mod?) {
+    public showSearch(mod?): void {
         let filterSearchHead = document.querySelector('.search-input-header');
         let filterTextHead = document.querySelector('.filter-text-part');
 
@@ -2488,7 +1370,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    hideFormPart(mod) {
+    public hideFormPart(mod): void {
         if (mod == 'part1') {
             this.showPart1 = !this.showPart1;
         } else if (mod == 'part2') {
@@ -2498,7 +1380,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    setRangeValue(mod) {
+    public setRangeValue(mod): void {
         if (this.type != 'locationFilter') {
             this.rangeValue = mod;
         } else {
@@ -2506,40 +1388,37 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    handleInputSelect(e) {
-        if (e?.address?.address) {
-            this.locationState = e.address.address;
+    public handleInputSelect(event): void {
+        if (event?.address?.address) {
+            this.locationState = event.address.address;
         }
 
-        if (e?.longLat) {
-            this.longVal = e?.longLat?.longitude;
-            this.latVal = e?.longLat?.latitude;
-        }
-    }
-
-    handleOriginSelect(e) {
-        if (e?.address?.address) {
-            this.originState = e.address.address;
-        }
-
-        if (e?.longLat && e?.longLat?.latitude) {
-            this.originLongVal = e?.longLat?.longitude;
-            this.originLatVal = e?.longLat?.latitude;
+        if (event?.longLat) {
+            this.longVal = event?.longLat?.longitude;
+            this.latVal = event?.longLat?.latitude;
         }
     }
 
-    handleDestinationSelect(e) {
-        if (e?.address?.address) {
-            this.destinationState = e.address.address;
-        }
+    public handleOriginSelect(event): void {
+        if (event?.address?.address) this.originState = event.address.address;
 
-        if (e?.longLat && e?.longLat?.latitude) {
-            this.destLongVal = e?.longLat?.longitude;
-            this.destLatVal = e?.longLat?.latitude;
+        if (event?.longLat && event?.longLat?.latitude) {
+            this.originLongVal = event?.longLat?.longitude;
+            this.originLatVal = event?.longLat?.latitude;
         }
     }
 
-    clearForm(mod) {
+    public handleDestinationSelect(event): void {
+        if (event?.address?.address)
+            this.destinationState = event.address.address;
+
+        if (event?.longLat && event?.longLat?.latitude) {
+            this.destLongVal = event?.longLat?.longitude;
+            this.destLatVal = event?.longLat?.latitude;
+        }
+    }
+
+    public clearForm(mod): void {
         switch (mod) {
             case 'singleForm':
                 this.moneyForm.get('singleFrom')?.setValue('');
@@ -2580,8 +1459,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public setFilterValue(e) {
-        const element = e.target;
+    public setFilterValue(event): boolean {
+        const element = event.target;
         if (element.classList.contains('active')) {
             let queryParams = {};
             let subType = '';
@@ -2592,7 +1471,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 this.filterActiveTime = this.selectedTimeValue;
 
                 if (!this.selectedTimeValue) {
-                    this.clearAll(e);
+                    this.clearAll(event);
                     return false;
                 }
 
@@ -2690,7 +1569,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         !this.moneyForm.get('singleFrom')?.value &&
                         !this.moneyForm.get('singleTo')?.value
                     ) {
-                        this.clearAll(e);
+                        this.clearAll(event);
                         return false;
                     }
 
@@ -2794,7 +1673,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 }
 
                 if (selectedUsersIdArray.length == 0) {
-                    this.clearAll(e);
+                    this.clearAll(event);
                     return false;
                 }
 
@@ -2818,8 +1697,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    checkFilterActiveValue() {
-        if (this.type == 'stateFilter') {
+    public checkFilterActiveValue(): void {
+        if (this.type === 'stateFilter') {
             let usaArrayChanged = false;
             let canadaArrayChanged = false;
 
@@ -2849,7 +1728,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
             let canadaStringfy = JSON.stringify(arrayCanadaSelected);
             let canadaActiveStringify = JSON.stringify(arrayCanadaActive);
 
-            if (usaStringfy == usaActiveStringify) {
+            if (usaStringfy === usaActiveStringify) {
                 usaArrayChanged = false;
             } else {
                 usaArrayChanged = true;
@@ -2889,7 +1768,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    checkMoneyMultiForm(data) {
+    public checkMoneyMultiForm(data): void {
         let firstFormChanged = 'none';
         let secondFormChanged = 'none';
         let thirdFormChanged = 'none';
@@ -2987,34 +1866,25 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    setRangeSliderValue(mod) {
+    public setRangeSliderValue(mod): void {
         let fromValue = this.thousandSeparator.transform(mod.value);
         let toValue = this.thousandSeparator.transform(mod.highValue);
         this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
         this.rangeForm?.get('rangeTo')?.setValue(toValue);
     }
 
-    setMinValueRange(mod) {
+    public setMinValueRange(mod): void {
         let fromValue = this.thousandSeparator.transform(mod);
         this.rangeForm?.get('rangeFrom')?.setValue(fromValue);
     }
 
-    setMaxValueRange(mod) {
+    public setMaxValueRange(mod): void {
         let toValue = this.thousandSeparator.transform(mod);
         this.rangeForm?.get('rangeTo')?.setValue(toValue);
     }
 
-    onFilterClose() {
-        if (!this.activeFilter) {
-            return false;
-        }
-        /*
-        if (this.isAnimated) {
-            this.isAnimated = true;
-            this.cdRef.detectChanges();
-            this.autoClose.tooltip.open();
-        }
-        */
+    public onFilterClose(): void {
+        if (!this.activeFilter) false;
         this.activeFilter = false;
 
         let mainElementHolder;
@@ -3026,13 +1896,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
 
         mainElementHolder?.classList.add('closeFilterAnimation');
-        /*
-        setTimeout(() => {
-            this.isAnimated = false;
-            this.autoClose.tooltip.close();
-            mainElementHolder?.classList.remove('closeFilterAnimation');
-        }, 120);
-        */
         if (this.defFilterHolder && this.type != 'stateFilter') {
             let mainArray: any[] = [];
             switch (this.type) {
@@ -3166,7 +2029,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
     }
 
-    onFilterShown() {
+    public onFilterShown(): void {
         this.activeFilter = true;
         this.isAnimated = true;
         let filterSearchHead = document.querySelector('.search-input-header');
@@ -3183,7 +2046,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.areaFilterSelected = event.name;
     }
 
-    public getBackendData(type: any, subType?: any) {
+    public getBackendData(type: any, subType?: string): void {
         switch (this.type) {
             case 'truckTypeFilter': {
                 this.filterService.getTruckType();
@@ -3225,5 +2088,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 break;
             }
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

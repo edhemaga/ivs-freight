@@ -330,6 +330,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                hideActivationButton: true,
                 showTimeFilter:
                     this.selectedTab !==
                     ConstantStringTableComponentsEnum.TEMPLATE,

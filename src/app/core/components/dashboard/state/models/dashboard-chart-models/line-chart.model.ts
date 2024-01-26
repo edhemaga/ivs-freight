@@ -20,6 +20,7 @@ export interface ChartDefaultConfig {
     id: string;
     hidden: boolean;
     label: string;
+    yAxisID: string;
 }
 
 export interface LineChartAxes extends BarChartAxes {}

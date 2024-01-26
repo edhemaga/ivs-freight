@@ -17,8 +17,8 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../state/trailer.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
-// Modals
-import { TrailerListResponse, TrailerResponse } from 'appcoretruckassist';
+// Models
+import { TrailerListResponse } from 'appcoretruckassist';
 import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
 import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 import {
@@ -914,6 +914,39 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // View Mode
         else if (event.action === ConstantStringTableComponentsEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
+        ) {
+            let status = false;
+            let mappedEvent = [];
+            this.viewData.map((data) => {
+                event.tabData.data.map((element) => {
+                    if (data.id === element) {
+                        status = data.status;
+                        mappedEvent.push({
+                            ...data,
+                            data: {
+                                ...data,
+                                number: data.trailerNumber,
+                                avatar: `assets/svg/common/trailers/${data?.trailerType?.logoName}`,
+                            },
+                        });
+                    }
+                });
+            });
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    data: null,
+                    array: mappedEvent,
+                    template: ConstantStringTableComponentsEnum.TRAILER_2,
+                    type: status
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
         }
     }
 

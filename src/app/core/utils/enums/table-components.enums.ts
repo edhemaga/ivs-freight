@@ -328,7 +328,14 @@ export enum ConstantStringTableComponentsEnum {
     LABEL_CHANGE = 'label-change',
 
     //Toolbar
-
+    EXPORT = 'Export',
+    IMPORT = 'Import',
+    DESELECT = 'deselect',
+    UNLOCK_TABLE = 'Unlock table',
+    LOCK_TABLE = 'Lock table',
+    RESET_TABLE = 'Reset Table',
+    SELECT_ACTION = 'select-action',
+    COLUMNS = 'Columns',
     CHECKBOX = 'checkbox',
     ATTACHMENTS = 'attachments',
     MEDIA = 'media',
