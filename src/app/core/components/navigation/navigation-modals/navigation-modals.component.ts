@@ -26,7 +26,7 @@ import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal
 import { AccidentModalComponent } from '../../modals/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
+import { LoadModalComponent } from '../../modals/load-modal/components/load-modal/load-modal.component';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';

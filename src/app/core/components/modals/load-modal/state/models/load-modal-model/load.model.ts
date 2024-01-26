@@ -28,7 +28,7 @@ export interface Load {
         doorType: number;
         suspension: number;
         trailerLengthId: number;
-        year: number;
+        year: number | string;
         liftgate: boolean;
         driverMessage: string;
     };
@@ -42,6 +42,8 @@ export interface Load {
     tags: Tags[];
     filesForDeleteIds?: number[];
     note: string;
+    commentId?: number;
+    commentCommentContent?: string;
     emptyMiles?: number;
     totalMiles: number;
     totalHours: number;

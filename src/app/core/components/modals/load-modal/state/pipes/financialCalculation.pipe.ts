@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { convertThousanSepInNumber } from '../../../../utils/methods.calculations';
+import { convertThousanSepInNumber } from '../../../../../utils/methods.calculations';
 
 @Pipe({
     name: 'financialCalculation',
-    standalone: true
+    standalone: true,
 })
 export class FinancialCalculationPipe implements PipeTransform {
     transform(item: any, type: string): number {
