@@ -202,14 +202,8 @@ export class TruckassistTableToolbarComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
-                    switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE: {
-                            this.onResetTable();
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
+                    if (res.type === ConstantStringTableComponentsEnum.DELETE) {
+                        this.onResetTable();
                     }
                 },
             });
@@ -609,9 +603,7 @@ export class TruckassistTableToolbarComponent
                     let numOfSelected = 0;
 
                     columns.group.map((column) => {
-                        if (!column.hidden) {
-                            numOfSelected++;
-                        }
+                        if (!column.hidden) numOfSelected++;
                     });
 
                     columns.areSomeSelected = numOfSelected ? true : false;
@@ -738,9 +730,7 @@ export class TruckassistTableToolbarComponent
         let newColumns = [...this.columns];
 
         newColumns = newColumns.map((newColumn) => {
-            if (newColumn.title === column.title) {
-                newColumn = column;
-            }
+            if (newColumn.title === column.title) newColumn = column;
 
             return newColumn;
         });

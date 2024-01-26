@@ -985,9 +985,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             let status = false;
             let mappedEvent = [];
             this.viewData.map((data) => {
-                event.tabData.data.map((e) => {
-                    if (data.id === e) {
-                        status = data.status === 0 ? false : true;
+                event.tabData.data.map((element) => {
+                    if (data.id === element) {
+                        status = data.status;
                         mappedEvent.push({
                             ...data,
                             data: {

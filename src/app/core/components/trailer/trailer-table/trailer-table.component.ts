@@ -17,7 +17,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../state/trailer.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
-// Modals
+// Models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
 import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
@@ -920,9 +920,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             let status = false;
             let mappedEvent = [];
             this.viewData.map((data) => {
-                event.tabData.data.map((e) => {
-                    if (data.id === e) {
-                        status = data.status === 0 ? false : true;
+                event.tabData.data.map((element) => {
+                    if (data.id === element) {
+                        status = data.status;
                         mappedEvent.push({
                             ...data,
                             data: {
