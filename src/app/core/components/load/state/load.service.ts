@@ -34,7 +34,6 @@ export class LoadTService {
     ) {}
 
     // table operations
-
     public getLoadList(
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
@@ -129,9 +128,8 @@ export class LoadTService {
     }
 
     // modal operations
-
-    public getLoadDropdowns(id: number): Observable<LoadModalResponse> {
-        return this.loadService.apiLoadModalGet(id);
+    public getLoadDropdowns(): Observable<LoadModalResponse> {
+        return this.loadService.apiLoadModalGet();
     }
 
     public getRouting(location: string): Observable<RoutingResponse> {
@@ -175,7 +173,6 @@ export class LoadTService {
     }
 
     // modal operations - template
-
     public createLoadTemplate(
         data: CreateLoadTemplateCommand
     ): Observable<CreateResponse> {

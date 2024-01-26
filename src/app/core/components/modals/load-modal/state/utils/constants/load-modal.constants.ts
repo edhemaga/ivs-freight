@@ -1,3 +1,7 @@
+import {
+    IBilling,
+    IPayment,
+} from '../../../components/load-modal-financial/load-modal-financial.component';
 import { LoadModalTab } from '../../models/load-modal-model/load-modal-tab';
 
 export class LoadModalConstants {
@@ -75,4 +79,27 @@ export class LoadModalConstants {
             },
         ],
     ];
+
+    static LOAD_MODAL_BILL: IBilling = {
+        baseRate: 0,
+        layover: 0,
+        lumper: 0,
+        fuelSurcharge: 0,
+        escort: 0,
+        detention: 0,
+    };
+
+    static LOAD_MODAL_PAYMENT: IPayment = {
+        advance: 0,
+        paidInFull: 0,
+        shortPaid: [],
+    };
+
+    static ANIMATION_MARGIN_PARAMS: {
+        marginTop: string;
+        marginBottom: string;
+    } = {
+        marginTop: '12px',
+        marginBottom: '4px',
+    };
 }

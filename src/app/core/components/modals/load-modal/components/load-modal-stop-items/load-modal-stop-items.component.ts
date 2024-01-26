@@ -33,11 +33,12 @@ import { descriptionValidation } from '../../../../shared/ta-input/ta-input.rege
 import { LoadStopItemsConstants } from '../../state/utils/constants/load-stop-items.constants';
 
 // enums
-import { ConstantStringEnum } from '../../state/enums/load-stop-items.enum';
+import { ConstantStringEnum } from '../../state/enums/load-modal-stop-items.enum';
 
-// models
-import { DropdownListItem } from '../../state/models/load-stop-items-model/dropdown-list-item.model';
-import { StopItemsData } from '../../state/models/load-stop-items-model/load-stop-items-data.model';
+// model
+import { StopItemsData } from '../../state/models/load-modal-stop-items-model/load-stop-items-data.model';
+import { StopItemDropdownLists } from '../../state/models/load-modal-stop-items-model/load-stop-item-dropdowns.model';
+import { EnumValue } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-load-modal-stop-items',
@@ -60,33 +61,28 @@ export class LoadModalStopItemsComponent
 {
     @Input() createNewStopItemsRow: boolean = false;
     @Input() stopItemsData: StopItemsData[] = [];
+    @Input() stopItemDropdownLists: StopItemDropdownLists;
 
     @Output() stopItemsDataValueEmitter = new EventEmitter<StopItemsData[]>();
     @Output() stopItemsValidStatusEmitter = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
-    public stopItemHeaders: string[] = [];
+    public stopItemHeaders: string[] = LoadStopItemsConstants.STOP_ITEM_HEADERS;
 
     public stopItemsForm: UntypedFormGroup;
 
     public isInputHoverRows: boolean[][] = [];
 
     // dropdowns
-    public quantityDropdownList: DropdownListItem[] = [];
-    public stackDropdownList: DropdownListItem[] = [];
-    public secureDropdownList: DropdownListItem[] = [];
-
-    public selectedQuantity: DropdownListItem[] = [];
-    public selectedStack: DropdownListItem[] = [];
-    public selectedSecure: DropdownListItem[] = [];
+    public selectedQuantity: EnumValue[] = [];
+    public selectedStack: EnumValue[] = [];
+    public selectedSecure: EnumValue[] = [];
 
     constructor(private formBuilder: UntypedFormBuilder) {}
 
     ngOnInit(): void {
         this.createForm();
-
-        this.getConstantData();
 
         this.checkForInputChanges();
     }
@@ -96,6 +92,7 @@ export class LoadModalStopItemsComponent
             this.updateStopItems(changes.stopItemsData.currentValue);
 
         if (
+            changes.createNewStopItemsRow &&
             !changes.createNewStopItemsRow.firstChange &&
             changes.createNewStopItemsRow.currentValue
         ) {
@@ -114,7 +111,7 @@ export class LoadModalStopItemsComponent
     }
 
     public handleInputSelect(
-        dropdownListItem: DropdownListItem,
+        dropdownListItem: EnumValue,
         action: string,
         stopItemsRowId: number
     ): void {
@@ -154,15 +151,6 @@ export class LoadModalStopItemsComponent
         return this.stopItemsForm.get(
             ConstantStringEnum.STOP_ITEMS
         ) as UntypedFormArray;
-    }
-
-    private getConstantData(): void {
-        this.stopItemHeaders = LoadStopItemsConstants.STOP_ITEM_HEADERS;
-
-        this.quantityDropdownList =
-            LoadStopItemsConstants.QUANTITY_DROPDOWN_LIST;
-        this.stackDropdownList = LoadStopItemsConstants.STACK_DROPDOWN_LIST;
-        this.secureDropdownList = LoadStopItemsConstants.SECURE_DROPDOWN_LIST;
     }
 
     private getStopItemsDataValue(): void {

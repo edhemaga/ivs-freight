@@ -745,7 +745,8 @@
                         <ng-container
                             *ngFor="
                                 let extraStop of loadExtraStops().controls;
-                                let indx = index
+                                let indx = index;
+                                trackBy: trackByIdentity
                             "
                         >
                             <div [formGroupName]="indx">
@@ -1133,6 +1134,9 @@
                                                 [createNewStopItemsRow]="
                                                     isCreatedNewStopItemsRow
                                                         .extraStops[indx]
+                                                "
+                                                [stopItemDropdownLists]="
+                                                    stopItemDropdownLists
                                                 "
                                                 (stopItemsDataValueEmitter)="
                                                     handleStopItemsDataValueEmit(
@@ -1568,7 +1572,8 @@
                                     *ngFor="
                                         let additional of additionalBillings()
                                             .controls;
-                                        let indx = index
+                                        let indx = index;
+                                        trackBy: trackByIdentity
                                     "
                                     [ngStyle]="{ 'margin-bottom': '4px' }"
                                 >

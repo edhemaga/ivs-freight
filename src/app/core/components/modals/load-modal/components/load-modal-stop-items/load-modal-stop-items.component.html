@@ -90,7 +90,9 @@
                                     getStopItems().at(i).get('quantity')
                                         .value && !isInputHoverRows[i][1]
                             }"
-                            [options]="quantityDropdownList"
+                            [options]="
+                                stopItemDropdownLists.quantityDropdownList
+                            "
                             [activeItem]="selectedQuantity[i]"
                             (selectedItem)="
                                 handleInputSelect($event, 'Quantity', i)
@@ -207,7 +209,7 @@
                                     getStopItems().at(i).get('stack').value &&
                                     !isInputHoverRows[i][7]
                             }"
-                            [options]="stackDropdownList"
+                            [options]="stopItemDropdownLists.stackDropdownList"
                             [activeItem]="selectedStack[i]"
                             (selectedItem)="
                                 handleInputSelect($event, 'Stack', i)
@@ -233,7 +235,7 @@
                                     getStopItems().at(i).get('secure').value &&
                                     !isInputHoverRows[i][8]
                             }"
-                            [options]="secureDropdownList"
+                            [options]="stopItemDropdownLists.secureDropdownList"
                             [activeItem]="selectedSecure[i]"
                             (selectedItem)="
                                 handleInputSelect($event, 'Secure', i)
