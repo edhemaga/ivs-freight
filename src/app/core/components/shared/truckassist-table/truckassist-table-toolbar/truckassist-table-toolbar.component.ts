@@ -8,6 +8,7 @@ import {
     EventEmitter,
     OnDestroy,
     ChangeDetectorRef,
+    TemplateRef,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -42,6 +43,9 @@ import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
+//Model
+import { optionsPopupContent } from '../../model/toolbar';
+
 @Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
@@ -64,7 +68,7 @@ export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
-    dropdownSelection = new UntypedFormControl();
+    public dropdownSelection = new UntypedFormControl();
     @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
     @Input() tableData: any[];
     @Input() options: any;
@@ -72,13 +76,13 @@ export class TruckassistTableToolbarComponent
     @Input() columns: any[];
     @Input() selectedDispatcher: any;
     @Input() dispathcboardTableLocked: boolean;
-    listName: string = '';
-    optionsPopup: any;
-    optionsPopupOpen: boolean = false;
-    tableLocked: boolean = true;
-    optionsPopupContent: any[] = [
+    public listName: string = '';
+    public optionsPopup: string | TemplateRef<any>;
+    public optionsPopupOpen: boolean = false;
+    public tableLocked: boolean = true;
+    public optionsPopupContent: optionsPopupContent[] = [
         {
-            text: 'Columns',
+            text: ConstantStringTableComponentsEnum.COLUMNS,
             svgPath: 'assets/svg/truckassist-table/columns-new.svg',
             active: false,
             hide: false,
@@ -88,72 +92,47 @@ export class TruckassistTableToolbarComponent
                 'assets/svg/truckassist-table/arrow-back-to-list.svg',
         },
         {
-            text: 'Unlock table',
+            text: ConstantStringTableComponentsEnum.UNLOCK_TABLE,
             svgPath: 'assets/svg/truckassist-table/lock-new.svg',
             active: false,
             hide: false,
         },
         {
-            text: 'Reset Table',
+            text: ConstantStringTableComponentsEnum.RESET_TABLE,
             svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
             isInactive: true,
             active: false,
             hide: false,
         },
         {
-            text: 'Import',
+            text: ConstantStringTableComponentsEnum.IMPORT,
             svgPath: 'assets/svg/truckassist-table/import-new.svg',
             active: false,
             hide: false,
             hasTopBorder: true,
         },
         {
-            text: 'Export',
+            text: ConstantStringTableComponentsEnum.EXPORT,
             svgPath: 'assets/svg/truckassist-table/export-new.svg',
             active: false,
             hide: false,
         },
     ];
-    tableRowsSelected: any[] = [];
-    activeTableData: any = {};
-    toolbarWidth: string = '';
-    maxToolbarWidth: number = 0;
-    timeOutToaggleColumn: any;
-    timeOutToaggleGroupColumn: any;
-    columnsOptions: any[] = [];
-    columnsOptionsWithGroups: any[] = [];
-    columnsOptionsWithGroupsActive: number = -1;
-    isMapShowning: boolean = false;
-    tableConfigurationType: TableType;
-    showResetOption: boolean;
-    tableReseting: boolean;
-    selectedViewMode: string;
-    selectedTableData: any = {};
-
-    // tableTypes = [
-    //     { configType: 'LOAD_TEMPLATE', id: 1 },DONE
-    //     { configType: 'LOAD_CLOSED', id: 2 }, DONE
-    //     { configType: 'LOAD_REGULAR', id: 3 }, DONE
-    //     { configType: 'BROKER', id: 4 }, DONE
-    //     { configType: 'SHIPPER', id: 5 }, DONE
-    //     { configType: 'DRIVER', id: 6 }, DONE
-    //     { configType: 'APPLICANT', id: 7 }, DONE
-    //     { configType: 'TRUCK', id: 8 }, DONE
-    //     { configType: 'TRAILER', id: 9 }, DONE
-    //     { configType: 'REPAIR_TRUCK', id: 10 }, DONE
-    //     { configType: 'REPAIR_TRAILER', id: 11 }, DONE
-    //     { configType: 'REPAIR_SHOP', id: 12 }, DONE
-    //     { configType: 'PM_TRUCK', id: 13 }, DONE
-    //     { configType: 'PM_TRAILER', id: 14 }, DONE
-    //     { configType: 'FUEL_TRANSACTION', id: 15 }, DONE
-    //     { configType: 'FUEL_STOP', id: 16 }, DONE
-    //     { configType: 'OWNER', id: 17 }, DONE
-    //     { configType: 'ACCOUNT', id: 18 }, DONE
-    //     { configType: 'CONTACT', id: 19 }, DONE
-    //     { configType: 'ROADSIDE_INSPECTION', id: 20 }, DONE
-    //     { configType: 'ACCIDENT', id: 21 }, DONE
-    //     { configType: 'USER', id: 22 }, DONE
-    // ];
+    public tableRowsSelected: any[] = [];
+    public activeTableData: any = {};
+    public toolbarWidth: string = '';
+    public maxToolbarWidth: number = 0;
+    public timeOutToaggleColumn: NodeJS.Timeout;
+    public timeOutToaggleGroupColumn: NodeJS.Timeout;
+    public columnsOptions: any[] = [];
+    public columnsOptionsWithGroups: any[] = [];
+    public columnsOptionsWithGroupsActive: number = -1;
+    public isMapShowning: boolean = false;
+    public tableConfigurationType: TableType;
+    public showResetOption: boolean;
+    public tableReseting: boolean;
+    public selectedViewMode: string;
+    public selectedTableData: any = {};
 
     constructor(
         private tableService: TruckassistTableService,
@@ -162,7 +141,6 @@ export class TruckassistTableToolbarComponent
         private changeDetectorRef: ChangeDetectorRef
     ) {}
 
-    // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
         this.getSelectedViewMode();
 
@@ -172,73 +150,15 @@ export class TruckassistTableToolbarComponent
 
         this.getActiveTableData();
 
-        // Get Table Width
-        this.tableService.currentSetTableWidth
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.getToolbarWidth();
-            });
+        this.currentSetTableWidth();
 
-        // Columns Reorder
-        this.tableService.currentColumnsOrder
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response.columnsOrder) {
-                    this.columns = this.columns.map((c) => {
-                        response.columnsOrder.map((r) => {
-                            if (r.field === c.field) {
-                                c.isPined = r.isPined;
-                                c.hidden = r.hidden;
-                            }
-                        });
+        this.columsReorder();
 
-                        return c;
-                    });
+        this.rowsSelected();
 
-                    this.getToolbarWidth();
-                }
-            });
-
-        // Rows Selected
-        this.tableService.currentRowsSelected
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                this.tableRowsSelected = response;
-
-                if (this.options.toolbarActions.showMoneyFilter) {
-                    this.activeTableData.moneyCountSelected = this
-                        .tableRowsSelected.length
-                        ? true
-                        : false;
-                }
-
-                if (this.options.toolbarActions.showCountSelectedInList) {
-                    this.activeTableData = {
-                        ...this.activeTableData,
-                        listSelectedCount: response.length,
-                    };
-                }
-            });
-
-        // Confirmation For Reset Table Configuration
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: Confirmation) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            this.onResetTable();
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
-            });
+        this.confirmationData();
     }
 
-    // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges) {
         if (!changes?.options?.firstChange && changes?.options) {
             this.options = changes.options.currentValue;
@@ -269,9 +189,71 @@ export class TruckassistTableToolbarComponent
         }
     }
 
-    // Get Active Table Data
-    getActiveTableData() {
-        const td = this.tableData.find((t) => t.isActive);
+    private currentSetTableWidth(): void {
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getToolbarWidth();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    if (res.type === ConstantStringTableComponentsEnum.DELETE) {
+                        this.onResetTable();
+                    }
+                },
+            });
+    }
+
+    private rowsSelected(): void {
+        this.tableService.currentRowsSelected
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                this.tableRowsSelected = response;
+
+                if (this.options.toolbarActions.showMoneyFilter) {
+                    this.activeTableData.moneyCountSelected = this
+                        .tableRowsSelected.length
+                        ? true
+                        : false;
+                }
+
+                if (this.options.toolbarActions.showCountSelectedInList) {
+                    this.activeTableData = {
+                        ...this.activeTableData,
+                        listSelectedCount: response.length,
+                    };
+                }
+            });
+    }
+
+    private columsReorder(): void {
+        this.tableService.currentColumnsOrder
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any) => {
+                if (response.columnsOrder) {
+                    this.columns = this.columns.map((column) => {
+                        response.columnsOrder.map((res) => {
+                            if (res.field === column.field) {
+                                column.isPined = res.isPined;
+                                column.hidden = res.hidden;
+                            }
+                        });
+
+                        return column;
+                    });
+
+                    this.getToolbarWidth();
+                }
+            });
+    }
+
+    private getActiveTableData(): void {
+        const td = this.tableData.find((table) => table.isActive);
 
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
@@ -286,21 +268,20 @@ export class TruckassistTableToolbarComponent
         this.selectedTableData = td;
     }
 
-    // Get Selected View Mode
-    getSelectedViewMode() {
+    private getSelectedViewMode(): void {
         if (this.options.toolbarActions?.viewModeOptions) {
-            this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
+            this.options.toolbarActions.viewModeOptions.map((viewMode) => {
                 if (viewMode.active) {
                     this.selectedViewMode = viewMode.name;
 
-                    this.isMapShowning = viewMode.name === 'Map';
+                    this.isMapShowning =
+                        viewMode.name === ConstantStringTableComponentsEnum.MAP;
                 }
             });
         }
     }
 
-    // Get Toolbar Width
-    getToolbarWidth() {
+    private getToolbarWidth(): void {
         const tableContainer = document.querySelector('.table-container');
 
         this.maxToolbarWidth = tableContainer.clientWidth;
@@ -310,8 +291,7 @@ export class TruckassistTableToolbarComponent
         this.setToolbarWidth();
     }
 
-    // Set Toolbar Width
-    setToolbarWidth() {
+    private setToolbarWidth(): void {
         let columnsSumWidth = 0,
             hasMinWidth = false;
 
@@ -398,8 +378,7 @@ export class TruckassistTableToolbarComponent
         }
     }
 
-    // Set Columns Options Groups
-    setColumnsOptionsGroups() {
+    private setColumnsOptionsGroups(): void {
         if (!this.optionsPopupOpen || this.tableReseting) {
             this.columnsOptionsWithGroups = [];
 
@@ -446,10 +425,11 @@ export class TruckassistTableToolbarComponent
         this.tableReseting = false;
     }
 
-    // Select Tab
-    onSelectTab(selectedTabData: any) {
+    public onSelectTab(selectedTabData: any): void {
         if (this.tableRowsSelected.length) {
-            this.tableService.sendSelectOrDeselect('deselect');
+            this.tableService.sendSelectOrDeselect(
+                ConstantStringTableComponentsEnum.DESELECT
+            );
         }
 
         localStorage.setItem(
@@ -461,38 +441,36 @@ export class TruckassistTableToolbarComponent
         );
 
         this.toolBarAction.emit({
-            action: 'tab-selected',
+            action: ConstantStringTableComponentsEnum.TAB_SELECTED,
             tabData: selectedTabData,
         });
     }
 
-    // Toolbar Action
-    onToolBarAction(actionType: string) {
+    public onToolBarAction(actionType: string): void {
         this.toolBarAction.emit({
             action: actionType,
         });
     }
 
-    // Toolbar Select Action
-    onToolBarSelectAction(actionType: string) {
+    public onToolBarSelectAction(actionType: string): void {
         this.toolBarAction.emit({
-            action: 'select-action',
+            action: ConstantStringTableComponentsEnum.SELECT_ACTION,
             data: actionType,
         });
     }
 
     // Chnage View Mode
-    changeModeView(modeView: any) {
-        // Treba da se sredi da kada se prebacujes samo na map da brise, al imamo konfilkt logike oko slekta i deslekta pa se u head brise kada se ukolni koponenta
-        // && modeView === 'Map'
+    public changeModeView(modeView: any): void {
         if (this.tableRowsSelected.length) {
-            this.tableService.sendSelectOrDeselect('deselect');
+            this.tableService.sendSelectOrDeselect(
+                ConstantStringTableComponentsEnum.DESELECT
+            );
         }
 
         this.selectedViewMode = modeView.mode;
 
         this.toolBarAction.emit({
-            action: 'view-mode',
+            action: ConstantStringTableComponentsEnum.VIEW_MODE,
             mode: modeView.mode,
         });
 
@@ -504,29 +482,36 @@ export class TruckassistTableToolbarComponent
             })
         );
 
-        this.isMapShowning = modeView.mode === 'Map';
+        this.isMapShowning =
+            modeView.mode === ConstantStringTableComponentsEnum.MAP;
     }
 
-    // Delete Selected Rows
-    deleteSelectedRows() {
+    public deleteSelectedRows(): void {
         this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
     }
 
-    // Get Tab Data For Selected Tab
-    getSelectedTabTableData() {
+    public activeSelectedRows(): void {
+        this.toolBarAction.emit({
+            action: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+            tabData: {
+                data: this.tableRowsSelected.map((data) => data.tableData.id),
+            },
+        });
+    }
+
+    public getSelectedTabTableData(): void {
         if (this.tableData.length) {
             this.activeTableData = this.tableData.find(
-                (t) => t.field === this.selectedTab
+                (table) => table.field === this.selectedTab
             );
         }
     }
 
     // Show Toolbar Options Popup
-    onShowOptions(optionsPopup: any) {
+    public onShowOptions(optionsPopup): void {
         this.optionsPopupContent[0].active = false;
-
         this.optionsPopupContent.map((option) => {
-            if (option.text !== 'Columns') {
+            if (option.text !== ConstantStringTableComponentsEnum.COLUMNS) {
                 option.hide = false;
             }
 
@@ -547,18 +532,19 @@ export class TruckassistTableToolbarComponent
     }
 
     //  On Toolbar Option Actions
-    onOptions(action: any) {
+    public onOptions(action: any): void {
         if (
-            (action.text === 'Unlock table' || action.text === 'Lock table') &&
-            this.selectedViewMode === 'List'
+            (action.text === ConstantStringTableComponentsEnum.UNLOCK_TABLE ||
+                action.text === ConstantStringTableComponentsEnum.LOCK_TABLE) &&
+            this.selectedViewMode === ConstantStringTableComponentsEnum.LIST
         ) {
             action.active = !action.active;
 
             this.tableLocked = !this.tableLocked;
 
             this.optionsPopupContent[1].text = this.tableLocked
-                ? 'Unlock table'
-                : 'Lock table';
+                ? ConstantStringTableComponentsEnum.UNLOCK_TABLE
+                : ConstantStringTableComponentsEnum.LOCK_TABLE;
 
             this.optionsPopupContent[1].svgPath = this.tableLocked
                 ? 'assets/svg/truckassist-table/lock-new.svg'
@@ -580,46 +566,44 @@ export class TruckassistTableToolbarComponent
                     })
                     .subscribe(() => {});
             }
-        } else if (action.text === 'Columns') {
+        } else if (action.text === ConstantStringTableComponentsEnum.COLUMNS) {
             action.active = !action.active;
 
             this.checkAreAllSelectedInGroup();
 
             this.optionsPopupContent.map((option) => {
-                if (option.text !== 'Columns') {
+                if (option.text !== ConstantStringTableComponentsEnum.COLUMNS) {
                     option.hide = action.active;
                 }
 
                 return option;
             });
         } else if (
-            action.text === 'Reset Table' &&
+            action.text === ConstantStringTableComponentsEnum.RESET_TABLE &&
             !this.optionsPopupContent[2].isInactive
         ) {
             this.onShowOptions(this.optionsPopup);
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     template: '',
-                    type: 'delete',
+                    type: ConstantStringTableComponentsEnum.DELETE,
                 }
             );
         }
     }
 
     // Check Are All Selected In Group
-    checkAreAllSelectedInGroup() {
+    public checkAreAllSelectedInGroup(): void {
         this.columnsOptionsWithGroups = this.columnsOptionsWithGroups.map(
             (columns) => {
                 if (columns.isGroup) {
                     let numOfSelected = 0;
 
-                    columns.group.map((c) => {
-                        if (!c.hidden) {
-                            numOfSelected++;
-                        }
+                    columns.group.map((column) => {
+                        if (!column.hidden) numOfSelected++;
                     });
 
                     columns.areSomeSelected = numOfSelected ? true : false;
@@ -634,7 +618,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Reset Table
-    onResetTable() {
+    public onResetTable(): void {
         this.tableReseting = true;
 
         localStorage.removeItem(
@@ -652,7 +636,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toaggle Column
-    onToaggleColumn(column: any, index: number) {
+    public onToaggleColumn(column: any, index: number): void {
         clearTimeout(this.timeOutToaggleColumn);
 
         this.timeOutToaggleColumn = setTimeout(() => {
@@ -665,7 +649,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Open Column Grop Dropdown
-    openColumnsGroupDropdown(index: number) {
+    public openColumnsGroupDropdown(index: number): void {
         if (
             this.columnsOptionsWithGroupsActive !== index &&
             this.columnsOptionsWithGroupsActive !== -1
@@ -686,7 +670,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toaggle All In Group
-    onToaggleAllInGroup(i: number) {
+    public onToaggleAllInGroup(i: number): void {
         const columnsOptionsWithGroups = [...this.columnsOptionsWithGroups];
         const tableColumns = [...this.columns];
 
@@ -698,14 +682,14 @@ export class TruckassistTableToolbarComponent
             areSomeSelected: !columnsOptionsWithGroups[i].areSomeSelected,
         };
 
-        columnsOptionsWithGroups[i].group.map((c) => {
-            if (!c.isPined) {
-                c.hidden = columnsOptionsWithGroups[i].areAllActive
+        columnsOptionsWithGroups[i].group.map((columnOption) => {
+            if (!columnOption.isPined) {
+                columnOption.hidden = columnsOptionsWithGroups[i].areAllActive
                     ? false
                     : true;
 
                 tableColumns.filter((column, index) => {
-                    if (column.title === c.title) {
+                    if (column.title === columnOption.title) {
                         column.hidden = columnsOptionsWithGroups[i].areAllActive
                             ? false
                             : true;
@@ -721,7 +705,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toaggle Group Column
-    onToaggleGroupColumn(columnGroup: any, index: number) {
+    public onToaggleGroupColumn(columnGroup: any, index: number): void {
         clearTimeout(this.timeOutToaggleGroupColumn);
 
         this.timeOutToaggleGroupColumn = setTimeout(() => {
@@ -742,15 +726,13 @@ export class TruckassistTableToolbarComponent
     }
 
     // Set Table Configuration
-    setTableConfig(column: any, index: number) {
+    public setTableConfig(column: any, index: number): void {
         let newColumns = [...this.columns];
 
-        newColumns = newColumns.map((c) => {
-            if (c.title === column.title) {
-                c = column;
-            }
+        newColumns = newColumns.map((newColumn) => {
+            if (newColumn.title === column.title) newColumn = column;
 
-            return c;
+            return newColumn;
         });
 
         localStorage.setItem(

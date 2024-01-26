@@ -707,9 +707,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab ===
                         ConstantStringTableComponentsEnum.ACTIVE ||
                     this.selectedTab ===
-                        ConstantStringTableComponentsEnum.INACTIVE ||
-                    this.selectedTab ===
-                        ConstantStringTableComponentsEnum.REPAIR_SHOP
+                        ConstantStringTableComponentsEnum.INACTIVE
                 ) {
                     switch (this.selectedTab) {
                         case ConstantStringTableComponentsEnum.ACTIVE:
@@ -721,15 +719,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
 
                             break;
-                        case ConstantStringTableComponentsEnum.REPAIR_SHOP:
-                            this.sendDataToCardsFront =
-                                this.displayRowsFrontRepairShop;
-                            this.sendDataToCardsBack =
-                                this.displayRowsBackRepairShop;
-                            this.cardTitle =
-                                ConstantStringTableComponentsEnum.NAME;
-                            break;
-
                         case ConstantStringTableComponentsEnum.INACTIVE:
                             this.sendDataToCardsFront =
                                 this.displayRowsFrontTrailer;
@@ -742,6 +731,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.getSelectedTabTableData();
                     return this.mapTruckAndTrailerData(data);
                 } else {
+                    this.sendDataToCardsFront = this.displayRowsFrontRepairShop;
+                    this.sendDataToCardsBack = this.displayRowsBackRepairShop;
+                    this.cardTitle = ConstantStringTableComponentsEnum.NAME;
                     return this.mapShopData(data);
                 }
             });
