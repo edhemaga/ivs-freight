@@ -21,6 +21,7 @@
             ></svg-icon>
 
             <span
+                class="d-flex justify-content-center"
                 [ngClass]="{
                     'no-count-text': data.card.truckCount === 0
                 }"
@@ -39,6 +40,7 @@
             ></svg-icon>
 
             <span
+                class="d-flex justify-content-center"
                 [ngClass]="{
                     'no-count-text': data.card.trailerCount === 0
                 }"
@@ -51,10 +53,13 @@
 
 <!-- Owner fleet dropdown -->
 <ng-template #dropdownOwnerFleet let-ownerFleet="data">
-    <div class="table-list-dropdown">
+    <div
+        class="table-list-dropdown"
+        [ngClass]="{ 'height-truck-colapsed': truckDropdown }"
+    >
         <!-- Head of dropdown -->
         <div class="description-titles d-flex justify-content-between">
-            <div class="d-flex gap">
+            <div class="d-flex align-items-center gap">
                 <p
                     class="dropdown-left m-0 ta-font-extra-bold d-flex align-items-center text-white"
                 >
@@ -62,12 +67,15 @@
                 </p>
 
                 <span
-                    class="total-number-fleet ta-font-extra-bold text-white count"
-                    >{{ ownerFleet.truckCount + ownerFleet.trailerCount }}</span
+                    class="total-number-fleet count d-flex align-items-center"
                 >
+                    <span class="counter ta-font-extra-bold text-white">
+                        {{ ownerFleet.truckCount + ownerFleet.trailerCount }}
+                    </span>
+                </span>
             </div>
 
-            <div class="d-flex gap">
+            <div class="d-flex gap header-right-side">
                 <p
                     class="dropdown-right m-0 ta-font-bold d-flex align-items-center text-white"
                 >
@@ -82,29 +90,157 @@
 
         <!-- Input Search -->
         <div class="input-holder">
-            <input placeholder="Search" />
+            <svg-icon
+                class="search-icon"
+                [src]="'assets/svg/common/ic_search.svg'"
+            ></svg-icon>
+            <input placeholder="Search" (keyup)="filterArray($event)" />
         </div>
 
-        <!-- Body of dropdown -->
-        <div class="trucks-fleet-container d-flex flex-column">
-            <div class="d-flex align-items-center gap">
-                <span class="ta-font-bold muted body-item-title">TRUCK</span>
-                <span class="ta-font-bold text-white count">{{
-                    ownerFleet.truckCount
-                }}</span>
-            </div>
-            <div
-                class="table-list-dropdown-content-container"
-                [ngClass]="{
-                    'table-list-dropdown-inner-dropdown-active':
-                        ownerFleet?.isInnerDropActive
-                }"
-                *ngFor="let truck of ownerFleet.trucks; let i = index"
-            >
-                <div class="table-list-dropdown-content text-white">
-                    {{ truck?.truckNumber }}
+        <!-- Trucks Body-->
+        <ng-container *ngIf="ownerFleet.truckCount > 0">
+            <div class="fleet-container d-flex flex-column">
+                <!-- Body Head -->
+                <div
+                    class="d-flex align-items-center justify-content-between gap toogle-dropdown"
+                    (click)="
+                        toggleDropdownTruckTrailer('Truck', !truckDropdown)
+                    "
+                >
+                    <div class="d-flex align-items-center">
+                        <span class="ta-font-bold muted body-item-title"
+                            >TRUCK</span
+                        >
+                        <span
+                            class="text-white count d-flex align-items-center"
+                        >
+                            <span class="counter ta-font-bold">
+                                {{ ownerFleet.truckCount }}
+                            </span>
+                        </span>
+                    </div>
+
+                    <div
+                        class="open-close-dropdown-icon"
+                        [ngClass]="{ rotate: truckDropdown }"
+                    >
+                        <svg-icon
+                            [src]="'assets/svg/common/dropdown-arrow.svg'"
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <!-- Body Items -->
+                <div
+                    class="items-holder"
+                    [ngClass]="{ 'hide-dropdown-items': truckDropdown }"
+                >
+                    <div
+                        class="table-list-dropdown-content-container d-flex"
+                        *ngFor="let truck of ownerFleet.trucks; let i = index"
+                        (click)="
+                            goToDetailsPage(
+                                truck,
+                                '/list/truck/' + truck.id + '/details'
+                            )
+                        "
+                    >
+                        <div class="dropdown-animate d-flex align-items-center">
+                            <!-- Truck Svg -->
+                            <div class="type-icon">
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/trucks/' +
+                                        truck?.truckType.logoName
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div class="text-white">
+                                {{ truck?.truckNumber }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
+
+        <!-- Separator -->
+        <ng-container *ngIf="ownerFleet.trailerCount > 0">
+            <div class="separator"></div>
+        </ng-container>
+
+        <!-- Trailer Body -->
+        <ng-container *ngIf="ownerFleet.trailerCount > 0">
+            <div class="fleet-container d-flex flex-column">
+                <!-- Body Head -->
+
+                <div
+                    class="d-flex align-items-center justify-content-between gap toogle-dropdown"
+                    (click)="
+                        toggleDropdownTruckTrailer('Trailer', !trailerDropdown)
+                    "
+                >
+                    <div class="d-flex align-items-center">
+                        <span class="ta-font-bold muted body-item-title"
+                            >TRAILER</span
+                        >
+
+                        <span
+                            class="text-white count d-flex align-items-center"
+                        >
+                            <span class="counter ta-font-bold">
+                                {{ ownerFleet.trailerCount }}
+                            </span>
+                        </span>
+                    </div>
+
+                    <div
+                        class="open-close-dropdown-icon"
+                        [ngClass]="{ rotate: trailerDropdown }"
+                    >
+                        <svg-icon
+                            [src]="'assets/svg/common/dropdown-arrow.svg'"
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div
+                    class="items-holder"
+                    [ngClass]="{ 'hide-dropdown-items': trailerDropdown }"
+                >
+                    <div
+                        class="table-list-dropdown-content-container d-flex"
+                        *ngFor="
+                            let trailer of ownerFleet.trailers;
+                            let i = index
+                        "
+                        (click)="
+                            goToDetailsPage(
+                                trailer,
+                                '/list/trailer/' + trailer.id + '/details'
+                            )
+                        "
+                    >
+                        <div class="dropdown-animate d-flex align-items-center">
+                            <!-- Trailer Svg -->
+                            <div class="type-icon">
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/trailers/' +
+                                        trailer?.trailerType.logoName
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div class="text-white">
+                                {{ trailer?.trailerNumber }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
     </div>
 </ng-template>
