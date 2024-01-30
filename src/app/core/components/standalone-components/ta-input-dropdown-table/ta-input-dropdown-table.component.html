@@ -7,7 +7,7 @@
     [placement]="['bottom-left']"
     popoverClass="table-dropdown-popover"
     triggers="manual"
-    (click)="toggleDropdownOwnerFleet(ownerDropdown, data.card)"
+    (click)="toggleDropdownOwnerFleet(ownerDropdown, filteredData)"
     [ngClass]="ownerDropdown.isOpen() ? 'owner-dropdown-opened' : ''"
 >
     <div class="fleet-holder d-flex">
@@ -16,17 +16,17 @@
                 class="d-flex justify-content-center svg-holder"
                 [src]="'assets/svg/common/dropdown-truck.svg'"
                 [ngClass]="{
-                    'no-count': data.card.truckCount === 0
+                    'no-count': filteredData.truckCount === 0
                 }"
             ></svg-icon>
 
             <span
                 class="d-flex justify-content-center"
                 [ngClass]="{
-                    'no-count-text': data.card.truckCount === 0
+                    'no-count-text': filteredData.truckCount === 0
                 }"
             >
-                {{ data.card.truckCount }}
+                {{ filteredData.truckCount }}
             </span>
         </div>
 
@@ -35,17 +35,17 @@
                 class="d-flex justify-content-center svg-holder"
                 [src]="'assets/svg/common/dropdown-trailer.svg'"
                 [ngClass]="{
-                    'no-count': data.card.trailerCount === 0
+                    'no-count': filteredData.trailerCount === 0
                 }"
             ></svg-icon>
 
             <span
                 class="d-flex justify-content-center"
                 [ngClass]="{
-                    'no-count-text': data.card.trailerCount === 0
+                    'no-count-text': filteredData.trailerCount === 0
                 }"
             >
-                {{ data.card.trailerCount }}
+                {{ filteredData.trailerCount }}
             </span>
         </div>
     </div>
@@ -90,11 +90,15 @@
 
         <!-- Input Search -->
         <div class="input-holder">
+            <input
+                placeholder="Search"
+                (keyup)="filterArray($event, ownerFleet)"
+                class="input-search"
+            />
             <svg-icon
                 class="search-icon"
                 [src]="'assets/svg/common/ic_search.svg'"
             ></svg-icon>
-            <input placeholder="Search" (keyup)="filterArray($event)" />
         </div>
 
         <!-- Trucks Body-->
@@ -115,6 +119,10 @@
                             class="text-white count d-flex align-items-center"
                         >
                             <span class="counter ta-font-bold">
+                                <ng-container *ngIf="filteredTruckCount">
+                                    {{ filteredTruckCount }} of
+                                </ng-container>
+
                                 {{ ownerFleet.truckCount }}
                             </span>
                         </span>
@@ -156,9 +164,12 @@
                                 ></svg-icon>
                             </div>
 
-                            <div class="text-white">
-                                {{ truck?.truckNumber }}
-                            </div>
+                            <div
+                                class="text-white"
+                                [innerHTML]="
+                                    highlight(truck.truckNumber) | safeHtml
+                                "
+                            ></div>
                         </div>
                     </div>
                 </div>
@@ -190,6 +201,10 @@
                             class="text-white count d-flex align-items-center"
                         >
                             <span class="counter ta-font-bold">
+                                <ng-container *ngIf="filteredTrailerCount">
+                                    {{ filteredTrailerCount }} of
+                                </ng-container>
+
                                 {{ ownerFleet.trailerCount }}
                             </span>
                         </span>
@@ -234,9 +249,12 @@
                                 ></svg-icon>
                             </div>
 
-                            <div class="text-white">
-                                {{ trailer?.trailerNumber }}
-                            </div>
+                            <div
+                                class="text-white"
+                                [innerHTML]="
+                                    highlight(trailer.trailerNumber) | safeHtml
+                                "
+                            ></div>
                         </div>
                     </div>
                 </div>

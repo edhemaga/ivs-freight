@@ -20,6 +20,12 @@ import { CardDetails } from '../../shared/model/cardTableData';
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
+// pipes
+import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
+
+// enums
+import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
+
 @Component({
     selector: 'app-ta-input-dropdown-table',
     standalone: true,
@@ -30,6 +36,7 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
         NgbModule,
         NgbPopoverModule,
         FormsModule,
+        SafeHtmlPipe,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
@@ -40,26 +47,95 @@ export class TaInputDropdownTableComponent implements OnInit {
     public tooltip: NgbTooltip;
     public dropDownActive: number;
 
+    public filteredData: CardDetails;
+
+    public filteredTruckCount: number;
+    public filteredTrailerCount: number;
+
     public truckDropdown: boolean = true;
     public trailerDropdown: boolean = true;
 
-    searchTerm: string = '';
-    arrayToFilter: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-    filteredArray: string[] = [];
+    public lattersToHighlight: string;
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.filteredData = { ...this.data.card };
+    }
 
     public filterArray(event: InputEvent): void {
-        // if (event.target instanceof HTMLInputElement) {
-        //     console.log(this.data.filter((item) =>
-        //     item.toLowerCase().includes(this.searchTerm.toLowerCase())
-        //   ));
-        //     // Now you can use event.target.value safely
-        // }
+        if (event.target instanceof HTMLInputElement) {
+            const searchTerm = event.target.value.toLowerCase();
+
+            // Check if the user has typed at least 2 characters
+            if (searchTerm.length >= 2) {
+                console.log(searchTerm);
+                this.lattersToHighlight = searchTerm;
+
+                const filteredTrucks = this.filteredData.trucks.filter(
+                    (truck) =>
+                        truck.truckNumber.toLowerCase().includes(searchTerm)
+                );
+
+                const filteredTrailer = this.filteredData.trailers.filter(
+                    (trailer) =>
+                        trailer.trailerNumber.toLowerCase().includes(searchTerm)
+                );
+
+                this.filteredTruckCount = filteredTrucks.length;
+
+                this.filteredTrailerCount = filteredTrailer.length;
+
+                // If there is empty array in filteredTrucks or filteredTrailer
+                if (
+                    filteredTrucks.length === 0 &&
+                    filteredTrailer.length === 0
+                ) {
+                    this.filteredData.trucks = this.data.card.trucks;
+
+                    this.filteredData.trailers = this.data.card.trailers;
+                }
+
+                // Set to default value in case there are no resaults
+                else {
+                    this.filteredData.trucks = filteredTrucks;
+
+                    this.filteredData.trailers = filteredTrailer;
+                }
+            }
+
+            // Set to default value in case user deleted value in input
+            else {
+                this.lattersToHighlight = '';
+
+                this.filteredTruckCount = null;
+
+                this.filteredTrailerCount = null;
+
+                this.filteredData.trucks = this.data.card.trucks;
+
+                this.filteredData.trailers = this.data.card.trailers;
+            }
+        }
+    }
+
+    public highlight(trailerTruckNumber: string): string {
+        if (!trailerTruckNumber || !this.lattersToHighlight)
+            return trailerTruckNumber;
+
+        return trailerTruckNumber.replace(
+            new RegExp(this.lattersToHighlight, 'gi'),
+            (match) => {
+                return (
+                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
+                    match +
+                    '</span>'
+                );
+            }
+        );
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {
@@ -86,11 +162,11 @@ export class TaInputDropdownTableComponent implements OnInit {
         toggle: boolean
     ): void {
         switch (truckOrTrailer) {
-            case 'Truck':
+            case ConstantStringTableDropdownEnum.TRUCK:
                 this.truckDropdown = toggle;
                 break;
 
-            case 'Trailer':
+            case ConstantStringTableDropdownEnum.TRAILER:
                 this.trailerDropdown = toggle;
                 break;
             default:

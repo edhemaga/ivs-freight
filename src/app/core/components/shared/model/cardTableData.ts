@@ -122,7 +122,42 @@ export interface SendDataCard {
     subType?: string;
 }
 
+export interface Trucks {
+    truckNumber: string;
+    status: number;
+    owner: string;
+    id: number;
+    color: {
+        companyId: number;
+        code: string;
+        name: number;
+        id: number;
+    };
+    truckType: {
+        id: number;
+        companyId: number;
+        name: string;
+        logoName: string;
+    };
+}
+
+export interface Trailers {
+    trailerNumber: string;
+    status: number;
+    owner: string;
+    id: number;
+    trailerType: {
+        id: number;
+        companyId: number;
+        name: string;
+        logoName: string;
+        hasVolume: boolean;
+    };
+}
+
 export interface CardDetails {
+    filteredTrucks?: Truck[];
+    trailers?: Trailers[];
     truckCount?: number;
     trailerCount?: number;
     descriptionItems?: string[];
@@ -178,7 +213,7 @@ export interface CardDetails {
     lastDeliveryTime?: LastDeliveryTime;
     currentLocation?: CurrentLocation;
     nextStop?: NextStop;
-    trucks?: string[];
+    trucks?: Trucks[];
     completedPercentage?: number;
     pendingPercentage?: number;
     closedPercentage?: number;
