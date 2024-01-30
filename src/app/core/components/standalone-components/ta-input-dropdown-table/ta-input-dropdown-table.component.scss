@@ -49,8 +49,29 @@
 .table-list-dropdown {
     width: 180px !important;
     right: 4px !important;
-    max-height: 331px !important;
-    overflow: scroll;
+    overflow: hidden;
+
+    .scroll-input-drodpwon {
+        max-height: 270px;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            width: 2px !important;
+            border-radius: 1px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: $ta-black-2 !important;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $muted !important;
+        }
+    }
+
+    .height-truck-colapsed {
+        max-height: 239px !important;
+    }
 
     // Head of dropdown
     .description-titles {
@@ -172,10 +193,6 @@
         margin: 2px 0;
         background: $ta-black;
     }
-}
-
-.height-truck-colapsed {
-    max-height: 298px !important;
 }
 
 // Shared classes

@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // models
-import { CardDetails } from '../../shared/model/cardTableData';
+import { CardDetails, Trailer, Trucks } from '../../shared/model/cardTableData';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -66,28 +66,22 @@ export class TaInputDropdownTableComponent implements OnInit {
         this.filteredData = { ...this.data.card };
     }
 
-    public filterArray(event: InputEvent): void {
+    public filterArray(event: KeyboardEvent): void {
         if (event.target instanceof HTMLInputElement) {
             const searchTerm = event.target.value.toLowerCase();
 
             // Check if the user has typed at least 2 characters
             if (searchTerm.length >= 2) {
-                console.log(searchTerm);
+                // Reset on every key press
+                this.filteredData.trucks = this.data.card.trucks;
+
+                this.filteredData.trailers = this.data.card.trailers;
+
                 this.lattersToHighlight = searchTerm;
 
-                const filteredTrucks = this.filteredData.trucks.filter(
-                    (truck) =>
-                        truck.truckNumber.toLowerCase().includes(searchTerm)
-                );
+                const filteredTrucks = this.filterTrucks(searchTerm);
 
-                const filteredTrailer = this.filteredData.trailers.filter(
-                    (trailer) =>
-                        trailer.trailerNumber.toLowerCase().includes(searchTerm)
-                );
-
-                this.filteredTruckCount = filteredTrucks.length;
-
-                this.filteredTrailerCount = filteredTrailer.length;
+                const filteredTrailer = this.filterTrailer(searchTerm);
 
                 // If there is empty array in filteredTrucks or filteredTrailer
                 if (
@@ -122,6 +116,26 @@ export class TaInputDropdownTableComponent implements OnInit {
         }
     }
 
+    public filterTrucks(searchString: string): Trucks[] {
+        const filterTrucks = this.filteredData.trucks.filter((truck) =>
+            truck.truckNumber.toLowerCase().includes(searchString)
+        );
+
+        this.filteredTruckCount = filterTrucks.length;
+
+        return filterTrucks;
+    }
+
+    public filterTrailer(searchString: string): Trailer[] {
+        const filterTrailer = this.filteredData.trailers.filter((trailer) =>
+            trailer.trailerNumber.toLowerCase().includes(searchString)
+        );
+
+        this.filteredTrailerCount = filterTrailer.length;
+
+        return filterTrailer;
+    }
+
     public highlight(trailerTruckNumber: string): string {
         if (!trailerTruckNumber || !this.lattersToHighlight)
             return trailerTruckNumber;
@@ -152,6 +166,15 @@ export class TaInputDropdownTableComponent implements OnInit {
         this.tooltip = tooltip;
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+
+        const subscribeToTooltip = tooltip.hidden.subscribe(() => {
+            this.filteredData.trucks = this.data.card.trucks;
+
+            this.filteredData.trailers = this.data.card.trailers;
+
+            subscribeToTooltip.unsubscribe();
+        });
+
         tooltip.open({ data: card });
 
         return;
