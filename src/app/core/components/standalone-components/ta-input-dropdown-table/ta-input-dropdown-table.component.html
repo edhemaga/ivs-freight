@@ -16,14 +16,14 @@
                 class="d-flex justify-content-center svg-holder"
                 [src]="'assets/svg/common/dropdown-truck.svg'"
                 [ngClass]="{
-                    'no-count': filteredData.truckCount === 0
+                    'no-count': !filteredData.truckCount
                 }"
             ></svg-icon>
 
             <span
                 class="d-flex justify-content-center"
                 [ngClass]="{
-                    'no-count-text': filteredData.truckCount === 0
+                    'no-count-text': !filteredData.truckCount
                 }"
             >
                 {{ filteredData.truckCount }}
@@ -35,14 +35,14 @@
                 class="d-flex justify-content-center svg-holder"
                 [src]="'assets/svg/common/dropdown-trailer.svg'"
                 [ngClass]="{
-                    'no-count': filteredData.trailerCount === 0
+                    'no-count': !filteredData.trailerCount
                 }"
             ></svg-icon>
 
             <span
                 class="d-flex justify-content-center"
                 [ngClass]="{
-                    'no-count-text': filteredData.trailerCount === 0
+                    'no-count-text': !filteredData.trailerCount
                 }"
             >
                 {{ filteredData.trailerCount }}
@@ -132,51 +132,55 @@
                         class="items-holder"
                         [ngClass]="{ 'hide-dropdown-items': truckDropdown }"
                     >
-                        <div
-                            class="table-list-dropdown-content-container d-flex"
+                        <ng-container
                             *ngFor="
                                 let truck of ownerFleet.trucks;
                                 let i = index
                             "
-                            (click)="
-                                goToDetailsPage(
-                                    truck,
-                                    '/list/truck/' + truck.id + '/details'
-                                )
-                            "
                         >
                             <div
-                                class="dropdown-animate d-flex align-items-center"
+                                class="table-list-dropdown-content-container d-flex"
+                                (click)="
+                                    goToDetailsPage(
+                                        truck,
+                                        '/list/truck/' + truck.id + '/details'
+                                    )
+                                "
                             >
-                                <!-- Truck Svg -->
-                                <div class="type-icon">
-                                    <svg-icon
-                                        [src]="
-                                            'assets/svg/common/trucks/' +
-                                            truck?.truckType.logoName
-                                        "
-                                    ></svg-icon>
-                                </div>
-
                                 <div
-                                    class="text-white"
-                                    [innerHTML]="
-                                        highlight(truck.truckNumber) | safeHtml
-                                    "
-                                ></div>
+                                    class="dropdown-animate d-flex align-items-center"
+                                >
+                                    <!-- Truck Svg -->
+                                    <div class="type-icon">
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/trucks/' +
+                                                truck?.truckType.logoName
+                                            "
+                                        ></svg-icon>
+                                    </div>
+
+                                    <div
+                                        class="text-white"
+                                        [innerHTML]="
+                                            highlight(truck.truckNumber)
+                                                | safeHtml
+                                        "
+                                    ></div>
+                                </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
                 </div>
             </ng-container>
 
             <!-- Separator -->
-            <ng-container *ngIf="ownerFleet.trailerCount > 0">
+            <ng-container *ngIf="ownerFleet.trailerCount">
                 <div class="separator"></div>
             </ng-container>
 
             <!-- Trailer Body -->
-            <ng-container *ngIf="ownerFleet.trailerCount > 0">
+            <ng-container *ngIf="ownerFleet.trailerCount">
                 <div class="fleet-container d-flex flex-column">
                     <!-- Body Head -->
 
@@ -222,41 +226,46 @@
                         class="items-holder"
                         [ngClass]="{ 'hide-dropdown-items': trailerDropdown }"
                     >
-                        <div
-                            class="table-list-dropdown-content-container d-flex"
+                        <ng-container
                             *ngFor="
                                 let trailer of ownerFleet.trailers;
                                 let i = index
                             "
-                            (click)="
-                                goToDetailsPage(
-                                    trailer,
-                                    '/list/trailer/' + trailer.id + '/details'
-                                )
-                            "
                         >
                             <div
-                                class="dropdown-animate d-flex align-items-center"
+                                class="table-list-dropdown-content-container d-flex"
+                                (click)="
+                                    goToDetailsPage(
+                                        trailer,
+                                        '/list/trailer/' +
+                                            trailer.id +
+                                            '/details'
+                                    )
+                                "
                             >
-                                <!-- Trailer Svg -->
-                                <div class="type-icon">
-                                    <svg-icon
-                                        [src]="
-                                            'assets/svg/common/trailers/' +
-                                            trailer?.trailerType.logoName
-                                        "
-                                    ></svg-icon>
-                                </div>
-
                                 <div
-                                    class="text-white"
-                                    [innerHTML]="
-                                        highlight(trailer.trailerNumber)
-                                            | safeHtml
-                                    "
-                                ></div>
+                                    class="dropdown-animate d-flex align-items-center"
+                                >
+                                    <!-- Trailer Svg -->
+                                    <div class="type-icon">
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/trailers/' +
+                                                trailer?.trailerType.logoName
+                                            "
+                                        ></svg-icon>
+                                    </div>
+
+                                    <div
+                                        class="text-white"
+                                        [innerHTML]="
+                                            highlight(trailer.trailerNumber)
+                                                | safeHtml
+                                        "
+                                    ></div>
+                                </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
                 </div>
             </ng-container>

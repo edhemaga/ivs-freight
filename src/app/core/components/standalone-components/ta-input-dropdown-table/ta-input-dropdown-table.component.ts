@@ -25,6 +25,7 @@ import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 
 // enums
 import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -43,6 +44,8 @@ import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-inp
 })
 export class TaInputDropdownTableComponent implements OnInit {
     @Input() data: DropdownData;
+
+    private destroy$ = new Subject<void>();
 
     public tooltip: NgbTooltip;
     public dropDownActive: number;
@@ -84,10 +87,7 @@ export class TaInputDropdownTableComponent implements OnInit {
                 const filteredTrailer = this.filterTrailer(searchTerm);
 
                 // If there is empty array in filteredTrucks or filteredTrailer
-                if (
-                    filteredTrucks.length === 0 &&
-                    filteredTrailer.length === 0
-                ) {
+                if (!filteredTrucks.length && !filteredTrailer.length) {
                     this.filteredData.trucks = this.data.card.trucks;
 
                     this.filteredData.trailers = this.data.card.trailers;
@@ -167,12 +167,16 @@ export class TaInputDropdownTableComponent implements OnInit {
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
 
-        const subscribeToTooltip = tooltip.hidden.subscribe(() => {
+        tooltip.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.filteredData.trucks = this.data.card.trucks;
 
-            this.filteredData.trailers = this.data.card.trailers;
+            this.lattersToHighlight = null;
 
-            subscribeToTooltip.unsubscribe();
+            this.filteredTruckCount = null;
+
+            this.filteredTrailerCount = null;
+
+            this.filteredData.trailers = this.data.card.trailers;
         });
 
         tooltip.open({ data: card });
