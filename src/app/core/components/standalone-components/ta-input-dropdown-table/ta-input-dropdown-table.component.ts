@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     NgbModule,
     NgbPopoverModule,
@@ -42,7 +42,7 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
-export class TaInputDropdownTableComponent implements OnInit {
+export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
     @Input() data: DropdownData;
 
     private destroy$ = new Subject<void>();
@@ -199,5 +199,10 @@ export class TaInputDropdownTableComponent implements OnInit {
             default:
                 break;
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
