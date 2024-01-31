@@ -18,9 +18,7 @@ export class TimeFormatPipe implements PipeTransform {
     }
 
     private formatTime(time: string): string {
-        if (!time) {
-            return '';
-        }
+        if (!time) return '';
 
         const [hour, minute] = time.split(':');
 

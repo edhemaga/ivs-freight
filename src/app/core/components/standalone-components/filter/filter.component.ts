@@ -352,9 +352,9 @@ export class FilterComponent implements OnInit {
 
     private timeAndPayFilter(): void {
         if (this.type === 'timeFilter') {
-            const d = new Date();
-            const pastYear = d.getFullYear() - 1;
-            const past2Year = d.getFullYear() - 2;
+            const date = new Date();
+            const pastYear = date.getFullYear() - 1;
+            const past2Year = date.getFullYear() - 2;
 
             this.lastYear = pastYear;
             this.last2Years = past2Year;
@@ -1289,7 +1289,6 @@ export class FilterComponent implements OnInit {
                     break;
                 case 'milesFilter':
                 case 'payFilter':
-                    //this.rangeForm.reset();
                     const maxNum = this.thousandSeparator.transform(
                         this.maxValueRange
                     );
