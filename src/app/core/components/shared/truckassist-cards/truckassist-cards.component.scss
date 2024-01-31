@@ -210,10 +210,10 @@
 
                     .bottom-item-body {
                         font-size: 14px;
-                        overflow: hidden;
+                        overflow-x: hidden;
                         line-height: 20px;
                         width: 100%;
-                        height: 20px;
+                        height: fit-content;
                         padding: 0 0 0 4px;
                         white-space: nowrap;
                         text-overflow: ellipsis;
@@ -349,31 +349,6 @@
                         }
 
                         // Styles owner page
-                        .fleet-holder {
-                            gap: 4px;
-
-                            .fleet {
-                                gap: 4px;
-                                font-size: 11px;
-
-                                .svg-holder {
-                                    height: 18px;
-                                    width: 18px;
-                                }
-
-                                .no-count-text {
-                                    color: $muted;
-                                }
-
-                                .no-count {
-                                    svg {
-                                        path {
-                                            fill: $ta-light-grey-6;
-                                        }
-                                    }
-                                }
-                            }
-                        }
 
                         .masked-number {
                             .masked {
@@ -381,6 +356,10 @@
                                 margin-left: 4px;
                             }
                         }
+                    }
+
+                    .line-height {
+                        height: 28px;
                     }
                 }
             }
@@ -675,4 +654,14 @@
             }
         }
     }
+}
+
+// Shared classes
+.gap {
+    gap: 4px;
+}
+
+.align-span {
+    position: relative;
+    top: 2px;
 }

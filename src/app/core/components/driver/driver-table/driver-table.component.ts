@@ -505,6 +505,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                hideActivationButton:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.APPLICANTS,
                 showLocationFilter:
                     this.selectedTab !==
                     ConstantStringTableComponentsEnum.APPLICANTS,
@@ -1326,6 +1329,38 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
+        ) {
+            let status = false;
+            let mappedEvent = [];
+            this.viewData.map((data) => {
+                event.tabData.data.map((element) => {
+                    if (data.id === element) {
+                        status = data.status;
+                        mappedEvent.push({
+                            ...data,
+                            data: {
+                                ...data,
+                                name: data?.fullName,
+                            },
+                        });
+                    }
+                });
+            });
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    data: null,
+                    array: mappedEvent,
+                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    type: status
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
         }
     }
 

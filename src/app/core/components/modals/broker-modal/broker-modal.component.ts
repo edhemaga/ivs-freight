@@ -53,7 +53,7 @@ import {
 } from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
-import { LoadModalComponent } from '../load-modal/load-modal.component';
+import { LoadModalComponent } from '../load-modal/components/load-modal/load-modal.component';
 import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
 import { BrokerResponse } from '../../../../../../appcoretruckassist/model/brokerResponse';
 import {

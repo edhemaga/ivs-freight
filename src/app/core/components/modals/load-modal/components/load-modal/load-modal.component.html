@@ -93,7 +93,9 @@
                                     <div
                                         class="popover-item"
                                         (click)="
-                                            handleTemplateSelectClick(template.id)
+                                            handleTemplateSelectClick(
+                                                template.id
+                                            )
                                         "
                                     >
                                         <p class="m-0">{{ template.name }}</p>
@@ -493,7 +495,7 @@
 
                     <!-- Pickup Stop  -->
 
-                    <app-load-stop
+                    <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('pickupStopOrder').value"
                         [isDelivery]="false"
@@ -719,7 +721,7 @@
                                     createNewStopItemsRow('pickup')
                                 "
                             >
-                                <app-load-stop-items
+                                <app-load-modal-stop-items
                                     [createNewStopItemsRow]="
                                         isCreatedNewStopItemsRow.pickup
                                     "
@@ -732,10 +734,10 @@
                                     (stopItemsValidStatusEmitter)="
                                         handleStopItemsValidStatusEmit($event)
                                     "
-                                ></app-load-stop-items>
+                                ></app-load-modal-stop-items>
                             </app-ta-custom-card>
                         </div>
-                    </app-load-stop>
+                    </app-load-modal-stop>
 
                     <!-- Extra Stops -->
 
@@ -743,11 +745,12 @@
                         <ng-container
                             *ngFor="
                                 let extraStop of loadExtraStops().controls;
-                                let indx = index
+                                let indx = index;
+                                trackBy: trackByIdentity
                             "
                         >
                             <div [formGroupName]="indx">
-                                <app-load-stop
+                                <app-load-modal-stop
                                     *ngIf="loadExtraStops().controls.length"
                                     [firstOrLast]="false"
                                     [stopNumber]="
@@ -1127,10 +1130,13 @@
                                                 )
                                             "
                                         >
-                                            <app-load-stop-items
+                                            <app-load-modal-stop-items
                                                 [createNewStopItemsRow]="
                                                     isCreatedNewStopItemsRow
                                                         .extraStops[indx]
+                                                "
+                                                [stopItemDropdownLists]="
+                                                    stopItemDropdownLists
                                                 "
                                                 (stopItemsDataValueEmitter)="
                                                     handleStopItemsDataValueEmit(
@@ -1144,17 +1150,17 @@
                                                         $event
                                                     )
                                                 "
-                                            ></app-load-stop-items>
+                                            ></app-load-modal-stop-items>
                                         </app-ta-custom-card>
                                     </div>
-                                </app-load-stop>
+                                </app-load-modal-stop>
                             </div>
                         </ng-container>
                     </div>
 
                     <!-- Delivery Stop -->
 
-                    <app-load-stop
+                    <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('deliveryStopOrder').value"
                         [isDelivery]="true"
@@ -1395,7 +1401,7 @@
                                     createNewStopItemsRow('delivery')
                                 "
                             >
-                                <app-load-stop-items
+                                <app-load-modal-stop-items
                                     [createNewStopItemsRow]="
                                         isCreatedNewStopItemsRow.delivery
                                     "
@@ -1408,10 +1414,10 @@
                                     (stopItemsValidStatusEmitter)="
                                         handleStopItemsValidStatusEmit($event)
                                     "
-                                ></app-load-stop-items>
+                                ></app-load-modal-stop-items>
                             </app-ta-custom-card>
                         </div>
-                    </app-load-stop>
+                    </app-load-modal-stop>
 
                     <!-- Stops Footer -->
 
@@ -1456,7 +1462,7 @@
             <!-- Financial -->
 
             <div class="load-modal-row">
-                <app-load-financial
+                <app-load-modal-financial
                     [firstHeaderTitle]="'Billing'"
                     [billing]="
                         loadModalBill
@@ -1566,7 +1572,8 @@
                                     *ngFor="
                                         let additional of additionalBillings()
                                             .controls;
-                                        let indx = index
+                                        let indx = index;
+                                        trackBy: trackByIdentity
                                     "
                                     [ngStyle]="{ 'margin-bottom': '4px' }"
                                 >
@@ -1661,7 +1668,7 @@
                             ></app-ta-input>
                         </div>
                     </div>
-                </app-load-financial>
+                </app-load-modal-financial>
             </div>
 
             <!-- Comments -->
