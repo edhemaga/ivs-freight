@@ -1,4 +1,4 @@
-import { ChartColor, ChartType, Chart } from 'chart.js';
+import { ChartColor, ChartType } from 'chart.js';
 import { AnnotationPositionEnum, AxisPositionEnum } from '../enums/chart-enums';
 import { BarChartConfig } from '../../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
 
