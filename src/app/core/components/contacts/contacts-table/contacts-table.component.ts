@@ -448,7 +448,6 @@ export class ContactsTableComponent
 
     // Set Countact Data
     setContactData(tdata: DataForCardsAndTables): void {
-        console.log(tdata);
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
