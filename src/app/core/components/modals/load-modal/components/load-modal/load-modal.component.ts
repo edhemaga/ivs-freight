@@ -292,7 +292,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public tags: TagResponse[] = [];
 
     // comments
-    public comments: any[] = [];
+    public comments: CommentCompanyUser[] = [];
+    private editedCommentId: number;
 
     // map routes
     public loadStopRoutes: MapRouteModel[] = [];
@@ -2819,6 +2820,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (this.comments.some((comment) => comment.isCommenting)) return;
 
         const newComment: CommentCompanyUser = {
+            commentId: 0,
             companyUser: {
                 name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
                 avatar: this.companyUser.avatar,
@@ -2909,6 +2911,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     commentContent: commentData.commentContent,
                     isCommenting: false,
                 };
+
+                this.editedCommentId = commentData.commentId;
+
+                console.log('this.editedCommentId', this.editedCommentId);
 
                 break;
             case ConstantStringEnum.DELETE:
@@ -3516,6 +3522,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 ConstantStringEnum.CREATE
             ),
+            comment: {
+                commentId: this.comments[this.comments.length - 1]?.commentId,
+                commentContent:
+                    this.comments[this.comments.length - 1]?.commentContent,
+            },
             files: documents,
             tags: tagsArray,
             filesForDeleteIds: this.filesForDelete,
@@ -3524,6 +3535,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
         };
+
+        console.log('newData', newData);
 
         this.loadService
             .updateLoad(newData)
@@ -3646,6 +3659,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private populateLoadModalData(loadModalData: LoadResponse): void {
+        console.log('loadModalData', loadModalData);
         const {
             loadNumber,
             type,
@@ -3663,6 +3677,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadedMiles,
             totalMiles,
             totalTimeHours,
+            comments,
         } = loadModalData;
 
         const pickupStop = stops[0];
@@ -3746,6 +3761,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // documents
         this.documents = files;
+
+        // comments
+        this.comments = comments.reverse().map((comment) => {
+            return {
+                commentId: comment.id,
+                commentContent: comment.commentContent,
+                companyUser: {
+                    name: comment.companyUser.fullName,
+                    avatar: comment.companyUser.avatar,
+                },
+                isCommenting: false,
+            };
+        });
 
         // dropdowns
         this.onSelectDropdown(editedBroker, ConstantStringEnum.BROKER);

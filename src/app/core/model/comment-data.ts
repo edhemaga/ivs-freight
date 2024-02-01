@@ -1,4 +1,5 @@
 export interface CommentData {
+    commentId?: number;
     commentDate?: string;
     commentTime?: string;
     commentContent?: string;

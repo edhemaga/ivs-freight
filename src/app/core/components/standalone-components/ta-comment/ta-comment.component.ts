@@ -59,6 +59,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.sanitazeAvatar();
+
+        this.commentData && this.patchCommentData();
     }
 
     ngAfterViewInit(): void {
@@ -138,6 +140,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
                     ConstantStringCommentEnum.COMMENT_TIME_FORMAT
                 );
                 const commentData: CommentData = {
+                    commentId: this.commentData.commentId,
                     commentDate: dateNow,
                     commentTime: timeNow,
                     commentContent: this.commentInput.nativeElement.textContent,
@@ -178,5 +181,15 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
             default:
                 break;
         }
+    }
+
+    private patchCommentData(): void {
+        this.isCommenting = false;
+        this.isDisabled = false;
+
+        setTimeout(() => {
+            this.commentInput.nativeElement.textContent =
+                this.commentData.commentContent;
+        }, 100);
     }
 }

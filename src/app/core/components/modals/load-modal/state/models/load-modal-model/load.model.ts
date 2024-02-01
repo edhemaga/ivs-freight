@@ -41,6 +41,10 @@ export interface Load {
     files: Blob[];
     tags: Tags[];
     filesForDeleteIds?: number[];
+    comment?: {
+        commentId: number;
+        commentContent: string;
+    };
     note: string;
     commentId?: number;
     commentCommentContent?: string;

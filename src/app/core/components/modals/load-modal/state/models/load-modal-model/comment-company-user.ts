@@ -1,4 +1,5 @@
 export interface CommentCompanyUser {
+    commentId: number;
     companyUser: {
         name: string;
         avatar: string;
