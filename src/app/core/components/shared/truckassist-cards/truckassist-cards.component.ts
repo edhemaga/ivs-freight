@@ -139,6 +139,7 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() rows: number[];
     @Input() displayRowsFront: CardRows;
     @Input() displayRowsBack: CardRows;
+    @Input() activeTab: string;
 
     public isCardFlipped: Array<number> = [];
     public tooltip;

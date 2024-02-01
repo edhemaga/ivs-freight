@@ -26,6 +26,10 @@ import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/se
 
 //enums
 import { ContractComponentEnum } from '../state/enum/contract-string.enum';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
+// constants
+import { TableContacts } from 'src/app/core/utils/constants/table-components.constants';
 
 //model
 import {
@@ -35,15 +39,21 @@ import {
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import {
+    ContactBackFilter,
     ContactEmail,
     ContactPhone,
 } from '../state/interface/contract-inteface';
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
 import {
     TableBodyActionsContract,
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
+import { DropdownItem } from '../../shared/model/cardTableData';
+import { CardRows } from '../../shared/model/cardData';
+
+// data for cards
+import { DisplayContactsConfiguration } from '../contacts-card-data';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 
 @Component({
     selector: 'app-contacts-table',
@@ -56,15 +66,15 @@ export class ContactsTableComponent
 {
     private destroy$ = new Subject<void>();
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
-    resizeObserver: ResizeObserver;
-    contacts: ContactState[] = [];
-    backFilterQuery = {
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: any[] = [];
+    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public resizeObserver: ResizeObserver;
+    public contacts: ContactState[] = [];
+    public backFilterQuery = {
         labelId: undefined,
         pageIndex: 1,
         pageSize: 25,
@@ -74,7 +84,21 @@ export class ContactsTableComponent
         searchTwo: undefined,
         searchThree: undefined,
     };
-    mapingIndex: number = 0;
+
+    public mapingIndex: number = 0;
+
+    public cardTitle: string = DisplayContactsConfiguration.cardTitle;
+
+    // Page
+    public page: string = DisplayContactsConfiguration.page;
+
+    //  Number of rows in card
+    public rows: number = DisplayContactsConfiguration.rows;
+
+    public sendDataToCardsFront: CardRows[] =
+        DisplayContactsConfiguration.displayRowsFrontConctacts;
+    public sendDataToCardsBack: CardRows[] =
+        DisplayContactsConfiguration.displayRowsBackConctacts;
 
     constructor(
         private modalService: ModalService,
@@ -116,15 +140,14 @@ export class ContactsTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response?.event?.width) {
-                    this.columns = this.columns.map((c) => {
+                    this.columns = this.columns.map((col) => {
                         if (
-                            c.title ===
+                            col.title ===
                             response.columns[response.event.index].title
-                        ) {
-                            c.width = response.event.width;
-                        }
+                        )
+                            col.width = response.event.width;
 
-                        return c;
+                        return col;
                     });
                 }
             });
@@ -135,12 +158,11 @@ export class ContactsTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response?.column) {
-                    this.columns = this.columns.map((c) => {
-                        if (c.field === response.column.field) {
-                            c.hidden = response.column.hidden;
-                        }
+                    this.columns = this.columns.map((col) => {
+                        if (col.field === response.column.field)
+                            col.hidden = response.column.hidden;
 
-                        return c;
+                        return col;
                     });
                 }
             });
@@ -158,10 +180,14 @@ export class ContactsTableComponent
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (searchEvent.action === ComponentsTableEnum.API) {
+                        if (
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.API
+                        ) {
                             this.contactBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action === ComponentsTableEnum.STORE
+                            searchEvent.action ===
+                            ConstantStringTableComponentsEnum.STORE
                         ) {
                             this.sendContactData();
                         }
@@ -175,14 +201,15 @@ export class ContactsTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // Add Contact
-                if (res?.animation === ComponentsTableEnum.ADD) {
+                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
                     this.viewData.push(this.mapContactData(res.data));
 
                     this.viewData = this.viewData.map(
                         (contact: CompanyContactResponse) => {
+                            // TODO this gives error when uncomented
                             // if (contact.id === res.id) {
                             //     contact.actionAnimation =
-                            //         ComponentsTableEnum.ADD;
+                            //         ConstantStringTableComponentsEnum.ADD;
                             // }
 
                             return contact;
@@ -201,15 +228,18 @@ export class ContactsTableComponent
                     this.updateDataCount();
                 }
                 // Update Contact
-                else if (res?.animation === ComponentsTableEnum.UPDATE) {
+                else if (
+                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
+                ) {
                     const updatedContact = this.mapContactData(res.data, true);
 
                     this.viewData = this.viewData.map(
                         (contact: CompanyContactResponse) => {
+                            // TODO this gives error when uncomented
                             // if (contact.id === res.id) {
                             //     contact = updatedContact;
                             //     contact.actionAnimation =
-                            //         ComponentsTableEnum.UPDATE;
+                            //         ConstantStringTableComponentsEnum.UPDATE;
                             // }
 
                             return contact;
@@ -226,14 +256,17 @@ export class ContactsTableComponent
                     }, 1000);
                 }
                 // Delete Contact
-                else if (res?.animation === ComponentsTableEnum.DELETE) {
+                else if (
+                    res?.animation === ConstantStringTableComponentsEnum.DELETE
+                ) {
                     let contactIndex: number;
 
                     this.viewData = this.viewData.map(
                         (contact: CompanyContactResponse, index: number) => {
+                            // TODO this gives error when uncomented
                             // if (contact.id === res.id) {
                             //     contact.actionAnimation =
-                            //         ComponentsTableEnum.DELETE;
+                            //         ConstantStringTableComponentsEnum.DELETE;
                             //     contactIndex = index;
                             // }
 
@@ -268,10 +301,11 @@ export class ContactsTableComponent
                             this.viewData = this.viewData.map(
                                 (contact: CompanyContactResponse) => {
                                     response.map((res) => {
-                                        // if (contact.id === res.id) {
-                                        //     contact.actionAnimation =
-                                        //         ComponentsTableEnum.DELETE_MULTIPLE;
-                                        // }
+                                        //     TODO this gives error when uncomented
+                                        //     if (contact.id === res.id) {
+                                        //         contact.actionAnimation =
+                                        //         ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                                        //     }
                                     });
 
                                     return contact;
@@ -312,8 +346,10 @@ export class ContactsTableComponent
             });
         });
 
-        this.resizeObserver.observe(
-            document.querySelector(ComponentsTableEnum.TABLE_CONTAINER)
+        this.resizeObserver?.observe(
+            document.querySelector(
+                ConstantStringTableComponentsEnum.TABLE_CONTAINER
+            )
         );
     }
 
@@ -325,14 +361,16 @@ export class ContactsTableComponent
                 showLabelFilter: true,
                 viewModeOptions: [
                     {
-                        name: ComponentsTableEnum.LIST,
+                        name: ConstantStringTableComponentsEnum.LIST,
                         active:
-                            this.activeViewMode === ComponentsTableEnum.LIST,
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.LIST,
                     },
                     {
-                        name: ComponentsTableEnum.CARD,
+                        name: ConstantStringTableComponentsEnum.CARD,
                         active:
-                            this.activeViewMode === ComponentsTableEnum.CARD,
+                            this.activeViewMode ===
+                            ConstantStringTableComponentsEnum.CARD,
                     },
                 ],
             },
@@ -362,7 +400,7 @@ export class ContactsTableComponent
         this.tableData = [
             {
                 title: ContractComponentEnum.CONTACTS,
-                field: ComponentsTableEnum.ACTIVE,
+                field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
@@ -409,11 +447,11 @@ export class ContactsTableComponent
     }
 
     // Set Countact Data
-    setContactData(td: any) {
-        this.columns = td.gridColumns;
+    setContactData(tdata: DataForCardsAndTables): void {
+        this.columns = tdata.gridColumns;
 
-        if (td.data.length) {
-            this.viewData = td.data;
+        if (tdata.data.length) {
+            this.viewData = tdata.data;
             this.viewData = this.viewData.map(
                 (data: CompanyContactResponse) => {
                     return this.mapContactData(data);
@@ -425,7 +463,7 @@ export class ContactsTableComponent
     }
 
     // Map Contact Data
-    mapContactData(data: any, dontMapIndex?: boolean) {
+    public mapContactData(data: any, dontMapIndex?: boolean): void {
         if (!data?.avatar && !dontMapIndex) {
             this.mapingIndex++;
         }
@@ -458,115 +496,18 @@ export class ContactsTableComponent
                 : null,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownContactContent(data),
+                content: this.getDropdownContactContent(),
             },
         };
     }
-    getDropdownContactContent(data: any) {
-        return [
-            {
-                title: 'Edit',
-                name: 'edit-contact',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: 'regular',
-            },
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Send SMS',
-                name: 'send-sms',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Delete',
-                name: 'delete-contact',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'delete',
-            },
-        ];
+    public getDropdownContactContent(): DropdownItem[] {
+        return TableContacts.DROPDOWN_CONTACTS_CONTENT;
     }
     // Get Avatar Color
-    getAvatarColors() {
-        let textColors: string[] = [
-            '#6D82C7',
-            '#4DB6A2',
-            '#E57373',
-            '#E3B00F',
-            '#BA68C8',
-            '#BEAB80',
-            '#81C784',
-            '#FF8A65',
-            '#64B5F6',
-            '#F26EC2',
-            '#A1887F',
-            '#919191',
-        ];
+    public getAvatarColors(): { background: string; color: string } {
+        const textColors: string[] = TableContacts.TEXT_COLORS;
 
-        let backgroundColors: string[] = [
-            '#DAE0F1',
-            '#D2EDE8',
-            '#F9DCDC',
-            '#F8EBC2',
-            '#EED9F1',
-            '#EFEADF',
-            '#DFF1E0',
-            '#FFE2D8',
-            '#D8ECFD',
-            '#FCDAF0',
-            '#E7E1DF',
-            '#E3E3E3',
-        ];
+        const backgroundColors: string[] = TableContacts.BACKGROUND_COLORS;
 
         this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 
@@ -577,19 +518,10 @@ export class ContactsTableComponent
     }
 
     // Contact Back Filter
-    contactBackFilter(
-        filter: {
-            labelId: number | undefined;
-            pageIndex: number;
-            pageSize: number;
-            companyId: number | undefined;
-            sort: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
-        },
+    public contactBackFilter(
+        filter: ContactBackFilter,
         isShowMore?: boolean
-    ) {
+    ): void {
         this.contactService
             .getContacts(
                 filter.labelId,
@@ -687,11 +619,13 @@ export class ContactsTableComponent
     }
     // On Toolbar Actions
     onToolBarAction(event: TableToolBarActionActionsContract) {
-        if (event.action === ComponentsTableEnum.OPEN_MODAL) {
+        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
             this.modalService.openModal(ContactModalComponent, {
-                size: ComponentsTableEnum.SMALL,
+                size: ConstantStringTableComponentsEnum.SMALL,
             });
-        } else if (event.action === ComponentsTableEnum.TAB_SELECTED) {
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
+        ) {
             this.mapingIndex = 0;
 
             this.selectedTab = event.tabData.field;
@@ -699,7 +633,9 @@ export class ContactsTableComponent
             this.backFilterQuery.pageIndex = 1;
 
             this.setContactData(event.tabData);
-        } else if (event.action === ComponentsTableEnum.VIEW_MODE) {
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
+        ) {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;
@@ -708,7 +644,7 @@ export class ContactsTableComponent
 
     // On Head Actions
     public onTableHeadActions(event: TableHeadActionContract) {
-        if (event.action === ComponentsTableEnum.SORT) {
+        if (event.action === ConstantStringTableComponentsEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
 
@@ -725,26 +661,32 @@ export class ContactsTableComponent
 
     // On Body Actions
     public onTableBodyActions(event: TableBodyActionsContract): void {
-        if (event.type === ComponentsTableEnum.SHOW_MORE) {
+        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
         } else if (event.type === ContractComponentEnum.EDIT_CONTACT) {
             this.modalService.openModal(
                 ContactModalComponent,
-                { size: ComponentsTableEnum.SMALL },
+                { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,
-                    type: ComponentsTableEnum.EDIT,
+                    type: ConstantStringTableComponentsEnum.EDIT,
                 }
             );
-        } else if (event.type === ContractComponentEnum.DELETE_CONTACT) {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.DELTETE_CONTACT
+        ) {
             this.contactService
                 .deleteCompanyContactById(event.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
-        } else if (event.type === ComponentsTableEnum.LABLE_CHANGE) {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.UPDATE_LABEL
+        ) {
             this.saveContractLabel(event.data);
-        } else if (event.type === ComponentsTableEnum.UPDATE_LABLE) {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.UPDATE_LABEL
+        ) {
             this.updateCompanyContactLabel(event);
         }
     }

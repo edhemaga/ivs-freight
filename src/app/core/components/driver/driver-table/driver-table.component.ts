@@ -110,11 +110,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public resizeObserver: ResizeObserver;
     public mapingIndex: number = 0;
 
-    //Data to display from model Active
+    //Data to display from model Active & Inactive
     public displayRowsFront: CardRows[] =
         DisplayDriverConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
         DisplayDriverConfiguration.displayRowsActiveBack;
+
+    //Data to display from model Applicants
+    public displayRowsFrontApplicants: CardRows[] =
+        DisplayDriverConfiguration.displayRowsFrontApplicants;
+    public displayRowsBackApplicants: CardRows[] =
+        DisplayDriverConfiguration.displayRowsBackApplicants;
 
     //Title
     public cardTitle: string = DisplayDriverConfiguration.cardTitle;
@@ -122,6 +128,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Page
     public page: string = DisplayDriverConfiguration.page;
 
+    public activeTab: string;
     //  Number of rows in card
     public rows: number = DisplayDriverConfiguration.rows;
 
@@ -644,6 +651,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (ConstantStringTableComponentsEnum.APPLICANTS) {
             this.applicantTabActive = true;
 
+            this.activeTab = ConstantStringTableComponentsEnum.APPLICANTS;
+
             this.applicantData = this.applicantQuery.getAll();
 
             return this.applicantData?.length ? this.applicantData : [];
@@ -679,11 +688,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : this.mapDriverData(data);
             });
 
-            // Set data for cards based on tab active
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? ((this.sendDataToCardsFront = this.displayRowsFront),
-                  (this.sendDataToCardsBack = this.displayRowsBack))
-                : null;
+            // Set data for cards based on selected tab
+            this.sendDataToCardsOnTabSwitch();
 
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
@@ -691,6 +697,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = [];
         }
         this.driverTableData = this.viewData;
+    }
+
+    public sendDataToCardsOnTabSwitch(): void {
+        switch (this.selectedTab) {
+            case ConstantStringTableComponentsEnum.INACTIVE:
+                this.sendDataToCardsFront = this.displayRowsFront;
+                this.sendDataToCardsBack = this.displayRowsBack;
+                break;
+
+            case ConstantStringTableComponentsEnum.APPLICANTS:
+                this.cardTitle = ConstantStringTableComponentsEnum.NAME;
+                this.sendDataToCardsFront = this.displayRowsFrontApplicants;
+                this.sendDataToCardsBack = this.displayRowsBackApplicants;
+                break;
+
+            default:
+                this.sendDataToCardsFront = this.displayRowsFront;
+                this.sendDataToCardsBack = this.displayRowsBack;
+                break;
+        }
     }
 
     // TODO find model for this data
