@@ -7,25 +7,50 @@ export class DisplayDriverConfiguration {
 
     static cardTitle: string = 'fullName';
 
-    // Data for applicants
+    // Data for applicants front
+    static displayRowsFrontApplicants: CardRows[] = [
+        {
+            title: 'Status',
+            endpoint: 'no-endpoint',
+        },
+
+        {
+            title: 'Application Process',
+            endpoint: 'tableApplicantProgress',
+        },
+
+        {
+            title: 'CDL Expiration',
+            endpoint: 'tableCdl.expirationDays',
+            secondEndpoint: 'tableCdl.percentage',
+        },
+
+        {
+            title: 'Medical Expiration',
+            endpoint: 'tableMedical.expirationDays',
+            secondEndpoint: 'tableMedical.percentage',
+        },
+    ];
+
+    // Data for applicants back
     static displayRowsBackApplicants: CardRows[] = [
         {
-            title: 'Shipping Hours',
+            title: 'Date of Birth',
             endpoint: 'no-endpoint',
         },
 
         {
-            title: 'Receiving Hours',
-            endpoint: 'no-endpoint',
+            title: 'Phone',
+            endpoint: 'phone',
         },
 
         {
-            title: 'Avg. Pickup Time',
-            endpoint: 'no-endpoint',
+            title: 'Email',
+            endpoint: 'email',
         },
 
         {
-            title: 'Avg. Delivery Time',
+            title: 'Date Accepted',
             endpoint: 'no-endpoint',
         },
     ];
