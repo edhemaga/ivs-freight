@@ -49,8 +49,11 @@ import {
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/cardTableData';
-import { DisplayContactsConfiguration } from '../contacts-card-data';
 import { CardRows } from '../../shared/model/cardData';
+
+// data for cards
+import { DisplayContactsConfiguration } from '../contacts-card-data';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 
 @Component({
     selector: 'app-contacts-table',
@@ -141,9 +144,8 @@ export class ContactsTableComponent
                         if (
                             col.title ===
                             response.columns[response.event.index].title
-                        ) {
+                        )
                             col.width = response.event.width;
-                        }
 
                         return col;
                     });
@@ -157,9 +159,8 @@ export class ContactsTableComponent
             .subscribe((response) => {
                 if (response?.column) {
                     this.columns = this.columns.map((col) => {
-                        if (col.field === response.column.field) {
+                        if (col.field === response.column.field)
                             col.hidden = response.column.hidden;
-                        }
 
                         return col;
                     });
@@ -446,7 +447,8 @@ export class ContactsTableComponent
     }
 
     // Set Countact Data
-    setContactData(tdata: any) {
+    setContactData(tdata: DataForCardsAndTables): void {
+        console.log(tdata);
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -503,7 +505,7 @@ export class ContactsTableComponent
         return TableContacts.DROPDOWN_CONTACTS_CONTENT;
     }
     // Get Avatar Color
-    getAvatarColors() {
+    public getAvatarColors(): { background: string; color: string } {
         const textColors: string[] = TableContacts.TEXT_COLORS;
 
         const backgroundColors: string[] = TableContacts.BACKGROUND_COLORS;
