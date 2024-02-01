@@ -291,6 +291,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public filesForDelete: number[] = [];
     public tags: TagResponse[] = [];
 
+    public isDocumentsCardOpen: boolean = false;
+
     // comments
     public comments: any[] = [];
 
@@ -2957,6 +2959,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 size: ConstantStringEnum.LOAD,
             });
         }, 200);
+    }
+
+    public handleOpenCloseDocumentsCard(openClose: boolean): void {
+        this.isDocumentsCardOpen = openClose;
     }
 
     private loadModalData() {
