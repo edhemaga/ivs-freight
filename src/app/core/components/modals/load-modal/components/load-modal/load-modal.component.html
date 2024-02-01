@@ -1710,9 +1710,11 @@
                 <app-ta-custom-card
                     [hasCounter]="documents?.length"
                     [cardName]="'Document'"
-                    [isCardOpen]="documents?.length > 0"
+                    [isCardOpen]="documents?.length"
+                    (onOpenCard)="handleOpenCloseDocumentsCard($event)"
                 >
                     <app-ta-upload-files
+                        *ngIf="isDocumentsCardOpen"
                         [files]="documents"
                         [size]="'medium'"
                         [showDropzone]="true"
