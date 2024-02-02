@@ -534,11 +534,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.dashboardService.getOverallCompanyDuration$
             .pipe(takeUntil(this.destroy$))
             .subscribe((companyDuration: number) => {
-                if (companyDuration) {
-                    this.overallCompanyDuration = companyDuration;
+                this.overallCompanyDuration = companyDuration;
 
-                    this.setCustomSubPeriodList(this.overallCompanyDuration);
-                }
+                this.setCustomSubPeriodList(this.overallCompanyDuration);
             });
     }
 

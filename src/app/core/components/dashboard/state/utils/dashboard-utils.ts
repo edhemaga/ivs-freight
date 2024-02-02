@@ -76,7 +76,7 @@ export class DashboardUtils {
     ): FilteredSubperiod {
         let matchingIdList: number[] = [];
 
-        if (selectedDaysRange >= 1 && selectedDaysRange <= 2) {
+        if (selectedDaysRange >= 0 && selectedDaysRange <= 2) {
             matchingIdList =
                 DashboardSubperiodConstants.CUSTOM_PERIOD_ID_LIST_1;
         }
