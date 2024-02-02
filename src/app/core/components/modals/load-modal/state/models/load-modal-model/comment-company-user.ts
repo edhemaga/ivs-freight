@@ -1,9 +1,11 @@
 export interface CommentCompanyUser {
-    commentId: number;
     companyUser: {
+        id: number;
         name: string;
         avatar: string;
     };
+    commentId: number;
     commentContent: string;
+    commentDate: string;
     isCommenting?: boolean;
 }

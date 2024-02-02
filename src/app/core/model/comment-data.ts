@@ -5,5 +5,6 @@ export interface CommentData {
     commentContent?: string;
     commentIndex?: number;
     isEditCancel?: boolean;
+    isEditConfirm?: boolean;
     btnType: string;
 }

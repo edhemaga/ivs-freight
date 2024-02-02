@@ -26,6 +26,7 @@ import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
+import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-ta-comment',
@@ -40,6 +41,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     @Input() commentData: CommentCompanyUser;
     @Input() commentIndex: number;
     @Input() isMe?: boolean = false;
+    @Input() isEditButtonDisabled?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
 
@@ -60,7 +62,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.sanitazeAvatar();
 
-        this.commentData && this.patchCommentData();
+        this.commentData.commentContent && this.patchCommentData();
     }
 
     ngAfterViewInit(): void {
@@ -130,8 +132,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
                     this.isEditing = false;
                 }
 
-                const dateAndTimeNow = moment().format(
-                    ConstantStringCommentEnum.COMMENT_DATE_TIME_FORMAT
+                const dateAndTimeNow = convertDateFromBackendToDateAndTime(
+                    new Date()
                 );
                 const dateNow = moment().format(
                     ConstantStringCommentEnum.COMMENT_DATE_FORMAT
@@ -145,6 +147,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
                     commentTime: timeNow,
                     commentContent: this.commentInput.nativeElement.textContent,
                     commentIndex: this.commentIndex,
+                    isEditConfirm: !!this.commentData.commentId,
                     btnType,
                 };
 
@@ -191,5 +194,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
             this.commentInput.nativeElement.textContent =
                 this.commentData.commentContent;
         }, 100);
+
+        this.commentDate = this.commentData.commentDate;
     }
 }
