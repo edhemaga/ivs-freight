@@ -69,16 +69,18 @@
             </ng-container>
 
             <ng-container *ngIf="!isCommenting">
-                <div
-                    class="d-flex justify-content-center align-items-center edit-icon-container"
-                >
-                    <svg-icon
-                        class="icon"
-                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                        [svgStyle]="{ 'width.px': 13, 'height.px': 13 }"
-                        (click)="handleBtnActionClick('Edit')"
-                    ></svg-icon>
-                </div>
+                <ng-container *ngIf="!isEditButtonDisabled">
+                    <div
+                        class="d-flex justify-content-center align-items-center edit-icon-container"
+                    >
+                        <svg-icon
+                            class="icon"
+                            src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                            [svgStyle]="{ 'width.px': 13, 'height.px': 13 }"
+                            (click)="handleBtnActionClick('Edit')"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
 
                 <div
                     class="d-flex justify-content-center align-items-center delete-icon-container"
