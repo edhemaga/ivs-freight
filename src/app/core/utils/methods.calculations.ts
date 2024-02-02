@@ -117,6 +117,10 @@ export const combineDateAndTimeToBackend = (date: string, time: string) => {
     }
     return moment(new Date(date + ' ' + time)).toISOString(true);
 };
+//------------------------------- DATE FROM BACKEND TO DATE AND TIME  -------------------------------
+export const convertDateFromBackendToDateAndTime = (date: Date | string) => {
+    return moment(new Date(date)).format('MM/DD/YY, hh:mm A');
+};
 
 //------------------------------- Convert thousand separator in number -------------------------------
 export const convertThousanSepInNumber = (value: string) => {

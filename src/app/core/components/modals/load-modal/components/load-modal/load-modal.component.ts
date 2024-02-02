@@ -34,7 +34,6 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { ReviewCommentModal } from '../../../../shared/ta-user-review/ta-user-review.component';
 import { LoadFinancialComponent } from '../load-modal-financial/load-modal-financial.component';
 import { BrokerModalComponent } from '../../../broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../../shipper-modal/shipper-modal.component';
@@ -57,7 +56,6 @@ import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../../services/form/form.service';
 import { LoadTService } from '../../../../load/state/load.service';
-import { CommentsService } from '../../../../../services/comments/comments.service';
 
 // animations
 import { fadeInAnimation } from '../../state/utils/animations/fade-in.animation';
@@ -65,6 +63,7 @@ import { fadeInAnimation } from '../../state/utils/animations/fade-in.animation'
 // helpers
 import {
     convertDateFromBackend,
+    convertDateFromBackendToDateAndTime,
     convertDateToBackend,
     convertThousanSepInNumber,
 } from '../../../../../utils/methods.calculations';
@@ -84,9 +83,7 @@ import { ConstantStringEnum } from '../../state/enums/load-modal.enum';
 
 // models
 import {
-    CreateCommentCommand,
     SignInResponse,
-    UpdateCommentCommand,
     LoadModalResponse,
     CreateLoadTemplateCommand,
     RoutingResponse,
@@ -291,8 +288,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public filesForDelete: number[] = [];
     public tags: TagResponse[] = [];
 
+    public isDocumentsCardOpen: boolean = false;
+
     // comments
-    public comments: any[] = [];
+    public comments: CommentCompanyUser[] = [];
+    private editedCommentId: number;
+
+    public isCommenting: boolean = false;
+    public isCommented: boolean = false;
+    public isCommentEdited: boolean = false;
 
     // map routes
     public loadStopRoutes: MapRouteModel[] = [];
@@ -318,7 +322,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
-        private commentsService: CommentsService,
         private loadService: LoadTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
@@ -2796,111 +2799,37 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public changeCommentsEvent(comments: ReviewCommentModal): void {
-        switch (comments.action) {
-            case ConstantStringEnum.DELETE_2:
-                this.deleteComment(comments);
-
-                break;
-            case ConstantStringEnum.ADD:
-                this.addComment(comments);
-
-                break;
-            case ConstantStringEnum.UPDATE:
-                this.updateComment(comments);
-
-                break;
-            default:
-                break;
-        }
-    }
-
     public createComment(): void {
         if (this.comments.some((comment) => comment.isCommenting)) return;
 
         const newComment: CommentCompanyUser = {
+            commentId: 0,
             companyUser: {
+                id: this.companyUser.userId,
                 name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
                 avatar: this.companyUser.avatar,
             },
             commentContent: null,
+            commentDate: null,
             isCommenting: true,
         };
 
+        this.isCommenting = true;
+        this.isCommented = true;
+
         this.comments = [...this.comments, newComment];
-
-        /*  if (this.comments.some((item) => item.isNewReview))  return;
-        
-
-        this.comments.unshift({
-            companyUser: {
-                fullName: this.companyUser.firstName.concat(
-                    EMPTY_SPACE_STRING,
-                    this.companyUser.lastName
-                ),
-                avatar: this.companyUser.avatar,
-            },
-            commentContent: EMPTY_STRING,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isNewReview: true,
-        }); */
-    }
-
-    public addComment(comments: ReviewCommentModal): void {
-        const comment: CreateCommentCommand = {
-            entityTypeCommentId: 2,
-            /*  entityTypeId: this.editData.id, */
-            commentContent: comments.data.commentContent,
-        };
-
-        this.commentsService
-            .createComment(comment)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    this.comments = comments.sortData.map((item, index) => {
-                        if (index === 0) {
-                            return {
-                                ...item,
-                                id: res.id,
-                            };
-                        }
-                        return item;
-                    });
-                },
-                error: () => {},
-            });
-    }
-
-    public deleteComment(comments: ReviewCommentModal): void {
-        this.comments = comments.sortData;
-
-        this.commentsService
-            .deleteCommentById(comments.data)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-    }
-
-    public updateComment(comments: ReviewCommentModal): void {
-        this.comments = comments.sortData;
-
-        const comment: UpdateCommentCommand = {
-            id: comments.data.id,
-            commentContent: comments.data.commentContent,
-        };
-
-        this.commentsService
-            .updateComment(comment)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
     }
 
     public handleCommentActionEmit(commentData: CommentData): void {
         switch (commentData.btnType) {
             case ConstantStringEnum.CANCEL:
-                if (!commentData.isEditCancel)
+                if (!commentData.isEditCancel) {
                     this.comments.splice(commentData.commentIndex, 1);
+
+                    this.isCommented = false;
+                }
+
+                this.isCommenting = false;
 
                 break;
             case ConstantStringEnum.CONFIRM:
@@ -2910,9 +2839,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     isCommenting: false,
                 };
 
+                this.editedCommentId = commentData.commentId;
+
+                commentData.isEditConfirm && (this.isCommentEdited = true);
+
+                this.isCommenting = false;
+
                 break;
             case ConstantStringEnum.DELETE:
                 this.comments.splice(commentData.commentIndex, 1);
+
+                this.isCommented = false;
+                this.isCommenting = false;
 
                 break;
             default:
@@ -2957,6 +2895,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 size: ConstantStringEnum.LOAD,
             });
         }, 200);
+    }
+
+    public handleOpenCloseDocumentsCard(openClose: boolean): void {
+        this.isDocumentsCardOpen = openClose;
     }
 
     private loadModalData() {
@@ -3516,6 +3458,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 ConstantStringEnum.CREATE
             ),
+            comment: {
+                id:
+                    this.editedCommentId ??
+                    this.comments[this.comments.length - 1]?.commentId,
+                commentContent: this.editedCommentId
+                    ? this.comments.find(
+                          (comment) =>
+                              comment.commentId === this.editedCommentId
+                      ).commentContent
+                    : this.comments[this.comments.length - 1]?.commentContent,
+            },
             files: documents,
             tags: tagsArray,
             filesForDeleteIds: this.filesForDelete,
@@ -3663,6 +3616,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadedMiles,
             totalMiles,
             totalTimeHours,
+            comments,
         } = loadModalData;
 
         const pickupStop = stops[0];
@@ -3747,6 +3701,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // documents
         this.documents = files;
 
+        // comments
+        this.comments = comments.map((comment) => {
+            return {
+                companyUser: {
+                    id: comment.companyUser.id,
+                    name: comment.companyUser.fullName,
+                    avatar: comment.companyUser.avatar,
+                },
+                commentId: comment.id,
+                commentContent: comment.commentContent,
+                commentDate: convertDateFromBackendToDateAndTime(
+                    comment.createdAt
+                ),
+                isCommenting: false,
+            };
+        });
+
         // dropdowns
         this.onSelectDropdown(editedBroker, ConstantStringEnum.BROKER);
         this.onSelectDropdown(editedTruck, ConstantStringEnum.DISPATCHES);
@@ -3827,9 +3798,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         openClose: false,
                     });
 
-                this.loadExtraStopsDateRange[index] = extraStop.dateTo
-                    ? true
-                    : false;
+                this.loadExtraStopsDateRange[index] = !!extraStop.dateTo;
 
                 this.onSelectDropdown(
                     editedShipper,

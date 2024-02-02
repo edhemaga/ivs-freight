@@ -1,4 +1,6 @@
-import { AxisPositionEnum } from '../enums/chart-enums';
+import { ChartColor, ChartType } from 'chart.js';
+import { AnnotationPositionEnum, AxisPositionEnum } from '../enums/chart-enums';
+import { BarChartConfig } from '../../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
 
 export interface AxisGridLines {
     display: boolean;
@@ -28,4 +30,43 @@ export interface Axis {
     position: AxisPositionEnum;
     gridLines: AxisGridLines;
     ticks: AxisTicks;
+}
+
+export interface LegendAttributes {
+    title: string;
+    value: number;
+    image: string;
+    elementId: number | string | number[];
+}
+
+export interface OnHoverProperties {
+    name: string;
+    value: string;
+    percent: string;
+    color: ChartColor | ChartColor[];
+}
+
+export interface AnnotationConfig {
+    type: string;
+    axis: AnnotationPositionEnum;
+    color: string;
+    dash: number | number[];
+}
+
+export interface BasicChartConfig extends BarChartConfig {
+    loadRatePerMileValue?: number;
+    pricePerGallonValue?: number;
+    extendFull?: boolean;
+}
+
+export interface ChartDataProperties {
+    backgroundColor: string;
+    borderColor: string;
+    hoverBackgroundColor: string;
+    data: number[];
+    dataPercentages: number[];
+    label: string;
+    type: ChartType;
+    yAxisID: string;
+    id: number;
 }
