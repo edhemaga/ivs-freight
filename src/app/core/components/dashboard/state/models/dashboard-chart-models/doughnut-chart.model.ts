@@ -1,4 +1,4 @@
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfiguration, ChartType } from 'chart.js';
 
 import { TopRatedListItem } from '../dashboard-top-rated-models/top-rated-list-item.model';
 
@@ -41,7 +41,7 @@ export interface DoughnutChartConfig extends ChartConfiguration {
     chartInnitProperties?: ChartInitProperties[];
     showLegend: boolean;
     chartValues: number[];
-    defaultType: string;
+    defaultType: ChartType;
     chartWidth: string;
     chartHeight: string;
     removeChartMargin: boolean;
