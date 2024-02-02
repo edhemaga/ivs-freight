@@ -66,7 +66,17 @@
                                         "
                                     ></svg-icon>
 
-                                    <span class="title">
+                                    <span
+                                        class="title"
+                                        (click)="
+                                            goToDetailsPage(
+                                                card,
+                                                cardTitleLink +
+                                                    card.id +
+                                                    '/details'
+                                            )
+                                        "
+                                    >
                                         <ng-container
                                             *ngIf="cardTitle !== 'name'"
                                         >
@@ -338,21 +348,42 @@
                                             <span
                                                 class="ta-font-black status"
                                                 [ngClass]="{
-                                                    assigned:
-                                                        getValueByStringPath(
+                                                    assigned: isValueEqualTo(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Assigned'
+                                                    ),
+                                                    dispatched: isValueEqualTo(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Dispatched'
+                                                    ),
+                                                    loaded: isValueEqualTo(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Loaded'
+                                                    ),
+                                                    paid:
+                                                        isValueEqualTo(
                                                             card,
-                                                            rowsFront.endpoint
-                                                        ) === 'Assigned',
-                                                    dispatched:
-                                                        getValueByStringPath(
+                                                            rowsFront.endpoint,
+                                                            'Short-paid'
+                                                        ) ||
+                                                        isValueEqualTo(
                                                             card,
-                                                            rowsFront.endpoint
-                                                        ) === 'Dispatched',
-                                                    loaded:
-                                                        getValueByStringPath(
+                                                            rowsFront.endpoint,
+                                                            'Unpaid'
+                                                        ) ||
+                                                        isValueEqualTo(
                                                             card,
-                                                            rowsFront.endpoint
-                                                        ) === 'Loaded'
+                                                            rowsFront.endpoint,
+                                                            'Paid'
+                                                        ),
+                                                    tonu: isValueEqualTo(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Tonu'
+                                                    )
                                                 }"
                                             >
                                                 {{
@@ -905,7 +936,8 @@
                                             *ngIf="rowsFront.title === 'Fleet'"
                                         >
                                             <app-ta-input-dropdown-table
-                                                [data]="{card}"
+                                                [data]="card"
+                                                [type]="'owner'"
                                             ></app-ta-input-dropdown-table>
                                         </ng-container>
 
@@ -1970,27 +2002,15 @@
                         <!-- Comments element -->
 
                         <ng-container *ngIf="page === 'Load'">
-                            <div
-                                class="right-side-svg d-flex align-items-center justify-content-center flex-column"
-                            >
-                                <span
-                                    class="comment-number ta-font-semi-bold"
-                                    >{{ card?.commentsCount }}</span
-                                >
-                                <svg-icon
-                                    class="comment"
-                                    [src]="
+                            <div class="right-side-svg">
+                                <app-ta-input-dropdown-table
+                                    [data]="card"
+                                    [type]="'comment'"
+                                    [searchPlaceholder]="'Find Title'"
+                                    [svg]="
                                         'assets/svg/detail-cards/comment - count.svg'
                                     "
-                                ></svg-icon>
-                                <ng-container *ngIf="card?.commentsCount > 0">
-                                    <svg-icon
-                                        class="notification"
-                                        [src]="
-                                            'assets/svg/applicant/notification-light.svg'
-                                        "
-                                    ></svg-icon>
-                                </ng-container>
+                                ></app-ta-input-dropdown-table>
                             </div>
                         </ng-container>
 

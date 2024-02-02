@@ -26,6 +26,7 @@ import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
+import { DummyComment } from 'src/app/core/utils/comments-dummy-data';
 
 @Component({
     selector: 'app-ta-comment',
@@ -37,8 +38,11 @@ import { CommentData } from 'src/app/core/model/comment-data';
 export class TaCommentComponent implements OnInit, AfterViewInit {
     @ViewChild('commentInput') public commentInput: ElementRef;
 
-    @Input() commentData: CommentCompanyUser;
-    @Input() commentIndex: number;
+    @Input() commentData?: CommentCompanyUser;
+    @Input() commentCardsDataDropdown?: DummyComment;
+    @Input() openComment?: boolean;
+
+    @Input() commentIndex?: number;
     @Input() isMe?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
@@ -62,11 +66,11 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.setCommentPlaceholder();
+        if (!this.commentCardsDataDropdown) this.setCommentPlaceholder();
     }
 
     private sanitazeAvatar(): void {
-        this.commentAvatar = this.commentData.companyUser.avatar
+        this.commentAvatar = this.commentData?.companyUser?.avatar
             ? this.imageBase64Service.sanitizer(
                   this.commentData.companyUser.avatar
               )

@@ -258,3 +258,147 @@
         }
     }
 }
+
+.comments-dropdown {
+    padding: 0 4px;
+    margin: 1px 0;
+    padding: 4px;
+    height: 48px;
+
+    .top-comment-body {
+        height: 26px;
+
+        .title-holder {
+            width: 100%;
+
+            .title-svg-holder {
+                position: relative;
+
+                .user-icons {
+                    position: absolute;
+                    right: 4px;
+                    visibility: hidden;
+                    gap: 4px;
+
+                    .rotate-svg {
+                        transform: rotate(180deg);
+                        transition: transform 0.3s;
+                    }
+
+                    .rotate-back {
+                        transform: rotate(0deg);
+                        transition: transform 0.3s;
+                    }
+
+                    .delete-icon {
+                        svg {
+                            path {
+                                fill: $muted;
+                            }
+                        }
+                    }
+
+                    .edit-icon {
+                        svg {
+                            path {
+                                fill: $muted;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .user-image {
+            transition: transform 0.2s;
+            margin-right: 4px;
+            position: relative;
+            bottom: 1px;
+            width: 22px;
+            height: 22px;
+            border-radius: 1px;
+            font-size: 7px;
+            border-radius: 50%;
+        }
+
+        .text-white {
+            color: $white;
+            height: 14px;
+        }
+
+        .card-user-me {
+            margin-left: 4px;
+            color: $ta-orange-3;
+            font-size: 11px;
+        }
+
+        .card-user-edited {
+            margin-left: 4px;
+            color: $ta-blue-19;
+            font-size: 11px;
+        }
+    }
+
+    span {
+        font-size: 11px;
+    }
+
+    .muted-text {
+        color: $muted;
+        height: 14px;
+        position: relative;
+        top: -2px;
+    }
+
+    .comment-text {
+        width: 100%;
+        overflow: hidden;
+        height: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .comment-open {
+        overflow: visible;
+        white-space: normal;
+    }
+
+    &:hover {
+        background: $ta-black;
+        border-radius: 2px;
+        transition: backgroung 0.3s;
+
+        .user-icons {
+            visibility: visible !important;
+        }
+    }
+}
+
+.comments-parent-opened {
+    background: $ta-black;
+    border-radius: 2px;
+    animation: openComments 0.3s forwards;
+    overflow: hidden;
+}
+
+.comments-parent-closed {
+    animation: closeComments 0.3s forwards;
+}
+
+@keyframes openComments {
+    from {
+        height: 48px;
+    }
+    to {
+        height: 90px;
+    }
+}
+
+@keyframes closeComments {
+    from {
+        height: 90px;
+    }
+    to {
+        height: 48px;
+    }
+}

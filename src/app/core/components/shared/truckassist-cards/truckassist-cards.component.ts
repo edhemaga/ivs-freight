@@ -20,6 +20,7 @@ import {
     OnInit,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Models
 import { CardRows, LoadTableData } from '../model/cardData';
@@ -140,6 +141,7 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() displayRowsFront: CardRows;
     @Input() displayRowsBack: CardRows;
     @Input() activeTab: string;
+    @Input() cardTitleLink: string;
 
     public isCardFlipped: Array<number> = [];
     public tooltip;
@@ -172,7 +174,8 @@ export class TruckassistCardsComponent implements OnInit {
         private formatCurrencyPipe: formatCurrency,
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
-        private timeFormatPipe: TimeFormatPipe
+        private timeFormatPipe: TimeFormatPipe,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -366,6 +369,11 @@ export class TruckassistCardsComponent implements OnInit {
 
     public objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
         return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
+    }
+
+    // For closed tab status return true false to style status
+    public isValueEqualTo(card: any, endpoint: string, value: string): boolean {
+        return this.getValueByStringPath(card, endpoint) === value;
     }
 
     //Remove quotes from string to convert into endpoint
@@ -588,6 +596,12 @@ export class TruckassistCardsComponent implements OnInit {
                 break;
             }
         }
+    }
+
+    public goToDetailsPage(card: CardDetails, link: string): void {
+        this.detailsDataService.setNewData(card);
+
+        this.router.navigate([link]);
     }
 
     // Track By For Table Row

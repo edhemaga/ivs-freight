@@ -45,11 +45,71 @@
     }
 }
 
+// -------------------------COMMENTS COMPONENT -----------------------
+.comment-button {
+    .comments-popover {
+        position: relative;
+
+        .comment-number {
+            position: absolute;
+            color: $white;
+            font-size: 9px;
+            top: 5px;
+        }
+
+        .comment {
+            svg {
+                width: 16px;
+            }
+        }
+
+        .notification {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            top: -8px;
+            right: 4px;
+
+            svg {
+                path:first-child {
+                    fill: $white;
+                }
+                path:nth-child(2) {
+                    fill: $ta-red-10;
+                }
+            }
+        }
+    }
+}
+
+.comments-dropdown-opened {
+    background: $ta-black;
+    border-radius: 2px;
+    transition: background 0.3s;
+
+    svg {
+        path {
+            fill: $ta-white-3;
+            transition: fill 0.3s;
+        }
+    }
+
+    .comment-number {
+        color: $ta-black-2 !important;
+        transition: color 0.3s;
+    }
+}
+
 // dropdown
 .table-list-dropdown {
-    width: 180px !important;
-    right: 4px !important;
-    overflow: hidden;
+    padding: 0 !important;
+
+    .table-inner {
+        width: 180px !important;
+        right: 4px !important;
+        overflow: hidden;
+        padding: 4px;
+    }
 
     .scroll-input-drodpwon {
         max-height: 270px;
@@ -192,6 +252,49 @@
         padding: 0 4px;
         margin: 2px 0;
         background: $ta-black;
+    }
+
+    .add-new-comment {
+        padding: 0 4px;
+        height: 26px;
+        margin-bottom: 2px;
+
+        .new-comment {
+            color: $ta-blue-19;
+            font-size: 11px;
+        }
+
+        svg {
+            height: 14px;
+            width: 14px;
+
+            path {
+                fill: $ta-blue-13;
+            }
+        }
+
+        &:hover {
+            background: $ta-blue-21;
+
+            svg {
+                path {
+                    fill: $ta-blue-19;
+                }
+            }
+
+            .new-comment {
+                color: $white;
+            }
+        }
+    }
+}
+
+.comments-width {
+    margin-top: -4px !important;
+    right: 4px !important;
+
+    .table-inner {
+        width: 260px !important;
     }
 }
 

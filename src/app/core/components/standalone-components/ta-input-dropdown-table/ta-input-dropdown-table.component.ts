@@ -1,3 +1,4 @@
+import { Subject, takeUntil } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     NgbModule,
@@ -25,7 +26,9 @@ import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 
 // enums
 import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
-import { Subject, takeUntil } from 'rxjs';
+
+// components
+import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -38,12 +41,18 @@ import { Subject, takeUntil } from 'rxjs';
         NgbPopoverModule,
         FormsModule,
         SafeHtmlPipe,
+
+        // Components
+        TaCommentComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
-    @Input() data: DropdownData;
+    @Input() data: CardDetails;
+    @Input() svg: string;
+    @Input() type: string;
+    @Input() searchPlaceholder?: string = 'Search';
 
     private destroy$ = new Subject<void>();
 
@@ -60,13 +69,26 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
     public lattersToHighlight: string;
 
+    public openDropdown: number;
+    public openComment: boolean;
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
-        this.filteredData = { ...this.data.card };
+        this.filteredData = { ...this.data };
+    }
+
+    public openCommentComponent(index: number): void {
+        this.openDropdown === index
+            ? (this.openDropdown = -1)
+            : (this.openDropdown = index);
+    }
+
+    public openNewComment(): void {
+        console.log('console');
     }
 
     public filterArray(event: KeyboardEvent): void {
@@ -76,9 +98,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchTerm.length >= 2) {
                 // Reset on every key press
-                this.filteredData.trucks = this.data.card.trucks;
+                this.filteredData.trucks = this.data.trucks;
 
-                this.filteredData.trailers = this.data.card.trailers;
+                this.filteredData.trailers = this.data.trailers;
 
                 this.lattersToHighlight = searchTerm;
 
@@ -88,9 +110,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 // If there is empty array in filteredTrucks or filteredTrailer
                 if (!filteredTrucks.length && !filteredTrailer.length) {
-                    this.filteredData.trucks = this.data.card.trucks;
+                    this.filteredData.trucks = this.data.trucks;
 
-                    this.filteredData.trailers = this.data.card.trailers;
+                    this.filteredData.trailers = this.data.trailers;
                 }
 
                 // Set to default value in case there are no resaults
@@ -109,9 +131,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 this.filteredTrailerCount = null;
 
-                this.filteredData.trucks = this.data.card.trucks;
+                this.filteredData.trucks = this.data.trucks;
 
-                this.filteredData.trailers = this.data.card.trailers;
+                this.filteredData.trailers = this.data.trailers;
             }
         }
     }
@@ -158,6 +180,17 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.router.navigate([link]);
     }
 
+    public toggleDropdownComments(
+        tooltip: NgbTooltip,
+        card: CardDetails
+    ): void {
+        this.tooltip = tooltip;
+
+        this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+
+        tooltip.open({ commentData: card });
+    }
+
     // Owner dropdown
     public toggleDropdownOwnerFleet(
         tooltip: NgbTooltip,
@@ -166,9 +199,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.tooltip = tooltip;
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
-
+        console.log(card);
         tooltip.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.filteredData.trucks = this.data.card.trucks;
+            this.filteredData.trucks = this.data.trucks;
 
             this.lattersToHighlight = null;
 
@@ -176,7 +209,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
             this.filteredTrailerCount = null;
 
-            this.filteredData.trailers = this.data.card.trailers;
+            this.filteredData.trailers = this.data.trailers;
         });
 
         tooltip.open({ data: card });
