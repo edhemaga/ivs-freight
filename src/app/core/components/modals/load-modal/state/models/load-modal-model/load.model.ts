@@ -42,7 +42,7 @@ export interface Load {
     tags: Tags[];
     filesForDeleteIds?: number[];
     comment?: {
-        commentId: number;
+        id: number;
         commentContent: string;
     };
     note: string;

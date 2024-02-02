@@ -447,7 +447,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.companyUser = JSON.parse(
             localStorage.getItem(ConstantStringEnum.USER)
         );
-
     }
 
     private getConstantData(): void {
@@ -3460,7 +3459,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ConstantStringEnum.CREATE
             ),
             comment: {
-                commentId:
+                id:
                     this.editedCommentId ??
                     this.comments[this.comments.length - 1]?.commentId,
                 commentContent: this.editedCommentId
@@ -3478,7 +3477,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
         };
-
 
         this.loadService
             .updateLoad(newData)
@@ -3704,7 +3702,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.documents = files;
 
         // comments
-        this.comments = comments.reverse().map((comment) => {
+        this.comments = comments.map((comment) => {
             return {
                 companyUser: {
                     id: comment.companyUser.id,
