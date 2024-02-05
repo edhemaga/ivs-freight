@@ -70,6 +70,7 @@ import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
 
 // Directives
 import { TextToggleDirective } from './directives/show-hide-pass.directive';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
     selector: 'app-truckassist-cards',
     templateUrl: './truckassist-cards.component.html',
@@ -172,7 +173,8 @@ export class TruckassistCardsComponent implements OnInit {
         private formatCurrencyPipe: formatCurrency,
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
-        private timeFormatPipe: TimeFormatPipe
+        private timeFormatPipe: TimeFormatPipe,
+        private sanitizer: DomSanitizer
     ) {}
 
     ngOnInit(): void {
@@ -342,6 +344,71 @@ export class TruckassistCardsComponent implements OnInit {
         }
         this.tooltip.close();
         return;
+    }
+
+    public onShowInnerDropdown(action) {
+        this.onRemoveClickEventListener();
+
+        let innerContent = '';
+
+        let newDropdownActions = [...this.dropdownActions];
+
+        newDropdownActions.map((actions) => {
+            if (
+                actions.isDropdown &&
+                actions.isInnerDropActive &&
+                actions.title !== action.title
+            ) {
+                actions.isInnerDropActive = false;
+                actions.innerDropElement = null;
+            }
+        });
+
+        this.dropdownActions = [...newDropdownActions];
+
+        if (action?.isDropdown && !action.isInnerDropActive) {
+            action.insideDropdownContent.map((content: any) => {
+                innerContent += `<div id="${content.title}" class="inner-dropdown-action-title">${content.title}</div>`;
+            });
+
+            action.innerDropElement =
+                this.sanitizer.bypassSecurityTrustHtml(innerContent);
+        }
+
+        action.isInnerDropActive = !action.isInnerDropActive;
+
+        if (action.isInnerDropActive) {
+            this.setInnerDropdownClickEvent();
+        }
+    }
+
+    // Set Click Event On Inner Dropdown
+    setInnerDropdownClickEvent() {
+        setTimeout(() => {
+            const innerDropdownContent = document.querySelectorAll(
+                '.inner-dropdown-action-title'
+            );
+
+            innerDropdownContent.forEach((content) => {
+                content.addEventListener('click', () => {
+                    this.dropdownActions.map((action: any) => {
+                        if (action.isInnerDropActive) {
+                            action.insideDropdownContent.map(
+                                (innerAction: any) => {
+                                    if (content.id === innerAction.title) {
+                                        this.onRemoveClickEventListener();
+
+                                        setTimeout(() => {
+                                            this.onDropAction(innerAction);
+                                        }, 100);
+                                    }
+                                }
+                            );
+                        }
+                    });
+                });
+            });
+        }, 100);
     }
 
     // Description
