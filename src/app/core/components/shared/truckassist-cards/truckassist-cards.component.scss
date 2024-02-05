@@ -229,6 +229,17 @@
                             background: rgb(108, 108, 108, 0.2);
                         }
 
+                        span {
+                            &::-moz-selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+                            &::selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+                        }
+
                         .subtotal {
                             color: $ta-yellow-5;
                         }
@@ -262,14 +273,33 @@
                             font-size: 11px;
                             border-radius: 1px;
                             color: $white;
+                            cursor: default;
                         }
 
                         .pickup {
                             background: $ta-green;
+
+                            &::-moz-selection {
+                                color: initial;
+                                background: initial;
+                            }
+                            &::selection {
+                                color: initial;
+                                background: initial;
+                            }
                         }
 
                         .delivery {
                             background: $ta-red-10;
+
+                            &::-moz-selection {
+                                color: initial;
+                                background: initial;
+                            }
+                            &::selection {
+                                color: initial;
+                                background: initial;
+                            }
                         }
 
                         .muted {

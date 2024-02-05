@@ -11,6 +11,9 @@ import {
 } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
+// animations
+import { dropdown_animation_comment } from './state/ta-comment.animation';
+
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -35,13 +38,13 @@ import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.
     styleUrls: ['./ta-comment.component.scss'],
     standalone: true,
     imports: [CommonModule, AngularSvgIconModule],
+    animations: [dropdown_animation_comment('dropdownAnimationComment')],
 })
 export class TaCommentComponent implements OnInit, AfterViewInit {
     @ViewChild('commentInput') public commentInput: ElementRef;
 
     @Input() commentData?: CommentCompanyUser;
     @Input() commentCardsDataDropdown?: DummyComment;
-    @Input() openComment?: boolean;
 
     @Input() commentIndex?: number;
     @Input() isMe?: boolean = false;
@@ -66,7 +69,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.sanitazeAvatar();
 
-        this.commentData.commentContent && this.patchCommentData();
+        this.commentData?.commentContent && this.patchCommentData();
     }
 
     ngAfterViewInit(): void {
@@ -79,6 +82,14 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
                   this.commentData.companyUser.avatar
               )
             : null;
+    }
+
+    public toogleComment(comment: DummyComment): void {
+        if (comment.isOpen) {
+            this.commentCardsDataDropdown = { ...comment, isOpen: false };
+        } else {
+            this.commentCardsDataDropdown = { ...comment, isOpen: true };
+        }
     }
 
     private setCommentPlaceholder(): void {

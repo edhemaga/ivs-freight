@@ -63,7 +63,7 @@
             [ngbPopover]="dropdownComments"
             #commentsDropdown="ngbPopover"
             [autoClose]="'outside'"
-            [placement]="['bottom-left']"
+            [placement]="['bottom-left', 'bottom-right']"
             popoverClass="table-dropdown-popover"
             triggers="manual"
             class="comments-popover d-flex align-items-center justify-content-center"
@@ -145,12 +145,9 @@
                     trackBy: trackByIdentity
                 "
             >
-                <div (click)="openCommentComponent(i)">
-                    <app-ta-comment
-                        [commentCardsDataDropdown]="comment"
-                        [openComment]="openDropdown === i"
-                    ></app-ta-comment>
-                </div>
+                <app-ta-comment
+                    [commentCardsDataDropdown]="comment"
+                ></app-ta-comment>
             </ng-container>
         </div>
     </div>

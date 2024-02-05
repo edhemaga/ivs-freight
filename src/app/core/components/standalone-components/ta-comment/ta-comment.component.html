@@ -119,10 +119,10 @@
 <ng-container *ngIf="commentCardsDataDropdown">
     <div
         class="comments-dropdown"
-        [ngClass]="{
-            'comments-parent-opened': openComment,
-            'comments-parent-closed': !openComment
-        }"
+        (click)="toogleComment(commentCardsDataDropdown)"
+        [@dropdownAnimationComment]="
+            commentCardsDataDropdown.isOpen ? 'true' : 'false'
+        "
     >
         <div class="d-grid">
             <div class="d-flex align-items-center top-comment-body">
@@ -194,8 +194,10 @@
                             <svg-icon
                                 [src]="'assets/svg/common/fill_arrow_down.svg'"
                                 [ngClass]="{
-                                    'rotate-svg': openComment,
-                                    'rotate-back': !openComment
+                                    'rotate-svg':
+                                        commentCardsDataDropdown.isOpen,
+                                    'rotate-back':
+                                        !commentCardsDataDropdown.isOpen
                                 }"
                                 class="arrow-svg-icon"
                                 [svgStyle]="{ 'width.px': 10, 'height.px': 10 }"
@@ -209,26 +211,10 @@
                 </div>
             </div>
             <span
-                class="text-white comment-text"
-                [ngClass]="{
-                    'comment-open': openComment
-                }"
+                class="text-white comment-text comment-text-holder"
+                [ngClass]="{ 'show-comment': commentCardsDataDropdown.isOpen }"
                 >{{ commentCardsDataDropdown.comment }}</span
             >
-        </div>
-        <div class="d-flex align-items-center comment-body">
-            <div
-                #commentInput
-                class="comment-input"
-                [ngClass]="{
-                    'no-value': commentInput?.textContent === 'Write Comment...'
-                }"
-                [attr.contenteditable]="isCommenting"
-                spellcheck="false"
-                (focus)="handleCommentChange()"
-                (input)="handleCommentChange()"
-                (blur)="handleCommentBlur()"
-            ></div>
         </div>
     </div>
 </ng-container>

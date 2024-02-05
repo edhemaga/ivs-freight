@@ -1921,3 +1921,20 @@ ngb-popover-window {
         display: none !important;
     }
 }
+
+.bs-popover-bottom-end {
+    .popover-body {
+        .comments-width {
+            margin-top: -4px !important;
+        }
+    }
+}
+
+.bs-popover-bottom-start {
+    .popover-body {
+        .comments-width {
+            margin-top: -4px !important;
+            right: 4px !important;
+        }
+    }
+}

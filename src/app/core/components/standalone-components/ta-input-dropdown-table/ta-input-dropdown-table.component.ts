@@ -69,9 +69,6 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
     public lattersToHighlight: string;
 
-    public openDropdown: number;
-    public openComment: boolean;
-
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService
@@ -81,14 +78,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.filteredData = { ...this.data };
     }
 
-    public openCommentComponent(index: number): void {
-        this.openDropdown === index
-            ? (this.openDropdown = -1)
-            : (this.openDropdown = index);
-    }
-
     public openNewComment(): void {
         console.log('console');
+        console.log(this.data);
     }
 
     public filterArray(event: KeyboardEvent): void {

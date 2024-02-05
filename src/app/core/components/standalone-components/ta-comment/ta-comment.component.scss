@@ -263,7 +263,7 @@
     padding: 0 4px;
     margin: 1px 0;
     padding: 4px;
-    height: 48px;
+    height: fit-content;
 
     .top-comment-body {
         height: 26px;
@@ -281,13 +281,17 @@
                     gap: 4px;
 
                     .rotate-svg {
-                        transform: rotate(180deg);
-                        transition: transform 0.3s;
+                        svg {
+                            transform: rotate(180deg);
+                            transition: transform 0.3s;
+                        }
                     }
 
                     .rotate-back {
-                        transform: rotate(0deg);
-                        transition: transform 0.3s;
+                        svg {
+                            transform: rotate(0deg);
+                            transition: transform 0.3s;
+                        }
                     }
 
                     .delete-icon {
@@ -323,7 +327,6 @@
 
         .text-white {
             color: $white;
-            height: 14px;
         }
 
         .card-user-me {
@@ -345,7 +348,6 @@
 
     .muted-text {
         color: $muted;
-        height: 14px;
         position: relative;
         top: -2px;
     }
@@ -353,14 +355,12 @@
     .comment-text {
         width: 100%;
         overflow: hidden;
-        height: 14px;
         text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
-    .comment-open {
+    .show-comment {
         overflow: visible;
-        white-space: normal;
+        white-space: break-spaces;
     }
 
     &:hover {
@@ -371,34 +371,5 @@
         .user-icons {
             visibility: visible !important;
         }
-    }
-}
-
-.comments-parent-opened {
-    background: $ta-black;
-    border-radius: 2px;
-    animation: openComments 0.3s forwards;
-    overflow: hidden;
-}
-
-.comments-parent-closed {
-    animation: closeComments 0.3s forwards;
-}
-
-@keyframes openComments {
-    from {
-        height: 48px;
-    }
-    to {
-        height: 90px;
-    }
-}
-
-@keyframes closeComments {
-    from {
-        height: 90px;
-    }
-    to {
-        height: 48px;
     }
 }

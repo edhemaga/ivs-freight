@@ -10,6 +10,7 @@ export interface DummyComment {
     me: boolean;
     edited: boolean;
     comment: string;
+    isOpen?: boolean;
 }
 
 export class DUMMY_COMMENT_DATA {
@@ -41,7 +42,8 @@ export class DUMMY_COMMENT_DATA {
             date: '04/25/24, 05:18 AM',
             me: true,
             edited: false,
-            comment: 'At vero eos et accusam et just dolore sind...',
+            comment:
+                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
         },
         {
             userAvatar: null,
