@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import {
     FormArray,
     FormControl,
@@ -70,7 +71,6 @@ import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
 
 // Directives
 import { TextToggleDirective } from './directives/show-hide-pass.directive';
-import { DomSanitizer } from '@angular/platform-browser';
 @Component({
     selector: 'app-truckassist-cards',
     templateUrl: './truckassist-cards.component.html',
@@ -116,6 +116,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
+
+    @ViewChild('innerDropdownContent') innerDropdownContent: ElementRef;
 
     @ViewChildren('itemsRepair', { read: ElementRef })
     public itemsContainers!: QueryList<ElementRef>;
@@ -174,7 +176,8 @@ export class TruckassistCardsComponent implements OnInit {
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
         private timeFormatPipe: TimeFormatPipe,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private el: ElementRef
     ) {}
 
     ngOnInit(): void {
@@ -318,21 +321,9 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
-    // Remove Click Event On Inner Dropdown
-    public onRemoveClickEventListener(): void {
-        const innerDropdownContent = document.querySelectorAll(
-            ConstantStringTableComponentsEnum.INNER_DROPDOWN_ACTION
-        );
-
-        innerDropdownContent.forEach((content) => {
-            content.removeAllListeners(ConstantStringTableComponentsEnum.CLICK);
-        });
-
-        return;
-    }
-
     // Dropdown Actions
     public onDropAction(action: DropdownItem): void {
+        console.log(action);
         if (!action?.mutedStyle) {
             // Send Drop Action
 
@@ -346,12 +337,8 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
-    public onShowInnerDropdown(action) {
-        this.onRemoveClickEventListener();
-
-        let innerContent = '';
-
-        let newDropdownActions = [...this.dropdownActions];
+    public onShowInnerDropdown(action): void {
+        const newDropdownActions = [...this.dropdownActions];
 
         newDropdownActions.map((actions) => {
             if (
@@ -366,49 +353,7 @@ export class TruckassistCardsComponent implements OnInit {
 
         this.dropdownActions = [...newDropdownActions];
 
-        if (action?.isDropdown && !action.isInnerDropActive) {
-            action.insideDropdownContent.map((content: any) => {
-                innerContent += `<div id="${content.title}" class="inner-dropdown-action-title">${content.title}</div>`;
-            });
-
-            action.innerDropElement =
-                this.sanitizer.bypassSecurityTrustHtml(innerContent);
-        }
-
         action.isInnerDropActive = !action.isInnerDropActive;
-
-        if (action.isInnerDropActive) {
-            this.setInnerDropdownClickEvent();
-        }
-    }
-
-    // Set Click Event On Inner Dropdown
-    setInnerDropdownClickEvent() {
-        setTimeout(() => {
-            const innerDropdownContent = document.querySelectorAll(
-                '.inner-dropdown-action-title'
-            );
-
-            innerDropdownContent.forEach((content) => {
-                content.addEventListener('click', () => {
-                    this.dropdownActions.map((action: any) => {
-                        if (action.isInnerDropActive) {
-                            action.insideDropdownContent.map(
-                                (innerAction: any) => {
-                                    if (content.id === innerAction.title) {
-                                        this.onRemoveClickEventListener();
-
-                                        setTimeout(() => {
-                                            this.onDropAction(innerAction);
-                                        }, 100);
-                                    }
-                                }
-                            );
-                        }
-                    });
-                });
-            });
-        }, 100);
     }
 
     // Description
