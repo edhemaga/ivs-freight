@@ -235,7 +235,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
             this.entityType.charAt(0).toUpperCase() + this.entityType.slice(1);
 
         const updateValue = {
-            entityTypeNote: EntityTypeNote[this.entityType.toUpperCase()],
+            entityTypeNote: EntityTypeNote[this.entityType],
             entityId: this.entityId,
             note: this.value,
         };
