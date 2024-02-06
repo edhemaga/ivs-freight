@@ -63,7 +63,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
     @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
     @ViewChild('noteContainer', { static: true }) noteContainer: any;
 
-    @Input() set note(value) {
+    @Input() set note(value: string) {
         if (
             (value && value != '' && value != 'null' && !this.gotValue) ||
             this.blankNote
@@ -231,8 +231,11 @@ export class TaInputNoteComponent implements ControlValueAccessor {
     }
 
     updateNote() {
+        this.entityType =
+            this.entityType.charAt(0).toUpperCase() + this.entityType.slice(1);
+
         const updateValue = {
-            entityTypeNote: EntityTypeNote[this.entityType],
+            entityTypeNote: EntityTypeNote[this.entityType.toUpperCase()],
             entityId: this.entityId,
             note: this.value,
         };

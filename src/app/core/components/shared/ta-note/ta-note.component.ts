@@ -66,7 +66,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     ],
 })
 export class TaNoteComponent implements OnInit, OnDestroy {
-    @Input() note: any;
+    public _note: string;
+    @Input() set note(value: string) {
+        this._note = value;
+        this.value = value;
+        this.checkNoteImage(value);
+    }
     @Input() mainData: any;
     @Input() openAllNotesText: any;
     @Input() parking: any = false;
@@ -125,7 +130,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.checkNoteImage(this.note);
+        this.checkNoteImage(this._note);
     }
 
     @HostListener('window:resize', ['$event'])
@@ -136,7 +141,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.value = this.note;
+        this.value = this._note;
         this.setNoteParentWidth();
 
         this.correctEntityType();
@@ -196,7 +201,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 this.buttonsExpanded = false;
                 this.leaveThisOpened = false;
                 this.noteOpened = false;
-                this.note = this.value;
+                this._note = this.value;
                 t2.close();
             }
             this.showCollorPattern = false;
@@ -292,7 +297,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.showCollorPattern = false;
         this.isExpanded = false;
         this.buttonsExpanded = false;
-        this.note = this.value;
+        this._note = this.value;
     }
 
     maxLimitForContenteditableDiv(e: any, limit: number) {
@@ -350,6 +355,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (this.entityType == 'Contact') {
             this.entityType = 'CompanyContact';
         }
+
+        this.entityType =
+            this.entityType.charAt(0).toUpperCase() + this.entityType.slice(1);
 
         const updateValue = {
             entityTypeNote: EntityTypeNote[this.entityType],

@@ -826,10 +826,10 @@ export class TruckassistTableBodyComponent
     // Show Attachments
     onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
-            let entity = this.activeTableData?.gridNameTitle;
+            let entity = this.activeTableData?.gridNameTitle?.toLowerCase();
 
-            if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
-                entity = 'Repair-Shop';
+            if (entity == 'repair' && this.selectedTab == 'repair-shop') {
+                entity = 'repair-shop';
             }
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
