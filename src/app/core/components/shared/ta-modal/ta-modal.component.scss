@@ -2,7 +2,8 @@
     overflow: hidden !important;
 
     .table-container {
-        padding-right: 16px;
+        // TODO in cards view mode this line makes cards shift
+        // padding-right: 16px;
     }
 
     &::-webkit-scrollbar-track {

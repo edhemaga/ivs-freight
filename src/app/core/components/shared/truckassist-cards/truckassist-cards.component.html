@@ -2108,7 +2108,7 @@
                 class="table-list-dropdown-content"
                 (click)="
                     !action?.isDropdown
-                        ? onDropAction(action, card)
+                        ? onDropAction(action)
                         : onShowInnerDropdown(action)
                 "
                 [ngClass]="{
@@ -2122,6 +2122,7 @@
                 <div class="table-list-dropdown-content-text">
                     {{ action?.title }}
                 </div>
+
                 <svg-icon
                     *ngIf="action?.svgUrl"
                     [class]="action?.svgClass"
@@ -2138,17 +2139,26 @@
             </div>
 
             <!-- Inner Dropdown -->
-
             <div
                 class="table-list-inner-dropdown"
                 [ngClass]="{
                     'table-list-inner-dropdown-active':
                         action?.isInnerDropActive
                 }"
-                [innerHtml]="
-                    action?.innerDropElement ? action?.innerDropElement : null
-                "
-            ></div>
+            >
+                <ng-container
+                    *ngFor="let content of action?.insideDropdownContent"
+                >
+                    <div
+                        [id]="content.title"
+                        #innerDropdownContent
+                        (click)="onDropAction(content)"
+                        class="inner-dropdown-action-title"
+                    >
+                        {{ content.title }}
+                    </div>
+                </ng-container>
+            </div>
 
             <!-- Border -->
 
