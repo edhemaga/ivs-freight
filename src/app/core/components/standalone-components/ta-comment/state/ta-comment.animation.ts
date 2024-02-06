@@ -11,7 +11,7 @@ export const dropdown_animation_comment = (type: string) =>
         state(
             'false',
             style({
-                height: '48px',
+                height: '14px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
             })

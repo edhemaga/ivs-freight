@@ -319,19 +319,6 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
-    // Remove Click Event On Inner Dropdown
-    public onRemoveClickEventListener(): void {
-        const innerDropdownContent = document.querySelectorAll(
-            ConstantStringTableComponentsEnum.INNER_DROPDOWN_ACTION
-        );
-
-        innerDropdownContent.forEach((content) => {
-            content.removeAllListeners(ConstantStringTableComponentsEnum.CLICK);
-        });
-
-        return;
-    }
-
     // Dropdown Actions
     public onDropAction(action: DropdownItem): void {
         if (!action?.mutedStyle) {

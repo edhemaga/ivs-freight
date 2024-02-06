@@ -56,7 +56,7 @@ export class DUMMY_COMMENT_DATA {
             date: 'Yesterday, 05:18 AM',
             me: false,
             edited: true,
-            comment: 'At vero eos et accusam et just dolore sind...',
+            comment: 'At vero eos et accusam et just dolore sind',
         },
         {
             userAvatar: null,
@@ -69,7 +69,7 @@ export class DUMMY_COMMENT_DATA {
             date: '04/25/24, 05:18 AM',
             me: false,
             edited: true,
-            comment: 'At vero eos et accusam et just dolore sind...',
+            comment: 'At vero eos et accusam et just dolore sind',
         },
         {
             userAvatar: null,
@@ -82,7 +82,7 @@ export class DUMMY_COMMENT_DATA {
             date: '04/25/24, 05:18 AM',
             me: false,
             edited: false,
-            comment: 'At vero eos et accusam et just dolore sind...',
+            comment: 'At vero eos et accusam et just dolore sind',
         },
     ];
 }

@@ -67,7 +67,7 @@
             popoverClass="table-dropdown-popover"
             triggers="manual"
             class="comments-popover d-flex align-items-center justify-content-center"
-            (click)="toggleDropdownComments(commentsDropdown, data)"
+            (click)="toggleDropdownComments(commentsDropdown, filteredData)"
         >
             <span class="comment-number ta-font-semi-bold">{{
                 data?.loadComment.count
@@ -116,7 +116,7 @@
             <div class="input-holder">
                 <input
                     [placeholder]="searchPlaceholder"
-                    (keyup)="filterArray($event, ownerFleet)"
+                    (keyup)="filterArrayComments($event)"
                     class="input-search"
                 />
                 <svg-icon
@@ -147,6 +147,7 @@
             >
                 <app-ta-comment
                     [commentCardsDataDropdown]="comment"
+                    [commentHighlight]="lattersToHighlight"
                 ></app-ta-comment>
             </ng-container>
         </div>
@@ -179,7 +180,7 @@
         <div class="input-holder">
             <input
                 placeholder="Search"
-                (keyup)="filterArray($event, ownerFleet)"
+                (keyup)="filterArrayOwner($event)"
                 class="input-search"
             />
             <svg-icon

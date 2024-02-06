@@ -8,15 +8,17 @@ import {
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-// animations
-import { DropdownData } from '../../../model/input-dropdown.model';
-
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // models
-import { CardDetails, Trailer, Trucks } from '../../shared/model/cardTableData';
+import {
+    CardDetails,
+    Trailer,
+    Trucks,
+    Comment,
+} from '../../shared/model/cardTableData';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -75,15 +77,61 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.filteredData = { ...this.data };
+        this.filteredData = JSON.parse(JSON.stringify(this.data));
     }
 
-    public openNewComment(): void {
-        console.log('console');
-        console.log(this.data);
+    public openNewComment(): void {}
+
+    public filterArrayComments(event: KeyboardEvent): void {
+        if (event.target instanceof HTMLInputElement) {
+            const searchParam = event.target.value.toLowerCase();
+
+            // Check if the user has typed at least 2 characters
+            if (searchParam.length >= 2) {
+                // Reset on every key press
+                this.filteredData.loadComment.comments =
+                    this.data.loadComment.comments;
+
+                this.lattersToHighlight = searchParam;
+
+                // Filter function for title and comment
+                const filteredCommentTitle =
+                    this.filterCommentsTitle(searchParam);
+
+                // If there is empty array in filteredComment set object value to default
+                if (!filteredCommentTitle.length) {
+                    this.filteredData.loadComment.comments =
+                        this.data.loadComment.comments;
+                }
+
+                // If there is filtered value set value to filteredData
+                else {
+                    this.filteredData.loadComment.comments =
+                        filteredCommentTitle;
+                }
+            }
+
+            // Set to default value in case user deleted all value in input
+            else {
+                this.lattersToHighlight = '';
+
+                this.filteredData.loadComment.comments =
+                    this.data.loadComment.comments;
+            }
+        }
     }
 
-    public filterArray(event: KeyboardEvent): void {
+    private filterCommentsTitle(searchParam: string): Comment[] {
+        const filteredComments = this.filteredData.loadComment.comments.filter(
+            (comment) =>
+                comment.fullName.toLowerCase().includes(searchParam) ||
+                comment.comment.toLowerCase().includes(searchParam)
+        );
+
+        return filteredComments;
+    }
+
+    public filterArrayOwner(event: KeyboardEvent): void {
         if (event.target instanceof HTMLInputElement) {
             const searchTerm = event.target.value.toLowerCase();
 
@@ -107,7 +155,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
                     this.filteredData.trailers = this.data.trailers;
                 }
 
-                // Set to default value in case there are no resaults
+                // Set value searched
                 else {
                     this.filteredData.trucks = filteredTrucks;
 
@@ -130,7 +178,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    public filterTrucks(searchString: string): Trucks[] {
+    private filterTrucks(searchString: string): Trucks[] {
         const filterTrucks = this.filteredData.trucks.filter((truck) =>
             truck.truckNumber.toLowerCase().includes(searchString)
         );
@@ -140,7 +188,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         return filterTrucks;
     }
 
-    public filterTrailer(searchString: string): Trailer[] {
+    private filterTrailer(searchString: string): Trailer[] {
         const filterTrailer = this.filteredData.trailers.filter((trailer) =>
             trailer.trailerNumber.toLowerCase().includes(searchString)
         );
@@ -191,7 +239,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.tooltip = tooltip;
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
-        console.log(card);
+
         tooltip.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.filteredData.trucks = this.data.trucks;
 
