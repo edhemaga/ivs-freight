@@ -1,5 +1,5 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { DropdownItem } from '../cardTableData';
+import { DropdownItem } from '../card-table-data';
 
 export interface LoadResponse {
     id?: number;
@@ -105,9 +105,23 @@ interface LoadTotal {
     total: string;
     subTotal: string;
 }
+
+interface Comments {
+    fullName: string;
+    avatarColor: {
+        background: string;
+        color: string;
+    };
+    textShortName: string;
+    date: string;
+    me: boolean;
+    edited: boolean;
+    comment: string;
+}
+
 interface LoadComment {
     count: string | number;
-    comments: any[];
+    comments: Comments[];
 }
 interface LoadStatus {
     status: string;

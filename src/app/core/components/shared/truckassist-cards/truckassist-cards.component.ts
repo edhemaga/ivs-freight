@@ -20,6 +20,7 @@ import {
     OnInit,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Models
 import { CardRows, LoadTableData } from '../model/cardData';
@@ -27,7 +28,7 @@ import {
     DropdownItem,
     CardDetails,
     SendDataCard,
-} from '../model/cardTableData';
+} from '../model/card-table-data';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from '../model/tableBody';
 
@@ -116,6 +117,8 @@ export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
+    @ViewChild('innerDropdownContent') innerDropdownContent: ElementRef;
+
     @ViewChildren('itemsRepair', { read: ElementRef })
     public itemsContainers!: QueryList<ElementRef>;
 
@@ -140,6 +143,7 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() displayRowsFront: CardRows;
     @Input() displayRowsBack: CardRows;
     @Input() activeTab: string;
+    @Input() cardTitleLink: string;
 
     public isCardFlipped: Array<number> = [];
     public tooltip;
@@ -172,7 +176,8 @@ export class TruckassistCardsComponent implements OnInit {
         private formatCurrencyPipe: formatCurrency,
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
-        private timeFormatPipe: TimeFormatPipe
+        private timeFormatPipe: TimeFormatPipe,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -316,21 +321,9 @@ export class TruckassistCardsComponent implements OnInit {
         return;
     }
 
-    // Remove Click Event On Inner Dropdown
-    public onRemoveClickEventListener(): void {
-        const innerDropdownContent = document.querySelectorAll(
-            ConstantStringTableComponentsEnum.INNER_DROPDOWN_ACTION
-        );
-
-        innerDropdownContent.forEach((content) => {
-            content.removeAllListeners(ConstantStringTableComponentsEnum.CLICK);
-        });
-
-        return;
-    }
-
     // Dropdown Actions
     public onDropAction(action: DropdownItem): void {
+        console.log(action);
         if (!action?.mutedStyle) {
             // Send Drop Action
 
@@ -342,6 +335,25 @@ export class TruckassistCardsComponent implements OnInit {
         }
         this.tooltip.close();
         return;
+    }
+
+    public onShowInnerDropdown(action): void {
+        const newDropdownActions = [...this.dropdownActions];
+
+        newDropdownActions.map((actions) => {
+            if (
+                actions.isDropdown &&
+                actions.isInnerDropActive &&
+                actions.title !== action.title
+            ) {
+                actions.isInnerDropActive = false;
+                actions.innerDropElement = null;
+            }
+        });
+
+        this.dropdownActions = [...newDropdownActions];
+
+        action.isInnerDropActive = !action.isInnerDropActive;
     }
 
     // Description
@@ -366,6 +378,15 @@ export class TruckassistCardsComponent implements OnInit {
 
     public objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
         return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
+    }
+
+    // For closed tab status return true false to style status
+    public checkLoadStatus(
+        card: CardDetails,
+        endpoint: string,
+        value: string
+    ): boolean {
+        return this.getValueByStringPath(card, endpoint) === value;
     }
 
     //Remove quotes from string to convert into endpoint
@@ -588,6 +609,12 @@ export class TruckassistCardsComponent implements OnInit {
                 break;
             }
         }
+    }
+
+    public goToDetailsPage(card: CardDetails, link: string): void {
+        this.detailsDataService.setNewData(card);
+
+        this.router.navigate([link]);
     }
 
     // Track By For Table Row

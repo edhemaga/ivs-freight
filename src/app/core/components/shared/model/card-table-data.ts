@@ -197,6 +197,7 @@ export interface CardDetails {
     statusHistory?: StatusHistory[];
     commentsCount?: number;
     comments?: Comment[];
+    loadComment?: { comments: Comment[]; count: number };
     totalPaid?: number;
     totalDue?: number;
     loadedMiles?: number;
@@ -732,6 +733,18 @@ export interface Comment {
     currentCompanyUserRating: number;
     createdAt: string;
     updatedAt: string;
+    userAvatar: string;
+    fullName: string;
+    avatarColor: {
+        background: string;
+        color: string;
+    };
+    textShortName: string;
+    date: string;
+    me: boolean;
+    edited: boolean;
+    comment: string;
+    isOpen?: boolean;
 }
 
 export interface CompanyUser {
