@@ -258,3 +258,192 @@
         }
     }
 }
+
+.comments-dropdown {
+    padding: 0 4px;
+    margin: 1px 0;
+    padding: 4px;
+    height: fit-content;
+
+    .top-comment-body {
+        height: 26px;
+
+        .title-holder {
+            width: 100%;
+
+            .title-svg-holder {
+                position: relative;
+                margin-top: 2px;
+
+                .user-icons {
+                    position: absolute;
+                    right: 0;
+                    visibility: hidden;
+                    gap: 4px;
+
+                    .rotate-svg {
+                        svg {
+                            transform: rotate(180deg);
+                            transition: transform 0.3s;
+                        }
+                    }
+
+                    .rotate-back {
+                        svg {
+                            transform: rotate(0deg);
+                            transition: transform 0.3s;
+                        }
+                    }
+
+                    .delete-icon {
+                        svg {
+                            path {
+                                fill: $muted;
+                            }
+                        }
+                    }
+
+                    .edit-tooltip {
+                        width: 18px;
+                        height: 18px;
+                        margin-top: 4px;
+
+                        .edit-icon {
+                            svg {
+                                path {
+                                    fill: $muted;
+                                }
+                            }
+                        }
+                    }
+
+                    .open-dropdown-icon {
+                        width: 18px;
+                        height: 18px;
+                        margin-top: 4px;
+                    }
+                }
+            }
+        }
+
+        .user-image {
+            transition: transform 0.2s;
+            margin-right: 4px;
+            position: relative;
+            bottom: 1px;
+            width: 22px;
+            height: 22px;
+            border-radius: 1px;
+            font-size: 7px;
+            border-radius: 50%;
+        }
+
+        .text-white {
+            color: $white;
+        }
+
+        .card-user-me {
+            margin-left: 4px;
+            color: $ta-orange-3;
+            font-size: 11px;
+        }
+
+        .card-user-edited {
+            margin-left: 4px;
+            color: $ta-blue-19;
+            font-size: 11px;
+        }
+    }
+
+    span {
+        font-size: 11px;
+    }
+
+    .muted-text {
+        color: $muted;
+        position: relative;
+        top: -2px;
+    }
+
+    .comment-text {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 11px;
+    }
+
+    .show-comment {
+        overflow: visible;
+        white-space: break-spaces;
+    }
+}
+
+.hoverable {
+    &:hover {
+        background: $ta-black;
+        border-radius: 2px;
+        transition: background 0.3s;
+
+        .user-icons {
+            visibility: visible !important;
+        }
+    }
+}
+
+.editable {
+    background: $bw-9;
+
+    .title {
+        color: $ta-black;
+    }
+
+    .edit-textarea {
+        border: none;
+        background: $bw-9;
+        font-size: 11px;
+    }
+
+    .user-icons {
+        visibility: visible !important;
+        right: 0px;
+        top: 2px;
+
+        .confirm-tooltip {
+            background: $muted;
+            height: 18px;
+            width: 18px;
+            border-radius: 1px;
+
+            svg {
+                path {
+                    fill: $bw-9;
+                }
+            }
+
+            &:hover {
+                background: $ta-black;
+                transform: scale(1.2);
+                transition: transform 3ms;
+            }
+        }
+
+        .cancel-tooltip {
+            background: $muted;
+            height: 18px;
+            width: 18px;
+            border-radius: 1px;
+
+            svg {
+                path {
+                    fill: $bw-9;
+                }
+            }
+
+            &:hover {
+                background: $ta-black;
+                transform: scale(1.2);
+                transition: transform 3ms;
+            }
+        }
+    }
+}

@@ -1,4 +1,3 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import {
     FormArray,
     FormControl,
@@ -21,6 +20,7 @@ import {
     OnInit,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Models
 import { CardRows, LoadTableData } from '../model/cardData';
@@ -28,7 +28,7 @@ import {
     DropdownItem,
     CardDetails,
     SendDataCard,
-} from '../model/cardTableData';
+} from '../model/card-table-data';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from '../model/tableBody';
 
@@ -143,6 +143,7 @@ export class TruckassistCardsComponent implements OnInit {
     @Input() displayRowsFront: CardRows;
     @Input() displayRowsBack: CardRows;
     @Input() activeTab: string;
+    @Input() cardTitleLink: string;
 
     public isCardFlipped: Array<number> = [];
     public tooltip;
@@ -176,8 +177,7 @@ export class TruckassistCardsComponent implements OnInit {
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
         private timeFormatPipe: TimeFormatPipe,
-        private sanitizer: DomSanitizer,
-        private el: ElementRef
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -378,6 +378,15 @@ export class TruckassistCardsComponent implements OnInit {
 
     public objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
         return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
+    }
+
+    // For closed tab status return true false to style status
+    public checkLoadStatus(
+        card: CardDetails,
+        endpoint: string,
+        value: string
+    ): boolean {
+        return this.getValueByStringPath(card, endpoint) === value;
     }
 
     //Remove quotes from string to convert into endpoint
@@ -600,6 +609,12 @@ export class TruckassistCardsComponent implements OnInit {
                 break;
             }
         }
+    }
+
+    public goToDetailsPage(card: CardDetails, link: string): void {
+        this.detailsDataService.setNewData(card);
+
+        this.router.navigate([link]);
     }
 
     // Track By For Table Row

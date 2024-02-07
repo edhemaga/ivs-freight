@@ -379,4 +379,7 @@ export enum ConstantStringTableComponentsEnum {
     AM_PM = 'am-pm',
     PRIMARY_PHONE = 'primary-phone',
     PRIMARY_EMAIL = 'primary-email',
+
+    // Links
+    LOAD_DETAILS = '/list/load/',
 }

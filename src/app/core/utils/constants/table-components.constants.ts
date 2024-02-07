@@ -3,7 +3,7 @@ import {
     ShopbBckFilterQueryInterface,
 } from '../../components/repair/repair.modal';
 
-import { DropdownItem } from '../../components/shared/model/cardTableData';
+import { DropdownItem } from '../../components/shared/model/card-table-data';
 
 import {
     FilterOptionBroker,

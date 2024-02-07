@@ -1,4 +1,4 @@
-import { tableDropdownContent } from '../components/shared/model/cardTableData';
+import { tableDropdownContent } from '../components/shared/model/card-table-data';
 
 export class Account {
     status: string;
