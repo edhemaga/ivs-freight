@@ -182,6 +182,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     ngOnInit(): void {
         this.viewData.length && this.labelDropdown();
+        console.log(this.viewData);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
