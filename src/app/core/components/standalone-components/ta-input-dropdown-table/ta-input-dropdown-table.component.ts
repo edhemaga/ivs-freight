@@ -18,7 +18,7 @@ import {
     Trailer,
     Trucks,
     Comment,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -54,7 +54,8 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
     @Input() data: CardDetails;
     @Input() svg: string;
     @Input() type: string;
-    @Input() searchPlaceholder?: string = 'Search';
+    @Input() searchPlaceholder?: string =
+        ConstantStringTableDropdownEnum.SEARCH;
 
     private destroy$ = new Subject<void>();
 
@@ -79,8 +80,6 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.filteredData = JSON.parse(JSON.stringify(this.data));
     }
-
-    public openNewComment(): void {}
 
     public filterArrayComments(event: KeyboardEvent): void {
         if (event.target instanceof HTMLInputElement) {

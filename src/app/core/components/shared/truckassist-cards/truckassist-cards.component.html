@@ -348,38 +348,38 @@
                                             <span
                                                 class="ta-font-black status"
                                                 [ngClass]="{
-                                                    assigned: isValueEqualTo(
+                                                    assigned: checkLoadStatus(
                                                         card,
                                                         rowsFront.endpoint,
                                                         'Assigned'
                                                     ),
-                                                    dispatched: isValueEqualTo(
+                                                    dispatched: checkLoadStatus(
                                                         card,
                                                         rowsFront.endpoint,
                                                         'Dispatched'
                                                     ),
-                                                    loaded: isValueEqualTo(
+                                                    loaded: checkLoadStatus(
                                                         card,
                                                         rowsFront.endpoint,
                                                         'Loaded'
                                                     ),
                                                     paid:
-                                                        isValueEqualTo(
+                                                        checkLoadStatus(
                                                             card,
                                                             rowsFront.endpoint,
                                                             'Short-paid'
                                                         ) ||
-                                                        isValueEqualTo(
+                                                        checkLoadStatus(
                                                             card,
                                                             rowsFront.endpoint,
                                                             'Unpaid'
                                                         ) ||
-                                                        isValueEqualTo(
+                                                        checkLoadStatus(
                                                             card,
                                                             rowsFront.endpoint,
                                                             'Paid'
                                                         ),
-                                                    tonu: isValueEqualTo(
+                                                    tonu: checkLoadStatus(
                                                         card,
                                                         rowsFront.endpoint,
                                                         'Tonu'

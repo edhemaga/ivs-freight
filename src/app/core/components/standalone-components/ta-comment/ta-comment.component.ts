@@ -30,8 +30,10 @@ import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
-import { DummyComment } from 'src/app/core/utils/comments-dummy-data';
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
+
+// utils
+import { DummyComment } from 'src/app/core/utils/comments-dummy-data';
 
 // pipe
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
@@ -104,10 +106,10 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
         this.editingCardComment = !this.editingCardComment;
     }
 
-    public highlight(commenTTitle: string): string {
-        if (!commenTTitle || !this.commentHighlight) return commenTTitle;
+    public higlitsPartOfCommentSearchValue(commentTitle: string): string {
+        if (!commentTitle || !this.commentHighlight) return commentTitle;
 
-        return commenTTitle.replace(
+        return commentTitle.replace(
             new RegExp(this.commentHighlight, 'gi'),
             (match) => {
                 return (

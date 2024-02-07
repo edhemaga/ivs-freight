@@ -23,7 +23,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data';
 import {
     CardRows,
     Search,
@@ -61,6 +61,8 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+
+// Utils
 import { DUMMY_COMMENT_DATA } from 'src/app/core/utils/comments-dummy-data';
 
 @Component({

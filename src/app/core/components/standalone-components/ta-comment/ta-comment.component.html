@@ -114,7 +114,7 @@
     </div>
 </ng-container>
 
-<!-- comments cards -->
+<!-- Comments for cards -->
 
 <ng-container *ngIf="commentCardsDataDropdown">
     <ng-container *ngIf="!editingCardComment">
@@ -149,7 +149,7 @@
                                 <span
                                     class="text-white ta-font-semi-bold"
                                     [innerHTML]="
-                                        highlight(
+                                        higlitsPartOfCommentSearchValue(
                                             commentCardsDataDropdown.fullName
                                         ) | safeHtml
                                     "
@@ -206,8 +206,6 @@
                                         tooltipBackground="#424242"
                                         position="top"
                                         type="button"
-                                        [margin]="'0 0 20px 0'"
-                                        style="margin-bottom: 20px"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
                                     >
                                         <svg-icon
@@ -262,7 +260,9 @@
                         commentCardsDataDropdown.isOpen ? 'true' : 'false'
                     "
                     [innerHTML]="
-                        highlight(commentCardsDataDropdown.comment) | safeHtml
+                        higlitsPartOfCommentSearchValue(
+                            commentCardsDataDropdown.comment
+                        ) | safeHtml
                     "
                 ></span>
             </div>
@@ -290,6 +290,7 @@
                             >
                         </div>
                     </ng-container>
+
                     <div class="d-grid title-holder">
                         <div
                             class="d-flex justify-content-between title-svg-holder"
@@ -298,7 +299,7 @@
                                 <span
                                     class="title ta-font-semi-bold"
                                     [innerHTML]="
-                                        highlight(
+                                        higlitsPartOfCommentSearchValue(
                                             commentCardsDataDropdown.fullName
                                         ) | safeHtml
                                     "
@@ -341,8 +342,6 @@
                                     tooltipBackground="#424242"
                                     position="top"
                                     type="button"
-                                    [margin]="'0 0 20px 0'"
-                                    style="margin-bottom: 20px"
                                     class="cancel-tooltip d-flex align-items-center justify-content-center"
                                 >
                                     <svg-icon

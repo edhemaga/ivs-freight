@@ -1,4 +1,3 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import {
     FormArray,
     FormControl,
@@ -29,7 +28,7 @@ import {
     DropdownItem,
     CardDetails,
     SendDataCard,
-} from '../model/cardTableData';
+} from '../model/card-table-data';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from '../model/tableBody';
 
@@ -178,9 +177,7 @@ export class TruckassistCardsComponent implements OnInit {
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
         private timeFormatPipe: TimeFormatPipe,
-        private router: Router,
-        private sanitizer: DomSanitizer,
-        private el: ElementRef
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -384,7 +381,11 @@ export class TruckassistCardsComponent implements OnInit {
     }
 
     // For closed tab status return true false to style status
-    public isValueEqualTo(card: any, endpoint: string, value: string): boolean {
+    public checkLoadStatus(
+        card: CardDetails,
+        endpoint: string,
+        value: string
+    ): boolean {
         return this.getValueByStringPath(card, endpoint) === value;
     }
 
