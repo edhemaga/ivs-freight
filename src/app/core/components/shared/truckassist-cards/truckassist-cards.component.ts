@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import {
     FormArray,
     FormControl,
@@ -117,6 +118,8 @@ export class TruckassistCardsComponent implements OnInit {
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
+    @ViewChild('innerDropdownContent') innerDropdownContent: ElementRef;
+
     @ViewChildren('itemsRepair', { read: ElementRef })
     public itemsContainers!: QueryList<ElementRef>;
 
@@ -175,7 +178,9 @@ export class TruckassistCardsComponent implements OnInit {
         private formatDatePipe: formatDatePipe,
         private formatNumberMi: FormatNumberMiPipe,
         private timeFormatPipe: TimeFormatPipe,
-        private router: Router
+        private router: Router,
+        private sanitizer: DomSanitizer,
+        private el: ElementRef
     ) {}
 
     ngOnInit(): void {
@@ -321,6 +326,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     // Dropdown Actions
     public onDropAction(action: DropdownItem): void {
+        console.log(action);
         if (!action?.mutedStyle) {
             // Send Drop Action
 
@@ -332,6 +338,25 @@ export class TruckassistCardsComponent implements OnInit {
         }
         this.tooltip.close();
         return;
+    }
+
+    public onShowInnerDropdown(action): void {
+        const newDropdownActions = [...this.dropdownActions];
+
+        newDropdownActions.map((actions) => {
+            if (
+                actions.isDropdown &&
+                actions.isInnerDropActive &&
+                actions.title !== action.title
+            ) {
+                actions.isInnerDropActive = false;
+                actions.innerDropElement = null;
+            }
+        });
+
+        this.dropdownActions = [...newDropdownActions];
+
+        action.isInnerDropActive = !action.isInnerDropActive;
     }
 
     // Description
