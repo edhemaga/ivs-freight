@@ -45,6 +45,9 @@ export interface Load {
         id: number;
         commentContent: string;
     };
+    deleteComment?: {
+        id: number;
+    };
     note: string;
     commentId?: number;
     commentCommentContent?: string;

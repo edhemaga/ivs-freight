@@ -79,6 +79,11 @@
                 height: 22px;
                 border-radius: 50%;
                 margin-right: 4px;
+
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
             }
 
             p {

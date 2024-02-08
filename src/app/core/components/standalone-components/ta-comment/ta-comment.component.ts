@@ -27,19 +27,19 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 // enums
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
-// models
-import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
-import { CommentData } from 'src/app/core/model/comment-data';
-import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
-
 // utils
 import { DummyComment } from 'src/app/core/utils/comments-dummy-data';
 
-// pipe
+// pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 
 // components
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
+
+// models
+import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
+import { CommentData } from 'src/app/core/model/comment-data';
+import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-ta-comment',
@@ -87,7 +87,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     public commentDate: string;
     private commentBeforeEdit: string;
 
-    // Cards comments
+    // card comments
     public editingCardComment: boolean = false;
 
     constructor(private imageBase64Service: ImageBase64Service) {}
@@ -221,6 +221,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
             case ConstantStringCommentEnum.CANCEL:
             case ConstantStringCommentEnum.DELETE:
                 const emitData: CommentData = {
+                    commentId: this.commentData.commentId,
                     commentContent: this.commentInput.nativeElement.textContent,
                     commentIndex: this.commentIndex,
                     isEditCancel: this.isEditing,
@@ -256,5 +257,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
         }, 100);
 
         this.commentDate = this.commentData.commentDate;
+
+        this.isEdited = this.commentData.isEdited;
     }
 }
