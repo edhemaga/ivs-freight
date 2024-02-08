@@ -205,7 +205,6 @@ export class InputAddressDropdownComponent
 
                 if (
                     !this.activeAddress ||
-                    this.activeAddress?.address != this.getSuperControl.value ||
                     !isValid
                 ) {
                     this.getSuperControl.setErrors({ invalid: true });
