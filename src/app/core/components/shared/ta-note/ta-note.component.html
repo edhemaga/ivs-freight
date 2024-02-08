@@ -9,25 +9,19 @@
     [placement]="'left-top'"
     popoverClass="my-note-popover"
     triggers="manual"
-    (click)="openedAll ? toggleNote(note, t2) : ''"
+    (click)="openedAll ? toggleNote(_note, t2) : ''"
 >
     <div
         class="note_button_hold"
         *ngIf="!openedAll && (noteOpened || (!noteOpened && !savingNote))"
         [ngClass]="{
             'note-normal-icon': !openedAll,
-            'note-note-empty': !note && !openedAll,
+            'note-note-empty': !_note && !openedAll,
             'note-all-expanded': noteOpened
         }"
-        [tooltipBackground]="!note ? '' : '#6C6C6C'"
+        [tooltipBackground]="'#6C6C6C'"
         ngbTooltip
-        [mainTooltip]="
-            note && noteOpened
-                ? 'Edit Note'
-                : note && !noteOpened
-                ? 'View Note'
-                : ''
-        "
+        [mainTooltip]="_note && noteOpened ? 'Edit Note' : 'View Note'"
         position="bottom"
     >
         <svg-icon
@@ -40,7 +34,7 @@
             [animation]="false"
             popoverClass="my-note-popover"
             triggers="manual"
-            (click)="toggleNote(note, t2)"
+            (click)="toggleNote(_note, t2)"
             (hidden)="popoverClosed()"
             src="assets/svg/truckassist-table/note/{{ noteIcon }}"
         >
@@ -51,7 +45,7 @@
     </div>
     <div
         *ngIf="openedAll"
-        [innerHTML]="note | safeHtml"
+        [innerHTML]="_note | safeHtml"
         class="note_inner_text"
     ></div>
 </div>
@@ -67,7 +61,9 @@
             [class.expanded]="isExpanded"
             class="k-widget k-editor custom_editor"
             [class.dark]="type == 'dark'"
-            [ngStyle]="{ width: parentWidth ? _parentWidth + 'px' : _noteWidth + 'px' }"
+            [ngStyle]="{
+                width: parentWidth ? _parentWidth + 'px' : _noteWidth + 'px'
+            }"
         >
             <div
                 (blur)="prepareForTextRange()"
@@ -79,7 +75,7 @@
                 [class.parking_text_hold]="parking"
                 [class.opened_all_editor]="openedAll"
                 [class.dark]="type == 'dark'"
-                [innerHTML]="note | safeHtml"
+                [innerHTML]="_note | safeHtml"
                 class="editor"
                 (keydown)="maxLimitForContenteditableDiv($event, 250)"
                 contenteditable="true"
