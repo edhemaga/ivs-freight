@@ -2,9 +2,11 @@ import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// services
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 import { WebsiteAuthService } from '../../../../state/service/website-auth.service';
 
+// enums
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 
 @Component({
@@ -49,21 +51,16 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
                     this.registerCompanyConfirmation ||
                     this.registerUserConfirmation ||
                     this.resendConfirmationRequested
-                ) {
+                )
                     this.resendRegisterConfirmation();
-                }
 
-                if (this.passwordResetRequested) {
-                    this.resendResetPassword();
-                }
+                if (this.passwordResetRequested) this.resendResetPassword();
             }
         }
     }
 
     public onResetRequestedResend(event: boolean): void {
-        if (event) {
-            this.requestedResendEmail = false;
-        }
+        if (event) this.requestedResendEmail = false;
     }
 
     private getConfirmationEmail(): void {

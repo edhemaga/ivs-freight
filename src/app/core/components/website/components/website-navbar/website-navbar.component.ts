@@ -3,12 +3,17 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// utils
 import { NAVBAR_MENU_ITEMS } from '../../state/utils/static';
 
+// services
 import { WebsiteActionsService } from '../../state/service/website-actions.service';
 
-import { NavigationModel } from '../../state/model/navigation.model';
+// enums
 import { ConstantString } from '../../state/enum/const-string.enum';
+
+// models
+import { NavigationModel } from '../../state/model/navigation.model';
 
 @Component({
     selector: 'app-website-navbar',
@@ -76,9 +81,7 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
         this.websiteActionsService.getSidebarContentType$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: string) => {
-                if (!res) {
-                    this.isSidebarOpen = false;
-                }
+                if (!res) this.isSidebarOpen = false;
             });
     }
 

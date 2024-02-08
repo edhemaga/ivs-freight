@@ -1,16 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
+// validations
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// enums
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+
+// models
 import { SetNewPasswordCommand } from 'appcoretruckassist';
 import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
 
@@ -22,7 +31,7 @@ import { UserInfoModel } from 'src/app/core/components/website/state/model/user-
 export class CreateNewPasswordComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public createNewPasswordForm: FormGroup;
+    public createNewPasswordForm: UntypedFormGroup;
 
     public userInfo: UserInfoModel = null;
     public userAvatar: any = null;
@@ -30,7 +39,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
     public displaySpinner: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService,
@@ -69,68 +78,63 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
         this.websiteActionsService.getAvatarImageSubject$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: string) => {
-                if (res) {
+                if (res)
                     this.userAvatar = this.imageBase64Service.sanitizer(res);
-                }
             });
     }
 
-    private passwordsNotSame(): void {
-        const passwordControl = this.createNewPasswordForm.get(
-            ConstantString.PASSWORD
-        );
-
-        const confirmPasswordControl = this.createNewPasswordForm.get(
-            ConstantString.CONFIRM_PASSWORD
-        );
-
-        confirmPasswordControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
+    public passwordsNotSame(): void {
+        this.createNewPasswordForm
+            .get(ConstantString.CONFIRM_PASSWORD)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    passwordControl.value &&
-                    value &&
                     value?.toLowerCase() ===
-                        passwordControl.value?.toLowerCase()
+                    this.createNewPasswordForm
+                        .get(ConstantString.PASSWORD)
+                        .value?.toLowerCase()
                 ) {
-                    confirmPasswordControl.setErrors(null);
-
-                    passwordControl.setErrors(null);
+                    this.createNewPasswordForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors(null);
                 } else {
-                    confirmPasswordControl.setErrors({
-                        invalid: true,
-                    });
+                    this.createNewPasswordForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors({
+                            invalid: true,
+                        });
                 }
             });
 
-        passwordControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
+        this.createNewPasswordForm
+            .get(ConstantString.PASSWORD)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    confirmPasswordControl.value &&
-                    value &&
-                    value?.toLowerCase() !==
-                        confirmPasswordControl.value?.toLowerCase()
+                    value?.toLowerCase() ===
+                    this.createNewPasswordForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .value?.toLowerCase()
                 ) {
-                    passwordControl.setErrors({
-                        invalid: true,
-                    });
+                    this.createNewPasswordForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors(null);
                 } else {
-                    confirmPasswordControl.setErrors(null);
+                    this.createNewPasswordForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors({
+                            invalid: true,
+                        });
                 }
             });
     }
 
     public onKeyDown(event: any): void {
-        if (event.keyCode === 13) {
-            this.createNewPassword();
-        }
+        if (event.keyCode === 13) this.createNewPassword();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) {
-            this.createNewPassword();
-        }
+        if (event.notDisabledClick) this.createNewPassword();
     }
 
     public createNewPassword(): void {

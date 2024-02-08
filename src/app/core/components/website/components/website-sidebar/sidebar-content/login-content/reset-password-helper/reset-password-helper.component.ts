@@ -3,10 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
+// enums
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+
+// models
 import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
 
 @Component({

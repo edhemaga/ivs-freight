@@ -3,8 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-    FormBuilder,
-    FormGroup,
+    UntypedFormBuilder,
+    UntypedFormGroup,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
@@ -59,14 +59,14 @@ export interface Confirmation {
 })
 export class ConfirmationModalComponent implements OnInit {
     @Input() editData: Confirmation;
-    public cdlForm: FormGroup;
+    public cdlForm: UntypedFormGroup;
     selectedCdl: any;
 
     constructor(
         public imageBase64Service: ImageBase64Service,
         private ngbActiveModal: NgbActiveModal,
         private confirmationDataSubject: ConfirmationService,
-        private formBuilder: FormBuilder
+        private formBuilder: UntypedFormBuilder
     ) {}
 
     ngOnInit() {
@@ -100,7 +100,7 @@ export class ConfirmationModalComponent implements OnInit {
         }
     }
 
-    public formatDate(mod){
+    public formatDate(mod) {
         return convertDateFromBackend(mod);
     }
 
