@@ -24,7 +24,7 @@ export class SettingsDocumentComponent implements OnInit {
     selectedTab: string = 'active';
     tableOptions: any = {
         toolbarActions: {
-            showArhiveFilter: true,
+            showArhiveFilter: false,
             viewModeOptions: [],
         },
         actions: [],
