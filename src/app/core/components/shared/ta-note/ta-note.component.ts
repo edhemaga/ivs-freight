@@ -12,11 +12,10 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment';
 
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+//animations
+import { animate, style, transition, trigger } from '@angular/animations';
 
 //services
 import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
@@ -26,9 +25,13 @@ import { SharedService } from '../../../services/shared/shared.service';
 //popover
 import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-//helpers
+//pipes
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+
+//modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 //components
 import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
@@ -97,11 +100,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     @Input() entityType: string;
     @Input() isDispatch: boolean = false;
 
-    @ViewChild('main_editor', { static: false }) public main_editor: ElementRef;
-    @ViewChild('note_popover', { static: false })
-    public note_popover: ElementRef;
-    @ViewChild('noteContainer', { static: true })
-    public noteContainer: TaNoteContainerComponent;
+    @ViewChild('main_editor') public main_editor: ElementRef;
+    @ViewChild('note_popover') public note_popover: ElementRef;
+    @ViewChild('noteContainer') public noteContainer: TaNoteContainerComponent;
 
     public _noteWidth: number = 250;
     public _parentWidth: number = 250;
