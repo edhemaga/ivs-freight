@@ -13,19 +13,31 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
-import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
-import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+//services
+import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { SharedService } from '../../../services/shared/shared.service';
+
+//popover
+import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+//helpers
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
-import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//components
+import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+
+//models
+import { activeOptions } from './models/note-models';
+import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
     selector: 'app-ta-note',
@@ -66,6 +78,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     ],
 })
 export class TaNoteComponent implements OnInit, OnDestroy {
+    @Output() saveNoteValue = new EventEmitter();
+
     public _note: string;
     @Input() set note(value: string) {
         this._note = value;
@@ -73,52 +87,54 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.checkNoteImage(value);
     }
     @Input() mainData: any;
-    @Input() openAllNotesText: any;
-    @Input() parking: any = false;
+    @Input() parking: boolean = false;
     @Input() dispatchIndex: number = -1;
     @Input() type: string;
     @Input() parentWidth: string;
-    @ViewChild('main_editor', { static: false }) public main_editor: any;
-    @ViewChild('note_popover', { static: false }) note_popover: any;
 
-    _noteWidth: number = 250;
-    _parentWidth: number = 250;
-
-    @Input() set noteWidth(value) {
-        this._noteWidth = value;
-    }
-
-    tooltip: any;
-    showCollorPattern: boolean;
-    buttonsExpanded = false;
-    isExpanded = false;
-    noteOpened: boolean = false;
-    editorDoc: any;
-    value: string = '';
-    savedValue: string = '';
-    lastTypeTime: any;
-    saveInterval: any;
-    saveIntervalStarted: boolean = false;
-    noteIcon: string = 'Note - Empty.svg';
-    selectedPaternColor = '#6C6C6C';
-    activeOptions: any = {
-        bold: false,
-        italic: false,
-        foreColor: false,
-        underline: false,
-    };
-    @Output() saveNoteValue = new EventEmitter();
-    @Input() openedAll: any;
+    @Input() openedAll: boolean;
     @Input() entityId: number = 0;
     @Input() entityType: string;
     @Input() isDispatch: boolean = false;
-    leaveThisOpened: boolean;
-    selectionTaken: any;
-    range: any;
-    isFocused: boolean = false;
-    preventClosing: boolean = false;
-    savingNote: boolean = false;
-    @ViewChild('noteContainer', { static: true }) noteContainer: any;
+
+    @ViewChild('main_editor', { static: false }) public main_editor: ElementRef;
+    @ViewChild('note_popover', { static: false })
+    public note_popover: ElementRef;
+    @ViewChild('noteContainer', { static: true })
+    public noteContainer: TaNoteContainerComponent;
+
+    public _noteWidth: number = 250;
+    public _parentWidth: number = 250;
+
+    @Input() set noteWidth(value: number) {
+        this._noteWidth = value;
+    }
+
+    //note container
+    public showCollorPattern: boolean;
+    public buttonsExpanded = false;
+    public activeOptions: activeOptions;
+    public selectedPaternColor: string = '#6C6C6C';
+
+    //properties and values
+
+    public isExpanded: boolean = false;
+    public noteOpened: boolean = false;
+    public value: string = '';
+    private lastTypeTime: number;
+    public noteIcon: string = 'Note - Empty.svg';
+    public leaveThisOpened: boolean;
+    public selectionTaken: Selection;
+    public range: Range;
+    public isFocused: boolean = false;
+    private preventClosing: boolean = false;
+
+    //saving
+    public savingNote: boolean = false;
+    private saveInterval: any;
+    private saveIntervalStarted: boolean = false;
+    public savedValue: string = '';
+
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -147,7 +163,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.correctEntityType();
     }
 
-    setNoteParentWidth() {
+    private setNoteParentWidth(): void {
         if (this.parentWidth) {
             setTimeout(() => {
                 const parentWidth = this.elRef.nativeElement
@@ -161,9 +177,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    checkFocus(e) {
-        e.stopPropagation();
-        e.preventDefault();
+    public checkFocus(event: Event): void {
+        event.stopPropagation();
+        event.preventDefault();
 
         this.isFocused = true;
         this.leaveThisOpened = true;
@@ -175,7 +191,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }, 150);
     }
 
-    toggleNote(data: any, t2) {
+    public toggleNote(data: string, t2: NgbPopover): void {
         if (this.mainData) {
             this.DetailsDataService.setNewData(this.mainData);
         }
@@ -220,13 +236,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    editorClick(event) {
-        if (event.target.innerText === 'Take a note...') {
-            event.target.innerText = '';
-        }
-    }
-
-    prepareForTextRange() {
+    public prepareForTextRange(): void {
         this.isFocused = false;
         this.selectionTaken = window.getSelection();
         if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
@@ -236,12 +246,12 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    preventMouseDown(ev) {
+    public preventMouseDown(ev: Event): void {
         ev.stopPropagation();
         ev.preventDefault();
     }
 
-    valueChange(event) {
+    public valueChange(event: string): void {
         this.value = event;
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
@@ -257,13 +267,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    checkActiveItems() {
+    private checkActiveItems(): void {
         if (this.noteContainer && this.noteContainer?.checkActiveItems) {
             this.noteContainer?.checkActiveItems();
         }
     }
 
-    saveNote(autoSave?: boolean) {
+    public saveNote(autoSave?: boolean): void {
         setTimeout(() => {
             if (!autoSave && this.openedAll) {
                 this.closeNote();
@@ -291,7 +301,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             });
     }
 
-    closeNote() {
+    private closeNote(): void {
         this.noteOpened = false;
         this.leaveThisOpened = false;
         this.showCollorPattern = false;
@@ -300,36 +310,39 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this._note = this.value;
     }
 
-    maxLimitForContenteditableDiv(e: any, limit: number) {
+    public maxLimitForContenteditableDiv(
+        event: KeyboardEvent,
+        limit: number
+    ): void {
         let allowedKeys = false;
 
-        if (e.type === 'keydown') {
+        if (event.type === 'keydown') {
             allowedKeys =
-                e.which === 8 /* BACKSPACE */ ||
-                e.which === 35 /* END */ ||
-                e.which === 36 /* HOME */ ||
-                e.which === 37 /* LEFT */ ||
-                e.which === 38 /* UP */ ||
-                e.which === 39 /* RIGHT*/ ||
-                e.which === 40 /* DOWN */ ||
-                e.which === 46 /* DEL*/ ||
-                (e.ctrlKey === true && e.which === 65) /* CTRL + A */ ||
-                (e.ctrlKey === true && e.which === 88) /* CTRL + X */ ||
-                (e.ctrlKey === true && e.which === 67) /* CTRL + C */ ||
-                (e.ctrlKey === true && e.which === 86) /* CTRL + V */ ||
-                (e.ctrlKey === true && e.which === 90) /* CTRL + Z */;
+                event.key === 'Backspace' ||
+                event.key === 'End' ||
+                event.key === 'Home' ||
+                event.key === 'ArrowLeft' ||
+                event.key === 'ArrowUp' ||
+                event.key === 'ArrowRight' ||
+                event.key === 'ArrowDown' ||
+                event.key === 'Delete' ||
+                (event.ctrlKey === true && event.key === 'a') ||
+                (event.ctrlKey === true && event.key === 'x') ||
+                (event.ctrlKey === true && event.key === 'c') ||
+                (event.ctrlKey === true && event.key === 'v') ||
+                (event.ctrlKey === true && event.key === 'z');
         }
-        if (e.ctrlKey === true && e.which === 86) {
-            setTimeout(function () {
-                $(e.target).text($(e.target).text().slice(0, limit));
+        if (event.ctrlKey === true && event.key === 'v') {
+            setTimeout(() => {
+                $(event.target).text($(event.target).text().slice(0, limit));
             });
         }
-        if (!allowedKeys && $(e.target).text().length >= limit) {
-            e.preventDefault();
+        if (!allowedKeys && $(event.target).text().length >= limit) {
+            event.preventDefault();
         }
     }
 
-    expandAllNotes() {
+    public expandAllNotes(): void {
         if (!this.isExpanded) {
             setTimeout(() => {
                 if (this.openedAll) {
@@ -339,7 +352,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    popoverClosed() {
+    public popoverClosed(): void {
         if (!this.preventClosing) {
             this.closeNote();
         }
@@ -347,7 +360,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.preventClosing = false;
     }
 
-    updateNote() {
+    private updateNote(): void {
         if (this.entityType == 'Account') {
             this.entityType = 'CompanyAccount';
         }
@@ -371,7 +384,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         });
     }
 
-    checkNoteImage(note) {
+    private checkNoteImage(note: string): void {
         if (note && note != '') {
             this.noteIcon = 'Note.svg';
         } else {
@@ -379,7 +392,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    correctEntityType() {
+    private correctEntityType(): void {
         if (this.entityType == 'User') {
             this.entityType = 'CompanyUser';
         }

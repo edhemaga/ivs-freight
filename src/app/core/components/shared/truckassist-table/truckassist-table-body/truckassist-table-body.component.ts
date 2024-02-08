@@ -408,9 +408,7 @@ export class TruckassistTableBodyComponent
         if (this.activeAttachment !== -1) {
             let entity = this.activeTableData?.gridNameTitle;
 
-            if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
-                entity = 'Repair-Shop';
-            }
+            if (entity === 'Repair' && this.selectedTab === 'repair-shop') entity = 'Repair-Shop';
 
             this.filesService
                 .getFiles(entity, this.activeAttachment)
@@ -828,9 +826,7 @@ export class TruckassistTableBodyComponent
         if (this.activeAttachment !== row.id) {
             let entity = this.activeTableData?.gridNameTitle?.toLowerCase();
 
-            if (entity == 'repair' && this.selectedTab == 'repair-shop') {
-                entity = 'repair-shop';
-            }
+            if (entity === 'repair' && this.selectedTab === 'repair-shop') entity = 'repair-shop';
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 if (res?.length) {
