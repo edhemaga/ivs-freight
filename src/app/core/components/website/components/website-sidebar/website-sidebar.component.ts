@@ -8,14 +8,18 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-import { Offcanvas } from 'bootstrap';
-
 import { Subject, takeUntil } from 'rxjs';
 
+// bootstrap
+import { Offcanvas } from 'bootstrap';
+
+// services
 import { WebsiteActionsService } from '../../state/service/website-actions.service';
 
+// animations
 import { fadeInAnimation } from '../../state/utils/animation';
 
+// enums
 import { ConstantString } from '../../state/enum/const-string.enum';
 
 @Component({
@@ -74,23 +78,19 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                         ConstantString.REGISTER_USER,
                     ];
 
-                    if (WIDTH_ONE_ARR.includes(this.selectedContentType)) {
+                    if (WIDTH_ONE_ARR.includes(this.selectedContentType))
                         this.selectedContentWidth = 480;
-                    }
 
-                    if (WIDTH_TWO_ARR.includes(this.selectedContentType)) {
+                    if (WIDTH_TWO_ARR.includes(this.selectedContentType))
                         this.selectedContentWidth = 580;
-                    }
 
-                    if (WIDTH_THREE_ARR.includes(this.selectedContentType)) {
+                    if (WIDTH_THREE_ARR.includes(this.selectedContentType))
                         this.selectedContentWidth = 680;
-                    }
 
-                    if (this.selectedContentType) {
+                    if (this.selectedContentType)
                         this.websiteActionsService.setSidebarContentWidth(
                             this.selectedContentWidth - 200
                         );
-                    }
                 }
             });
     }

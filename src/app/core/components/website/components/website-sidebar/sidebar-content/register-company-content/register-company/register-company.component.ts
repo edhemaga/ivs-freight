@@ -1,14 +1,23 @@
 /* eslint-disable no-unused-vars */
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
 import { WebsiteActionsService } from '../../../../../state/service/website-actions.service';
 
+// components
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+
+// validations
 import {
     addressUnitValidation,
     addressValidation,
@@ -19,8 +28,11 @@ import {
     phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
+// enums
 import { ConstantString } from '../../../../../state/enum/const-string.enum';
+
+// models
+import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-register-company',
@@ -28,18 +40,19 @@ import { ConstantString } from '../../../../../state/enum/const-string.enum';
     styleUrls: ['./register-company.component.scss'],
 })
 export class RegisterCompanyComponent implements OnInit, OnDestroy {
-    @ViewChild('inputAddress', { static: false }) public inputAddress: any;
+    @ViewChild('inputAddress')
+    public inputAddress: InputAddressDropdownComponent;
 
     private destroy$ = new Subject<void>();
 
-    public registerCompanyForm: FormGroup;
+    public registerCompanyForm: UntypedFormGroup;
 
     public selectedAddress: AddressEntity = null;
 
     public displaySpinner: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
@@ -82,78 +95,72 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     }): void {
         this.selectedAddress = event.address;
 
-        if (!event.valid) {
+        if (!event.valid)
             this.registerCompanyForm
                 .get(ConstantString.ADDRESS)
                 .setErrors({ invalid: true });
-        }
     }
 
-    private passwordsNotSame(): void {
-        const passwordControl = this.registerCompanyForm.get(
-            ConstantString.PASSWORD
-        );
-
-        const confirmPasswordControl = this.registerCompanyForm.get(
-            ConstantString.CONFIRM_PASSWORD
-        );
-
-        confirmPasswordControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
+    public passwordsNotSame(): void {
+        this.registerCompanyForm
+            .get(ConstantString.CONFIRM_PASSWORD)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    passwordControl.value &&
-                    value &&
                     value?.toLowerCase() ===
-                        passwordControl.value?.toLowerCase()
+                    this.registerCompanyForm
+                        .get(ConstantString.PASSWORD)
+                        .value?.toLowerCase()
                 ) {
-                    confirmPasswordControl.setErrors(null);
-
-                    passwordControl.setErrors(null);
+                    this.registerCompanyForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors(null);
                 } else {
-                    confirmPasswordControl.setErrors({
-                        invalid: true,
-                    });
+                    this.registerCompanyForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors({
+                            invalid: true,
+                        });
                 }
             });
 
-        passwordControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
+        this.registerCompanyForm
+            .get(ConstantString.PASSWORD)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    confirmPasswordControl.value &&
-                    value &&
-                    value?.toLowerCase() !==
-                        confirmPasswordControl.value?.toLowerCase()
+                    value?.toLowerCase() ===
+                    this.registerCompanyForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .value?.toLowerCase()
                 ) {
-                    passwordControl.setErrors({
-                        invalid: true,
-                    });
+                    this.registerCompanyForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors(null);
                 } else {
-                    confirmPasswordControl.setErrors(null);
+                    this.registerCompanyForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors({
+                            invalid: true,
+                        });
                 }
             });
     }
 
     public onKeyDown(event: { keyCode: number }): void {
-        if (event.keyCode === 13) {
-            this.registerCompany();
-        }
+        if (event.keyCode === 13) this.registerCompany();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) {
-            this.registerCompany();
-        }
+        if (event.notDisabledClick) this.registerCompany();
     }
 
     private registerCompany(): void {
         if (
             this.inputAddress?.inputDropdown?.inputRef?.focusInput &&
             this.inputAddress?.addresList?.length
-        ) {
+        )
             return;
-        }
 
         if (this.registerCompanyForm.invalid) {
             this.inputService.markInvalid(this.registerCompanyForm);
@@ -205,27 +212,20 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
                         const errorMessage = error.error.error;
 
-                        if (errorMessage === ConstantString.EIN_ALREADY_EXIST) {
+                        if (errorMessage === ConstantString.EIN_ALREADY_EXIST)
                             this.registerCompanyForm
                                 .get(ConstantString.EIN)
                                 .setErrors({ einAlreadyExist: true });
-                        }
 
-                        if (
-                            errorMessage === ConstantString.PHONE_ALREADY_EXIST
-                        ) {
+                        if (errorMessage === ConstantString.PHONE_ALREADY_EXIST)
                             this.registerCompanyForm
                                 .get(ConstantString.PHONE)
                                 .setErrors({ phoneAlreadyExist: true });
-                        }
 
-                        if (
-                            errorMessage === ConstantString.EMAIL_ALREADY_EXIST
-                        ) {
+                        if (errorMessage === ConstantString.EMAIL_ALREADY_EXIST)
                             this.registerCompanyForm
                                 .get(ConstantString.EMAIL_ADDRESS)
                                 .setErrors({ emailAlreadyExist: true });
-                        }
                     },
                 })
             )

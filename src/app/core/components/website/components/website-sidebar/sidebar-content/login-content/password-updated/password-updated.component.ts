@@ -2,10 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// services
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
+// enums
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+
+// models
 import { UserInfoModel } from './../../../../../state/model/user-info.model';
 
 @Component({
@@ -49,11 +53,10 @@ export class PasswordUpdatedComponent implements OnInit, OnDestroy {
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) {
+        if (event.notDisabledClick)
             this.websiteActionsService.setSidebarContentType(
                 ConstantString.LOGIN
             );
-        }
     }
 
     ngOnDestroy(): void {
