@@ -8,4 +8,5 @@ export interface CommentCompanyUser {
     commentContent: string;
     commentDate: string;
     isCommenting?: boolean;
+    isEdited?: boolean;
 }
