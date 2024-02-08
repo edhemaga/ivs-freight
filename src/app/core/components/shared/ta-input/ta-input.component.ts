@@ -51,7 +51,7 @@ import { ProfileImagesComponent } from '../profile-images/profile-images.compone
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
-import { merge } from 'jquery';
+
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
