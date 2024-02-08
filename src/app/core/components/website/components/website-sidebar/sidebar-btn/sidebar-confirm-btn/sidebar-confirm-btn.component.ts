@@ -10,7 +10,9 @@ export class SidebarConfirmBtnComponent implements OnInit {
     @Input() loginBtn?: boolean = false;
     @Input() displaySpinner?: boolean = false;
 
-    @Output() clickValueEmitter = new EventEmitter<any>();
+    @Output() clickValueEmitter = new EventEmitter<{
+        notDisabledClick: boolean;
+    }>();
 
     constructor() {}
 

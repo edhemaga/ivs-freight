@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -31,7 +35,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public registerUserForm: FormGroup;
+    public registerUserForm: UntypedFormGroup;
 
     private registerUserCode: string = null;
 
@@ -45,7 +49,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     public displaySpinner: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteActionsService: WebsiteActionsService,
         private websiteAuthService: WebsiteAuthService
@@ -114,48 +118,48 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         }
     }
 
-    private passwordsNotSame(): void {
-        const passwordControl = this.registerUserForm.get(
-            ConstantString.PASSWORD
-        );
-
-        const confirmPasswordControl = this.registerUserForm.get(
-            ConstantString.CONFIRM_PASSWORD
-        );
-
-        confirmPasswordControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
+    public passwordsNotSame(): void {
+        this.registerUserForm
+            .get(ConstantString.CONFIRM_PASSWORD)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    passwordControl.value &&
-                    value &&
                     value?.toLowerCase() ===
-                        passwordControl.value?.toLowerCase()
+                    this.registerUserForm
+                        .get(ConstantString.PASSWORD)
+                        .value?.toLowerCase()
                 ) {
-                    confirmPasswordControl.setErrors(null);
-
-                    passwordControl.setErrors(null);
+                    this.registerUserForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors(null);
                 } else {
-                    confirmPasswordControl.setErrors({
-                        invalid: true,
-                    });
+                    this.registerUserForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors({
+                            invalid: true,
+                        });
                 }
             });
 
-        passwordControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
+        this.registerUserForm
+            .get(ConstantString.PASSWORD)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    confirmPasswordControl.value &&
-                    value &&
-                    value?.toLowerCase() !==
-                        confirmPasswordControl.value?.toLowerCase()
+                    value?.toLowerCase() ===
+                    this.registerUserForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .value?.toLowerCase()
                 ) {
-                    passwordControl.setErrors({
-                        invalid: true,
-                    });
+                    this.registerUserForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors(null);
                 } else {
-                    confirmPasswordControl.setErrors(null);
+                    this.registerUserForm
+                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .setErrors({
+                            invalid: true,
+                        });
                 }
             });
     }
