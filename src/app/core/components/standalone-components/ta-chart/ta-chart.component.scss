@@ -181,6 +181,8 @@
         background: $ta-black-2;
         z-index: 2;
         transform: translateY(-50%);
+        transition: all 0.3s ease-in-out;
+        pointer-events: none;
 
         &-title {
             padding: 2px 4px;

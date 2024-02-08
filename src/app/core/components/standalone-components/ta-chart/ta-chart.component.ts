@@ -1130,6 +1130,8 @@ export class TaChartComponent implements OnInit, OnChanges {
                     this.hoverDataPosition =
                         xPos - this.hoverColumnWidth / 2 + 4;
                 }
+
+                this.ref.detectChanges();
             }
         }
     }
