@@ -86,13 +86,17 @@
                 .name {
                     font-size: 14px;
                     line-height: 18px;
-                    cursor: pointer;
                     width: 100%;
 
                     .title {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: $ta-blue-15;
+                        }
                     }
 
                     .finish-order-holder {
@@ -135,12 +139,6 @@
 
                     .circle-image {
                         border-radius: 50%;
-                    }
-
-                    &:hover {
-                        .title {
-                            color: $ta-blue-15;
-                        }
                     }
 
                     .title {
@@ -231,6 +229,17 @@
                             background: rgb(108, 108, 108, 0.2);
                         }
 
+                        span {
+                            &::-moz-selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+                            &::selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+                        }
+
                         .subtotal {
                             color: $ta-yellow-5;
                         }
@@ -264,14 +273,33 @@
                             font-size: 11px;
                             border-radius: 1px;
                             color: $white;
+                            cursor: default;
                         }
 
                         .pickup {
                             background: $ta-green;
+
+                            &::-moz-selection {
+                                color: initial;
+                                background: initial;
+                            }
+                            &::selection {
+                                color: initial;
+                                background: initial;
+                            }
                         }
 
                         .delivery {
                             background: $ta-red-10;
+
+                            &::-moz-selection {
+                                color: initial;
+                                background: initial;
+                            }
+                            &::selection {
+                                color: initial;
+                                background: initial;
+                            }
                         }
 
                         .muted {
@@ -284,6 +312,14 @@
 
                         .loaded {
                             color: $ta-green-2;
+                        }
+
+                        .paid {
+                            color: $ta-yellow-6;
+                        }
+
+                        .tonu {
+                            color: $ta-red-11;
                         }
 
                         .assigned {
@@ -423,34 +459,6 @@
                         svg {
                             transform: rotate(0deg);
                             transition: all 0.3s;
-                        }
-                    }
-
-                    .comment-number {
-                        position: absolute;
-                        color: $white;
-                        font-size: 9px;
-                    }
-
-                    .comment {
-                        svg {
-                            width: 16px;
-                        }
-                    }
-
-                    .notification {
-                        position: absolute;
-                        width: 6px;
-                        height: 6px;
-                        top: -8px;
-                        right: 4px;
-                        svg {
-                            path:first-child {
-                                fill: $white;
-                            }
-                            path:nth-child(2) {
-                                fill: $ta-red-10;
-                            }
                         }
                     }
 

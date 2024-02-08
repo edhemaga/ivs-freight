@@ -1,115 +1,377 @@
-<div
-    class="d-flex flex-column comment-container"
-    [ngClass]="{ inactive: !isCommenting }"
->
-    <!-- Comment Header -->
-
+<ng-container *ngIf="!commentCardsDataDropdown">
     <div
-        class="d-flex align-items-start justify-content-between comment-header"
+        class="d-flex flex-column comment-container"
+        [ngClass]="{ inactive: !isCommenting }"
     >
-        <div class="d-flex align-items-center comment-header-left">
-            <img
-                src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
-                [src]="
-                    commentAvatar ??
-                    'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                "
-                alt="User Profile Image"
-            />
-
-            <p class="m-0 ta-font-semi-bold">
-                {{ commentData.companyUser.name }}
-            </p>
-
-            <ng-container *ngIf="!isCommenting">
-                <ng-container *ngIf="isMe">
-                    <div class="me-container">
-                        <span class="m-0 ta-font-bold">(Me)</span>
-                    </div>
-                </ng-container>
-
-                <ng-container *ngIf="commentDate">
-                    <div class="date-container">
-                        <span class="m-0 ta-font-medium">
-                            • {{ commentDate }}
-                        </span>
-                    </div>
-                </ng-container>
-
-                <ng-container *ngIf="isEdited">
-                    <div class="edited-container">
-                        <span class="m-0 ta-font-medium"> • </span>
-
-                        <span class="m-0 ta-font-medium">Edited</span>
-                    </div>
-                </ng-container>
-            </ng-container>
-        </div>
+        <!-- Comment Header -->
 
         <div
-            class="d-flex align-items-center justify-content-center comment-header-right"
+            class="d-flex align-items-start justify-content-between comment-header"
         >
-            <ng-container *ngIf="isCommenting">
-                <svg-icon
-                    class="confirm-icon"
-                    [ngClass]="{
-                        disabled: isDisabled
-                    }"
-                    src="assets/svg/ic_spec-confirm.svg"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    (click)="handleBtnActionClick('Confirm')"
-                ></svg-icon>
+            <div class="d-flex align-items-center comment-header-left">
+                <img
+                    src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
+                    [src]="
+                        commentAvatar ??
+                        'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                    "
+                    alt="User Profile Image"
+                />
 
-                <svg-icon
-                    class="cancel-icon"
-                    src="assets/svg/ic_x.svg"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    (click)="handleBtnActionClick('Cancel')"
-                ></svg-icon>
-            </ng-container>
+                <p class="m-0 ta-font-semi-bold">
+                    {{ commentData.companyUser.name }}
+                </p>
 
-            <ng-container *ngIf="!isCommenting">
-                <ng-container *ngIf="!isEditButtonDisabled">
+                <ng-container *ngIf="!isCommenting">
+                    <ng-container *ngIf="isMe">
+                        <div class="me-container">
+                            <span class="m-0 ta-font-bold">(Me)</span>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="commentDate">
+                        <div class="date-container">
+                            <span class="m-0 ta-font-medium">
+                                • {{ commentDate }}
+                            </span>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isEdited">
+                        <div class="edited-container">
+                            <span class="m-0 ta-font-medium">• Edited</span>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+
+            <div
+                class="d-flex align-items-center justify-content-center comment-header-right"
+            >
+                <ng-container *ngIf="isCommenting">
+                    <svg-icon
+                        class="confirm-icon"
+                        [ngClass]="{
+                            disabled: isDisabled
+                        }"
+                        src="assets/svg/ic_spec-confirm.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        (click)="handleBtnActionClick('Confirm')"
+                    ></svg-icon>
+
+                    <svg-icon
+                        class="cancel-icon"
+                        src="assets/svg/ic_x.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        (click)="handleBtnActionClick('Cancel')"
+                    ></svg-icon>
+                </ng-container>
+
+                <ng-container *ngIf="!isCommenting">
+                    <ng-container *ngIf="!isEditButtonDisabled">
+                        <div
+                            class="d-flex justify-content-center align-items-center edit-icon-container"
+                        >
+                            <svg-icon
+                                class="icon"
+                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                [svgStyle]="{ 'width.px': 13, 'height.px': 13 }"
+                                (click)="handleBtnActionClick('Edit')"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
                     <div
-                        class="d-flex justify-content-center align-items-center edit-icon-container"
+                        class="d-flex justify-content-center align-items-center delete-icon-container"
                     >
                         <svg-icon
                             class="icon"
-                            src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                            [svgStyle]="{ 'width.px': 13, 'height.px': 13 }"
-                            (click)="handleBtnActionClick('Edit')"
+                            src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                            [svgStyle]="{ 'width.px': 11, 'height.px': 13 }"
+                            (click)="handleBtnActionClick('Delete')"
                         ></svg-icon>
                     </div>
                 </ng-container>
+            </div>
+        </div>
 
-                <div
-                    class="d-flex justify-content-center align-items-center delete-icon-container"
-                >
-                    <svg-icon
-                        class="icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                        [svgStyle]="{ 'width.px': 11, 'height.px': 13 }"
-                        (click)="handleBtnActionClick('Delete')"
-                    ></svg-icon>
-                </div>
-            </ng-container>
+        <!-- Comment Body -->
+
+        <div class="d-flex align-items-center comment-body">
+            <div
+                #commentInput
+                class="comment-input"
+                [ngClass]="{
+                    'no-value': commentInput?.textContent === 'Write Comment...'
+                }"
+                [attr.contenteditable]="isCommenting"
+                spellcheck="false"
+                (focus)="handleCommentChange()"
+                (input)="handleCommentChange()"
+                (blur)="handleCommentBlur()"
+            ></div>
         </div>
     </div>
+</ng-container>
 
-    <!-- Comment Body -->
+<!-- Comments for cards -->
 
-    <div class="d-flex align-items-center comment-body">
+<ng-container *ngIf="commentCardsDataDropdown">
+    <ng-container *ngIf="!editingCardComment">
         <div
-            #commentInput
-            class="comment-input"
-            [ngClass]="{
-                'no-value': commentInput?.textContent === 'Write Comment...'
-            }"
-            [attr.contenteditable]="isCommenting"
-            spellcheck="false"
-            (focus)="handleCommentChange()"
-            (input)="handleCommentChange()"
-            (blur)="handleCommentBlur()"
-        ></div>
-    </div>
-</div>
+            class="comments-dropdown hoverable"
+            (click)="toogleComment(commentCardsDataDropdown)"
+        >
+            <div class="d-grid">
+                <div class="d-flex align-items-center top-comment-body">
+                    <ng-container *ngIf="!commentCardsDataDropdown.userAvatar">
+                        <div class="d-flex">
+                            <span
+                                class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                [style]="{
+                                    background:
+                                        commentCardsDataDropdown.avatarColor
+                                            .background,
+                                    color: commentCardsDataDropdown.avatarColor
+                                        .color
+                                }"
+                                >{{
+                                    commentCardsDataDropdown.textShortName
+                                }}</span
+                            >
+                        </div>
+                    </ng-container>
+
+                    <div class="d-grid title-holder">
+                        <div
+                            class="d-flex justify-content-between title-svg-holder"
+                        >
+                            <div class="d-flex">
+                                <span
+                                    class="text-white ta-font-semi-bold"
+                                    [innerHTML]="
+                                        higlitsPartOfCommentSearchValue(
+                                            commentCardsDataDropdown.fullName
+                                        ) | safeHtml
+                                    "
+                                ></span>
+
+                                <!-- if owner of the card -->
+
+                                <ng-container
+                                    *ngIf="commentCardsDataDropdown.me"
+                                >
+                                    <span class="card-user-me ta-font-bold"
+                                        >(Me)</span
+                                    >
+                                </ng-container>
+
+                                <!-- if card is edited -->
+
+                                <ng-container
+                                    *ngIf="commentCardsDataDropdown.edited"
+                                >
+                                    <span
+                                        class="card-user-edited ta-font-medium"
+                                        >• Edited</span
+                                    >
+                                </ng-container>
+                            </div>
+
+                            <div class="user-icons d-flex">
+                                <ng-container
+                                    *ngIf="commentCardsDataDropdown.me"
+                                >
+                                    <span
+                                        ngbTooltip
+                                        mainTooltip="Edit"
+                                        type="button"
+                                        tooltipBackground="#424242"
+                                        position="top"
+                                        (click)="openEditComment()"
+                                        class="edit-tooltip d-flex align-items-center justify-content-center"
+                                    >
+                                        <svg-icon
+                                            class="edit-icon"
+                                            [src]="
+                                                'assets/svg/truckassist-table/dropdown/content/edit.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 13,
+                                                'height.px': 13
+                                            }"
+                                        ></svg-icon>
+                                    </span>
+
+                                    <span
+                                        ngbTooltip
+                                        mainTooltip="Delete"
+                                        tooltipBackground="#424242"
+                                        position="top"
+                                        type="button"
+                                        class="edit-tooltip d-flex align-items-center justify-content-center"
+                                    >
+                                        <svg-icon
+                                            class="delete-icon"
+                                            [src]="
+                                                'assets/svg/truckassist-table/dropdown/content/delete.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 11,
+                                                'height.px': 13
+                                            }"
+                                        ></svg-icon>
+                                    </span>
+                                </ng-container>
+
+                                <span
+                                    class="open-dropdown-icon d-flex align-items-center justify-content-center"
+                                >
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/common/fill_arrow_down.svg'
+                                        "
+                                        [ngClass]="{
+                                            'rotate-svg':
+                                                commentCardsDataDropdown.isOpen,
+                                            'rotate-back':
+                                                !commentCardsDataDropdown.isOpen
+                                        }"
+                                        class="arrow-svg-icon"
+                                        [svgStyle]="{
+                                            'width.px': 10,
+                                            'height.px': 10
+                                        }"
+                                    >
+                                    </svg-icon>
+                                </span>
+                            </div>
+                        </div>
+
+                        <span class="ta-font-medium muted-text">{{
+                            commentCardsDataDropdown.date
+                        }}</span>
+                    </div>
+                </div>
+
+                <span
+                    class="text-white comment-text"
+                    [ngClass]="{
+                        'show-comment': commentCardsDataDropdown.isOpen
+                    }"
+                    [@dropdownAnimationComment]="
+                        commentCardsDataDropdown.isOpen ? 'true' : 'false'
+                    "
+                    [innerHTML]="
+                        higlitsPartOfCommentSearchValue(
+                            commentCardsDataDropdown.comment
+                        ) | safeHtml
+                    "
+                ></span>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="editingCardComment">
+        <div class="comments-dropdown editable">
+            <div class="d-grid">
+                <div class="d-flex align-items-center top-comment-body">
+                    <ng-container *ngIf="!commentCardsDataDropdown.userAvatar">
+                        <div class="d-flex">
+                            <span
+                                class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                [style]="{
+                                    background:
+                                        commentCardsDataDropdown.avatarColor
+                                            .background,
+                                    color: commentCardsDataDropdown.avatarColor
+                                        .color
+                                }"
+                                >{{
+                                    commentCardsDataDropdown.textShortName
+                                }}</span
+                            >
+                        </div>
+                    </ng-container>
+
+                    <div class="d-grid title-holder">
+                        <div
+                            class="d-flex justify-content-between title-svg-holder"
+                        >
+                            <div class="d-flex">
+                                <span
+                                    class="title ta-font-semi-bold"
+                                    [innerHTML]="
+                                        higlitsPartOfCommentSearchValue(
+                                            commentCardsDataDropdown.fullName
+                                        ) | safeHtml
+                                    "
+                                ></span>
+
+                                <!-- if card is edited -->
+
+                                <ng-container
+                                    *ngIf="commentCardsDataDropdown.edited"
+                                >
+                                    <span
+                                        class="card-user-edited ta-font-medium"
+                                        >• Edited</span
+                                    >
+                                </ng-container>
+                            </div>
+
+                            <div class="user-icons d-flex">
+                                <span
+                                    ngbTooltip
+                                    mainTooltip="Confirm"
+                                    type="button"
+                                    tooltipBackground="#424242"
+                                    position="top"
+                                    (click)="openEditComment()"
+                                    class="confirm-tooltip d-flex align-items-center justify-content-center"
+                                >
+                                    <svg-icon
+                                        class="confirm-icon"
+                                        [src]="'assets/svg/applicant/check.svg'"
+                                        [svgStyle]="{
+                                            'width.px': 13,
+                                            'height.px': 13
+                                        }"
+                                    ></svg-icon>
+                                </span>
+
+                                <span
+                                    ngbTooltip
+                                    mainTooltip="Cancel"
+                                    tooltipBackground="#424242"
+                                    position="top"
+                                    type="button"
+                                    class="cancel-tooltip d-flex align-items-center justify-content-center"
+                                >
+                                    <svg-icon
+                                        class="cancel-icon"
+                                        [src]="
+                                            'assets/svg/applicant/invalid-review-x.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': 11,
+                                            'height.px': 13
+                                        }"
+                                    ></svg-icon>
+                                </span>
+                            </div>
+                        </div>
+
+                        <span class="ta-font-medium muted-text"
+                            >Edit Comment</span
+                        >
+                    </div>
+                </div>
+
+                <textarea rows="4" cols="50" class="edit-textarea">{{
+                    commentCardsDataDropdown.comment
+                }}</textarea>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>

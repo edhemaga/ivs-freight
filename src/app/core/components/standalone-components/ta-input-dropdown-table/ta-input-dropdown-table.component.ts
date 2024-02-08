@@ -1,3 +1,4 @@
+import { Subject, takeUntil } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     NgbModule,
@@ -7,15 +8,17 @@ import {
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-// animations
-import { DropdownData } from '../../../model/input-dropdown.model';
-
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // models
-import { CardDetails, Trailer, Trucks } from '../../shared/model/cardTableData';
+import {
+    CardDetails,
+    Trailer,
+    Trucks,
+    Comment,
+} from '../../shared/model/card-table-data';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -25,7 +28,9 @@ import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 
 // enums
 import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
-import { Subject, takeUntil } from 'rxjs';
+
+// components
+import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -38,12 +43,19 @@ import { Subject, takeUntil } from 'rxjs';
         NgbPopoverModule,
         FormsModule,
         SafeHtmlPipe,
+
+        // Components
+        TaCommentComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
-    @Input() data: DropdownData;
+    @Input() data: CardDetails;
+    @Input() svg: string;
+    @Input() type: string;
+    @Input() searchPlaceholder?: string =
+        ConstantStringTableDropdownEnum.SEARCH;
 
     private destroy$ = new Subject<void>();
 
@@ -66,19 +78,68 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.filteredData = { ...this.data.card };
+        this.filteredData = JSON.parse(JSON.stringify(this.data));
     }
 
-    public filterArray(event: KeyboardEvent): void {
+    public filterArrayComments(event: KeyboardEvent): void {
+        if (event.target instanceof HTMLInputElement) {
+            const searchParam = event.target.value.toLowerCase();
+
+            // Check if the user has typed at least 2 characters
+            if (searchParam.length >= 2) {
+                // Reset on every key press
+                this.filteredData.loadComment.comments =
+                    this.data.loadComment.comments;
+
+                this.lattersToHighlight = searchParam;
+
+                // Filter function for title and comment
+                const filteredCommentTitle =
+                    this.filterCommentsTitle(searchParam);
+
+                // If there is empty array in filteredComment set object value to default
+                if (!filteredCommentTitle.length) {
+                    this.filteredData.loadComment.comments =
+                        this.data.loadComment.comments;
+                }
+
+                // If there is filtered value set value to filteredData
+                else {
+                    this.filteredData.loadComment.comments =
+                        filteredCommentTitle;
+                }
+            }
+
+            // Set to default value in case user deleted all value in input
+            else {
+                this.lattersToHighlight = '';
+
+                this.filteredData.loadComment.comments =
+                    this.data.loadComment.comments;
+            }
+        }
+    }
+
+    private filterCommentsTitle(searchParam: string): Comment[] {
+        const filteredComments = this.filteredData.loadComment.comments.filter(
+            (comment) =>
+                comment.fullName.toLowerCase().includes(searchParam) ||
+                comment.comment.toLowerCase().includes(searchParam)
+        );
+
+        return filteredComments;
+    }
+
+    public filterArrayOwner(event: KeyboardEvent): void {
         if (event.target instanceof HTMLInputElement) {
             const searchTerm = event.target.value.toLowerCase();
 
             // Check if the user has typed at least 2 characters
             if (searchTerm.length >= 2) {
                 // Reset on every key press
-                this.filteredData.trucks = this.data.card.trucks;
+                this.filteredData.trucks = this.data.trucks;
 
-                this.filteredData.trailers = this.data.card.trailers;
+                this.filteredData.trailers = this.data.trailers;
 
                 this.lattersToHighlight = searchTerm;
 
@@ -88,12 +149,12 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 // If there is empty array in filteredTrucks or filteredTrailer
                 if (!filteredTrucks.length && !filteredTrailer.length) {
-                    this.filteredData.trucks = this.data.card.trucks;
+                    this.filteredData.trucks = this.data.trucks;
 
-                    this.filteredData.trailers = this.data.card.trailers;
+                    this.filteredData.trailers = this.data.trailers;
                 }
 
-                // Set to default value in case there are no resaults
+                // Set value searched
                 else {
                     this.filteredData.trucks = filteredTrucks;
 
@@ -109,14 +170,14 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 this.filteredTrailerCount = null;
 
-                this.filteredData.trucks = this.data.card.trucks;
+                this.filteredData.trucks = this.data.trucks;
 
-                this.filteredData.trailers = this.data.card.trailers;
+                this.filteredData.trailers = this.data.trailers;
             }
         }
     }
 
-    public filterTrucks(searchString: string): Trucks[] {
+    private filterTrucks(searchString: string): Trucks[] {
         const filterTrucks = this.filteredData.trucks.filter((truck) =>
             truck.truckNumber.toLowerCase().includes(searchString)
         );
@@ -126,7 +187,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         return filterTrucks;
     }
 
-    public filterTrailer(searchString: string): Trailer[] {
+    private filterTrailer(searchString: string): Trailer[] {
         const filterTrailer = this.filteredData.trailers.filter((trailer) =>
             trailer.trailerNumber.toLowerCase().includes(searchString)
         );
@@ -158,6 +219,17 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.router.navigate([link]);
     }
 
+    public toggleDropdownComments(
+        tooltip: NgbTooltip,
+        card: CardDetails
+    ): void {
+        this.tooltip = tooltip;
+
+        this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+
+        tooltip.open({ commentData: card });
+    }
+
     // Owner dropdown
     public toggleDropdownOwnerFleet(
         tooltip: NgbTooltip,
@@ -168,7 +240,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
 
         tooltip.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.filteredData.trucks = this.data.card.trucks;
+            this.filteredData.trucks = this.data.trucks;
 
             this.lattersToHighlight = null;
 
@@ -176,7 +248,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
             this.filteredTrailerCount = null;
 
-            this.filteredData.trailers = this.data.card.trailers;
+            this.filteredData.trailers = this.data.trailers;
         });
 
         tooltip.open({ data: card });

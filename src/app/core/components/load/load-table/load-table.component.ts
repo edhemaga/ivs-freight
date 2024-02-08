@@ -23,7 +23,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data';
 import {
     CardRows,
     Search,
@@ -62,6 +62,9 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
+// Utils
+import { DUMMY_COMMENT_DATA } from 'src/app/core/utils/comments-dummy-data';
+
 @Component({
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
@@ -76,7 +79,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
     public selectedTab: string = ConstantStringTableComponentsEnum.PENDING;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
     public resizeObserver: ResizeObserver;
     public loadActive: LoadActiveState[] = [];
     public loadClosed: LoadClosedState[] = [];
@@ -100,10 +103,17 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayRowsBack: CardRows[] =
         DisplayLoadConfiguration.displayRowsBack;
 
+    public displayRowsFrontClosed: CardRows[] =
+        DisplayLoadConfiguration.displayRowsFrontClosed;
+    public displayRowsBackClosed: CardRows[] =
+        DisplayLoadConfiguration.displayRowsBackClosed;
+
     public page: string = DisplayLoadConfiguration.page;
     public rows: number = DisplayLoadConfiguration.rows;
 
     public cardTitle: string;
+    public cardTitleLink: string =
+        ConstantStringTableComponentsEnum.LOAD_DETAILS;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -557,6 +567,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontTemplate),
                   (this.sendDataToCardsBack = this.displayRowsBackTemplate),
                   (this.cardTitle = ConstantStringTableComponentsEnum.NAME_1))
+                : this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
+                ? ((this.sendDataToCardsFront = this.displayRowsFrontClosed),
+                  (this.sendDataToCardsBack = this.displayRowsBackClosed))
                 : ((this.sendDataToCardsFront = this.displayRowsFront),
                   (this.sendDataToCardsBack = this.displayRowsBack),
                   (this.cardTitle =
@@ -569,6 +582,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.loadTableData = this.viewData;
+    }
+
+    public sendDataToCardsOnTabSwitch(): void {
+        if (this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE) {
+            this.cardTitle = ConstantStringTableComponentsEnum.NAME_1;
+            this.sendDataToCardsFront = this.displayRowsFront;
+            this.sendDataToCardsBack = this.displayRowsBack;
+        } else if (
+            this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
+        ) {
+            this.sendDataToCardsFront = this.displayRowsFrontClosed;
+            this.sendDataToCardsBack = this.displayRowsBackClosed;
+        } else {
+            this.sendDataToCardsFront = this.displayRowsFront;
+            this.sendDataToCardsBack = this.displayRowsBack;
+        }
     }
 
     private mapLoadData(data: LoadModel): LoadModel {
@@ -702,10 +731,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       data?.dispatch?.driver?.lastName
                     : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             loadComment: {
-                count: data?.commentsCount
-                    ? data.commentsCount
+                count: DUMMY_COMMENT_DATA.COUNT
+                    ? DUMMY_COMMENT_DATA.COUNT
                     : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-                comments: data.comments,
+                comments: DUMMY_COMMENT_DATA.DISPLAY_COMMENTS,
             },
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,

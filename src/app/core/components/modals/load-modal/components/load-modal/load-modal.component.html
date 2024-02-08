@@ -1697,11 +1697,7 @@
                     (onActionEvent)="createComment()"
                 >
                     <ng-container
-                        *ngFor="
-                            let comment of comments;
-                            let i = index;
-                            trackBy: trackByIdentity
-                        "
+                        *ngFor="let comment of comments; let i = index"
                     >
                         <app-ta-comment
                             [commentData]="comment"

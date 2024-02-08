@@ -90,4 +90,47 @@ export class DisplayLoadConfiguration {
             endpoint: 'totalMiles',
         },
     ];
+
+    static displayRowsFrontClosed: CardRows[] = [
+        {
+            title: 'Status',
+            endpoint: 'loadStatus.status',
+        },
+        {
+            title: 'Rate',
+            endpoint: 'loadTotal.total',
+            secondEndpoint: 'loadTotal.subTotal',
+        },
+        {
+            title: 'Paid',
+            endpoint: 'totalPaid',
+        },
+        {
+            title: 'Due',
+            endpoint: 'no-endpoint',
+        },
+    ];
+
+    static displayRowsBackClosed: CardRows[] = [
+        {
+            title: 'Broker',
+            endpoint: 'broker.businessName',
+        },
+        {
+            title: 'Pickup',
+            endpoint: 'loadPickup.count',
+            secondEndpoint: 'loadPickup.location',
+            thirdEndpoint: 'loadPickup.date',
+        },
+        {
+            title: 'Delivery',
+            endpoint: 'loadDelivery.count',
+            secondEndpoint: 'loadDelivery.location',
+            thirdEndpoint: 'loadDelivery.date',
+        },
+        {
+            title: 'Age',
+            endpoint: 'no-ednpoint',
+        },
+    ];
 }

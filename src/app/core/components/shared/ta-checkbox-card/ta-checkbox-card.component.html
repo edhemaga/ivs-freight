@@ -9,7 +9,8 @@
         }"
     >
         <app-ta-checkbox
-            [formControl]="getSuperControl"
+            [ngModel]="getSuperControl.value"
+            (ngModelChange)="onChange($event)"
             [label]="label"
             [name]="name"
         ></app-ta-checkbox>
