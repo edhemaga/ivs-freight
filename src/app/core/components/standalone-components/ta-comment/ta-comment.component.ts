@@ -11,8 +11,12 @@ import {
 } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
+// animations
+import { dropdown_animation_comment } from './state/ta-comment.animation';
+
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // moment
 import moment from 'moment';
@@ -23,23 +27,51 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 // enums
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
+// utils
+import { DummyComment } from 'src/app/core/utils/comments-dummy-data';
+
+// pipes
+import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
+
+// components
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
+
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
+import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-ta-comment',
     templateUrl: './ta-comment.component.html',
     styleUrls: ['./ta-comment.component.scss'],
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule],
+    imports: [
+        // modules
+        CommonModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
+        NgbModule,
+
+        // pipes
+        SafeHtmlPipe,
+
+        // components
+        AppTooltipComponent,
+    ],
+    animations: [dropdown_animation_comment('dropdownAnimationComment')],
 })
 export class TaCommentComponent implements OnInit, AfterViewInit {
     @ViewChild('commentInput') public commentInput: ElementRef;
 
-    @Input() commentData: CommentCompanyUser;
-    @Input() commentIndex: number;
+    @Input() commentData?: CommentCompanyUser;
+
+    @Input() commentCardsDataDropdown?: DummyComment;
+    @Input() commentHighlight?: string;
+
+    @Input() commentIndex?: number;
     @Input() isMe?: boolean = false;
+    @Input() isEditButtonDisabled?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
 
@@ -55,22 +87,54 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     public commentDate: string;
     private commentBeforeEdit: string;
 
+    // card comments
+    public editingCardComment: boolean = false;
+
     constructor(private imageBase64Service: ImageBase64Service) {}
 
     ngOnInit(): void {
         this.sanitazeAvatar();
+
+        this.commentData?.commentContent && this.patchCommentData();
     }
 
     ngAfterViewInit(): void {
-        this.setCommentPlaceholder();
+        if (!this.commentCardsDataDropdown) this.setCommentPlaceholder();
+    }
+
+    public openEditComment(): void {
+        this.editingCardComment = !this.editingCardComment;
+    }
+
+    public higlitsPartOfCommentSearchValue(commentTitle: string): string {
+        if (!commentTitle || !this.commentHighlight) return commentTitle;
+
+        return commentTitle.replace(
+            new RegExp(this.commentHighlight, 'gi'),
+            (match) => {
+                return (
+                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
+                    match +
+                    '</span>'
+                );
+            }
+        );
     }
 
     private sanitazeAvatar(): void {
-        this.commentAvatar = this.commentData.companyUser.avatar
+        this.commentAvatar = this.commentData?.companyUser?.avatar
             ? this.imageBase64Service.sanitizer(
                   this.commentData.companyUser.avatar
               )
             : null;
+    }
+
+    public toogleComment(comment: DummyComment): void {
+        if (comment.isOpen) {
+            this.commentCardsDataDropdown = { ...comment, isOpen: false };
+        } else {
+            this.commentCardsDataDropdown = { ...comment, isOpen: true };
+        }
     }
 
     private setCommentPlaceholder(): void {
@@ -128,8 +192,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
                     this.isEditing = false;
                 }
 
-                const dateAndTimeNow = moment().format(
-                    ConstantStringCommentEnum.COMMENT_DATE_TIME_FORMAT
+                const dateAndTimeNow = convertDateFromBackendToDateAndTime(
+                    new Date()
                 );
                 const dateNow = moment().format(
                     ConstantStringCommentEnum.COMMENT_DATE_FORMAT
@@ -138,10 +202,12 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
                     ConstantStringCommentEnum.COMMENT_TIME_FORMAT
                 );
                 const commentData: CommentData = {
+                    commentId: this.commentData.commentId,
                     commentDate: dateNow,
                     commentTime: timeNow,
                     commentContent: this.commentInput.nativeElement.textContent,
                     commentIndex: this.commentIndex,
+                    isEditConfirm: !!this.commentData.commentId,
                     btnType,
                 };
 
@@ -155,6 +221,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
             case ConstantStringCommentEnum.CANCEL:
             case ConstantStringCommentEnum.DELETE:
                 const emitData: CommentData = {
+                    commentId: this.commentData.commentId,
                     commentContent: this.commentInput.nativeElement.textContent,
                     commentIndex: this.commentIndex,
                     isEditCancel: this.isEditing,
@@ -178,5 +245,19 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
             default:
                 break;
         }
+    }
+
+    private patchCommentData(): void {
+        this.isCommenting = false;
+        this.isDisabled = false;
+
+        setTimeout(() => {
+            this.commentInput.nativeElement.textContent =
+                this.commentData.commentContent;
+        }, 100);
+
+        this.commentDate = this.commentData.commentDate;
+
+        this.isEdited = this.commentData.isEdited;
     }
 }

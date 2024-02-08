@@ -66,7 +66,17 @@
                                         "
                                     ></svg-icon>
 
-                                    <span class="title">
+                                    <span
+                                        class="title"
+                                        (click)="
+                                            goToDetailsPage(
+                                                card,
+                                                cardTitleLink +
+                                                    card.id +
+                                                    '/details'
+                                            )
+                                        "
+                                    >
                                         <ng-container
                                             *ngIf="cardTitle !== 'name'"
                                         >
@@ -92,18 +102,21 @@
                                 </div>
                             </ng-container>
 
-                            <!-- If Driver or User page-->
+                            <!-- If Driver User or Contact page-->
 
                             <ng-container
                                 *ngIf="
                                     (page === 'Driver' &&
                                         selectedTab !== 'applicant') ||
-                                    page === 'User'
+                                    page === 'User' ||
+                                    page === 'Contact'
                                 "
                             >
                                 <!-- If driver/user has image -->
 
-                                <ng-container *ngIf="card.avatarImg">
+                                <ng-container
+                                    *ngIf="card.avatarImg && page !== 'Contact'"
+                                >
                                     <div class="image-holder">
                                         <img
                                             class="image-hover"
@@ -136,7 +149,7 @@
                                                     .background
                                             "
                                             [style.color]="
-                                                card.tableAvatar.avatarColor
+                                                card.tableAvatar?.avatarColor
                                                     .color
                                             "
                                         >
@@ -147,19 +160,40 @@
                                     </div>
                                 </ng-container>
 
+                                <!-- Contact page -->
+                                <ng-container *ngIf="page === 'Contact'">
+                                    <div class="image-holder">
+                                        <span
+                                            class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold circle-image"
+                                            [style.background]="
+                                                card.avatarColor.background
+                                            "
+                                            [style.color]="
+                                                card?.avatarColor.color
+                                            "
+                                        >
+                                            {{ card.textShortName }}</span
+                                        >
+                                    </div>
+                                </ng-container>
+
                                 <!-- If driver doesen't have image -->
 
                                 <ng-container
-                                    *ngIf="!card.avatarImg && page !== 'User'"
+                                    *ngIf="
+                                        !card.avatarImg &&
+                                        page !== 'User' &&
+                                        activeTab !== 'applicants'
+                                    "
                                 >
                                     <div class="image-holder">
                                         <span
                                             class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
                                             [style.background]="
-                                                card.avatarColor.background
+                                                card.avatarColor?.background
                                             "
                                             [style.color]="
-                                                card.avatarColor.color
+                                                card.avatarColor?.color
                                             "
                                         >
                                             {{ card.textShortName }}</span
@@ -209,7 +243,8 @@
                                     page !== 'Load' &&
                                     page !== 'Driver' &&
                                     page !== 'Repair' &&
-                                    page !== 'User'
+                                    page !== 'User' &&
+                                    page !== 'Contact'
                                 "
                             >
                                 <span class="title">
@@ -313,21 +348,42 @@
                                             <span
                                                 class="ta-font-black status"
                                                 [ngClass]="{
-                                                    assigned:
-                                                        getValueByStringPath(
+                                                    assigned: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Assigned'
+                                                    ),
+                                                    dispatched: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Dispatched'
+                                                    ),
+                                                    loaded: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Loaded'
+                                                    ),
+                                                    paid:
+                                                        checkLoadStatus(
                                                             card,
-                                                            rowsFront.endpoint
-                                                        ) === 'Assigned',
-                                                    dispatched:
-                                                        getValueByStringPath(
+                                                            rowsFront.endpoint,
+                                                            'Short-paid'
+                                                        ) ||
+                                                        checkLoadStatus(
                                                             card,
-                                                            rowsFront.endpoint
-                                                        ) === 'Dispatched',
-                                                    loaded:
-                                                        getValueByStringPath(
+                                                            rowsFront.endpoint,
+                                                            'Unpaid'
+                                                        ) ||
+                                                        checkLoadStatus(
                                                             card,
-                                                            rowsFront.endpoint
-                                                        ) === 'Loaded'
+                                                            rowsFront.endpoint,
+                                                            'Paid'
+                                                        ),
+                                                    tonu: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Tonu'
+                                                    )
                                                 }"
                                             >
                                                 {{
@@ -545,12 +601,109 @@
                                     <!-- Driver page body -->
 
                                     <ng-container *ngIf="page === 'Driver'">
-                                        {{
-                                            getValueByStringPath(
-                                                card,
-                                                rowsFront.endpoint
-                                            )
-                                        }}
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint !==
+                                                    'tableApplicantProgress' &&
+                                                rowsFront.endpoint !==
+                                                    'tableCdl.expirationDays' &&
+                                                rowsFront.endpoint !==
+                                                    'tableMedical.expirationDays'
+                                            "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableApplicantProgress'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let applicantProgress of card.tableApplicantProgress
+                                                "
+                                            >
+                                                {{
+                                                    applicantProgress.title
+                                                        | uppercase
+                                                }}
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <!-- driver cdl -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableCdl.expirationDays'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <!-- driver medical  -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableMedical.expirationDays'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableMedical.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
                                     </ng-container>
 
                                     <!-- Truck and Trailer page body -->
@@ -783,7 +936,8 @@
                                             *ngIf="rowsFront.title === 'Fleet'"
                                         >
                                             <app-ta-input-dropdown-table
-                                                [data]="{card}"
+                                                [data]="card"
+                                                [type]="'owner'"
                                             ></app-ta-input-dropdown-table>
                                         </ng-container>
 
@@ -913,6 +1067,119 @@
                                         </ng-container>
                                     </ng-container>
 
+                                    <!-- Contact page body -->
+
+                                    <ng-container *ngIf="page === 'Contact'">
+                                        <!-- If primary phone  -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'contactPhones'
+                                            "
+                                        >
+                                            <!-- Icon for phone -->
+                                            <ng-container
+                                                *ngIf="
+                                                    card.contactPhones[0]
+                                                        .contactPhoneType
+                                                        .name === 'Work'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/common/ic_company.svg'
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    card.contactPhones[0]
+                                                        .contactPhoneType
+                                                        .name === 'Mobile'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/common/ic_phone.svg'
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    card.contactPhones[0]
+                                                        .contactPhoneType
+                                                        .name === 'Home'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/common/home.svg'
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+
+                                            {{ card.contactPhones[0].phone }}
+                                        </ng-container>
+
+                                        <!-- If primary mail -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'contactEmails'
+                                            "
+                                        >
+                                            <!-- email svg -->
+                                            <ng-container
+                                                *ngIf="
+                                                    card.contactEmails[0]
+                                                        .contactEmailType
+                                                        .name === 'Work'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/common/ic_company.svg'
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    card.contactEmails[0]
+                                                        .contactEmailType
+                                                        .name === 'Home'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/common/home.svg'
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+
+                                            {{ card.contactEmails[0].email }}
+                                        </ng-container>
+
+                                        <!-- rest of elements -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint !==
+                                                    'contactPhones' &&
+                                                rowsFront.endpoint !==
+                                                    'contactEmails'
+                                            "
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+                                    </ng-container>
                                     <!-- User page body -->
                                     <ng-container *ngIf="page === 'User'">
                                         {{
@@ -1147,6 +1414,17 @@
                                     <ng-container *ngIf="page === 'Driver'">
                                         <!-- Hired -->
 
+                                        <ng-contaniner
+                                            *ngIf="activeTab === 'applicants'"
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
+                                        </ng-contaniner>
+
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint === 'hired'
@@ -1231,6 +1509,17 @@
                                                     )
                                                 "
                                             ></app-progres-bar>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="selectedTab === 'applicants'"
+                                        >
+                                            {{
+                                                getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
                                         </ng-container>
                                     </ng-container>
 
@@ -1432,6 +1721,212 @@
                                         </ng-container>
                                     </ng-container>
 
+                                    <!-- Contact Page Body -->
+                                    <ng-container *ngIf="page === 'Contact'">
+                                        <!-- If phone-->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'contactPhonesFirst'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    card?.contactPhones[1]
+                                                        ?.phone
+                                                "
+                                            >
+                                                <!-- if home contact -->
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactPhones[1]
+                                                            .contactPhoneType
+                                                            .name === 'Home'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/home.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+
+                                                <!-- If work phone -->
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactPhones[1]
+                                                            .contactPhoneType
+                                                            .name === 'Work'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/ic_company.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactPhones[1]
+                                                            .contactPhoneType
+                                                            .name === 'Mobile'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/ic_phone.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+                                                {{
+                                                    card?.contactPhones[1]
+                                                        ?.phone
+                                                }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !card?.contactPhones[1]
+                                                        ?.phone
+                                                "
+                                            >
+                                                /
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'contactPhonesSecc'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    card?.contactPhones[2]
+                                                        ?.phone
+                                                "
+                                            >
+                                                <!-- if home contact -->
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactPhones[2]
+                                                            .contactPhoneType
+                                                            .name === 'Home'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/home.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+
+                                                <!-- If work phone -->
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactPhones[2]
+                                                            .contactPhoneType
+                                                            .name === 'Work'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/ic_company.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactPhones[2]
+                                                            .contactPhoneType
+                                                            .name === 'Mobile'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/ic_phone.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+                                                {{
+                                                    card?.contactPhones[2]
+                                                        ?.phone
+                                                }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !card?.contactPhones[2]
+                                                        ?.phone
+                                                "
+                                            >
+                                                /
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <!-- If email -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'contactEmails'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    card?.contactEmails[1]
+                                                        ?.email
+                                                "
+                                            >
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactEmails[1]
+                                                            .contactEmailType
+                                                            .name === 'Home'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/home.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+
+                                                <!-- If work phone -->
+                                                <ng-container
+                                                    *ngIf="
+                                                        card.contactEmails[1]
+                                                            .contactEmailType
+                                                            .name === 'Work'
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/common/ic_company.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </ng-container>
+
+                                                {{
+                                                    card?.contactEmails[1]
+                                                        ?.email
+                                                }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !card?.contactEmails[1]
+                                                        ?.email
+                                                "
+                                            >
+                                                /
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+
                                     <!-- User Page Body -->
                                     <ng-container *ngIf="page === 'User'">
                                         {{
@@ -1472,7 +1967,6 @@
                                 container="body"
                                 popoverClass="table-dropdown-popover"
                                 triggers="manual"
-                                (hidden)="onRemoveClickEventListener()"
                             >
                                 <svg-icon
                                     class="dots"
@@ -1507,32 +2001,22 @@
                         <!-- Comments element -->
 
                         <ng-container *ngIf="page === 'Load'">
-                            <div
-                                class="right-side-svg d-flex align-items-center justify-content-center flex-column"
-                            >
-                                <span
-                                    class="comment-number ta-font-semi-bold"
-                                    >{{ card?.commentsCount }}</span
-                                >
-                                <svg-icon
-                                    class="comment"
-                                    [src]="
+                            <div class="right-side-svg">
+                                <app-ta-input-dropdown-table
+                                    [data]="card"
+                                    [type]="'comment'"
+                                    [searchPlaceholder]="'Find Title'"
+                                    [svg]="
                                         'assets/svg/detail-cards/comment - count.svg'
                                     "
-                                ></svg-icon>
-                                <ng-container *ngIf="card?.commentsCount > 0">
-                                    <svg-icon
-                                        class="notification"
-                                        [src]="
-                                            'assets/svg/applicant/notification-light.svg'
-                                        "
-                                    ></svg-icon>
-                                </ng-container>
+                                ></app-ta-input-dropdown-table>
                             </div>
                         </ng-container>
 
                         <!-- Favorite element -->
-                        <ng-container *ngIf="page === 'Repair'">
+                        <ng-container
+                            *ngIf="page === 'Repair' || page === 'Driver'"
+                        >
                             <div
                                 class="right-side-svg-favorite d-flex align-items-center justify-content-center flex-column"
                                 (click)="onFavorite(card)"
@@ -1549,6 +2033,30 @@
                                         class="favorite"
                                         [src]="
                                             'assets/svg/truckassist-table/favorite.svg'
+                                        "
+                                    ></svg-icon>
+                                </span>
+                            </div>
+                        </ng-container>
+
+                        <!-- Hire Driver -->
+                        <ng-container *ngIf="page === 'Driver'">
+                            <div
+                                class="right-side-svg-favorite d-flex align-items-center justify-content-center flex-column"
+                                (click)="onFavorite(card)"
+                            >
+                                <span
+                                    class="tooltip-card d-flex align-items-center"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Hire"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        class="favorite"
+                                        [src]="
+                                            'assets/svg/truckassist-table/hire-applicant.svg'
                                         "
                                     ></svg-icon>
                                 </span>
@@ -1619,7 +2127,7 @@
                 class="table-list-dropdown-content"
                 (click)="
                     !action?.isDropdown
-                        ? onDropAction(action, card)
+                        ? onDropAction(action)
                         : onShowInnerDropdown(action)
                 "
                 [ngClass]="{
@@ -1633,6 +2141,7 @@
                 <div class="table-list-dropdown-content-text">
                     {{ action?.title }}
                 </div>
+
                 <svg-icon
                     *ngIf="action?.svgUrl"
                     [class]="action?.svgClass"
@@ -1649,17 +2158,26 @@
             </div>
 
             <!-- Inner Dropdown -->
-
             <div
                 class="table-list-inner-dropdown"
                 [ngClass]="{
                     'table-list-inner-dropdown-active':
                         action?.isInnerDropActive
                 }"
-                [innerHtml]="
-                    action?.innerDropElement ? action?.innerDropElement : null
-                "
-            ></div>
+            >
+                <ng-container
+                    *ngFor="let content of action?.insideDropdownContent"
+                >
+                    <div
+                        [id]="content.title"
+                        #innerDropdownContent
+                        (click)="onDropAction(content)"
+                        class="inner-dropdown-action-title"
+                    >
+                        {{ content.title }}
+                    </div>
+                </ng-container>
+            </div>
 
             <!-- Border -->
 

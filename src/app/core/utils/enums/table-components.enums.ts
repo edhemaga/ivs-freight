@@ -290,6 +290,9 @@ export enum ConstantStringTableComponentsEnum {
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
 
+    // Contact
+    DELTETE_CONTACT = 'delete-contact',
+
     // Svg
     COMPLETE_ICON = 'complete-icon',
     DONE_ICON = 'done-icon',
@@ -374,4 +377,9 @@ export enum ConstantStringTableComponentsEnum {
     MONEY = 'money',
     DATE = 'date',
     AM_PM = 'am-pm',
+    PRIMARY_PHONE = 'primary-phone',
+    PRIMARY_EMAIL = 'primary-email',
+
+    // Links
+    LOAD_DETAILS = '/list/load/',
 }

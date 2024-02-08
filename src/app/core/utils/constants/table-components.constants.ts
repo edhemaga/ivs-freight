@@ -3,7 +3,7 @@ import {
     ShopbBckFilterQueryInterface,
 } from '../../components/repair/repair.modal';
 
-import { DropdownItem } from '../../components/shared/model/cardTableData';
+import { DropdownItem } from '../../components/shared/model/card-table-data';
 
 import {
     FilterOptionBroker,
@@ -793,6 +793,7 @@ export class TableRepair {
     ];
 }
 
+// Pm page
 export class TablePM {
     static ACTIONS_DROPDOWN: DropdownItem[] = [
         {
@@ -945,5 +946,111 @@ export class TableOwner {
             },
             svgClass: 'delete',
         },
+    ];
+}
+
+// Contacts page
+export class TableContacts {
+    static DROPDOWN_CONTACTS_CONTENT: DropdownItem[] = [
+        {
+            title: 'Edit',
+            name: 'edit-contact',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            hasBorder: true,
+            svgClass: 'regular',
+        },
+        {
+            title: 'View Details',
+            name: 'view-details',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Send SMS',
+            name: 'send-sms',
+            svgUrl: '',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'Share',
+            name: 'share',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Print',
+            name: 'print',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+
+            svgClass: 'regular',
+            hasBorder: true,
+        },
+        {
+            title: 'Delete',
+            name: 'delete-contact',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'delete',
+        },
+    ];
+
+    static TEXT_COLORS: string[] = [
+        '#6D82C7',
+        '#4DB6A2',
+        '#E57373',
+        '#E3B00F',
+        '#BA68C8',
+        '#BEAB80',
+        '#81C784',
+        '#FF8A65',
+        '#64B5F6',
+        '#F26EC2',
+        '#A1887F',
+        '#919191',
+    ];
+
+    static BACKGROUND_COLORS: string[] = [
+        '#DAE0F1',
+        '#D2EDE8',
+        '#F9DCDC',
+        '#F8EBC2',
+        '#EED9F1',
+        '#EFEADF',
+        '#DFF1E0',
+        '#FFE2D8',
+        '#D8ECFD',
+        '#FCDAF0',
+        '#E7E1DF',
+        '#E3E3E3',
     ];
 }

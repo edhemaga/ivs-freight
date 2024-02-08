@@ -9,7 +9,12 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid"
+    [isModalValid]="
+        loadForm.valid &&
+        isFormDirty &&
+        isEachStopItemsRowValid &&
+        !isCommenting
+    "
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -31,6 +36,7 @@
     >
         <div class="m-tab">
             <!-- FTL - LTL, Dispatcher, Company -->
+
             <div
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{ 'template-row': isConvertedToTemplate }"
@@ -1678,7 +1684,9 @@
                     [cardName]="'Comment'"
                     [isCardOpen]="comments.length"
                     [hasCounter]="comments.length"
-                    [hasActionSvg]="editData"
+                    [hasActionSvg]="
+                        editData && !isCommented && !isCommentEdited
+                    "
                     [hasScrollBody]="comments.length"
                     [hasBodyData]="true"
                     [animationMarginParams]="{
@@ -1689,15 +1697,17 @@
                     (onActionEvent)="createComment()"
                 >
                     <ng-container
-                        *ngFor="
-                            let comment of comments;
-                            let i = index;
-                            trackBy: trackByIdentity
-                        "
+                        *ngFor="let comment of comments; let i = index"
                     >
                         <app-ta-comment
                             [commentData]="comment"
                             [commentIndex]="i"
+                            [isMe]="
+                                comment.companyUser.id === companyUser.userId
+                            "
+                            [isEditButtonDisabled]="
+                                isCommented || isCommentEdited
+                            "
                             (btnActionEmitter)="handleCommentActionEmit($event)"
                         ></app-ta-comment>
                     </ng-container>
@@ -1710,9 +1720,11 @@
                 <app-ta-custom-card
                     [hasCounter]="documents?.length"
                     [cardName]="'Document'"
-                    [isCardOpen]="documents?.length > 0"
+                    [isCardOpen]="documents?.length"
+                    (onOpenCard)="handleOpenCloseDocumentsCard($event)"
                 >
                     <app-ta-upload-files
+                        *ngIf="isDocumentsCardOpen"
                         [files]="documents"
                         [size]="'medium'"
                         [showDropzone]="true"

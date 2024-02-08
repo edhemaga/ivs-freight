@@ -30,17 +30,17 @@ export class FilesService implements OnDestroy {
 
     public getFiles(entity: string, id: number) {
         switch (entity) {
-            case 'Driver':
+            case 'driver':
                 return this.getDriverFiles(id);
-            case 'Repair':
+            case 'repair':
                 return this.getRepairFiles(id);
-            case 'Repair-Shop':
+            case 'repair-shop':
                 return this.getRepairShopFiles(id);
-            case 'Owner':
+            case 'owner':
                 return this.getOwnerFiles(id);
-            case 'Trailer':
+            case 'trailer':
                 return this.getTrailerFiles(id);
-            case 'Truck':
+            case 'truck':
                 return this.getTruckFiles(id);
             default:
                 break;
