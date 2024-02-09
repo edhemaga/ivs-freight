@@ -213,14 +213,25 @@
     }
 
     .modal-footer {
+        display: flex;
         & > * {
             margin: 0px !important;
         }
-
-        .ta-modal-footer-right-side,
+        &.active {
+            justify-content: space-between;
+        }
+        &.inactive {
+            justify-content: flex-end;
+        }
+        .ta-modal-footer-right-side {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-left: 1px;
+        }
         .ta-modal-footer-left-side {
             display: flex;
-            align-items: center;
+            justify-content: flex-start;
             gap: 12px;
             padding-left: 1px;
         }

@@ -199,7 +199,7 @@
         padding-left: 6px;
 
         &.extended {
-            grid-template-columns: 59px 143px 116px 1fr;
+            grid-template-columns: 59px 165px 200px 1fr;
             -moz-column-gap: 12px;
             column-gap: 12px;
         }
@@ -212,10 +212,10 @@
     // Driver Notification
     .driver-notification {
         display: grid;
-        gap: 22px;
+        gap: 12px;
         align-items: center;
         padding-left: 6px;
-        grid-template-columns: 79px 61px 143px 1fr;
+        grid-template-columns: 76px 73px 156px 1fr;
 
         p {
             margin: 0;

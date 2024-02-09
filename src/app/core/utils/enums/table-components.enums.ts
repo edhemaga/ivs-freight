@@ -167,6 +167,7 @@ export enum ConstantStringTableComponentsEnum {
 
     // Driver
     DRIVER = 'driver',
+    DRIVER_1 = 'Driver',
     DRIVER_2 = 'drivers',
     APPLICANT = 'APPLICANT',
 

@@ -123,7 +123,18 @@
                 [ngClass]="{
                     'mutliple-buttons': editData?.type?.includes('edit'),
                     'load-template': loadModalTemplate,
-                    'map-settings-template': mapSettingsModal || mapRouteModal
+                    'map-settings-template': mapSettingsModal || mapRouteModal,
+                    active:
+                        editData?.type?.includes('edit') ||
+                        loadModalTemplate ||
+                        mapSettingsModal ||
+                        mapRouteModal,
+                    inactive: !(
+                        editData?.type?.includes('edit') ||
+                        loadModalTemplate ||
+                        mapSettingsModal ||
+                        mapRouteModal
+                    )
                 }"
             >
                 <!-- Footer Left Side -->

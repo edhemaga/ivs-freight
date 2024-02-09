@@ -62,8 +62,10 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-driver-modal',
@@ -205,7 +207,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private uploadFileService: TaUploadFileService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     public get offDutyLocations(): UntypedFormArray {
@@ -226,8 +229,30 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (data.action === 'deactivate' && this.editData) {
-            this.updateDriverStatus();
+        if (
+            data.action === ConstantStringTableComponentsEnum.DEACTIVATE &&
+            this.editData
+        ) {
+            const mappedEvent = {
+                ...this.editData,
+                data: {
+                    ...this.editData.data,
+                    name: this.editData.data?.fullName,
+                },
+            };
+            this.ngbActiveModal.close();
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    type: data.bool
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    image: true,
+                }
+            );
         }
         // Save And Add New
         else if (data.action === 'save and add new') {
@@ -269,13 +294,28 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         }
         // Delete
-        else if (data.action === 'delete' && this.editData?.id) {
-            this.deleteDriverById(this.editData.id);
-            this.modalService.setModalSpinner({
-                action: 'delete',
-                status: true,
-                close: false,
-            });
+        else if (
+            data.action === ConstantStringTableComponentsEnum.DELETE &&
+            this.editData?.id
+        ) {
+            const mappedEvent = {
+                ...this.editData,
+                data: {
+                    ...this.editData.data,
+                    name: this.editData.data?.fullName,
+                },
+            };
+            this.ngbActiveModal.close();
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    image: true,
+                }
+            );
         }
     }
 
