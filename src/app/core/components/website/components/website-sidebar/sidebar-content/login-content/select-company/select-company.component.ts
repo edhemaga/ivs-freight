@@ -182,7 +182,11 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                     localStorage.removeItem('user');
                     localStorage.setItem('user', JSON.stringify(this.userData));
 
-                    this.router.navigate(['/dashboard']);
+                    if (!res.areSettingsUpdated) {
+                        this.router.navigate(['/company/settings']);
+                    } else {
+                        this.router.navigate(['/dashboard']);
+                    }
                 })
             )
             .subscribe();

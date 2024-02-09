@@ -14,17 +14,7 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 
 // services
 import { SharedService } from '../../../../../services/shared/shared.service';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { DashboardService } from '../../../state/services/dashboard.service';
-
-// components
-import { SettingsBasicModalComponent } from '../../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
-
-// enums
-import { ConstantStringEnum } from '../../../state/enums/constant-string.enum';
-
-// models
-import { SignInResponse } from '../../../../../../../../appcoretruckassist/model/signInResponse';
 
 @Titles()
 @Component({
@@ -40,13 +30,10 @@ export class DashboardComponent
 
     constructor(
         private sharedService: SharedService,
-        private modalService: ModalService,
         private dashboardService: DashboardService
     ) {}
 
     ngOnInit(): void {
-        this.checkIfUserSettingsAreUpdated();
-
         this.getOverallCompanyDuration();
     }
 
@@ -55,26 +42,6 @@ export class DashboardComponent
     }
 
     ngOnChanges(): void {}
-
-    private checkIfUserSettingsAreUpdated(): void {
-        const loggedUser: SignInResponse = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.USER)
-        );
-
-        if (!loggedUser.areSettingsUpdated) {
-            this.modalService.openModal(
-                SettingsBasicModalComponent,
-                {
-                    size: ConstantStringEnum.MEDIUM,
-                },
-                {
-                    type: ConstantStringEnum.MODAL_TYPE,
-                },
-                null,
-                false
-            );
-        }
-    }
 
     private emitUpdateScrollHeight(): void {
         setTimeout(() => {
