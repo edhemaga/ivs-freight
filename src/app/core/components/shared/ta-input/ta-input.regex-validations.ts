@@ -102,7 +102,7 @@ export const vehicleUnitValidation = [
 
 //---------------- VIN Number
 export const vinNumberValidation = [
-    Validators.minLength(5),
+    Validators.minLength(13),
     Validators.maxLength(17),
 ];
 
