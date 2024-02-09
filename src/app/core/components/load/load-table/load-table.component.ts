@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
-// Compoenents
+// Modals
 import { LoadModalComponent } from '../../modals/load-modal/components/load-modal/load-modal.component';
 
 // Services
@@ -20,10 +20,11 @@ import {
 import { LoadListResponse } from 'appcoretruckassist';
 import { DisplayLoadConfiguration } from '../load-card-data';
 import {
+    DeleteComment,
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/card-table-data';
+} from '../../shared/model/cardTableData';
 import {
     CardRows,
     Search,
@@ -50,6 +51,7 @@ import { LoadTemplateState } from '../state/load-template-state/load-template.st
 // Pipes
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { DatePipe } from '@angular/common';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 // Constants
@@ -63,13 +65,13 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Utils
-import { DUMMY_COMMENT_DATA } from 'src/app/core/utils/comments-dummy-data';
+import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
 @Component({
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
     styleUrls: ['./load-table.component.scss'],
-    providers: [TaThousandSeparatorPipe],
+    providers: [TaThousandSeparatorPipe, NameInitialsPipe],
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -118,6 +120,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public mapingIndex: number = 0;
+    public dataSubscription: Subscription;
+
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
@@ -129,7 +134,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadTemplateQuery: LoadTemplateQuery,
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
-        private confiramtionService: ConfirmationService
+        private confiramtionService: ConfirmationService,
+        private nameInitialsPipe: NameInitialsPipe
     ) {}
 
     ngOnInit(): void {
@@ -150,12 +156,48 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.driverActions();
 
         this.setTableFilter();
+
+        this.commentsUpdate();
     }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    public commentsUpdate(): void {
+        this.dataSubscription = this.loadServices.data$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                const foundObject = this.viewData.findIndex(
+                    (item) => item.id === data.entityTypeId
+                );
+                if (foundObject !== -1) {
+                    this.viewData[foundObject].comments.push(data);
+
+                    this.viewData[foundObject].commentsCount =
+                        this.viewData[foundObject].commentsCount + 1;
+                }
+            });
+
+        this.dataSubscription = this.loadServices.removeComment$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: DeleteComment) => {
+                const foundObject = this.viewData.find(
+                    (item) => item.id === data.entityTypeId
+                );
+
+                const indexToRemove = foundObject.comments.findIndex(
+                    (comment) => comment.id === data.commentId
+                );
+
+                if (indexToRemove !== -1) {
+                    foundObject.comments.splice(indexToRemove, 1);
+
+                    foundObject.commentsCount = foundObject.commentsCount - 1;
+                }
+            });
     }
 
     public setTableFilter(): void {
@@ -601,6 +643,21 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapLoadData(data: LoadModel): LoadModel {
+        const commentsWithAvatarColor = Object.values(data?.comments).map(
+            (comment) => {
+                this.mapingIndex++;
+                return {
+                    ...comment,
+                    avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                        this.mapingIndex
+                    ),
+                    textShortName: this.nameInitialsPipe.transform(
+                        comment.companyUser.fullName
+                    ),
+                };
+            }
+        );
+
         return {
             ...data,
             isSelected: false,
@@ -730,12 +787,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       ConstantStringTableComponentsEnum.DOT +
                       data?.dispatch?.driver?.lastName
                     : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            loadComment: {
-                count: DUMMY_COMMENT_DATA.COUNT
-                    ? DUMMY_COMMENT_DATA.COUNT
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-                comments: DUMMY_COMMENT_DATA.DISPLAY_COMMENTS,
-            },
+            comments: commentsWithAvatarColor,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
             tableDropdownContent: {

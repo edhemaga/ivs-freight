@@ -48,7 +48,7 @@ import {
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
-import { DropdownItem } from '../../shared/model/card-table-data';
+import { DropdownItem } from '../../shared/model/cardTableData';
 import { CardRows } from '../../shared/model/cardData';
 
 // data for cards

@@ -19,8 +19,8 @@ import {
 } from './ta-like-dislike.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
-// modal
-import { SendDataCard } from '../model/card-table-data';
+// model
+import { SendDataCard } from '../model/cardTableData';
 
 // enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
