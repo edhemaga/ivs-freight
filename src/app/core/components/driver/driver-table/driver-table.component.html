@@ -50,7 +50,10 @@
                     </div>
 
                     <ng-container
-                        *ngIf="viewData.length < activeTableData.length"
+                        *ngIf="
+                            viewData.length < activeTableData.length &&
+                            !isSearching
+                        "
                     >
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"

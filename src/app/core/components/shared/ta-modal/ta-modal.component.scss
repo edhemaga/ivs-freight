@@ -216,11 +216,11 @@
         & > * {
             margin: 0px !important;
         }
-
-        .ta-modal-footer-right-side,
+        .ta-modal-footer-right-side {
+            gap: 12px;
+            padding-left: 1px;
+        }
         .ta-modal-footer-left-side {
-            display: flex;
-            align-items: center;
             gap: 12px;
             padding-left: 1px;
         }
