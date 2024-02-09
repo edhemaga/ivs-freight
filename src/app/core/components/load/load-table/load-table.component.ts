@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
-// Compoenents
+// Modals
 import { LoadModalComponent } from '../../modals/load-modal/components/load-modal/load-modal.component';
 
 // Services
@@ -167,20 +167,23 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public commentsUpdate(): void {
-        this.dataSubscription = this.loadServices.data$.subscribe((data) => {
-            const foundObject = this.viewData.findIndex(
-                (item) => item.id === data.entityTypeId
-            );
-            if (foundObject !== -1) {
-                this.viewData[foundObject].comments.push(data);
+        this.dataSubscription = this.loadServices.data$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                const foundObject = this.viewData.findIndex(
+                    (item) => item.id === data.entityTypeId
+                );
+                if (foundObject !== -1) {
+                    this.viewData[foundObject].comments.push(data);
 
-                this.viewData[foundObject].commentsCount =
-                    this.viewData[foundObject].commentsCount + 1;
-            }
-        });
+                    this.viewData[foundObject].commentsCount =
+                        this.viewData[foundObject].commentsCount + 1;
+                }
+            });
 
-        this.dataSubscription = this.loadServices.removeComment$.subscribe(
-            (data: DeleteComment) => {
+        this.dataSubscription = this.loadServices.removeComment$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: DeleteComment) => {
                 const foundObject = this.viewData.find(
                     (item) => item.id === data.entityTypeId
                 );
@@ -194,8 +197,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     foundObject.commentsCount = foundObject.commentsCount - 1;
                 }
-            }
-        );
+            });
     }
 
     public setTableFilter(): void {

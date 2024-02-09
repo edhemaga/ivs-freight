@@ -71,7 +71,7 @@ import { Comment } from '../../shared/model/cardTableData';
 })
 export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('commentInput') public commentInput: ElementRef;
-    @ViewChild('textareaRefValue', { static: false }) textareaRef: ElementRef;
+    @ViewChild('textareaRefValue') public textareaRef: ElementRef;
 
     @ViewChild('customInput') customInput!: ElementRef;
 
@@ -104,8 +104,6 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     // card comments
     public editingCardComment: boolean = false;
 
-    public dataSubscription: Subscription;
-
     public newCommentText: string;
 
     constructor(
@@ -117,7 +115,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit(): void {
         this.sanitazeAvatar();
-
+        console.log(this.commentCardsDataDropdown);
         this.commentData?.commentContent && this.patchCommentData();
     }
 

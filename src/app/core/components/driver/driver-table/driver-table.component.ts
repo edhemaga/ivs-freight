@@ -186,8 +186,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.driverActions();
 
         this.loadingPage = false;
-
-        console.log(this.viewData);
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------

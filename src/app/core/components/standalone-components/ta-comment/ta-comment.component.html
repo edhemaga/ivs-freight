@@ -321,6 +321,19 @@
                         </div>
                     </ng-container>
 
+                    <ng-template
+                        *ngIf="commentCardsDataDropdown?.companyUser.avatar"
+                    >
+                        {{ commentCardsDataDropdown?.companyUser.avatar }}
+                        <img
+                            src="{{
+                                'data:image/jpg;base64,' +
+                                    commentCardsDataDropdown?.companyUser.avatar
+                            }}"
+                            alt=""
+                        />
+                    </ng-template>
+
                     <div class="d-grid title-holder">
                         <div
                             class="d-flex justify-content-between title-svg-holder"
@@ -332,6 +345,24 @@
                                 }}</span>
                             </div>
 
+                            <span
+                                class="title ta-font-semi-bold"
+                                [innerHTML]="
+                                    higlitsPartOfCommentSearchValue(
+                                        commentCardsDataDropdown.fullName
+                                    ) | safeHtml
+                                "
+                            ></span>
+
+                            <!-- if card is edited -->
+
+                            <ng-container
+                                *ngIf="commentCardsDataDropdown.edited"
+                            >
+                                <span class="card-user-edited ta-font-medium"
+                                    >• Edited</span
+                                >
+                            </ng-container>
                             <div class="user-icons d-flex">
                                 <span
                                     ngbTooltip

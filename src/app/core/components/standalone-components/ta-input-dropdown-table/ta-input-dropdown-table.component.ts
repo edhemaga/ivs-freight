@@ -88,8 +88,6 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
     public user: UserModel;
 
-    public dataSubscription: Subscription;
-
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,

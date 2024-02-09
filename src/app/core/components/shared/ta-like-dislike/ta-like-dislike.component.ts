@@ -19,7 +19,7 @@ import {
 } from './ta-like-dislike.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
-// modal
+// model
 import { SendDataCard } from '../model/cardTableData';
 
 // enum
