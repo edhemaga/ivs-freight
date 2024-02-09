@@ -11,6 +11,7 @@
  */
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
+import { CdlResponse } from './cdlResponse';
 import { OwnerResponse } from './ownerResponse';
 import { PerMileEntity } from './perMileEntity';
 import { NotificationEntity } from './notificationEntity';
@@ -50,6 +51,7 @@ export interface DriverShortResponse {
     emergencyContactRelationship?: string | null;
     general?: NotificationEntity;
     payroll?: NotificationEntity;
+    cdls?: Array<CdlResponse> | null;
     cdlNumber?: string | null;
     licenseStateShortName?: string | null;
     hired?: string | null;

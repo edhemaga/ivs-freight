@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'inputError',
-    standalone: true
+    standalone: true,
 })
 export class InputErrorPipe implements PipeTransform {
     transform(value: any, inputName?: string): string {
@@ -84,6 +84,10 @@ export class InputErrorPipe implements PipeTransform {
                 value['emailAlreadyExist']
             ) {
                 errorMessageValue = 'Already in use';
+            }
+
+            if (value['incorrectVinNumber']) {
+                errorMessageValue = '13 or 17 characters';
             }
         }
         return errorMessageValue;

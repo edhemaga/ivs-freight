@@ -1,13 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
 
+// validations
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// enums
 import { ConstantString } from '../../../../../state/enum/const-string.enum';
 
 @Component({
@@ -18,12 +25,12 @@ import { ConstantString } from '../../../../../state/enum/const-string.enum';
 export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public loginForm: FormGroup;
+    public loginForm: UntypedFormGroup;
 
     public displaySpinner: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService
     ) {}
@@ -47,22 +54,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public onKeyDown(event: { keyCode: number }): void {
-        if (event.keyCode === 13) {
-            this.userLogin();
-        }
+        if (event.keyCode === 13) this.userLogin();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) {
-            this.userLogin();
-        }
+        if (event.notDisabledClick) this.userLogin();
     }
 
     private userLogin() {
         if (this.loginForm.invalid) {
             this.inputService.markInvalid(this.loginForm);
 
-            return false;
+            return;
         }
 
         this.displaySpinner = true;
@@ -75,7 +78,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     next: () => {
                         this.displaySpinner = false;
                     },
-                    error: (error: any) => {
+                    error: (error) => {
                         this.displaySpinner = false;
 
                         const errorMessage = error.error.error;
@@ -92,11 +95,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (
                             errorMessage ===
                             ConstantString.WRONG_PASSWORD_TRY_AGAIN
-                        ) {
+                        )
                             this.loginForm
                                 .get(ConstantString.PASSWORD)
                                 .setErrors({ wrongPassword: true });
-                        }
                     },
                 })
             )

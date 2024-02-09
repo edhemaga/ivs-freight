@@ -1,23 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { ConstantString } from '../../../state/enum/const-string.enum';
-
+// services
 import { WebsiteActionsService } from '../../../state/service/website-actions.service';
+
+// enums
+import { ConstantString } from '../../../state/enum/const-string.enum';
 
 @Component({
     selector: 'app-sidebar-dropdown',
     templateUrl: './sidebar-dropdown.component.html',
     styleUrls: ['./sidebar-dropdown.component.scss'],
 })
-export class SidebarDropdownComponent implements OnInit {
+export class SidebarDropdownComponent {
     @Input() displayResendConfirmationBtn: boolean = true;
     @Input() displayResetPasswordBtn: boolean = true;
 
     public openHavingTroubleContent: boolean = false;
 
     constructor(private websiteActionsService: WebsiteActionsService) {}
-
-    ngOnInit(): void {}
 
     public onHavingTroubleClick(): void {
         this.openHavingTroubleContent = !this.openHavingTroubleContent;
@@ -28,17 +28,15 @@ export class SidebarDropdownComponent implements OnInit {
         type?: string
     ): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.RESET_PASSWORD_BTN) {
+            if (type === ConstantString.RESET_PASSWORD_BTN)
                 this.websiteActionsService.setSidebarContentType(
                     ConstantString.RESET_PASSWORD
                 );
-            }
 
-            if (type === ConstantString.RESEND_CONFIRMATION_BTN) {
+            if (type === ConstantString.RESEND_CONFIRMATION_BTN)
                 this.websiteActionsService.setSidebarContentType(
                     ConstantString.RESEND_CONFIRMATION
                 );
-            }
         }
     }
 }

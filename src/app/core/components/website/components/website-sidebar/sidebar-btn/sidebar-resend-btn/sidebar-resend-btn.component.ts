@@ -2,12 +2,12 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnInit,
     Output,
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
 
+// animations
 import { fadeInAnimation } from '../../../../state/utils/animation';
 
 @Component({
@@ -16,31 +16,25 @@ import { fadeInAnimation } from '../../../../state/utils/animation';
     styleUrls: ['./sidebar-resend-btn.component.scss'],
     animations: [fadeInAnimation()],
 })
-export class SidebarResendBtnComponent implements OnInit, OnChanges {
+export class SidebarResendBtnComponent implements OnChanges {
     @Input() btnText: string = null;
     @Input() requestedResend?: boolean = false;
 
-    @Output() clickValueEmitter = new EventEmitter<any>();
-    @Output() resetRequestedResendEmitter = new EventEmitter<any>();
+    @Output() clickValueEmitter = new EventEmitter<{
+        notDisabledClick: boolean;
+    }>();
+    @Output() resetRequestedResendEmitter = new EventEmitter<boolean>();
 
     public sentAgoCounter: number = 0;
 
     public sentAgoBtnDisabled: boolean = false;
 
-    constructor() {}
-
-    ngOnInit(): void {}
-
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.requestedResend?.currentValue) {
-            this.startSentAgoCounter();
-        }
+        if (changes.requestedResend?.currentValue) this.startSentAgoCounter();
     }
 
     public onGetClickValue(): void {
-        if (this.sentAgoBtnDisabled) {
-            return;
-        }
+        if (this.sentAgoBtnDisabled) return;
 
         this.clickValueEmitter.emit({ notDisabledClick: true });
 
@@ -69,9 +63,7 @@ export class SidebarResendBtnComponent implements OnInit, OnChanges {
                 }
             }
 
-            if (this.sentAgoCounter === 30) {
-                clearInterval(sentAgoInterval);
-            }
+            if (this.sentAgoCounter === 30) clearInterval(sentAgoInterval);
         }, 1000);
     }
 }

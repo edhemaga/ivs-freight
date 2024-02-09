@@ -497,7 +497,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                             break;
                         }
                     }
-
+                    this.ref.detectChanges();
                     if (
                         !['save and add new'].includes(data.action) &&
                         data.close

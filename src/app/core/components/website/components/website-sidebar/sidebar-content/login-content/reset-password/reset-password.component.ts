@@ -1,14 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
-import { ForgotPasswordCommand } from 'appcoretruckassist';
+// enums
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+
+// models
+import { ForgotPasswordCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-reset-password',
@@ -18,12 +26,12 @@ import { ConstantString } from 'src/app/core/components/website/state/enum/const
 export class ResetPasswordComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public resetPasswordForm: FormGroup;
+    public resetPasswordForm: UntypedFormGroup;
 
     public displaySpinner: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
@@ -46,15 +54,11 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     }
 
     public onKeyDown(event: any): void {
-        if (event.keyCode === 13) {
-            this.resetPassword();
-        }
+        if (event.keyCode === 13) this.resetPassword();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) {
-            this.resetPassword();
-        }
+        if (event.notDisabledClick) this.resetPassword();
     }
 
     public resetPassword(): void {

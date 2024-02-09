@@ -30,7 +30,7 @@ import {
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 
-import { Subject, takeUntil } from 'rxjs';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import {
     convertThousanSepInNumber,
@@ -51,6 +51,7 @@ import { ProfileImagesComponent } from '../profile-images/profile-images.compone
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
+
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -274,14 +275,18 @@ export class TaInputComponent
     public setDisabledState?(_: boolean): void {}
 
     ngOnInit(): void {
-        // Track input changes
-        this.getSuperControl.valueChanges
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.cdRef.detectChanges();
-            });
+        //Track input changes
 
-        // Reset Form
+        const combinedChanges = combineLatest([
+            this.getSuperControl.valueChanges,
+            this.getSuperControl.statusChanges,
+        ]);
+
+        combinedChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.cdRef.detectChanges();
+        });
+
+        //Reset Form
         this.formService.formReset$
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {

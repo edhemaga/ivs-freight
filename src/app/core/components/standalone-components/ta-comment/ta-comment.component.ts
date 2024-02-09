@@ -29,21 +29,23 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { LoadTService } from '../../load/state/load.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
+// utils
+import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
+
 // enums
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
-// models
-import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
-import { CommentData } from 'src/app/core/model/comment-data';
-import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
-import { Comment } from '../../shared/model/cardTableData';
-
-// pipe
+// pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 // components
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
+
+// models
+import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
+import { CommentData } from 'src/app/core/model/comment-data';
+import { Comment } from '../../shared/model/cardTableData';
 
 @Component({
     selector: 'app-ta-comment',
@@ -99,7 +101,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public commentDate: string;
     private commentBeforeEdit: string;
 
-    // Cards comments
+    // card comments
     public editingCardComment: boolean = false;
 
     public dataSubscription: Subscription;
@@ -308,6 +310,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             case ConstantStringCommentEnum.CANCEL:
             case ConstantStringCommentEnum.DELETE:
                 const emitData: CommentData = {
+                    commentId: this.commentData.commentId,
                     commentContent: this.commentInput.nativeElement.textContent,
                     commentIndex: this.commentIndex,
                     isEditCancel: this.isEditing,
@@ -343,6 +346,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 100);
 
         this.commentDate = this.commentData.commentDate;
+
+        this.isEdited = this.commentData.isEdited;
     }
 
     ngOnDestroy(): void {

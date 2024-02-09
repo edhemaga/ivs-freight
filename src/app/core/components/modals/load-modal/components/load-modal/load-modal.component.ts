@@ -293,6 +293,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     // comments
     public comments: CommentCompanyUser[] = [];
     private editedCommentId: number;
+    private deletedCommentId: number;
 
     public isCommenting: boolean = false;
     public isCommented: boolean = false;
@@ -350,7 +351,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public trackByIdentity(index: number): number {
+    public trackByIdentity(_, index: number): number {
         return index;
     }
 
@@ -2836,6 +2837,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.comments[commentData.commentIndex] = {
                     ...this.comments[commentData.commentIndex],
                     commentContent: commentData.commentContent,
+                    commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
                     isCommenting: false,
                 };
 
@@ -2848,6 +2850,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case ConstantStringEnum.DELETE:
                 this.comments.splice(commentData.commentIndex, 1);
+
+                this.deletedCommentId = commentData.commentId;
 
                 this.isCommented = false;
                 this.isCommenting = false;
@@ -3459,15 +3463,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ConstantStringEnum.CREATE
             ),
             comment: {
-                id:
-                    this.editedCommentId ??
-                    this.comments[this.comments.length - 1]?.commentId,
-                commentContent: this.editedCommentId
+                id: this.deletedCommentId
+                    ? null
+                    : this.editedCommentId ??
+                      this.comments[this.comments.length - 1]?.commentId,
+                commentContent: this.deletedCommentId
+                    ? null
+                    : this.editedCommentId
                     ? this.comments.find(
                           (comment) =>
                               comment.commentId === this.editedCommentId
                       ).commentContent
                     : this.comments[this.comments.length - 1]?.commentContent,
+            },
+            deleteComment: {
+                id: this.deletedCommentId,
             },
             files: documents,
             tags: tagsArray,
@@ -3715,6 +3725,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     comment.createdAt
                 ),
                 isCommenting: false,
+                isEdited: comment.isEdited,
             };
         });
 

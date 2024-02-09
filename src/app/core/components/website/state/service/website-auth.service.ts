@@ -3,10 +3,16 @@ import { Router } from '@angular/router';
 
 import { Observable, Subject, tap } from 'rxjs';
 
+// services
 import { WebsiteActionsService } from './website-actions.service';
 
+// store
 import { PersistState } from '@datorama/akita';
 
+// enums
+import { ConstantString } from '../enum/const-string.enum';
+
+// models
 import {
     AccountService,
     AvatarResponse,
@@ -23,7 +29,6 @@ import {
     VerifyOwnerCommand,
     VerifyUserCommand,
 } from 'appcoretruckassist';
-import { ConstantString } from '../enum/const-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -123,7 +128,11 @@ export class WebsiteAuthService {
                 } else {
                     localStorage.setItem('user', JSON.stringify(user));
 
-                    this.router.navigate(['/dashboard']);
+                    if (!user.areSettingsUpdated) {
+                        this.router.navigate(['/company/settings']);
+                    } else {
+                        this.router.navigate(['/dashboard']);
+                    }
                 }
 
                 this.websiteActionsService.setOpenSidebarSubject(false);

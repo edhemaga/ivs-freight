@@ -60,10 +60,10 @@ import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
     ],
 })
 export class TaInputNoteComponent implements ControlValueAccessor {
-    @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
-    @ViewChild('noteContainer', { static: true }) noteContainer: any;
+    @ViewChild('main_editor', { static: true }) public noteRef: ElementRef;
+    @ViewChild('noteContainer', { static: true }) public noteContainer: TaNoteContainerComponent;
 
-    @Input() set note(value) {
+    @Input() set note(value: string) {
         if (
             (value && value != '' && value != 'null' && !this.gotValue) ||
             this.blankNote
@@ -92,24 +92,23 @@ export class TaInputNoteComponent implements ControlValueAccessor {
 
     @Output() styledValueEmitter = new EventEmitter<string>();
 
-    _isVisibleNote: any = 'null';
-    selectionTaken: any;
-    range: any;
-    gotValue: boolean = false;
-    showNote: any;
-    value: string = '';
-    savedValue: string = '';
-    saveInterval: any;
-    isFocused: any = false;
-    lastTypeTime: any;
-    saveIntervalStarted: boolean = false;
-    blurNoteTimeout: any;
-    savingNote: boolean = false;
-    noActive: string;
-    animationMarginParams = {
-        marginTop: '0px',
-        marginBottom: '0px',
-    };
+    //note properties
+    public _isVisibleNote: boolean | string = 'null';
+    public selectionTaken: Selection;
+    public range: Range;
+    private gotValue: boolean = false;
+    public showNote: string;
+    public value: string = '';
+    public isFocused: boolean = false;
+    private lastTypeTime: number;
+    private blurNoteTimeout: any;
+    public noActive: string;
+
+    //saving
+    public savingNote: boolean = false;
+    private saveInterval: any;
+    private saveIntervalStarted: boolean = false;
+    public savedValue: string = '';
 
     constructor(
         @Self() public superControl: NgControl,
@@ -136,7 +135,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
 
     public registerOnTouched(_: any): void {}
 
-    public openNote() {
+    public openNote(): void {
         this.noActive = '';
         this._isVisibleNote = !this._isVisibleNote;
 
@@ -145,7 +144,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         }
     }
 
-    checkFocus() {
+    public checkFocus(): void {
         this.isFocused = true;
 
         if (!this._isVisibleNote) {
@@ -156,7 +155,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         }
     }
 
-    changeValue(event) {
+    public changeValue(event: string): void {
         this.gotValue = true;
         this.value = event;
         this.checkActiveItems();
@@ -175,13 +174,13 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         }
     }
 
-    checkActiveItems() {
+    public checkActiveItems(): void {
         if (this.noteContainer && this.noteContainer?.checkActiveItems) {
             this.noteContainer?.checkActiveItems();
         }
     }
 
-    saveNote(allowSave?: boolean) {
+    public saveNote(allowSave?: boolean): void {
         if (this.value == '<br>') {
             this.value = this.value.replace('<br>', '');
         }
@@ -205,11 +204,11 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         this.styledValueEmitter.emit(this.noteRef.nativeElement.innerHTML);
     }
 
-    stopBlurRemoveTimeout() {
+    public stopBlurRemoveTimeout(): void {
         clearTimeout(this.blurNoteTimeout);
     }
 
-    prepareForTextRange() {
+    public prepareForTextRange(): void {
         this.isFocused = false;
         this.selectionTaken = window.getSelection();
         if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
@@ -230,7 +229,10 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         this.styledValueEmitter.emit(this.noteRef.nativeElement.innerHTML);
     }
 
-    updateNote() {
+    public updateNote(): void {
+        this.entityType =
+            this.entityType.charAt(0).toUpperCase() + this.entityType.slice(1);
+
         const updateValue = {
             entityTypeNote: EntityTypeNote[this.entityType],
             entityId: this.entityId,
