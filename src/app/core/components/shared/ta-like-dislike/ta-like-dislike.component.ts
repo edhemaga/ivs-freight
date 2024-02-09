@@ -20,7 +20,7 @@ import {
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 // modal
-import { SendDataCard } from '../model/card-table-data';
+import { SendDataCard } from '../model/cardTableData';
 
 // enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';

@@ -186,6 +186,122 @@
         }
     }
 
+    //Add new comment
+    .add-comment {
+        background: $bw-9;
+        border-radius: 2px;
+        padding: 4px;
+
+        .comment-input {
+            outline: none;
+            border: none;
+            width: 100%;
+            font-size: 11px;
+            line-height: 18px;
+            color: $ta-black-2;
+            background: $bw-9;
+            padding: 4px;
+            transition: background 0.3s ease-in;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+        }
+
+        .user-icons {
+            gap: 4px;
+
+            .confirm-tooltip {
+                background: $muted;
+                height: 18px;
+                width: 18px;
+                border-radius: 1px;
+
+                svg {
+                    path {
+                        fill: $bw-9;
+                    }
+                }
+
+                &:hover {
+                    background: $ta-black;
+                    transform: scale(1.2);
+                    transition: transform 3ms;
+                }
+            }
+
+            .cancel-tooltip {
+                background: $muted;
+                height: 18px;
+                width: 18px;
+                border-radius: 1px;
+
+                svg {
+                    path {
+                        fill: $bw-9;
+                    }
+                }
+
+                &:hover {
+                    background: $ta-black;
+                    transform: scale(1.2);
+                    transition: transform 3ms;
+                }
+            }
+        }
+
+        textarea {
+            width: 100%;
+            background: $bw-9;
+            border: none;
+            outline: none;
+            resize: none;
+            height: 21px;
+            font-size: 11px;
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+        }
+
+        .user-avatar {
+            width: fit-content;
+
+            img {
+                height: 22px;
+                width: 22px;
+            }
+        }
+
+        .user-name {
+            .title {
+                font-size: 11px;
+                position: relative;
+                bottom: 2px;
+                left: 4px;
+            }
+
+            .muted {
+                position: relative;
+                bottom: 9px;
+                left: 4px;
+            }
+        }
+    }
+
     // Body of dropdown
     .fleet-container {
         gap: 2px;
@@ -267,6 +383,8 @@
         svg {
             height: 14px;
             width: 14px;
+            bottom: 1px;
+            position: relative;
 
             path {
                 fill: $ta-blue-13;
@@ -292,6 +410,11 @@
 .comments-width {
     .table-inner {
         width: 260px !important;
+
+        .comments-holder {
+            max-height: 394px;
+            overflow-y: scroll;
+        }
     }
 }
 

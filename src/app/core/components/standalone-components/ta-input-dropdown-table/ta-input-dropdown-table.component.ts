@@ -1,4 +1,4 @@
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     NgbModule,
@@ -7,6 +7,9 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
+//moment
+import moment from 'moment';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -18,10 +21,14 @@ import {
     Trailer,
     Trucks,
     Comment,
-} from '../../shared/model/card-table-data';
+} from '../../shared/model/cardTableData';
+import { UserModel } from 'src/app/core/model/user-localstorage.model';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { LoadTService } from '../../load/state/load.service';
+import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
 // pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
@@ -51,7 +58,11 @@ import { TaCommentComponent } from '../ta-comment/ta-comment.component';
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
-    @Input() data: CardDetails;
+    public _data: CardDetails;
+    @Input() set data(value: CardDetails) {
+        this._data = value;
+        this.filteredData = { ...value };
+    }
     @Input() svg: string;
     @Input() type: string;
     @Input() searchPlaceholder?: string =
@@ -72,13 +83,89 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
     public lattersToHighlight: string;
 
+    public openNewComment: boolean = false;
+    public newCommentText: string;
+
+    public user: UserModel;
+
+    public dataSubscription: Subscription;
+
     constructor(
         private router: Router,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        public imageBase64Service: ImageBase64Service,
+        private loadService: LoadTService,
+        private commentService: CommentsService
     ) {}
 
-    ngOnInit(): void {
-        this.filteredData = JSON.parse(JSON.stringify(this.data));
+    ngOnInit(): void {}
+
+    public adjustTextareaHeight(element: HTMLTextAreaElement): void {
+        this.newCommentText = element.value;
+
+        const lineHeight = 21;
+        element.style.height = ConstantStringTableDropdownEnum.HEIGHT;
+
+        if (element.scrollWidth > element.offsetWidth) {
+            element.style.height =
+                lineHeight +
+                element.scrollHeight +
+                ConstantStringTableDropdownEnum.PX;
+        } else {
+            element.style.height =
+                element.scrollHeight + ConstantStringTableDropdownEnum.PX;
+        }
+    }
+
+    public getUserFromLocalStorage(): void {
+        const user = JSON.parse(
+            localStorage.getItem(ConstantStringTableDropdownEnum.USER)
+        );
+        this.user = user;
+    }
+
+    public newComment(type: string, loadId: number): void {
+        switch (type) {
+            case ConstantStringTableDropdownEnum.OPEN_NEW_COMMENT:
+                this.openNewComment = true;
+                this.getUserFromLocalStorage();
+                break;
+
+            case ConstantStringTableDropdownEnum.ADD_NEW_COMMENT:
+                this.openNewComment = false;
+
+                const comment = {
+                    entityTypeCommentId: 2,
+                    entityTypeId: loadId,
+                    commentContent: this.newCommentText,
+                };
+
+                this.commentService
+                    .createComment(comment)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (res) => {
+                            this.loadService.addData({
+                                ...comment,
+                                cardId: loadId,
+                                createdAt: moment().format(),
+                                companyUser: {
+                                    avatar: this.user.avatar,
+                                    fullName:
+                                        this.user.firstName +
+                                        ' ' +
+                                        this.user.lastName,
+                                    id: this.user.companyUserId,
+                                },
+                                id: res.id,
+                            });
+                        },
+                    });
+                break;
+
+            default:
+                break;
+        }
     }
 
     public filterArrayComments(event: KeyboardEvent): void {
@@ -88,8 +175,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchParam.length >= 2) {
                 // Reset on every key press
-                this.filteredData.loadComment.comments =
-                    this.data.loadComment.comments;
+                this.filteredData.comments = this._data.comments;
 
                 this.lattersToHighlight = searchParam;
 
@@ -99,14 +185,12 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 // If there is empty array in filteredComment set object value to default
                 if (!filteredCommentTitle.length) {
-                    this.filteredData.loadComment.comments =
-                        this.data.loadComment.comments;
+                    this.filteredData.comments = this._data.comments;
                 }
 
                 // If there is filtered value set value to filteredData
                 else {
-                    this.filteredData.loadComment.comments =
-                        filteredCommentTitle;
+                    this.filteredData.comments = filteredCommentTitle;
                 }
             }
 
@@ -114,17 +198,18 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             else {
                 this.lattersToHighlight = '';
 
-                this.filteredData.loadComment.comments =
-                    this.data.loadComment.comments;
+                this.filteredData.comments = this._data.comments;
             }
         }
     }
 
     private filterCommentsTitle(searchParam: string): Comment[] {
-        const filteredComments = this.filteredData.loadComment.comments.filter(
+        const filteredComments = this.filteredData.comments.filter(
             (comment) =>
-                comment.fullName.toLowerCase().includes(searchParam) ||
-                comment.comment.toLowerCase().includes(searchParam)
+                comment.companyUser.fullName
+                    .toLowerCase()
+                    .includes(searchParam) ||
+                comment.commentContent.toLowerCase().includes(searchParam)
         );
 
         return filteredComments;
@@ -137,9 +222,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchTerm.length >= 2) {
                 // Reset on every key press
-                this.filteredData.trucks = this.data.trucks;
+                this.filteredData.trucks = this._data.trucks;
 
-                this.filteredData.trailers = this.data.trailers;
+                this.filteredData.trailers = this._data.trailers;
 
                 this.lattersToHighlight = searchTerm;
 
@@ -149,9 +234,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 // If there is empty array in filteredTrucks or filteredTrailer
                 if (!filteredTrucks.length && !filteredTrailer.length) {
-                    this.filteredData.trucks = this.data.trucks;
+                    this.filteredData.trucks = this._data.trucks;
 
-                    this.filteredData.trailers = this.data.trailers;
+                    this.filteredData.trailers = this._data.trailers;
                 }
 
                 // Set value searched
@@ -170,9 +255,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 this.filteredTrailerCount = null;
 
-                this.filteredData.trucks = this.data.trucks;
+                this.filteredData.trucks = this._data.trucks;
 
-                this.filteredData.trailers = this.data.trailers;
+                this.filteredData.trailers = this._data.trailers;
             }
         }
     }
@@ -197,7 +282,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         return filterTrailer;
     }
 
-    public highlight(trailerTruckNumber: string): string {
+    public highlightPartOfTheTextString(trailerTruckNumber: string): string {
         if (!trailerTruckNumber || !this.lattersToHighlight)
             return trailerTruckNumber;
 
@@ -240,7 +325,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
 
         tooltip.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.filteredData.trucks = this.data.trucks;
+            this.filteredData.trucks = this._data.trucks;
 
             this.lattersToHighlight = null;
 
@@ -248,7 +333,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
             this.filteredTrailerCount = null;
 
-            this.filteredData.trailers = this.data.trailers;
+            this.filteredData.trailers = this._data.trailers;
         });
 
         tooltip.open({ data: card });

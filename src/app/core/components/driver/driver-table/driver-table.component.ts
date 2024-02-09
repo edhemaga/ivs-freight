@@ -69,7 +69,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/card-table-data';
+} from '../../shared/model/cardTableData';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
@@ -177,6 +177,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.driverActions();
 
         this.loadingPage = false;
+
+        console.log(this.viewData);
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------

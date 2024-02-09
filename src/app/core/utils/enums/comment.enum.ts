@@ -10,4 +10,8 @@ export enum ConstantStringCommentEnum {
 
     COMMENT_DATE_FORMAT = 'MM/DD/YY',
     COMMENT_TIME_FORMAT = 'hh:mm A',
+
+    PX = 'px',
+    HEIGHT = '21px',
+    USER = 'user',
 }

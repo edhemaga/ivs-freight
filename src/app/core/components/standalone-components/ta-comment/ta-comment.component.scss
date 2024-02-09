@@ -299,6 +299,16 @@
                         svg {
                             path {
                                 fill: $muted;
+                                transition: fill 3ms;
+                            }
+                        }
+
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: $bw-9;
+                                    transition: fill 3ms;
+                                }
                             }
                         }
                     }
@@ -312,6 +322,14 @@
                             svg {
                                 path {
                                     fill: $muted;
+                                }
+                            }
+
+                            &:hover {
+                                svg {
+                                    path {
+                                        fill: $bw-9;
+                                    }
                                 }
                             }
                         }
@@ -334,7 +352,7 @@
             width: 22px;
             height: 22px;
             border-radius: 1px;
-            font-size: 7px;
+            font-size: 9px;
             border-radius: 50%;
         }
 
@@ -363,6 +381,7 @@
         color: $muted;
         position: relative;
         top: -2px;
+        width: fit-content;
     }
 
     .comment-text {
@@ -401,6 +420,24 @@
         border: none;
         background: $bw-9;
         font-size: 11px;
+        height: fit-content;
+        resize: none;
+        white-space: normal;
+        outline: none;
+        color: $ta-black-2;
+        transition: height 0.3s;
+        overflow-y: hidden;
+        height: 18px;
+
+        &::-moz-selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
     }
 
     .user-icons {
@@ -425,6 +462,12 @@
                 transform: scale(1.2);
                 transition: transform 3ms;
             }
+        }
+
+        .customClass {
+            margin-bottom: 20px;
+            position: relative;
+            bottom: 20px;
         }
 
         .cancel-tooltip {

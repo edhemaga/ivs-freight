@@ -20,10 +20,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from '../../shared/model/card-table-data';
+import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 import {
     DataForCardsAndTables,
     TableColumnConfig,

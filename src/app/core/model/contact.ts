@@ -8,7 +8,7 @@ import {
     UpdateContactEmailCommand,
     UpdateContactPhoneCommand,
 } from 'appcoretruckassist';
-import { tableDropdownContent } from '../components/shared/model/card-table-data';
+import { tableDropdownContent } from '../components/shared/model/cardTableData';
 
 export class Contacts {
     status: string;
