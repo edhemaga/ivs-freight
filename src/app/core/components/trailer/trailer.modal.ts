@@ -105,6 +105,8 @@ export interface TraillerData {
     vin: string;
     year: number;
     files: number;
+
+    volume: string;
 }
 
 export interface MappedTrailer extends TraillerData {

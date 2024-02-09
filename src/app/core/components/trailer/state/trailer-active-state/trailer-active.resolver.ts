@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { TrailerListResponse } from 'appcoretruckassist';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerTService } from '../trailer.service';
 import { TrailerActiveState, TrailerActiveStore } from './trailer-active.store';

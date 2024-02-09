@@ -35,6 +35,7 @@ export interface TrailerShortResponse {
     doorType?: EnumValue;
     reeferUnit?: EnumValue;
     emptyWeight?: number | null;
+    volume?: number | null;
     mileage?: number | null;
     insurancePolicy?: string | null;
     trailerNumber?: string | null;
