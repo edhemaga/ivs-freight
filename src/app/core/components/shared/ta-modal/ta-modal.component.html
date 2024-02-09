@@ -118,18 +118,24 @@
 
             <div
                 *ngIf="!disableFooter && !confirmationData"
-                class="modal-footer"
+                class="modal-footer d-flex"
                 cdkDragHandle
+                [ngStyle]="
+                    editData?.type?.includes('edit') ||
+                    loadModalTemplate ||
+                    mapSettingsModal ||
+                    mapRouteModal
+                "
                 [ngClass]="{
                     'mutliple-buttons': editData?.type?.includes('edit'),
                     'load-template': loadModalTemplate,
                     'map-settings-template': mapSettingsModal || mapRouteModal,
-                    active:
+                    'justify-content-between':
                         editData?.type?.includes('edit') ||
                         loadModalTemplate ||
                         mapSettingsModal ||
                         mapRouteModal,
-                    inactive: !(
+                    'justify-content-end': !(
                         editData?.type?.includes('edit') ||
                         loadModalTemplate ||
                         mapSettingsModal ||
@@ -138,9 +144,7 @@
                 }"
             >
                 <!-- Footer Left Side -->
-
-                <div
-                    class="ta-modal-footer-left-side"
+                <ng-container
                     *ngIf="
                         editData?.type?.includes('edit') ||
                         loadModalTemplate ||
@@ -148,134 +152,140 @@
                         mapRouteModal
                     "
                 >
-                    <!-- Delete -->
-
-                    <ng-container
-                        *ngIf="
-                            !disableDelete &&
-                            !resendEmail &&
-                            !loadModalTemplate &&
-                            !mapSettingsModal &&
-                            !mapRouteModal
-                        "
+                    <div
+                        class="ta-modal-footer-left-side d-flex justify-content-start"
                     >
-                        <button
-                            (click)="onAction('delete')"
-                            class="modal-delete-btn"
-                            type="button"
+                        <!-- Delete -->
+
+                        <ng-container
+                            *ngIf="
+                                !disableDelete &&
+                                !resendEmail &&
+                                !loadModalTemplate &&
+                                !mapSettingsModal &&
+                                !mapRouteModal
+                            "
                         >
-                            Delete
-                        </button>
-                    </ng-container>
-
-                    <!-- Map Settings Reset -->
-
-                    <ng-container
-                        *ngIf="
-                            (mapSettingsModal || mapRouteModal) &&
-                            resetMapVisibility
-                        "
-                    >
-                        <button
-                            (click)="onAction('reset-map-routing')"
-                            class="modal-map-settings-reset-btn"
-                            type="button"
-                        >
-                            Reset
-                        </button>
-                    </ng-container>
-
-                    <!-- Resend Email -->
-
-                    <ng-container *ngIf="resendEmail">
-                        <button
-                            (click)="onAction('resend email')"
-                            class="modal-resend-email-btn"
-                            type="button"
-                        >
-                            {{
-                                resendEmailSpinnerVisibility
-                                    ? 'Sending'
-                                    : 'Resend Application Email'
-                            }}
-                            <div
-                                *ngIf="resendEmailSpinnerVisibility"
-                                class="modal-spinner"
+                            <button
+                                (click)="onAction('delete')"
+                                class="modal-delete-btn"
+                                type="button"
                             >
-                                <app-ta-spinner
-                                    [size]="'small'"
-                                    [color]="'white'"
-                                ></app-ta-spinner>
-                            </div>
-                        </button>
-                    </ng-container>
+                                Delete
+                            </button>
+                        </ng-container>
 
-                    <!-- Deactivated -->
+                        <!-- Map Settings Reset -->
 
-                    <ng-container *ngIf="editData?.disableButton">
-                        <button
-                            (click)="onAction('deactivate')"
-                            class="modal-deactivate-btn"
-                            type="button"
+                        <ng-container
+                            *ngIf="
+                                (mapSettingsModal || mapRouteModal) &&
+                                resetMapVisibility
+                            "
                         >
-                            {{ isDeactivated ? 'Activate' : 'Deactivate' }}
-                        </button>
-                    </ng-container>
+                            <button
+                                (click)="onAction('reset-map-routing')"
+                                class="modal-map-settings-reset-btn"
+                                type="button"
+                            >
+                                Reset
+                            </button>
+                        </ng-container>
 
-                    <!-- DNU -->
+                        <!-- Resend Email -->
 
-                    <ng-container *ngIf="editData?.dnuButton">
-                        <button
-                            (click)="onAction('dnu')"
-                            class="modal-deactivate-btn"
-                            type="button"
-                            ngbTooltip
-                            mainTooltip="Do Not Use List"
-                            tooltipBackground="#6c6c6c"
-                            position="top"
+                        <ng-container *ngIf="resendEmail">
+                            <button
+                                (click)="onAction('resend email')"
+                                class="modal-resend-email-btn"
+                                type="button"
+                            >
+                                {{
+                                    resendEmailSpinnerVisibility
+                                        ? 'Sending'
+                                        : 'Resend Application Email'
+                                }}
+                                <div
+                                    *ngIf="resendEmailSpinnerVisibility"
+                                    class="modal-spinner"
+                                >
+                                    <app-ta-spinner
+                                        [size]="'small'"
+                                        [color]="'white'"
+                                    ></app-ta-spinner>
+                                </div>
+                            </button>
+                        </ng-container>
+
+                        <!-- Deactivated -->
+
+                        <ng-container *ngIf="editData?.disableButton">
+                            <button
+                                (click)="onAction('deactivate')"
+                                class="modal-deactivate-btn"
+                                type="button"
+                            >
+                                {{ isDeactivated ? 'Activate' : 'Deactivate' }}
+                            </button>
+                        </ng-container>
+
+                        <!-- DNU -->
+
+                        <ng-container *ngIf="editData?.dnuButton">
+                            <button
+                                (click)="onAction('dnu')"
+                                class="modal-deactivate-btn"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Do Not Use List"
+                                tooltipBackground="#6c6c6c"
+                                position="top"
+                            >
+                                {{ isDNU ? 'Remove from DNU' : 'Move to DNU' }}
+                            </button>
+                        </ng-container>
+
+                        <!-- BFB -->
+
+                        <ng-container *ngIf="editData?.bfbButton">
+                            <button
+                                (click)="onAction('bfb')"
+                                class="modal-deactivate-btn"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Banned from Broker List"
+                                tooltipBackground="#6c6c6c"
+                                position="top"
+                            >
+                                {{ isBFB ? 'Remove from BFB' : 'Move to BFB' }}
+                            </button>
+                        </ng-container>
+
+                        <!-- Convert to Template -->
+
+                        <ng-container
+                            *ngIf="
+                                loadModalTemplate &&
+                                !isConvertedToTemplate &&
+                                !editData
+                            "
                         >
-                            {{ isDNU ? 'Remove from DNU' : 'Move to DNU' }}
-                        </button>
-                    </ng-container>
-
-                    <!-- BFB -->
-
-                    <ng-container *ngIf="editData?.bfbButton">
-                        <button
-                            (click)="onAction('bfb')"
-                            class="modal-deactivate-btn"
-                            type="button"
-                            ngbTooltip
-                            mainTooltip="Banned from Broker List"
-                            tooltipBackground="#6c6c6c"
-                            position="top"
-                        >
-                            {{ isBFB ? 'Remove from BFB' : 'Move to BFB' }}
-                        </button>
-                    </ng-container>
-
-                    <!-- Convert to Template -->
-
-                    <ng-container
-                        *ngIf="
-                            loadModalTemplate &&
-                            !isConvertedToTemplate &&
-                            !editData
-                        "
-                    >
-                        <button
-                            (click)="onAction('convert-to-template')"
-                            class="d-flex align-items-center justify-content-center ta-font-bold modal-convert-to-template-btn"
-                            type="button"
-                        >
-                            Convert to Template
-                        </button>
-                    </ng-container>
-                </div>
+                            <button
+                                (click)="onAction('convert-to-template')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-convert-to-template-btn"
+                                type="button"
+                            >
+                                Convert to Template
+                            </button>
+                        </ng-container>
+                    </div>
+                </ng-container>
 
                 <!-- Footer right side -->
 
-                <div class="ta-modal-footer-right-side">
+                <div
+                    class="ta-modal-footer-right-side d-flex justify-content-end"
+                >
                     <!-- Save and Add New button -->
 
                     <button

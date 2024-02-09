@@ -84,7 +84,7 @@ import {
 
 //Helpers
 import {
-    calculateDistance,
+    calculateDistanceBetweenTwoCitysByCoordinates,
     checkSpecialFilterArray,
 } from 'src/app/core/helpers/dataFilter';
 
@@ -265,7 +265,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                         .pipe(
                                             map((address) => {
                                                 const distance =
-                                                    calculateDistance(
+                                                    calculateDistanceBetweenTwoCitysByCoordinates(
                                                         res.queryParams
                                                             .latValue,
                                                         res.queryParams

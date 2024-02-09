@@ -21,7 +21,12 @@ export function checkSpecialFilterArray(
     };
 }
 
-export function calculateDistance(lat1, lon1, lat2, lon2) {
+export function calculateDistanceBetweenTwoCitysByCoordinates(
+    lat1,
+    lon1,
+    lat2,
+    lon2
+) {
     const R = 6371;
     const dLat = degreesToRadians(lat2 - lat1);
     const dLon = degreesToRadians(lon2 - lon1);
