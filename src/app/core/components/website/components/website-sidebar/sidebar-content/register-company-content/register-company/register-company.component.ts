@@ -73,19 +73,13 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
             phone: [null, [Validators.required, phoneFaxRegex]],
-            email: [null, [Validators.required]],
+            email: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required, ...passwordValidation]],
             confirmPassword: [
                 null,
                 [Validators.required, ...passwordValidation],
             ],
         });
-
-        this.inputService.customInputValidator(
-            this.registerCompanyForm.get(ConstantString.EMAIL_ADDRESS),
-            ConstantString.EMAIL_ADDRESS,
-            this.destroy$
-        );
     }
 
     public handleAddressChange(event: {
