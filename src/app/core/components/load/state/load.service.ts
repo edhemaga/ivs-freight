@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 // services
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+//Model
+import { Comment, DeleteComment } from '../../shared/model/cardTableData';
 
 // models
 import {
@@ -27,11 +30,27 @@ import { Load } from '../../modals/load-modal/state/models/load-modal-model/load
     providedIn: 'root',
 })
 export class LoadTService {
+    private newComment: Subject<Comment> = new Subject<Comment>();
+    public data$: Observable<Comment> = this.newComment.asObservable();
+
+    private deleteComment: Subject<DeleteComment> =
+        new Subject<DeleteComment>();
+    public removeComment$: Observable<Comment> =
+        this.deleteComment.asObservable();
+
     constructor(
         private loadService: LoadService,
         private formDataService: FormDataService,
         private routingService: RoutingService
     ) {}
+
+    public addData(data: Comment): void {
+        this.newComment.next(data);
+    }
+
+    public removeComment(comment: DeleteComment): void {
+        this.deleteComment.next(comment);
+    }
 
     // table operations
     public getLoadList(

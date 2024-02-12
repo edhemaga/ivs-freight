@@ -1,10 +1,13 @@
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     ElementRef,
     EventEmitter,
     Input,
+    OnDestroy,
     OnInit,
     Output,
     ViewChild,
@@ -23,15 +26,18 @@ import moment from 'moment';
 
 // services
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { LoadTService } from '../../load/state/load.service';
+import { CommentsService } from 'src/app/core/services/comments/comments.service';
+
+// utils
+import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
 
 // enums
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
-// utils
-import { DummyComment } from 'src/app/core/utils/comments-dummy-data';
-
 // pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 // components
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
@@ -39,13 +45,15 @@ import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
-import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
+import { Comment } from '../../shared/model/cardTableData';
 
 @Component({
     selector: 'app-ta-comment',
     templateUrl: './ta-comment.component.html',
     styleUrls: ['./ta-comment.component.scss'],
     standalone: true,
+    providers: [formatDatePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         // modules
         CommonModule,
@@ -61,19 +69,25 @@ import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.
     ],
     animations: [dropdown_animation_comment('dropdownAnimationComment')],
 })
-export class TaCommentComponent implements OnInit, AfterViewInit {
+export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('commentInput') public commentInput: ElementRef;
+    @ViewChild('textareaRefValue') public textareaRef: ElementRef;
+
+    @ViewChild('customInput') customInput!: ElementRef;
 
     @Input() commentData?: CommentCompanyUser;
 
-    @Input() commentCardsDataDropdown?: DummyComment;
+    @Input() commentCardsDataDropdown?: Comment;
     @Input() commentHighlight?: string;
+    @Input() commentsCardId?: number;
 
     @Input() commentIndex?: number;
     @Input() isMe?: boolean = false;
     @Input() isEditButtonDisabled?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
+
+    private destroy$ = new Subject<void>();
 
     private placeholder: string =
         ConstantStringCommentEnum.WRITE_COMMENT_PLACEHOLDER;
@@ -90,11 +104,18 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
     // card comments
     public editingCardComment: boolean = false;
 
-    constructor(private imageBase64Service: ImageBase64Service) {}
+    public newCommentText: string;
+
+    constructor(
+        private imageBase64Service: ImageBase64Service,
+        private formatDatePipe: formatDatePipe,
+        private commentsService: CommentsService,
+        private loadService: LoadTService
+    ) {}
 
     ngOnInit(): void {
         this.sanitazeAvatar();
-
+        console.log(this.commentCardsDataDropdown);
         this.commentData?.commentContent && this.patchCommentData();
     }
 
@@ -102,8 +123,74 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
         if (!this.commentCardsDataDropdown) this.setCommentPlaceholder();
     }
 
-    public openEditComment(): void {
-        this.editingCardComment = !this.editingCardComment;
+    public adjustTextareaHeight(element: HTMLTextAreaElement): void {
+        this.newCommentText = element.value;
+
+        const lineHeight = 21;
+        element.style.height = ConstantStringCommentEnum.HEIGHT;
+
+        if (element.scrollWidth > element.offsetWidth) {
+            element.style.height =
+                lineHeight +
+                element.scrollHeight +
+                ConstantStringCommentEnum.PX;
+        } else {
+            element.style.height =
+                element.scrollHeight + ConstantStringCommentEnum.PX;
+        }
+    }
+
+    public transformDate(date: string): void {
+        return this.formatDatePipe.transform(date);
+    }
+
+    public openEditComment(openClose: boolean): void {
+        this.editingCardComment = openClose;
+    }
+
+    public editComment(commentId: number): void {
+        const textareaValue = this.textareaRef.nativeElement.value;
+
+        const comment = {
+            id: commentId,
+            commentContent: textareaValue,
+        };
+
+        this.commentsService
+            .updateComment(comment)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.editingCardComment = false;
+                    this.commentCardsDataDropdown.commentContent =
+                        textareaValue;
+                },
+                error: () => {},
+            });
+    }
+
+    public deleteComment(commentId: number): void {
+        const comment = {
+            entityTypeId: this.commentsCardId,
+            commentId: commentId,
+        };
+
+        this.commentsService
+            .deleteCommentById(commentId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.loadService.removeComment(comment);
+                },
+                error: () => {},
+            });
+    }
+
+    public checkIfLoggedUserCommented(user: number): boolean {
+        const userLocalStorage = JSON.parse(
+            localStorage.getItem(ConstantStringCommentEnum.USER)
+        );
+        return user === userLocalStorage.companyUserId;
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
@@ -129,7 +216,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
             : null;
     }
 
-    public toogleComment(comment: DummyComment): void {
+    public toogleComment(comment: Comment): void {
         if (comment.isOpen) {
             this.commentCardsDataDropdown = { ...comment, isOpen: false };
         } else {
@@ -259,5 +346,10 @@ export class TaCommentComponent implements OnInit, AfterViewInit {
         this.commentDate = this.commentData.commentDate;
 
         this.isEdited = this.commentData.isEdited;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

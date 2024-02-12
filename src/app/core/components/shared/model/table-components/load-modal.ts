@@ -1,5 +1,6 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { DropdownItem } from '../card-table-data';
+import { DropdownItem } from '../cardTableData';
+import { CommentResponse } from 'appcoretruckassist';
 
 export interface LoadResponse {
     id?: number;
@@ -46,8 +47,6 @@ export interface LoadModel {
     advancePay: number;
     pays: Pay[];
     statusHistory: StatusHistory[];
-    commentsCount: number;
-    comments: Comment[];
     totalPaid: number;
     totalDue: number;
     loadedMiles: number;
@@ -88,7 +87,7 @@ export interface LoadModel {
     textAdvance: string;
     textPayTerms: string;
     textDriver: string;
-    loadComment: LoadComment;
+    comments?: Comment[];
     tableAttachments: File[];
     tableDropdownContent: TableDropdownContent;
 }
@@ -106,23 +105,6 @@ interface LoadTotal {
     subTotal: string;
 }
 
-interface Comments {
-    fullName: string;
-    avatarColor: {
-        background: string;
-        color: string;
-    };
-    textShortName: string;
-    date: string;
-    me: boolean;
-    edited: boolean;
-    comment: string;
-}
-
-interface LoadComment {
-    count: string | number;
-    comments: Comments[];
-}
 interface LoadStatus {
     status: string;
     color: string;
@@ -608,6 +590,10 @@ export interface Status2 {
 }
 
 export interface Comment {
+    avatarColor: {
+        background: string;
+        color: string;
+    };
     id: number;
     companyUser: CompanyUser;
     entityTypeComment: EntityTypeComment;

@@ -87,7 +87,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                             errorMessage ===
                             ConstantString.THIS_USER_DOESENT_EXIST
                         ) {
-                            console.log('uslo', error);
                             this.loginForm
                                 .get(ConstantString.EMAIL_ADDRESS)
                                 .setErrors({ userDoesntExist: true });

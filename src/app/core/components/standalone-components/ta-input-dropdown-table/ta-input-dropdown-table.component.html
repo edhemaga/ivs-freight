@@ -70,7 +70,7 @@
             (click)="toggleDropdownComments(commentsDropdown, filteredData)"
         >
             <span class="comment-number ta-font-semi-bold">{{
-                data?.loadComment.count
+                _data?.commentsCount
             }}</span>
             <svg-icon
                 [src]="svg"
@@ -78,7 +78,7 @@
             ></svg-icon>
 
             <!-- Show notification if there is new comment -->
-            <ng-container *ngIf="data?.commentsCount > 0">
+            <ng-container *ngIf="_data?.commentsCount > 0">
                 <svg-icon
                     class="notification"
                     [src]="'assets/svg/applicant/notification-light.svg'"
@@ -106,7 +106,7 @@
                         class="total-number-fleet count d-flex align-items-center"
                     >
                         <span class="counter ta-font-extra-bold text-white">
-                            {{ commmentsData?.loadComment.count }}
+                            {{ commmentsData?.commentsCount }}
                         </span>
                     </span>
                 </div>
@@ -126,26 +126,119 @@
             </div>
 
             <!-- Add new comment button -->
-            <div
-                class="add-new-comment d-flex justify-content-between align-items-center"
-            >
-                <span class="new-comment ta-font-bold">NEW COMMENT</span>
-                <svg-icon [src]="'assets/svg/common/ic_plus.svg'"></svg-icon>
-            </div>
+            <ng-container *ngIf="!openNewComment">
+                <div
+                    class="add-new-comment d-flex justify-content-between align-items-center"
+                    (click)="newComment('open-new-comment', commmentsData.id)"
+                >
+                    <span class="new-comment ta-font-bold">NEW COMMENT</span>
+                    <svg-icon
+                        [src]="'assets/svg/common/ic_plus.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Add new comment input -->
+            <ng-container *ngIf="openNewComment">
+                <div class="add-comment">
+                    <div class="d-flex justify-content-between">
+                        <div class="user-creds d-flex">
+                            <div class="user-avatar">
+                                <img
+                                    src="{{
+                                        'data:image/jpg;base64,' + user?.avatar
+                                    }}"
+                                    alt=""
+                                />
+                            </div>
+
+                            <div class="user-name d-grid">
+                                <span class="title ta-font-semi-bold">{{
+                                    user.firstName + ' ' + user.lastName
+                                }}</span>
+
+                                <span class="muted ta-font-medium"
+                                    >New Comment</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="user-icons d-flex">
+                            <span
+                                ngbTooltip
+                                mainTooltip="Confirm"
+                                type="button"
+                                tooltipBackground="#424242"
+                                position="top"
+                                class="confirm-tooltip d-flex align-items-center justify-content-center"
+                                [tooltipClass]="customClass"
+                            >
+                                <svg-icon
+                                    class="confirm-icon d-flex align-items-center justify-content-center"
+                                    [src]="'assets/svg/applicant/check.svg'"
+                                    (click)="
+                                        newComment(
+                                            'add-new-comment',
+                                            commmentsData.id
+                                        )
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 12,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+                            </span>
+
+                            <span
+                                ngbTooltip
+                                mainTooltip="Cancel"
+                                tooltipBackground="#424242"
+                                position="top"
+                                type="button"
+                                (click)="openNewComment = false"
+                                class="cancel-tooltip d-flex align-items-center justify-content-center"
+                            >
+                                <svg-icon
+                                    class="cancel-icon d-flex align-items-center justify-content-center"
+                                    [src]="
+                                        'assets/svg/applicant/invalid-review-x.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 10,
+                                        'height.px': 10
+                                    }"
+                                ></svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                    <textarea
+                        #textareaRefValue
+                        rows="4"
+                        cols="50"
+                        class="edit-textarea"
+                        (keyup)="adjustTextareaHeight($event.target)"
+                        placeholder="Write Comment..."
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+            </ng-container>
 
             <!-- Display comments -->
-            <ng-container
-                *ngFor="
-                    let comment of commmentsData.loadComment.comments;
-                    let i = index;
-                    trackBy: trackByIdentity
-                "
-            >
-                <app-ta-comment
-                    [commentCardsDataDropdown]="comment"
-                    [commentHighlight]="lattersToHighlight"
-                ></app-ta-comment>
-            </ng-container>
+            <div class="comments-holder">
+                <ng-container
+                    *ngFor="
+                        let comment of commmentsData.comments;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <app-ta-comment
+                        [commentCardsDataDropdown]="comment"
+                        [commentHighlight]="lattersToHighlight"
+                        [commentsCardId]="commmentsData.id"
+                    ></app-ta-comment>
+                </ng-container>
+            </div>
         </div>
     </div>
 </ng-template>
@@ -262,8 +355,9 @@
                                     <div
                                         class="text-white"
                                         [innerHTML]="
-                                            highlight(truck.truckNumber)
-                                                | safeHtml
+                                            highlightPartOfTheTextString(
+                                                truck.truckNumber
+                                            ) | safeHtml
                                         "
                                     ></div>
                                 </div>
@@ -358,8 +452,9 @@
                                     <div
                                         class="text-white"
                                         [innerHTML]="
-                                            highlight(trailer.trailerNumber)
-                                                | safeHtml
+                                            highlightPartOfTheTextString(
+                                                trailer.trailerNumber
+                                            ) | safeHtml
                                         "
                                     ></div>
                                 </div>

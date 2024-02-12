@@ -41,10 +41,7 @@ import {
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
 import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from '../../shared/model/card-table-data';
+import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 
 // Store
 import { ShopQuery } from '../state/shop-state/shop.query';

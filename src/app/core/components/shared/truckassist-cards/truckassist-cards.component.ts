@@ -1,8 +1,8 @@
 import {
-    FormArray,
     FormControl,
     FormsModule,
     ReactiveFormsModule,
+    UntypedFormArray,
     UntypedFormControl,
 } from '@angular/forms';
 import {
@@ -28,7 +28,7 @@ import {
     DropdownItem,
     CardDetails,
     SendDataCard,
-} from '../model/card-table-data';
+} from '../model/cardTableData';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from '../model/tableBody';
 
@@ -124,7 +124,7 @@ export class TruckassistCardsComponent implements OnInit {
 
     public containerWidth: number = 0;
 
-    public dropdownSelectionArray = new FormArray([]);
+    public dropdownSelectionArray = new UntypedFormArray([]);
 
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
@@ -323,7 +323,6 @@ export class TruckassistCardsComponent implements OnInit {
 
     // Dropdown Actions
     public onDropAction(action: DropdownItem): void {
-        console.log(action);
         if (!action?.mutedStyle) {
             // Send Drop Action
 

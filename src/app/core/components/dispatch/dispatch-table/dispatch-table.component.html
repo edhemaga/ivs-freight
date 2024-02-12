@@ -137,7 +137,7 @@
                             }"
                             [options]="truckList"
                             [canAddNew]="true"
-                            [canAddNew]="truckList?.length ? false : true"
+                            [canOpenModal]="true"
                             [activeItem]="null"
                             (selectedItem)="addTruck($event)"
                         ></app-ta-input-dropdown>
@@ -279,7 +279,7 @@
                                     mergeDropdownBodyWithInput: true
                                 }"
                                 [options]="trailerList"
-                                [canAddNew]="trailerList?.length ? false : true"
+                                [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [activeItem]="null"
                                 (selectedItem)="addTrailer($event)"
@@ -675,7 +675,7 @@
                                 [statusMainIndex]="rowIndex"
                                 [statusTypes]="'dispatch'"
                                 [withStatusAgo]="true"
-                                [pickupCount]="item.activeLoad?.pickupCount" 
+                                [pickupCount]="item.activeLoad?.pickupCount"
                                 [deliveryCount]="item.activeLoad?.deliveryCount"
                                 [possibleNextStatuses]="
                                     item.possibleNextStatuses
@@ -945,7 +945,6 @@
                             *ngIf="openedTruckDropdown != -2"
                         >
                             <div
-                                *ngIf="openedTruckDropdown != -2"
                                 class="add_new"
                                 (click)="showTruckDropdown(-2)"
                             >
@@ -986,7 +985,7 @@
                             }"
                             [options]="truckList"
                             [activeItem]="null"
-                            [canAddNew]="truckList?.length ? false : true"
+                            [canAddNew]="true"
                             [canOpenModal]="true"
                             (selectedItem)="addTruck($event)"
                         ></app-ta-input-dropdown>
@@ -1059,7 +1058,7 @@
                                 }"
                                 [options]="trailerList"
                                 [activeItem]="null"
-                                [canAddNew]="trailerList?.length ? false : true"
+                                [canAddNew]="true"
                                 [canOpenModal]="true"
                                 (selectedItem)="addTrailer($event)"
                             ></app-ta-input-dropdown>

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { forkJoin, map, Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 // Components
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
@@ -20,6 +21,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ApplicantTService } from '../state/applicant.service';
+import { AddressService } from 'src/app/core/services/shared/address.service';
 
 // Queries
 import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
@@ -69,7 +71,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/card-table-data';
+} from '../../shared/model/cardTableData';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
@@ -79,7 +81,12 @@ import {
     TableDriverColorsConstants,
     TableDropdownDriverComponentConstants,
 } from 'src/app/core/utils/constants/table-components.constants';
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+
+//Helpers
+import {
+    calculateDistanceBetweenTwoCitysByCoordinates,
+    checkSpecialFilterArray,
+} from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-driver-table',
@@ -109,7 +116,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         TableDropdownDriverComponentConstants.APPLICANT_BACK_FILTER;
     public resizeObserver: ResizeObserver;
     public mapingIndex: number = 0;
-
+    public isSearching: boolean = false;
     //Data to display from model Active & Inactive
     public displayRowsFront: CardRows[] =
         DisplayDriverConfiguration.displayRowsActiveFront;
@@ -136,6 +143,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsBack: CardRows[];
 
     constructor(
+        private addressService: AddressService,
         private applicantService: ApplicantTService,
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -149,7 +157,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private nameInitialsPipe: NameInitialsPipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private driversInactiveStore: DriversInactiveStore,
-        private applicantStore: ApplicantTableStore
+        private applicantStore: ApplicantTableStore,
+        private router: Router
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -239,6 +248,48 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
 
                     if (!res.selectedFilter) this.sendDriverData();
+                } else if (res?.filterType) {
+                    if (
+                        res.filterType ===
+                        ConstantStringTableComponentsEnum.LOCATION_FILTER
+                    ) {
+                        if (
+                            res.action === ConstantStringTableComponentsEnum.SET
+                        ) {
+                            forkJoin(
+                                this.driverTableData.map((repairData) =>
+                                    this.addressService
+                                        .getAddressInfo(
+                                            repairData.address.address
+                                        )
+                                        .pipe(
+                                            map((address) => {
+                                                const distance =
+                                                    calculateDistanceBetweenTwoCitysByCoordinates(
+                                                        res.queryParams
+                                                            .latValue,
+                                                        res.queryParams
+                                                            .longValue,
+                                                        address.longLat
+                                                            .latitude,
+                                                        address.longLat
+                                                            .longitude
+                                                    );
+                                                return { repairData, distance };
+                                            })
+                                        )
+                                )
+                            ).subscribe((results) => {
+                                this.viewData = results
+                                    .filter(
+                                        (result) =>
+                                            result.distance <
+                                            res.queryParams.rangeValue
+                                    )
+                                    .map((result) => result.repairData);
+                            });
+                        } else this.viewData = this.driverTableData;
+                    }
                 }
             });
     }
@@ -297,6 +348,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    if (res.search) {
+                        this.isSearching = true;
+                    } else if (res.doReset) {
+                        this.isSearching = false;
+                    }
                     this.mapingIndex = 0;
 
                     this.driverBackFilterQuery.active =
@@ -581,7 +637,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: driverCount.applicant,
                 data: applicantsData,
                 extended: true,
-                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
+                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER_1,
                 stateName: ConstantStringTableComponentsEnum.APPLICANTS,
                 tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
                 driverArhivedArray: checkSpecialFilterArray(
@@ -602,7 +658,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: driverCount.active,
                 data: driverActiveData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
+                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER_1,
                 stateName: ConstantStringTableComponentsEnum.DRIVER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.DRIVER,
                 isActive:
@@ -619,7 +675,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: driverCount.inactive,
                 data: driverInactiveData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER,
+                gridNameTitle: ConstantStringTableComponentsEnum.DRIVER_1,
                 stateName: ConstantStringTableComponentsEnum.DRIVER_2,
                 tableConfiguration: ConstantStringTableComponentsEnum.DRIVER,
                 isActive:
@@ -1479,6 +1535,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 { ...event, tableActiveTab: this.selectedTab }
             );
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.VIEW_DETAILS
+        ) {
+            this.router.navigate([`/list/driver/${event.id}/details`]);
         } else if (
             event.type === ConstantStringTableComponentsEnum.NEW_MEDICAL
         ) {

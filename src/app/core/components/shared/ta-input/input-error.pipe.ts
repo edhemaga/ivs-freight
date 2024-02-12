@@ -85,6 +85,10 @@ export class InputErrorPipe implements PipeTransform {
             ) {
                 errorMessageValue = 'Already in use';
             }
+
+            if (value['incorrectVinNumber']) {
+                errorMessageValue = '13 or 17 characters';
+            }
         }
         return errorMessageValue;
     }
