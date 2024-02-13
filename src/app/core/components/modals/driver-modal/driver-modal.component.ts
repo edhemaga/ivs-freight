@@ -103,6 +103,24 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
+    // Logo Actions
+    public croppieOptions: Croppie.CroppieOptions = {
+        enableExif: true,
+        viewport: {
+            width: 616,
+            height: 194,
+            type: 'square',
+        },
+        boundary: {
+            width: 616,
+            height: 194,
+        },
+        enforceBoundary: false,
+    };
+
+    public displayDeleteAction: boolean = false;
+    public displayUploadZone: boolean = false;
+
     public driverForm: UntypedFormGroup;
 
     public labelsBank: any[] = [];
@@ -677,6 +695,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.driverForm.get('avatar'),
                 false
             );
+        }
+    }
+
+    public onSaveLogoAction(event: any) {
+        if (event) {
+            this.displayDeleteAction = true;
         }
     }
 
