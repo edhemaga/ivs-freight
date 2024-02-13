@@ -5,22 +5,32 @@ import {
     SimpleChanges,
     ViewChild,
     ViewEncapsulation,
+    OnDestroy
 } from '@angular/core';
-import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
+
+import { Subject, takeUntil } from 'rxjs';
+import { UntypedFormControl } from '@angular/forms';
+
+//Animations
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
+
+//Helpers
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { Clipboard } from '@angular/cdk/clipboard';
+
+//Services
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+
+//Components
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { Subject, takeUntil } from 'rxjs';
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { UntypedFormControl } from '@angular/forms';
-import { OnDestroy } from '@angular/core';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+
 @Component({
     selector: 'app-settings-insurancepolicy',
     templateUrl: './settings-insurancepolicy.component.html',
