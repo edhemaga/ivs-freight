@@ -2,11 +2,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'detailActiveItem',
-    standalone: true
+    standalone: true,
 })
 export class DetailsActiveItemPipe implements PipeTransform {
     transform(options: any[], template?: string): any {
-        const option = options.find((item) => item.active);
+        const option = options?.find((item) => item.active);
         switch (template) {
             default: {
                 return {

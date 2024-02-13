@@ -805,6 +805,17 @@
                         "
                     ></app-ta-input-note>
                 </div>
+
+                <!--  <app-ta-logo-change
+                            [croppieOptions]="croppieOptions"
+                            [croppieShape]="'rectangle'"
+                            [customClass]="'modal-container-M'"
+                            [imageUrl]="this.companyForm.get('logo').value"
+                            [displayUploadZone]="displayUploadZone"
+                            (validationEvent)="onImageValidation($event)"
+                            (base64ImageEvent)="onUploadImage($event)"
+                            (saveLogoEvent)="onSaveLogoAction($event)"
+                        ></app-ta-logo-change> -->
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
                     <app-ta-custom-card
@@ -813,10 +824,14 @@
                         [disableAnimation]="disableCardAnimation"
                     >
                         <app-ta-logo-change
+                            [croppieOptions]="croppieOptions"
+                            [croppieShape]="'rectangle'"
                             [customClass]="'modal-container-M'"
                             [imageUrl]="this.driverForm.get('avatar').value"
+                            [displayUploadZone]="displayUploadZone"
                             (validationEvent)="onImageValidation($event)"
                             (base64ImageEvent)="onUploadImage($event)"
+                            (saveLogoEvent)="onSaveLogoAction($event)"
                         ></app-ta-logo-change>
                     </app-ta-custom-card>
                     <div class="driver-cards-mvr">
