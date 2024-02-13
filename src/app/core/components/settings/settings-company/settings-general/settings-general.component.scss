@@ -151,8 +151,8 @@
             //margin-bottom: 15px;
             border-radius: 3px;
             .basic-header {
-                width: 100%;
-                height: 90px;
+                width: 462px;
+                height: 130px;
                 display: flex;
                 flex-direction: column;
                 user-select: none;
@@ -264,7 +264,7 @@
                 grid-template-columns: repeat(3, 180px);
                 -moz-column-gap: 12px;
                 column-gap: 12px;
-                padding:0px 12px 12px 12px;
+                padding: 0px 12px 12px 12px;
                 background-color: $settings-background;
 
                 &::-moz-selection {
@@ -276,17 +276,17 @@
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                .basic-bottom-cards-redesign{
+                .basic-bottom-cards-redesign {
                     //display: flex;
                     //justify-content: space-between;
                     //align-items: center;
 
-                    .bottom-title-value{
+                    .bottom-title-value {
                         line-height: 14px;
                         font-size: 11px;
                         font-weight: 700;
                         padding-bottom: 4px;
-                        color: #2F2F2F;
+                        color: #2f2f2f;
 
                         &::-moz-selection {
                             color: $settings-gray-dark;
@@ -298,11 +298,11 @@
                         }
                     }
 
-                    .bottom-value{
+                    .bottom-value {
                         line-height: 22px;
                         font-size: 18px;
                         font-weight: 500;
-                        color: #2F2F2F;
+                        color: #2f2f2f;
 
                         &::-moz-selection {
                             color: $settings-gray-dark;
@@ -313,9 +313,7 @@
                             background: rgb(108, 108, 108, 0.2);
                         }
                     }
-
                 }
-
 
                 .basic-bottom-card {
                     background-color: #f9f9f9;
@@ -539,7 +537,7 @@
     height: 100%;
     max-width: 346px;
     max-height: 110px;
-    position: absolute;
+    position: relative;
     background-size: cover;
 }
 .first-element-company {
@@ -553,8 +551,9 @@
     font-weight: 900;
     color: #b7b7b7;
     white-space: nowrap;
-    max-width: 550px;
     text-overflow: ellipsis;
     overflow: hidden;
+    width: fit-content;
     white-space: nowrap;
+    min-height: 110px;
 }
