@@ -417,7 +417,13 @@
                     </div>
                 </div>
 
-                <textarea
+                <div
+                    #textareaRefValue
+                    class="input-like"
+                    contenteditable="true"
+                ></div>
+
+                <!-- <textarea
                     #textareaRefValue
                     rows="4"
                     cols="50"
@@ -425,7 +431,7 @@
                     spellcheck="false"
                     (keyup)="adjustTextareaHeight($event.target)"
                     >{{ commentCardsDataDropdown.commentContent }}</textarea
-                >
+                > -->
             </div>
         </div>
     </ng-container>

@@ -71,7 +71,8 @@ import { Comment } from '../../shared/model/cardTableData';
 })
 export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('commentInput') public commentInput: ElementRef;
-    @ViewChild('textareaRefValue') public textareaRef: ElementRef;
+
+    @ViewChild('textareaRefValue', { static: false }) inputDivRef: ElementRef;
 
     @ViewChild('customInput') customInput!: ElementRef;
 
@@ -149,24 +150,26 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public editComment(commentId: number): void {
-        const textareaValue = this.textareaRef.nativeElement.value;
+        const textareaValue = this.inputDivRef.nativeElement.value;
+
+        console.log(textareaValue);
 
         const comment = {
             id: commentId,
             commentContent: textareaValue,
         };
 
-        this.commentsService
-            .updateComment(comment)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.editingCardComment = false;
-                    this.commentCardsDataDropdown.commentContent =
-                        textareaValue;
-                },
-                error: () => {},
-            });
+        // this.commentsService
+        //     .updateComment(comment)
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe({
+        //         next: () => {
+        //             this.editingCardComment = false;
+        //             this.commentCardsDataDropdown.commentContent =
+        //                 textareaValue;
+        //         },
+        //         error: () => {},
+        //     });
     }
 
     public deleteComment(commentId: number): void {
