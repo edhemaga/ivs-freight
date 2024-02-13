@@ -3,8 +3,8 @@
         <div class="icon-text-wrapper">
             <p class="disable-selection">
                 Company
-                <span *ngIf="optionsCompany.length > 1"
-                    >({{ optionsCompany.length }})</span
+                <span *ngIf="optionsCompany?.length > 1"
+                    >({{ optionsCompany?.length }})</span
                 >
             </p>
         </div>
@@ -58,7 +58,7 @@
                         *ngIf="!selectedDropdown"
                         class="current-active-item"
                         [ngClass]="{
-                            'single-data': optionsCompany.length == 1
+                            'single-data': optionsCompany?.length == 1
                         }"
                         (click)="showDropdown()"
                     >
@@ -74,7 +74,7 @@
                             </div>
                             <div
                                 class="arrow-company-icon-holder"
-                                *ngIf="optionsCompany.length > 1"
+                                *ngIf="optionsCompany?.length > 1"
                             >
                                 <svg-icon
                                     class="arrow-down"
@@ -86,7 +86,7 @@
                     </div>
 
                     <app-ta-input-dropdown
-                        *ngIf="selectedDropdown && optionsCompany.length > 1"
+                        *ngIf="selectedDropdown && optionsCompany?.length > 1"
                         class="dropInput"
                         [formControl]="inputFormControl"
                         [inputConfig]="{
@@ -109,13 +109,13 @@
                     </app-ta-input-dropdown>
                 </div>
                 <div
-                    *ngIf="optionsCompany.length > 1"
+                    *ngIf="optionsCompany?.length > 1"
                     class="arrows"
                     [class.disabedPreviousArrow]="
                         currentCompanyIndex == 0 || currentCompanyIndex == -1
                     "
                     [class.disableNextArrow]="
-                        currentCompanyIndex == optionsCompany.length - 1
+                        currentCompanyIndex == optionsCompany?.length - 1
                     "
                 >
                     <span
@@ -145,12 +145,12 @@
                     <span
                         ngbTooltip
                         [mainTooltip]="
-                            currentCompanyIndex == optionsCompany.length - 1
+                            currentCompanyIndex == optionsCompany?.length - 1
                                 ? ''
                                 : 'Next'
                         "
                         [tooltipBackground]="
-                            currentCompanyIndex == optionsCompany.length - 1
+                            currentCompanyIndex == optionsCompany?.length - 1
                                 ? 'rgba(0,0,0,0)'
                                 : '#6C6C6C'
                         "
