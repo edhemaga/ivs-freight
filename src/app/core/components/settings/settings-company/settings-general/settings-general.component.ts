@@ -61,7 +61,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         ) {
             this.companyData = changes?.companyData?.currentValue;
         }
-        if (this.companyData?.name.length > 13) {
+        if (this.companyData?.name?.length > 13) {
             this.changeFont = true;
         } else {
             this.changeFont = false;
@@ -69,7 +69,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
     ngOnInit(): void {
         let divisionArray = [];
-        
+
         this.optionsCompany?.map((item) => {
             if (item.isDivision == true) {
                 this.companyDivision = true;
@@ -92,15 +92,14 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             );
         }
 
-
-        let currentIndex = this.optionsCompany.findIndex(
+        let currentIndex = this.optionsCompany?.findIndex(
             (comp) => comp.id === this.companyData.id
         );
         this.currentCompanyIndex = currentIndex;
     }
 
-    public timeZoneFormat(mod){
-        return mod.substring(0,7); 
+    public timeZoneFormat(mod) {
+        return mod.substring(0, 7);
     }
 
     public onAction(modal: { modalName: string; type: string; company?: any }) {
@@ -118,9 +117,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
     public onSelectItem(event: any) {
-
-        if ( event ) {
-            let currentIndex = this.optionsCompany.findIndex(
+        if (event) {
+            let currentIndex = this.optionsCompany?.findIndex(
                 (comp) => comp.id === event.id
             );
             this.currentCompanyIndex = currentIndex;
@@ -128,25 +126,24 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             this.selectDropDown.emit(event);
             this.selectValue.emit(event);
         }
-        
-        
+
         this.selectedDropdown = false;
     }
 
     public showDropdown(): void {
-        if (this.optionsCompany.length > 1) {
+        if (this.optionsCompany?.length > 1) {
             this.selectedDropdown = true;
         }
     }
 
-    public onActionChange(action: any){
-        let currentIndex = this.optionsCompany.findIndex(
+    public onActionChange(action: any) {
+        let currentIndex = this.optionsCompany?.findIndex(
             (comp) => comp.id === this.companyData.id
         );
 
         switch (action) {
             case 'previous': {
-                currentIndex = --currentIndex; 
+                currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     let data = this.optionsCompany[currentIndex];
                     this.currentCompanyIndex = currentIndex;
@@ -158,18 +155,18 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.optionsCompany.length > currentIndex
+                    this.optionsCompany?.length > currentIndex
                 ) {
-                   let data = this.optionsCompany[currentIndex];
-                   this.currentCompanyIndex = currentIndex;
-                   this.onSelectItem(data);
+                    let data = this.optionsCompany[currentIndex];
+                    this.currentCompanyIndex = currentIndex;
+                    this.onSelectItem(data);
                 }
                 break;
             }
             default: {
                 break;
             }
-        }   
+        }
     }
 
     ngOnDestroy(): void {}
