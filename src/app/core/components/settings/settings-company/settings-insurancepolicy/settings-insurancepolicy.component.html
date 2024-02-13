@@ -52,7 +52,7 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="insurance?.phone"
                             [textColor]="'#2f2f2f'"
                         >
@@ -63,7 +63,7 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="insurance?.email"
                             [textColor]="'#2f2f2f'"
                         >
@@ -409,20 +409,26 @@
                     >
                         <div class="icon-counter-wrapper">
                             <div class="counter-text-wrapper">
-                                <app-ta-counter
-                                    [countHeight]="'24px'"
-                                    [countWidth]="'24px'"
-                                    [count]="
-                                        insurance?.files.length
-                                            ? insurance?.files.length
-                                            : 0
-                                    "
-                                >
-                                </app-ta-counter>
-                                <p class="details-document-name">Document</p>
+                                <div class="counter-text-wrapper">
+                                    <p class="details-document-name">
+                                        Document
+                                    </p>
+                                    <app-ta-counter
+                                        [countBackground]="'#424242'"
+                                        [customClass]="'circle_counter'"
+                                        [countHeight]="'22px'"
+                                        [countWidth]="'22px'"
+                                        [count]="
+                                            insurance?.files?.length
+                                                ? insurance.files.length
+                                                : 0
+                                        "
+                                    >
+                                    </app-ta-counter>
+                                </div>
                             </div>
                             <svg-icon
-                                (click)="onFileAction('download')"
+                                (click)="downloadAllFiles()"
                                 src="assets/svg/common/ic_download.svg"
                             >
                             </svg-icon>
@@ -435,6 +441,7 @@
                         [class.disabled]="!insurance?.files?.length"
                     >
                         <app-ta-upload-files
+                            #insuranceFiles
                             [files]="insurance?.files"
                             [customClassName]="'company-details-pdf'"
                             [slideWidth]="390"

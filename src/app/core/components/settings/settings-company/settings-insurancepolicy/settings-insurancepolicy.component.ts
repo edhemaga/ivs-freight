@@ -3,6 +3,7 @@ import {
     Input,
     OnChanges,
     SimpleChanges,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
@@ -19,6 +20,7 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 import { UntypedFormControl } from '@angular/forms';
 import { OnDestroy } from '@angular/core';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 @Component({
     selector: 'app-settings-insurancepolicy',
     templateUrl: './settings-insurancepolicy.component.html',
@@ -27,6 +29,7 @@ import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
     animations: [card_component_animation('showHideCardBody')],
 })
 export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
+    @ViewChild('insuranceFiles') insuranceFiles: TaUploadFilesComponent;
     @Input() public insurancePolicyData: any;
     public insuranceNote: UntypedFormControl = new UntypedFormControl();
 
@@ -176,9 +179,15 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
             }
         }
     }
+
     public onFileAction(action: string) {
         onFileActionMethods(action);
     }
+
+    public downloadAllFiles(): void {
+        this.insuranceFiles.downloadAllFiles();
+    }
+
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

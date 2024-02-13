@@ -212,7 +212,7 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="companyData?.phone"
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
@@ -223,7 +223,7 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="companyData?.email"
                         [textColor]="'#2f2f2f'"
                     >
@@ -235,7 +235,7 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_fax.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="companyData?.fax"
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
@@ -245,7 +245,11 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_web.svg"
                     ></svg-icon>
-                    <p class="basic-data-value">{{ companyData?.webUrl }}</p>
+                    <app-ta-copy
+                        [copyValue]="companyData?.webUrl"
+                        [textColor]="'#6c6c6c'"
+                    >
+                    </app-ta-copy>
                 </div>
             </div>
             <div
@@ -423,7 +427,7 @@
                     <span class="body-value-department">{{
                         department.department.name
                     }}</span>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="department?.phone"
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
@@ -431,9 +435,10 @@
                     <span class="body-value">{{
                         department.extensionPhone
                     }}</span>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="department?.email"
                         [textColor]="'#2f2f2f'"
+                        [maxWidth]="'164px'"
                     ></app-ta-copy>
                 </div>
             </app-ta-custom-card>
@@ -466,10 +471,11 @@
                     </div>
                     <div class="additional-template-item">
                         <p class="additional-template-value-name">Routing</p>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="bank?.routing"
                             [textColor]="'#2f2f2f'"
-                        > </app-ta-copy>
+                        >
+                        </app-ta-copy>
                     </div>
                     <div class="additional-template-item">
                         <p class="additional-template-value-name">Account</p>
