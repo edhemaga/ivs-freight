@@ -547,16 +547,39 @@
     margin-top: 8px;
 }
 
-.no-company-logo {
-    padding: 0px 12px;
-    font-weight: 900;
-    color: #b7b7b7;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    width: fit-content;
-    white-space: nowrap;
-    min-height: 110px;
+.no-company-logo-holder {
+    .no-company-logo {
+        padding: 0px 12px;
+        font-weight: 900;
+        color: #b7b7b7;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: fit-content;
+        white-space: nowrap;
+        min-height: 110px;
+    }
+
+    .sixty {
+        font-size: 60px;
+    }
+
+    .fourty {
+        font-size: 48px;
+    }
+
+    .thirty {
+        font-size: 32px;
+    }
+
+    .twentythree {
+        font-size: 23px;
+    }
+
+    .twenty {
+        font-size: 20px;
+        white-space: pre-line;
+    }
 }
 
 @keyframes change {

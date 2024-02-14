@@ -165,7 +165,7 @@
                     </span>
                 </div>
             </div>
-            <div class="basic-header" #logoBox>
+            <div class="basic-header">
                 <img
                     *ngIf="companyData.logo"
                     [src]="imageBase64Service.sanitizer(companyData.logo)"
@@ -174,12 +174,15 @@
                 />
 
                 <ng-container *ngIf="!companyData.logo">
-                    <div
-                        #logoText
-                        class="no-company-logo d-flex align-items-center"
-                        [style.font-size]="fontSizeLogo"
-                    >
-                        {{ companyData?.name }}
+                    <div #logoBox class="no-company-logo-holder">
+                        <div
+                            #logoText
+                            class="no-company-logo d-flex align-items-center {{
+                                fontSizeLogo
+                            }}"
+                        >
+                            {{ companyData?.name }}
+                        </div>
                     </div>
                 </ng-container>
 
