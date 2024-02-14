@@ -418,11 +418,7 @@
                                         [customClass]="'circle_counter'"
                                         [countHeight]="'22px'"
                                         [countWidth]="'22px'"
-                                        [count]="
-                                            insurance?.files?.length
-                                                ? insurance.files.length
-                                                : 0
-                                        "
+                                        [count]="insurance.files?.length ?? 0"
                                     >
                                     </app-ta-counter>
                                 </div>
