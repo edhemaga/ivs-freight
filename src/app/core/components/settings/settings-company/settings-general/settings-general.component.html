@@ -165,23 +165,24 @@
                     </span>
                 </div>
             </div>
-            <div class="basic-header">
+            <div class="basic-header" #logoBox>
                 <img
                     *ngIf="companyData.logo"
                     [src]="imageBase64Service.sanitizer(companyData.logo)"
                     [alt]="companyData.logo?.name?.substring(0, 1)"
                     class="company-logo-img"
                 />
-                <div
-                    *ngIf="!companyData.logo"
-                    [ngStyle]="{
-                        'font-size': changeFont ? '22px' : '48px',
-                        'margin-top': changeFont ? '60px' : '0px'
-                    }"
-                    class="no-company-logo"
-                >
-                    {{ companyData?.name }}
-                </div>
+
+                <ng-container *ngIf="!companyData.logo">
+                    <div
+                        #logoText
+                        class="no-company-logo d-flex align-items-center"
+                        [style.font-size]="fontSizeLogo"
+                    >
+                        {{ companyData?.name }}
+                    </div>
+                </ng-container>
+
                 <div class="basic-header-logo-top">
                     <div class="basic-logo-text">
                         This logo will be used on invoices
@@ -192,6 +193,7 @@
                     ></svg-icon>
                 </div>
             </div>
+
             <!-- Middle -->
             <div class="basic-middle">
                 <div class="basic-data first-element-company">
