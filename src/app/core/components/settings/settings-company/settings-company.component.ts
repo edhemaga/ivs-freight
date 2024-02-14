@@ -47,59 +47,58 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.selectCompanyFunction();
         this.getCompanyDivision();
-        
+
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation) {
+                if (res?.animation) {
                     this.dataCompany = res.data.divisions;
                     this.data = res.data;
                     this.getCompanyDivision();
                     this.cdRef.detectChanges();
                 }
             });
-           
+
         this.getData(this.activated.snapshot.data.company);
 
         this.detailsPageSer.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-
                 let currentIndex = this.dataCompany.findIndex(
                     (comp) => comp.id === id
                 );
-                
-                if ( this.dataCompany[currentIndex].isDivision ) {
-                    this.settingsCompanyService
-                    .getCompanyDivisionById(id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: CompanyResponse) => {
-                            this.getData(res);
 
-                            this.cdRef.detectChanges();
-                        },
-                        error: () => {
-                            if (this.CompanyStore.getValue()?.entities) {
-                                this.getData(
-                                    this.CompanyStore.getValue()?.entities[id]
-                                );
-                            } else {
-                                this.getData(
-                                    this.activated.snapshot.data.company
-                                );
-                            }
-                        },
-                    });
+                if (this.dataCompany[currentIndex].isDivision) {
+                    this.settingsCompanyService
+                        .getCompanyDivisionById(id)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (res: CompanyResponse) => {
+                                this.getData(res);
+
+                                this.cdRef.detectChanges();
+                            },
+                            error: () => {
+                                if (this.CompanyStore.getValue()?.entities) {
+                                    this.getData(
+                                        this.CompanyStore.getValue()?.entities[
+                                            id
+                                        ]
+                                    );
+                                } else {
+                                    this.getData(
+                                        this.activated.snapshot.data.company
+                                    );
+                                }
+                            },
+                        });
                 } else {
                     if (this.CompanyStore.getValue()?.entities) {
                         this.getData(
-                            this.CompanyStore.getValue()?.entities[id] 
+                            this.CompanyStore.getValue()?.entities[id]
                         );
                     } else {
-                        this.getData(
-                            this.activated.snapshot.data.company
-                        );
+                        this.getData(this.activated.snapshot.data.company);
                     }
                 }
             });

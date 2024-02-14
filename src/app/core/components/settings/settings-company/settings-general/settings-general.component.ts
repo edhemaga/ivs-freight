@@ -1,6 +1,8 @@
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import {
+    AfterViewInit,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnChanges,
@@ -8,12 +10,20 @@ import {
     OnInit,
     Output,
     SimpleChanges,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
+// services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
+// pipes
+import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+
+// enums
+import { SETINGS_ENUMS } from '../utils/enums/settings.enum';
 
 @Component({
     selector: 'app-settings-general',
@@ -22,7 +32,13 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
     encapsulation: ViewEncapsulation.None,
     providers: [DetailsPageService, DetailsActiveItemPipe],
 })
-export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
+export class SettingsGeneralComponent
+    implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
+    @ViewChild('logoText', { static: false }) logoText: ElementRef;
+
+    @ViewChild('logoBox', { static: false }) logoBox: ElementRef;
+
     @Input() public optionsCompany: any[] = [];
     @Input() public companyData: any;
 
@@ -40,6 +56,9 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public changeFont: boolean;
     public selectedDropdown: boolean = false;
     public currentCompanyIndex;
+
+    public fontSizeLogo = SETINGS_ENUMS.SIXTY;
+
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         public imageBase64Service: ImageBase64Service
@@ -67,6 +86,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             this.changeFont = false;
         }
     }
+
     ngOnInit(): void {
         let divisionArray = [];
 
@@ -96,6 +116,52 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             (comp) => comp.id === this.companyData.id
         );
         this.currentCompanyIndex = currentIndex;
+    }
+
+    ngAfterViewInit(): void {
+        this.changeFontSizeLogo();
+    }
+
+    public changeFontSizeLogo(): void {
+        if (this.logoText) {
+            const element = this.logoText.nativeElement;
+
+            element.style.fontSize = SETINGS_ENUMS.SIXTY;
+            element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
+            element.style.lineHeight = SETINGS_ENUMS.SIXTY;
+
+            if (element.offsetWidth > this.logoBox.nativeElement.offsetWidth) {
+                element.style.fontSize = SETINGS_ENUMS.FOURTY_EIGHT;
+                element.style.lineHeight = SETINGS_ENUMS.FOURTY_EIGHT;
+                element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
+
+                if (
+                    element.offsetWidth > this.logoBox.nativeElement.offsetWidth
+                ) {
+                    element.style.fontSize = SETINGS_ENUMS.THIRTY_TWO;
+                    element.style.lineHeight = SETINGS_ENUMS.THIRTY_TWO;
+                    element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
+
+                    if (
+                        element.offsetWidth >
+                        this.logoBox.nativeElement.offsetWidth
+                    ) {
+                        element.style.fontSize = SETINGS_ENUMS.TWENTY_THREE;
+                        element.style.lineHeight = SETINGS_ENUMS.TWENTY_THREE;
+                        element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
+
+                        if (
+                            element.offsetWidth >
+                            this.logoBox.nativeElement.offsetWidth
+                        ) {
+                            element.style.fontSize = SETINGS_ENUMS.TWENTY;
+                            element.style.lineHeight = SETINGS_ENUMS.TWENTY;
+                            element.style.whiteSpace = SETINGS_ENUMS.PRE_LINE;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public timeZoneFormat(mod) {
