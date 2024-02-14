@@ -78,6 +78,8 @@ import {
     startingValidation,
     cvcValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { SETTINGS_MODAL_CONSTANTS } from '../utils/constants/settings-modal.constants';
+import { Tabs } from '../../../shared/model/modal-tabs';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -112,61 +114,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public companyForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-            checked: false,
-        },
-        {
-            id: 3,
-            name: 'Payroll',
-            checked: false,
-        },
-    ];
 
-    public tabsDivision: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
-    public prefferedLoadBtns: any[] = [
-        {
-            id: 1,
-            name: 'FTL',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'LTL',
-            checked: false,
-        },
-    ];
-
-    public fleetTypeBtns: any[] = [
-        {
-            id: 1,
-            name: 'Solo',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Team',
-            checked: false,
-        },
-        { id: 3, name: 'Combined', checked: false },
-    ];
+    public tabs: Tabs[] = SETTINGS_MODAL_CONSTANTS.TABS;
+    public tabsDivision: Tabs[] = SETTINGS_MODAL_CONSTANTS.TABS_DIVISION;
+    public prefferedLoadBtns: Tabs[] =
+        SETTINGS_MODAL_CONSTANTS.PREFERED_LOAD_BTNS;
+    public fleetTypeBtns: Tabs[] = SETTINGS_MODAL_CONSTANTS.FLEET_TYPE_BTNS;
 
     public driverCommissionOptions: Options = {
         floor: 5,
@@ -528,7 +481,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData.type.includes('edit-company') || this.editData.type.includes('payroll-tab')) {
+                if (
+                    this.editData.type.includes('edit-company') ||
+                    this.editData.type.includes('payroll-tab')
+                ) {
                     this.updateCompany();
                     this.modalService.setModalSpinner({
                         action: null,
