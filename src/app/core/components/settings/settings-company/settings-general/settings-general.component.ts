@@ -14,10 +14,16 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
+// services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { SETINGS_ENUMS } from '../utils/settings.enum';
+
+// pipes
+import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+
+// enums
+import { SETINGS_ENUMS } from '../utils/enums/settings.enum';
 
 @Component({
     selector: 'app-settings-general',
