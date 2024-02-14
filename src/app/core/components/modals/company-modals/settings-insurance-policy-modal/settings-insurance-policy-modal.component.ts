@@ -924,6 +924,11 @@ export class SettingsInsurancePolicyModalComponent
             note: insurance.note,
         });
 
+        this.onHandleAddress({
+            address: insurance.address,
+            valid: insurance.address.address ? true : false,
+        });
+
         this.documents = insurance.files;
 
         if (insurance.insurancePolicyAddons.length) {
