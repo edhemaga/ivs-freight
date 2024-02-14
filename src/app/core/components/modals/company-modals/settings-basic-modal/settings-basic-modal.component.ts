@@ -78,7 +78,7 @@ import {
     startingValidation,
     cvcValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { SETTINGS_MODAL_CONSTANTS } from '../utils/constants/settings-modal.constants';
+import { SettingsModalConstantS } from '../utils/constants/settings-modal.constants';
 import { Tabs } from '../../../shared/model/modal-tabs';
 
 @Component({
@@ -115,11 +115,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public selectedTab: number = 1;
 
-    public tabs: Tabs[] = SETTINGS_MODAL_CONSTANTS.TABS;
-    public tabsDivision: Tabs[] = SETTINGS_MODAL_CONSTANTS.TABS_DIVISION;
+    public tabs: Tabs[] = SettingsModalConstantS.TABS;
+    public tabsDivision: Tabs[] = SettingsModalConstantS.TABS_DIVISION;
     public prefferedLoadBtns: Tabs[] =
-        SETTINGS_MODAL_CONSTANTS.PREFERED_LOAD_BTNS;
-    public fleetTypeBtns: Tabs[] = SETTINGS_MODAL_CONSTANTS.FLEET_TYPE_BTNS;
+        SettingsModalConstantS.PREFERED_LOAD_BTNS;
+    public fleetTypeBtns: Tabs[] = SettingsModalConstantS.FLEET_TYPE_BTNS;
 
     public driverCommissionOptions: Options = {
         floor: 5,
