@@ -245,7 +245,11 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_web.svg"
                     ></svg-icon>
-                    <p class="basic-data-value">{{ companyData?.webUrl }}</p>
+                    <app-ta-copy
+                        [copyValue]="companyData?.webUrl"
+                        [textColor]="'#6c6c6c'"
+                    >
+                    </app-ta-copy>
                 </div>
             </div>
             <div
@@ -434,6 +438,7 @@
                     <app-ta-copy
                         [copyValue]="department?.email"
                         [textColor]="'#2f2f2f'"
+                        [maxWidth]="'164px'"
                     ></app-ta-copy>
                 </div>
             </app-ta-custom-card>
