@@ -172,16 +172,20 @@
                     [alt]="companyData.logo?.name?.substring(0, 1)"
                     class="company-logo-img"
                 />
-                <div
-                    *ngIf="!companyData.logo"
-                    [ngStyle]="{
-                        'font-size': changeFont ? '22px' : '48px',
-                        'margin-top': changeFont ? '60px' : '0px'
-                    }"
-                    class="no-company-logo"
-                >
-                    {{ companyData?.name }}
-                </div>
+
+                <ng-container *ngIf="!companyData.logo">
+                    <div #logoBox class="no-company-logo-holder">
+                        <div
+                            #logoText
+                            class="no-company-logo d-flex align-items-center {{
+                                fontSizeLogo
+                            }}"
+                        >
+                            {{ companyData?.name }}
+                        </div>
+                    </div>
+                </ng-container>
+
                 <div class="basic-header-logo-top">
                     <div class="basic-logo-text">
                         This logo will be used on invoices
@@ -192,6 +196,7 @@
                     ></svg-icon>
                 </div>
             </div>
+
             <!-- Middle -->
             <div class="basic-middle">
                 <div class="basic-data first-element-company">
@@ -245,7 +250,11 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_web.svg"
                     ></svg-icon>
-                    <p class="basic-data-value">{{ companyData?.webUrl }}</p>
+                    <app-ta-copy
+                        [copyValue]="companyData?.webUrl"
+                        [textColor]="'#6c6c6c'"
+                    >
+                    </app-ta-copy>
                 </div>
             </div>
             <div
@@ -434,6 +443,7 @@
                     <app-ta-copy
                         [copyValue]="department?.email"
                         [textColor]="'#2f2f2f'"
+                        [maxWidth]="'164px'"
                     ></app-ta-copy>
                 </div>
             </app-ta-custom-card>

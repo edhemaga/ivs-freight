@@ -13,7 +13,11 @@
         'margin-left': marginLeft
     }"
 >
-    <p class="m-0 ta-font-bold" [ngStyle]="{ bottom: countTextBottomPosition }">
+    <p
+        class="m-0 ta-font-bold"
+        [ngStyle]="{ bottom: countTextBottomPosition }"
+        [style.left]="leftPosition"
+    >
         {{ count > 0 ? (count | taThousandSeparator) : 0 }}
     </p>
 </div>

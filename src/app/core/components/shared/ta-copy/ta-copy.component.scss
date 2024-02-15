@@ -34,8 +34,13 @@
             color: #3c3c3c;
         }
 
-        &.leftIconOrder{
+        &.leftIconOrder {
             order: 2;
+        }
+        &.short_text {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
     }
     .card-icon-copy {
@@ -55,10 +60,9 @@
         .card-icon-copy {
             display: flex;
 
-            &.extraPadding{
+            &.extraPadding {
                 margin-right: 4px;
             }
-
         }
     }
 }
@@ -88,8 +92,8 @@
 .app-icon-copy {
     display: flex;
     align-items: center;
-    
-    &.leftIconOrder{
+
+    &.leftIconOrder {
         order: 1;
     }
 }
@@ -119,6 +123,6 @@
     margin-right: 6px;
 }
 
-.boldVinSpan{
+.boldVinSpan {
     font-weight: 700;
 }
