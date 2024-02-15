@@ -5,6 +5,7 @@
     <div
         ngbTooltip
         [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
+        [customClass]="'mb-2'"
         position="top"
         [tooltipBackground]="isCardOpen || forcedOpen ? '#6C6C6C' : '#6C6C6C'"
         class="tooltipClose"
@@ -88,7 +89,7 @@
                                             copyText(cardNameCommon, $event)
                                         "
                                         [tooltipBackground]="
-                                            copiedCommon ? '#536BC2' : '#6c6c6c'
+                                            copiedCommon ? '#424242' : '#424242'
                                         "
                                         (mouseleave)="copiedCommon = false"
                                         >{{ cardNameCommon }}</span

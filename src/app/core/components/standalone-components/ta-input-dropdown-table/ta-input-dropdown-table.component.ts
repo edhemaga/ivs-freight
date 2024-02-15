@@ -1,5 +1,5 @@
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { Component, Input, OnDestroy } from '@angular/core';
 import {
     NgbModule,
     NgbPopoverModule,
@@ -7,9 +7,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-//moment
-import moment from 'moment';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -22,13 +19,10 @@ import {
     Trucks,
     Comment,
 } from '../../shared/model/cardTableData';
-import { UserModel } from 'src/app/core/model/user-localstorage.model';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { LoadTService } from '../../load/state/load.service';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
 // pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
@@ -38,6 +32,7 @@ import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-inp
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
+import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -53,11 +48,12 @@ import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 
         // Components
         TaCommentComponent,
+        TaNewCommentComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
-export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
+export class TaInputDropdownTableComponent implements OnDestroy {
     public _data: CardDetails;
     @Input() set data(value: CardDetails) {
         this._data = value;
@@ -83,86 +79,15 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
     public lattersToHighlight: string;
 
-    public openNewComment: boolean = false;
-    public newCommentText: string;
-
-    public user: UserModel;
-
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
-        public imageBase64Service: ImageBase64Service,
-        private loadService: LoadTService,
-        private commentService: CommentsService
+        public imageBase64Service: ImageBase64Service
     ) {}
 
-    ngOnInit(): void {}
-
-    public adjustTextareaHeight(element: HTMLTextAreaElement): void {
-        this.newCommentText = element.value;
-
-        const lineHeight = 21;
-        element.style.height = ConstantStringTableDropdownEnum.HEIGHT;
-
-        if (element.scrollWidth > element.offsetWidth) {
-            element.style.height =
-                lineHeight +
-                element.scrollHeight +
-                ConstantStringTableDropdownEnum.PX;
-        } else {
-            element.style.height =
-                element.scrollHeight + ConstantStringTableDropdownEnum.PX;
-        }
-    }
-
-    public getUserFromLocalStorage(): void {
-        const user = JSON.parse(
-            localStorage.getItem(ConstantStringTableDropdownEnum.USER)
-        );
-        this.user = user;
-    }
-
-    public newComment(type: string, loadId: number): void {
-        switch (type) {
-            case ConstantStringTableDropdownEnum.OPEN_NEW_COMMENT:
-                this.openNewComment = true;
-                this.getUserFromLocalStorage();
-                break;
-
-            case ConstantStringTableDropdownEnum.ADD_NEW_COMMENT:
-                this.openNewComment = false;
-
-                const comment = {
-                    entityTypeCommentId: 2,
-                    entityTypeId: loadId,
-                    commentContent: this.newCommentText,
-                };
-
-                this.commentService
-                    .createComment(comment)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res) => {
-                            this.loadService.addData({
-                                ...comment,
-                                cardId: loadId,
-                                createdAt: moment().format(),
-                                companyUser: {
-                                    avatar: this.user.avatar,
-                                    fullName:
-                                        this.user.firstName +
-                                        ' ' +
-                                        this.user.lastName,
-                                    id: this.user.companyUserId,
-                                },
-                                id: res.id,
-                            });
-                        },
-                    });
-                break;
-
-            default:
-                break;
+    public closeDropdownFromComment(): void {
+        if (this.tooltip) {
+            this.tooltip.close();
         }
     }
 

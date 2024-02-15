@@ -7,4 +7,7 @@ export enum ConstantStringTableDropdownEnum {
     USER = 'user',
     PX = 'px',
     HEIGHT = '21px',
+
+    WRITE_COMMENT_PLACEHOLDER = 'Write Comment...',
+    EMPTY_STRING_PLACEHOLDER = '',
 }

@@ -187,14 +187,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 const foundObject = this.viewData.find(
                     (item) => item.id === data.entityTypeId
                 );
-
                 const indexToRemove = foundObject.comments.findIndex(
                     (comment) => comment.id === data.commentId
                 );
-
                 if (indexToRemove !== -1) {
                     foundObject.comments.splice(indexToRemove, 1);
-
                     foundObject.commentsCount = foundObject.commentsCount - 1;
                 }
             });
