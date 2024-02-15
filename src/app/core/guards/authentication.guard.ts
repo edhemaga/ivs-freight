@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
         // }
 
         // ----------------------- DEVELOP MODE ----------------------------
+        
         const user = JSON.parse(localStorage.getItem('user'));
 
         if (user) {
