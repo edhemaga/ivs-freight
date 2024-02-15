@@ -4,6 +4,8 @@
     }
 
     .popover-body {
+        margin-top: -2px !important;
+
         .dropdown-options-divider {
             content: '';
             height: 1px;
@@ -189,7 +191,7 @@
                         padding-top: 1px;
                     }
                 }
-               
+
                 &.add-new {
                     padding: 4.5px 4px;
                     font-size: 11px;
@@ -246,10 +248,11 @@
                         display: none;
                     }
                 }
-                &.active-label, &.active-dark{
+                &.active-label,
+                &.active-dark {
                     .labels-template-counter {
-                        background-color: #3B73ED!important;
-                        color: #FFFFFF!important;
+                        background-color: #3b73ed !important;
+                        color: #ffffff !important;
                     }
                 }
                 &.active,
@@ -407,17 +410,17 @@
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
-  
+
                         .labels-template-text {
                             margin-right: 28px;
                             font-size: 14px;
                             font-weight: 400;
                             line-height: 18px;
                             color: #ffffff;
-                            &.lable-text-wrap{
+                            &.lable-text-wrap {
                                 text-overflow: ellipsis;
-                                overflow: hidden; 
-                                width: 80px; 
+                                overflow: hidden;
+                                width: 80px;
                                 white-space: nowrap;
                             }
                             &.add-new {
@@ -450,7 +453,7 @@
                                 }
                             }
                         }
-                       
+
                         .labels-template-counter {
                             width: 22px;
                             height: 16px;
@@ -461,7 +464,7 @@
                             font-size: 11px;
                             font-weight: 500;
                             padding: 0 4.5px;
-                            &.dont-show-counter{
+                            &.dont-show-counter {
                                 display: none;
                             }
                         }
