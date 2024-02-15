@@ -1,20 +1,5 @@
 @import '../../settings.global.scss';
-@keyframes change {
-    from {
-        color: #6c6c6c;
-    }
-    to {
-        color: #3551b7;
-    }
-}
-@keyframes changeSVG {
-    from {
-        fill: #6c6c6c;
-    }
-    to {
-        fill: #3551b7;
-    }
-}
+@import '/src/theme/variables.scss';
 
 .dropInputCompany {
     width: 512px;
@@ -25,11 +10,12 @@
     grid-template-columns: repeat(3, 130px);
     column-gap: 64px;
     row-gap: 12px;
-    //padding-left: 4px;
+
     .additional-template-item {
         display: flex;
         flex-direction: column;
     }
+
     .additional-template-value-name {
         font-size: 12px;
         font-weight: $settings-font-semibold;
@@ -38,28 +24,34 @@
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
+
         &::selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
     }
+
     .additional-template-value {
         font-size: 14px;
         font-weight: 400;
         color: $settings-gray-dark;
+
         &::-moz-selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
+
         &::selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
+
         span {
             &::-moz-selection {
                 color: $settings-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
             }
+
             &::selection {
                 color: $settings-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
@@ -73,58 +65,70 @@
     row-gap: 12px;
     column-gap: 65px;
     padding-left: 4px;
+
     .bank-card-name-header {
         font-size: 12px;
         font-weight: $settings-font-semibold;
         color: $settings-gray-dark;
+
         &::-moz-selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
+
         &::selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
     }
+
     .bank-card-template-item {
         display: flex;
         flex-direction: column;
     }
 }
+
 .bank-card-template-data-body {
     display: grid;
     grid-template-columns: 72px 160px 65px 50px;
     row-gap: 12px;
     column-gap: 65px;
     padding-left: 4px;
+
     .bank-card-template-item-body {
         display: grid;
         grid-template-columns: 106px 194px 98px 50px;
         row-gap: 12px;
         column-gap: 31px;
+
         .item-body-nick-name {
             font-size: 14px;
             font-weight: 400;
             color: $settings-gray-dark;
+
             &::-moz-selection {
                 color: $settings-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
             }
+
             &::selection {
                 color: $settings-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
+
         .item-body-cvc {
             &::-moz-selection {
                 color: $settings-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
             }
+
             &::selection {
                 color: $settings-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
+
         .item-body-icon-text {
             display: flex;
             align-items: center;
@@ -144,29 +148,27 @@
         // Basic Info & Logo
         background-color: $settings-background;
         border-radius: 3px;
+
         .basic-details {
             width: 100%;
-            //padding: 0px 8px;
-            //height: 262px;
-            //margin-bottom: 15px;
             border-radius: 3px;
+            overflow: hidden;
+
             .basic-header {
-                width: 100%;
-                height: 90px;
+                width: 462px;
+                height: 130px;
                 display: flex;
                 flex-direction: column;
                 user-select: none;
                 background-color: $settings-background;
-                //padding: 0px 12px;
                 border-radius: 3px;
+
                 .basic-header-logo-top {
                     display: flex;
                     align-items: center;
                     padding: 0px 12px;
-                    //justify-content: flex-end;
                     height: 22px;
                     width: 100%;
-                    //margin-bottom: 8px;
 
                     .basic-logo-text {
                         font-size: 10px;
@@ -181,15 +183,18 @@
                         height: 22px;
                         display: none;
                         margin-left: 6px;
+
                         svg {
                             width: 100%;
                             height: 100%;
                             #Rectangle_3879 {
                                 fill: $settings-white-light-2;
                             }
+
                             #Path_7775 {
                                 fill: $settings-white-dark-2;
                             }
+
                             #Path_7776 {
                                 fill: $settings-white-dark-2;
                             }
@@ -198,27 +203,21 @@
                         &:hover {
                             transition: $settings-transition;
                             cursor: pointer;
+
                             svg {
                                 #Rectangle_3879 {
                                     fill: $settings-gray;
                                 }
+
                                 #Path_7775 {
                                     fill: $settings-background;
                                 }
+
                                 #Path_7776 {
                                     fill: $settings-background;
                                 }
                             }
                         }
-                    }
-
-                    &:hover {
-                        /*
-                        .basic-logo-edit {
-                            transition: $settings-transition;
-                            display: inline-block;
-                        }
-                        */
                     }
                 }
 
@@ -234,6 +233,7 @@
                 row-gap: 12px;
                 padding: 0px 12px 10px 12px;
                 background-color: $settings-background;
+
                 .basic-data {
                     display: flex;
                     align-items: center;
@@ -246,11 +246,13 @@
                     &:nth-child(1) {
                         grid-column: 1 / -1;
                     }
+
                     .basic-data-value {
                         font-size: 14px;
                         font-weight: 400;
                         color: $settings-gray-dark;
                     }
+
                     .basic-data-svg {
                         margin-right: 6px;
                         position: relative;
@@ -264,45 +266,43 @@
                 grid-template-columns: repeat(3, 180px);
                 -moz-column-gap: 12px;
                 column-gap: 12px;
-                padding:0px 12px 12px 12px;
+                padding: 0px 12px 12px 12px;
                 background-color: $settings-background;
 
                 &::-moz-selection {
                     color: $settings-gray-dark;
                     background: rgb(108, 108, 108, 0.2);
                 }
+
                 &::selection {
                     color: $settings-gray-dark;
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                .basic-bottom-cards-redesign{
-                    //display: flex;
-                    //justify-content: space-between;
-                    //align-items: center;
-
-                    .bottom-title-value{
+                .basic-bottom-cards-redesign {
+                    .bottom-title-value {
                         line-height: 14px;
                         font-size: 11px;
                         font-weight: 700;
                         padding-bottom: 4px;
-                        color: #2F2F2F;
+                        color: $ta-black-2;
 
                         &::-moz-selection {
                             color: $settings-gray-dark;
                             background: rgb(108, 108, 108, 0.2);
                         }
+
                         &::selection {
                             color: $settings-gray-dark;
                             background: rgb(108, 108, 108, 0.2);
                         }
                     }
 
-                    .bottom-value{
+                    .bottom-value {
                         line-height: 22px;
                         font-size: 18px;
                         font-weight: 500;
-                        color: #2F2F2F;
+                        color: $ta-black-2;
 
                         &::-moz-selection {
                             color: $settings-gray-dark;
@@ -313,9 +313,7 @@
                             background: rgb(108, 108, 108, 0.2);
                         }
                     }
-
                 }
-
 
                 .basic-bottom-card {
                     background-color: #f9f9f9;
@@ -351,9 +349,6 @@
 }
 .cards-custom {
     padding: 0 8px;
-    .ta-card-header {
-        //padding: 0 4px !important;
-    }
 }
 .show-hide {
     display: flex;
@@ -415,10 +410,12 @@
     grid-template-columns: 105px 122px 90px 60px;
     column-gap: 15px;
     padding-bottom: 6px;
+
     .body-value-department {
         font-size: 14px;
         font-weight: $settings-font-semibold;
         color: #6c6c6c;
+
         &::-moz-selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
@@ -433,10 +430,12 @@
         font-weight: 400;
         color: #6c6c6c;
         white-space: nowrap;
+
         &::-moz-selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
+
         &::selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
@@ -447,10 +446,12 @@
         font-weight: 400;
         color: #6c6c6c;
         white-space: nowrap;
+
         &::-moz-selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
         }
+
         &::selection {
             color: $settings-gray-dark;
             background: rgb(108, 108, 108, 0.2);
@@ -492,9 +493,6 @@
     }
 
     &:hover {
-        // background-color: #f3f3f3;
-        // transition: all 0.3s ease-in-out;
-
         .current-active-name {
             color: #3c3c3c;
         }
@@ -513,6 +511,7 @@
         path {
             fill: #cccccc !important;
         }
+
         &:hover {
             path {
                 fill: #6c6c6c !important;
@@ -523,6 +522,7 @@
 .division-name-wrapper {
     display: flex;
     align-items: center;
+
     .division-company {
         background-color: #f3f3f3;
         border-radius: 2px;
@@ -534,27 +534,71 @@
         padding: 0 6px;
     }
 }
+
 .company-logo-img {
     width: 100%;
     height: 100%;
     max-width: 346px;
     max-height: 110px;
-    position: absolute;
+    position: relative;
     background-size: cover;
 }
+
 .first-element-company {
     margin-top: 8px;
 }
-.no-company-logo {
-    // font-size: 48px;
-    //position: absolute;
-    // margin-top: 30px;
-    padding: 0px 12px;
-    font-weight: 900;
-    color: #b7b7b7;
-    white-space: nowrap;
-    max-width: 550px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+
+.no-company-logo-holder {
+    .no-company-logo {
+        padding: 0px 12px;
+        font-weight: 900;
+        color: #b7b7b7;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: fit-content;
+        white-space: nowrap;
+        min-height: 110px;
+    }
+
+    .sixty {
+        font-size: 60px;
+    }
+
+    .fourty {
+        font-size: 48px;
+    }
+
+    .thirty {
+        font-size: 32px;
+    }
+
+    .twentythree {
+        font-size: 23px;
+    }
+
+    .twenty {
+        font-size: 20px;
+        white-space: pre-line;
+    }
+}
+
+@keyframes change {
+    from {
+        color: #6c6c6c;
+    }
+
+    to {
+        color: #3551b7;
+    }
+}
+
+@keyframes changeSVG {
+    from {
+        fill: #6c6c6c;
+    }
+
+    to {
+        fill: #3551b7;
+    }
 }

@@ -3,22 +3,34 @@ import {
     Input,
     OnChanges,
     SimpleChanges,
+    ViewChild,
     ViewEncapsulation,
+    OnDestroy
 } from '@angular/core';
-import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
+
+import { Subject, takeUntil } from 'rxjs';
+import { UntypedFormControl } from '@angular/forms';
+
+//Animations
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
+
+//Helpers
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { Clipboard } from '@angular/cdk/clipboard';
+
+//Services
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+
+//Components
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { Subject, takeUntil } from 'rxjs';
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { UntypedFormControl } from '@angular/forms';
-import { OnDestroy } from '@angular/core';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+
 @Component({
     selector: 'app-settings-insurancepolicy',
     templateUrl: './settings-insurancepolicy.component.html',
@@ -27,6 +39,7 @@ import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
     animations: [card_component_animation('showHideCardBody')],
 })
 export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
+    @ViewChild('insuranceFiles') insuranceFiles: TaUploadFilesComponent;
     @Input() public insurancePolicyData: any;
     public insuranceNote: UntypedFormControl = new UntypedFormControl();
 
@@ -176,9 +189,15 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
             }
         }
     }
+
     public onFileAction(action: string) {
         onFileActionMethods(action);
     }
+
+    public downloadAllFiles(): void {
+        this.insuranceFiles.downloadAllFiles();
+    }
+
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

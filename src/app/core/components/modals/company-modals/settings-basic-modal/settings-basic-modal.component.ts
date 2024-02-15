@@ -78,6 +78,9 @@ import {
     cvcValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
+// constants
+import { SettingsModalConstantS } from '../utils/constants/settings-modal.constants';
+
 // models
 import {
     AddressEntity,
@@ -89,6 +92,7 @@ import {
     CompanyResponse,
 } from 'appcoretruckassist';
 import { CroppieOptions } from 'croppie';
+import { Tabs } from '../../../shared/model/modal-tabs';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -127,61 +131,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public companyForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-            checked: false,
-        },
-        {
-            id: 3,
-            name: 'Payroll',
-            checked: false,
-        },
-    ];
 
-    public tabsDivision: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
-    public prefferedLoadBtns: any[] = [
-        {
-            id: 1,
-            name: 'FTL',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'LTL',
-            checked: false,
-        },
-    ];
-
-    public fleetTypeBtns: any[] = [
-        {
-            id: 1,
-            name: 'Solo',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Team',
-            checked: false,
-        },
-        { id: 3, name: 'Combined', checked: false },
-    ];
+    public tabs: Tabs[] = SettingsModalConstantS.TABS;
+    public tabsDivision: Tabs[] = SettingsModalConstantS.TABS_DIVISION;
+    public prefferedLoadBtns: Tabs[] =
+        SettingsModalConstantS.PREFERED_LOAD_BTNS;
+    public fleetTypeBtns: Tabs[] = SettingsModalConstantS.FLEET_TYPE_BTNS;
 
     public driverCommissionOptions: Options = {
         floor: 5,

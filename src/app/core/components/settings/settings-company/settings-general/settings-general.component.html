@@ -3,8 +3,8 @@
         <div class="icon-text-wrapper">
             <p class="disable-selection">
                 Company
-                <span *ngIf="optionsCompany.length > 1"
-                    >({{ optionsCompany.length }})</span
+                <span *ngIf="optionsCompany?.length > 1"
+                    >({{ optionsCompany?.length }})</span
                 >
             </p>
         </div>
@@ -58,7 +58,7 @@
                         *ngIf="!selectedDropdown"
                         class="current-active-item"
                         [ngClass]="{
-                            'single-data': optionsCompany.length == 1
+                            'single-data': optionsCompany?.length == 1
                         }"
                         (click)="showDropdown()"
                     >
@@ -74,7 +74,7 @@
                             </div>
                             <div
                                 class="arrow-company-icon-holder"
-                                *ngIf="optionsCompany.length > 1"
+                                *ngIf="optionsCompany?.length > 1"
                             >
                                 <svg-icon
                                     class="arrow-down"
@@ -86,7 +86,7 @@
                     </div>
 
                     <app-ta-input-dropdown
-                        *ngIf="selectedDropdown && optionsCompany.length > 1"
+                        *ngIf="selectedDropdown && optionsCompany?.length > 1"
                         class="dropInput"
                         [formControl]="inputFormControl"
                         [inputConfig]="{
@@ -109,13 +109,13 @@
                     </app-ta-input-dropdown>
                 </div>
                 <div
-                    *ngIf="optionsCompany.length > 1"
+                    *ngIf="optionsCompany?.length > 1"
                     class="arrows"
                     [class.disabedPreviousArrow]="
                         currentCompanyIndex == 0 || currentCompanyIndex == -1
                     "
                     [class.disableNextArrow]="
-                        currentCompanyIndex == optionsCompany.length - 1
+                        currentCompanyIndex == optionsCompany?.length - 1
                     "
                 >
                     <span
@@ -145,12 +145,12 @@
                     <span
                         ngbTooltip
                         [mainTooltip]="
-                            currentCompanyIndex == optionsCompany.length - 1
+                            currentCompanyIndex == optionsCompany?.length - 1
                                 ? ''
                                 : 'Next'
                         "
                         [tooltipBackground]="
-                            currentCompanyIndex == optionsCompany.length - 1
+                            currentCompanyIndex == optionsCompany?.length - 1
                                 ? 'rgba(0,0,0,0)'
                                 : '#6C6C6C'
                         "
@@ -172,16 +172,20 @@
                     [alt]="companyData.logo?.name?.substring(0, 1)"
                     class="company-logo-img"
                 />
-                <div
-                    *ngIf="!companyData.logo"
-                    [ngStyle]="{
-                        'font-size': changeFont ? '22px' : '48px',
-                        'margin-top': changeFont ? '60px' : '0px'
-                    }"
-                    class="no-company-logo"
-                >
-                    {{ companyData?.name }}
-                </div>
+
+                <ng-container *ngIf="!companyData.logo">
+                    <div #logoBox class="no-company-logo-holder">
+                        <div
+                            #logoText
+                            class="no-company-logo d-flex align-items-center {{
+                                fontSizeLogo
+                            }}"
+                        >
+                            {{ companyData?.name }}
+                        </div>
+                    </div>
+                </ng-container>
+
                 <div class="basic-header-logo-top">
                     <div class="basic-logo-text">
                         This logo will be used on invoices
@@ -192,6 +196,7 @@
                     ></svg-icon>
                 </div>
             </div>
+
             <!-- Middle -->
             <div class="basic-middle">
                 <div class="basic-data first-element-company">
@@ -212,7 +217,7 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="companyData?.phone"
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
@@ -223,7 +228,7 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="companyData?.email"
                         [textColor]="'#2f2f2f'"
                     >
@@ -235,7 +240,7 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_fax.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="companyData?.fax"
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
@@ -245,7 +250,11 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_web.svg"
                     ></svg-icon>
-                    <p class="basic-data-value">{{ companyData?.webUrl }}</p>
+                    <app-ta-copy
+                        [copyValue]="companyData?.webUrl"
+                        [textColor]="'#6c6c6c'"
+                    >
+                    </app-ta-copy>
                 </div>
             </div>
             <div
@@ -423,7 +432,7 @@
                     <span class="body-value-department">{{
                         department.department.name
                     }}</span>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="department?.phone"
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
@@ -431,9 +440,10 @@
                     <span class="body-value">{{
                         department.extensionPhone
                     }}</span>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="department?.email"
                         [textColor]="'#2f2f2f'"
+                        [maxWidth]="'164px'"
                     ></app-ta-copy>
                 </div>
             </app-ta-custom-card>
@@ -466,10 +476,11 @@
                     </div>
                     <div class="additional-template-item">
                         <p class="additional-template-value-name">Routing</p>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="bank?.routing"
                             [textColor]="'#2f2f2f'"
-                        > </app-ta-copy>
+                        >
+                        </app-ta-copy>
                     </div>
                     <div class="additional-template-item">
                         <p class="additional-template-value-name">Account</p>
