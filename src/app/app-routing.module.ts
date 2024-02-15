@@ -52,6 +52,7 @@ import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './core/components/routing/state/routing-state/routing-state.resolver';
 import { TelematicResolver } from './core/components/telematic/state/telematic-state.resolver';
 import { DashboardResolver } from './core/components/dashboard/state/resolvers/dashboard.resolver';
+import { CompanySettingsGuard } from './core/guards/company-settings.guard';
 
 const routes: Routes = [
     /* WEBSITE */
@@ -109,7 +110,7 @@ const routes: Routes = [
                 (m) => m.DashboardModule
             ),
         resolve: { dashboard: DashboardResolver },
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
     },
     {
         path: 'under-construction',
@@ -121,7 +122,7 @@ const routes: Routes = [
             import('./core/components/dispatch/dispatch.module').then(
                 (m) => m.DispatchModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: { dispatcher: DispatcherResolverService },
     },
     {
@@ -138,7 +139,7 @@ const routes: Routes = [
             import('./core/components/load/load.module').then(
                 (m) => m.LoadModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             loadTemplate: LoadTemplateResolver,
             loadPanding: LoadPandingResolver,
@@ -152,7 +153,7 @@ const routes: Routes = [
             import('./core/components/driver/driver.module').then(
                 (m) => m.DriverModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             driverActive: DriverActiveResolver,
             driverInactive: DriverInactiveResolver,
@@ -165,7 +166,7 @@ const routes: Routes = [
             import('./core/components/truck/truck.module').then(
                 (m) => m.TruckModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             truckActive: TruckActiveResolver,
             truckInactive: TruckInactiveResolver,
@@ -177,7 +178,7 @@ const routes: Routes = [
             import('./core/components/trailer/trailer.module').then(
                 (m) => m.TrailerModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             trailerActive: TrailerActiveResolver,
             trailerInactive: TrailerInactiveResolver,
@@ -189,7 +190,7 @@ const routes: Routes = [
             import('./core/components/customer/customer.module').then(
                 (m) => m.CustomerModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: { broker: BrokerResolver, shipper: ShipperResolver },
     },
     {
@@ -198,7 +199,7 @@ const routes: Routes = [
             import('./core/components/repair/repair.module').then(
                 (m) => m.RepairModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             repairTruck: RepairTruckResolver,
             repairTrailer: RepairTrailerResolver,
@@ -211,7 +212,7 @@ const routes: Routes = [
             import(
                 './core/components/pm-truck-trailer/pm-truck-trailer.module'
             ).then((m) => m.PmTruckTrailerModule),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             pmTrailer: pmTrailerResolver,
             pmTruck: pmTruckResolver,
@@ -223,7 +224,7 @@ const routes: Routes = [
             import('./core/components/fuel/fuel.module').then(
                 (m) => m.FuelModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             fuel: FuelResolver,
         },
@@ -234,7 +235,7 @@ const routes: Routes = [
             import('./core/components/owner/owner.module').then(
                 (m) => m.OwnerModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             ownerActive: OwnerActiveResolver,
             ownerInactive: OwnerInactiveResolver,
@@ -243,7 +244,7 @@ const routes: Routes = [
     {
         path: 'list/rentor',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Rentor' },
     },
     {
@@ -252,7 +253,7 @@ const routes: Routes = [
             import('./core/components/account/account.module').then(
                 (m) => m.AccountModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             account: AccountResolver,
         },
@@ -263,7 +264,7 @@ const routes: Routes = [
             import('./core/components/contacts/contacts.module').then(
                 (m) => m.ContactsModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             contact: ContactResolver,
         },
@@ -274,7 +275,7 @@ const routes: Routes = [
             import('./core/components/routing/routing.module').then(
                 (m) => m.RoutingModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             routing: RoutingResolver,
         },
@@ -310,7 +311,7 @@ const routes: Routes = [
             import('./core/components/telematic/telematic.module').then(
                 (m) => m.TelematicModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             routing: TelematicResolver,
         },
@@ -321,7 +322,7 @@ const routes: Routes = [
             import('./core/components/calendar/calendar.module').then(
                 (m) => m.CalendarModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
     },
     {
         path: 'tools/miles',
@@ -329,37 +330,37 @@ const routes: Routes = [
             import('./core/components/miles/miles.module').then(
                 (m) => m.MilesModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: { miles: MilesResolverService },
     },
     {
         path: 'tools/1099',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: '1099' },
     },
     {
         path: 'tools/2290',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: '2290' },
     },
     {
         path: 'tools/factoring',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Factoring' },
     },
     {
         path: 'tools/fax',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Fax' },
     },
     {
         path: 'tools/sms',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Sms' },
     },
     {
@@ -368,7 +369,7 @@ const routes: Routes = [
             import('./core/components/safety/violation/violation.module').then(
                 (m) => m.ViolationModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             roadsideActive: RoadsideActiveResolver,
             roadsideInactive: RoadsideInactiveResolver,
@@ -380,7 +381,7 @@ const routes: Routes = [
             import('./core/components/safety/accident/accident.module').then(
                 (m) => m.AccidentModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             accidentActive: AccidentActiveResolver,
             accidentInactive: AccidentInactiveResolver,
@@ -390,25 +391,25 @@ const routes: Routes = [
     {
         path: 'safety/log',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Log' },
     },
     {
         path: 'safety/scheduled-insurance',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Scheduled Insurance' },
     },
     {
         path: 'safety/mvr',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Mvr' },
     },
     {
         path: 'safety/test',
         component: UnderConstructionComponent,
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Test' },
     },
     {
@@ -417,7 +418,7 @@ const routes: Routes = [
             import('./core/components/to-do/to-do.module').then(
                 (m) => m.ToDoModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: { todo: TodoResolverService },
     },
     // ------- Applicant Section
@@ -533,7 +534,7 @@ const routes: Routes = [
             import('./core/components/accounting/accounting.module').then(
                 (m) => m.AccountingModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
     },
     {
         path: 'accounting',
@@ -541,7 +542,7 @@ const routes: Routes = [
             import('./core/components/accounting/accounting.module').then(
                 (m) => m.AccountingModule
             ),
-        canActivate: [AuthGuard],
+        canActivate: [CompanySettingsGuard, AuthGuard],
     },
     {
         path: 'accounting/ifta',

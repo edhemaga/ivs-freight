@@ -27,6 +27,7 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { LogoSliderPipe } from './logoSlider.pipe';
 
 @Component({
     selector: 'app-ta-logo-change',
@@ -46,6 +47,9 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         AppTooltipComponent,
         TaUploadDropzoneComponent,
         TaNgxSliderComponent,
+
+        // pipes
+        LogoSliderPipe,
     ],
 })
 export class TaLogoChangeComponent

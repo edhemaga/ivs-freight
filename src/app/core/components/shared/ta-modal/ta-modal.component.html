@@ -83,6 +83,40 @@
                         </div>
                     </ng-container>
 
+                    <!-- Stepper -->
+
+                    <ng-container *ngIf="isStepper">
+                        <div
+                            class="d-flex align-items-center stepper-container"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                STEP
+                                {{
+                                    stepperCounter === 1
+                                        ? '2'
+                                        : stepperCounter === 2
+                                        ? '3'
+                                        : '1'
+                                }}
+                                OF 3
+                            </p>
+
+                            <div class="stepper">
+                                <div
+                                    class="stepper-inner"
+                                    [ngStyle]="{
+                                        width:
+                                            stepperCounter === 1
+                                                ? '66.66%'
+                                                : stepperCounter === 2
+                                                ? '100%'
+                                                : '33%'
+                                    }"
+                                ></div>
+                            </div>
+                        </div>
+                    </ng-container>
+
                     <!-- Header close -->
 
                     <ng-container
@@ -120,12 +154,6 @@
                 *ngIf="!disableFooter && !confirmationData"
                 class="modal-footer d-flex"
                 cdkDragHandle
-                [ngStyle]="
-                    editData?.type?.includes('edit') ||
-                    loadModalTemplate ||
-                    mapSettingsModal ||
-                    mapRouteModal
-                "
                 [ngClass]="{
                     'mutliple-buttons': editData?.type?.includes('edit'),
                     'load-template': loadModalTemplate,
@@ -363,9 +391,56 @@
                         </div>
                     </button>
 
+                    <!-- Stepper -->
+
+                    <ng-container *ngIf="isStepper && stepperCounter">
+                        <button
+                            (click)="onAction('stepper-back')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-stepper-back-btn"
+                            type="button"
+                        >
+                            Back
+                        </button>
+                    </ng-container>
+
+                    <ng-container *ngIf="isStepper && stepperCounter !== 2">
+                        <button
+                            (click)="onAction('stepper-next')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            [ngClass]="{ valid: isModalValid }"
+                            type="button"
+                        >
+                            Next
+                        </button>
+                    </ng-container>
+
+                    <ng-container *ngIf="isStepper && stepperCounter === 2">
+                        <button
+                            (click)="onAction('stepper-save')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            [ngClass]="{ valid: isModalValid }"
+                            type="button"
+                        >
+                            Finish
+
+                            <ng-container *ngIf="saveSpinnerVisibility">
+                                <div class="modal-spinner">
+                                    <app-ta-spinner
+                                        [size]="'small'"
+                                        [color]="'white'"
+                                    ></app-ta-spinner>
+                                </div>
+                            </ng-container>
+                        </button>
+                    </ng-container>
+
                     <!-- Save button -->
 
-                    <ng-container *ngIf="!mapSettingsModal && !mapRouteModal">
+                    <ng-container
+                        *ngIf="
+                            !mapSettingsModal && !mapRouteModal && !isStepper
+                        "
+                    >
                         <button
                             (click)="onAction('save')"
                             class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"

@@ -1,3 +1,27 @@
+@import 'src/theme/variables';
+
+.company-part {
+    padding: 4px;
+    border-top: 1px solid $ta-gray-01;
+
+    p {
+        font-size: 14px;
+        line-height: 18px;
+        color: $ta-black;
+        margin-bottom: 22px !important;
+
+        &::-moz-selection {
+            color: $ta-black;
+            background-color: rgb(66, 66, 66, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background-color: rgb(66, 66, 66, 0.2);
+        }
+    }
+}
+
 .use-truck-assist-header {
     font-size: 14px;
     font-weight: 500;

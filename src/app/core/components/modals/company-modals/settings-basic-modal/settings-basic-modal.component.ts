@@ -1,8 +1,51 @@
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// services
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../services/form/form.service';
+
+// components
+import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaLogoChangeComponent } from '../../../shared/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../../shared/ta-ngx-slider/ta-ngx-slider.component';
+
+// animations
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+
+// utils
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertThousanSepInNumber,
+    convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
+
+// validations
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -29,55 +72,23 @@ import {
     tollValidation,
     urlValidation,
     usdotValidation,
+    einNumberRegex,
+    phoneFaxRegex,
+    startingValidation,
+    cvcValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-    UntypedFormArray,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
-} from '@angular/forms';
+
+// models
 import {
     AddressEntity,
     CompanyModalResponse,
     CreateDivisionCompanyCommand,
     CreateResponse,
-    SignInResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
+    CompanyResponse,
 } from 'appcoretruckassist';
-import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { Options } from '@angular-slider/ngx-slider';
-import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
-import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import {
-    einNumberRegex,
-    phoneFaxRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
-import { convertNumberInThousandSep } from '../../../../utils/methods.calculations';
-import { FormService } from '../../../../services/form/form.service';
-import { CompanyResponse } from '../../../../../../../appcoretruckassist/model/companyResponse';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaLogoChangeComponent } from '../../../shared/ta-logo-change/ta-logo-change.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
-import { TaNgxSliderComponent } from '../../../shared/ta-ngx-slider/ta-ngx-slider.component';
-import {
-    startingValidation,
-    cvcValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+import { CroppieOptions } from 'croppie';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -87,13 +98,13 @@ import {
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         TaInputComponent,
         TaInputDropdownComponent,
         TaModalComponent,
@@ -108,6 +119,10 @@ import {
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
+
+    private destroy$ = new Subject<void>();
+
+    public isSetupCompany: boolean = false;
 
     public companyForm: UntypedFormGroup;
 
@@ -268,7 +283,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedFleetType: string = null;
 
     // Logo Actions
-    public croppieOptions: Croppie.CroppieOptions = {
+    public croppieOptions: CroppieOptions = {
         enableExif: true,
         viewport: {
             width: 616,
@@ -287,8 +302,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
-    private destroy$ = new Subject<void>();
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -300,11 +313,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getModalDropdowns();
+
         this.checkForCompany();
     }
 
     private checkForCompany() {
         this.createForm();
+
         if (['new-division', 'edit-division'].includes(this.editData.type)) {
             this.createDivisionForm();
 
@@ -334,7 +349,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData?.type === 'edit-company-first-login') {
+            this.isSetupCompany = true;
             this.disableCardAnimation = true;
+
             this.settingsCompanyService
                 .getCompany()
                 .pipe(takeUntil(this.destroy$))
@@ -342,14 +359,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     next: (data: CompanyResponse) => {
                         this.editCompany(data);
                         this.editData.data = data;
-                        const loggedUser: SignInResponse = JSON.parse(
-                            localStorage.getItem('user')
-                        );
-                        loggedUser.areSettingsUpdated = true;
-                        localStorage.setItem(
-                            'user',
-                            JSON.stringify(loggedUser)
-                        );
+
+                        console.log('this.editData.data', this.editData.data);
                     },
                     error: () => {},
                 });
@@ -518,17 +529,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case 'close':
                 break;
-            }
-            case 'save': {
+
+            case 'save':
+            case 'stepper-save':
                 // If Form not valid
                 if (this.companyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.companyForm);
                     return;
                 }
 
-                if (this.editData.type.includes('edit-company') || this.editData.type.includes('payroll-tab')) {
+                if (
+                    this.editData.type.includes('edit-company') ||
+                    this.editData.type.includes('payroll-tab')
+                ) {
                     this.updateCompany();
                     this.modalService.setModalSpinner({
                         action: null,
@@ -554,8 +569,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-            }
-            case 'delete': {
+
+            case 'delete':
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.id);
                     this.modalService.setModalSpinner({
@@ -565,10 +580,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+
+            case 'stepper-next':
+                this.selectedTab++;
+
                 break;
-            }
+            case 'stepper-back':
+                this.selectedTab--;
+
+                break;
+            default:
+                break;
         }
     }
 
