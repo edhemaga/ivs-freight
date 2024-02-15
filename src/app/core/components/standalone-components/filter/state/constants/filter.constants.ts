@@ -470,7 +470,7 @@ export class DirectiveConstants {
         },
         {
             id: 5,
-            name: 'Everyone on time safelyaaaasdasd asdsad asdadaaa',
+            name: 'Everyone on time safely',
         },
         {
             id: 6,

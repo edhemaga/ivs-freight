@@ -35,9 +35,9 @@ import { SETINGS_ENUMS } from '../utils/enums/settings.enum';
 export class SettingsGeneralComponent
     implements OnInit, OnDestroy, OnChanges, AfterViewInit
 {
-    @ViewChild('logoText', { static: false }) logoText: ElementRef;
+    @ViewChild('logoText') logoText: ElementRef;
 
-    @ViewChild('logoBox', { static: false }) logoBox: ElementRef;
+    @ViewChild('logoBox') logoBox: ElementRef;
 
     @Input() public optionsCompany: any[] = [];
     @Input() public companyData: any;
@@ -57,7 +57,7 @@ export class SettingsGeneralComponent
     public selectedDropdown: boolean = false;
     public currentCompanyIndex;
 
-    public fontSizeLogo = SETINGS_ENUMS.SIXTY;
+    public fontSizeLogo: string = '';
 
     constructor(
         private settingsCompanyService: SettingsCompanyService,
@@ -71,19 +71,28 @@ export class SettingsGeneralComponent
         } else {
             this.companyDivision = false;
         }
+
         if (changes?.companyData?.currentValue?.divisions?.length > 1) {
             this.hasArrow = true;
         }
+
         if (
             changes?.companyData?.currentValue !==
             changes?.companyData?.previousValue
         ) {
             this.companyData = changes?.companyData?.currentValue;
         }
+
         if (this.companyData?.name?.length > 13) {
             this.changeFont = true;
         } else {
             this.changeFont = false;
+        }
+
+        if (!changes?.companyData?.currentValue?.logo) {
+            setTimeout(() => {
+                this?.changeFontSizeLogo();
+            }, 0);
         }
     }
 
@@ -119,49 +128,7 @@ export class SettingsGeneralComponent
     }
 
     ngAfterViewInit(): void {
-        this.changeFontSizeLogo();
-    }
-
-    public changeFontSizeLogo(): void {
-        if (this.logoText) {
-            const element = this.logoText.nativeElement;
-
-            element.style.fontSize = SETINGS_ENUMS.SIXTY;
-            element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
-            element.style.lineHeight = SETINGS_ENUMS.SIXTY;
-
-            if (element.offsetWidth > this.logoBox.nativeElement.offsetWidth) {
-                element.style.fontSize = SETINGS_ENUMS.FOURTY_EIGHT;
-                element.style.lineHeight = SETINGS_ENUMS.FOURTY_EIGHT;
-                element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
-
-                if (
-                    element.offsetWidth > this.logoBox.nativeElement.offsetWidth
-                ) {
-                    element.style.fontSize = SETINGS_ENUMS.THIRTY_TWO;
-                    element.style.lineHeight = SETINGS_ENUMS.THIRTY_TWO;
-                    element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
-
-                    if (
-                        element.offsetWidth >
-                        this.logoBox.nativeElement.offsetWidth
-                    ) {
-                        element.style.fontSize = SETINGS_ENUMS.TWENTY_THREE;
-                        element.style.lineHeight = SETINGS_ENUMS.TWENTY_THREE;
-                        element.style.whiteSpace = SETINGS_ENUMS.NOWRRAP;
-
-                        if (
-                            element.offsetWidth >
-                            this.logoBox.nativeElement.offsetWidth
-                        ) {
-                            element.style.fontSize = SETINGS_ENUMS.TWENTY;
-                            element.style.lineHeight = SETINGS_ENUMS.TWENTY;
-                            element.style.whiteSpace = SETINGS_ENUMS.PRE_LINE;
-                        }
-                    }
-                }
-            }
-        }
+        this?.changeFontSizeLogo();
     }
 
     public timeZoneFormat(mod) {
@@ -232,6 +199,24 @@ export class SettingsGeneralComponent
             default: {
                 break;
             }
+        }
+    }
+
+    public changeFontSizeLogo(): void {
+        const element = this?.logoText?.nativeElement;
+        const textContent = element?.innerText;
+        const numberOfLettersAndSpaces = textContent?.length;
+
+        if (numberOfLettersAndSpaces <= 12) {
+            this.fontSizeLogo = SETINGS_ENUMS.SIXTY;
+        } else if (numberOfLettersAndSpaces <= 16) {
+            this.fontSizeLogo = SETINGS_ENUMS.FOURTY_EIGHT;
+        } else if (numberOfLettersAndSpaces <= 25) {
+            this.fontSizeLogo = SETINGS_ENUMS.THIRTY_TWO;
+        } else if (numberOfLettersAndSpaces <= 35) {
+            this.fontSizeLogo = SETINGS_ENUMS.TWENTY_THREE;
+        } else {
+            this.fontSizeLogo = SETINGS_ENUMS.TWENTY;
         }
     }
 

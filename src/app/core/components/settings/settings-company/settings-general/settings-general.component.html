@@ -165,7 +165,7 @@
                     </span>
                 </div>
             </div>
-            <div class="basic-header" #logoBox>
+            <div class="basic-header">
                 <img
                     *ngIf="companyData.logo"
                     [src]="imageBase64Service.sanitizer(companyData.logo)"
@@ -174,12 +174,15 @@
                 />
 
                 <ng-container *ngIf="!companyData.logo">
-                    <div
-                        #logoText
-                        class="no-company-logo d-flex align-items-center"
-                        [style.font-size]="fontSizeLogo"
-                    >
-                        {{ companyData?.name }}
+                    <div #logoBox class="no-company-logo-holder">
+                        <div
+                            #logoText
+                            class="no-company-logo d-flex align-items-center {{
+                                fontSizeLogo
+                            }}"
+                        >
+                            {{ companyData?.name }}
+                        </div>
                     </div>
                 </ng-container>
 
@@ -247,7 +250,11 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_web.svg"
                     ></svg-icon>
-                    <p class="basic-data-value">{{ companyData?.webUrl }}</p>
+                    <app-ta-copy
+                        [copyValue]="companyData?.webUrl"
+                        [textColor]="'#6c6c6c'"
+                    >
+                    </app-ta-copy>
                 </div>
             </div>
             <div
@@ -436,6 +443,7 @@
                     <app-ta-copy
                         [copyValue]="department?.email"
                         [textColor]="'#2f2f2f'"
+                        [maxWidth]="'164px'"
                     ></app-ta-copy>
                 </div>
             </app-ta-custom-card>
