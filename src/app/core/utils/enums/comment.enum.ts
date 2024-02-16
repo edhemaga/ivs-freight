@@ -8,6 +8,9 @@ export enum ConstantStringCommentEnum {
     EDIT = 'Edit',
     DELETE = 'Delete',
 
+    SMALL = 'small',
+    DELETE_SMALL = 'delete',
+
     COMMENT_DATE_FORMAT = 'MM/DD/YY',
     COMMENT_TIME_FORMAT = 'hh:mm A',
 

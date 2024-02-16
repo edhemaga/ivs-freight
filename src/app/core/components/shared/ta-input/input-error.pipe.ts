@@ -18,11 +18,11 @@ export class InputErrorPipe implements PipeTransform {
             }
 
             if (value['minlength']) {
-                errorMessageValue = `${value['minlength'].requiredLength} Characters Minimum`;
+                errorMessageValue = `${value['minlength'].requiredLength} Characters Min`;
             }
 
             if (value['maxlength']) {
-                errorMessageValue = `${value['maxlength'].requiredLength} Characters Maximum`;
+                errorMessageValue = `${value['maxlength'].requiredLength} Characters Max`;
             }
 
             if (value['min']) {

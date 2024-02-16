@@ -10,7 +10,6 @@ import { SettingsInsurancepolicyComponent } from './settings-insurancepolicy/set
 import { SettingsFactoringComponent } from './settings-factoring/settings-factoring.component';
 
 // Modals
-import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -78,7 +77,6 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
         SettingsPayrollComponent,
         SettingsInsurancepolicyComponent,
         SettingsFactoringComponent,
-        SettingsNodataComponent,
     ],
 })
 export class SettingsCompanyModule {}

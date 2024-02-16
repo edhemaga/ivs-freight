@@ -81,6 +81,7 @@
                 contenteditable="true"
                 spellcheck="false"
                 id="main_editor"
+                (paste)="onPaste($event)"
             ></div>
             <div class="container_separate" *ngIf="isExpanded">
                 <div
