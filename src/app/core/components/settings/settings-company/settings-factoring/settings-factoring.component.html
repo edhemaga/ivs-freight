@@ -112,6 +112,26 @@
                     "
                 ></div>
             </app-ta-custom-card>
+            <div class="divider"></div>
+            <div class="note-details-holder">
+                <div class="note-item">
+                    <app-ta-input-note
+                        [formControl]="factoringNote"
+                        [isVisibleDivider]="false"
+                        [isVisibleNote]="true"
+                        [isVisibleArrow]="true"
+                        [minRows]="1"
+                        [placeholder]="'Write something.'"
+                        [customClass]="'note-small'"
+                        [note]="factoringData?.factoringCompany?.note"
+                        [blankNote]="factoringData?.factoringCompany?.note ? true : false"
+                        [noteType]="'details-card'"
+                        [entityId]="factoringData.id"
+                        [entityType]="'FactoringCompany'"
+                    >
+                    </app-ta-input-note>
+                </div>
+            </div>
         </app-ta-re-card>
     </div>
 </div>
