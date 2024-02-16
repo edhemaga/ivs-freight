@@ -36,11 +36,14 @@ export class AppTooltipComponent implements AfterViewInit {
     @Input() tooltipColor: string = '#fff';
     @Input() tooltipTextAlign: string = 'left';
     @Input() margin?: string = '';
+    @Input() customClass?: string = '';
+
     @ViewChild(TemplateRef, { static: false }) template: TemplateRef<void>;
 
     ngAfterViewInit() {
         this.bindTemplete();
     }
+
     bindTemplete() {
         if (this.ngbTooltop) {
             this.ngbTooltop.tooltipClass = 'app-main-tooltip';

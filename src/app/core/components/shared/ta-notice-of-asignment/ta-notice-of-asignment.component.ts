@@ -26,6 +26,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
+// helpers
+import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+
 @Component({
     selector: 'app-ta-notice-of-asignment',
     templateUrl: './ta-notice-of-asignment.component.html',
@@ -224,8 +227,7 @@ export class TaNoticeOfAsignmentComponent
                     this.alignOptions.map((align) => {
                         if (align.name != action) {
                             align.value = false;
-                        }
-                        else {
+                        } else {
                             align.value = !align.value;
                             checkAlign = align.value;
                         }
@@ -319,7 +321,7 @@ export class TaNoticeOfAsignmentComponent
                     : this.fontSizeList[2];
         }
 
-        this.alignOptions.map((align)=>{
+        this.alignOptions.map((align) => {
             align.value = document.queryCommandState(align.name);
         });
 
@@ -366,5 +368,9 @@ export class TaNoticeOfAsignmentComponent
         setTimeout(() => {
             this.checkActiveItems();
         }, 100);
+    }
+
+    public onPaste(event: ClipboardEvent): void {
+        PasteHelper.onPaste(event);
     }
 }

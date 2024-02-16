@@ -38,6 +38,8 @@ import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
 // models
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
+// helpers
+import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
 @Component({
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',
@@ -61,7 +63,8 @@ import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 })
 export class TaInputNoteComponent implements ControlValueAccessor {
     @ViewChild('main_editor', { static: true }) public noteRef: ElementRef;
-    @ViewChild('noteContainer', { static: true }) public noteContainer: TaNoteContainerComponent;
+    @ViewChild('noteContainer', { static: true })
+    public noteContainer: TaNoteContainerComponent;
 
     @Input() set note(value: string) {
         if (
@@ -240,5 +243,9 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         };
 
         this.noteService.updateNote(updateValue).subscribe(() => {});
+    }
+
+    public onPaste(event: ClipboardEvent): void {
+        PasteHelper.onPaste(event);
     }
 }
