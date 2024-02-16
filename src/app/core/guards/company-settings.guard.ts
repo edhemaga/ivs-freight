@@ -11,8 +11,9 @@ export class CompanySettingsGuard implements CanActivate {
     canActivate() {
         const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
-        if (!user.areSettingsUpdated) {
+        if (!user?.areSettingsUpdated) {
             this.router.navigate(['/company/settings']);
+
             return false;
         }
 

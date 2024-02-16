@@ -1,10 +1,9 @@
+@import 'src/theme/variables';
+
 .custom-checkbox-card {
     display: block;
 
     .checkbox-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         padding: 7px 4px;
         line-height: 18px;
 
@@ -26,6 +25,25 @@
                     }
                 }
             }
+        }
+
+        // ACH
+        .use-truck-assist-price {
+            outline: none;
+            border: none;
+            width: 65px;
+            height: 22px;
+            border-radius: 2px;
+            font-size: 11px;
+            color: $ta-blue-14;
+            line-height: 14px;
+            background: $bw2;
+            margin-right: 6px;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         // For two or more checkboxes

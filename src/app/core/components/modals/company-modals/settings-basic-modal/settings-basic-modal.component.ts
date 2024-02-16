@@ -79,7 +79,7 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
-import { SettingsModalConstantS } from '../utils/constants/settings-modal.constants';
+import { SettingsModalConstants } from '../utils/constants/settings-modal.constants';
 
 // models
 import {
@@ -126,17 +126,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public isFormDirty: boolean;
+
     public isSetupCompany: boolean = false;
 
     public companyForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
 
-    public tabs: Tabs[] = SettingsModalConstantS.TABS;
-    public tabsDivision: Tabs[] = SettingsModalConstantS.TABS_DIVISION;
+    public tabs: Tabs[] = SettingsModalConstants.TABS;
+    public tabsDivision: Tabs[] = SettingsModalConstants.TABS_DIVISION;
     public prefferedLoadBtns: Tabs[] =
-        SettingsModalConstantS.PREFERED_LOAD_BTNS;
-    public fleetTypeBtns: Tabs[] = SettingsModalConstantS.FLEET_TYPE_BTNS;
+        SettingsModalConstants.PREFERED_LOAD_BTNS;
+    public fleetTypeBtns: Tabs[] = SettingsModalConstants.FLEET_TYPE_BTNS;
 
     public driverCommissionOptions: Options = {
         floor: 5,
@@ -202,11 +204,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedBankAccountFormArray: any[] = [];
     public isBankSelectedFormArray: boolean[] = [];
 
-    // Payroll tab
-    public truckAssistText: string = "Use Truck Assist's ACH Payout";
-
-    public isFormDirty: boolean;
-
     // Dropdowns
     public banks: any[] = [];
     public payPeriods: any[] = [];
@@ -267,14 +264,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.getModalDropdowns();
+        this.createForm();
 
         this.checkForCompany();
+
+        this.getModalDropdowns();
     }
 
     private checkForCompany() {
-        this.createForm();
-
         if (['new-division', 'edit-division'].includes(this.editData.type)) {
             this.createDivisionForm();
 
@@ -314,8 +311,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     next: (data: CompanyResponse) => {
                         this.editCompany(data);
                         this.editData.data = data;
-
-                        console.log('this.editData.data', this.editData.data);
                     },
                     error: () => {},
                 });
@@ -382,10 +377,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             prefix: [null, prefixValidation],
             starting: [null, [Validators.required, ...startingValidation]],
             suffix: [null, suffixValidation],
-            autoInvoicing: [false],
-            fleetType: ['Solo'],
-            preferredLoadType: ['FTL'],
             factorByDefault: [false],
+            autoInvoicing: [false],
+            preferredLoadType: ['FTL'],
+            fleetType: ['Solo'],
+            hazmat: [false],
             customerPayTerm: [
                 null,
                 [daysValidRegex, ...customerPayTermValidation],
@@ -400,8 +396,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 12,
                 [Validators.required, monthsValidRegex],
             ],
+            shareDriverMiles: [true],
+            shareDriverComission: [true],
+            shareDriverFlatRate: [false],
             //------------------ Payroll Tab
-            useACHPayout: [false],
+            useACHPayout: [true],
             // Driver & Owner
             driveOwnerPayPeriod: ['Weekly', Validators.required],
             driverOwnerEndingIn: ['Monday', Validators.required],
@@ -756,93 +755,154 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'timezone': {
+            case 'timezone':
                 this.selectedTimeZone = event;
+
                 break;
-            }
-            case 'currency': {
+            case 'currency':
                 this.selectedCurrency = event;
+
                 break;
-            }
-            case 'driver-pay-period': {
+            case 'driver-pay-period':
                 this.selectedDriverPayPeriod = event;
+
+                this.selectedDriverEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'driver-ending-in': {
+            case 'driver-ending-in':
                 this.selectedDriverEndingIn = event;
+
                 break;
-            }
-            case 'accounting-pay-period': {
+            case 'accounting-pay-period':
                 this.selectedAccountingPayPeriod = event;
-            }
-            case 'accounting-ending-in': {
+
+                this.selectedAccountingEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
+                break;
+            case 'accounting-ending-in':
                 this.selectedAccountingEndingIn = event;
+
                 break;
-            }
-            case 'companyOwner-pay-period': {
+            case 'companyOwner-pay-period':
                 this.selectedCompanyPayPeriod = event;
+
+                this.selectedCompanyEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'companyOwner-ending-in': {
+            case 'companyOwner-ending-in':
                 this.selectedCompanyEndingIn = event;
+
                 break;
-            }
-            case 'dispatch-pay-period': {
+            case 'dispatch-pay-period':
                 this.selectedDispatchPayPeriod = event;
+
+                this.selectedDispatchEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'dispatch-ending-in': {
+            case 'dispatch-ending-in':
                 this.selectedDispatchEndingIn = event;
+
                 break;
-            }
-            case 'manager-pay-period': {
+            case 'manager-pay-period':
                 this.selectedManagerPayPeriod = event;
+
+                this.selectedManagerEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'manager-ending-in': {
+            case 'manager-ending-in':
                 this.selectedManagerEndingIn = event;
+
                 break;
-            }
-            case 'recruiting-pay-period': {
+            case 'recruiting-pay-period':
                 this.selectedRecPayPeriod = event;
+
+                this.selectedRecEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'recruiting-ending-in': {
+            case 'recruiting-ending-in':
                 this.selectedRecEndingIn = event;
+
                 break;
-            }
-            case 'repair-pay-period': {
+            case 'repair-pay-period':
                 this.selectedRepairPayPeriod = event;
+
+                this.selectedRepairEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'repair-ending-in': {
+            case 'repair-ending-in':
                 this.selectedRepairEndingIn = event;
+
                 break;
-            }
-            case 'safety-pay-period': {
+            case 'safety-pay-period':
                 this.selectedSafetyPayPeriod = event;
+
+                this.selectedSafetyEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'safety-ending-in': {
+            case 'safety-ending-in':
                 this.selectedSafetyEndingIn = event;
+
                 break;
-            }
-            case 'other-pay-period': {
+            case 'other-pay-period':
                 this.selectedOtherPayPeriod = event;
+
+                this.selectedOtherEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'other-ending-in': {
+            case 'other-ending-in':
                 this.selectedOtherEndingIn = event;
+
                 break;
-            }
-            case 'company-data': {
+            case 'company-data':
                 this.selectedCompanyData = event;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
+    }
+
+    private setEndingInInputOptions(payPeriod: string): {
+        id: number;
+        name: string;
+    } {
+        let selectedEndingIn: { id: number; name: string };
+
+        if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
+            if (payPeriod === 'Semi Monthly') {
+                selectedEndingIn = {
+                    id: null,
+                    name: '15th / Last day',
+                };
+            } else {
+                selectedEndingIn = {
+                    id: null,
+                    name: 'Last Day',
+                };
+            }
+        } else {
+            selectedEndingIn = this.endingIns[0];
+        }
+
+        return selectedEndingIn;
     }
 
     private validateMiles() {
@@ -947,6 +1007,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onSaveLogoAction(event: any) {
+        if (event) {
+            this.displayDeleteAction = true;
+        }
+    }
+
     public onPrefferedLoadCheck(event: any) {
         this.prefferedLoadBtns = this.prefferedLoadBtns.map((item) => {
             if (item.name === event.name) {
@@ -1038,8 +1104,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                     this.selectedDriverPayPeriod = res.payPeriods[0];
                     this.selectedDriverEndingIn = res.endingIns[0];
-                    this.selectedAccountingPayPeriod = res.payPeriods[0];
-                    this.selectedAccountingEndingIn = res.endingIns[0];
+                    /*                 this.selectedAccountingPayPeriod = res.payPeriods[0];
+                    this.selectedAccountingEndingIn = res.endingIns[0]; */
                     this.selectedCompanyPayPeriod = res.payPeriods[0];
                     this.selectedCompanyEndingIn = res.endingIns[0];
                     this.selectedDispatchPayPeriod = res.payPeriods[0];
@@ -1736,6 +1802,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompany(data: any) {
+        console.log('data', data);
         this.companyForm.patchValue({
             // -------------------- Basic Tab
             name: data.name,
@@ -1765,7 +1832,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             bankAccounts: [],
             bankCards: [],
             prefix: data.additionalInfo.prefix,
-            starting: data.additionalInfo.starting,
+            starting: 100,
             suffix: data.additionalInfo.sufix,
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,
@@ -1813,7 +1880,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         email: department.email,
                     })
                 );
-                this.selectedDepartmentFormArray.push(department);
+
+                this.selectedDepartmentFormArray.push(department.department);
             }
         }
 
@@ -1878,6 +1946,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                         this.selectedAccountingPayPeriod = payroll.payPeriod;
                         this.selectedAccountingEndingIn = payroll.endingIn;
+
+                        console.log(
+                            'this.selectedAccountingPayPeriod',
+                            this.selectedAccountingPayPeriod
+                        );
+                        console.log(
+                            'this.selectedAccountingEndingIn',
+                            this.selectedAccountingEndingIn
+                        );
                         break;
                     }
                     case 2: {
@@ -2169,12 +2246,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm.get('logo').setErrors(null);
 
             this.displayDeleteAction = false;
-        }
-    }
-
-    public onSaveLogoAction(event: any) {
-        if (event) {
-            this.displayDeleteAction = true;
         }
     }
 

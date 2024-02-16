@@ -1,6 +1,6 @@
 import { Tabs } from 'src/app/core/components/shared/model/modal-tabs';
 
-export class SettingsModalConstantS {
+export class SettingsModalConstants {
     static TABS: Tabs[] = [
         {
             id: 1,

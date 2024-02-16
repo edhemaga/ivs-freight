@@ -1,88 +1,57 @@
 @import 'src/theme/variables';
 
-.company-part {
-    padding: 4px;
-    border-top: 1px solid $ta-gray-01;
+.use-truck-assist-header {
+    padding-left: 6px;
 
     p {
         font-size: 14px;
         line-height: 18px;
-        color: $ta-black;
-        margin-bottom: 22px !important;
+        color: $ta-black-2;
 
         &::-moz-selection {
-            color: $ta-black;
-            background-color: rgb(66, 66, 66, 0.2);
+            color: $ta-black-2;
+            background-color: rgb(57, 57, 57, 0.2);
         }
 
         &::selection {
-            color: $ta-black;
-            background-color: rgb(66, 66, 66, 0.2);
+            color: $ta-black-2;
+            background-color: rgb(57, 57, 57, 0.2);
         }
-    }
-}
-
-.use-truck-assist-header {
-    font-size: 14px;
-    font-weight: 500;
-    color: #919191;
-    margin: 0;
-    padding-left: 6px;
-
-    &::-moz-selection {
-        color: #919191;
-        background-color: rgb(145, 145, 145, 0.2);
-    }
-
-    &::selection {
-        color: #919191;
-        background-color: rgb(145, 145, 145, 0.2);
     }
 }
 
 .use-truck-assist-text {
-    font-size: 11px;
-    font-weight: 500;
-    color: #919191;
-    margin: 0;
     padding-left: 6px;
 
-    &::-moz-selection {
-        color: #919191;
-        background-color: rgb(145, 145, 145, 0.2);
+    p {
+        font-size: 11px;
+        line-height: 14px;
+        color: $ta-black-2;
+
+        &::-moz-selection {
+            color: $ta-black-2;
+            background-color: rgb(57, 57, 57, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black-2;
+            background-color: rgb(57, 57, 57, 0.2);
+        }
     }
-
-    &::selection {
-        color: #919191;
-        background-color: rgb(145, 145, 145, 0.2);
-    }
-}
-
-.use-truck-assist-price {
-    width: 68px;
-    height: 26px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #536bc2;
-    border-radius: 2px;
-    background-color: #f3f3f3;
-    text-align: center;
-    line-height: 26px;
-    margin: 12px 6px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.custom-p-modal-container {
-    padding-left: 6px;
 }
 
 .permile-fields {
-    grid-template-columns: 42px repeat(4, 130px) !important;
+    grid-template-columns: repeat(4, 145px) !important;
 
-    &.permile-fields-same-rate {
-        grid-template-columns: 42px repeat(3, 177px) !important;
+    &-same-rate {
+        grid-template-columns: repeat(3, 197px) !important;
+    }
+
+    &-combined {
+        grid-template-columns: 41px repeat(4, 130px) !important;
+    }
+
+    &-combined-same-rate {
+        grid-template-columns: 48px repeat(3, 177px) !important;
     }
 }

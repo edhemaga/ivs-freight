@@ -458,7 +458,8 @@
                                         : 'Invite'
                                     : saveSpinnerVisibility
                                     ? 'Saving'
-                                    : editData?.type?.includes('edit')
+                                    : editData?.type?.includes('edit') ||
+                                      editData?.type?.includes('payroll')
                                     ? editData?.type?.includes('fo')
                                         ? 'Save'
                                         : 'Save Changes'
