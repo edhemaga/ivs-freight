@@ -13,10 +13,7 @@
         <div class="d-flex justify-content-between">
             <div class="user-creds d-flex">
                 <div class="user-avatar">
-                    <img
-                        [src]="imageBase64Service.sanitizer(user?.avatar)"
-                        alt=""
-                    />
+                    <img [src]="commentAvatar" alt="" />
                 </div>
 
                 <div class="user-name d-grid">

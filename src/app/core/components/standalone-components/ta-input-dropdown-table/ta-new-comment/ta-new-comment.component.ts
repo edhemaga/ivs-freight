@@ -4,10 +4,12 @@ import {
     ElementRef,
     Input,
     OnDestroy,
+    OnInit,
     ViewChild,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -44,6 +46,8 @@ export class TaNewCommentComponent implements OnDestroy {
     public placeholder: string =
         ConstantStringTableDropdownEnum.WRITE_COMMENT_PLACEHOLDER;
 
+    public commentAvatar: SafeResourceUrl;
+
     constructor(
         private loadService: LoadTService,
         private commentService: CommentsService,
@@ -56,6 +60,8 @@ export class TaNewCommentComponent implements OnDestroy {
         );
 
         this.user = user;
+
+        this.sanitazeAvatar();
     }
 
     public newComment(type: string, loadId: number): void {
@@ -130,6 +136,12 @@ export class TaNewCommentComponent implements OnDestroy {
         if (commentInputDiv.textContent.trim() === this.placeholder)
             commentInputDiv.textContent =
                 ConstantStringTableDropdownEnum.EMPTY_STRING_PLACEHOLDER;
+    }
+
+    private sanitazeAvatar(): void {
+        this.commentAvatar = this.user?.avatar
+            ? this.imageBase64Service.sanitizer(this.user?.avatar)
+            : null;
     }
 
     ngOnDestroy(): void {
