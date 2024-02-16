@@ -2,6 +2,7 @@
 <ng-template>
     <div
         class="tooltip-holder"
+        [ngClass]="customClass"
         [style]="
             'background-color: ' +
             tooltipBackground +
@@ -14,5 +15,7 @@
             ' '
         "
         [innerHTML]="mainTooltip"
-    ></div>
+    >
+        {{ customClass }}
+    </div>
 </ng-template>

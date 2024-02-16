@@ -33,6 +33,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+// helpers
+import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+
 //components
 import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -400,6 +403,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (this.entityType == 'Customer') {
             this.entityType = 'Broker';
         }
+    }
+
+    public onPaste(event: ClipboardEvent): void {
+        PasteHelper.onPaste(event);
     }
 
     public ngOnDestroy(): void {

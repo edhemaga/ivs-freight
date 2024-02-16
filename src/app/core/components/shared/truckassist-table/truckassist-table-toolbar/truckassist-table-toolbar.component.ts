@@ -625,12 +625,12 @@ export class TruckassistTableToolbarComponent
             `table-${this.tableConfigurationType}-Configuration`
         );
 
-        this.tableService
-            .sendTableConfig({
-                tableType: this.tableConfigurationType,
-                config: null,
-            })
-            .subscribe(() => {});
+        // this.tableService
+        //     .sendTableConfig({
+        //         tableType: this.tableConfigurationType,
+        //         config: null,
+        //     })
+        //     .subscribe(() => {});
 
         this.tableService.sendResetColumns(true);
     }

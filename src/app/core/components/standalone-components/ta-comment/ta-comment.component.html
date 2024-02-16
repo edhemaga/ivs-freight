@@ -109,6 +109,7 @@
                 (focus)="handleCommentChange()"
                 (input)="handleCommentChange()"
                 (blur)="handleCommentBlur()"
+                (paste)="onPaste($event)"
             ></div>
         </div>
     </div>
@@ -418,20 +419,14 @@
                 </div>
 
                 <div
-                    #textareaRefValue
-                    class="input-like"
-                    contenteditable="true"
-                ></div>
-
-                <!-- <textarea
-                    #textareaRefValue
-                    rows="4"
-                    cols="50"
-                    class="edit-textarea"
+                    #editCommentEl
+                    [contentEditable]="true"
                     spellcheck="false"
-                    (keyup)="adjustTextareaHeight($event.target)"
-                    >{{ commentCardsDataDropdown.commentContent }}</textarea
-                > -->
+                    class="edit-textarea"
+                    (paste)="onPaste($event)"
+                >
+                    {{ commentCardsDataDropdown.commentContent }}
+                </div>
             </div>
         </div>
     </ng-container>

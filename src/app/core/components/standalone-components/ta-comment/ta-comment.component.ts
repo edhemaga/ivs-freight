@@ -1,4 +1,4 @@
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
@@ -28,6 +28,8 @@ import moment from 'moment';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { LoadTService } from '../../load/state/load.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // utils
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
@@ -41,6 +43,10 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 // components
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+
+// helpers
+import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
 
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
@@ -71,8 +77,7 @@ import { Comment } from '../../shared/model/cardTableData';
 })
 export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('commentInput') public commentInput: ElementRef;
-
-    @ViewChild('textareaRefValue', { static: false }) inputDivRef: ElementRef;
+    @ViewChild('editCommentEl') editCommentEl: ElementRef;
 
     @ViewChild('customInput') customInput!: ElementRef;
 
@@ -87,6 +92,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() isEditButtonDisabled?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
+    @Output() closeDropdown = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
@@ -105,40 +111,22 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     // card comments
     public editingCardComment: boolean = false;
 
-    public newCommentText: string;
-
     constructor(
         private imageBase64Service: ImageBase64Service,
         private formatDatePipe: formatDatePipe,
         private commentsService: CommentsService,
-        private loadService: LoadTService
+        private loadService: LoadTService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
         this.sanitazeAvatar();
-        console.log(this.commentCardsDataDropdown);
         this.commentData?.commentContent && this.patchCommentData();
     }
 
     ngAfterViewInit(): void {
         if (!this.commentCardsDataDropdown) this.setCommentPlaceholder();
-    }
-
-    public adjustTextareaHeight(element: HTMLTextAreaElement): void {
-        this.newCommentText = element.value;
-
-        const lineHeight = 21;
-        element.style.height = ConstantStringCommentEnum.HEIGHT;
-
-        if (element.scrollWidth > element.offsetWidth) {
-            element.style.height =
-                lineHeight +
-                element.scrollHeight +
-                ConstantStringCommentEnum.PX;
-        } else {
-            element.style.height =
-                element.scrollHeight + ConstantStringCommentEnum.PX;
-        }
     }
 
     public transformDate(date: string): void {
@@ -150,43 +138,55 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public editComment(commentId: number): void {
-        const textareaValue = this.inputDivRef.nativeElement.value;
-
-        console.log(textareaValue);
+        const editComment = this.editCommentEl.nativeElement.textContent;
 
         const comment = {
             id: commentId,
-            commentContent: textareaValue,
+            commentContent: editComment,
         };
 
-        // this.commentsService
-        //     .updateComment(comment)
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe({
-        //         next: () => {
-        //             this.editingCardComment = false;
-        //             this.commentCardsDataDropdown.commentContent =
-        //                 textareaValue;
-        //         },
-        //         error: () => {},
-        //     });
+        this.commentsService
+            .updateComment(comment)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.editingCardComment = false;
+                    this.commentCardsDataDropdown.commentContent = editComment;
+                },
+                error: () => {},
+            });
     }
 
     public deleteComment(commentId: number): void {
+        this.closeDropdown.emit(true);
+
         const comment = {
             entityTypeId: this.commentsCardId,
             commentId: commentId,
         };
 
-        this.commentsService
-            .deleteCommentById(commentId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.loadService.removeComment(comment);
-                },
-                error: () => {},
-            });
+        this.modalService.openModal(
+            ConfirmationModalComponent,
+            {
+                size: ConstantStringCommentEnum.SMALL,
+            },
+            {
+                type: ConstantStringCommentEnum.DELETE_SMALL,
+            }
+        );
+
+        this.confirmationService.confirmationData$.subscribe((response) => {
+            if (response.type === ConstantStringCommentEnum.DELETE_SMALL)
+                this.commentsService
+                    .deleteCommentById(commentId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: () => {
+                            this.loadService.removeComment(comment);
+                        },
+                        error: () => {},
+                    });
+        });
     }
 
     public checkIfLoggedUserCommented(user: number): boolean {
@@ -349,6 +349,10 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.commentDate = this.commentData.commentDate;
 
         this.isEdited = this.commentData.isEdited;
+    }
+
+    public onPaste(event: ClipboardEvent): void {
+        PasteHelper.onPaste(event);
     }
 
     ngOnDestroy(): void {
