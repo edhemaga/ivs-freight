@@ -73,6 +73,7 @@
             (focus)="checkFocus()"
             (blur)="prepareForTextRange()"
             [innerHTML]="showNote | safeHtml"
+            (paste)="onPaste($event)"
         ></div>
 
         <!-- Spinner -->

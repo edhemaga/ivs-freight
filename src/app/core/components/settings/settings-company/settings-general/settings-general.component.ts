@@ -1,6 +1,5 @@
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import {
-    AfterViewInit,
     Component,
     ElementRef,
     EventEmitter,
@@ -32,9 +31,7 @@ import { SETINGS_ENUMS } from '../utils/enums/settings.enum';
     encapsulation: ViewEncapsulation.None,
     providers: [DetailsPageService, DetailsActiveItemPipe],
 })
-export class SettingsGeneralComponent
-    implements OnInit, OnDestroy, OnChanges, AfterViewInit
-{
+export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('logoText') logoText: ElementRef;
 
     @ViewChild('logoBox') logoBox: ElementRef;
@@ -125,10 +122,6 @@ export class SettingsGeneralComponent
             (comp) => comp.id === this.companyData.id
         );
         this.currentCompanyIndex = currentIndex;
-    }
-
-    ngAfterViewInit(): void {
-        this?.changeFontSizeLogo();
     }
 
     public timeZoneFormat(mod) {

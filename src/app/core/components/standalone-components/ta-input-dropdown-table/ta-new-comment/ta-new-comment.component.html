@@ -1,0 +1,82 @@
+<ng-container *ngIf="!openNewComment">
+    <div
+        class="add-new-comment d-flex justify-content-between align-items-center"
+        (click)="newComment('open-new-comment', commmentsData.id)"
+    >
+        <span class="new-comment ta-font-bold">NEW COMMENT</span>
+        <svg-icon [src]="'assets/svg/common/ic_plus.svg'"></svg-icon>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="openNewComment">
+    <div class="add-comment">
+        <div class="d-flex justify-content-between">
+            <div class="user-creds d-flex">
+                <div class="user-avatar">
+                    <img [src]="commentAvatar" alt="" />
+                </div>
+
+                <div class="user-name d-grid">
+                    <span class="title ta-font-semi-bold">{{
+                        user.firstName + ' ' + user.lastName
+                    }}</span>
+
+                    <span class="muted ta-font-medium">New Comment</span>
+                </div>
+            </div>
+
+            <div class="user-icons d-flex">
+                <span
+                    ngbTooltip
+                    mainTooltip="Confirm"
+                    type="button"
+                    tooltipBackground="#424242"
+                    position="top"
+                    class="confirm-tooltip d-flex align-items-center justify-content-center"
+                >
+                    <svg-icon
+                        class="confirm-icon d-flex align-items-center justify-content-center"
+                        [src]="'assets/svg/applicant/check.svg'"
+                        (click)="
+                            newComment('add-new-comment', commmentsData.id)
+                        "
+                        [svgStyle]="{
+                            'width.px': 12,
+                            'height.px': 10
+                        }"
+                    ></svg-icon>
+                </span>
+
+                <span
+                    ngbTooltip
+                    mainTooltip="Cancel"
+                    tooltipBackground="#424242"
+                    position="top"
+                    type="button"
+                    (click)="openNewComment = false"
+                    class="cancel-tooltip d-flex align-items-center justify-content-center"
+                >
+                    <svg-icon
+                        class="cancel-icon d-flex align-items-center justify-content-center"
+                        [src]="'assets/svg/applicant/invalid-review-x.svg'"
+                        [svgStyle]="{
+                            'width.px': 10,
+                            'height.px': 10
+                        }"
+                    ></svg-icon>
+                </span>
+            </div>
+        </div>
+
+        <div
+            #newCommentEl
+            [contentEditable]="true"
+            spellcheck="false"
+            class="new-textarea"
+            (focus)="handleCommentChange()"
+            (input)="handleCommentChange()"
+            (blur)="handleCommentBlur()"
+            [attr.data-text]="placeholder"
+        ></div>
+    </div>
+</ng-container>
