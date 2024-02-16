@@ -968,7 +968,9 @@
         [name]="_inputConfig.name"
         [disabled]="_inputConfig.isDisabled"
         [autocomplete]="
-            _inputConfig.autocomplete ? _inputConfig.autocomplete : 'off'
+            _inputConfig.autocomplete
+                ? _inputConfig.autocomplete
+                : 'new-password'
         "
         [pattern]="_inputConfig.pattern"
         [placeholder]="

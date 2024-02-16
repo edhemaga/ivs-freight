@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 .ta-ngx-slider,
 .custom-slider-commission {
     margin-top: 18px;
@@ -7,17 +9,17 @@
     .custom-slider-text {
         font-size: 11px;
         font-weight: 600;
-        color: #6c6c6c;
+        color: $bw6-2;
         margin-bottom: 10px !important;
 
         &::-moz-selection {
             background-color: rgb(108, 108, 108, 0.2);
-            color: #6c6c6c;
+            color: $bw6-2;
         }
 
         &::selection {
             background-color: rgb(108, 108, 108, 0.2);
-            color: #6c6c6c;
+            color: $bw6-2;
         }
     }
 
@@ -27,22 +29,22 @@
         // FULL LINE
         .ngx-slider-bar {
             height: 6px;
-            background: #f3f3f3 !important;
+            background: $ta-light-grey-4 !important;
         }
 
         // ACTIVE LINE
         .ngx-slider-selection {
-            background-color: #97a8dc !important;
+            background-color: $ta-blue-13 !important;
         }
 
         // Number
         .ngx-slider-bubble {
             cursor: pointer;
-            color: #536bc2 !important;
+            color: $ta-blue-13 !important;
             font-size: 12px !important;
             box-shadow: 0 0 4px rgb(0 0 0 / 15%) !important;
             border-radius: 2px;
-            background-color: #ffffff;
+            background-color: $white;
             font-weight: bold !important;
             position: absolute;
             top: -7.5px;
@@ -137,11 +139,11 @@
 
             .ngx-slider-bar {
                 height: 6px;
-                background: #f3f3f3 !important;
+                background: $ta-light-grey-4 !important;
             }
 
             .ngx-slider-selection {
-                background: #b7b7b7 !important;
+                background: $bw4 !important;
             }
             .ngx-slider-bubble {
                 display: none;
@@ -151,7 +153,7 @@
                 width: 18px;
                 height: 18px;
                 top: -6px !important;
-                background-color: #ffffff !important;
+                background-color: $white !important;
                 box-shadow: 0 0 4px rgb(0, 0, 0, 0.15) !important;
                 border-radius: 20px !important;
 
@@ -177,5 +179,10 @@
                 }
             }
         }
+    }
+
+    // No Margin
+    &.negative-margin {
+        margin-top: -16px !important;
     }
 }
