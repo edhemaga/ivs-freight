@@ -22,6 +22,7 @@ import { ConstantStringTableDropdownEnum } from '../../../../utils/enums/ta-inpu
 // services
 import { LoadTService } from '../../../load/state/load.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
     selector: 'app-ta-new-comment',
@@ -45,7 +46,8 @@ export class TaNewCommentComponent implements OnDestroy {
 
     constructor(
         private loadService: LoadTService,
-        private commentService: CommentsService
+        private commentService: CommentsService,
+        public imageBase64Service: ImageBase64Service
     ) {}
 
     public getUserFromLocalStorage(): void {
@@ -109,7 +111,6 @@ export class TaNewCommentComponent implements OnDestroy {
     private setCommentPlaceholder(): void {
         const commentInputDiv = this.newCommentEl
             .nativeElement as HTMLDivElement;
-
         if (!commentInputDiv.textContent.trim())
             commentInputDiv.textContent = this.placeholder;
     }

@@ -14,7 +14,7 @@
             <div class="user-creds d-flex">
                 <div class="user-avatar">
                     <img
-                        src="{{ 'data:image/jpg;base64,' + user?.avatar }}"
+                        [src]="imageBase64Service.sanitizer(user?.avatar)"
                         alt=""
                     />
                 </div>

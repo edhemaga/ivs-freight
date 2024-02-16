@@ -86,9 +86,7 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     ) {}
 
     public closeDropdownFromComment(): void {
-        if (this.tooltip) {
-            this.tooltip.close();
-        }
+        if (this.tooltip) this.tooltip.close();
     }
 
     public filterArrayComments(event: KeyboardEvent): void {

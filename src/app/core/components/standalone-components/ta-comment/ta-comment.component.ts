@@ -117,7 +117,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private commentsService: CommentsService,
         private loadService: LoadTService,
         private modalService: ModalService,
-        private confiramtionService: ConfirmationService
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -138,11 +138,11 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public editComment(commentId: number): void {
-        const editeComment = this.editCommentEl.nativeElement.textContent;
+        const editComment = this.editCommentEl.nativeElement.textContent;
 
         const comment = {
             id: commentId,
-            commentContent: editeComment,
+            commentContent: editComment,
         };
 
         this.commentsService
@@ -151,7 +151,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.editingCardComment = false;
-                    this.commentCardsDataDropdown.commentContent = editeComment;
+                    this.commentCardsDataDropdown.commentContent = editComment;
                 },
                 error: () => {},
             });
@@ -175,8 +175,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         );
 
-        this.confiramtionService.confirmationData$.subscribe((response) => {
-            if (response.type === ConstantStringCommentEnum.DELETE_SMALL) {
+        this.confirmationService.confirmationData$.subscribe((response) => {
+            if (response.type === ConstantStringCommentEnum.DELETE_SMALL)
                 this.commentsService
                     .deleteCommentById(commentId)
                     .pipe(takeUntil(this.destroy$))
@@ -186,7 +186,6 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                         },
                         error: () => {},
                     });
-            }
         });
     }
 
