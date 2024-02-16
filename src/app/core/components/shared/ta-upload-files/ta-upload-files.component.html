@@ -1,25 +1,25 @@
 <div
     class="ta-upload {{ customClassName }}"
     [ngClass]="{
-        'ta-upload-small': files?.length && size === 'small',
+        'ta-upload-small': _files?.length && size === 'small',
         'ta-upload-medium-file':
-            files?.length && files?.length < 2 && size === 'medium',
+            _files?.length && _files?.length < 2 && size === 'medium',
         'ta-upload-medium-files':
-            files?.length && files?.length > 1 && size === 'medium',
+            _files?.length && _files?.length > 1 && size === 'medium',
         'ta-upload-large-file':
-            files?.length && files?.length < 2 && size === 'large',
+            _files?.length && _files?.length < 2 && size === 'large',
         'ta-upload-large-twofiles':
-            files?.length && files?.length >= 2 && size === 'large',
+            _files?.length && _files?.length >= 2 && size === 'large',
         'ta-upload-large-threefiles':
-            files?.length && files?.length >= 3 && size === 'large',
+            _files?.length && _files?.length >= 3 && size === 'large',
         'ta-upload-review-mode': isReview,
         documents: dontUseSlider
     }"
 >
     <!-- Carousel Files -->
     <app-ta-upload-files-carousel
-        *ngIf="files?.length && !dontUseSlider"
-        [files]="files"
+        *ngIf="_files?.length && !dontUseSlider"
+        [files]="_files"
         [hasCarouselBottomTabs]="hasCarouselBottomTabs"
         [customClass]="size"
         [customDetailsPageClass]="customClassName"
@@ -29,7 +29,7 @@
     >
         <div
             class="ta-upload-carousel-container"
-            *ngFor="let file of files; let ind = index; trackBy: identity"
+            *ngFor="let file of _files; let ind = index; trackBy: identity"
         >
             <div>
                 <app-ta-upload-file
@@ -69,7 +69,7 @@
         ></app-ta-upload-dropzone>
         <div
             class="ta-upload-carousel-container"
-            *ngFor="let file of files; let ind = index; trackBy: identity"
+            *ngFor="let file of _files; let ind = index; trackBy: identity"
         >
             <div>
                 <app-ta-upload-file
@@ -103,6 +103,6 @@
         [customClassName]="customClassName"
         [size]="size"
         [modalSize]="modalSize"
-        [filesLength]="files?.length ? files.length : 0"
+        [filesLength]="_files?.length ? _files.length : 0"
     ></app-ta-upload-dropzone>
 </div>
