@@ -27,33 +27,34 @@
         [slideWidth]="slideWidth"
         (hoverArrowEmit)="hoverArrow($event)"
     >
-        <div
-            class="ta-upload-carousel-container"
+        <ng-container
             *ngFor="let file of _files; let ind = index; trackBy: identity"
         >
-            <div>
-                <app-ta-upload-file
-                    #uploadedFiles
-                    [file]="file"
-                    [hasTagsDropdown]="hasTagsDropdown"
-                    [isReview]="isReview"
-                    [reviewMode]="reviewMode"
-                    [feedbackText]="feedbackText"
-                    [hasNumberOfPages]="hasNumberOfPages"
-                    [customClassName]="customClassName"
-                    (fileAction)="onFileAction($event)"
-                    (landscapeCheck)="onLandscapeCheck($event)"
-                    (documentReviewInputEvent)="
-                        documentReviewInputEventMethod($event)
-                    "
-                    [tags]="tags"
-                    [type]="type"
-                    [categoryTag]="categoryTag"
-                    [hasLandscapeOption]="hasLandscapeOption"
-                    (fileHover)="fileHover($event)"
-                ></app-ta-upload-file>
+            <div class="ta-upload-carousel-container">
+                <div>
+                    <app-ta-upload-file
+                        #uploadedFiles
+                        [file]="file"
+                        [hasTagsDropdown]="hasTagsDropdown"
+                        [isReview]="isReview"
+                        [reviewMode]="reviewMode"
+                        [feedbackText]="feedbackText"
+                        [hasNumberOfPages]="hasNumberOfPages"
+                        [customClassName]="customClassName"
+                        (fileAction)="onFileAction($event)"
+                        (landscapeCheck)="onLandscapeCheck($event)"
+                        (documentReviewInputEvent)="
+                            documentReviewInputEventMethod($event)
+                        "
+                        [tags]="tags"
+                        [type]="type"
+                        [categoryTag]="categoryTag"
+                        [hasLandscapeOption]="hasLandscapeOption"
+                        (fileHover)="fileHover($event)"
+                    ></app-ta-upload-file>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </app-ta-upload-files-carousel>
 
     <div class="documents_holder" *ngIf="dontUseSlider">
@@ -67,31 +68,32 @@
             (closeDropzone)="dropZoneClose()"
             [customClassName]="customClassName"
         ></app-ta-upload-dropzone>
-        <div
-            class="ta-upload-carousel-container"
+        <ng-container
             *ngFor="let file of _files; let ind = index; trackBy: identity"
         >
-            <div>
-                <app-ta-upload-file
-                    [file]="file"
-                    [hasTagsDropdown]="hasTagsDropdown"
-                    [isReview]="isReview"
-                    [reviewMode]="reviewMode"
-                    [feedbackText]="feedbackText"
-                    [hasNumberOfPages]="hasNumberOfPages"
-                    [customClassName]="customClassName"
-                    (fileAction)="onFileAction($event)"
-                    (landscapeCheck)="onLandscapeCheck($event)"
-                    (documentReviewInputEvent)="
-                        documentReviewInputEventMethod($event)
-                    "
-                    [tags]="tags"
-                    [type]="type"
-                    [categoryTag]="categoryTag"
-                    [hasLandscapeOption]="hasLandscapeOption"
-                ></app-ta-upload-file>
+            <div class="ta-upload-carousel-container">
+                <div>
+                    <app-ta-upload-file
+                        [file]="file"
+                        [hasTagsDropdown]="hasTagsDropdown"
+                        [isReview]="isReview"
+                        [reviewMode]="reviewMode"
+                        [feedbackText]="feedbackText"
+                        [hasNumberOfPages]="hasNumberOfPages"
+                        [customClassName]="customClassName"
+                        (fileAction)="onFileAction($event)"
+                        (landscapeCheck)="onLandscapeCheck($event)"
+                        (documentReviewInputEvent)="
+                            documentReviewInputEventMethod($event)
+                        "
+                        [tags]="tags"
+                        [type]="type"
+                        [categoryTag]="categoryTag"
+                        [hasLandscapeOption]="hasLandscapeOption"
+                    ></app-ta-upload-file>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </div>
 
     <app-ta-upload-dropzone
@@ -103,6 +105,6 @@
         [customClassName]="customClassName"
         [size]="size"
         [modalSize]="modalSize"
-        [filesLength]="_files?.length ? _files.length : 0"
+        [filesLength]="_files.length ?? 0"
     ></app-ta-upload-dropzone>
 </div>

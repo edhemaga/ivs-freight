@@ -26,10 +26,10 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
 
 //Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
+import { Tags } from '../../modals/load-modal/state/models/load-modal-model/tags.model';
 
 //Services
 import { TaUploadFileService } from './ta-upload-file.service';
-import { Tags } from '../../modals/load-modal/state/models/load-modal-model/tags.model';
 
 //Enums
 import { FileTypes, FilesSize } from './enums/files-enum';
