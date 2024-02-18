@@ -16,6 +16,7 @@ import {
     ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { OnInit } from '@angular/core';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-settings-factoring',
@@ -29,6 +30,7 @@ export class SettingsFactoringComponent
     @Input() public factoringData: any;
     public factoringPhone: boolean;
     public factoringEmail: boolean;
+    public factoringNote: UntypedFormControl = new UntypedFormControl();
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         private notificationService: NotificationService,

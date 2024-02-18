@@ -197,7 +197,6 @@ export interface CardDetails {
     statusHistory?: StatusHistory[];
     commentsCount?: number;
     comments?: Comment[];
-    loadComment?: { comments: Comment[]; count: number };
     totalPaid?: number;
     totalDue?: number;
     loadedMiles?: number;
@@ -234,6 +233,7 @@ export interface CardDetails {
         quantity?: number;
         subtotal?: number;
     };
+
     textCommodity?: string;
     textMiles?: string;
     textWeight?: string;
@@ -724,34 +724,39 @@ export interface Status2 {
 }
 
 export interface Comment {
-    id: number;
-    companyUser: CompanyUser;
-    entityTypeComment: EntityTypeComment;
-    commentContent: string;
-    downRatingCount: number;
-    upRatingCount: number;
-    currentCompanyUserRating: number;
-    createdAt: string;
-    updatedAt: string;
-    userAvatar: string;
-    fullName: string;
-    avatarColor: {
-        background: string;
-        color: string;
+    id?: number;
+    companyUser?: CompanyUser;
+    entityTypeComment?: EntityTypeComment;
+    commentContent?: string;
+    downRatingCount?: number;
+    upRatingCount?: number;
+    currentCompanyUserRating?: number;
+    createdAt?: string;
+    updatedAt?: string;
+    userAvatar?: string;
+    fullName?: string;
+    avatarColor?: {
+        background?: string;
+        color?: string;
     };
-    textShortName: string;
-    date: string;
-    me: boolean;
-    edited: boolean;
-    comment: string;
+    cardId?: number;
+    textShortName?: string;
+    date?: string;
+    edited?: boolean;
+    comment?: string;
     isOpen?: boolean;
+    entityTypeId?: number;
 }
 
+export interface DeleteComment {
+    entityTypeId: number;
+    commentId: number;
+}
 export interface CompanyUser {
-    id: number;
-    fullName: string;
-    avatar: string;
-    departmentId: number;
+    id?: number;
+    fullName?: string;
+    avatar?: string;
+    departmentId?: number;
 }
 
 export interface EntityTypeComment {

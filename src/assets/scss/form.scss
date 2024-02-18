@@ -47,10 +47,6 @@
         margin-top: 12px !important;
     }
 
-    .row-mt-8 {
-        margin-top: 8px !important;
-    }
-
     .row-mt-20 {
         margin-top: 20px !important;
     }
@@ -199,7 +195,7 @@
         padding-left: 6px;
 
         &.extended {
-            grid-template-columns: 59px 143px 116px 1fr;
+            grid-template-columns: 59px 165px 200px 1fr;
             -moz-column-gap: 12px;
             column-gap: 12px;
         }
@@ -212,10 +208,10 @@
     // Driver Notification
     .driver-notification {
         display: grid;
-        gap: 22px;
+        gap: 12px;
         align-items: center;
         padding-left: 6px;
-        grid-template-columns: 79px 61px 143px 1fr;
+        grid-template-columns: 76px 73px 156px 1fr;
 
         p {
             margin: 0;
@@ -287,7 +283,6 @@
 
     //---------------- PayType Per Mile ----------------
     .paytype-permile {
-        padding-left: 6px;
         max-height: 0px;
         overflow: hidden;
         transition: all 0.3s ease-in-out;
@@ -751,44 +746,84 @@
     align-items: center;
     margin: 32px 0px;
 }
+/* Company Part */
+.company-part {
+    padding: 4px;
+    border-top: 1px solid $ta-gray-01;
+
+    h3 {
+        font-size: 14px;
+        line-height: 18px;
+        color: $ta-black;
+        margin-bottom: 22px !important;
+
+        &::-moz-selection {
+            color: $ta-black;
+            background-color: rgb(66, 66, 66, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background-color: rgb(66, 66, 66, 0.2);
+        }
+    }
+}
+/* Prefix, Sufix*/
+.prefix-sufix-row {
+    display: grid;
+    grid-template-columns: 92px 106px 92px 126px 146px;
+    margin-bottom: 32px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+}
+
 //---------------- Preferred Load Company Additional  ----------------
 .preferred-load-fleet-type-additional {
     display: grid;
-    grid-template-columns: 243px 1fr;
+    grid-template-columns: 205px 1fr 81px;
+    grid-gap: 12px;
     margin: 32px 0px;
-    padding-left: 6px;
-    align-items: center;
-    -moz-column-gap: 22px;
-    column-gap: 22px;
 
     .preffered-field {
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        display: grid;
+        grid-template-columns: 109px 90px;
+        grid-gap: 6px;
 
-        .r-text {
+        &-second {
+            display: grid;
+            grid-template-columns: 74px 226px;
+            grid-gap: 6px;
+        }
+
+        p {
             font-size: 14px;
-            font-weight: 500;
-            color: #919191;
+            line-height: 18px;
+            color: $ta-black-2;
 
             &::-moz-selection {
-                color: #919191;
-                background-color: rgb(145, 145, 145, 0.2);
+                color: $ta-black-2;
+                background-color: rgb(47, 47, 47, 0.2);
             }
 
             &::selection {
-                color: #919191;
-                background-color: rgb(145, 145, 145, 0.2);
+                color: $ta-black-2;
+                background-color: rgb(47, 47, 47, 0.2);
             }
         }
     }
+}
+/* Expiration */
+.expiration-row {
+    padding-bottom: 22px;
+}
+/* Share Document */
+.share-document-row {
+    padding-bottom: 16px;
+    border-bottom: 1px solid $ta-gray-01;
 
-    .preffered-field-second {
+    div {
         display: grid;
-        grid-template-columns: 74px 265px;
-        -moz-column-gap: 6px;
-        column-gap: 6px;
-        align-items: center;
+        grid-template-columns: 197px 197px 197px;
     }
 }
 //---------------- Violation Report, Inspection Level, HM Inspection Type  ----------------

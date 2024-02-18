@@ -20,10 +20,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from '../../shared/model/card-table-data';
+import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
 import {
     DataForCardsAndTables,
     TableColumnConfig,
@@ -53,10 +50,10 @@ import {
     tableSearch,
 } from '../../../utils/methods.globals';
 
-//Constants
+// Constants
 import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
-//Configuration
+// Configuration
 import { DisplayTrailerConfiguration } from '../trailer-card-data';
 
 // Enum
@@ -597,7 +594,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.thousandSeparator.transform(data.emptyWeight) +
                   ConstantStringTableComponentsEnum.POUNDS_2
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWeightVolume: ConstantStringTableComponentsEnum.NA,
+            tableWeightVolume:
+                data.volume ?? ConstantStringTableComponentsEnum.NA,
             tableAxle: data?.axles
                 ? data?.axles
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,

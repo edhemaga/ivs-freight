@@ -11,10 +11,12 @@
         <div
             class="copy-value"
             [class.leftIconOrder]="leftSideIcon"
+            [class.short_text]="maxWidth"
             [ngStyle]="{
                 color: textColor,
                 'font-size': textFontSize,
-                'font-weight': textFontWeight
+                'font-weight': textFontWeight,
+                'max-width': maxWidth
             }"
         >
             <span 

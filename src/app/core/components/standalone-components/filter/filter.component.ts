@@ -100,7 +100,7 @@ import { ArrayStatus } from './state/model/filter.models';
 export class FilterComponent implements OnInit {
     @ViewChild('t2') t2: any;
     @ViewChild('mainFilter') mainFilter: any;
-    @ViewChild(AutoclosePopoverComponent)
+    @ViewChild(AutoclosePopoverComponent) autoClose: AutoclosePopoverComponent;
     public hoverFilter: boolean = false;
 
     @Input() type: string = 'userFilter';
@@ -126,8 +126,6 @@ export class FilterComponent implements OnInit {
 
     private destroy$ = new Subject<void>();
     public autoCloseComponent: QueryList<AutoclosePopoverComponent>;
-
-    public autoClose: AutoclosePopoverComponent;
 
     public labelArray: ArrayStatus[] = DirectiveConstants.LABEL_ARRAY;
     public unselectedUser: ArrayStatus[] = DirectiveConstants.UNSELECTED_USER;

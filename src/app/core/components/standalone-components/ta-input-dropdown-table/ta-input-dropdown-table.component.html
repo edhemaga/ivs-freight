@@ -70,7 +70,7 @@
             (click)="toggleDropdownComments(commentsDropdown, filteredData)"
         >
             <span class="comment-number ta-font-semi-bold">{{
-                data?.loadComment.count
+                _data?.commentsCount
             }}</span>
             <svg-icon
                 [src]="svg"
@@ -78,7 +78,7 @@
             ></svg-icon>
 
             <!-- Show notification if there is new comment -->
-            <ng-container *ngIf="data?.commentsCount > 0">
+            <ng-container *ngIf="_data?.commentsCount > 0">
                 <svg-icon
                     class="notification"
                     [src]="'assets/svg/applicant/notification-light.svg'"
@@ -106,7 +106,7 @@
                         class="total-number-fleet count d-flex align-items-center"
                     >
                         <span class="counter ta-font-extra-bold text-white">
-                            {{ commmentsData?.loadComment.count }}
+                            {{ commmentsData?.commentsCount }}
                         </span>
                     </span>
                 </div>
@@ -126,26 +126,27 @@
             </div>
 
             <!-- Add new comment button -->
-            <div
-                class="add-new-comment d-flex justify-content-between align-items-center"
-            >
-                <span class="new-comment ta-font-bold">NEW COMMENT</span>
-                <svg-icon [src]="'assets/svg/common/ic_plus.svg'"></svg-icon>
-            </div>
+            <app-ta-new-comment
+                [commmentsData]="commmentsData"
+            ></app-ta-new-comment>
 
             <!-- Display comments -->
-            <ng-container
-                *ngFor="
-                    let comment of commmentsData.loadComment.comments;
-                    let i = index;
-                    trackBy: trackByIdentity
-                "
-            >
-                <app-ta-comment
-                    [commentCardsDataDropdown]="comment"
-                    [commentHighlight]="lattersToHighlight"
-                ></app-ta-comment>
-            </ng-container>
+            <div class="comments-holder">
+                <ng-container
+                    *ngFor="
+                        let comment of commmentsData.comments;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <app-ta-comment
+                        [commentCardsDataDropdown]="comment"
+                        [commentHighlight]="lattersToHighlight"
+                        [commentsCardId]="commmentsData.id"
+                        (closeDropdown)="closeDropdownFromComment($event)"
+                    ></app-ta-comment>
+                </ng-container>
+            </div>
         </div>
     </div>
 </ng-template>
@@ -262,8 +263,9 @@
                                     <div
                                         class="text-white"
                                         [innerHTML]="
-                                            highlight(truck.truckNumber)
-                                                | safeHtml
+                                            highlightPartOfTheTextString(
+                                                truck.truckNumber
+                                            ) | safeHtml
                                         "
                                     ></div>
                                 </div>
@@ -358,8 +360,9 @@
                                     <div
                                         class="text-white"
                                         [innerHTML]="
-                                            highlight(trailer.trailerNumber)
-                                                | safeHtml
+                                            highlightPartOfTheTextString(
+                                                trailer.trailerNumber
+                                            ) | safeHtml
                                         "
                                     ></div>
                                 </div>

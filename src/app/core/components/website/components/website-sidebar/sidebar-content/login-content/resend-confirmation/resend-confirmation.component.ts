@@ -1,13 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
+// enums
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+
+// models
 import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';
 
 @Component({
@@ -18,12 +26,12 @@ import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';
 export class ResendConfirmationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public resendConfirmationForm: FormGroup;
+    public resendConfirmationForm: UntypedFormGroup;
 
     public displaySpinner: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
@@ -46,15 +54,11 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
     }
 
     public onKeyDown(event: any): void {
-        if (event.keyCode === 13) {
-            this.resendConfirmation();
-        }
+        if (event.keyCode === 13) this.resendConfirmation();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) {
-            this.resendConfirmation();
-        }
+        if (event.notDisabledClick) this.resendConfirmation();
     }
 
     private resendConfirmation(): void {

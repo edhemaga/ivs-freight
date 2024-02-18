@@ -80,13 +80,22 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     // On Typing Send Search
     onTyping(event: KeyboardEvent) {
         clearTimeout(this.typingTimeout);
-
         const searchNumber = !this.chips.length
             ? 'searchOne'
             : this.chips.length === 1
             ? 'searchTwo'
             : 'searchThree';
+        if (!event.key) {
+            this.searchIsActive = true;
+            this.searchText = '';
+            this.sendHighlightSearchOnTyping();
 
+            this.tableService.sendCurrentSearchTableData({
+                chip: searchNumber,
+                search: this.searchText,
+                searchType: this.searchType,
+            });
+        }
         if (event.key !== 'Enter') {
             this.typingTimeout = setTimeout(() => {
                 if (this.searchText.length >= 3) {

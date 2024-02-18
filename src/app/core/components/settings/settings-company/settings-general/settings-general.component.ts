@@ -1,6 +1,7 @@
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnChanges,
@@ -8,12 +9,20 @@ import {
     OnInit,
     Output,
     SimpleChanges,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
+// services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
+// pipes
+import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+
+// enums
+import { SETINGS_ENUMS } from '../utils/enums/settings.enum';
 
 @Component({
     selector: 'app-settings-general',
@@ -23,6 +32,10 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
     providers: [DetailsPageService, DetailsActiveItemPipe],
 })
 export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
+    @ViewChild('logoText') logoText: ElementRef;
+
+    @ViewChild('logoBox') logoBox: ElementRef;
+
     @Input() public optionsCompany: any[] = [];
     @Input() public companyData: any;
 
@@ -40,6 +53,9 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public changeFont: boolean;
     public selectedDropdown: boolean = false;
     public currentCompanyIndex;
+
+    public fontSizeLogo: string = '';
+
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         public imageBase64Service: ImageBase64Service
@@ -52,24 +68,34 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         } else {
             this.companyDivision = false;
         }
+
         if (changes?.companyData?.currentValue?.divisions?.length > 1) {
             this.hasArrow = true;
         }
+
         if (
             changes?.companyData?.currentValue !==
             changes?.companyData?.previousValue
         ) {
             this.companyData = changes?.companyData?.currentValue;
         }
-        if (this.companyData?.name.length > 13) {
+
+        if (this.companyData?.name?.length > 13) {
             this.changeFont = true;
         } else {
             this.changeFont = false;
         }
+
+        if (!changes?.companyData?.currentValue?.logo) {
+            setTimeout(() => {
+                this?.changeFontSizeLogo();
+            }, 0);
+        }
     }
+
     ngOnInit(): void {
         let divisionArray = [];
-        
+
         this.optionsCompany?.map((item) => {
             if (item.isDivision == true) {
                 this.companyDivision = true;
@@ -92,15 +118,14 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             );
         }
 
-
-        let currentIndex = this.optionsCompany.findIndex(
+        let currentIndex = this.optionsCompany?.findIndex(
             (comp) => comp.id === this.companyData.id
         );
         this.currentCompanyIndex = currentIndex;
     }
 
-    public timeZoneFormat(mod){
-        return mod.substring(0,7); 
+    public timeZoneFormat(mod) {
+        return mod.substring(0, 7);
     }
 
     public onAction(modal: { modalName: string; type: string; company?: any }) {
@@ -118,9 +143,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
     public onSelectItem(event: any) {
-
-        if ( event ) {
-            let currentIndex = this.optionsCompany.findIndex(
+        if (event) {
+            let currentIndex = this.optionsCompany?.findIndex(
                 (comp) => comp.id === event.id
             );
             this.currentCompanyIndex = currentIndex;
@@ -128,25 +152,24 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             this.selectDropDown.emit(event);
             this.selectValue.emit(event);
         }
-        
-        
+
         this.selectedDropdown = false;
     }
 
     public showDropdown(): void {
-        if (this.optionsCompany.length > 1) {
+        if (this.optionsCompany?.length > 1) {
             this.selectedDropdown = true;
         }
     }
 
-    public onActionChange(action: any){
-        let currentIndex = this.optionsCompany.findIndex(
+    public onActionChange(action: any) {
+        let currentIndex = this.optionsCompany?.findIndex(
             (comp) => comp.id === this.companyData.id
         );
 
         switch (action) {
             case 'previous': {
-                currentIndex = --currentIndex; 
+                currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     let data = this.optionsCompany[currentIndex];
                     this.currentCompanyIndex = currentIndex;
@@ -158,18 +181,36 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.optionsCompany.length > currentIndex
+                    this.optionsCompany?.length > currentIndex
                 ) {
-                   let data = this.optionsCompany[currentIndex];
-                   this.currentCompanyIndex = currentIndex;
-                   this.onSelectItem(data);
+                    let data = this.optionsCompany[currentIndex];
+                    this.currentCompanyIndex = currentIndex;
+                    this.onSelectItem(data);
                 }
                 break;
             }
             default: {
                 break;
             }
-        }   
+        }
+    }
+
+    public changeFontSizeLogo(): void {
+        const element = this?.logoText?.nativeElement;
+        const textContent = element?.innerText;
+        const numberOfLettersAndSpaces = textContent?.length;
+
+        if (numberOfLettersAndSpaces <= 12) {
+            this.fontSizeLogo = SETINGS_ENUMS.SIXTY;
+        } else if (numberOfLettersAndSpaces <= 16) {
+            this.fontSizeLogo = SETINGS_ENUMS.FOURTY_EIGHT;
+        } else if (numberOfLettersAndSpaces <= 25) {
+            this.fontSizeLogo = SETINGS_ENUMS.THIRTY_TWO;
+        } else if (numberOfLettersAndSpaces <= 35) {
+            this.fontSizeLogo = SETINGS_ENUMS.TWENTY_THREE;
+        } else {
+            this.fontSizeLogo = SETINGS_ENUMS.TWENTY;
+        }
     }
 
     ngOnDestroy(): void {}

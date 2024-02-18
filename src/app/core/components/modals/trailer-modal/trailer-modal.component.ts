@@ -859,9 +859,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             )
             .subscribe((value) => {
                 this.skipVinDecocerEdit = false;
-                if (value?.length > 13 && value?.length < 17) {
-                    this.trailerForm.get('vin').setErrors({ invalid: true });
+                if (value?.length < 13 || value?.length > 17) {
+                    this.trailerForm
+                        .get('vin')
+                        .setErrors({ incorrectVinNumber: true });
                 }
+
                 if (value?.length === 17) {
                     this.loadingVinDecoder = true;
                     this.vinDecoderService

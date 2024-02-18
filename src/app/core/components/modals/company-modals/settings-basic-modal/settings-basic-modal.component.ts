@@ -1,8 +1,51 @@
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// services
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../services/form/form.service';
+
+// components
+import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaLogoChangeComponent } from '../../../shared/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../../shared/ta-ngx-slider/ta-ngx-slider.component';
+
+// animations
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+
+// utils
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertThousanSepInNumber,
+    convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
+
+// validations
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -29,55 +72,27 @@ import {
     tollValidation,
     urlValidation,
     usdotValidation,
+    einNumberRegex,
+    phoneFaxRegex,
+    startingValidation,
+    cvcValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-    UntypedFormArray,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
-} from '@angular/forms';
+
+// constants
+import { SettingsModalConstants } from '../utils/constants/settings-modal.constants';
+
+// models
 import {
     AddressEntity,
     CompanyModalResponse,
     CreateDivisionCompanyCommand,
     CreateResponse,
-    SignInResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
+    CompanyResponse,
 } from 'appcoretruckassist';
-import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { Options } from '@angular-slider/ngx-slider';
-import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
-import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import {
-    einNumberRegex,
-    phoneFaxRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
-import { convertNumberInThousandSep } from '../../../../utils/methods.calculations';
-import { FormService } from '../../../../services/form/form.service';
-import { CompanyResponse } from '../../../../../../../appcoretruckassist/model/companyResponse';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaLogoChangeComponent } from '../../../shared/ta-logo-change/ta-logo-change.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
-import { TaNgxSliderComponent } from '../../../shared/ta-ngx-slider/ta-ngx-slider.component';
-import {
-    startingValidation,
-    cvcValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+import { CroppieOptions } from 'croppie';
+import { Tabs } from '../../../shared/model/modal-tabs';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -87,13 +102,13 @@ import {
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         TaInputComponent,
         TaInputDropdownComponent,
         TaModalComponent,
@@ -109,64 +124,21 @@ import {
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
+    private destroy$ = new Subject<void>();
+
+    public isFormDirty: boolean;
+
+    public isSetupCompany: boolean = false;
+
     public companyForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-            checked: false,
-        },
-        {
-            id: 3,
-            name: 'Payroll',
-            checked: false,
-        },
-    ];
 
-    public tabsDivision: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
-    public prefferedLoadBtns: any[] = [
-        {
-            id: 1,
-            name: 'FTL',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'LTL',
-            checked: false,
-        },
-    ];
-
-    public fleetTypeBtns: any[] = [
-        {
-            id: 1,
-            name: 'Solo',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Team',
-            checked: false,
-        },
-        { id: 3, name: 'Combined', checked: false },
-    ];
+    public tabs: Tabs[] = SettingsModalConstants.TABS;
+    public tabsDivision: Tabs[] = SettingsModalConstants.TABS_DIVISION;
+    public prefferedLoadBtns: Tabs[] =
+        SettingsModalConstants.PREFERED_LOAD_BTNS;
+    public fleetTypeBtns: Tabs[] = SettingsModalConstants.FLEET_TYPE_BTNS;
 
     public driverCommissionOptions: Options = {
         floor: 5,
@@ -232,11 +204,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedBankAccountFormArray: any[] = [];
     public isBankSelectedFormArray: boolean[] = [];
 
-    // Payroll tab
-    public truckAssistText: string = "Use Truck Assist's ACH Payout";
-
-    public isFormDirty: boolean;
-
     // Dropdowns
     public banks: any[] = [];
     public payPeriods: any[] = [];
@@ -268,7 +235,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedFleetType: string = null;
 
     // Logo Actions
-    public croppieOptions: Croppie.CroppieOptions = {
+    public croppieOptions: CroppieOptions = {
         enableExif: true,
         viewport: {
             width: 616,
@@ -287,8 +254,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
-    private destroy$ = new Subject<void>();
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -299,12 +264,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.getModalDropdowns();
+        this.createForm();
+
         this.checkForCompany();
+
+        this.getModalDropdowns();
     }
 
     private checkForCompany() {
-        this.createForm();
         if (['new-division', 'edit-division'].includes(this.editData.type)) {
             this.createDivisionForm();
 
@@ -334,7 +301,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData?.type === 'edit-company-first-login') {
+            this.isSetupCompany = true;
             this.disableCardAnimation = true;
+
             this.settingsCompanyService
                 .getCompany()
                 .pipe(takeUntil(this.destroy$))
@@ -342,14 +311,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     next: (data: CompanyResponse) => {
                         this.editCompany(data);
                         this.editData.data = data;
-                        const loggedUser: SignInResponse = JSON.parse(
-                            localStorage.getItem('user')
-                        );
-                        loggedUser.areSettingsUpdated = true;
-                        localStorage.setItem(
-                            'user',
-                            JSON.stringify(loggedUser)
-                        );
                     },
                     error: () => {},
                 });
@@ -416,10 +377,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             prefix: [null, prefixValidation],
             starting: [null, [Validators.required, ...startingValidation]],
             suffix: [null, suffixValidation],
-            autoInvoicing: [false],
-            fleetType: ['Solo'],
-            preferredLoadType: ['FTL'],
             factorByDefault: [false],
+            autoInvoicing: [false],
+            preferredLoadType: ['FTL'],
+            fleetType: ['Solo'],
+            hazmat: [false],
             customerPayTerm: [
                 null,
                 [daysValidRegex, ...customerPayTermValidation],
@@ -434,8 +396,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 12,
                 [Validators.required, monthsValidRegex],
             ],
+            shareDriverMiles: [true],
+            shareDriverComission: [true],
+            shareDriverFlatRate: [false],
             //------------------ Payroll Tab
-            useACHPayout: [false],
+            useACHPayout: [true],
             // Driver & Owner
             driveOwnerPayPeriod: ['Weekly', Validators.required],
             driverOwnerEndingIn: ['Monday', Validators.required],
@@ -518,17 +483,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case 'close':
                 break;
-            }
-            case 'save': {
+
+            case 'save':
+            case 'stepper-save':
                 // If Form not valid
                 if (this.companyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.companyForm);
                     return;
                 }
 
-                if (this.editData.type.includes('edit-company') || this.editData.type.includes('payroll-tab')) {
+                if (
+                    this.editData.type.includes('edit-company') ||
+                    this.editData.type.includes('payroll-tab')
+                ) {
                     this.updateCompany();
                     this.modalService.setModalSpinner({
                         action: null,
@@ -554,8 +523,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-            }
-            case 'delete': {
+
+            case 'delete':
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.id);
                     this.modalService.setModalSpinner({
@@ -565,10 +534,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+
+            case 'stepper-next':
+                this.selectedTab++;
+
                 break;
-            }
+            case 'stepper-back':
+                this.selectedTab--;
+
+                break;
+            default:
+                break;
         }
     }
 
@@ -779,93 +755,154 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'timezone': {
+            case 'timezone':
                 this.selectedTimeZone = event;
+
                 break;
-            }
-            case 'currency': {
+            case 'currency':
                 this.selectedCurrency = event;
+
                 break;
-            }
-            case 'driver-pay-period': {
+            case 'driver-pay-period':
                 this.selectedDriverPayPeriod = event;
+
+                this.selectedDriverEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'driver-ending-in': {
+            case 'driver-ending-in':
                 this.selectedDriverEndingIn = event;
+
                 break;
-            }
-            case 'accounting-pay-period': {
+            case 'accounting-pay-period':
                 this.selectedAccountingPayPeriod = event;
-            }
-            case 'accounting-ending-in': {
+
+                this.selectedAccountingEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
+                break;
+            case 'accounting-ending-in':
                 this.selectedAccountingEndingIn = event;
+
                 break;
-            }
-            case 'companyOwner-pay-period': {
+            case 'companyOwner-pay-period':
                 this.selectedCompanyPayPeriod = event;
+
+                this.selectedCompanyEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'companyOwner-ending-in': {
+            case 'companyOwner-ending-in':
                 this.selectedCompanyEndingIn = event;
+
                 break;
-            }
-            case 'dispatch-pay-period': {
+            case 'dispatch-pay-period':
                 this.selectedDispatchPayPeriod = event;
+
+                this.selectedDispatchEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'dispatch-ending-in': {
+            case 'dispatch-ending-in':
                 this.selectedDispatchEndingIn = event;
+
                 break;
-            }
-            case 'manager-pay-period': {
+            case 'manager-pay-period':
                 this.selectedManagerPayPeriod = event;
+
+                this.selectedManagerEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'manager-ending-in': {
+            case 'manager-ending-in':
                 this.selectedManagerEndingIn = event;
+
                 break;
-            }
-            case 'recruiting-pay-period': {
+            case 'recruiting-pay-period':
                 this.selectedRecPayPeriod = event;
+
+                this.selectedRecEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'recruiting-ending-in': {
+            case 'recruiting-ending-in':
                 this.selectedRecEndingIn = event;
+
                 break;
-            }
-            case 'repair-pay-period': {
+            case 'repair-pay-period':
                 this.selectedRepairPayPeriod = event;
+
+                this.selectedRepairEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'repair-ending-in': {
+            case 'repair-ending-in':
                 this.selectedRepairEndingIn = event;
+
                 break;
-            }
-            case 'safety-pay-period': {
+            case 'safety-pay-period':
                 this.selectedSafetyPayPeriod = event;
+
+                this.selectedSafetyEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'safety-ending-in': {
+            case 'safety-ending-in':
                 this.selectedSafetyEndingIn = event;
+
                 break;
-            }
-            case 'other-pay-period': {
+            case 'other-pay-period':
                 this.selectedOtherPayPeriod = event;
+
+                this.selectedOtherEndingIn = this.setEndingInInputOptions(
+                    event.name
+                );
+
                 break;
-            }
-            case 'other-ending-in': {
+            case 'other-ending-in':
                 this.selectedOtherEndingIn = event;
+
                 break;
-            }
-            case 'company-data': {
+            case 'company-data':
                 this.selectedCompanyData = event;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
+    }
+
+    private setEndingInInputOptions(payPeriod: string): {
+        id: number;
+        name: string;
+    } {
+        let selectedEndingIn: { id: number; name: string };
+
+        if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
+            if (payPeriod === 'Semi Monthly') {
+                selectedEndingIn = {
+                    id: null,
+                    name: '15th / Last day',
+                };
+            } else {
+                selectedEndingIn = {
+                    id: null,
+                    name: 'Last Day',
+                };
+            }
+        } else {
+            selectedEndingIn = this.endingIns[0];
+        }
+
+        return selectedEndingIn;
     }
 
     private validateMiles() {
@@ -970,6 +1007,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onSaveLogoAction(event: any) {
+        if (event) {
+            this.displayDeleteAction = true;
+        }
+    }
+
     public onPrefferedLoadCheck(event: any) {
         this.prefferedLoadBtns = this.prefferedLoadBtns.map((item) => {
             if (item.name === event.name) {
@@ -1061,8 +1104,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                     this.selectedDriverPayPeriod = res.payPeriods[0];
                     this.selectedDriverEndingIn = res.endingIns[0];
-                    this.selectedAccountingPayPeriod = res.payPeriods[0];
-                    this.selectedAccountingEndingIn = res.endingIns[0];
+                    /*                 this.selectedAccountingPayPeriod = res.payPeriods[0];
+                    this.selectedAccountingEndingIn = res.endingIns[0]; */
                     this.selectedCompanyPayPeriod = res.payPeriods[0];
                     this.selectedCompanyEndingIn = res.endingIns[0];
                     this.selectedDispatchPayPeriod = res.payPeriods[0];
@@ -1759,6 +1802,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompany(data: any) {
+        console.log('data', data);
         this.companyForm.patchValue({
             // -------------------- Basic Tab
             name: data.name,
@@ -1788,7 +1832,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             bankAccounts: [],
             bankCards: [],
             prefix: data.additionalInfo.prefix,
-            starting: data.additionalInfo.starting,
+            starting: 100,
             suffix: data.additionalInfo.sufix,
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,
@@ -1836,7 +1880,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         email: department.email,
                     })
                 );
-                this.selectedDepartmentFormArray.push(department);
+
+                this.selectedDepartmentFormArray.push(department.department);
             }
         }
 
@@ -1901,6 +1946,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                         this.selectedAccountingPayPeriod = payroll.payPeriod;
                         this.selectedAccountingEndingIn = payroll.endingIn;
+
+                        console.log(
+                            'this.selectedAccountingPayPeriod',
+                            this.selectedAccountingPayPeriod
+                        );
+                        console.log(
+                            'this.selectedAccountingEndingIn',
+                            this.selectedAccountingEndingIn
+                        );
                         break;
                     }
                     case 2: {
@@ -2192,12 +2246,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm.get('logo').setErrors(null);
 
             this.displayDeleteAction = false;
-        }
-    }
-
-    public onSaveLogoAction(event: any) {
-        if (event) {
-            this.displayDeleteAction = true;
         }
     }
 

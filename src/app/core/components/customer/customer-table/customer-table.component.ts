@@ -49,7 +49,7 @@ import {
     DropdownItem,
     MappedShipperBroker,
     ToolbarActions,
-} from '../../shared/model/card-table-data';
+} from '../../shared/model/cardTableData';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,

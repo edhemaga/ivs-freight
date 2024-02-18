@@ -17,8 +17,8 @@ export class SettingsPayrollComponent implements OnChanges {
             changes?.payrollData?.previousValue
         ) {
             this.payrollData = changes?.payrollData?.currentValue;
-        }   
-        
+        }
+
         if (changes?.payrollData?.currentValue?.divisions?.length < 1) {
             this.companyDivision = true;
         } else {
@@ -33,14 +33,12 @@ export class SettingsPayrollComponent implements OnChanges {
         this.settingsCompanyService.onModalAction(modal);
     }
 
-    public setNameFormat(mod){
-        
-        if ( mod == 'Driver&Owner' ) {
+    public setNameFormat(mod) {
+        if (mod == 'Driver&Owner') {
             mod = 'Driver & Owner';
             return mod;
         } else {
-            return mod.match(/[A-Z][a-z]+|[0-9]+/g).join(" ");
+            return mod.match(/[A-Z][a-z]+|[0-9]+/g).join(' ');
         }
-        
     }
 }

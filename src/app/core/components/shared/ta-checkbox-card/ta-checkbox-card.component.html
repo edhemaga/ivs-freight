@@ -1,7 +1,7 @@
 <div class="custom-checkbox-card">
     <div class="divider"></div>
     <div
-        class="checkbox-card-header"
+        class="d-flex align-items-center justify-content-between checkbox-card-header"
         [ngClass]="{
             pointer: reverseLogic
                 ? !getSuperControl.value
@@ -17,18 +17,29 @@
 
         <ng-content select="[header]"></ng-content>
 
-        <svg-icon
-            *ngIf="hasArrow"
-            class="checkbox-card-header-arrow"
-            src="assets/svg/common/ic_arrow_down_updated.svg"
-            [ngClass]="{
-                visible: reverseLogic
-                    ? !getSuperControl.value
-                    : getSuperControl.value,
-                rotate: reverseLogic ? _isCardOpen : !_isCardOpen
-            }"
-            (click)="onToggleCard($event)"
-        ></svg-icon>
+        <div class="d-flex align-items-center">
+            <ng-container *ngIf="hasPricingButton">
+                <button
+                    class="d-flex align-items-center justify-content-center ta-font-bold use-truck-assist-price"
+                >
+                    PRICING
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="hasArrow">
+                <svg-icon
+                    class="checkbox-card-header-arrow"
+                    src="assets/svg/common/ic_arrow_down_updated.svg"
+                    [ngClass]="{
+                        visible: reverseLogic
+                            ? !getSuperControl.value
+                            : getSuperControl.value,
+                        rotate: reverseLogic ? _isCardOpen : !_isCardOpen
+                    }"
+                    (click)="onToggleCard($event)"
+                ></svg-icon>
+            </ng-container>
+        </div>
     </div>
 
     <!-- Normal -->

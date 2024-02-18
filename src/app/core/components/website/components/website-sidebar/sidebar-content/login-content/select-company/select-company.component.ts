@@ -11,13 +11,17 @@ import { UntypedFormBuilder } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// moment
 import moment from 'moment';
 
+// utils
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 
+// services
 import { AuthStoreService } from 'src/app/core/components/authentication/state/auth.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
+// models
 import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
 
 @Component({
@@ -178,7 +182,11 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                     localStorage.removeItem('user');
                     localStorage.setItem('user', JSON.stringify(this.userData));
 
-                    this.router.navigate(['/dashboard']);
+                    if (!res.areSettingsUpdated) {
+                        this.router.navigate(['/company/settings']);
+                    } else {
+                        this.router.navigate(['/dashboard']);
+                    }
                 })
             )
             .subscribe();

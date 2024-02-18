@@ -356,6 +356,30 @@ ngb-modal-window[aria-hidden='true'] {
                         }
                     }
 
+                    .stepper-container {
+                        p {
+                            font-size: 14px;
+                            line-height: 18px;
+                            color: $bw5;
+                        }
+
+                        .stepper {
+                            margin-left: 8px;
+                            width: 54px;
+                            height: 14px;
+                            border-radius: 2px;
+                            background: $bw2;
+
+                            &-inner {
+                                background: $ta-blue-13;
+                                height: 14px;
+                                border-radius: 2px;
+                                width: 33.33%;
+                                transition: width 0.2s ease-in;
+                            }
+                        }
+                    }
+
                     .modal-close {
                         position: relative;
                         right: 1px;
@@ -439,7 +463,44 @@ ngb-modal-window[aria-hidden='true'] {
                     }
                 }
 
-                .modal-deactivate-btn,
+                .modal-deactivate-btn {
+                    outline: none;
+                    border: none;
+                    border-radius: 2px;
+                    background: $bw2;
+                    color: $ta-black;
+                    font-family: Montserrat;
+                    font-size: 14px;
+                    font-weight: 700;
+                    line-height: 20px;
+                    letter-spacing: 0em;
+                    text-align: center;
+                    flex: 1;
+                    height: 32px;
+                    margin: 0;
+                    width: 150px;
+                    padding: 6px;
+                    position: relative;
+                    transition: background 0.3s ease-in-out;
+
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+
+                    &.valid {
+                        cursor: pointer;
+                        pointer-events: all;
+                        background: $bw2;
+                        color: $ta-blue-14;
+
+                        &:hover {
+                            background: $ta-blue-15;
+                            color: $white;
+                        }
+                    }
+                }
+
                 .modal-resend-email-btn,
                 .modal-cancel-btn,
                 .modal-map-settings-reset-btn {
@@ -473,6 +534,22 @@ ngb-modal-window[aria-hidden='true'] {
                             color: $white;
                         }
                     }
+                }
+
+                .modal-stepper-back-btn {
+                    outline: none;
+                    border: none;
+                    border-radius: 2px;
+                    background: $bw2;
+                    color: $ta-black;
+                    font-size: 14px;
+                    height: 32px;
+                    width: 150px;
+
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
                 .modal-save-btn {

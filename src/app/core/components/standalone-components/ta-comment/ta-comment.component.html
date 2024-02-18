@@ -109,6 +109,7 @@
                 (focus)="handleCommentChange()"
                 (input)="handleCommentChange()"
                 (blur)="handleCommentBlur()"
+                (paste)="onPaste($event)"
             ></div>
         </div>
     </div>
@@ -118,25 +119,24 @@
 
 <ng-container *ngIf="commentCardsDataDropdown">
     <ng-container *ngIf="!editingCardComment">
-        <div
-            class="comments-dropdown hoverable"
-            (click)="toogleComment(commentCardsDataDropdown)"
-        >
+        <div class="comments-dropdown hoverable">
             <div class="d-grid">
                 <div class="d-flex align-items-center top-comment-body">
-                    <ng-container *ngIf="!commentCardsDataDropdown.userAvatar">
+                    <ng-container
+                        *ngIf="!commentCardsDataDropdown?.companyUser.avatar"
+                    >
                         <div class="d-flex">
                             <span
                                 class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
                                 [style]="{
                                     background:
                                         commentCardsDataDropdown.avatarColor
-                                            .background,
+                                            ?.background,
                                     color: commentCardsDataDropdown.avatarColor
-                                        .color
+                                        ?.color
                                 }"
                                 >{{
-                                    commentCardsDataDropdown.textShortName
+                                    commentCardsDataDropdown?.textShortName
                                 }}</span
                             >
                         </div>
@@ -149,9 +149,13 @@
                             <div class="d-flex">
                                 <span
                                     class="text-white ta-font-semi-bold"
+                                    (click)="
+                                        toogleComment(commentCardsDataDropdown)
+                                    "
                                     [innerHTML]="
                                         higlitsPartOfCommentSearchValue(
-                                            commentCardsDataDropdown.fullName
+                                            commentCardsDataDropdown.companyUser
+                                                .fullName
                                         ) | safeHtml
                                     "
                                 ></span>
@@ -159,7 +163,12 @@
                                 <!-- if owner of the card -->
 
                                 <ng-container
-                                    *ngIf="commentCardsDataDropdown.me"
+                                    *ngIf="
+                                        checkIfLoggedUserCommented(
+                                            commentCardsDataDropdown.companyUser
+                                                .id
+                                        )
+                                    "
                                 >
                                     <span class="card-user-me ta-font-bold"
                                         >(Me)</span
@@ -169,7 +178,7 @@
                                 <!-- if card is edited -->
 
                                 <ng-container
-                                    *ngIf="commentCardsDataDropdown.edited"
+                                    *ngIf="commentCardsDataDropdown?.edited"
                                 >
                                     <span
                                         class="card-user-edited ta-font-medium"
@@ -180,7 +189,12 @@
 
                             <div class="user-icons d-flex">
                                 <ng-container
-                                    *ngIf="commentCardsDataDropdown.me"
+                                    *ngIf="
+                                        checkIfLoggedUserCommented(
+                                            commentCardsDataDropdown.companyUser
+                                                .id
+                                        )
+                                    "
                                 >
                                     <span
                                         ngbTooltip
@@ -188,7 +202,8 @@
                                         type="button"
                                         tooltipBackground="#424242"
                                         position="top"
-                                        (click)="openEditComment()"
+                                        [margin]="'0 0 10px 0'"
+                                        (click)="openEditComment(true)"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
                                     >
                                         <svg-icon
@@ -209,7 +224,13 @@
                                         tooltipBackground="#424242"
                                         position="top"
                                         type="button"
+                                        [margin]="'0 0 10px 0'"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
+                                        (click)="
+                                            deleteComment(
+                                                commentCardsDataDropdown.id
+                                            )
+                                        "
                                     >
                                         <svg-icon
                                             class="delete-icon"
@@ -248,9 +269,15 @@
                             </div>
                         </div>
 
-                        <span class="ta-font-medium muted-text">{{
-                            commentCardsDataDropdown.date
-                        }}</span>
+                        <span
+                            class="ta-font-medium muted-text"
+                            (click)="toogleComment(commentCardsDataDropdown)"
+                            >{{
+                                transformDate(
+                                    commentCardsDataDropdown.createdAt
+                                )
+                            }}</span
+                        >
                     </div>
                 </div>
 
@@ -264,7 +291,7 @@
                     "
                     [innerHTML]="
                         higlitsPartOfCommentSearchValue(
-                            commentCardsDataDropdown.comment
+                            commentCardsDataDropdown.commentContent
                         ) | safeHtml
                     "
                 ></span>
@@ -272,6 +299,7 @@
         </div>
     </ng-container>
 
+    <!-- Editing comment component -->
     <ng-container *ngIf="editingCardComment">
         <div class="comments-dropdown editable">
             <div class="d-grid">
@@ -282,10 +310,10 @@
                                 class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
                                 [style]="{
                                     background:
-                                        commentCardsDataDropdown.avatarColor
-                                            .background,
-                                    color: commentCardsDataDropdown.avatarColor
-                                        .color
+                                        commentCardsDataDropdown?.avatarColor
+                                            ?.background,
+                                    color: commentCardsDataDropdown?.avatarColor
+                                        ?.color
                                 }"
                                 >{{
                                     commentCardsDataDropdown.textShortName
@@ -294,32 +322,48 @@
                         </div>
                     </ng-container>
 
+                    <ng-template
+                        *ngIf="commentCardsDataDropdown?.companyUser.avatar"
+                    >
+                        {{ commentCardsDataDropdown?.companyUser.avatar }}
+                        <img
+                            src="{{
+                                'data:image/jpg;base64,' +
+                                    commentCardsDataDropdown?.companyUser.avatar
+                            }}"
+                            alt=""
+                        />
+                    </ng-template>
+
                     <div class="d-grid title-holder">
                         <div
                             class="d-flex justify-content-between title-svg-holder"
                         >
                             <div class="d-flex">
-                                <span
-                                    class="title ta-font-semi-bold"
-                                    [innerHTML]="
-                                        higlitsPartOfCommentSearchValue(
-                                            commentCardsDataDropdown.fullName
-                                        ) | safeHtml
-                                    "
-                                ></span>
-
-                                <!-- if card is edited -->
-
-                                <ng-container
-                                    *ngIf="commentCardsDataDropdown.edited"
-                                >
-                                    <span
-                                        class="card-user-edited ta-font-medium"
-                                        >• Edited</span
-                                    >
-                                </ng-container>
+                                <span class="title ta-font-semi-bold">{{
+                                    commentCardsDataDropdown.companyUser
+                                        .fullName
+                                }}</span>
                             </div>
 
+                            <span
+                                class="title ta-font-semi-bold"
+                                [innerHTML]="
+                                    higlitsPartOfCommentSearchValue(
+                                        commentCardsDataDropdown.fullName
+                                    ) | safeHtml
+                                "
+                            ></span>
+
+                            <!-- if card is edited -->
+
+                            <ng-container
+                                *ngIf="commentCardsDataDropdown.edited"
+                            >
+                                <span class="card-user-edited ta-font-medium"
+                                    >• Edited</span
+                                >
+                            </ng-container>
                             <div class="user-icons d-flex">
                                 <span
                                     ngbTooltip
@@ -327,15 +371,19 @@
                                     type="button"
                                     tooltipBackground="#424242"
                                     position="top"
-                                    (click)="openEditComment()"
+                                    [margin]="'0 0 10px 0'"
+                                    (click)="
+                                        editComment(commentCardsDataDropdown.id)
+                                    "
                                     class="confirm-tooltip d-flex align-items-center justify-content-center"
+                                    [tooltipClass]="customClass"
                                 >
                                     <svg-icon
-                                        class="confirm-icon"
+                                        class="confirm-icon d-flex align-items-center justify-content-center"
                                         [src]="'assets/svg/applicant/check.svg'"
                                         [svgStyle]="{
-                                            'width.px': 13,
-                                            'height.px': 13
+                                            'width.px': 12,
+                                            'height.px': 10
                                         }"
                                     ></svg-icon>
                                 </span>
@@ -346,16 +394,18 @@
                                     tooltipBackground="#424242"
                                     position="top"
                                     type="button"
+                                    [margin]="'0 0 10px 0'"
+                                    (click)="openEditComment(false)"
                                     class="cancel-tooltip d-flex align-items-center justify-content-center"
                                 >
                                     <svg-icon
-                                        class="cancel-icon"
+                                        class="cancel-icon d-flex align-items-center justify-content-center"
                                         [src]="
                                             'assets/svg/applicant/invalid-review-x.svg'
                                         "
                                         [svgStyle]="{
-                                            'width.px': 11,
-                                            'height.px': 13
+                                            'width.px': 10,
+                                            'height.px': 10
                                         }"
                                     ></svg-icon>
                                 </span>
@@ -368,9 +418,15 @@
                     </div>
                 </div>
 
-                <textarea rows="4" cols="50" class="edit-textarea">{{
-                    commentCardsDataDropdown.comment
-                }}</textarea>
+                <div
+                    #editCommentEl
+                    [contentEditable]="true"
+                    spellcheck="false"
+                    class="edit-textarea"
+                    (paste)="onPaste($event)"
+                >
+                    {{ commentCardsDataDropdown.commentContent }}
+                </div>
             </div>
         </div>
     </ng-container>

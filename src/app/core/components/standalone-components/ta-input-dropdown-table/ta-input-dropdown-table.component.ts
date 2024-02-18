@@ -1,5 +1,5 @@
 import { Subject, takeUntil } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import {
     NgbModule,
     NgbPopoverModule,
@@ -18,10 +18,11 @@ import {
     Trailer,
     Trucks,
     Comment,
-} from '../../shared/model/card-table-data';
+} from '../../shared/model/cardTableData';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // pipes
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
@@ -31,6 +32,7 @@ import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-inp
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
+import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -46,12 +48,17 @@ import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 
         // Components
         TaCommentComponent,
+        TaNewCommentComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
-export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
-    @Input() data: CardDetails;
+export class TaInputDropdownTableComponent implements OnDestroy {
+    public _data: CardDetails;
+    @Input() set data(value: CardDetails) {
+        this._data = value;
+        this.filteredData = { ...value };
+    }
     @Input() svg: string;
     @Input() type: string;
     @Input() searchPlaceholder?: string =
@@ -74,11 +81,12 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        public imageBase64Service: ImageBase64Service
     ) {}
 
-    ngOnInit(): void {
-        this.filteredData = JSON.parse(JSON.stringify(this.data));
+    public closeDropdownFromComment(): void {
+        if (this.tooltip) this.tooltip.close();
     }
 
     public filterArrayComments(event: KeyboardEvent): void {
@@ -88,8 +96,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchParam.length >= 2) {
                 // Reset on every key press
-                this.filteredData.loadComment.comments =
-                    this.data.loadComment.comments;
+                this.filteredData.comments = this._data.comments;
 
                 this.lattersToHighlight = searchParam;
 
@@ -99,14 +106,12 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 // If there is empty array in filteredComment set object value to default
                 if (!filteredCommentTitle.length) {
-                    this.filteredData.loadComment.comments =
-                        this.data.loadComment.comments;
+                    this.filteredData.comments = this._data.comments;
                 }
 
                 // If there is filtered value set value to filteredData
                 else {
-                    this.filteredData.loadComment.comments =
-                        filteredCommentTitle;
+                    this.filteredData.comments = filteredCommentTitle;
                 }
             }
 
@@ -114,17 +119,18 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             else {
                 this.lattersToHighlight = '';
 
-                this.filteredData.loadComment.comments =
-                    this.data.loadComment.comments;
+                this.filteredData.comments = this._data.comments;
             }
         }
     }
 
     private filterCommentsTitle(searchParam: string): Comment[] {
-        const filteredComments = this.filteredData.loadComment.comments.filter(
+        const filteredComments = this.filteredData.comments.filter(
             (comment) =>
-                comment.fullName.toLowerCase().includes(searchParam) ||
-                comment.comment.toLowerCase().includes(searchParam)
+                comment.companyUser.fullName
+                    .toLowerCase()
+                    .includes(searchParam) ||
+                comment.commentContent.toLowerCase().includes(searchParam)
         );
 
         return filteredComments;
@@ -137,9 +143,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchTerm.length >= 2) {
                 // Reset on every key press
-                this.filteredData.trucks = this.data.trucks;
+                this.filteredData.trucks = this._data.trucks;
 
-                this.filteredData.trailers = this.data.trailers;
+                this.filteredData.trailers = this._data.trailers;
 
                 this.lattersToHighlight = searchTerm;
 
@@ -149,9 +155,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 // If there is empty array in filteredTrucks or filteredTrailer
                 if (!filteredTrucks.length && !filteredTrailer.length) {
-                    this.filteredData.trucks = this.data.trucks;
+                    this.filteredData.trucks = this._data.trucks;
 
-                    this.filteredData.trailers = this.data.trailers;
+                    this.filteredData.trailers = this._data.trailers;
                 }
 
                 // Set value searched
@@ -170,9 +176,9 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
                 this.filteredTrailerCount = null;
 
-                this.filteredData.trucks = this.data.trucks;
+                this.filteredData.trucks = this._data.trucks;
 
-                this.filteredData.trailers = this.data.trailers;
+                this.filteredData.trailers = this._data.trailers;
             }
         }
     }
@@ -197,7 +203,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         return filterTrailer;
     }
 
-    public highlight(trailerTruckNumber: string): string {
+    public highlightPartOfTheTextString(trailerTruckNumber: string): string {
         if (!trailerTruckNumber || !this.lattersToHighlight)
             return trailerTruckNumber;
 
@@ -240,7 +246,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
 
         tooltip.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.filteredData.trucks = this.data.trucks;
+            this.filteredData.trucks = this._data.trucks;
 
             this.lattersToHighlight = null;
 
@@ -248,7 +254,7 @@ export class TaInputDropdownTableComponent implements OnInit, OnDestroy {
 
             this.filteredTrailerCount = null;
 
-            this.filteredData.trailers = this.data.trailers;
+            this.filteredData.trailers = this._data.trailers;
         });
 
         tooltip.open({ data: card });

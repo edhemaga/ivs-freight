@@ -41,7 +41,6 @@
                                 isRequired: true,
                                 minLength: 2,
                                 maxLength: 26,
-                                textTransform: 'capitalize',
                                 autoFocus: editData?.type !== 'edit'
                             }"
                         ></app-ta-input>
@@ -53,8 +52,7 @@
                                 label: 'Last Name',
                                 isRequired: true,
                                 minLength: 2,
-                                maxLength: 26,
-                                textTransform: 'capitalize'
+                                maxLength: 26
                             }"
                         ></app-ta-input>
                         <app-ta-input
@@ -762,7 +760,6 @@
                                     type: 'text',
                                     label: 'Name',
                                     isRequired: true,
-                                    textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 24
                                 }"
@@ -785,7 +782,6 @@
                                     name: 'Relationship',
                                     type: 'text',
                                     label: 'Relationship',
-                                    textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 24
                                 }"
@@ -809,6 +805,17 @@
                         "
                     ></app-ta-input-note>
                 </div>
+
+                <!--  <app-ta-logo-change
+                            [croppieOptions]="croppieOptions"
+                            [croppieShape]="'rectangle'"
+                            [customClass]="'modal-container-M'"
+                            [imageUrl]="this.companyForm.get('logo').value"
+                            [displayUploadZone]="displayUploadZone"
+                            (validationEvent)="onImageValidation($event)"
+                            (base64ImageEvent)="onUploadImage($event)"
+                            (saveLogoEvent)="onSaveLogoAction($event)"
+                        ></app-ta-logo-change> -->
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
                     <app-ta-custom-card
@@ -817,10 +824,14 @@
                         [disableAnimation]="disableCardAnimation"
                     >
                         <app-ta-logo-change
+                            [croppieOptions]="croppieOptions"
+                            [croppieShape]="'rectangle'"
                             [customClass]="'modal-container-M'"
                             [imageUrl]="this.driverForm.get('avatar').value"
+                            [displayUploadZone]="displayUploadZone"
                             (validationEvent)="onImageValidation($event)"
                             (base64ImageEvent)="onUploadImage($event)"
+                            (saveLogoEvent)="onSaveLogoAction($event)"
                         ></app-ta-logo-change>
                     </app-ta-custom-card>
                     <div class="driver-cards-mvr">
