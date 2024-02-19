@@ -1,5 +1,4 @@
 import {
-    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
@@ -11,17 +10,29 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TaUploadFileService } from './ta-upload-file.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+//Modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Components
+import { TaUploadDropzoneComponent } from './ta-upload-dropzone/ta-upload-dropzone.component';
 import {
     UploadFile,
     TaUploadFileComponent,
 } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaUploadDropzoneComponent } from './ta-upload-dropzone/ta-upload-dropzone.component';
+
+//Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
+import { Tags } from '../../modals/load-modal/state/models/load-modal-model/tags.model';
+
+//Services
+import { TaUploadFileService } from './ta-upload-file.service';
+
+//Enums
+import { FileTypes, FilesSize } from './enums/files-enum';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -30,62 +41,74 @@ import { FileEvent } from 'src/app/core/model/file-event.model';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        //Modules
         CommonModule,
         FormsModule,
-        TaUploadFilesCarouselComponent,
         AngularSvgIconModule,
+
+        //Components
+        TaUploadFilesCarouselComponent,
         TaUploadDropzoneComponent,
         TaUploadFileComponent,
     ],
 })
 export class TaUploadFilesComponent implements OnInit {
-    private destroy$ = new Subject<void>();
     @ViewChild(TaUploadFilesCarouselComponent)
-    modalCarousel: TaUploadFilesCarouselComponent;
+    public modalCarousel: TaUploadFilesCarouselComponent;
 
-    @ViewChildren('uploadedFiles') uploadedFiles: ElementRef;
+    @ViewChildren('uploadedFiles') public uploadedFiles: ElementRef;
 
+    @Output() documentReviewInputEvent: EventEmitter<{
+        file: UploadFile;
+        message: string;
+    }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
+    @Output() onFileEvent: EventEmitter<FileEvent> =
+        new EventEmitter<FileEvent>(null);
+    @Output() closeDropzone = new EventEmitter<{}>();
+
+    //General
+    @Input() set files(value: UploadFile[]) {
+        this._files = value;
+        if (this.type == FileTypes.DETAILS) {
+            this.modalCarousel?.slideToFile(0);
+        }
+    }
     @Input() customClassName: string;
-    @Input() files: UploadFile[] = [];
-    @Input() hasTagsDropdown: boolean = false;
+    @Input() type: FileTypes;
     @Input() hasNumberOfPages: boolean = false;
-    @Input() size: string = 'small'; // small | medium | large
+    @Input() size: string = FilesSize.SMALL;
     @Input() modalSize: string;
-    @Input() hasCarouselBottomTabs: boolean;
-    @Input() tags: any[] = [];
-    @Input() type: string; // modal | table | details | todo
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
     @Input() hasLandscapeOption: boolean = false;
-    @Input() showDropzone: boolean = false;
-    @Input() dontUseSlider: boolean = false;
-    @Input() dropzoneFocus: boolean = false;
-    @Input() onlyOneTagFile: boolean = false;
 
-    @Output() onFileEvent: EventEmitter<FileEvent> =
-        new EventEmitter<FileEvent>(null);
+    //Carousel
+    @Input() dontUseSlider: boolean = false;
+    @Input() hasCarouselBottomTabs: boolean;
+
+    //Tags
+    @Input() onlyOneTagFile: boolean = false;
+    @Input() tags: Tags[] = [];
+    @Input() hasTagsDropdown: boolean = false;
+
+    //Dropzone
+    @Input() dropzoneFocus: boolean = false;
+    @Input() showDropzone: boolean = false;
 
     // Review
     @Input() isReview: boolean;
     @Input() reviewMode: string;
     @Input() feedbackText: string;
-    @Output() documentReviewInputEvent: EventEmitter<{
-        file: UploadFile;
-        message: string;
-    }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
     @Input() slideWidth: number = 180;
     @Input() categoryTag: string;
 
-    @Output() closeDropzone = new EventEmitter<{}>();
-
+    public _files: UploadFile[] = [];
     public currentSlide: number = 0;
+    private destroy$ = new Subject<void>();
 
-    constructor(
-        private uploadFileService: TaUploadFileService,
-        private ref: ChangeDetectorRef
-    ) {}
+    constructor(private uploadFileService: TaUploadFileService) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.uploadFileService.uploadedFiles$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: { files: UploadFile[]; action: string }) => {
@@ -99,56 +122,56 @@ export class TaUploadFilesComponent implements OnInit {
      *
      * @param data - returned data from file action (one or multiple)
      */
-    public onFileAction(data: { file: UploadFile; action: string }) {
+    public onFileAction(data: { file: UploadFile; action: string }): void {
         switch (data.action) {
             case 'tag': {
                 this.onFileEvent.emit({
-                    files: !this.onlyOneTagFile ? this.files : data.file,
+                    files: !this.onlyOneTagFile ? this._files : data.file,
                     action: data.action,
                 });
                 break;
             }
             case 'delete': {
                 let isLastDeleted = false;
-                this.files.map((item, index) => {
+                this._files.map((item, index) => {
                     if (
                         item.fileName == data.file.fileName &&
-                        (index == this.files.length - 1 ||
-                            index == this.files.length - 2)
+                        (index == this._files.length - 1 ||
+                            index == this._files.length - 2)
                     ) {
                         isLastDeleted = true;
                     }
                 });
 
-                this.files = this.files.filter(
+                this._files = this._files.filter(
                     (item) => item.fileName !== data.file.fileName
                 );
 
                 if (data.file['fileId']) {
                     this.onFileEvent.emit({
-                        files: this.files,
+                        files: this._files,
                         action: data.action,
                         deleteId: data.file['fileId'],
                     });
                 } else {
                     this.onFileEvent.emit({
-                        files: this.files,
+                        files: this._files,
                         action: data.action,
                     });
                 }
 
-                this.currentSlide = this.files.length - 1;
+                this.currentSlide = this._files.length - 1;
 
                 if (
-                    (this.size === 'modal-large' && this.files.length < 4) ||
-                    (this.size === 'modal-medium' && this.files.length < 3)
+                    (this.size === FilesSize.MODAL_LARGE && this._files.length < 4) ||
+                    (this.size === FilesSize.MODAL_MEDIUM && this._files.length < 3)
                 ) {
                     this.modalCarousel.currentSlide = 0;
                     this.modalCarousel.translateXMultipleSlides = 0;
                     this.modalCarousel.multipleCurrentSlide = 0;
                 }
 
-                if (!this.files.length) {
+                if (!this._files.length) {
                     this.currentSlide = 0;
                 }
 
@@ -161,48 +184,48 @@ export class TaUploadFilesComponent implements OnInit {
                             : 1;
                     const allowSlide =
                         this.modalCarousel.customClass == 'large' &&
-                        this.files.length > 2
+                        this._files.length > 2
                             ? true
                             : this.modalCarousel.customClass == 'medium' &&
-                              this.files.length > 1
+                              this._files.length > 1
                             ? true
                             : this.modalCarousel.customClass == 'small' &&
-                              this.files.length > 0
+                              this._files.length > 0
                             ? true
                             : false;
                     if (allowSlide) {
                         this.modalCarousel.slideToFile(
-                            this.files.length - slideTo
+                            this._files.length - slideTo
                         );
                     }
                 }
                 break;
             }
             case 'mark-incorrect': {
-                let incorrectIndx;
-                this.files.map((item, index) => {
+                let incorrectIndx: number;
+                this._files.map((item, index) => {
                     if (item.fileName == data.file.fileName) {
                         incorrectIndx = index;
                     }
                 });
 
                 this.onFileEvent.emit({
-                    files: this.files,
+                    files: this._files,
                     action: data.action,
                     index: incorrectIndx,
                 });
                 break;
             }
             case 'mark-correct': {
-                let correctIndx;
-                this.files.map((item, index) => {
+                let correctIndx: number;
+                this._files.map((item, index) => {
                     if (item.fileName == data.file.fileName) {
                         correctIndx = index;
                     }
                 });
 
                 this.onFileEvent.emit({
-                    files: this.files,
+                    files: this._files,
                     action: data.action,
                     index: correctIndx,
                 });
@@ -214,14 +237,15 @@ export class TaUploadFilesComponent implements OnInit {
         }
     }
 
-    public onUploadFiles(data: { files: UploadFile[]; action: string }) {
+    public onUploadFiles(data: { files: UploadFile[]; action: string }): void {
         const uploadedFiles = [...data.files];
         switch (data.action) {
             case 'add': {
                 uploadedFiles.map((files, i) => {
-                    for (var a = 0; a < this.files.length; a++) {
+                    for (var a = 0; a < this._files.length; a++) {
                         if (
-                            files.realFile?.name == this.files[a].realFile?.name
+                            files.realFile?.name ==
+                            this._files[a].realFile?.name
                         ) {
                             uploadedFiles.splice(i);
                         }
@@ -238,10 +262,10 @@ export class TaUploadFilesComponent implements OnInit {
                     });
                     file.fileName = setName;
                 });
-                const oldFiles = this.files.length ? this.files : [];
+                const oldFiles = this._files.length ? this._files : [];
 
-                this.files = [...oldFiles, ...uploadedFiles];
-                this.onFileEvent.emit({ files: this.files, action: 'add' });
+                this._files = [...oldFiles, ...uploadedFiles];
+                this.onFileEvent.emit({ files: this._files, action: 'add' });
                 const slideTo =
                     this.modalCarousel?.customClass == 'large'
                         ? 3
@@ -250,18 +274,18 @@ export class TaUploadFilesComponent implements OnInit {
                         : 1;
                 const allowSlide =
                     this.modalCarousel?.customClass == 'large' &&
-                    this.files.length > 2
+                    this._files.length > 2
                         ? true
                         : this.modalCarousel?.customClass == 'medium' &&
-                          this.files.length > 1
+                          this._files.length > 1
                         ? true
                         : this.modalCarousel?.customClass == 'small' &&
-                          this.files.length > 0
+                          this._files.length > 0
                         ? true
                         : false;
                 if (allowSlide) {
                     this.modalCarousel?.slideToFile(
-                        this.files.length - slideTo
+                        this._files.length - slideTo
                     );
                 }
                 break;
@@ -272,20 +296,19 @@ export class TaUploadFilesComponent implements OnInit {
     public documentReviewInputEventMethod(data: {
         file: UploadFile;
         message: string;
-    }) {
+    }): void {
         this.documentReviewInputEvent.emit({
             file: data.file,
             message: data.message,
         });
     }
 
-    // TruckBy ngFor files changes
-    public identity(index: number, item: any): number {
+    public identity(index: number, item: any): number { //leave any for now
         return item.name;
     }
 
-    public downloadAllFiles() {
-        this.files.map((item) => {
+    public downloadAllFiles(): void {
+        this._files.map((item) => {
             fetch(item.url).then((t) => {
                 t.blob().then((b) => {
                     const a = document.createElement('a');
@@ -297,20 +320,18 @@ export class TaUploadFilesComponent implements OnInit {
         });
     }
 
-    public onLandscapeCheck(landscape: boolean) {
-        if (landscape) {
-            this.customClassName = 'landscape-details-view';
-        }
+    public onLandscapeCheck(landscape: boolean): void {
+        if (landscape) this.customClassName = 'landscape-details-view';
     }
 
-    public dropZoneClose() {
+    public dropZoneClose(): void {
         this.closeDropzone.emit();
     }
 
-    public fileHover(file: UploadFile) {
+    public fileHover(file: UploadFile): void {
         if (this.customClassName == 'modals') {
             let checkById = file?.realFile ? false : true;
-            this.files.map((item, index) => {
+            this._files.map((item, index) => {
                 if (
                     (checkById && file?.fileId == item.fileId) ||
                     (!checkById && file?.realFile.name == item.realFile.name)
@@ -323,8 +344,8 @@ export class TaUploadFilesComponent implements OnInit {
         }
     }
 
-    public hoverArrow(mod: boolean) {
-        this.files.map((item, index) => {
+    public hoverArrow(mod: boolean): void {
+        this._files.map((item, index) => {
             this.uploadedFiles['_results'][index].hoverArrow(mod);
         });
     }

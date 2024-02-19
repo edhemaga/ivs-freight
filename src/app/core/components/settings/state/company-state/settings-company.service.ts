@@ -23,7 +23,9 @@ import { FormDataService } from '../../../../services/formData/form-data.service
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {
     private destroy$ = new Subject<void>();
-    public companyId: any = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).companyUserId : 0;
+    public companyId: any = localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user')).companyUserId
+        : 0;
 
     constructor(
         private modalService: ModalService,
@@ -92,23 +94,21 @@ export class SettingsCompanyService implements OnDestroy {
     // Main Company
     public updateCompany(data: UpdateCompanyCommand): Observable<object> {
         return this.settingService.apiCompanyPut(data).pipe(
-            tap((res: any) => {
+            tap((y) => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (company: CompanyResponse | any) => {
-                            
                             this.companyStore.add(company);
                             this.companyStore.update(
                                 ({ id }) => id === company.id,
                                 {
-                                    
                                     address: company.address,
                                     phone: company.phone,
                                     ein: company.ein,
                                     email: company.email,
                                     usDot: company.usDot,
-                                    
+                                    logo: company.logo,
                                 }
                             );
 
@@ -242,7 +242,6 @@ export class SettingsCompanyService implements OnDestroy {
                             companySub.unsubscribe();
                         },
                     });
-                  
             })
         );
     }
@@ -272,7 +271,7 @@ export class SettingsCompanyService implements OnDestroy {
     public updateInsurancePolicy(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.settingService.apiCompanyInsurancepolicyPut().pipe(
-            tap(() => {    
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -348,12 +347,11 @@ export class SettingsCompanyService implements OnDestroy {
         return this.settingService.apiCompanyDocumentsPost();
     }
 
-
-    public getCompanyInsurance(){
+    public getCompanyInsurance() {
         return this.settingService.apiCompanyInsurancepolicyGet();
     }
 
-    public getCompanyPayroll(){
+    public getCompanyPayroll() {
         return this.settingService.apiCompanyCompanypayrollGet();
     }
 

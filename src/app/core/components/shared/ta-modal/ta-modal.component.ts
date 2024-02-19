@@ -118,6 +118,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() topDivider: boolean = true;
     @Input() bottomDivider: boolean = true;
     @Input() isConvertedToTemplate?: boolean = false;
+    @Input() isStepper: boolean = false;
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
@@ -165,6 +166,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     public loadTemplateSpinnerVisibility: boolean = false;
     public setMapSettingsSpinnerVisibility: boolean = false;
     public setMapRouteSpinnerVisibility: boolean = false;
+
+    public stepperCounter: number = 0;
 
     // Drag & Drop properties
     public isDropZoneVisible: boolean = false;
@@ -370,6 +373,22 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
+            case 'stepper-next':
+                this.stepperCounter++;
+
+                this.action.emit({ action: action, bool: false });
+
+                break;
+            case 'stepper-back':
+                this.stepperCounter--;
+
+                this.action.emit({ action: action, bool: false });
+
+                break;
+            case 'stepper-save':
+                this.action.emit({ action: action, bool: false });
+
+                break;
             default: {
                 break;
             }
