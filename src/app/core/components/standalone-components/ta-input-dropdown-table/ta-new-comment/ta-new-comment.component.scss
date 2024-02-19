@@ -38,6 +38,10 @@
             width: 18px;
             border-radius: 1px;
 
+            &.disabled {
+                pointer-events: none;
+            }
+
             svg {
                 path {
                     fill: $bw-9;
@@ -104,6 +108,8 @@
     }
 
     .user-name {
+        height: 28px;
+
         .title {
             font-size: 11px;
             position: relative;
@@ -113,7 +119,7 @@
 
         .muted {
             position: relative;
-            bottom: 9px;
+            top: -7px;
             left: 4px;
         }
     }

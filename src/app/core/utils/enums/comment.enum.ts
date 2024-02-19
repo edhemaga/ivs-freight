@@ -3,6 +3,9 @@ export enum ConstantStringCommentEnum {
 
     EMPTY_STRING_PLACEHOLDER = '',
 
+    OPEN_COMMENT = 'open-comment',
+    OPEN_NEW_COMMENT = 'open-new-comment',
+
     CONFIRM = 'Confirm',
     CANCEL = 'Cancel',
     EDIT = 'Edit',

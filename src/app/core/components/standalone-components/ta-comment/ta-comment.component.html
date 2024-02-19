@@ -187,7 +187,7 @@
                                 </ng-container>
                             </div>
 
-                            <div class="user-icons d-flex">
+                            <div class="user-icons d-flex align-items-center">
                                 <ng-container
                                     *ngIf="
                                         checkIfLoggedUserCommented(
@@ -200,9 +200,10 @@
                                         ngbTooltip
                                         mainTooltip="Edit"
                                         type="button"
-                                        tooltipBackground="#424242"
+                                        tooltipBackground="#CCCCCC"
+                                        tooltipColor="#2F2F2F"
+                                        customClass="mb-2"
                                         position="top"
-                                        [margin]="'0 0 10px 0'"
                                         (click)="openEditComment(true)"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
                                     >
@@ -221,10 +222,11 @@
                                     <span
                                         ngbTooltip
                                         mainTooltip="Delete"
-                                        tooltipBackground="#424242"
+                                        tooltipBackground="#CCCCCC"
+                                        tooltipColor="#2F2F2F"
+                                        customClass="mb-2"
                                         position="top"
                                         type="button"
-                                        [margin]="'0 0 10px 0'"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
                                         (click)="
                                             deleteComment(
@@ -248,23 +250,30 @@
                                 <span
                                     class="open-dropdown-icon d-flex align-items-center justify-content-center"
                                 >
-                                    <svg-icon
-                                        [src]="
-                                            'assets/svg/common/fill_arrow_down.svg'
+                                    <ng-container
+                                        *ngIf="
+                                            commentCardsDataDropdown
+                                                .commentContent.length >= 42
                                         "
-                                        [ngClass]="{
-                                            'rotate-svg':
-                                                commentCardsDataDropdown.isOpen,
-                                            'rotate-back':
-                                                !commentCardsDataDropdown.isOpen
-                                        }"
-                                        class="arrow-svg-icon"
-                                        [svgStyle]="{
-                                            'width.px': 10,
-                                            'height.px': 10
-                                        }"
                                     >
-                                    </svg-icon>
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/fill_arrow_down.svg'
+                                            "
+                                            [ngClass]="{
+                                                'rotate-svg':
+                                                    commentCardsDataDropdown.isOpen,
+                                                'rotate-back':
+                                                    !commentCardsDataDropdown.isOpen
+                                            }"
+                                            class="arrow-svg-icon"
+                                            [svgStyle]="{
+                                                'width.px': 10,
+                                                'height.px': 10
+                                            }"
+                                        >
+                                        </svg-icon>
+                                    </ng-container>
                                 </span>
                             </div>
                         </div>
@@ -364,14 +373,16 @@
                                     >• Edited</span
                                 >
                             </ng-container>
+
                             <div class="user-icons d-flex">
                                 <span
                                     ngbTooltip
                                     mainTooltip="Confirm"
                                     type="button"
-                                    tooltipBackground="#424242"
+                                    tooltipBackground="#CCCCCC"
+                                    tooltipColor="#2F2F2F"
+                                    customClass="mb-2"
                                     position="top"
-                                    [margin]="'0 0 10px 0'"
                                     (click)="
                                         editComment(commentCardsDataDropdown.id)
                                     "
@@ -391,10 +402,11 @@
                                 <span
                                     ngbTooltip
                                     mainTooltip="Cancel"
-                                    tooltipBackground="#424242"
+                                    tooltipBackground="#CCCCCC"
+                                    tooltipColor="#2F2F2F"
+                                    customClass="mb-2"
                                     position="top"
                                     type="button"
-                                    [margin]="'0 0 10px 0'"
                                     (click)="openEditComment(false)"
                                     class="cancel-tooltip d-flex align-items-center justify-content-center"
                                 >
@@ -424,9 +436,7 @@
                     spellcheck="false"
                     class="edit-textarea"
                     (paste)="onPaste($event)"
-                >
-                    {{ commentCardsDataDropdown.commentContent }}
-                </div>
+                ></div>
             </div>
         </div>
     </ng-container>

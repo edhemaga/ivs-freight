@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs';
 import {
+    ChangeDetectorRef,
     Component,
     ElementRef,
     Input,
@@ -25,6 +26,7 @@ import { ConstantStringTableDropdownEnum } from '../../../../utils/enums/ta-inpu
 import { LoadTService } from '../../../load/state/load.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { TaInputDropdownTableService } from '../utils/services/ta-input-dropdown-table.service';
 
 @Component({
     selector: 'app-ta-new-comment',
@@ -33,7 +35,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
     templateUrl: './ta-new-comment.component.html',
     styleUrls: ['./ta-new-comment.component.scss'],
 })
-export class TaNewCommentComponent implements OnDestroy {
+export class TaNewCommentComponent implements OnDestroy, OnInit {
     @ViewChild('newCommentEl') newCommentEl: ElementRef;
 
     @Input() commmentsData;
@@ -48,11 +50,19 @@ export class TaNewCommentComponent implements OnDestroy {
 
     public commentAvatar: SafeResourceUrl;
 
+    public isDisabled: boolean = true;
+
     constructor(
         private loadService: LoadTService,
         private commentService: CommentsService,
-        public imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service,
+        private taInputDropdownTableService: TaInputDropdownTableService,
+        private cdr: ChangeDetectorRef
     ) {}
+
+    ngOnInit(): void {
+        this.checkIfNewCommentOpen();
+    }
 
     public getUserFromLocalStorage(): void {
         const user = JSON.parse(
@@ -69,6 +79,10 @@ export class TaNewCommentComponent implements OnDestroy {
             case ConstantStringTableDropdownEnum.OPEN_NEW_COMMENT:
                 this.openNewComment = true;
 
+                this.taInputDropdownTableService.setDropdownCommentNewCommentState(
+                    ConstantStringTableDropdownEnum.OPEN_NEW_COMMENT
+                );
+
                 setTimeout(() => {
                     this.setCommentPlaceholder();
                 }, 100);
@@ -82,7 +96,6 @@ export class TaNewCommentComponent implements OnDestroy {
                     entityTypeId: loadId,
                     commentContent: this.newCommentEl.nativeElement.textContent,
                 };
-
                 this.commentService
                     .createComment(comment)
                     .pipe(takeUntil(this.destroy$))
@@ -136,12 +149,42 @@ export class TaNewCommentComponent implements OnDestroy {
         if (commentInputDiv.textContent.trim() === this.placeholder)
             commentInputDiv.textContent =
                 ConstantStringTableDropdownEnum.EMPTY_STRING_PLACEHOLDER;
+
+        this.checkIfCommentIsEmpty();
+    }
+
+    public checkIfCommentIsEmpty(): boolean {
+        if (this.newCommentEl) {
+            const divContent =
+                this.newCommentEl.nativeElement.textContent.trim();
+
+            return (this.isDisabled =
+                divContent ===
+                    ConstantStringTableDropdownEnum.WRITE_COMMENT_PLACEHOLDER ||
+                divContent ===
+                    ConstantStringTableDropdownEnum.EMPTY_STRING_PLACEHOLDER);
+        }
+
+        return (this.isDisabled = false);
     }
 
     private sanitazeAvatar(): void {
         this.commentAvatar = this.user?.avatar
             ? this.imageBase64Service.sanitizer(this.user?.avatar)
             : null;
+    }
+
+    private checkIfNewCommentOpen(): void {
+        this.taInputDropdownTableService
+            .getDropdownCommentNewCommentState()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((opened) => {
+                if (opened === ConstantStringTableDropdownEnum.OPEN_COMMENT) {
+                    this.openNewComment = false;
+
+                    this.cdr.detectChanges();
+                }
+            });
     }
 
     ngOnDestroy(): void {

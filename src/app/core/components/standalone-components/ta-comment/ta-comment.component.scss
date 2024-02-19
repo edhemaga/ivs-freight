@@ -285,6 +285,8 @@
                     right: 0;
                     visibility: hidden;
                     gap: 4px;
+                    height: 18px;
+                    padding-top: 4px;
 
                     .rotate-svg {
                         svg {
@@ -321,7 +323,6 @@
                     .edit-tooltip {
                         width: 18px;
                         height: 18px;
-                        margin-top: 4px;
 
                         .edit-icon {
                             svg {
@@ -343,7 +344,13 @@
                     .open-dropdown-icon {
                         width: 18px;
                         height: 18px;
-                        margin-top: 4px;
+                        margin-top: 2px;
+
+                        svg {
+                            path {
+                                fill: $ta-light-grey-6;
+                            }
+                        }
                     }
                 }
             }
@@ -433,6 +440,7 @@
         overflow-y: hidden;
         max-height: fit-content;
         min-height: 18px;
+        cursor: text;
 
         &::-moz-selection {
             color: $ta-black-2;
