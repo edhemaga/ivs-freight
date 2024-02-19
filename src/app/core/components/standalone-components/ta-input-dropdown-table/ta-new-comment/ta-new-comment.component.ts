@@ -35,7 +35,7 @@ import { TaInputDropdownTableService } from '../utils/services/ta-input-dropdown
     templateUrl: './ta-new-comment.component.html',
     styleUrls: ['./ta-new-comment.component.scss'],
 })
-export class TaNewCommentComponent implements OnDestroy {
+export class TaNewCommentComponent implements OnDestroy, OnInit {
     @ViewChild('newCommentEl') newCommentEl: ElementRef;
 
     @Input() commmentsData;
