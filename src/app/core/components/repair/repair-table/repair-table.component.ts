@@ -1181,6 +1181,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     this.repairBackFilter(this.backFilterQuery);
                 } else {
+                    this.shopFilterQuery.sort = event.direction;
                     this.shopBackFilter(this.shopFilterQuery);
                 }
             } else {
@@ -1252,25 +1253,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // Delete
         else if (
-            event.type === ConstantStringTableComponentsEnum.DELETE_REPAIR
+            event.type === ConstantStringTableComponentsEnum.DELETE_REPAIR ||
+            event.type === ConstantStringTableComponentsEnum.DELETE
         ) {
             switch (this.selectedTab) {
-                case ConstantStringTableComponentsEnum.INACTIVE:
-                    this.modalService.openModal(
-                        ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.DELETE },
-                        {
-                            type: ConstantStringTableComponentsEnum.DELETE,
-                        }
-                    );
-
-                    this.repairService
-                        .deleteRepairById(event.id, this.selectedTab)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe();
-
-                    break;
-
                 case ConstantStringTableComponentsEnum.REPAIR_SHOP:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
@@ -1279,11 +1265,20 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             type: ConstantStringTableComponentsEnum.DELETE,
                         }
                     );
+                    this.confiramtionService.confirmationData$.subscribe(
+                        (response) => {
+                            if (
+                                response.type ===
+                                ConstantStringTableComponentsEnum.DELETE
+                            ) {
+                                this.repairService
+                                    .deleteRepairShopById(event.id)
+                                    .pipe(takeUntil(this.destroy$))
+                                    .subscribe();
+                            }
+                        }
+                    );
 
-                    this.repairService
-                        .deleteRepairById(event.id, this.selectedTab)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe();
                     break;
 
                 default:
@@ -1306,7 +1301,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                         this.selectedTab
                                     )
                                     .pipe(takeUntil(this.destroy$))
-                                    .subscribe();
+                                    .subscribe({
+                                        next: () => {
+                                            this.updateDataCount();
+                                        },
+                                        error: () => {},
+                                    });
                             }
                         }
                     );
