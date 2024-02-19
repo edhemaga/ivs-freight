@@ -1270,12 +1270,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (
                                 response.type ===
                                 ConstantStringTableComponentsEnum.DELETE
-                            ) {
+                            )
                                 this.repairService
                                     .deleteRepairShopById(event.id)
                                     .pipe(takeUntil(this.destroy$))
                                     .subscribe();
-                            }
                         }
                     );
 
