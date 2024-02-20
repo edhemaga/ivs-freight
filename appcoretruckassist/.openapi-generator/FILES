@@ -536,6 +536,8 @@ model/payrollBonusDeductionResponse.ts
 model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
+model/payrollCountItemResponse.ts
+model/payrollCountsResponse.ts
 model/payrollCreditDescriptionAutocompleteResponse.ts
 model/payrollCreditMinimalResponse.ts
 model/payrollCreditModalResponse.ts

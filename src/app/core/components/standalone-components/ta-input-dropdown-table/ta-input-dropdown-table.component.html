@@ -106,9 +106,18 @@
                         class="total-number-fleet count d-flex align-items-center"
                     >
                         <span class="counter ta-font-extra-bold text-white">
-                            {{ commmentsData?.commentsCount }}
+                            {{ _data?.commentsCount }}
                         </span>
                     </span>
+                </div>
+
+                <div class="filter-drodpown d-flex">
+                    <span class="filter-date ta-font-medium">Date</span>
+
+                    <svg-icon
+                        class="svg-date"
+                        [src]="'assets/svg/sort-by-descending.svg'"
+                    ></svg-icon>
                 </div>
             </div>
 

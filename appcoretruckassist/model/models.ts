@@ -465,6 +465,8 @@ export * from './payrollBonusDeductionResponse';
 export * from './payrollBonusDescriptionAutocompleteResponse';
 export * from './payrollBonusModalResponse';
 export * from './payrollBonusResponse';
+export * from './payrollCountItemResponse';
+export * from './payrollCountsResponse';
 export * from './payrollCreditDescriptionAutocompleteResponse';
 export * from './payrollCreditMinimalResponse';
 export * from './payrollCreditModalResponse';

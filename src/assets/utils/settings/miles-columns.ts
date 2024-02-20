@@ -436,6 +436,7 @@ export function getMilesColumnsDefinition() {
             title: 'Actions',
             field: 'action',
             name: '',
+            sortName: 'action',
             hidden: false,
             width: 42,
             minWidth: 42,
