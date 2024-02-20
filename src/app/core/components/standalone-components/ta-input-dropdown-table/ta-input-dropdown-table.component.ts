@@ -1,5 +1,5 @@
 import { Subject, takeUntil } from 'rxjs';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
 import {
     NgbModule,
     NgbPopoverModule,
@@ -58,6 +58,8 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     @Input() set data(value: CardDetails) {
         this._data = value;
         this.filteredData = { ...value };
+
+        this.cdr.detectChanges();
     }
     @Input() svg: string;
     @Input() type: string;
@@ -82,7 +84,8 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
-        public imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service,
+        private cdr: ChangeDetectorRef
     ) {}
 
     public closeDropdownFromComment(): void {
@@ -232,7 +235,6 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         this.tooltip = tooltip;
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
-
         tooltip.open({ commentData: card });
     }
 
