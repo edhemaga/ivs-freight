@@ -1,11 +1,11 @@
-export enum Commands {
+export enum AddressCommands {
     CONFIRM = 'confirm',
     CANCEL = 'cancel',
     ENTER = 'Enter',
     ESCAPE = 'Escape',
 }
 
-export enum StopTypes {
+export enum AddressStopTypes {
     EMPTY = 'EMPTY',
     LOADED = 'LOADED',
 }

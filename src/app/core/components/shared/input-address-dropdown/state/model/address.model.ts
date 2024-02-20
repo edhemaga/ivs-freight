@@ -1,5 +1,5 @@
 import { AddressEntity } from "appcoretruckassist";
-import { Commands } from "../enum/addres.enum";
+import { AddressCommands } from "../enum/addres.enum";
 
 export interface AddressList {
     id: number;
@@ -31,5 +31,5 @@ export interface AddressData {
     address: AddressEntity;
     longLat: LongLat;
     valid: boolean;
-    type?: Commands
+    type?: AddressCommands
 }

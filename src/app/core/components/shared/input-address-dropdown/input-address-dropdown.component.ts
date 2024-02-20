@@ -46,8 +46,8 @@ import { CommonModule } from '@angular/common';
 import {
     AddressLayers,
     AddressType,
-    Commands,
-    StopTypes,
+    AddressCommands,
+    AddressStopTypes,
 } from './state/enum/addres.enum';
 import {
     AddressData,
@@ -112,11 +112,11 @@ export class InputAddressDropdownComponent
     handleKeyboardEvent(event: KeyboardEvent) {
         const key = event.key;
         if (this.inputConfig.name == 'RoutingAddress') {
-            if (key === Commands.ENTER) {
+            if (key === AddressCommands.ENTER) {
                 if (this.currentAddressData) {
-                    this.onCommands(event, Commands.CONFIRM);
+                    this.onCommands(event, AddressCommands.CONFIRM);
                 }
-            } else if (key === Commands.ESCAPE) {
+            } else if (key === AddressCommands.ESCAPE) {
                 this.clearInput(event);
             }
         }
@@ -131,7 +131,7 @@ export class InputAddressDropdownComponent
     public addressExpanded: boolean = false;
     public chosenFromDropdown: boolean = false;
     private allowValidation: boolean = false;
-    public stopType: string = StopTypes.EMPTY;
+    public stopType: string = AddressStopTypes.EMPTY;
     private requestSent: boolean = false;
 
     private destroy$ = new Subject<void>();
@@ -213,7 +213,7 @@ export class InputAddressDropdownComponent
             )
             .subscribe((res) => {
                 let isValid = true;
-                if (this.searchLayers[0] == AddressLayers.ADDRESS) {
+                if (this.searchLayers[0] === AddressLayers.ADDRESS) {
                     isValid = this.checkAddressValidation(
                         this.activeAddress?.address
                     );
@@ -325,13 +325,13 @@ export class InputAddressDropdownComponent
         }
     }
 
-    public onCommands(e: KeyboardEvent, type: Commands): void {
+    public onCommands(e: KeyboardEvent, type: AddressCommands): void {
         e.preventDefault();
         e.stopPropagation();
 
         if (
-            (type === Commands.CONFIRM && this.currentAddressData) ||
-            type === Commands.CANCEL
+            (type === AddressCommands.CONFIRM && this.currentAddressData) ||
+            type === AddressCommands.CANCEL
         ) {
             this.currentAddressData.type = type;
             this.commandEvent.emit(this.currentAddressData ?? {});
@@ -369,11 +369,11 @@ export class InputAddressDropdownComponent
 
     public changeStopType(): void {
         let flag = false;
-        if (this.stopType === StopTypes.EMPTY) {
-            this.stopType = StopTypes.LOADED;
+        if (this.stopType === AddressStopTypes.EMPTY) {
+            this.stopType = AddressStopTypes.LOADED;
             flag = true;
         } else {
-            this.stopType = StopTypes.EMPTY;
+            this.stopType = AddressStopTypes.EMPTY;
         }
 
         this.changeFlag.emit(flag);
