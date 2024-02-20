@@ -23,7 +23,7 @@ export class ApplicantTService {
     ) {}
 
     public addApplicantAdmin(data: CreateApplicantCommand): Observable<object> {
-        return this.applicantService.apiApplicantAdminPost(data).pipe(
+        return this.applicantService.apiApplicantAdminCreatePost(data).pipe(
             tap((res: any) => {
                 const subApplicant = this.getApplicantByIdAdmin(
                     res.id
@@ -59,7 +59,7 @@ export class ApplicantTService {
     public updateApplicantAdmin(
         data: UpdateApplicantCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantAdminPut(data);
+        return this.applicantService.apiApplicantAdminUpdatePut(data);
     }
 
     // Get Applicant Admin List

@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface SignUpCompanyCommand { 
-    firstName?: string | null;
-    lastName?: string | null;
-    companyName?: string | null;
-    ein?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    password?: string | null;
+export interface PayrollCountItemResponse { 
+    count?: number;
+    value?: number | null;
+    status?: EnumValue;
 }
 
