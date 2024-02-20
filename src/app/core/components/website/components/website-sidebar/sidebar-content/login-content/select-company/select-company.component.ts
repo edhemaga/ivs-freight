@@ -18,7 +18,6 @@ import moment from 'moment';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 
 // services
-import { AuthStoreService } from 'src/app/core/components/authentication/state/auth.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 // models
@@ -45,7 +44,6 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     constructor(
         @Inject(DOCUMENT) private document: HTMLDocument,
         private router: Router,
-        private accountStoreService: AuthStoreService,
         private websiteAuthService: WebsiteAuthService,
         private formBuilder: UntypedFormBuilder
     ) {}
@@ -162,7 +160,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         const center: any = this.document.querySelectorAll('.slick-center');
         let id = center[0]?.firstChild?.id;
 
-        this.accountStoreService
+        this.websiteAuthService
             .selectCompanyAccount({
                 companyId: parseInt(id),
             })

@@ -32,6 +32,7 @@
                     type="button"
                     tooltipBackground="#424242"
                     position="top"
+                    [ngClass]="{ disabled: isDisabled }"
                     class="confirm-tooltip d-flex align-items-center justify-content-center"
                 >
                     <svg-icon

@@ -47,7 +47,6 @@ import { ApplicantSphFormResolver } from './core/components/applicant/state/reso
 import { MilesResolverService } from './core/components/miles/state/miles-resolver.service';
 import { DispatcherResolverService } from './core/components/dispatch/state/dispatcher-resolver.service';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
-import { HideContentGuard } from './core/guards/hideContent.guard';
 import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './core/components/routing/state/routing-state/routing-state.resolver';
 import { TelematicResolver } from './core/components/telematic/state/telematic-state.resolver';
@@ -67,14 +66,6 @@ const routes: Routes = [
 
     // Auth Routes
 
-    {
-        path: 'auth',
-        loadChildren: () =>
-            import('./core/components/authentication/auth.module').then(
-                (m) => m.AuthModule
-            ),
-        canActivate: [HideContentGuard],
-    },
     {
         path: 'api/account/signupuser',
         component: RegisterUserHelperComponent,

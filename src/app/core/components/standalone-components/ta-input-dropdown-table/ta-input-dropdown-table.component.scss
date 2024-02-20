@@ -139,6 +139,22 @@
         font-size: 11px;
         line-height: 18px;
         margin-bottom: 4px;
+
+        .filter-drodpown {
+            gap: 4px;
+
+            .filter-date {
+                color: $white;
+            }
+        }
+
+        .svg-date {
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
     }
 
     // search input

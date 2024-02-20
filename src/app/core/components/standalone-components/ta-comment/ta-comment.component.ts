@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
@@ -30,6 +31,7 @@ import { LoadTService } from '../../load/state/load.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TaInputDropdownTableService } from '../ta-input-dropdown-table/utils/services/ta-input-dropdown-table.service';
 
 // utils
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
@@ -117,12 +119,17 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private commentsService: CommentsService,
         private loadService: LoadTService,
         private modalService: ModalService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private taInputDropdownTableService: TaInputDropdownTableService,
+        private cdr: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
         this.sanitazeAvatar();
+
         this.commentData?.commentContent && this.patchCommentData();
+
+        this.checkIfNewCommentOpen();
     }
 
     ngAfterViewInit(): void {
@@ -134,7 +141,23 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public openEditComment(openClose: boolean): void {
-        this.editingCardComment = openClose;
+        if (openClose) {
+            this.taInputDropdownTableService.setDropdownCommentNewCommentState(
+                ConstantStringCommentEnum.OPEN_COMMENT
+            );
+            this.editingCardComment = openClose;
+        } else {
+            this.taInputDropdownTableService.setDropdownCommentNewCommentState(
+                ConstantStringCommentEnum.EMPTY_STRING_PLACEHOLDER
+            );
+            this.editingCardComment = openClose;
+        }
+
+        setTimeout(() => {
+            if (this.editCommentEl)
+                this.editCommentEl.nativeElement.textContent =
+                    this.commentCardsDataDropdown.commentContent;
+        }, 200);
     }
 
     public editComment(commentId: number): void {
@@ -353,6 +376,19 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onPaste(event: ClipboardEvent): void {
         PasteHelper.onPaste(event);
+    }
+
+    private checkIfNewCommentOpen(): void {
+        this.taInputDropdownTableService
+            .getDropdownCommentNewCommentState()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((opened) => {
+                if (opened === ConstantStringCommentEnum.OPEN_NEW_COMMENT) {
+                    this.editingCardComment = false;
+
+                    this.cdr.detectChanges();
+                }
+            });
     }
 
     ngOnDestroy(): void {

@@ -33,6 +33,8 @@ export interface UpdateCompanyCommand {
     companyType?: number | null;
     dateOfIncorporation?: string | null;
     address?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
     prefix?: string | null;
     starting?: number;
     sufix?: string | null;
