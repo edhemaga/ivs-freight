@@ -9,9 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckMinimalResponse } from './truckMinimalResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
+import { TruckOwnerResponse } from './truckOwnerResponse';
 import { EnumValue } from './enumValue';
+import { TrailerOwnerResponse } from './trailerOwnerResponse';
 
 
 export interface OwnerTableResponse { 
@@ -29,7 +29,7 @@ export interface OwnerTableResponse {
     routingNumber?: string | null;
     address?: string | null;
     fileCount?: number | null;
-    trucks?: Array<TruckMinimalResponse> | null;
-    trailers?: Array<TrailerMinimalResponse> | null;
+    trucks?: Array<TruckOwnerResponse> | null;
+    trailers?: Array<TrailerOwnerResponse> | null;
 }
 
