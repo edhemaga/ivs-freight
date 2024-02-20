@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { OnDestroy } from '@angular/core';
-import { GeolocationService } from './../../../../../appcoretruckassist/api/geolocation.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+
+//Models
 import { AddressListResponse, AddressResponse } from 'appcoretruckassist';
+
+//Services
+import { GeolocationService } from './../../../../../appcoretruckassist/api/geolocation.service';
 
 @Injectable({
     providedIn: 'root',

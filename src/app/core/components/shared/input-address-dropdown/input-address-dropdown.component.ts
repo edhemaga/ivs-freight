@@ -43,9 +43,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 
 //Models
-import { AddressEntity } from 'appcoretruckassist';
-import { Commands } from './enums/addres-enums';
-import { AddressData, AddressList, CommandsHandler } from './models/address-models';
+import {
+    AddressLayers,
+    AddressType,
+    Commands,
+    StopTypes,
+} from './state/enum/addres.enum';
+import {
+    AddressData,
+    AddressList,
+    CommandsHandler,
+} from './state/model/address.model';
 
 @Component({
     selector: 'app-input-address-dropdown',
@@ -75,7 +83,7 @@ export class InputAddressDropdownComponent
     @ViewChild('inputDropdown') inputDropdown: TaInputDropdownComponent;
 
     @Input() public activeAddress: AddressList;
-    
+
     @Input() public inputConfig: ITaInput;
     @Input() set placeholderType(value: string) {
         this.checkSearchLayers(value);
@@ -85,17 +93,15 @@ export class InputAddressDropdownComponent
     @Input() public closedBorder: boolean = false;
     @Input() public incorrectValue: boolean;
     @Input() public hideEmptyLoaded: boolean = false;
-    
-    @Output() selectedAddress: EventEmitter<AddressData> = new EventEmitter<AddressData
-    >(null);
+
+    @Output() selectedAddress: EventEmitter<AddressData> =
+        new EventEmitter<AddressData>(null);
 
     @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(
         null
     );
 
-    @Output() commandEvent: EventEmitter<any> = new EventEmitter<boolean>(
-        null
-    ); //leave any for now
+    @Output() commandEvent: EventEmitter<any> = new EventEmitter<boolean>(null); //leave any for now
 
     @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -106,11 +112,11 @@ export class InputAddressDropdownComponent
     handleKeyboardEvent(event: KeyboardEvent) {
         const key = event.key;
         if (this.inputConfig.name == 'RoutingAddress') {
-            if (key === 'Enter') {
+            if (key === Commands.ENTER) {
                 if (this.currentAddressData) {
                     this.onCommands(event, Commands.CONFIRM);
                 }
-            } else if (key === 'Escape') {
+            } else if (key === Commands.ESCAPE) {
                 this.clearInput(event);
             }
         }
@@ -125,7 +131,7 @@ export class InputAddressDropdownComponent
     public addressExpanded: boolean = false;
     public chosenFromDropdown: boolean = false;
     private allowValidation: boolean = false;
-    public stopType: string = 'EMPTY';
+    public stopType: string = StopTypes.EMPTY;
     private requestSent: boolean = false;
 
     private destroy$ = new Subject<void>();
@@ -207,7 +213,7 @@ export class InputAddressDropdownComponent
             )
             .subscribe((res) => {
                 let isValid = true;
-                if (this.searchLayers[0] == 'Address') {
+                if (this.searchLayers[0] == AddressLayers.ADDRESS) {
                     isValid = this.checkAddressValidation(
                         this.activeAddress?.address
                     );
@@ -245,7 +251,7 @@ export class InputAddressDropdownComponent
     public onCloseDropdown(e: boolean): void {
         let isValid = true;
         setTimeout(() => {
-            if (this.searchLayers[0] == 'Address') {
+            if (this.searchLayers[0] === AddressLayers.ADDRESS) {
                 isValid = this.checkAddressValidation(
                     this.activeAddress?.address
                 );
@@ -286,7 +292,7 @@ export class InputAddressDropdownComponent
                     ? { ...event, address: event?.name }
                     : null;
                 if (event?.name) {
-                    if (this.searchLayers[0] == 'Address') {
+                    if (this.searchLayers[0] === AddressLayers.ADDRESS) {
                         const isValid = this.checkAddressValidation(event.name);
 
                         if (isValid) {
@@ -324,8 +330,8 @@ export class InputAddressDropdownComponent
         e.stopPropagation();
 
         if (
-            (type == Commands.CONFIRM && this.currentAddressData) ||
-            type == Commands.CANCEL
+            (type === Commands.CONFIRM && this.currentAddressData) ||
+            type === Commands.CANCEL
         ) {
             this.currentAddressData.type = type;
             this.commandEvent.emit(this.currentAddressData ?? {});
@@ -336,9 +342,7 @@ export class InputAddressDropdownComponent
     }
 
     public addressExpand(): void {
-        if (!this.addressExpanded) {
-            this.addressExpanded = true;
-        }
+        if (!this.addressExpanded) this.addressExpanded = true;
     }
 
     public closeAddress(): void {
@@ -356,20 +360,20 @@ export class InputAddressDropdownComponent
 
     private checkSearchLayers(value: string): void {
         this.searchLayers =
-            value === 'longAddress'
-                ? ['Address']
-                : value === 'shortAddress'
-                ? ['Locality']
+            value === AddressType.LONG_ADDRESS
+                ? [AddressLayers.ADDRESS]
+                : value === AddressType.SHORT_ADDRESS
+                ? [AddressLayers.LOCALITY]
                 : [];
     }
 
     public changeStopType(): void {
         let flag = false;
-        if (this.stopType === 'EMPTY') {
-            this.stopType = 'LOADED';
+        if (this.stopType === StopTypes.EMPTY) {
+            this.stopType = StopTypes.LOADED;
             flag = true;
         } else {
-            this.stopType = 'EMPTY';
+            this.stopType = StopTypes.EMPTY;
         }
 
         this.changeFlag.emit(flag);

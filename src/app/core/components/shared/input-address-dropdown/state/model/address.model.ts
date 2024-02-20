@@ -1,5 +1,5 @@
-import { AddressEntity, AddressResponse } from "appcoretruckassist";
-import { Commands } from "../enums/addres-enums";
+import { AddressEntity } from "appcoretruckassist";
+import { Commands } from "../enum/addres.enum";
 
 export interface AddressList {
     id: number;
