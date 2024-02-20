@@ -134,7 +134,7 @@ export function getToolsAccountsColumnDefinition() {
             title: 'Label',
             field: 'lable',
             name: 'Label',
-            sortName: 'labelName',
+            sortName: 'label',
             isPined: false,
             isComputed: false,
             hidden: false,
