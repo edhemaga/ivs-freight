@@ -84,13 +84,13 @@ export class ApplicantActionsService {
     public verifyApplicant(
         data: VerifyApplicantCommand
     ): Observable<ApplicantResponse> {
-        return this.applicantService.apiApplicantAdminVerifyPost(data);
+        return this.applicantService.apiApplicantVerifyPost(data);
     }
 
     public acceptApplicant(
         data: AcceptApplicationCommand
     ): Observable<ApplicantResponse> {
-        return this.applicantService.apiApplicantAdminAcceptPost(data);
+        return this.applicantService.apiApplicantAcceptPost(data);
     }
 
     public createPersonalInfo(data: any): Observable<CreateResponse> {

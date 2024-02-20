@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -14,13 +14,8 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
 import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
 import { WebsiteActionsService } from '../../../../../state/service/website-actions.service';
 
-// components
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-
 // validations
 import {
-    addressUnitValidation,
-    addressValidation,
     einNumberRegex,
     firstNameValidation,
     lastNameValidation,
@@ -32,7 +27,7 @@ import {
 import { ConstantString } from '../../../../../state/enum/const-string.enum';
 
 // models
-import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
+import { SignUpCompanyCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-register-company',
@@ -40,14 +35,9 @@ import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
     styleUrls: ['./register-company.component.scss'],
 })
 export class RegisterCompanyComponent implements OnInit, OnDestroy {
-    @ViewChild('inputAddress')
-    public inputAddress: InputAddressDropdownComponent;
-
     private destroy$ = new Subject<void>();
 
     public registerCompanyForm: UntypedFormGroup;
-
-    public selectedAddress: AddressEntity = null;
 
     public displaySpinner: boolean = false;
 
@@ -70,8 +60,6 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             lastName: [null, [Validators.required, ...lastNameValidation]],
             companyName: [null, Validators.required],
             ein: [null, [Validators.required, einNumberRegex]],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
             phone: [null, [Validators.required, phoneFaxRegex]],
             email: [null, [Validators.required]],
             password: [null, [Validators.required, ...passwordValidation]],
@@ -86,19 +74,6 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             ConstantString.EMAIL_ADDRESS,
             this.destroy$
         );
-    }
-
-    public handleAddressChange(event: {
-        address: any;
-        longLat: any;
-        valid: boolean;
-    }): void {
-        this.selectedAddress = event.address;
-
-        if (!event.valid)
-            this.registerCompanyForm
-                .get(ConstantString.ADDRESS)
-                .setErrors({ invalid: true });
     }
 
     public passwordsNotSame(): void {
@@ -156,12 +131,6 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     }
 
     private registerCompany(): void {
-        if (
-            this.inputAddress?.inputDropdown?.inputRef?.focusInput &&
-            this.inputAddress?.addresList?.length
-        )
-            return;
-
         if (this.registerCompanyForm.invalid) {
             this.inputService.markInvalid(this.registerCompanyForm);
 
@@ -170,20 +139,11 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
         this.displaySpinner = true;
 
-        const {
-            address,
-            addressUnit,
-            confirmPassword,
-            ...registerCompanyForm
-        } = this.registerCompanyForm.value;
-
-        this.selectedAddress.addressUnit = this.registerCompanyForm.get(
-            ConstantString.ADDRESS_UNIT
-        ).value;
+        const { confirmPassword, ...registerCompanyForm } =
+            this.registerCompanyForm.value;
 
         const saveData: SignUpCompanyCommand = {
             ...registerCompanyForm,
-            address: this.selectedAddress,
         };
 
         this.websiteAuthService
