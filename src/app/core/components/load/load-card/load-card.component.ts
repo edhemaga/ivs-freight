@@ -1,12 +1,20 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardDetails, SendDataCard } from '../../shared/model/cardTableData';
+import { Router } from '@angular/router';
+
+// enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
+// pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
+
+// models
 import { CardRows, LoadTableData } from '../../shared/model/cardData';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-load-card',

@@ -1,12 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+
+// models
 import { CardDetails, SendDataCard } from '../../shared/model/cardTableData';
+import { CardRows } from '../../shared/model/cardData';
+
+// enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+
+// pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TimeFormatPipe } from 'src/app/core/pipes/time-format-am-pm.pipe';
-import { CardRows } from '../../shared/model/cardData';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-customer-card',
