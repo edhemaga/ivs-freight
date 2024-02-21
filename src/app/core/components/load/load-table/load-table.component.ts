@@ -640,20 +640,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapLoadData(data: LoadModel): LoadModel {
-        const commentsWithAvatarColor = Object.values(data?.comments).map(
-            (comment) => {
-                this.mapingIndex++;
-                return {
-                    ...comment,
-                    avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
-                        this.mapingIndex
-                    ),
-                    textShortName: this.nameInitialsPipe.transform(
-                        comment.companyUser.fullName
-                    ),
-                };
-            }
-        );
+        let commentsWithAvatarColor;
+
+        if (data.comments) {
+            commentsWithAvatarColor = Object.values(data?.comments).map(
+                (comment) => {
+                    this.mapingIndex++;
+                    return {
+                        ...comment,
+                        avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                            this.mapingIndex
+                        ),
+                        textShortName: this.nameInitialsPipe.transform(
+                            comment.companyUser.fullName
+                        ),
+                    };
+                }
+            );
+        }
 
         return {
             ...data,

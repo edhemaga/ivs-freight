@@ -84,6 +84,9 @@ import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/cons
 
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
+// delete after backend is created
+import { DisplayCustomerLikesDislikes } from '../customer-likes-dislakes';
+
 @Component({
     selector: 'app-customer-table',
     templateUrl: './customer-table.component.html',
@@ -680,7 +683,6 @@ export class CustomerTableComponent
         this.customerTableData = this.viewData;
     }
 
-    // Map Broker Data
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
         return {
             ...data,
@@ -727,16 +729,7 @@ export class CustomerTableComponent
                 ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.revenue)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount
-                    ? data.upCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-                dislikeCount: data?.downCount
-                    ? data.downCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-            },
+            reviews: null,
             tableContact: data?.brokerContacts?.length
                 ? data.brokerContacts.length
                 : 0,
@@ -759,7 +752,6 @@ export class CustomerTableComponent
         };
     }
 
-    // Map Shipper Data
     private mapShipperData(data: ShipperResponse): MappedShipperBroker {
         return {
             ...data,
@@ -783,16 +775,7 @@ export class CustomerTableComponent
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
                     : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount
-                    ? data.upCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-                dislikeCount: data?.downCount
-                    ? data.downCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-            },
+            reviews: null,
             tableContact: data?.shipperContacts?.length
                 ? data.shipperContacts.length
                 : 0,

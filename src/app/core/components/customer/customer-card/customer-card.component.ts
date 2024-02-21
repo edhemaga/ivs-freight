@@ -1,28 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CardDetails, SendDataCard } from '../../shared/model/cardTableData';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
-import { CardRows, LoadTableData } from '../../shared/model/cardData';
+import { TimeFormatPipe } from 'src/app/core/pipes/time-format-am-pm.pipe';
+import { CardRows } from '../../shared/model/cardData';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-load-card',
-    templateUrl: './load-card.component.html',
-    styleUrls: ['./load-card.component.scss'],
-    providers: [FormatNumberMiPipe, formatCurrency],
+    selector: 'app-customer-card',
+    templateUrl: './customer-card.component.html',
+    styleUrls: ['./customer-card.component.scss'],
+    providers: [formatCurrency, TimeFormatPipe],
 })
-export class LoadCardComponent {
+export class CustomerCardComponent implements OnInit {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
-    // All data
     @Input() viewData: CardDetails[];
-    @Input() tableData: LoadTableData[];
-
-    // Page
-    @Input() selectedTab: string;
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -32,22 +27,24 @@ export class LoadCardComponent {
     @Input() activeTab: string;
     @Input() cardTitleLink: string;
 
-    public mySelection: { id: number; tableData: CardDetails }[] = [];
-
     public isCardFlipped: Array<number> = [];
+
+    // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
-    public dropDownActive: number;
-    public cardData: CardDetails;
 
     public isCardFlippedArray: number[] = [];
 
+    public mySelection: { id: number; tableData: CardDetails }[] = [];
+
     constructor(
         private formatCurrencyPipe: formatCurrency,
-        private formatNumberMi: FormatNumberMiPipe,
+        private timeFormatPipe: TimeFormatPipe,
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
         private router: Router
     ) {}
+
+    ngOnInit(): void {}
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
@@ -67,15 +64,7 @@ export class LoadCardComponent {
         this.tableService.sendRowsSelected(this.mySelection);
     }
 
-    // For closed tab status return true false to style status
-    public checkLoadStatus(
-        card: CardDetails,
-        endpoint: string,
-        value: string
-    ): boolean {
-        return this.getValueByStringPath(card, endpoint) === value;
-    }
-
+    //Remove quotes from string to convert into endpoint
     public getValueByStringPath(
         obj: CardDetails,
         ObjKey: string,
@@ -102,9 +91,9 @@ export class LoadCardComponent {
                     ).reduce((acc, part) => acc && acc[part], obj)
                 );
 
-            // Transform to miles format
-            case ConstantStringTableComponentsEnum.MILES_3:
-                return this.formatNumberMi.transform(
+            // Transform 24h time to am-pm
+            case ConstantStringTableComponentsEnum.AM_PM:
+                return this.timeFormatPipe.transform(
                     ObjKey.split(
                         ConstantStringTableComponentsEnum.DOT_1
                     ).reduce((acc, part) => acc && acc[part], obj)

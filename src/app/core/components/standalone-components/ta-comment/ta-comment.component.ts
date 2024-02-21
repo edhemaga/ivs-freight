@@ -140,6 +140,17 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.formatDatePipe.transform(date);
     }
 
+    public abbreviateFullName(fullName: string): string {
+        const words = fullName.split(' ');
+        if (fullName.length > 19) {
+            if (words.length > 1) {
+                return `${words[0].charAt(0)}. ${words.slice(1).join(' ')}`;
+            }
+        } else {
+            return fullName;
+        }
+    }
+
     public openEditComment(openClose: boolean): void {
         if (openClose) {
             this.taInputDropdownTableService.setDropdownCommentNewCommentState(

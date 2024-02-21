@@ -25,10 +25,20 @@ export interface MappedShipperBroker extends ShipperResponse {
         amount: string;
     };
     tableRaiting?: {
-        hasLiked?: boolean;
-        hasDislike?: boolean;
-        likeCount?: number | string;
-        dislikeCount?: number | string;
+        id: 1;
+        fullName: string;
+        date: string;
+        me: boolean;
+        avatar: string;
+        noAvatar: {
+            color: string;
+            backgroundColor: string;
+            textShort: string;
+        };
+        liked: boolean;
+        disliked: boolean;
+        comment: string;
+        edited: boolean;
     };
     tableContact?: number;
     tableAdded?: string;
@@ -155,6 +165,25 @@ export interface Trailers {
     };
 }
 
+export interface Rating {
+    avatarColor?: {
+        background?: string;
+        color?: string;
+    };
+    commentContent?: string;
+    companyUser?: {
+        id: number;
+        avatar?: string;
+        fullName?: string;
+    };
+    date?: string;
+    disliked?: boolean;
+    liked?: boolean;
+    edited?: boolean;
+    me?: true;
+    textShortName?: string;
+}
+
 export interface CardDetails {
     filteredTrucks?: Truck[];
     trailers?: Trailers[];
@@ -233,7 +262,7 @@ export interface CardDetails {
         quantity?: number;
         subtotal?: number;
     };
-
+    rating?: Rating[];
     textCommodity?: string;
     textMiles?: string;
     textWeight?: string;

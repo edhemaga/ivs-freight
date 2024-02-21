@@ -27,7 +27,18 @@
     </ng-container>
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
-            <app-truckassist-cards
+            <app-customer-card
+                (bodyActions)="onTableBodyActions($event)"
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [cardTitleLink]="cardTitleLink"
+                [displayRowsFront]="sendDataToCardsFront"
+                [displayRowsBack]="sendDataToCardsBack"
+                [selectedTab]="selectedTab"
+            ></app-customer-card>
+
+            <!-- <app-truckassist-cards
                 (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
                 [rows]="rows"
@@ -35,7 +46,7 @@
                 [displayRowsFront]="sendDataToCardsFront"
                 [displayRowsBack]="sendDataToCardsBack"
                 [page]="page"
-            ></app-truckassist-cards>
+            ></app-truckassist-cards> -->
 
             <!-- Show More -->
             <ng-container *ngIf="viewData.length">

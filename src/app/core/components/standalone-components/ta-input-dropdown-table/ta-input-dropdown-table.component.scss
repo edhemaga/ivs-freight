@@ -14,6 +14,10 @@
     }
 }
 
+.rating-dropdown-opened {
+    padding: 0 4px;
+}
+
 .fleet-holder {
     gap: 4px;
     cursor: pointer;
@@ -39,10 +43,30 @@
             }
         }
 
+        .user-liked {
+            svg {
+                path {
+                    fill: $ta-green;
+                }
+            }
+        }
+
+        .user-disliked {
+            svg {
+                path {
+                    fill: $ta-red-10;
+                }
+            }
+        }
+
         span {
             width: 16px;
         }
     }
+}
+
+.gap-big {
+    gap: 8px;
 }
 
 // -------------------------COMMENTS COMPONENT -----------------------
@@ -321,6 +345,15 @@
     // Body of dropdown
     .fleet-container {
         gap: 2px;
+        width: 100%;
+
+        .shared-full-name {
+            padding-left: 4px;
+        }
+
+        .rating-full-name {
+            font-size: 11px;
+        }
 
         .toogle-dropdown {
             cursor: pointer;
