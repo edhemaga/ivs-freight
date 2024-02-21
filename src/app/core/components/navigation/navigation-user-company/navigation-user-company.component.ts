@@ -7,12 +7,12 @@ import {
     EventEmitter,
 } from '@angular/core';
 import { SelectCompanyResponse } from 'appcoretruckassist';
-import { AuthStoreService } from '../../authentication/state/auth.service';
 import { NavigationService } from '../services/navigation.service';
 import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { WebsiteAuthService } from '../../website/state/service/website-auth.service';
 
 @Component({
     selector: 'app-navigation-user-company',
@@ -29,7 +29,7 @@ export class NavigationUserCompanyComponent implements OnInit {
 
     constructor(
         private navigationService: NavigationService,
-        private accountStoreService: AuthStoreService
+        private websiteAuthService: WebsiteAuthService
     ) {}
 
     ngOnInit(): void {
@@ -58,7 +58,7 @@ export class NavigationUserCompanyComponent implements OnInit {
     }
 
     public onSelectCompany(company: any) {
-        this.accountStoreService
+        this.websiteAuthService
             .selectCompanyAccount({ companyId: company.id })
             .subscribe({
                 next: (res: SelectCompanyResponse) => {

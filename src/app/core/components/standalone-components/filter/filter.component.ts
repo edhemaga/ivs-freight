@@ -896,13 +896,15 @@ export class FilterComponent implements OnInit {
                         this.truckArray = newData;
                     }
                 } else if (this.type === 'trailerFilter') {
-                    const newData = res.data.pagination.data.map(
-                        (type: any, index: number) => {
-                            type['name'] = type.trailerNumber;
-                            return type;
-                        }
-                    );
-                    this.trailerArray = newData;
+                    if (res?.data) {
+                        const newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['name'] = type.trailerNumber;
+                                return type;
+                            }
+                        );
+                        this.trailerArray = newData;
+                    }
                 }
             });
     }

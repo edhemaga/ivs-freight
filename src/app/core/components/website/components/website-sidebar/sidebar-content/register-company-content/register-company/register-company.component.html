@@ -86,45 +86,6 @@
             </div>
         </div>
 
-        <!-- ADDRESS -->
-
-        <div class="d-flex">
-            <div class="group address-group">
-                <app-input-address-dropdown
-                    #inputAddress
-                    formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Address, City, State Zip',
-                        isRequired: true,
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-383',
-                        minLength: 6,
-                        maxLength: 256
-                    }"
-                    [placeholderType]="'longAddress'"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="handleAddressChange($event)"
-                ></app-input-address-dropdown>
-            </div>
-
-            <div class="group address-unit-group">
-                <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                        name: 'address-unit',
-                        type: 'text',
-                        label: 'Unit #',
-                        textTransform: 'uppercase',
-                        minLength: 1,
-                        maxLength: 10
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-
         <!-- PHONE, EMAIL -->
 
         <div class="d-flex">

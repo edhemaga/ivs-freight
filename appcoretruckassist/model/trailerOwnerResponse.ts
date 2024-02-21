@@ -11,13 +11,9 @@
  */
 
 
-export interface SignUpCompanyCommand { 
-    firstName?: string | null;
-    lastName?: string | null;
-    companyName?: string | null;
-    ein?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    password?: string | null;
+export interface TrailerOwnerResponse { 
+    id?: number;
+    trailerNumber?: string | null;
+    trailerTypeId?: number;
 }
 

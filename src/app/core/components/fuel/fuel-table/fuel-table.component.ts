@@ -461,13 +461,13 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.fuelQuery.fuelTransactions$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((data) => {
-                    this.fuelData = data.pagination.data;
+                    this.fuelData = data;
                 });
         } else {
             return this.fuelQuery.fuelStops$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((data) => {
-                    this.fuelData = data.pagination?.data;
+                    this.fuelData = data;
                 });
         }
     }
