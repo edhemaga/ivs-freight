@@ -526,7 +526,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
             case 'delete':
                 if (!this.editData.company?.divisions.length) {
-                    this.deleteCompanyDivisionById(this.editData.id);
+                    this.deleteCompanyDivisionById(this.editData.company.id);
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
