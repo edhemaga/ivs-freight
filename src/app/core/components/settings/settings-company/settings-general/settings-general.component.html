@@ -3,8 +3,8 @@
         <div class="icon-text-wrapper">
             <p class="disable-selection">
                 Company
-                <span *ngIf="optionsCompany?.length > 1"
-                    >({{ optionsCompany?.length }})</span
+                <span *ngIf="_optionsCompany?.length > 1"
+                    >({{ _optionsCompany?.length }})</span
                 >
             </p>
         </div>
@@ -31,6 +31,7 @@
                 <svg-icon
                     src="assets/svg/common/ic_trash.svg"
                     class="settings-edit-button"
+                    (click)="onDeleteDivisionCompany()"
                 ></svg-icon>
             </div>
             <div class="settings-header-button">
@@ -58,12 +59,12 @@
                         *ngIf="!selectedDropdown"
                         class="current-active-item"
                         [ngClass]="{
-                            'single-data': optionsCompany?.length == 1
+                            'single-data': _optionsCompany?.length == 1
                         }"
                         (click)="showDropdown()"
                     >
                         <p class="current-active-name">
-                            {{ (optionsCompany | detailActiveItem).name }}
+                            {{ (_optionsCompany | detailActiveItem).name }}
                         </p>
                         <div class="select-right-side-holders">
                             <div
@@ -74,7 +75,7 @@
                             </div>
                             <div
                                 class="arrow-company-icon-holder"
-                                *ngIf="optionsCompany?.length > 1"
+                                *ngIf="_optionsCompany?.length > 1"
                             >
                                 <svg-icon
                                     class="arrow-down"
@@ -86,7 +87,7 @@
                     </div>
 
                     <app-ta-input-dropdown
-                        *ngIf="selectedDropdown && optionsCompany?.length > 1"
+                        *ngIf="selectedDropdown && _optionsCompany?.length > 1"
                         class="dropInput"
                         [formControl]="inputFormControl"
                         [inputConfig]="{
@@ -101,7 +102,7 @@
                             customClass:
                                 'input-32 input-32-font-20 details-pages'
                         }"
-                        [options]="optionsCompany"
+                        [options]="_optionsCompany"
                         [template]="'details-template'"
                         [isDetailsPages]="selectedDropdown"
                         (selectedItem)="onSelectItem($event)"
@@ -109,13 +110,13 @@
                     </app-ta-input-dropdown>
                 </div>
                 <div
-                    *ngIf="optionsCompany?.length > 1"
+                    *ngIf="_optionsCompany?.length > 1"
                     class="arrows"
                     [class.disabedPreviousArrow]="
                         currentCompanyIndex == 0 || currentCompanyIndex == -1
                     "
                     [class.disableNextArrow]="
-                        currentCompanyIndex == optionsCompany?.length - 1
+                        currentCompanyIndex == _optionsCompany?.length - 1
                     "
                 >
                     <span
@@ -145,12 +146,12 @@
                     <span
                         ngbTooltip
                         [mainTooltip]="
-                            currentCompanyIndex == optionsCompany?.length - 1
+                            currentCompanyIndex == _optionsCompany?.length - 1
                                 ? ''
                                 : 'Next'
                         "
                         [tooltipBackground]="
-                            currentCompanyIndex == optionsCompany?.length - 1
+                            currentCompanyIndex == _optionsCompany?.length - 1
                                 ? 'rgba(0,0,0,0)'
                                 : '#6C6C6C'
                         "

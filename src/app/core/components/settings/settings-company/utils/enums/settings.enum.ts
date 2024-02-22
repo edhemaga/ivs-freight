@@ -8,3 +8,8 @@ export enum SETINGS_ENUMS {
     TWENTY_THREE = 'twentythree',
     TWENTY = 'twenty',
 }
+
+export enum SETTINGS_ARROW_ACTIONS {
+    NEXT = 'next',
+    PREVIOUS = 'previous',
+}
