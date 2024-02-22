@@ -36,7 +36,7 @@ import {
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 
 //Models
-import { CompanyProperties } from '../utils/models/settings.models';
+import { CompanyProperties } from '../utils/models/settings.model';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

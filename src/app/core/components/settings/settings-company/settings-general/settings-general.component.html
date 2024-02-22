@@ -112,25 +112,25 @@
                     <div
                         class="arrows"
                         [class.disabedPreviousArrow]="
-                            currentCompanyIndex == 0 ||
-                            currentCompanyIndex == -1
+                            currentCompanyIndex === 0 ||
+                            currentCompanyIndex === -1
                         "
                         [class.disableNextArrow]="
-                            currentCompanyIndex == _optionsCompany?.length - 1
+                            currentCompanyIndex === _optionsCompany?.length - 1
                         "
                     >
                         <span
                             ngbTooltip
                             [mainTooltip]="
-                                currentCompanyIndex == 0 ||
-                                currentCompanyIndex == -1
+                                currentCompanyIndex === 0 ||
+                                currentCompanyIndex === -1
                                     ? ' '
                                     : 'Previous'
                             "
                             position="top"
                             [tooltipBackground]="
-                                currentCompanyIndex == 0 ||
-                                currentCompanyIndex == -1
+                                currentCompanyIndex === 0 ||
+                                currentCompanyIndex === -1
                                     ? 'rgba(0,0,0,0)'
                                     : '#6C6C6C'
                             "
