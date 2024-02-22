@@ -146,19 +146,49 @@
                         <div
                             class="d-flex justify-content-between title-svg-holder"
                         >
-                            <div class="d-flex">
-                                <span
-                                    class="text-white ta-font-semi-bold"
-                                    (click)="
-                                        toogleComment(commentCardsDataDropdown)
-                                    "
-                                    [innerHTML]="
-                                        higlitsPartOfCommentSearchValue(
+                            <div class="d-flex align-items-center creds-holder">
+                                <ng-container *ngIf="loggedUserCommented">
+                                    <span
+                                        class="text-white ta-font-semi-bold"
+                                        (click)="
+                                            toogleComment(
+                                                commentCardsDataDropdown
+                                            )
+                                        "
+                                        [innerHTML]="
+                                            higlitsPartOfCommentSearchValue(
+                                                abbreviateFullName(
+                                                    commentCardsDataDropdown
+                                                        .companyUser.fullName
+                                                )
+                                            )
+                                        "
+                                    ></span>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="
+                                        !checkIfLoggedUserCommented(
                                             commentCardsDataDropdown.companyUser
-                                                .fullName
-                                        ) | safeHtml
+                                                .id
+                                        )
                                     "
-                                ></span>
+                                >
+                                    <span
+                                        class="text-white ta-font-semi-bold"
+                                        (click)="
+                                            toogleComment(
+                                                commentCardsDataDropdown
+                                            )
+                                        "
+                                        [innerHTML]="
+                                            higlitsPartOfCommentSearchValue(
+                                                commentCardsDataDropdown
+                                                    .companyUser.fullName
+                                            )
+                                        "
+                                    ></span>
+                                </ng-container>
 
                                 <!-- if owner of the card -->
 
@@ -175,15 +205,32 @@
                                     >
                                 </ng-container>
 
-                                <!-- if card is edited -->
+                                <ng-container
+                                    *ngIf="commentCardsDataDropdown.liked"
+                                >
+                                    <svg-icon
+                                        class="like-icon"
+                                        [src]="'assets/svg/common/ic_like.svg'"
+                                        [svgStyle]="{
+                                            'width.px': 13,
+                                            'height.px': 13
+                                        }"
+                                    ></svg-icon>
+                                </ng-container>
 
                                 <ng-container
-                                    *ngIf="commentCardsDataDropdown?.edited"
+                                    *ngIf="commentCardsDataDropdown.disliked"
                                 >
-                                    <span
-                                        class="card-user-edited ta-font-medium"
-                                        >• Edited</span
-                                    >
+                                    <svg-icon
+                                        class="dislike-icon"
+                                        [src]="
+                                            'assets/svg/common/ic_dislike.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': 13,
+                                            'height.px': 13
+                                        }"
+                                    ></svg-icon>
                                 </ng-container>
                             </div>
 
@@ -247,63 +294,80 @@
                                     </span>
                                 </ng-container>
 
-                                <span
-                                    class="open-dropdown-icon d-flex align-items-center justify-content-center"
+                                <ng-container
+                                    *ngIf="
+                                        commentCardsDataDropdown.commentContent
+                                    "
                                 >
-                                    <ng-container
-                                        *ngIf="
-                                            commentCardsDataDropdown
-                                                .commentContent.length >= 42
-                                        "
+                                    <span
+                                        class="open-dropdown-icon d-flex align-items-center justify-content-center"
                                     >
-                                        <svg-icon
-                                            [src]="
-                                                'assets/svg/common/fill_arrow_down.svg'
+                                        <ng-container
+                                            *ngIf="
+                                                commentCardsDataDropdown
+                                                    .commentContent.length >= 42
                                             "
-                                            [ngClass]="{
-                                                'rotate-svg':
-                                                    commentCardsDataDropdown.isOpen,
-                                                'rotate-back':
-                                                    !commentCardsDataDropdown.isOpen
-                                            }"
-                                            class="arrow-svg-icon"
-                                            [svgStyle]="{
-                                                'width.px': 10,
-                                                'height.px': 10
-                                            }"
                                         >
-                                        </svg-icon>
-                                    </ng-container>
-                                </span>
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/common/fill_arrow_down.svg'
+                                                "
+                                                [ngClass]="{
+                                                    'rotate-svg':
+                                                        commentCardsDataDropdown.isOpen,
+                                                    'rotate-back':
+                                                        !commentCardsDataDropdown.isOpen
+                                                }"
+                                                class="arrow-svg-icon"
+                                                [svgStyle]="{
+                                                    'width.px': 10,
+                                                    'height.px': 10
+                                                }"
+                                            >
+                                            </svg-icon>
+                                        </ng-container>
+                                    </span>
+                                </ng-container>
                             </div>
                         </div>
 
-                        <span
-                            class="ta-font-medium muted-text"
-                            (click)="toogleComment(commentCardsDataDropdown)"
-                            >{{
-                                transformDate(
-                                    commentCardsDataDropdown.createdAt
-                                )
-                            }}</span
-                        >
+                        <div class="d-flex">
+                            <span
+                                class="ta-font-medium muted-text"
+                                (click)="
+                                    toogleComment(commentCardsDataDropdown)
+                                "
+                                >{{ commentCardsDataDropdown.createdAt }}</span
+                            >
+
+                            <!-- if card is edited -->
+
+                            <ng-container
+                                *ngIf="commentCardsDataDropdown?.edited"
+                            >
+                                <span class="card-user-edited ta-font-medium"
+                                    >• Edited</span
+                                >
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
-
-                <span
-                    class="text-white comment-text"
-                    [ngClass]="{
-                        'show-comment': commentCardsDataDropdown.isOpen
-                    }"
-                    [@dropdownAnimationComment]="
-                        commentCardsDataDropdown.isOpen ? 'true' : 'false'
-                    "
-                    [innerHTML]="
-                        higlitsPartOfCommentSearchValue(
-                            commentCardsDataDropdown.commentContent
-                        ) | safeHtml
-                    "
-                ></span>
+                <ng-container *ngIf="commentCardsDataDropdown.commentContent">
+                    <span
+                        class="text-white comment-text"
+                        [ngClass]="{
+                            'show-comment': commentCardsDataDropdown.isOpen
+                        }"
+                        [@dropdownAnimationComment]="
+                            commentCardsDataDropdown.isOpen ? 'true' : 'false'
+                        "
+                        [innerHTML]="
+                            higlitsPartOfCommentSearchValue(
+                                commentCardsDataDropdown.commentContent
+                            )
+                        "
+                    ></span>
+                </ng-container>
             </div>
         </div>
     </ng-container>
@@ -360,7 +424,7 @@
                                 [innerHTML]="
                                     higlitsPartOfCommentSearchValue(
                                         commentCardsDataDropdown.fullName
-                                    ) | safeHtml
+                                    )
                                 "
                             ></span>
 

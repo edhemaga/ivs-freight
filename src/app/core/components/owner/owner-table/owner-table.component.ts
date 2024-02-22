@@ -12,7 +12,10 @@ import {
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
-import { GridColumn, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    GridColumn,
+    ToolbarActions,
+} from '../../shared/model/card-table-data.model';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';

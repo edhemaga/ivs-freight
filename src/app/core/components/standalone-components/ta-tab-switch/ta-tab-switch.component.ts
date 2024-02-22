@@ -36,7 +36,7 @@ import { Tabs } from '../../shared/model/modal-tabs';
         TaCustomPeriodRangeComponent,
     ],
 })
-export class TaTabSwitchComponent implements AfterViewInit {
+export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
     @ViewChildren('popoverHolder')
     autoCloseComponent: QueryList<AutoclosePopoverComponent>;
 
@@ -60,6 +60,10 @@ export class TaTabSwitchComponent implements AfterViewInit {
     public indexSwitch: number = -1;
 
     constructor(public elem: ElementRef, public det: ChangeDetectorRef) {}
+
+    ngOnChanges() {
+        this.setSwitchActive(this.tabs);
+    }
 
     ngAfterViewInit() {
         setTimeout(() => {
@@ -99,15 +103,15 @@ export class TaTabSwitchComponent implements AfterViewInit {
     }
 
     private getElementOffset(item): { x: number; width: string } {
-        const parentElement = item.closest('.tab-switch-holder');
-        const selectedElement = item.closest('.tab-switch-items-holder');
+        const parentElement = item?.closest('.tab-switch-holder');
+        const selectedElement = item?.closest('.tab-switch-items-holder');
 
-        const parentItem = parentElement.getBoundingClientRect();
-        const elementItem = selectedElement.getBoundingClientRect();
+        const parentItem = parentElement?.getBoundingClientRect();
+        const elementItem = selectedElement?.getBoundingClientRect();
 
         return {
-            x: elementItem.x - parentItem.x,
-            width: elementItem.width,
+            x: elementItem?.x - parentItem?.x,
+            width: elementItem?.width,
         };
     }
 

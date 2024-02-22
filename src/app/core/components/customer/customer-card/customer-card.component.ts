@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+
+// models
 import {
     CardDetails,
     SendDataCard,
 } from '../../shared/model/card-table-data.model';
-import { Router } from '@angular/router';
+import { CardRows } from '../../shared/model/cardData';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
-
-// models
-import { CardRows, LoadTableData } from '../../shared/model/cardData';
+import { TimeFormatPipe } from 'src/app/core/pipes/time-format-am-pm.pipe';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -20,19 +20,15 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 @Component({
-    selector: 'app-load-card',
-    templateUrl: './load-card.component.html',
-    styleUrls: ['./load-card.component.scss'],
-    providers: [FormatNumberMiPipe, formatCurrency],
+    selector: 'app-customer-card',
+    templateUrl: './customer-card.component.html',
+    styleUrls: ['./customer-card.component.scss'],
+    providers: [formatCurrency, TimeFormatPipe],
 })
-export class LoadCardComponent {
+export class CustomerCardComponent {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
-    // All data
     @Input() viewData: CardDetails[];
-
-    // Page
-    @Input() selectedTab: string;
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -41,13 +37,14 @@ export class LoadCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public valueByStringPathInstance = new ValueByStringPath();
-
     public isCardFlipped: Array<number> = [];
-    public dropDownActive: number;
-    public cardData: CardDetails;
+
+    // Array holding id of checked cards
+    public isCheckboxCheckedArray: number[] = [];
 
     public isCardFlippedArray: number[] = [];
+
+    public valueByStringPathInstance = new ValueByStringPath();
 
     constructor(
         private tableService: TruckassistTableService,
@@ -65,20 +62,6 @@ export class LoadCardComponent {
         );
 
         this.tableService.sendRowsSelected(checkedCard);
-    }
-
-    // For closed tab status return true false to style status
-    public checkLoadStatus(
-        card: CardDetails,
-        endpoint: string,
-        value: string
-    ): boolean {
-        return (
-            this.valueByStringPathInstance.getValueByStringPath(
-                card,
-                endpoint
-            ) === value
-        );
     }
 
     // Flip card based on card index

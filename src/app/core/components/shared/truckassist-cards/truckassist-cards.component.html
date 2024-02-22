@@ -518,8 +518,8 @@
 
                                     <!-- Customer page body -->
 
-                                    <ng-container *ngIf="page === 'Customer'">
-                                        <ng-container
+                                    <!-- <ng-container *ngIf="page === 'Customer'"> -->
+                                    <!-- <ng-container
                                             *ngIf="
                                                 rowsFront.endpoint !==
                                                     'tableRaiting.likeCount' &&
@@ -535,11 +535,11 @@
                                                     )
                                                 }}
                                             </span>
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <!-- Available Credit -->
+                                    <!-- Available Credit -->
 
-                                        <ng-container
+                                    <!-- <ng-container
                                             *ngIf="
                                                 rowsFront.endpoint ===
                                                 'availableCredit'
@@ -552,51 +552,26 @@
                                                     'money'
                                                 )
                                             }}
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <!-- Rating & Review -->
+                                    <!-- Rating & Review Shipper-->
 
-                                        <ng-container
+                                    <!-- <ng-container
                                             *ngIf="
                                                 rowsFront.endpoint ===
                                                 'tableRaiting.likeCount'
                                             "
                                         >
                                             <div class="rating-holder d-flex">
-                                                <app-ta-like-dislike
-                                                    [taLikes]="
-                                                        getValueByStringPath(
-                                                            card,
-                                                            rowsFront.endpoint
-                                                        )
-                                                    "
-                                                    [taDislikes]="
-                                                        getValueByStringPath(
-                                                            card,
-                                                            rowsFront.secondEndpoint
-                                                        )
-                                                    "
-                                                    [isTaLiked]="
-                                                        card.tableRaiting
-                                                            .hasLiked
-                                                    "
-                                                    [isTaDisliked]="
-                                                        card.tableRaiting
-                                                            .hasDislike
-                                                    "
-                                                    [isCard]="true"
-                                                    [card]="card"
-                                                    (likesDislakes)="
-                                                        likeDislake(
-                                                            $event,
-                                                            card
-                                                        )
-                                                    "
+                                                <app-ta-input-dropdown-table
+                                                    [data]="card.tableRating"
+                                                    [type]="'rating-shipper'"
+                                                    [loggedUserCommented]="true"
                                                 >
-                                                </app-ta-like-dislike>
+                                                </app-ta-input-dropdown-table>
                                             </div>
-                                        </ng-container>
-                                    </ng-container>
+                                        </ng-container> -->
+                                    <!-- </ng-container> -->
 
                                     <!-- Driver page body -->
 
@@ -1319,7 +1294,9 @@
                                                 rowsBack.endpoint !==
                                                     'tableAvailableHoursReceiving' &&
                                                 rowsBack.endpoint !==
-                                                    'tableAvailableHoursShipping'
+                                                    'tableAvailableHoursShipping' &&
+                                                rowsBack.endpoint !==
+                                                    'tableRaiting.likeCount'
                                             "
                                         >
                                             {{
@@ -1329,6 +1306,7 @@
                                                 )
                                             }}
                                         </ng-container>
+
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint ===
@@ -1357,39 +1335,18 @@
                                         </ng-container>
 
                                         <!-- Rating & Review -->
-
                                         <ng-container
                                             *ngIf="
                                                 rowsBack.endpoint ===
                                                 'tableRaiting.likeCount'
                                             "
                                         >
-                                            <app-ta-like-dislike
-                                                [taLikes]="
-                                                    getValueByStringPath(
-                                                        card,
-                                                        rowsBack.endpoint
-                                                    )
-                                                "
-                                                [taDislikes]="
-                                                    getValueByStringPath(
-                                                        card,
-                                                        rowsBack.secondEndpoint
-                                                    )
-                                                "
-                                                [isTaLiked]="
-                                                    card.tableRaiting.hasLiked
-                                                "
-                                                [isTaDisliked]="
-                                                    card.tableRaiting.hasDislike
-                                                "
-                                                [isCard]="true"
-                                                [card]="card"
-                                                (likesDislakes)="
-                                                    likeDislake($event, card)
-                                                "
+                                            <app-ta-input-dropdown-table
+                                                [data]="card.tableRating"
+                                                [type]="'rating-shipper'"
+                                                [loggedUserCommented]="true"
                                             >
-                                            </app-ta-like-dislike>
+                                            </app-ta-input-dropdown-table>
                                         </ng-container>
 
                                         <!-- Format revanue -->
@@ -1924,6 +1881,24 @@
                                             >
                                                 /
                                             </ng-container>
+                                        </ng-container>
+
+                                        <!-- if shared with -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.title === 'Shared With'
+                                            "
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                type="contacts"
+                                                [data]="card.departmentContacts"
+                                                [searchPlaceholder]="
+                                                    'Find Title'
+                                                "
+                                                [svg]="
+                                                    'assets/svg/truckassist-table/constacts/people.svg'
+                                                "
+                                            ></app-ta-input-dropdown-table>
                                         </ng-container>
                                     </ng-container>
 

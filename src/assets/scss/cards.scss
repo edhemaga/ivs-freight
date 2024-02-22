@@ -76,7 +76,7 @@
 
                     .table-checkbox:checked + .table-checkbox-label {
                         background-color: $ta-blue-14;
-                        background-image: url('../../../../../assets/svg/truckassist-table/check-new.svg');
+                        background-image: url('../svg/truckassist-table/check-new.svg');
                         background-repeat: no-repeat;
                         background-position: center;
                         transition: background-color 0.25s;
@@ -199,29 +199,35 @@
                 gap: 8px;
                 margin-top: 8px;
 
-                .item-body {
-                    height: fit-content;
+                .one-row {
+                    .item-body {
+                        height: fit-content;
 
-                    .top-item-body {
-                        font-size: 11px;
-                        font-weight: 700;
-                        line-height: 20px;
-                        padding: 0 4px;
-                        color: $ta-black-2;
-                        line-height: 14px;
-
-                        &::-moz-selection {
+                        .top-item-body {
+                            font-size: 11px;
+                            font-weight: 700;
+                            line-height: 20px;
+                            padding: 0 4px;
                             color: $ta-black-2;
-                            background: rgb(47, 47, 47, 0.2);
-                        }
-                        &::selection {
-                            color: $ta-black-2;
-                            background: rgb(47, 47, 47, 0.2);
-                        }
-                    }
+                            height: 14px;
 
-                    .gap {
-                        gap: 4px;
+                            &::-moz-selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+                            &::selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+                        }
+
+                        .gap {
+                            gap: 4px;
+                        }
+
+                        .line-height {
+                            height: 28px;
+                        }
                     }
 
                     .bottom-item-body {
@@ -229,7 +235,7 @@
                         overflow-x: hidden;
                         line-height: 26px;
                         width: 100%;
-                        height: fit-content;
+                        height: 26px;
                         padding: 0 0 0 4px;
                         white-space: nowrap;
                         text-overflow: ellipsis;
@@ -280,68 +286,8 @@
                             }
                         }
 
-                        // Styles for load page
-                        .load-span {
-                            width: 18px;
-                            height: 18px;
-                            font-size: 11px;
-                            border-radius: 1px;
-                            color: $white;
-                            cursor: default;
-                        }
-
-                        .pickup {
-                            background: $ta-green;
-
-                            &::-moz-selection {
-                                color: initial;
-                                background: initial;
-                            }
-                            &::selection {
-                                color: initial;
-                                background: initial;
-                            }
-                        }
-
-                        .delivery {
-                            background: $ta-red-10;
-
-                            &::-moz-selection {
-                                color: initial;
-                                background: initial;
-                            }
-                            &::selection {
-                                color: initial;
-                                background: initial;
-                            }
-                        }
-
                         .muted {
                             color: $muted;
-                        }
-
-                        .status {
-                            color: $ta-light-grey-2;
-                        }
-
-                        .loaded {
-                            color: $ta-green-2;
-                        }
-
-                        .paid {
-                            color: $ta-yellow-6;
-                        }
-
-                        .tonu {
-                            color: $ta-red-11;
-                        }
-
-                        .assigned {
-                            color: $ta-green-1;
-                        }
-
-                        .dispatched {
-                            color: $ta-blue-14;
                         }
 
                         // Styles for customer page
@@ -411,10 +357,6 @@
                             }
                         }
                     }
-
-                    .line-height {
-                        height: 28px;
-                    }
                 }
             }
         }
@@ -424,6 +366,7 @@
             display: flex;
             flex-direction: column;
             padding: 4px 4px 0 0;
+            position: relative;
 
             .top-side {
                 height: 100%;
@@ -448,12 +391,6 @@
                         height: 30px;
                     }
 
-                    svg {
-                        path {
-                            fill: $muted;
-                        }
-                    }
-
                     .dots {
                         svg {
                             width: 18px;
@@ -474,11 +411,6 @@
                             transform: rotate(0deg);
                             transition: all 0.3s;
                         }
-                    }
-
-                    span {
-                        color: $muted;
-                        font-size: 11px;
                     }
                 }
 
@@ -533,7 +465,8 @@
                 width: 26px;
                 height: 26px;
                 cursor: pointer;
-                position: relative;
+                position: absolute;
+                bottom: 5px;
 
                 .svg-position {
                     rotate: (0deg);
@@ -550,9 +483,6 @@
                 }
 
                 .expand-card {
-                    position: absolute;
-                    bottom: 5px;
-
                     &:hover {
                         svg {
                             path {
