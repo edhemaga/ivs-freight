@@ -118,9 +118,10 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             );
         }
 
-        let currentIndex = this.optionsCompany?.findIndex(
+        const currentIndex = this.optionsCompany?.findIndex(
             (comp) => comp.id === this.companyData.id
         );
+
         this.currentCompanyIndex = currentIndex;
     }
 
