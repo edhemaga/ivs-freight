@@ -13,7 +13,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 // animations
 import { dropdown_animation_comment } from './state/ta-comment.animation';
@@ -53,7 +53,7 @@ import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
-import { Comment } from '../../shared/model/cardTableData';
+import { Comment } from '../../shared/model/card-table-data.model';
 
 @Component({
     selector: 'app-ta-comment',
@@ -113,6 +113,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     // card comments
     public editingCardComment: boolean = false;
 
+    public loggedUserCommented: boolean;
     constructor(
         private imageBase64Service: ImageBase64Service,
         private formatDatePipe: formatDatePipe,
@@ -121,7 +122,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private taInputDropdownTableService: TaInputDropdownTableService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer
     ) {}
 
     ngOnInit(): void {
@@ -130,6 +132,12 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.commentData?.commentContent && this.patchCommentData();
 
         this.checkIfNewCommentOpen();
+
+        this.checkIfLoggedUserCommented(
+            this.commentCardsDataDropdown.companyUser.id
+        );
+
+        this.transformDate(this.commentCardsDataDropdown.createdAt);
     }
 
     ngAfterViewInit(): void {
@@ -137,7 +145,19 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public transformDate(date: string): void {
-        return this.formatDatePipe.transform(date);
+        this.commentCardsDataDropdown.createdAt =
+            this.formatDatePipe.transform(date);
+    }
+
+    public abbreviateFullName(fullName: string): string {
+        const words = fullName.split(' ');
+        if (fullName.length > 19) {
+            if (words.length > 1) {
+                return `${words[0].charAt(0)}. ${words.slice(1).join(' ')}`;
+            }
+        } else {
+            return fullName;
+        }
     }
 
     public openEditComment(openClose: boolean): void {
@@ -212,17 +232,17 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    public checkIfLoggedUserCommented(user: number): boolean {
+    public checkIfLoggedUserCommented(user: number): void {
         const userLocalStorage = JSON.parse(
             localStorage.getItem(ConstantStringCommentEnum.USER)
         );
-        return user === userLocalStorage.companyUserId;
+        this.loggedUserCommented = user === userLocalStorage.companyUserId;
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
         if (!commentTitle || !this.commentHighlight) return commentTitle;
 
-        return commentTitle.replace(
+        const sanitizedHtml = commentTitle.replace(
             new RegExp(this.commentHighlight, 'gi'),
             (match) => {
                 return (
@@ -232,6 +252,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
             }
         );
+
+        return this.sanitizer.bypassSecurityTrustHtml(sanitizedHtml) as string;
     }
 
     private sanitazeAvatar(): void {

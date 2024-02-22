@@ -148,15 +148,18 @@
 
     &:hover {
         background: $ta-blue-21;
+        transition: background 0.3s;
 
         svg {
             path {
                 fill: $ta-blue-19;
+                transition: fill 0.3s;
             }
         }
 
         .new-comment {
             color: $white;
+            transition: color 0.3s;
         }
     }
 }

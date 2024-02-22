@@ -29,12 +29,22 @@ import { MapListCardComponent } from '../shared/map-list-card/map-list-card.comp
 
 import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
 
+import { CustomerCardComponent } from './customer-card/customer-card.component';
+
+import { TaInputDropdownTableComponent } from '../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
+import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+
 //pipes
 import { formatEinPipe } from '../../pipes/formatEin.pipe';
 
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
 @NgModule({
-    declarations: [CustomerTableComponent, BrokerCardComponent],
+    declarations: [
+        CustomerTableComponent,
+        BrokerCardComponent,
+        CustomerCardComponent,
+    ],
     imports: [
         //modules
         CommonModule,
@@ -58,6 +68,9 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         MapListComponent,
         MapListCardComponent,
         TruckassistCardsComponent,
+        TaInputDropdownTableComponent,
+        TableCardDropdownActionsComponent,
+        TaNoteComponent,
 
         //pipes
         formatDatePipe,

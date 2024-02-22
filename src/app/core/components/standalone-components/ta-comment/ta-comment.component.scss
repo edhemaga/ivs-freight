@@ -280,6 +280,27 @@
                 position: relative;
                 margin-top: 2px;
 
+                .creds-holder {
+                    gap: 4px;
+
+                    .like-icon {
+                        transform: scaleX(-1);
+                        svg {
+                            path {
+                                fill: $ta-green;
+                            }
+                        }
+                    }
+
+                    .dislike-icon {
+                        svg {
+                            path {
+                                fill: $ta-red-10;
+                            }
+                        }
+                    }
+                }
+
                 .user-icons {
                     position: absolute;
                     right: 0;
@@ -373,7 +394,6 @@
         }
 
         .card-user-me {
-            margin-left: 4px;
             color: $ta-orange-3;
             font-size: 11px;
         }
@@ -382,6 +402,8 @@
             margin-left: 4px;
             color: $ta-blue-19;
             font-size: 11px;
+            position: relative;
+            top: -6px;
         }
     }
 
@@ -392,7 +414,7 @@
     .muted-text {
         color: $muted;
         position: relative;
-        top: -2px;
+        top: -6px;
         width: fit-content;
     }
 

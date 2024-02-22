@@ -6,7 +6,10 @@ import { Observable, Subject } from 'rxjs';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Model
-import { Comment, DeleteComment } from '../../shared/model/cardTableData';
+import {
+    Comment,
+    DeleteComment,
+} from '../../shared/model/card-table-data.model';
 
 // models
 import {

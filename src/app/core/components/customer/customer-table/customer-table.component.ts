@@ -46,10 +46,11 @@ import {
     ViewDataResponse,
 } from '../customer.modal';
 import {
+    CardDetails,
     DropdownItem,
     MappedShipperBroker,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data.model';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
@@ -66,6 +67,7 @@ import {
 
 // Services
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Globals
 import {
@@ -142,6 +144,7 @@ export class CustomerTableComponent
         private ref: ChangeDetectorRef,
         private modalService: ModalService,
         private tableService: TruckassistTableService,
+        private tableDropdownService: TableCardDropdownActionsService,
         private brokerQuery: BrokerQuery,
         private brokerService: BrokerTService,
         private shipperService: ShipperTService,
@@ -173,6 +176,8 @@ export class CustomerTableComponent
         this.search();
 
         this.setTableFilter();
+
+        this.onDropdownActions();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -680,7 +685,6 @@ export class CustomerTableComponent
         this.customerTableData = this.viewData;
     }
 
-    // Map Broker Data
     private mapBrokerData(data: BrokerResponse): MappedShipperBroker {
         return {
             ...data,
@@ -727,16 +731,7 @@ export class CustomerTableComponent
                 ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.revenue)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount
-                    ? data.upCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-                dislikeCount: data?.downCount
-                    ? data.downCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-            },
+            reviews: null,
             tableContact: data?.brokerContacts?.length
                 ? data.brokerContacts.length
                 : 0,
@@ -759,7 +754,6 @@ export class CustomerTableComponent
         };
     }
 
-    // Map Shipper Data
     private mapShipperData(data: ShipperResponse): MappedShipperBroker {
         return {
             ...data,
@@ -783,16 +777,7 @@ export class CustomerTableComponent
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
                     : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount
-                    ? data.upCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-                dislikeCount: data?.downCount
-                    ? data.downCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
-            },
+            reviews: null,
             tableContact: data?.shipperContacts?.length
                 ? data.shipperContacts.length
                 : 0,
@@ -1021,8 +1006,21 @@ export class CustomerTableComponent
         }
     }
 
+    public onDropdownActions(): void {
+        this.tableDropdownService.openModal$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.onTableBodyActions(res);
+            });
+    }
+
     // Table Body Actions
-    private onTableBodyActions(event: BodyResponse): void {
+    private onTableBodyActions(event: {
+        id?: number;
+        data?: CardDetails;
+        type?: string;
+        subType?: string;
+    }): void {
         let businessName: string =
             ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
         this.DetailsDataService.setNewData(event.data);

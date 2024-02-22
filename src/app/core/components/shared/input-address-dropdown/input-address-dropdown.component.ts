@@ -19,22 +19,41 @@ import {
     takeUntil,
     throttleTime,
 } from 'rxjs';
-import { AddressService } from 'src/app/core/services/shared/address.service';
-import { AddressEntity } from 'appcoretruckassist';
 import {
-    UntypedFormBuilder,
     UntypedFormGroup,
     NgControl,
     ControlValueAccessor,
     FormsModule,
 } from '@angular/forms';
+
+//Config
 import { ITaInput } from '../ta-input/ta-input.config';
-import { CommonModule } from '@angular/common';
+
+//Services
+import { AddressService } from 'src/app/core/services/shared/address.service';
+
+//Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+
+//Modules
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+
+//Models
+import {
+    AddressLayers,
+    AddressType,
+    AddressCommands,
+    AddressStopTypes,
+} from './state/enum/addres.enum';
+import {
+    AddressData,
+    AddressList,
+    CommandsHandler,
+} from './state/model/address.model';
 
 @Component({
     selector: 'app-input-address-dropdown',
@@ -61,45 +80,28 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 export class InputAddressDropdownComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
-    private destroy$ = new Subject<void>();
-    public addressForm!: UntypedFormGroup;
-    @ViewChild('inputDropdown') inputDropdown: any;
-    @Input() activeAddress: any;
-    addresList: any[] = [];
-    currentAddress: any;
-    searchLayers: any[] = [];
-    currentAddressData: any;
-    @Input() inputConfig: ITaInput;
-    @Input() set placeholderType(value) {
+    @ViewChild('inputDropdown') inputDropdown: TaInputDropdownComponent;
+
+    @Input() public activeAddress: AddressList;
+
+    @Input() public inputConfig: ITaInput;
+    @Input() set placeholderType(value: string) {
         this.checkSearchLayers(value);
     }
-    @Input() commandHandler: any;
-    @Input() isRouting: boolean = false;
-    @Input() closedBorder: boolean = false;
-    @Input() incorrectValue: boolean;
-    @Input() hideEmptyLoaded: boolean = false;
-    addressExpanded: boolean = false;
-    chosenFromDropdown: boolean = false;
-    allowValidation: boolean = false;
-    stopType: string = 'EMPTY';
-    requestSent: boolean = false;
-    @Output() selectedAddress: EventEmitter<{
-        address: AddressEntity;
-        valid: boolean;
-        longLat: any;
-    }> = new EventEmitter<{
-        address: AddressEntity;
-        valid: boolean;
-        longLat: any;
-    }>(null);
+    @Input() public commandHandler: CommandsHandler;
+    @Input() public isRouting: boolean = false;
+    @Input() public closedBorder: boolean = false;
+    @Input() public incorrectValue: boolean;
+    @Input() public hideEmptyLoaded: boolean = false;
+
+    @Output() selectedAddress: EventEmitter<AddressData> =
+        new EventEmitter<AddressData>(null);
 
     @Output() closeDropdown: EventEmitter<boolean> = new EventEmitter<boolean>(
         null
     );
 
-    @Output() commandEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
-        null
-    );
+    @Output() commandEvent: EventEmitter<any> = new EventEmitter<boolean>(null); //leave any for now
 
     @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -107,23 +109,37 @@ export class InputAddressDropdownComponent
         new EventEmitter<boolean>();
 
     @HostListener('document:keydown', ['$event'])
-    handleKeyboardEvent(event: any) {
-        const key = event.keyCode;
+    handleKeyboardEvent(event: KeyboardEvent) {
+        const key = event.key;
         if (this.inputConfig.name == 'RoutingAddress') {
-            if (key === 13) {
+            if (key === AddressCommands.ENTER) {
                 if (this.currentAddressData) {
-                    this.onCommands(event, 'confirm');
+                    this.onCommands(event, AddressCommands.CONFIRM);
                 }
-            } else if (key === 27) {
+            } else if (key === AddressCommands.ESCAPE) {
                 this.clearInput(event);
             }
         }
     }
 
+    //Address data
+    public addresList: AddressList[];
+    private searchLayers: string[];
+    public currentAddressData: AddressData;
+
+    //Confg
+    public addressExpanded: boolean = false;
+    public chosenFromDropdown: boolean = false;
+    private allowValidation: boolean = false;
+    public stopType: string = AddressStopTypes.EMPTY;
+    private requestSent: boolean = false;
+
+    private destroy$ = new Subject<void>();
+    public addressForm!: UntypedFormGroup;
+
     constructor(
         @Self() public superControl: NgControl,
         private addressService: AddressService,
-        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;
@@ -137,7 +153,7 @@ export class InputAddressDropdownComponent
 
     public onChange(_: any): void {}
 
-    registerOnTouched(_: any): void {}
+    public registerOnTouched(_: any): void {}
 
     ngOnInit(): void {
         this.getSuperControl.valueChanges
@@ -170,7 +186,7 @@ export class InputAddressDropdownComponent
                         const addressData = {
                             address: {},
                             valid: false,
-                            longLat: [],
+                            longLat: {},
                         };
                         this.selectedAddress.emit(addressData);
                     }
@@ -197,24 +213,17 @@ export class InputAddressDropdownComponent
             )
             .subscribe((res) => {
                 let isValid = true;
-                if (this.searchLayers[0] == 'Address') {
+                if (this.searchLayers[0] === AddressLayers.ADDRESS) {
                     isValid = this.checkAddressValidation(
                         this.activeAddress?.address
                     );
                 }
 
-                if (
-                    !this.activeAddress ||
-                    !isValid
-                ) {
+                if (!this.activeAddress || !isValid) {
                     this.getSuperControl.setErrors({ invalid: true });
                 } else {
                     this.getSuperControl.setErrors(null);
                 }
-
-                // this.inputConfig.loadingSpinner = {
-                //     isLoading: false,
-                // };
 
                 this.inputConfig = {
                     ...this.inputConfig,
@@ -239,13 +248,15 @@ export class InputAddressDropdownComponent
         return this.superControl.control;
     }
 
-    public onCloseDropdown(e) {
+    public onCloseDropdown(e: boolean): void {
         let isValid = true;
         setTimeout(() => {
-            if (this.searchLayers[0] == 'Address') {
+            if (this.searchLayers[0] === AddressLayers.ADDRESS) {
                 isValid = this.checkAddressValidation(
                     this.activeAddress?.address
                 );
+
+                if (!isValid) this.getSuperControl.setErrors({ invalid: true });
             }
             if (!this.requestSent && isValid) {
                 this.getSuperControl.setErrors({ invalid: true });
@@ -260,7 +271,7 @@ export class InputAddressDropdownComponent
         this.closeDropdown.emit(e);
     }
 
-    public getAddressData(address) {
+    public getAddressData(address: string): void {
         this.requestSent = true;
         this.addressService.getAddressInfo(address).subscribe((res) => {
             this.currentAddressData = {
@@ -276,14 +287,14 @@ export class InputAddressDropdownComponent
         });
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: AddressList, action: string): void {
         switch (action) {
             case 'address': {
                 this.activeAddress = event
                     ? { ...event, address: event?.name }
                     : null;
                 if (event?.name) {
-                    if ((this.searchLayers[0] == 'Address')) {
+                    if (this.searchLayers[0] === AddressLayers.ADDRESS) {
                         const isValid = this.checkAddressValidation(event.name);
 
                         if (isValid) {
@@ -316,34 +327,31 @@ export class InputAddressDropdownComponent
         }
     }
 
-    onCommands(e, type) {
+    public onCommands(e: KeyboardEvent, type: AddressCommands): void {
         e.preventDefault();
         e.stopPropagation();
 
         if (
-            (type == 'confirm' && this.currentAddressData) ||
-            type == 'cancel'
+            (type === AddressCommands.CONFIRM && this.currentAddressData) ||
+            type === AddressCommands.CANCEL
         ) {
-            if (!this.currentAddressData) this.currentAddressData = {};
             this.currentAddressData.type = type;
-            this.commandEvent.emit(this.currentAddressData);
+            this.commandEvent.emit(this.currentAddressData ?? {});
 
             this.closeAddress();
             this.clearInput(e);
         }
     }
 
-    addressExpand() {
-        if (!this.addressExpanded) {
-            this.addressExpanded = true;
-        }
+    public addressExpand(): void {
+        if (!this.addressExpanded) this.addressExpanded = true;
     }
 
-    closeAddress() {
+    public closeAddress(): void {
         this.addressExpanded = false;
     }
 
-    clearInput(e) {
+    public clearInput(e: KeyboardEvent): void {
         this.currentAddressData = null;
         this.addresList = [];
         this.getSuperControl.setValue(null);
@@ -352,22 +360,22 @@ export class InputAddressDropdownComponent
         this.chosenFromDropdown = false;
     }
 
-    checkSearchLayers(value) {
+    private checkSearchLayers(value: string): void {
         this.searchLayers =
-            value == 'longAddress'
-                ? ['Address']
-                : value == 'shortAddress'
-                ? ['Locality']
+            value === AddressType.LONG_ADDRESS
+                ? [AddressLayers.ADDRESS]
+                : value === AddressType.SHORT_ADDRESS
+                ? [AddressLayers.LOCALITY]
                 : [];
     }
 
-    changeStopType() {
+    public changeStopType(): void {
         let flag = false;
-        if (this.stopType == 'EMPTY') {
-            this.stopType = 'LOADED';
+        if (this.stopType === AddressStopTypes.EMPTY) {
+            this.stopType = AddressStopTypes.LOADED;
             flag = true;
         } else {
-            this.stopType = 'EMPTY';
+            this.stopType = AddressStopTypes.EMPTY;
         }
 
         this.changeFlag.emit(flag);
@@ -380,11 +388,11 @@ export class InputAddressDropdownComponent
         }
     }
 
-    onIncorrectInput(event: boolean) {
+    public onIncorrectInput(event: boolean): void {
         this.incorrectEvent.emit(event);
     }
 
-    onClearInputEvent(e?: any) {
+    public onClearInputEvent(): void {
         if (this.inputConfig.isRequired) {
             setTimeout(() => {
                 this.getSuperControl.setErrors({ required: true });
@@ -393,12 +401,12 @@ export class InputAddressDropdownComponent
         const addressData = {
             address: {},
             valid: false,
-            longLat: [],
+            longLat: {},
         };
         this.selectedAddress.emit(addressData);
     }
 
-    checkAddressValidation(address) {
+    private checkAddressValidation(address: string): boolean {
         const streetNum = /\d.*\d/;
 
         return streetNum.test(address) ? true : false;

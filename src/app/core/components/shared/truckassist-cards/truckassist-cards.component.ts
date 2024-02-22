@@ -28,7 +28,7 @@ import {
     DropdownItem,
     CardDetails,
     SendDataCard,
-} from '../model/cardTableData';
+} from '../model/card-table-data.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from '../model/tableBody';
 

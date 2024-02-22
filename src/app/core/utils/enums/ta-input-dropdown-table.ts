@@ -12,4 +12,11 @@ export enum ConstantStringTableDropdownEnum {
 
     WRITE_COMMENT_PLACEHOLDER = 'Write Comment...',
     EMPTY_STRING_PLACEHOLDER = '',
+
+    COMMENTS = 'comments',
+    RATING = 'rating',
+
+    ALL = 'ALL',
+    RATING_CAPS = 'RATING',
+    REVIEW = 'REVIEW',
 }

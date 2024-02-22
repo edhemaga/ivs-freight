@@ -929,7 +929,7 @@ export class CompanyService {
             }
         }
 
-        let localVarPath = `/api/company/factoringcompany/`;
+        let localVarPath = `/api/company/factoringcompany/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1194,7 +1194,7 @@ export class CompanyService {
             }
         }
 
-        let localVarPath = `/api/company/insurancepolicy/`;
+        let localVarPath = `/api/company/insurancepolicy/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<object>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1260,7 +1260,7 @@ export class CompanyService {
             }
         }
 
-        let localVarPath = `/api/company/insurancepolicy/`;
+        let localVarPath = `/api/company/insurancepolicy/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<object>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

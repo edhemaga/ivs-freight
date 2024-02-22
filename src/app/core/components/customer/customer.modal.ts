@@ -7,7 +7,7 @@ import {
     TimeOnly,
 } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
-import { DropdownItem } from '../shared/model/cardTableData';
+import { DropdownItem } from '../shared/model/card-table-data.model';
 
 export interface ViewDataResponse {
     data: BrokerResponse | ShipperResponse;
@@ -65,7 +65,7 @@ export interface MappedShipperData {
 export interface BodyResponse {
     data?: ShipperResponse | BrokerResponse;
     subType?: string;
-    type?: ConstantStringTableComponentsEnum;
+    open?: ConstantStringTableComponentsEnum;
     id?: number;
     event?: string;
     businessName?: string;

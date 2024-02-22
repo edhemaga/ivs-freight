@@ -18,7 +18,9 @@ import {
     Trailer,
     Trucks,
     Comment,
-} from '../../shared/model/cardTableData';
+    Rating,
+} from '../../shared/model/card-table-data.model';
+import { Tabs } from '../../shared/model/modal-tabs';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -30,9 +32,13 @@ import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 // enums
 import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
 
+// constants
+import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
+
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
+import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -49,6 +55,7 @@ import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component
         // Components
         TaCommentComponent,
         TaNewCommentComponent,
+        TaTabSwitchComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
@@ -62,9 +69,11 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         this.cdr.detectChanges();
     }
     @Input() svg: string;
+
     @Input() type: string;
     @Input() searchPlaceholder?: string =
         ConstantStringTableDropdownEnum.SEARCH;
+    @Input() checkForLoggedUser: boolean;
 
     private destroy$ = new Subject<void>();
 
@@ -81,6 +90,10 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
     public lattersToHighlight: string;
 
+    public tabs: Tabs[] = RatingReviewTabsConstants.TABS;
+
+    public loggedUserCommented: boolean;
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
@@ -88,33 +101,110 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         private cdr: ChangeDetectorRef
     ) {}
 
+    ngOnInit() {
+        if (this.checkForLoggedUser)
+            this.checkIfLoggedUserCommented(this.filteredData);
+    }
+
+    public checkIfLoggedUserCommented(data: CardDetails): void {
+        data.rating.map((comment) => {
+            if (this.getUserLoggedUserFromLocalStorage(comment.companyUser.id))
+                this.loggedUserCommented = true;
+        });
+    }
+
+    public onPrefferedLoadCheck(event: { name: string }): void {
+        switch (event.name) {
+            case ConstantStringTableDropdownEnum.RATING_CAPS:
+                const filteredRating = this.filteredData.rating.filter(
+                    (item) => item.liked || item.disliked
+                );
+
+                this.filteredData.rating = filteredRating;
+                break;
+
+            case ConstantStringTableDropdownEnum.REVIEW:
+                const filteredComment = this.filteredData.rating.filter(
+                    (item) => !item.commentContent
+                );
+
+                this.filteredData.rating = filteredComment;
+                break;
+
+            case ConstantStringTableDropdownEnum.ALL:
+                this.filteredData.rating = this._data.rating;
+                break;
+            default:
+                break;
+        }
+    }
+
     public closeDropdownFromComment(): void {
         if (this.tooltip) this.tooltip.close();
     }
 
-    public filterArrayComments(event: KeyboardEvent): void {
+    public getUserLoggedUserFromLocalStorage(user: number): boolean {
+        const userLocalStorage = JSON.parse(
+            localStorage.getItem(ConstantStringTableDropdownEnum.USER)
+        );
+        return user === userLocalStorage.companyUserId;
+    }
+
+    public filterArrayCommentsRating(event: KeyboardEvent, type: string): void {
         if (event.target instanceof HTMLInputElement) {
             const searchParam = event.target.value.toLowerCase();
 
             // Check if the user has typed at least 2 characters
             if (searchParam.length >= 2) {
+                this.tabs = this.tabs.map((tab) => {
+                    console.log(tab);
+                    if (tab.id === 1) {
+                        return { ...tab, checked: true };
+                    } else {
+                        return { ...tab, checked: false };
+                    }
+                });
+
                 // Reset on every key press
-                this.filteredData.comments = this._data.comments;
+                if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                    this.filteredData.comments = this._data.comments;
+                } else {
+                    this.filteredData.rating = this._data.rating;
+                }
 
                 this.lattersToHighlight = searchParam;
 
                 // Filter function for title and comment
-                const filteredCommentTitle =
-                    this.filterCommentsTitle(searchParam);
+                let filteredCommentTitle;
+
+                if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                    filteredCommentTitle = this.filterCommentsTitle(
+                        searchParam,
+                        ConstantStringTableDropdownEnum.COMMENTS
+                    );
+                } else {
+                    filteredCommentTitle = this.filterCommentsTitle(
+                        searchParam,
+                        ConstantStringTableDropdownEnum.RATING
+                    );
+                }
 
                 // If there is empty array in filteredComment set object value to default
                 if (!filteredCommentTitle.length) {
-                    this.filteredData.comments = this._data.comments;
+                    if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                        this.filteredData.comments = this._data.comments;
+                    } else {
+                        this.filteredData.rating = this._data.rating;
+                    }
                 }
 
                 // If there is filtered value set value to filteredData
                 else {
-                    this.filteredData.comments = filteredCommentTitle;
+                    if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                        this.filteredData.comments = filteredCommentTitle;
+                    } else {
+                        this.filteredData.rating = filteredCommentTitle;
+                    }
                 }
             }
 
@@ -122,21 +212,49 @@ export class TaInputDropdownTableComponent implements OnDestroy {
             else {
                 this.lattersToHighlight = '';
 
-                this.filteredData.comments = this._data.comments;
+                if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                    this.filteredData.comments = this._data.comments;
+                } else {
+                    this.filteredData.rating = this._data.rating;
+                }
             }
         }
     }
 
-    private filterCommentsTitle(searchParam: string): Comment[] {
-        const filteredComments = this.filteredData.comments.filter(
-            (comment) =>
-                comment.companyUser.fullName
-                    .toLowerCase()
-                    .includes(searchParam) ||
-                comment.commentContent.toLowerCase().includes(searchParam)
-        );
+    private filterCommentsTitle(
+        searchParam: string,
+        type: string
+    ): Comment[] | Rating[] {
+        switch (type) {
+            case ConstantStringTableDropdownEnum.COMMENTS:
+                const filteredComments = this.filteredData.comments.filter(
+                    (comment) =>
+                        comment.companyUser.fullName
+                            .toLowerCase()
+                            .includes(searchParam) ||
+                        comment.commentContent
+                            .toLowerCase()
+                            .includes(searchParam)
+                );
 
-        return filteredComments;
+                return filteredComments;
+
+            case ConstantStringTableDropdownEnum.RATING:
+                const filteredRating = this.filteredData.rating.filter(
+                    (rating) =>
+                        rating.companyUser.fullName
+                            .toLowerCase()
+                            .includes(searchParam) ||
+                        rating?.commentContent
+                            ?.toLowerCase()
+                            .includes(searchParam)
+                );
+
+                return filteredRating;
+
+            default:
+                break;
+        }
     }
 
     public filterArrayOwner(event: KeyboardEvent): void {
@@ -279,6 +397,28 @@ export class TaInputDropdownTableComponent implements OnDestroy {
             default:
                 break;
         }
+    }
+
+    public toggleDropdownContacts(
+        tooltip: NgbTooltip,
+        card: CardDetails
+    ): void {
+        this.tooltip = tooltip;
+
+        this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+        console.log(card);
+        tooltip.open({ contacts: card });
+    }
+
+    public toggleDropdownRating(tooltip: NgbTooltip, card: CardDetails): void {
+        this.tooltip = tooltip;
+
+        this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+        tooltip.open({ rating: card });
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 
     ngOnDestroy(): void {
