@@ -46,10 +46,11 @@ import {
     ViewDataResponse,
 } from '../customer.modal';
 import {
+    CardDetails,
     DropdownItem,
     MappedShipperBroker,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data.model';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
@@ -66,6 +67,7 @@ import {
 
 // Services
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Globals
 import {
@@ -83,9 +85,6 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
-
-// delete after backend is created
-import { DisplayCustomerLikesDislikes } from '../customer-likes-dislakes';
 
 @Component({
     selector: 'app-customer-table',
@@ -145,6 +144,7 @@ export class CustomerTableComponent
         private ref: ChangeDetectorRef,
         private modalService: ModalService,
         private tableService: TruckassistTableService,
+        private tableDropdownService: TableCardDropdownActionsService,
         private brokerQuery: BrokerQuery,
         private brokerService: BrokerTService,
         private shipperService: ShipperTService,
@@ -176,6 +176,8 @@ export class CustomerTableComponent
         this.search();
 
         this.setTableFilter();
+
+        this.onDropdownActions();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -1004,8 +1006,21 @@ export class CustomerTableComponent
         }
     }
 
+    public onDropdownActions(): void {
+        this.tableDropdownService.openModal$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.onTableBodyActions(res);
+            });
+    }
+
     // Table Body Actions
-    private onTableBodyActions(event: BodyResponse): void {
+    private onTableBodyActions(event: {
+        id?: number;
+        data?: CardDetails;
+        type?: string;
+        subType?: string;
+    }): void {
         let businessName: string =
             ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
         this.DetailsDataService.setNewData(event.data);

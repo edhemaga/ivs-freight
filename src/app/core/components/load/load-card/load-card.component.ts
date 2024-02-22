@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CardDetails, SendDataCard } from '../../shared/model/cardTableData';
+import {
+    CardDetails,
+    SendDataCard,
+} from '../../shared/model/card-table-data.model';
 import { Router } from '@angular/router';
-
-// enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
@@ -16,6 +16,9 @@ import { CardRows, LoadTableData } from '../../shared/model/cardData';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
+// helpers
+import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+
 @Component({
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
@@ -27,7 +30,6 @@ export class LoadCardComponent {
 
     // All data
     @Input() viewData: CardDetails[];
-    @Input() tableData: LoadTableData[];
 
     // Page
     @Input() selectedTab: string;
@@ -37,21 +39,17 @@ export class LoadCardComponent {
     @Input() rows: number[];
     @Input() displayRowsFront: CardRows;
     @Input() displayRowsBack: CardRows;
-    @Input() activeTab: string;
     @Input() cardTitleLink: string;
 
-    public mySelection: { id: number; tableData: CardDetails }[] = [];
+    public valueByStringPathInstance = new ValueByStringPath();
 
     public isCardFlipped: Array<number> = [];
-    public isCheckboxCheckedArray: number[] = [];
     public dropDownActive: number;
     public cardData: CardDetails;
 
     public isCardFlippedArray: number[] = [];
 
     constructor(
-        private formatCurrencyPipe: formatCurrency,
-        private formatNumberMi: FormatNumberMiPipe,
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
         private router: Router
@@ -60,19 +58,13 @@ export class LoadCardComponent {
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
-        const indexSelected = this.isCheckboxCheckedArray.indexOf(index);
 
-        if (indexSelected !== -1) {
-            this.mySelection = this.mySelection.filter(
-                (item) => item.id !== card.id
-            );
-            this.isCheckboxCheckedArray.splice(indexSelected, 1);
-        } else {
-            this.mySelection.push({ id: card.id, tableData: card });
-            this.isCheckboxCheckedArray.push(index);
-        }
+        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+            index,
+            card
+        );
 
-        this.tableService.sendRowsSelected(this.mySelection);
+        this.tableService.sendRowsSelected(checkedCard);
     }
 
     // For closed tab status return true false to style status
@@ -81,55 +73,12 @@ export class LoadCardComponent {
         endpoint: string,
         value: string
     ): boolean {
-        return this.getValueByStringPath(card, endpoint) === value;
-    }
-
-    public getValueByStringPath(
-        obj: CardDetails,
-        ObjKey: string,
-        format?: string
-    ): string {
-        if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
-            return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
-
-        const isValueOfKey = !ObjKey.split(
-            ConstantStringTableComponentsEnum.DOT_1
-        ).reduce((acc, part) => acc && acc[part], obj);
-
-        const isNotZeroValueOfKey =
-            ObjKey.split(ConstantStringTableComponentsEnum.DOT_1).reduce(
-                (acc, part) => acc && acc[part],
-                obj
-            ) !== 0;
-
-        switch (format) {
-            case ConstantStringTableComponentsEnum.MONEY:
-                return this.formatCurrencyPipe.transform(
-                    ObjKey.split(
-                        ConstantStringTableComponentsEnum.DOT_1
-                    ).reduce((acc, part) => acc && acc[part], obj)
-                );
-
-            // Transform to miles format
-            case ConstantStringTableComponentsEnum.MILES_3:
-                return this.formatNumberMi.transform(
-                    ObjKey.split(
-                        ConstantStringTableComponentsEnum.DOT_1
-                    ).reduce((acc, part) => acc && acc[part], obj)
-                );
-
-            default:
-                if (isValueOfKey && isNotZeroValueOfKey)
-                    return ConstantStringTableComponentsEnum.SLASH;
-
-                return ObjKey.split(
-                    ConstantStringTableComponentsEnum.DOT_1
-                ).reduce((acc, part) => acc && acc[part], obj);
-        }
-    }
-
-    public onTableBodyActions(action): void {
-        this.bodyActions.emit(action);
+        return (
+            this.valueByStringPathInstance.getValueByStringPath(
+                card,
+                endpoint
+            ) === value
+        );
     }
 
     // Flip card based on card index

@@ -39,7 +39,7 @@
                 'table-list-dropdown-inner-dropdown-active':
                     action?.isInnerDropActive
             }"
-            *ngFor="let action of data"
+            *ngFor="let action of data; trackBy: trackByIdentity"
         >
             <!-- Action -->
 
@@ -62,19 +62,20 @@
                     {{ action?.title }}
                 </div>
 
-                <svg-icon
-                    *ngIf="action?.svgUrl"
-                    [class]="action?.svgClass"
-                    class="table-list-dropdown-content-icon"
-                    [ngClass]="{
-                        'inner-dropdown-open': action?.isInnerDropActive
-                    }"
-                    [src]="action?.svgUrl"
-                    [svgStyle]="{
-                        'width.px': action?.svgStyle.width,
-                        'height.px': action?.svgStyle.height
-                    }"
-                ></svg-icon>
+                <ng-container *ngIf="action?.svgUrl">
+                    <svg-icon
+                        [class]="action?.svgClass"
+                        class="table-list-dropdown-content-icon"
+                        [ngClass]="{
+                            'inner-dropdown-open': action?.isInnerDropActive
+                        }"
+                        [src]="action?.svgUrl"
+                        [svgStyle]="{
+                            'width.px': action?.svgStyle.width,
+                            'height.px': action?.svgStyle.height
+                        }"
+                    ></svg-icon>
+                </ng-container>
             </div>
 
             <!-- Inner Dropdown -->

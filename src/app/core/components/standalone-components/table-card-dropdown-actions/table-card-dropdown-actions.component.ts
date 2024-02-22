@@ -1,13 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+
+// services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TableCardDropdownActionsService } from './table-card-dropdown-actions.service';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// models
 import {
     CardDetails,
     DropdownItem,
     SendDataCard,
-} from '../../shared/model/cardTableData';
-import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+} from '../../shared/model/card-table-data.model';
 
 @Component({
     selector: 'app-table-card-dropdown-actions',
@@ -16,7 +23,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     standalone: true,
     imports: [CommonModule, NgbModule, AngularSvgIconModule],
 })
-export class TableCardDropdownActionsComponent implements OnInit {
+export class TableCardDropdownActionsComponent {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     @Input() card: CardDetails;
@@ -28,9 +35,10 @@ export class TableCardDropdownActionsComponent implements OnInit {
     public dropDownActive: number;
     public cardData: CardDetails;
 
-    constructor(private detailsDataService: DetailsDataService) {}
-
-    ngOnInit(): void {}
+    constructor(
+        private detailsDataService: DetailsDataService,
+        private tableDropdownService: TableCardDropdownActionsService
+    ) {}
 
     // Show hide dropdown
     public toggleDropdown(tooltip, card: CardDetails): void {
@@ -72,8 +80,7 @@ export class TableCardDropdownActionsComponent implements OnInit {
     public onDropAction(action: DropdownItem): void {
         if (!action?.mutedStyle) {
             // Send Drop Action
-
-            this.bodyActions.emit({
+            this.tableDropdownService.openDropdown({
                 id: this.dropDownActive,
                 data: this.cardData,
                 type: action.name,
@@ -84,9 +91,7 @@ export class TableCardDropdownActionsComponent implements OnInit {
     }
 
     public onShowInnerDropdown(action): void {
-        const newDropdownActions = [...this.dropdownActions];
-
-        newDropdownActions.map((actions) => {
+        this.dropdownActions.map((actions) => {
             if (
                 actions.isDropdown &&
                 actions.isInnerDropActive &&
@@ -97,8 +102,12 @@ export class TableCardDropdownActionsComponent implements OnInit {
             }
         });
 
-        this.dropdownActions = [...newDropdownActions];
+        this.dropdownActions = [...this.dropdownActions];
 
         action.isInnerDropActive = !action.isInnerDropActive;
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 }

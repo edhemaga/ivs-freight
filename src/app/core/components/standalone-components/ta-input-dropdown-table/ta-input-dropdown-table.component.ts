@@ -19,7 +19,7 @@ import {
     Trucks,
     Comment,
     Rating,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data.model';
 import { Tabs } from '../../shared/model/modal-tabs';
 
 // services
@@ -125,7 +125,7 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
             case ConstantStringTableDropdownEnum.REVIEW:
                 const filteredComment = this.filteredData.rating.filter(
-                    (item) => item.commentContent !== null
+                    (item) => !item.commentContent
                 );
 
                 this.filteredData.rating = filteredComment;
@@ -133,6 +133,8 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
             case ConstantStringTableDropdownEnum.ALL:
                 this.filteredData.rating = this._data.rating;
+                break;
+            default:
                 break;
         }
     }
@@ -404,6 +406,7 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         this.tooltip = tooltip;
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+        console.log(card);
         tooltip.open({ contacts: card });
     }
 
@@ -412,6 +415,10 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
         tooltip.open({ rating: card });
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 
     ngOnDestroy(): void {

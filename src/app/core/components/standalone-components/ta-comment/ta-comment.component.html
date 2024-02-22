@@ -147,14 +147,7 @@
                             class="d-flex justify-content-between title-svg-holder"
                         >
                             <div class="d-flex align-items-center creds-holder">
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span
                                         class="text-white ta-font-semi-bold"
                                         (click)="
@@ -168,7 +161,7 @@
                                                     commentCardsDataDropdown
                                                         .companyUser.fullName
                                                 )
-                                            ) | safeHtml
+                                            )
                                         "
                                     ></span>
                                 </ng-container>
@@ -192,7 +185,7 @@
                                             higlitsPartOfCommentSearchValue(
                                                 commentCardsDataDropdown
                                                     .companyUser.fullName
-                                            ) | safeHtml
+                                            )
                                         "
                                     ></span>
                                 </ng-container>
@@ -344,11 +337,7 @@
                                 (click)="
                                     toogleComment(commentCardsDataDropdown)
                                 "
-                                >{{
-                                    transformDate(
-                                        commentCardsDataDropdown.createdAt
-                                    )
-                                }}</span
+                                >{{ commentCardsDataDropdown.createdAt }}</span
                             >
 
                             <!-- if card is edited -->
@@ -375,7 +364,7 @@
                         [innerHTML]="
                             higlitsPartOfCommentSearchValue(
                                 commentCardsDataDropdown.commentContent
-                            ) | safeHtml
+                            )
                         "
                     ></span>
                 </ng-container>
@@ -435,7 +424,7 @@
                                 [innerHTML]="
                                     higlitsPartOfCommentSearchValue(
                                         commentCardsDataDropdown.fullName
-                                    ) | safeHtml
+                                    )
                                 "
                             ></span>
 

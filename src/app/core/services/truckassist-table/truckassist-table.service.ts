@@ -12,7 +12,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import {
     Column,
     ColumnWidthData,
-} from '../../components/shared/model/cardTableData';
+} from '../../components/shared/model/card-table-data.model';
 import { AllTableModal } from '../../components/customer/customer.modal';
 
 @Injectable({

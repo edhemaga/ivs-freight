@@ -23,11 +23,6 @@
                                 class="checkbox-tooltip"
                                 type="button"
                                 ngbTooltip
-                                mainTooltip="{{
-                                    isCheckboxCheckedArray.includes(i)
-                                        ? 'Clear'
-                                        : 'Select'
-                                }}"
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
@@ -72,7 +67,7 @@
                                 >
                                     <ng-container *ngIf="cardTitle !== 'name'">
                                         INV-{{
-                                            getValueByStringPath(
+                                            valueByStringPathInstance.getValueByStringPath(
                                                 card,
                                                 cardTitle
                                             )
@@ -81,7 +76,7 @@
 
                                     <ng-container *ngIf="cardTitle === 'name'">
                                         {{
-                                            getValueByStringPath(
+                                            valueByStringPathInstance.getValueByStringPath(
                                                 card,
                                                 cardTitle
                                             )
@@ -125,7 +120,7 @@
                                     <!-- If Comodity is Hazardous-->
                                     <ng-container
                                         *ngIf="
-                                            getValueByStringPath(
+                                            valueByStringPathInstance.getValueByStringPath(
                                                 card,
                                                 rowsFront.endpoint
                                             ) === 'Hazardous'
@@ -139,7 +134,7 @@
                                         </svg-icon>
                                         <span>
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 )
@@ -194,7 +189,7 @@
                                             }"
                                         >
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 ) | uppercase
@@ -207,7 +202,7 @@
                                     <ng-container
                                         *ngIf="
                                             rowsFront.title !== 'Status' &&
-                                            getValueByStringPath(
+                                            valueByStringPathInstance.getValueByStringPath(
                                                 card,
                                                 rowsFront.endpoint
                                             ) !== 'Hazardous'
@@ -227,7 +222,7 @@
                                             "
                                         >
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 )
@@ -240,7 +235,7 @@
                                     <ng-container
                                         *ngIf="
                                             rowsFront.secondEndpoint &&
-                                            getValueByStringPath(
+                                            valueByStringPathInstance.getValueByStringPath(
                                                 card,
                                                 rowsFront.secondEndpoint
                                             ) !== '/'
@@ -256,7 +251,7 @@
                                             <span class="muted">x</span>
                                             <span class="muted">
                                                 {{
-                                                    getValueByStringPath(
+                                                    valueByStringPathInstance.getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
@@ -280,7 +275,7 @@
                                                 }"
                                             >
                                                 {{
-                                                    getValueByStringPath(
+                                                    valueByStringPathInstance.getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
@@ -298,7 +293,7 @@
                                         >
                                             <span>
                                                 {{
-                                                    getValueByStringPath(
+                                                    valueByStringPathInstance.getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
@@ -314,7 +309,7 @@
                                     >
                                         <span class="muted">
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsFront.thirdEndpoint
                                                 )
@@ -370,7 +365,7 @@
                                                 "
                                             >
                                                 {{
-                                                    getValueByStringPath(
+                                                    valueByStringPathInstance.getValueByStringPath(
                                                         card,
                                                         rowsBack.endpoint
                                                     )
@@ -384,7 +379,7 @@
                                             >
                                                 <span>
                                                     {{
-                                                        getValueByStringPath(
+                                                        valueByStringPathInstance.getValueByStringPath(
                                                             card,
                                                             rowsBack.secondEndpoint
                                                         )
@@ -399,7 +394,7 @@
                                             >
                                                 <span class="muted">
                                                     {{
-                                                        getValueByStringPath(
+                                                        valueByStringPathInstance.getValueByStringPath(
                                                             card,
                                                             rowsBack.thirdEndpoint
                                                         )
@@ -417,7 +412,7 @@
                                             "
                                         >
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsBack.endpoint
                                                 )
@@ -448,7 +443,6 @@
                         <!-- Open dropdown element-->
 
                         <app-table-card-dropdown-actions
-                            (bodyActions)="onTableBodyActions($event)"
                             [card]="card"
                         ></app-table-card-dropdown-actions>
 

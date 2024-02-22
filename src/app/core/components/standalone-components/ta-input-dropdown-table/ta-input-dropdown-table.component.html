@@ -225,7 +225,8 @@
                             <ng-container
                                 *ngFor="
                                     let truck of ownerFleet.trucks;
-                                    let i = index
+                                    let i = id;
+                                    trackBy: trackByIdentity
                                 "
                             >
                                 <div
@@ -432,7 +433,7 @@
                 <ng-container
                     *ngFor="
                         let comment of commmentsData.comments;
-                        let i = index;
+                        let i = id;
                         trackBy: trackByIdentity
                     "
                 >
@@ -515,7 +516,8 @@
                     <ng-container
                         *ngFor="
                             let contact of contacts[0].companyUsers;
-                            let i = index
+                            let i = id;
+                            trackBy: trackByIdentity
                         "
                     >
                         <span class="text-white shared-full-name">
@@ -679,7 +681,11 @@
             <div class="d-flex align-items-center">
                 <div class="fleet-container d-flex flex-column">
                     <ng-container
-                        *ngFor="let review of rating.rating; let i = index"
+                        *ngFor="
+                            let review of rating.rating;
+                            let i = id;
+                            trackBy: trackByIdentity
+                        "
                     >
                         <app-ta-comment
                             [commentCardsDataDropdown]="review"

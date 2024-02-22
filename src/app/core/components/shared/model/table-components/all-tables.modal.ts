@@ -1,4 +1,4 @@
-import { CardDetails } from '../cardTableData';
+import { CardDetails } from '../card-table-data.model';
 
 export interface DataForCardsAndTables {
     data?: CardDetails[];

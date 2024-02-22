@@ -278,6 +278,13 @@ export interface tableDropdownContent {
     content: DropdownItem[];
     hasContent: boolean;
 }
+
+export interface dropdownOpen {
+    id: number;
+    data: CardDetails;
+    type: string;
+}
+
 export interface DropdownItem {
     title?: string;
     name?: string;
@@ -293,10 +300,12 @@ export interface DropdownItem {
     tableListDropdownContentStyle?: { [key: string]: any };
     insideDropdownContent?: InsideDropdownContent[];
 }
+
 interface InsideDropdownContent {
     title: string;
     name: string;
 }
+
 export interface BodyActions {
     id: number;
     card: CardDetails;

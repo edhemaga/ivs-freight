@@ -61,7 +61,12 @@
                                     )
                                 "
                             >
-                                {{ getValueByStringPath(card, cardTitle) }}
+                                {{
+                                    valueByStringPathInstance.getValueByStringPath(
+                                        card,
+                                        cardTitle
+                                    )
+                                }}
                             </span>
                         </div>
                     </div>
@@ -107,7 +112,7 @@
                                     >
                                         <span>
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 )
@@ -124,7 +129,7 @@
                                         "
                                     >
                                         {{
-                                            getValueByStringPath(
+                                            valueByStringPathInstance.getValueByStringPath(
                                                 card,
                                                 rowsFront.endpoint,
                                                 'money'
@@ -183,11 +188,12 @@
                                                 rowsBack.endpoint !==
                                                     'tableAvailableHoursShipping' &&
                                                 rowsBack.endpoint !==
-                                                    'tableRaiting.likeCount'
+                                                    'tableRaiting.likeCount' &&
+                                                rowsBack.endpoint !== 'revenue'
                                             "
                                         >
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsBack.endpoint
                                                 )
@@ -211,7 +217,7 @@
 
                                                 <span class="align-span">
                                                     {{
-                                                        getValueByStringPath(
+                                                        valueByStringPathInstance.getValueByStringPath(
                                                             card,
                                                             rowsBack.endpoint,
                                                             'am-pm'
@@ -244,7 +250,7 @@
                                             "
                                         >
                                             {{
-                                                getValueByStringPath(
+                                                valueByStringPathInstance.getValueByStringPath(
                                                     card,
                                                     rowsBack.endpoint,
                                                     'money'
@@ -264,7 +270,6 @@
                         <!-- Open dropdown element-->
 
                         <app-table-card-dropdown-actions
-                            (bodyActions)="onTableBodyActions($event)"
                             [card]="card"
                         ></app-table-card-dropdown-actions>
 
