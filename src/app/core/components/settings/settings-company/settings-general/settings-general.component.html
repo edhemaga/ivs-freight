@@ -3,9 +3,9 @@
         <div class="icon-text-wrapper">
             <p class="disable-selection">
                 Company
-                <span *ngIf="_optionsCompany?.length > 1"
-                    >({{ _optionsCompany?.length }})</span
-                >
+                <ng-container *ngIf="_optionsCompany?.length > 1">
+                    <span>({{ _optionsCompany?.length }})</span>
+                </ng-container>
             </p>
         </div>
         <div class="icon-right-holder">
@@ -59,7 +59,7 @@
                         *ngIf="!selectedDropdown"
                         class="current-active-item"
                         [ngClass]="{
-                            'single-data': _optionsCompany?.length == 1
+                            'single-data': _optionsCompany?.length === 1
                         }"
                         (click)="showDropdown()"
                     >
@@ -73,16 +73,15 @@
                             >
                                 <span> DIVISION CO </span>
                             </div>
-                            <div
-                                class="arrow-company-icon-holder"
-                                *ngIf="_optionsCompany?.length > 1"
-                            >
-                                <svg-icon
-                                    class="arrow-down"
-                                    src="assets/svg/common/arrow-left.svg"
-                                >
-                                </svg-icon>
-                            </div>
+                            <ng-container *ngIf="_optionsCompany?.length > 1">
+                                <div class="arrow-company-icon-holder">
+                                    <svg-icon
+                                        class="arrow-down"
+                                        src="assets/svg/common/arrow-left.svg"
+                                    >
+                                    </svg-icon>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
 
@@ -109,62 +108,66 @@
                     >
                     </app-ta-input-dropdown>
                 </div>
-                <div
-                    *ngIf="_optionsCompany?.length > 1"
-                    class="arrows"
-                    [class.disabedPreviousArrow]="
-                        currentCompanyIndex == 0 || currentCompanyIndex == -1
-                    "
-                    [class.disableNextArrow]="
-                        currentCompanyIndex == _optionsCompany?.length - 1
-                    "
-                >
-                    <span
-                        ngbTooltip
-                        [mainTooltip]="
+                <ng-container *ngIf="_optionsCompany?.length > 1">
+                    <div
+                        class="arrows"
+                        [class.disabedPreviousArrow]="
                             currentCompanyIndex == 0 ||
                             currentCompanyIndex == -1
-                                ? ' '
-                                : 'Previous'
                         "
-                        position="top"
-                        [tooltipBackground]="
-                            currentCompanyIndex == 0 ||
-                            currentCompanyIndex == -1
-                                ? 'rgba(0,0,0,0)'
-                                : '#6C6C6C'
+                        [class.disableNextArrow]="
+                            currentCompanyIndex == _optionsCompany?.length - 1
                         "
-                        class="previousArrow"
-                        (click)="onActionChange('previous')"
                     >
-                        <svg-icon
-                            class="arrow-left"
-                            src="assets/svg/common/arrow-left.svg"
+                        <span
+                            ngbTooltip
+                            [mainTooltip]="
+                                currentCompanyIndex == 0 ||
+                                currentCompanyIndex == -1
+                                    ? ' '
+                                    : 'Previous'
+                            "
+                            position="top"
+                            [tooltipBackground]="
+                                currentCompanyIndex == 0 ||
+                                currentCompanyIndex == -1
+                                    ? 'rgba(0,0,0,0)'
+                                    : '#6C6C6C'
+                            "
+                            class="previousArrow"
+                            (click)="onActionChange('previous')"
                         >
-                        </svg-icon>
-                    </span>
-                    <span
-                        ngbTooltip
-                        [mainTooltip]="
-                            currentCompanyIndex == _optionsCompany?.length - 1
-                                ? ''
-                                : 'Next'
-                        "
-                        [tooltipBackground]="
-                            currentCompanyIndex == _optionsCompany?.length - 1
-                                ? 'rgba(0,0,0,0)'
-                                : '#6C6C6C'
-                        "
-                        position="top"
-                        class="nextArrow"
-                        (click)="onActionChange('next')"
-                    >
-                        <svg-icon
-                            class="arrow-right"
-                            src="assets/svg/common/arrow-left.svg"
-                        ></svg-icon>
-                    </span>
-                </div>
+                            <svg-icon
+                                class="arrow-left"
+                                src="assets/svg/common/arrow-left.svg"
+                            >
+                            </svg-icon>
+                        </span>
+                        <span
+                            ngbTooltip
+                            [mainTooltip]="
+                                currentCompanyIndex ===
+                                _optionsCompany?.length - 1
+                                    ? ''
+                                    : 'Next'
+                            "
+                            [tooltipBackground]="
+                                currentCompanyIndex ===
+                                _optionsCompany?.length - 1
+                                    ? 'rgba(0,0,0,0)'
+                                    : '#6C6C6C'
+                            "
+                            position="top"
+                            class="nextArrow"
+                            (click)="onActionChange('next')"
+                        >
+                            <svg-icon
+                                class="arrow-right"
+                                src="assets/svg/common/arrow-left.svg"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                </ng-container>
             </div>
             <div class="basic-header">
                 <img

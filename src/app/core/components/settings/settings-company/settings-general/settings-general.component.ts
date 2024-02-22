@@ -37,6 +37,7 @@ import {
 
 //Models
 import { CompanyProperties } from '../utils/models/settings.models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-settings-general',
@@ -72,6 +73,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public currentCompanyIndex: number;
 
     public fontSizeLogo: string;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private settingsCompanyService: SettingsCompanyService,
@@ -137,32 +140,38 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             );
         }
 
-        this.confirmationService.confirmationData$.subscribe({
-            next: (res: Confirmation) => {
-                switch (res.type) {
-                    case 'delete': {
-                        if (res.template === 'company') {
-                            this.deleteDivisionCompanyById(res.id);
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    switch (res.type) {
+                        case 'delete': {
+                            if (res.template === SETINGS_ENUMS.COMPANY)
+                                this.deleteDivisionCompanyById(res.id);
+                            break;
                         }
-                        break;
+                        default: {
+                            break;
+                        }
                     }
-                    default: {
-                        break;
-                    }
-                }
-            },
-        });
+                },
+            });
     }
 
     public timeZoneFormat(mod: string): string {
         return mod.substring(0, 7);
     }
 
-    public onAction(modal: { modalName: string; type: string; company?: CompanyProperties }): void {
+    public onAction(modal: {
+        modalName: string;
+        type: string;
+        company?: CompanyProperties;
+    }): void {
         this.settingsCompanyService.onModalAction(modal);
     }
 
-    public identity(index: number, item: any): number { //leave any for now
+    public identity(index: number, item: any): number {
+        //leave any for now
         return item.id;
     }
 
@@ -172,9 +181,10 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             this.selectDropDown.emit(value);
         }
     }
-    public onSelectItem(event: any): void { //leave any for now
+    public onSelectItem(event: any): void {
+        //leave any for now
         if (event) {
-            let currentIndex = this._optionsCompany?.findIndex(
+            const currentIndex = this._optionsCompany?.findIndex(
                 (comp) => comp.id === event.id
             );
             this.currentCompanyIndex = currentIndex;
@@ -187,9 +197,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public showDropdown(): void {
-        if (this._optionsCompany?.length > 1) {
-            this.selectedDropdown = true;
-        }
+        if (this._optionsCompany?.length > 1) this.selectedDropdown = true;
     }
 
     public onActionChange(action: string): void {
@@ -201,7 +209,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             case SETTINGS_ARROW_ACTIONS.PREVIOUS: {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
-                    let data = this._optionsCompany[currentIndex];
+                    const data = this._optionsCompany[currentIndex];
                     this.currentCompanyIndex = currentIndex;
                     this.onSelectItem(data);
                 }
@@ -213,7 +221,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                     currentIndex !== -1 &&
                     this._optionsCompany?.length > currentIndex
                 ) {
-                    let data = this._optionsCompany[currentIndex];
+                    const data = this._optionsCompany[currentIndex];
                     this.currentCompanyIndex = currentIndex;
                     this.onSelectItem(data);
                 }

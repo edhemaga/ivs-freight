@@ -7,6 +7,8 @@ export enum SETINGS_ENUMS {
     THIRTY_TWO = 'thirty',
     TWENTY_THREE = 'twentythree',
     TWENTY = 'twenty',
+
+    COMPANY = 'company'
 }
 
 export enum SETTINGS_ARROW_ACTIONS {
