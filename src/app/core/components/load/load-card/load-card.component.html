@@ -6,7 +6,7 @@
             <div
                 class="card-body d-flex justify-content-between"
                 [ngClass]="{
-                    'body-active': isCardFlipped.includes(i),
+                    'body-active': isCardFlippedCheckInCards.includes(i),
                     'body-checked': card.isSelected
                 }"
             >
@@ -26,8 +26,10 @@
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
-                                    'rotate-svg': isCardFlipped.includes(i),
-                                    'svg-position': !isCardFlipped.includes(i)
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
                                 }"
                             >
                                 <input
@@ -92,7 +94,8 @@
                     <div
                         class="flipped"
                         [ngClass]="{
-                            'card-body-content': !isCardFlipped.includes(i)
+                            'card-body-content':
+                                !isCardFlippedCheckInCards.includes(i)
                         }"
                     >
                         <ng-container
@@ -325,7 +328,8 @@
                     <div
                         class="flipped"
                         [ngClass]="{
-                            'card-body-content': isCardFlipped.includes(i)
+                            'card-body-content':
+                                isCardFlippedCheckInCards.includes(i)
                         }"
                     >
                         <ng-container
@@ -489,8 +493,10 @@
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
-                                    'rotate-svg': isCardFlipped.includes(i),
-                                    'svg-position': !isCardFlipped.includes(i)
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
                                 }"
                             >
                                 <svg-icon

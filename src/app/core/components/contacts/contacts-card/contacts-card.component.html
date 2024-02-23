@@ -8,7 +8,7 @@
             <div
                 class="card-body d-flex justify-content-between"
                 [ngClass]="{
-                    'body-active': isCardFlipped.includes(i),
+                    'body-active': isCardFlippedCheckInCards.includes(i),
                     'body-checked': card.isSelected
                 }"
             >
@@ -28,8 +28,10 @@
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
-                                    'rotate-svg': isCardFlipped.includes(i),
-                                    'svg-position': !isCardFlipped.includes(i)
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
                                 }"
                             >
                                 <input
@@ -76,7 +78,8 @@
                     <div
                         class="flipped"
                         [ngClass]="{
-                            'card-body-content': !isCardFlipped.includes(i)
+                            'card-body-content':
+                                !isCardFlippedCheckInCards.includes(i)
                         }"
                     >
                         <ng-container
@@ -214,7 +217,8 @@
                     <div
                         class="flipped"
                         [ngClass]="{
-                            'card-body-content': isCardFlipped.includes(i)
+                            'card-body-content':
+                                isCardFlippedCheckInCards.includes(i)
                         }"
                     >
                         <!-- First item in back of the card -->
@@ -486,29 +490,31 @@
                             </app-ta-note>
                         </div>
 
-                           <!-- Expand element -->
+                        <!-- Expand element -->
 
-                           <div
-                           class="bottom-side d-flex justify-content-center"
-                           (click)="flipCard(i)"
-                       >
-                           <span
-                               class="expand-card"
-                               type="button"
-                               ngbTooltip
-                               mainTooltip="Expand Card"
-                               tooltipBackground="#424242"
-                               position="bottom"
-                               [ngClass]="{
-                                   'rotate-svg': isCardFlipped.includes(i),
-                                   'svg-position': !isCardFlipped.includes(i)
-                               }"
-                           >
-                               <svg-icon
-                                   [src]="'assets/svg/common/resize-arrow.svg'"
-                               ></svg-icon>
-                           </span>
-                       </div>
+                        <div
+                            class="bottom-side d-flex justify-content-center"
+                            (click)="flipCard(i)"
+                        >
+                            <span
+                                class="expand-card"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Expand Card"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/resize-arrow.svg'"
+                                ></svg-icon>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

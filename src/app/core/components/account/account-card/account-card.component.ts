@@ -39,8 +39,6 @@ export class AccountCardComponent implements OnInit {
     public dropdownSelectionArray = new UntypedFormArray([]);
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
-    public isCardFlippedArray: number[] = [];
-    public isCardFlipped: Array<number> = [];
     constructor(private tableService: TruckassistTableService) {}
 
     ngOnInit(): void {

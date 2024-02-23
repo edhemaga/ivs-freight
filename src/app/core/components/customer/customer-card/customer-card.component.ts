@@ -37,12 +37,10 @@ export class CustomerCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public isCardFlipped: Array<number> = [];
-
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
-    public isCardFlippedArray: number[] = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     public valueByStringPathInstance = new ValueByStringPath();
 
@@ -66,17 +64,8 @@ export class CustomerCardComponent {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        const indexSelected = this.isCardFlippedArray.indexOf(index);
-
-        if (indexSelected !== -1) {
-            this.isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = this.isCardFlippedArray;
-        } else {
-            this.isCardFlippedArray.push(index);
-            this.isCardFlipped = this.isCardFlippedArray;
-        }
-
-        return;
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

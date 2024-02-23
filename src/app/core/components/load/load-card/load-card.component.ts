@@ -40,8 +40,7 @@ export class LoadCardComponent {
 
     public cardData: CardDetails;
 
-    public isCardFlippedArray: number[] = [];
-    public isCardFlipped: Array<number> = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -77,17 +76,8 @@ export class LoadCardComponent {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        const indexSelected = this.isCardFlippedArray.indexOf(index);
-
-        if (indexSelected !== -1) {
-            this.isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = this.isCardFlippedArray;
-        } else {
-            this.isCardFlippedArray.push(index);
-            this.isCardFlipped = this.isCardFlippedArray;
-        }
-
-        return;
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

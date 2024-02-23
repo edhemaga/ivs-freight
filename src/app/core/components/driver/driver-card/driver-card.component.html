@@ -8,7 +8,7 @@
             <div
                 class="card-body d-flex justify-content-between"
                 [ngClass]="{
-                    'body-active': isCardFlipped.includes(i),
+                    'body-active': isCardFlippedCheckInCards.includes(i),
                     'body-checked': card.isSelected
                 }"
             >
@@ -28,8 +28,10 @@
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
-                                    'rotate-svg': isCardFlipped.includes(i),
-                                    'svg-position': !isCardFlipped.includes(i)
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
                                 }"
                             >
                                 <input
@@ -60,7 +62,7 @@
                                         class="image-hover"
                                         [src]="card.avatarImg"
                                     />
-                                    <ng-container *ngIf="card.owner !== null">
+                                    <ng-container *ngIf="card.owner">
                                         <svg-icon
                                             class="is-owner"
                                             [src]="
@@ -111,7 +113,8 @@
                     <div
                         class="flipped"
                         [ngClass]="{
-                            'card-body-content': !isCardFlipped.includes(i)
+                            'card-body-content':
+                                !isCardFlippedCheckInCards.includes(i)
                         }"
                     >
                         <!-- Card body item -->
@@ -157,7 +160,8 @@
                                         >
                                             <ng-container
                                                 *ngFor="
-                                                    let applicantProgress of card.tableApplicantProgress
+                                                    let applicantProgress of card.tableApplicantProgress;
+                                                    trackBy: trackCard
                                                 "
                                             >
                                                 {{
@@ -245,7 +249,8 @@
                     <div
                         class="flipped"
                         [ngClass]="{
-                            'card-body-content': isCardFlipped.includes(i)
+                            'card-body-content':
+                                isCardFlippedCheckInCards.includes(i)
                         }"
                     >
                         <ng-container
@@ -466,8 +471,10 @@
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{
-                                    'rotate-svg': isCardFlipped.includes(i),
-                                    'svg-position': !isCardFlipped.includes(i)
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
                                 }"
                             >
                                 <svg-icon

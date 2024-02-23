@@ -20,10 +20,10 @@ import {
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 // Helpers
-import { CardArrayHelper } from '../../../helpers/card-array-helper';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { CardArrayHelper } from 'src/app/core/helpers/card-array-helper';
 
 @Component({
     selector: 'app-repair-card',
@@ -40,6 +40,7 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     public valueByStringPathInstance = new ValueByStringPath();
+
     // All data
     @Input() viewData: CardDetails[];
 
@@ -50,14 +51,15 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public isCardFlippedArray: number[] = [];
-    public isCardFlipped: Array<number> = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     public descriptionTooltip: NgbPopover;
     public descriptionIsOpened: number;
     public activeDescriptionDropdown: number = -1;
 
     public elementWidth: number;
+
+    public ValueByStringPath = new ValueByStringPath();
 
     constructor(
         private tableService: TruckassistTableService,
@@ -68,7 +70,10 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
     ngOnChanges(): void {
         setTimeout(() => {
             this.itemsContainers.forEach((containerRef: ElementRef) => {
-                this.calculateItemsToFit(containerRef.nativeElement);
+                this.ValueByStringPath.calculateItemsToFit(
+                    containerRef.nativeElement,
+                    this.renderer
+                );
             });
         }, 500);
     }
@@ -136,11 +141,12 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
             const resizeObserver = new ResizeObserver((entries) => {
                 for (const entry of entries) {
                     const { width } = entry.contentRect;
-                    if (width !== undefined) {
+                    if (width) {
                         this.itemsContainers.forEach(
                             (containerRef: ElementRef) => {
-                                this.calculateItemsToFit(
-                                    containerRef.nativeElement
+                                this.ValueByStringPath.calculateItemsToFit(
+                                    containerRef.nativeElement,
+                                    this.renderer
                                 );
                             }
                         );
@@ -149,82 +155,6 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
             });
 
             resizeObserver.observe(parentElement);
-        }
-    }
-
-    // Setting count number for each card on page
-    public calculateItemsToFit(container: HTMLElement): void {
-        const content =
-            container?.textContent ||
-            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
-
-        const containerWidth = container?.offsetWidth;
-
-        const contentSentences = content
-            .split('•')
-            .map((sentence) => sentence.trim());
-
-        let visibleSentencesCount = 0;
-        let visibleWidth = 0;
-        let remainingSentences = 0;
-
-        for (let i = 0; i < contentSentences.length; i++) {
-            // Creating test span for measuring the parent
-
-            const testContent = contentSentences
-                .slice(0, i + 1)
-                .join(ConstantStringTableComponentsEnum.SEPARATOR); // Reconstructing sentences
-
-            const testElement = this.renderer.createElement(
-                ConstantStringTableComponentsEnum.SPAN
-            );
-
-            testElement.textContent = testContent;
-
-            this.renderer.appendChild(document.body, testElement); // Append to the body to measure width
-
-            const testWidth = testElement?.offsetWidth;
-
-            this.renderer.removeChild(document.body, testElement); // Remove element after measurement
-
-            if (testWidth <= containerWidth) {
-                visibleSentencesCount = i + 2;
-                visibleWidth = testWidth;
-            } else if (testWidth - 34 > containerWidth && i > 0) {
-                remainingSentences =
-                    contentSentences.length - visibleSentencesCount;
-
-                const existingNewElement = container.parentNode.querySelector(
-                    ConstantStringTableComponentsEnum.CONTAINER_COUNT_TA_FONT_MEDIUM
-                );
-
-                if (existingNewElement) {
-                    this.renderer.removeChild(container, existingNewElement);
-                }
-
-                const newElement = this.renderer.createElement(
-                    ConstantStringTableComponentsEnum.DIV
-                );
-
-                newElement.className =
-                    'container-count ta-font-medium d-flex justify-content-center align-items-center';
-
-                if (remainingSentences > 0) {
-                    const text = this.renderer.createText(
-                        ConstantStringTableComponentsEnum.PLUS +
-                            remainingSentences
-                    );
-
-                    this.renderer.appendChild(newElement, text);
-
-                    this.renderer.insertBefore(
-                        container?.parentNode,
-                        newElement,
-                        container.nextSibling
-                    );
-                }
-                break;
-            }
         }
     }
 
@@ -242,17 +172,8 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        const indexSelected = this.isCardFlippedArray.indexOf(index);
-
-        if (indexSelected !== -1) {
-            this.isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = this.isCardFlippedArray;
-        } else {
-            this.isCardFlippedArray.push(index);
-            this.isCardFlipped = this.isCardFlippedArray;
-        }
-
-        return;
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
 
     public trackCard(item: number): number {

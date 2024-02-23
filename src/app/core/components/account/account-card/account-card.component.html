@@ -21,10 +21,6 @@
                                 ngbTooltip
                                 tooltipBackground="#424242"
                                 position="bottom"
-                                [ngClass]="{
-                                    'rotate-svg': isCardFlipped.includes(i),
-                                    'svg-position': !isCardFlipped.includes(i)
-                                }"
                             >
                                 <input
                                     class="table-checkbox"
@@ -56,12 +52,7 @@
 
                     <!-- Card body front-->
 
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content': !isCardFlipped.includes(i)
-                        }"
-                    >
+                    <div class="flipped">
                         <ng-container
                             *ngFor="
                                 let rowsFront of displayRowsFront;
