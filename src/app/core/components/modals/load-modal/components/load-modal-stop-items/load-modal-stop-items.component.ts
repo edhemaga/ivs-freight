@@ -100,6 +100,8 @@ export class LoadModalStopItemsComponent
 
             this.getStopItemsDataValue();
         }
+
+        console.log(changes);
     }
 
     public trackByIdentity = (_: number, item: string): string => item;

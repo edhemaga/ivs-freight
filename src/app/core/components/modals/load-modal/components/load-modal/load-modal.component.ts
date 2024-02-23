@@ -3254,6 +3254,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     if (this.editData)
                         this.populateLoadModalData(this.editData.data);
+
+                    // stop items
+                    this.stopItemDropdownLists = {
+                        quantityDropdownList: res.loadItemUnits,
+                        stackDropdownList: res.stackable,
+                        secureDropdownList: res.secures,
+                    };
                 },
 
                 error: () => {},
