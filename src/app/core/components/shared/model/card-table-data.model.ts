@@ -197,12 +197,14 @@ export interface CardDetails {
     isSelected?: boolean;
     loadNumber?: string;
     statusType?: StatusType;
-    status?: Status;
+    status?: number;
     tableDropdownContent?: tableDropdownContent;
     dispatcher?: Dispatcher;
     company?: Company;
     dateCreated?: string;
     dispatch?: Dispatch;
+    ban?: boolean;
+    dnu?: boolean;
     broker?: Broker;
     brokerContact?: BrokerContact;
     referenceNumber?: string;

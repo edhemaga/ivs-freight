@@ -74,6 +74,7 @@ export class RepairTService implements OnDestroy {
                             localStorage.setItem(
                                 'repairTruckTrailerTableCount',
                                 JSON.stringify({
+                                    repairShops: repairCount.repairShops,
                                     repairTrucks: repairCount.repairTrucks,
                                     repairTrailers: repairCount.repairTrailers,
                                     truckMoneyTotal: repair?.truckMoneyTotal
@@ -189,22 +190,6 @@ export class RepairTService implements OnDestroy {
     ): Observable<object> {
         return this.repairService.apiRepairIdDelete(repairId).pipe(
             tap(() => {
-                const subShop = this.getRepairShopById(this.repairShopId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shop: RepairShopResponse | any) => {
-                            /* this.sdls.update(shop.id, { repairs: shop.repairs });
-              this.sdls.update(shop.id, { repairsByUnit: shop.repairsByUnit }); */
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'repair-shop',
-                                data: shop,
-                                id: shop.id,
-                            });
-                            subShop.unsubscribe();
-                        },
-                    });
-
                 const repairCount = JSON.parse(
                     localStorage.getItem('repairTruckTrailerTableCount')
                 );
@@ -222,9 +207,10 @@ export class RepairTService implements OnDestroy {
                     'repairTruckTrailerTableCount',
                     JSON.stringify({
                         repairTrucks: repairCount.repairTrucks,
-                        repairTrailers: repairCount.repairTrucks,
+                        repairTrailers: repairCount.repairTrailers,
                         truckMoneyTotal: repairCount.truckMoneyTotal,
                         trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                        repairShops: repairCount.repairShops,
                     })
                 );
 
@@ -262,15 +248,24 @@ export class RepairTService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (shop: RepairShopResponse | any) => {
-                            const repairShopCount = JSON.parse(
-                                localStorage.getItem('repairShopTableCount')
+                            const repairCount = JSON.parse(
+                                localStorage.getItem(
+                                    'repairTruckTrailerTableCount'
+                                )
                             );
-                            repairShopCount.repairShops++;
+                            this.shopStore.add(shop);
+                            repairCount.repairShops++;
 
                             localStorage.setItem(
-                                'repairShopTableCount',
+                                'repairTruckTrailerTableCount',
                                 JSON.stringify({
-                                    repairShops: repairShopCount.repairShops,
+                                    repairTrucks: repairCount.repairTrucks,
+                                    repairTrailers: repairCount.repairTrailers,
+                                    truckMoneyTotal:
+                                        repairCount.truckMoneyTotal,
+                                    trailerMoneyTotal:
+                                        repairCount.trailerMoneyTotal,
+                                    repairShops: repairCount.repairShops,
                                 })
                             );
 
@@ -469,18 +464,22 @@ export class RepairTService implements OnDestroy {
     public deleteRepairShopById(shopId: number): Observable<any> {
         return this.shopServices.apiRepairshopIdDelete(shopId).pipe(
             tap(() => {
-                const shopCount = JSON.parse(
-                    localStorage.getItem('repairShopTableCount')
+                const repairCount = JSON.parse(
+                    localStorage.getItem('repairTruckTrailerTableCount')
                 );
 
                 this.shopStore.remove(({ id }) => id === shopId);
 
-                shopCount.repairShops--;
+                repairCount.repairShops--;
 
                 localStorage.setItem(
-                    'repairShopTableCount',
+                    'repairTruckTrailerTableCount',
                     JSON.stringify({
-                        repairShops: shopCount.repairShops,
+                        repairTrucks: repairCount.repairTrucks,
+                        repairTrailers: repairCount.repairTrailers,
+                        truckMoneyTotal: repairCount.truckMoneyTotal,
+                        trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                        repairShops: repairCount.repairShops,
                     })
                 );
 

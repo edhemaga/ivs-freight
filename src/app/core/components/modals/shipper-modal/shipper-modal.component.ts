@@ -940,7 +940,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
-
+                    this.tabs = this.tabs.map((tab) => {
+                        if (tab.name === this.editData.openedTab) {
+                            return { ...tab, checked: true };
+                        } else {
+                            return { ...tab, checked: false };
+                        }
+                    });
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {

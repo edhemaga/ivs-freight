@@ -126,6 +126,7 @@ export class DriverTService {
                             localStorage.setItem(
                                 ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                                 JSON.stringify({
+                                    applicant: driverCount.applicant,
                                     active: driverCount.active,
                                     inactive: driverCount.inactive,
                                 })
@@ -184,6 +185,7 @@ export class DriverTService {
                 localStorage.setItem(
                     ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                     JSON.stringify({
+                        applicant: driverCount.applicant,
                         active: driverCount.active,
                         inactive: driverCount.inactive,
                     })
@@ -244,6 +246,7 @@ export class DriverTService {
                 localStorage.setItem(
                     ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                     JSON.stringify({
+                        applicant: driverCount.applicant,
                         active: driverCount.active,
                         inactive: driverCount.inactive,
                     })
@@ -454,6 +457,7 @@ export class DriverTService {
                     localStorage.setItem(
                         ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                         JSON.stringify({
+                            applicant: driverCount.applicant,
                             active: driverCount.active,
                             inactive: driverCount.inactive,
                         })

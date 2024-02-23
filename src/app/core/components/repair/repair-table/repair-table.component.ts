@@ -15,7 +15,10 @@ import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-ord
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 // Services
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
 import { RepairTService } from '../state/repair.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
@@ -182,6 +185,26 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.repair();
 
         this.getSelectedTabTableData();
+
+        this.confiramtionSubscribe();
+    }
+
+    private confiramtionSubscribe(): void {
+        this.confiramtionService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation | any) => {
+                    if (
+                        res.template === ConstantStringTableComponentsEnum.INFO
+                    ) {
+                        this.changeRepairShopStatus(res.data);
+                    }
+                },
+            });
+    }
+
+    public changeRepairShopStatus(data): void {
+        this.repairService.changeShopStatus(data.id);
     }
 
     ngAfterViewInit(): void {
@@ -1194,9 +1217,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Table Body Actions
-    public onTableBodyActions(event: BodyResponseRepair): void {
+    public onTableBodyActions(event: BodyResponseRepair | any): void {
         // Show More
-
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             if (
                 this.selectedTab !==
@@ -1219,7 +1241,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // Edit
-        else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        else if (
+            event.type === ConstantStringTableComponentsEnum.EDIT ||
+            event.type === ConstantStringTableComponentsEnum.WRITE_REVIEW
+        ) {
             switch (this.selectedTab) {
                 case ConstantStringTableComponentsEnum.ACTIVE: {
                     this.modalService.openModal(
@@ -1247,13 +1272,30 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.modalService.openModal(
                         RepairShopModalComponent,
                         { size: ConstantStringTableComponentsEnum.SMALL },
-                        event
+                        {
+                            ...event,
+                            openedTab:
+                                event.type ===
+                                ConstantStringTableComponentsEnum.ADD_CONTRACT
+                                    ? ConstantStringTableComponentsEnum.CONTRACT
+                                    : event.type ===
+                                      ConstantStringTableComponentsEnum.WRITE_REVIEW
+                                    ? ConstantStringTableComponentsEnum.REVIEW
+                                    : ConstantStringTableComponentsEnum.DETAILS,
+                        }
                     );
                     break;
                 }
             }
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.VIEW_DETAILS
+        ) {
+            if (
+                this.selectedTab ===
+                ConstantStringTableComponentsEnum.REPAIR_SHOP
+            )
+                this.router.navigate([`/list/repair/${event.id}/shop-details`]);
         }
-
         // Delete
         else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_REPAIR ||
@@ -1314,8 +1356,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
                     break;
             }
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.CLOSE_BUSINESS
+        ) {
+            const mappedEvent = {
+                ...event,
+                type:
+                    event.data.status !== undefined && event.data.status == 0
+                        ? ConstantStringTableComponentsEnum.OPEN
+                        : ConstantStringTableComponentsEnum.CLOSE,
+            };
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    template: ConstantStringTableComponentsEnum.INFO,
+                    subType: 'repair shop',
+                    subTypeStatus: ConstantStringTableComponentsEnum.BUSINESS,
+                }
+            );
         }
-
         // Finish Order
         else if (
             event.type === ConstantStringTableComponentsEnum.FINISH_ORDER

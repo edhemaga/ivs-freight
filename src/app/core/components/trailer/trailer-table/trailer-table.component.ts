@@ -74,7 +74,7 @@ import {
 })
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-
+    public trailerData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -136,12 +136,35 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRows();
 
         this.search();
+
+        this.setTableFilter();
     }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    if (res.action === ConstantStringTableComponentsEnum.SET) {
+                        this.viewData = this.trailerData?.filter(
+                            (customerData) =>
+                                res.queryParams.some(
+                                    (filterData) =>
+                                        filterData === customerData.id
+                                )
+                        );
+                    }
+
+                    if (res.action === ConstantStringTableComponentsEnum.CLEAR)
+                        this.viewData = this.trailerData;
+                }
+            });
     }
 
     private confirmationSubscribe(): void {
@@ -517,6 +540,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.trailerData = this.viewData;
     }
 
     private setTrailerTooltipColor(trailerName: string): string {

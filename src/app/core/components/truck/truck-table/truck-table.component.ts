@@ -67,6 +67,7 @@ import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public tableOptions: TableOptionsInterface;
+    public truckData: any[] = [];
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -131,6 +132,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.search();
 
         this.getSelectedTabTableData();
+
+        this.setTableFilter();
     }
 
     ngAfterViewInit(): void {
@@ -177,6 +180,25 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((response) => {
                 if (response && !this.loadingPage) {
                     this.sendTruckData();
+                }
+            });
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    if (res.action === ConstantStringTableComponentsEnum.SET) {
+                        this.viewData = this.truckData?.filter((customerData) =>
+                            res.queryParams.some(
+                                (filterData) => filterData === customerData.id
+                            )
+                        );
+                    }
+
+                    if (res.action === ConstantStringTableComponentsEnum.CLEAR)
+                        this.viewData = this.truckData;
                 }
             });
     }
@@ -540,6 +562,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.truckData = this.viewData;
     }
 
     private setTruckTooltipColor(truckName: string): string {

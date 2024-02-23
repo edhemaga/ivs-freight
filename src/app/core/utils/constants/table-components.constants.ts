@@ -703,7 +703,7 @@ export class TableRepair {
         },
         {
             title: 'Move to Favourite',
-            name: 'move-to-favourite',
+            name: 'favorite',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },

@@ -41,6 +41,8 @@ import { FuelQuery } from '../state/fule-state/fuel-state.query';
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { SortTypes } from 'src/app/core/model/fuel';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @Component({
     selector: 'app-fuel-table',
@@ -85,7 +87,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
         private fuelQuery: FuelQuery,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private confiramtionService: ConfirmationService
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -554,22 +557,83 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             isSelected: false,
-            tableName: data?.fuelStopFranchise?.businessName
-                ? data.fuelStopFranchise.businessName
-                : '',
+            tableName: data?.businessName ? data.businessName : '',
             tableStore: data?.store ? data.store : '',
             tableAddress: data?.address?.address ? data.address.address : '',
             tablePPG: data?.pricePerGallon ? data.pricePerGallon : '',
-            tableLast: data?.fuelStopExtensions[0]?.totalCost
-                ? data.fuelStopExtensions[0].totalCost
-                : '',
-            tableUsed: data?.fuelStopExtensions[0]?.lastUsed
-                ? data.fuelStopExtensions[0].lastUsed
-                : '',
+            tableLast: data?.totalCost ? data.totalCost : '',
+            tableUsed: data?.lastUsed ? data.lastUsed : '',
             tableTotalCost:
                 'Nema propery ili treba da se mapira iz fuelStopExtensions',
-            isFavorite: data.fuelStopExtensions[0].favourite,
+            isFavorite: data.favourite,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(),
+            },
         };
+    }
+
+    private getDropdownOwnerContent() {
+        return [
+            {
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            },
+            {
+                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
+                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: ConstantStringTableComponentsEnum.SHARE_2,
+                name: ConstantStringTableComponentsEnum.SHARE,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: ConstantStringTableComponentsEnum.PRINT_2,
+                name: ConstantStringTableComponentsEnum.PRINT,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                hasBorder: true,
+            },
+            {
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.DELETE,
+            },
+        ];
     }
 
     onToolBarAction(event: any) {
@@ -628,6 +692,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 );
             }
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
+        ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.FUEL,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    svg: true,
+                }
+            );
         }
     }
 

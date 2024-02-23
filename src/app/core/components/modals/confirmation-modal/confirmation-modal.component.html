@@ -33,7 +33,6 @@
     (confirmationAction)="onModalAction($event)"
 >
     <div origin class="confirmation-modal">
-        
         <!-- Renew CDL -->
         <p
             *ngIf="
@@ -88,13 +87,18 @@
             >
                 <p class="confirmation-text-1 large-text-1">
                     {{ editData?.data?.name }}
-                    <span *ngIf="editData?.data?.status == 0" class="inactive-icon-holder">
+                    <span
+                        *ngIf="editData?.data?.status == 0"
+                        class="inactive-icon-holder"
+                    >
                         <svg-icon
                             src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
                         ></svg-icon>
                     </span>
                 </p>
-                <p class="confirmation-text-2 large-text-2">{{formatDate(editData?.dateOfBirth)}}</p>
+                <p class="confirmation-text-2 large-text-2">
+                    {{ formatDate(editData?.dateOfBirth) }}
+                </p>
                 <!--
                 <p class="confirmation-text-2">
                     SSN: {{ editData?.data?.ssn }}
@@ -145,6 +149,22 @@
                     Phone: {{ editData?.data?.phone }}
                 </p>
             </div>
+
+            <div
+                *ngIf="editData?.subTypeStatus === 'business'"
+                class="confirmation-info"
+            >
+                <p class="confirmation-text-1 large-text-1">
+                    {{ editData?.data?.businessName }}
+                </p>
+                <p class="confirmation-text-2 large-text-2">
+                    {{
+                        editData?.data.mainAddress
+                            ? editData?.data.mainAddress.address
+                            : editData?.data?.address?.address
+                    }}
+                </p>
+            </div>
             <!-- CDL -->
             <div
                 *ngIf="['cdl'].includes(editData?.template)"
@@ -178,7 +198,6 @@
                             (selectedItem)="onSelectDropdown($event, 'cdl')"
                         ></app-ta-input-dropdown>
                     </div>
-
                 </div>
 
                 <div
@@ -283,14 +302,19 @@
                 >
                     <p class="confirmation-text-1 large-text-1">
                         {{ item?.data?.name }}
-                        <span *ngIf="item?.data?.status == 0" class="inactive-icon-holder">
+                        <span
+                            *ngIf="item?.data?.status == 0"
+                            class="inactive-icon-holder"
+                        >
                             <svg-icon
                                 src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
                             ></svg-icon>
                         </span>
                     </p>
-                    <p class="confirmation-text-2 large-text-2">{{formatDate(item?.data?.dateOfBirth)}}</p>
-                    
+                    <p class="confirmation-text-2 large-text-2">
+                        {{ formatDate(item?.data?.dateOfBirth) }}
+                    </p>
+
                     <!--
                     <p class="confirmation-text-2">
                         SSN: {{ item?.data?.ssn }}
@@ -348,10 +372,18 @@
                     ? 'archive'
                     : editData?.subType === 'dnu'
                     ? 'do not use list'
-                    : editData?.subType === 'favorite' ? 'favorite list' : 'ban list'
+                    : editData?.subType === 'favorite'
+                    ? 'favorite list'
+                    : 'ban list'
             }}?
         </p>
-
+        <p
+            *ngIf="editData.type && editData?.subTypeStatus === 'business'"
+            class="confirmation-header confirmation-text-1"
+        >
+            Are you sure you want to {{ editData?.type }} selected
+            {{ editData?.subType }}?
+        </p>
         <!-- Normal Header -->
         <div
             *ngIf="
@@ -376,6 +408,5 @@
                     : editData?.template
             }}?
         </div>
-
     </div>
 </app-ta-modal>

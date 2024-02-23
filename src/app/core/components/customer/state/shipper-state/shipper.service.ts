@@ -11,7 +11,15 @@ import {
     ShipperModalResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import {
+    finalize,
+    Observable,
+    of,
+    Subject,
+    switchMap,
+    takeUntil,
+    tap,
+} from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
@@ -483,50 +491,40 @@ export class ShipperTService implements OnDestroy {
     }
 
     public getShipperChart(id: number, chartType: number) {
-        return this.shipperService.apiShipperAveragewaitingtimeGet(id, chartType);
+        return this.shipperService.apiShipperAveragewaitingtimeGet(
+            id,
+            chartType
+        );
     }
 
+    public changeShipperStatus(id: number): Observable<any> {
+        const destroy$ = new Subject<void>();
+        return this.shipperService.apiShipperStatusIdPut(id).pipe(
+            switchMap(() => this.getShipperById(id).pipe(takeUntil(destroy$))),
+            tap((shipper) => {
+                let shipperId = id;
+                let shipperData = {
+                    ...this.ShipperItemStore?.getValue()?.entities[shipperId],
+                };
 
-    public changeShipperStatus(id: number){
-        return this.shipperService.apiShipperStatusIdPut(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    let shipperId = id;
-                    let shipperData = {
-                        ...this.ShipperItemStore?.getValue()?.entities[shipperId],
-                    };
+                const subShipper = this.getShipperById(id);
+                this.shipperStore.remove(({ id }) => id === shipperId);
+                this.shipperMinimalStore.remove(({ id }) => id === shipperId);
 
-                    const subShipper = this.getShipperById(id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shipper: any) => {
-                            this.shipperStore.remove(
-                                ({ id }) => id === shipperId
-                            );
-                            this.shipperMinimalStore.remove(
-                                ({ id }) => id === shipperId
-                            );
+                shipper.loadStops = shipperData.loadStops;
 
-                            shipper.loadStops = shipperData.loadStops;
-
-                            this.shipperStore.add(shipper);
-                            this.shipperMinimalStore.add(shipper);
-                            this.sListStore.update(shipper.id, shipper);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'shipper',
-                                data: shipper,
-                                id: shipper.id,
-                            });
-
-                            subShipper.unsubscribe();
-                        },
-                    });
-                }
-                
-            });
-          
+                this.shipperStore.add(shipper);
+                this.shipperMinimalStore.add(shipper);
+                this.sListStore.update(shipper.id, shipper);
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'shipper',
+                    data: shipper,
+                    id: shipper.id,
+                });
+            }),
+            finalize(() => destroy$.next())
+        );
     }
 
     ngOnDestroy(): void {

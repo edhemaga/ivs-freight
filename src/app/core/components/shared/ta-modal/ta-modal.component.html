@@ -593,18 +593,7 @@
                     class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
                     type="button"
                 >
-                    {{
-                        confirmationData?.subTypeStatus
-                            ?.substring(0, 1)
-                            .toUpperCase() +
-                            confirmationData?.subTypeStatus?.substring(1)
-                    }}
-                    {{
-                        confirmationData?.subTypeStatus === 'move'
-                            ? 'to'
-                            : 'from'
-                    }}
-                    DNU
+                    Yes
                 </button>
 
                 <!-- DNU -->
@@ -615,18 +604,7 @@
                     class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
                     type="button"
                 >
-                    {{
-                        confirmationData?.subTypeStatus
-                            ?.substring(0, 1)
-                            .toUpperCase() +
-                            confirmationData?.subTypeStatus?.substring(1)
-                    }}
-                    {{
-                        confirmationData?.subTypeStatus === 'move'
-                            ? 'to'
-                            : 'from'
-                    }}
-                    Ban List
+                    Yes
                 </button>
 
                 <!-- Favourite -->
@@ -642,6 +620,15 @@
                             ? 'Mark as Favorite'
                             : 'Remove from Favorite'
                     }}
+                </button>
+
+                <button
+                    *ngIf="confirmationData?.subTypeStatus === 'business'"
+                    (click)="onAction('business')"
+                    class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                    type="button"
+                >
+                    Yes
                 </button>
             </div>
 

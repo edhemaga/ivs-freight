@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 
 // Models
-import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
+import { GetOwnerListResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
@@ -36,13 +36,12 @@ import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { TableOwner } from 'src/app/core/utils/constants/table-components.constants';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
-import {
-    MapOwnerData,
-    OwnerBackFilterFilter,
-    OwnerBodyResponse,
-} from '../owner.modal';
+import { MapOwnerData, OwnerBackFilterFilter } from '../owner.modal';
 import { DisplayOwnerConfiguration } from '../owner-card-data';
 import { CardRows } from '../../shared/model/cardData';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
     selector: 'app-owner-table',
@@ -89,7 +88,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
         private phonePipe: formatPhonePipe,
-        private ownerInactiveStore: OwnerInactiveStore
+        private ownerInactiveStore: OwnerInactiveStore,
+        private confirmationService: ConfirmationService,
+        private sharedService: SharedService
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -109,6 +110,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRows();
 
         this.ownerActions();
+
+        this.confirmationSubscribe();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -146,6 +149,67 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         return col;
                     });
                 }
+            });
+    }
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case ConstantStringTableComponentsEnum.DELETE: {
+                            this.deleteOwnerById(res.id);
+                            break;
+                        }
+                        case ConstantStringTableComponentsEnum.ACTIVATE: {
+                            this.changeOwnerStatus(res.data);
+                            break;
+                        }
+                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
+                            this.changeOwnerStatus(res.data);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                },
+            });
+    }
+    private changeOwnerStatus(data): void {
+        this.ownerService
+            .updateOwner(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+    private deleteOwnerById(id: number): void {
+        this.ownerService
+            .deleteOwnerById(id, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((owner) => {
+                        if (owner.id === id) {
+                            owner.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE;
+                        }
+
+                        return owner;
+                    });
+
+                    this.sendOwnerData();
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            true,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 900);
+                },
+                error: () => {},
             });
     }
 
@@ -594,7 +658,111 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownOwnerContent() {
-        return TableOwner.DROPDOWN_OWNER_CONTENT;
+        return [
+            {
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            },
+            {
+                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
+                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Truck',
+                name: 'add-truck',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Trailer',
+                name: 'add-trailer',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                hasBorder: true,
+            },
+            {
+                title: ConstantStringTableComponentsEnum.SHARE_2,
+                name: ConstantStringTableComponentsEnum.SHARE,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: ConstantStringTableComponentsEnum.PRINT_2,
+                name: ConstantStringTableComponentsEnum.PRINT,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                hasBorder: true,
+            },
+            {
+                title:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+                        : ConstantStringTableComponentsEnum.ACTIVATE_2,
+                name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass:
+                    this.selectedTab ===
+                    ConstantStringTableComponentsEnum.ACTIVE
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.DELETE,
+            },
+        ];
     }
 
     private getTabData(dataType: string) {
@@ -725,7 +893,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: OwnerBodyResponse): void {
+    public onTableBodyActions(event: any): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.active =
                 this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
@@ -735,8 +903,22 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.ownerBackFilter(this.backFilterQuery, true);
         } else if (
-            event.type === ConstantStringTableComponentsEnum.EDIT_OWNER
+            event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
         ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.OWNER,
+                    type:
+                        event.data.isSelected === 1
+                            ? ConstantStringTableComponentsEnum.DEACTIVATE
+                            : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
+        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
             this.modalService.openModal(
                 OwnerModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },
@@ -747,12 +929,17 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         } else if (
-            event.type === ConstantStringTableComponentsEnum.DELETE_OWNER
+            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
         ) {
             this.ownerService
                 .deleteOwnerById(event.id, this.selectedTab)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe();
+                .subscribe({
+                    next: () => {
+                        this.sendOwnerData();
+                    },
+                    error: () => {},
+                });
         }
     }
 
