@@ -36,9 +36,8 @@ import { LoadStopItemsConstants } from '../../state/utils/constants/load-stop-it
 import { ConstantStringEnum } from '../../state/enums/load-modal-stop-items.enum';
 
 // model
-import { StopItemsData } from '../../state/models/load-modal-stop-items-model/load-stop-items-data.model';
 import { StopItemDropdownLists } from '../../state/models/load-modal-stop-items-model/load-stop-item-dropdowns.model';
-import { EnumValue } from 'appcoretruckassist';
+import { EnumValue, LoadStopItemCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-load-modal-stop-items',
@@ -60,10 +59,12 @@ export class LoadModalStopItemsComponent
     implements OnInit, OnChanges, OnDestroy
 {
     @Input() createNewStopItemsRow: boolean = false;
-    @Input() stopItemsData: StopItemsData[] = [];
+    @Input() stopItemsData: LoadStopItemCommand[] = [];
     @Input() stopItemDropdownLists: StopItemDropdownLists;
 
-    @Output() stopItemsDataValueEmitter = new EventEmitter<StopItemsData[]>();
+    @Output() stopItemsDataValueEmitter = new EventEmitter<
+        LoadStopItemCommand[]
+    >();
     @Output() stopItemsValidStatusEmitter = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
@@ -200,7 +201,7 @@ export class LoadModalStopItemsComponent
         this.getStopItemsDataValue();
     }
 
-    public updateStopItems(stopItemsData: StopItemsData[]): void {
+    public updateStopItems(stopItemsData: LoadStopItemCommand[]): void {
         for (let i = 0; i < stopItemsData.length; i++) {
             this.createStopItemsRow();
 
@@ -219,7 +220,7 @@ export class LoadModalStopItemsComponent
                 throttleTime(2),
                 takeUntil(this.destroy$)
             )
-            .subscribe((res: StopItemsData[]) => {
+            .subscribe((res: LoadStopItemCommand[]) => {
                 if (res) {
                     this.getStopItemsDataValue();
 
