@@ -1,8 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-    CardDetails,
-    SendDataCard,
-} from '../../shared/model/card-table-data.model';
+import { Component, Input } from '@angular/core';
+import { CardDetails } from '../../shared/model/card-table-data.model';
 import { Router } from '@angular/router';
 
 // pipes
@@ -26,8 +23,6 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     providers: [FormatNumberMiPipe, formatCurrency],
 })
 export class LoadCardComponent {
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
-
     // All data
     @Input() viewData: CardDetails[];
 
@@ -43,11 +38,9 @@ export class LoadCardComponent {
 
     public valueByStringPathInstance = new ValueByStringPath();
 
-    public isCardFlipped: Array<number> = [];
-    public dropDownActive: number;
     public cardData: CardDetails;
 
-    public isCardFlippedArray: number[] = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -83,17 +76,8 @@ export class LoadCardComponent {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        const indexSelected = this.isCardFlippedArray.indexOf(index);
-
-        if (indexSelected !== -1) {
-            this.isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = this.isCardFlippedArray;
-        } else {
-            this.isCardFlippedArray.push(index);
-            this.isCardFlipped = this.isCardFlippedArray;
-        }
-
-        return;
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

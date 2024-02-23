@@ -102,7 +102,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public columns: TableColumnConfig[] = [];
     public selectedTab: ConstantStringTableComponentsEnum | string =
         ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
     public repairShops: ShopState[] = [];
@@ -192,14 +192,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: Confirmation | any) => {
-                    if (
-                        res.template === ConstantStringTableComponentsEnum.INFO
-                    ) {
-                        this.changeRepairShopStatus(res.data);
-                    }
-                },
+            .subscribe((res: Confirmation) => {
+                if (res.template === ConstantStringTableComponentsEnum.INFO)
+                    this.changeRepairShopStatus(res.data);
             });
     }
 
@@ -1362,7 +1357,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             const mappedEvent = {
                 ...event,
                 type:
-                    event.data.status !== undefined && event.data.status == 0
+                    !event.data.status && event.data.status == 0
                         ? ConstantStringTableComponentsEnum.OPEN
                         : ConstantStringTableComponentsEnum.CLOSE,
             };

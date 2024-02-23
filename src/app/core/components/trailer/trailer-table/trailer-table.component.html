@@ -27,15 +27,15 @@
     </ng-container>
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
-            <app-truckassist-cards
-                (bodyActions)="onTableBodyActions($event)"
+            <app-trailer-card
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
                 [displayRowsFront]="sendDataToCardsFront"
                 [displayRowsBack]="sendDataToCardsBack"
                 [page]="page"
-            ></app-truckassist-cards>
+            >
+            </app-trailer-card>
             <!-- Show More -->
 
             <ng-container *ngIf="viewData.length">

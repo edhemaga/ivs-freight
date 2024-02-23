@@ -86,7 +86,11 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 // Constants
-import { TableDropdownCustomerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import {
+    TableDropdownCustomerComponentConstants,
+    getDropdownBrokerContent,
+    getDropdownShipperContent,
+} from 'src/app/core/utils/constants/table-components.constants';
 
 //Filters
 import {
@@ -199,34 +203,27 @@ export class CustomerTableComponent
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: Confirmation | any) => {
-                    if (res.type === ConstantStringTableComponentsEnum.INFO) {
-                        if (
-                            res.subType ===
-                            ConstantStringTableComponentsEnum.BAN_LIST
-                        ) {
-                            this.changeBanStatus(res.data);
-                        } else if (
-                            res.subType ===
-                            ConstantStringTableComponentsEnum.DNU
-                        ) {
-                            this.changeDnuStatus(res.data);
-                        }
-                    }
+            .subscribe((res: Confirmation) => {
+                if (res.type === ConstantStringTableComponentsEnum.INFO) {
                     if (
-                        res.template === ConstantStringTableComponentsEnum.INFO
+                        res.subType ===
+                        ConstantStringTableComponentsEnum.BAN_LIST
                     ) {
-                        if (
-                            this.selectedTab ===
-                            ConstantStringTableComponentsEnum.ACTIVE
-                        ) {
-                            this.changeBussinesStatusBroker(res.data);
-                        } else {
-                            this.changeBussinesStatusShipper(res.data);
-                        }
+                        this.changeBanStatus(res.data);
+                    } else {
+                        this.changeDnuStatus(res.data);
                     }
-                },
+                }
+                if (res.template === ConstantStringTableComponentsEnum.INFO) {
+                    if (
+                        this.selectedTab ===
+                        ConstantStringTableComponentsEnum.ACTIVE
+                    ) {
+                        this.changeBussinesStatusBroker(res.data);
+                    } else {
+                        this.changeBussinesStatusShipper(res.data);
+                    }
+                }
             });
     }
 
@@ -234,11 +231,8 @@ export class CustomerTableComponent
         this.brokerService
             .changeDnuStatus(data.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.sendCustomerData();
-                },
-                error: () => {},
+            .subscribe(() => {
+                this.sendCustomerData();
             });
     }
 
@@ -246,11 +240,8 @@ export class CustomerTableComponent
         this.brokerService
             .changeBrokerStatus(data.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.sendCustomerData();
-                },
-                error: () => {},
+            .subscribe(() => {
+                this.sendCustomerData();
             });
     }
 
@@ -258,11 +249,8 @@ export class CustomerTableComponent
         this.shipperService
             .changeShipperStatus(data.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.sendCustomerData();
-                },
-                error: () => {},
+            .subscribe(() => {
+                this.sendCustomerData();
             });
     }
 
@@ -270,11 +258,8 @@ export class CustomerTableComponent
         this.brokerService
             .changeBanStatus(data.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.sendCustomerData();
-                },
-                error: () => {},
+            .subscribe(() => {
+                this.sendCustomerData();
             });
     }
 
@@ -940,246 +925,11 @@ export class CustomerTableComponent
     }
 
     private getDropdownBrokerContent(data): DropdownItem[] {
-        return [
-            {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: 'edit-cutomer-or-shipper',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.CREATE_LOAD_2,
-                name: ConstantStringTableComponentsEnum.CREATE_LOAD,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.ADD_CONTRACT_2,
-                name: ConstantStringTableComponentsEnum.ADD_CONTRACT,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.WRITE_REVIEW_2,
-                name: ConstantStringTableComponentsEnum.WRITE_REVIEW,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: !data.ban
-                    ? ConstantStringTableComponentsEnum.MOVE_TO_BAN_LIST_2
-                    : ConstantStringTableComponentsEnum.REMOVE_FROM_BAN_LIST,
-                name: ConstantStringTableComponentsEnum.MOVE_TO_BAN_LIST,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: !data.dnu
-                    ? ConstantStringTableComponentsEnum.MOVE_TO_DNU_LIST_2
-                    : ConstantStringTableComponentsEnum.REMOVE_FROM_DNU_LIST,
-                name: ConstantStringTableComponentsEnum.MOVE_TO_DNU_LIST,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                hasBorder: true,
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.SHARE_2,
-                name: ConstantStringTableComponentsEnum.SHARE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.PRINT_2,
-                name: ConstantStringTableComponentsEnum.PRINT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                hasBorder: true,
-            },
-
-            {
-                title:
-                    data.status === 1
-                        ? ConstantStringTableComponentsEnum.CLOSE_BUSINESS_2
-                        : ConstantStringTableComponentsEnum.OPEN_BUSINESS,
-                name: ConstantStringTableComponentsEnum.CLOSE_BUSINESS,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-        ];
+        return getDropdownBrokerContent(data);
     }
 
     private getDropdownShipperContent(data): DropdownItem[] {
-        return [
-            {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: 'edit-cutomer-or-shipper',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.ADD_CONTRACT_2,
-                name: ConstantStringTableComponentsEnum.ADD_CONTRACT,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.WRITE_REVIEW_2,
-                name: ConstantStringTableComponentsEnum.WRITE_REVIEW,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title:
-                    data.status === 1
-                        ? ConstantStringTableComponentsEnum.CLOSE_BUSINESS_2
-                        : ConstantStringTableComponentsEnum.OPEN_BUSINESS,
-                name: ConstantStringTableComponentsEnum.CLOSE_BUSINESS,
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-
-            {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-        ];
+        return getDropdownShipperContent(data);
     }
 
     // Update Broker And Shipper Count
@@ -1545,32 +1295,27 @@ export class CustomerTableComponent
                             this.brokerService
                                 .deleteBrokerById(event.id)
                                 .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: () => {
-                                        this.viewData = this.viewData.map(
-                                            (broker) => {
-                                                if (broker.id === event.id) {
-                                                    broker.actionAnimation =
-                                                        ConstantStringTableComponentsEnum.DELETE;
-                                                }
+                                .subscribe(() => {
+                                    this.viewData = this.viewData.map(
+                                        (broker) => {
+                                            if (broker.id === event.id)
+                                                broker.actionAnimation =
+                                                    ConstantStringTableComponentsEnum.DELETE;
 
-                                                return broker;
-                                            }
+                                            return broker;
+                                        }
+                                    );
+
+                                    this.updateDataCount();
+
+                                    const inetval = setInterval(() => {
+                                        this.viewData = closeAnimationAction(
+                                            true,
+                                            this.viewData
                                         );
 
-                                        this.updateDataCount();
-
-                                        const inetval = setInterval(() => {
-                                            this.viewData =
-                                                closeAnimationAction(
-                                                    true,
-                                                    this.viewData
-                                                );
-
-                                            clearInterval(inetval);
-                                        }, 900);
-                                    },
-                                    error: () => {},
+                                        clearInterval(inetval);
+                                    }, 900);
                                 });
                         }
                     }

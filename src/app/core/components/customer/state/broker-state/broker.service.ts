@@ -11,15 +11,7 @@ import {
     RatingReviewService,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import {
-    finalize,
-    Observable,
-    of,
-    Subject,
-    switchMap,
-    takeUntil,
-    tap,
-} from 'rxjs';
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
@@ -286,13 +278,9 @@ export class BrokerTService implements OnDestroy {
 
     // Change Ban Status
     public changeBanStatus(brokerId: number) {
-        const destroy$ = new Subject<void>();
-
         return this.brokerService.apiBrokerBanIdPut(brokerId, 'response').pipe(
-            switchMap(() =>
-                this.getBrokerById(brokerId).pipe(takeUntil(destroy$))
-            ),
-            tap((broker: BrokerResponse | any) => {
+            switchMap(() => this.getBrokerById(brokerId)),
+            tap((broker: BrokerResponse) => {
                 this.brokerStore.remove(({ id }) => id === brokerId);
                 this.brokerMinimalStore.remove(({ id }) => id === brokerId);
                 this.brokerStore.add(broker);
@@ -304,19 +292,15 @@ export class BrokerTService implements OnDestroy {
                     data: broker,
                     id: broker.id,
                 });
-            }),
-            finalize(() => destroy$.next())
+            })
         );
     }
 
     // Change Dnu Status
     public changeDnuStatus(brokerId: number): Observable<any> {
-        const destroy$ = new Subject<void>();
         return this.brokerService.apiBrokerDnuIdPut(brokerId, 'response').pipe(
-            switchMap(() =>
-                this.getBrokerById(brokerId).pipe(takeUntil(destroy$))
-            ),
-            tap((broker: BrokerResponse | any) => {
+            switchMap(() => this.getBrokerById(brokerId)),
+            tap((broker: BrokerResponse) => {
                 this.brokerStore.remove(({ id }) => id === brokerId);
                 this.brokerMinimalStore.remove(({ id }) => id === brokerId);
                 this.brokerStore.add(broker);
@@ -328,8 +312,7 @@ export class BrokerTService implements OnDestroy {
                     data: broker,
                     id: broker.id,
                 });
-            }),
-            finalize(() => destroy$.next())
+            })
         );
     }
 
@@ -435,13 +418,10 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
-    public changeBrokerStatus(brokerId: any): Observable<any> {
-        const destroy$ = new Subject<void>();
+    public changeBrokerStatus(brokerId: number): Observable<any> {
         return this.brokerService.apiBrokerStatusIdPut(brokerId).pipe(
-            switchMap(() =>
-                this.getBrokerById(brokerId).pipe(takeUntil(destroy$))
-            ),
-            tap((broker: BrokerResponse | any) => {
+            switchMap(() => this.getBrokerById(brokerId)),
+            tap((broker: BrokerResponse) => {
                 this.brokerStore.remove(({ id }) => id === brokerId);
                 this.brokerMinimalStore.remove(({ id }) => id === brokerId);
                 this.brokerStore.add(broker);
@@ -453,8 +433,7 @@ export class BrokerTService implements OnDestroy {
                     data: broker,
                     id: broker.id,
                 });
-            }),
-            finalize(() => destroy$.next())
+            })
         );
     }
 

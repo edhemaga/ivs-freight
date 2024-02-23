@@ -9,17 +9,10 @@ import {
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
+    ShipperResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import {
-    finalize,
-    Observable,
-    of,
-    Subject,
-    switchMap,
-    takeUntil,
-    tap,
-} from 'rxjs';
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
@@ -497,13 +490,12 @@ export class ShipperTService implements OnDestroy {
         );
     }
 
-    public changeShipperStatus(id: number): Observable<any> {
-        const destroy$ = new Subject<void>();
+    public changeShipperStatus(id: number): Observable<ShipperResponse> {
         return this.shipperService.apiShipperStatusIdPut(id).pipe(
-            switchMap(() => this.getShipperById(id).pipe(takeUntil(destroy$))),
+            switchMap(() => this.getShipperById(id)),
             tap((shipper) => {
-                let shipperId = id;
-                let shipperData = {
+                const shipperId = id;
+                const shipperData = {
                     ...this.ShipperItemStore?.getValue()?.entities[shipperId],
                 };
 
@@ -522,8 +514,7 @@ export class ShipperTService implements OnDestroy {
                     data: shipper,
                     id: shipper.id,
                 });
-            }),
-            finalize(() => destroy$.next())
+            })
         );
     }
 

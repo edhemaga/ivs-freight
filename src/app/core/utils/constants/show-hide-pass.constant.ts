@@ -1,6 +1,9 @@
-import { SvgStyles, TooltipStyles } from '../../modal/directive.modal';
+import {
+    SvgStyles,
+    TooltipStyles,
+} from '../../model/show-hide-directive.model';
 
-export class DirectiveConstants {
+export class ShowHidePassDirective {
     static TOOLTIP_STYLES: TooltipStyles = {
         position: 'absolute',
         visibility: 'hidden',

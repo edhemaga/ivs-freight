@@ -228,9 +228,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
-        if (this.editData.tab) {
-            this.selectedTab = this.editData.tab;
-        }
+        if (this.editData.tab) this.selectedTab = this.editData.tab;
+
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 

@@ -12,15 +12,15 @@ import { TimeFormatPipe } from '../pipes/time-format-am-pm.pipe';
 //Remove quotes from string to convert into endpoint
 export class ValueByStringPath {
     private formatCurrencyPipe: formatCurrency = new formatCurrency();
-    private formatDatePipe: formatDatePipe;
-    private formatNumberMi: FormatNumberMiPipe;
-    private timeFormatPipe: TimeFormatPipe;
+    private formatDatePipe: formatDatePipe = new formatDatePipe();
+    private formatNumberMi: FormatNumberMiPipe = new FormatNumberMiPipe();
+    private timeFormatPipe: TimeFormatPipe = new TimeFormatPipe();
 
     public mySelection: { id: number; tableData: CardDetails }[] = [];
     public isCheckboxCheckedArray: number[] = [];
 
-    public isCardFlippedArray: number[] = [];
-    public isCardFlipped: Array<number> = [];
+    public isCardFlippedArrayComparasion: number[] = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     public getValueByStringPath(
         obj: CardDetails,
@@ -96,5 +96,93 @@ export class ValueByStringPath {
         }
 
         return [...this.mySelection];
+    }
+
+    // Setting count number for each card on page
+    public calculateItemsToFit(container: HTMLElement, renderer): void {
+        const content =
+            container?.textContent ||
+            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+
+        const containerWidth = container?.offsetWidth;
+
+        const contentSentences = content
+            .split('•')
+            .map((sentence) => sentence.trim());
+
+        let visibleSentencesCount = 0;
+        let remainingSentences = 0;
+
+        for (let i = 0; i < contentSentences.length; i++) {
+            // Creating span for measuring the parent
+
+            const content = contentSentences
+                .slice(0, i + 1)
+                .join(ConstantStringTableComponentsEnum.SEPARATOR); // Reconstructing sentences
+
+            const element = renderer.createElement(
+                ConstantStringTableComponentsEnum.SPAN
+            );
+
+            element.textContent = content;
+
+            renderer.appendChild(document.body, element); // Append to the body to measure width
+
+            const width = element?.offsetWidth;
+
+            renderer.removeChild(document.body, element); // Remove element after measurement
+
+            if (width <= containerWidth) {
+                visibleSentencesCount = i + 2;
+            } else if (width - 34 > containerWidth && i > 0) {
+                remainingSentences =
+                    contentSentences.length - visibleSentencesCount;
+
+                const existingNewElement = container.parentNode.querySelector(
+                    ConstantStringTableComponentsEnum.CONTAINER_COUNT_TA_FONT_MEDIUM
+                );
+
+                if (existingNewElement)
+                    renderer.removeChild(container, existingNewElement);
+
+                const newElement = renderer.createElement(
+                    ConstantStringTableComponentsEnum.DIV
+                );
+
+                newElement.className =
+                    'container-count ta-font-medium d-flex justify-content-center align-items-center';
+
+                if (remainingSentences > 0) {
+                    const text = renderer.createText(
+                        ConstantStringTableComponentsEnum.PLUS +
+                            remainingSentences
+                    );
+
+                    renderer.appendChild(newElement, text);
+
+                    renderer.insertBefore(
+                        container?.parentNode,
+                        newElement,
+                        container.nextSibling
+                    );
+                }
+                break;
+            }
+        }
+    }
+
+    // Flip card based on card index
+    public flipCard(index: number): number[] {
+        const indexSelected = this.isCardFlippedArrayComparasion.indexOf(index);
+
+        if (indexSelected !== -1) {
+            this.isCardFlippedArrayComparasion.splice(indexSelected, 1);
+            this.isCardFlippedCheckInCards = this.isCardFlippedArrayComparasion;
+        } else {
+            this.isCardFlippedArrayComparasion.push(index);
+            this.isCardFlippedCheckInCards = this.isCardFlippedArrayComparasion;
+        }
+
+        return this.isCardFlippedCheckInCards;
     }
 }

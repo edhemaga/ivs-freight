@@ -263,6 +263,7 @@ export enum ConstantStringTableComponentsEnum {
     EDIT_FO_TRAILER = 'edit-fo-trailer',
     EDIT_FO_TRUCK = 'edit-fo-truck',
     REPAIR_SHOP = 'repair-shop',
+    REPAIR_SHOP_2 = 'Repair-shop',
     NEW_TRAILER = 'new-trailer',
     NEW_TRUCK = 'new-truck',
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',

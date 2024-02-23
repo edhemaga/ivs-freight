@@ -12,10 +12,12 @@ import { Subject, takeUntil } from 'rxjs';
 //Components
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 //Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 //Utils
 import {
@@ -41,8 +43,6 @@ import { FuelQuery } from '../state/fule-state/fuel-state.query';
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 import { SortTypes } from 'src/app/core/model/fuel';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @Component({
     selector: 'app-fuel-table',
@@ -574,66 +574,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownOwnerContent() {
-        return [
-            {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: ConstantStringTableComponentsEnum.EDIT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            },
-            {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: ConstantStringTableComponentsEnum.SHARE_2,
-                name: ConstantStringTableComponentsEnum.SHARE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: ConstantStringTableComponentsEnum.PRINT_2,
-                name: ConstantStringTableComponentsEnum.PRINT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-        ];
+        return TableFuel.DROPDOWN_FUEL_CONTENT;
     }
 
     onToolBarAction(event: any) {

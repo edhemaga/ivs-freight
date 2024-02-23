@@ -87,14 +87,13 @@
             >
                 <p class="confirmation-text-1 large-text-1">
                     {{ editData?.data?.name }}
-                    <span
-                        *ngIf="editData?.data?.status == 0"
-                        class="inactive-icon-holder"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
-                        ></svg-icon>
-                    </span>
+                    <ng-container *ngIf="!editData?.data?.status">
+                        <span class="inactive-icon-holder">
+                            <svg-icon
+                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                            ></svg-icon>
+                        </span>
+                    </ng-container>
                 </p>
                 <p class="confirmation-text-2 large-text-2">
                     {{ formatDate(editData?.dateOfBirth) }}
@@ -150,21 +149,21 @@
                 </p>
             </div>
 
-            <div
-                *ngIf="editData?.subTypeStatus === 'business'"
-                class="confirmation-info"
-            >
-                <p class="confirmation-text-1 large-text-1">
-                    {{ editData?.data?.businessName }}
-                </p>
-                <p class="confirmation-text-2 large-text-2">
-                    {{
-                        editData?.data.mainAddress
-                            ? editData?.data.mainAddress.address
-                            : editData?.data?.address?.address
-                    }}
-                </p>
-            </div>
+            <ng-container *ngIf="editData?.subTypeStatus === 'business'">
+                <div class="confirmation-info">
+                    <p class="confirmation-text-1 large-text-1">
+                        {{ editData?.data?.businessName }}
+                    </p>
+                    <p class="confirmation-text-2 large-text-2">
+                        {{
+                            editData?.data.mainAddress
+                                ? editData?.data.mainAddress.address
+                                : editData?.data?.address?.address
+                        }}
+                    </p>
+                </div>
+            </ng-container>
+
             <!-- CDL -->
             <div
                 *ngIf="['cdl'].includes(editData?.template)"
@@ -302,14 +301,14 @@
                 >
                     <p class="confirmation-text-1 large-text-1">
                         {{ item?.data?.name }}
-                        <span
-                            *ngIf="item?.data?.status == 0"
-                            class="inactive-icon-holder"
-                        >
-                            <svg-icon
-                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
-                            ></svg-icon>
-                        </span>
+
+                        <ng-container *ngIf="!editData?.data?.status">
+                            <span class="inactive-icon-holder">
+                                <svg-icon
+                                    src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
                     </p>
                     <p class="confirmation-text-2 large-text-2">
                         {{ formatDate(item?.data?.dateOfBirth) }}
@@ -351,39 +350,42 @@
         </div>
 
         <!-- Rating Header -->
-        <p
-            *ngIf="editData.rating && editData?.type === 'delete'"
-            class="confirmation-header confirmation-text-1"
-        >
-            Are you sure you want to delete rating for this
-            {{ editData?.template }}?
-        </p>
+        <ng-container *ngIf="editData.rating && editData?.type === 'delete'">
+            <p class="confirmation-header confirmation-text-1">
+                Are you sure you want to delete rating for this
+                {{ editData?.template }}?
+            </p>
+        </ng-container>
 
         <!-- Info Header -->
-        <p
+        <ng-container
             *ngIf="editData.subTypeStatus && editData?.type === 'info'"
-            class="confirmation-header confirmation-text-1"
         >
-            Are you sure you want to {{ editData?.subTypeStatus }} this
-            {{ editData?.template }}
-            {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
-            {{
-                editData?.subType === 'archive'
-                    ? 'archive'
-                    : editData?.subType === 'dnu'
-                    ? 'do not use list'
-                    : editData?.subType === 'favorite'
-                    ? 'favorite list'
-                    : 'ban list'
-            }}?
-        </p>
-        <p
+            <p class="confirmation-header confirmation-text-1">
+                Are you sure you want to {{ editData?.subTypeStatus }} this
+                {{ editData?.template }}
+                {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
+                {{
+                    editData?.subType === 'archive'
+                        ? 'archive'
+                        : editData?.subType === 'dnu'
+                        ? 'do not use list'
+                        : editData?.subType === 'favorite'
+                        ? 'favorite list'
+                        : 'ban list'
+                }}?
+            </p>
+        </ng-container>
+
+        <ng-container
             *ngIf="editData.type && editData?.subTypeStatus === 'business'"
-            class="confirmation-header confirmation-text-1"
         >
-            Are you sure you want to {{ editData?.type }} selected
-            {{ editData?.subType }}?
-        </p>
+            <p class="confirmation-header confirmation-text-1">
+                Are you sure you want to {{ editData?.type }} selected
+                {{ editData?.subType }}?
+            </p>
+        </ng-container>
+
         <!-- Normal Header -->
         <div
             *ngIf="
