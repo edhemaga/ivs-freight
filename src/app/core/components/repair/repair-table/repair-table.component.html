@@ -28,7 +28,7 @@
 
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
-            <app-truckassist-cards
+            <app-repair-card
                 (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
                 [rows]="rows"
@@ -37,8 +37,8 @@
                 [displayRowsBack]="sendDataToCardsBack"
                 [page]="page"
                 [selectedTab]="selectedTab"
-            ></app-truckassist-cards>
-
+            >
+            </app-repair-card>
             <!-- Show More -->
 
             <ng-container *ngIf="viewData.length">

@@ -20,7 +20,6 @@
                     <div class="card-header d-flex align-items-center">
                         <div class="checkbox-holder d-flex align-items-center">
                             <!-- Checkbox -->
-
                             <span
                                 class="checkbox-tooltip"
                                 type="button"
@@ -45,10 +44,44 @@
                                 ></label>
                             </span>
                         </div>
-
-                        <!-- Card Title -->
-
                         <div class="name d-flex ta-font-bold">
+                            <ng-container *ngIf="card.avatarImg">
+                                <div class="image-holder">
+                                    <img
+                                        class="image-hover"
+                                        [src]="card.avatarImg"
+                                    />
+
+                                    <ng-container *ngIf="card.owner !== null">
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/ic_owner-status.svg'
+                                            "
+                                        >
+                                        </svg-icon>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="!card.avatarImg">
+                                <div class="image-holder">
+                                    <span
+                                        class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                        [style.background]="
+                                            card.tableAvatar.avatarColor
+                                                .background
+                                        "
+                                        [style.color]="
+                                            card.tableAvatar?.avatarColor.color
+                                        "
+                                    >
+                                        {{
+                                            card.tableAvatar.textShortName
+                                        }}</span
+                                    >
+                                </div>
+                            </ng-container>
+
                             <span class="title">
                                 {{
                                     valueByStringPathInstance.getValueByStringPath(
@@ -68,8 +101,6 @@
                             'card-body-content': !isCardFlipped.includes(i)
                         }"
                     >
-                        <!-- Card body item -->
-
                         <ng-container
                             *ngFor="
                                 let rowsFront of displayRowsFront;
@@ -84,30 +115,13 @@
 
                                     <div
                                         class="bottom-item-body d-flex align-items-center"
-                                        [ngClass]="{
-                                            'line-height':
-                                                rowsFront.title === 'Fleet'
-                                        }"
                                     >
-                                        <ng-container
-                                            *ngIf="rowsFront.title === 'Fleet'"
-                                        >
-                                            <app-ta-input-dropdown-table
-                                                [data]="card"
-                                                [type]="'owner'"
-                                            ></app-ta-input-dropdown-table>
-                                        </ng-container>
-
-                                        <ng-container
-                                            *ngIf="rowsFront.title !== 'Fleet'"
-                                        >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
-                                        </ng-container>
+                                        {{
+                                            valueByStringPathInstance.getValueByStringPath(
+                                                card,
+                                                rowsFront.endpoint
+                                            )
+                                        }}
                                     </div>
                                 </div>
                             </div>
@@ -133,45 +147,15 @@
                                     <div class="top-item-body">
                                         {{ rowsBack.title }}
                                     </div>
-
                                     <div
                                         class="bottom-item-body d-flex align-items-center gap"
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.title !==
-                                                'Bank Account'
-                                            "
-                                        >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsBack.endpoint
-                                                )
-                                            }}
-                                        </ng-container>
-
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.title ===
-                                                'Bank Account'
-                                            "
-                                        >
-                                            <svg-icon
-                                                [src]="
-                                                    'assets/svg/common/ic_password.svg'
-                                                "
-                                            ></svg-icon>
-                                            <span
-                                                class="masked-number"
-                                                [innerHTML]="
-                                                    valueByStringPathInstance.getValueByStringPath(
-                                                        card,
-                                                        rowsBack.endpoint
-                                                    ) | maskNumber : 'masked'
-                                                "
-                                            ></span>
-                                        </ng-container>
+                                        {{
+                                            valueByStringPathInstance.getValueByStringPath(
+                                                card,
+                                                rowsBack.endpoint
+                                            )
+                                        }}
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +163,7 @@
                     </div>
                 </div>
 
-                <!-- Right side of the card -->
+                <!-- Right side of card -->
 
                 <div class="card-body-right">
                     <div class="top-side">

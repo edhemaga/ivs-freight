@@ -12,9 +12,9 @@ import { TimeFormatPipe } from '../pipes/time-format-am-pm.pipe';
 //Remove quotes from string to convert into endpoint
 export class ValueByStringPath {
     private formatCurrencyPipe: formatCurrency = new formatCurrency();
-    private formatDatePipe: formatDatePipe;
-    private formatNumberMi: FormatNumberMiPipe;
-    private timeFormatPipe: TimeFormatPipe;
+    private formatDatePipe: formatDatePipe = new formatDatePipe();
+    private formatNumberMi: FormatNumberMiPipe = new FormatNumberMiPipe();
+    private timeFormatPipe: TimeFormatPipe = new TimeFormatPipe();
 
     public mySelection: { id: number; tableData: CardDetails }[] = [];
     public isCheckboxCheckedArray: number[] = [];

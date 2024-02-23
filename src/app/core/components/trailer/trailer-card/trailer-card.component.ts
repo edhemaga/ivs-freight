@@ -1,21 +1,19 @@
 import { Component, Input } from '@angular/core';
 
-// model
-import { CardDetails } from '../../shared/model/card-table-data.model';
+// models
 import { CardRows } from '../../shared/model/cardData';
+import { CardDetails } from '../../shared/model/card-table-data.model';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 @Component({
-    selector: 'app-driver-card',
-    templateUrl: './driver-card.component.html',
-    styleUrls: ['./driver-card.component.scss'],
+    selector: 'app-trailer-card',
+    templateUrl: './trailer-card.component.html',
+    styleUrls: ['./trailer-card.component.scss'],
 })
-export class DriverCardComponent {
-    // All data
+export class TrailerCardComponent {
     @Input() viewData: CardDetails[];
-    @Input() selectedTab: string;
 
     @Input() cardTitle: string;
     @Input() displayRowsFront: CardRows;

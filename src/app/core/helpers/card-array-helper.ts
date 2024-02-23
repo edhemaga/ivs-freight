@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 // Models
-import { CardDetails } from '../../../model/card-table-data.model';
+import { CardDetails } from '../components/shared/model/card-table-data.model';
 
 @Injectable({
     providedIn: 'root',

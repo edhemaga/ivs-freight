@@ -311,7 +311,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
 
-        this.resizeObserver.observe(
+        this.resizeObserver?.observe(
             document.querySelector(ComponentsTableEnum.TABLE_CONTAINER)
         );
     }
