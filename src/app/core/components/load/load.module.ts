@@ -13,7 +13,6 @@ import { LoadDetailsModule } from './load-details/load-details.module';
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
 
 import { TaInputDropdownTableComponent } from '../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
@@ -39,7 +38,6 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
-        TruckassistCardsComponent,
         TaInputDropdownTableComponent,
         TaNoteComponent,
         TableCardDropdownActionsComponent,

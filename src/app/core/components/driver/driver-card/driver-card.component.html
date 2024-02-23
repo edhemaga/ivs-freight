@@ -1,68 +1,490 @@
-<div class="card-main-holder">
-    <div class="left-side">
-        <div class="details">
-            <app-driver-details-card
-                *ngIf="selectedData"
-                [driver]="selectedData"
-                [templateCard]="true"
+<div class="cards-container">
+    <ng-container
+        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+    >
+        <div class="custom-card">
+            <!-- Card splited on left and right side -->
+
+            <div
+                class="card-body d-flex justify-content-between"
+                [ngClass]="{
+                    'body-active': isCardFlippedCheckInCards.includes(i),
+                    'body-checked': card.isSelected
+                }"
             >
-            </app-driver-details-card>
-        </div>
-    </div>
-    <div class="right-side">
-        <div *ngFor="let item of viewData; let indx = index" class="card-frame">
-            <div class="card-holder-frame" [class.active]="item.isSelected">
-                <div class="driver-dropdown">
-                    <svg-icon
-                        src="assets/svg/truckassist-table/dropdown/dropdown.svg"
-                    ></svg-icon>
-                </div>
-                <div class="driver-card-frame">
-                    <div class="driver-card-img">
-                        <div class="circle-active">
-                            <svg-icon
-                                src="assets/svg/common/ic_driver-owner.svg"
-                            ></svg-icon>
+                <!-- Left side of the card -->
+
+                <div class="card-body-left p-1">
+                    <!-- Head of the card -->
+
+                    <div class="card-header d-flex align-items-center">
+                        <div class="checkbox-holder d-flex align-items-center">
+                            <!-- Checkbox -->
+
+                            <span
+                                class="checkbox-tooltip"
+                                type="button"
+                                ngbTooltip
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <input
+                                    class="table-checkbox"
+                                    type="checkbox"
+                                    id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
+                                    (change)="onCheckboxSelect(i, card)"
+                                />
+                                <label
+                                    class="table-checkbox-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </span>
                         </div>
-                        <label class="container1">
-                            <input
-                                (change)="changeChatBox(item.id)"
-                                [checked]="item.isSelected"
-                                type="checkbox"
-                            />
-                            <span class="checkmark"></span>
-                        </label>
-                        <div class="driver-avatar">
-                            <img
-                                class="driver-avatar-svg"
-                                [src]="transformImage()"
-                                alt="Driver Image"
-                            />
+
+                        <div class="name d-flex ta-font-bold">
+                            <!-- Driver Image -->
+
+                            <ng-container
+                                *ngIf="
+                                    card.avatarImg &&
+                                    selectedTab !== 'applicants'
+                                "
+                            >
+                                <div class="image-holder">
+                                    <img
+                                        class="image-hover"
+                                        [src]="card.avatarImg"
+                                    />
+                                    <ng-container *ngIf="card.owner">
+                                        <svg-icon
+                                            class="is-owner"
+                                            [src]="
+                                                'assets/svg/common/ic_owner-status.svg'
+                                            "
+                                        >
+                                        </svg-icon>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <!-- Driver No Image -->
+
+                            <ng-container
+                                *ngIf="
+                                    !card.avatarImg &&
+                                    selectedTab !== 'applicants'
+                                "
+                            >
+                                <div class="image-holder">
+                                    <span
+                                        class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                        [style.background]="
+                                            card.avatarColor.background
+                                        "
+                                        [style.color]="card?.avatarColor.color"
+                                    >
+                                        {{ card.textShortName }}</span
+                                    >
+                                </div>
+                            </ng-container>
+
+                            <!-- Title -->
+
+                            <span class="title">
+                                {{
+                                    valueByStringPathInstance.getValueByStringPath(
+                                        card,
+                                        cardTitle
+                                    )
+                                }}
+                            </span>
                         </div>
                     </div>
-                    <div class="driver-card-info-frame">
-                        <div class="driver-card-name">{{ item.fullName }}</div>
-                        <div class="driver-card-phone-frame padding-between">
-                            <div class="driver-phone-img">
-                                <svg-icon
-                                    src="assets/svg/common/ic_phone.svg"
-                                ></svg-icon>
+
+                    <!-- Card body front-->
+
+                    <div
+                        class="flipped"
+                        [ngClass]="{
+                            'card-body-content':
+                                !isCardFlippedCheckInCards.includes(i)
+                        }"
+                    >
+                        <!-- Card body item -->
+
+                        <ng-container
+                            *ngFor="
+                                let rowsFront of displayRowsFront;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ rowsFront.title }}
+                                    </div>
+
+                                    <div
+                                        class="bottom-item-body d-flex align-items-center"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint !==
+                                                    'tableApplicantProgress' &&
+                                                rowsFront.endpoint !==
+                                                    'tableCdl.expirationDays' &&
+                                                rowsFront.endpoint !==
+                                                    'tableMedical.expirationDays'
+                                            "
+                                        >
+                                            {{
+                                                valueByStringPathInstance.getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableApplicantProgress'
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let applicantProgress of card.tableApplicantProgress;
+                                                    trackBy: trackCard
+                                                "
+                                            >
+                                                {{
+                                                    applicantProgress.title
+                                                        | uppercase
+                                                }}
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <!-- driver cdl -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableCdl.expirationDays'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <!-- driver medical  -->
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableMedical.expirationDays'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.endpoint ===
+                                                'tableMedical.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="driver-phone">
-                                {{ item.phone | formatPhoneP }}
+                        </ng-container>
+                    </div>
+
+                    <!-- Card body back -->
+
+                    <div
+                        class="flipped"
+                        [ngClass]="{
+                            'card-body-content':
+                                isCardFlippedCheckInCards.includes(i)
+                        }"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let rowsBack of displayRowsBack;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ rowsBack.title }}
+                                    </div>
+
+                                    <div
+                                        class="bottom-item-body d-flex align-items-center gap"
+                                    >
+                                        <!-- Hired -->
+
+                                        <ng-contaniner
+                                            *ngIf="activeTab === 'applicants'"
+                                        >
+                                            {{
+                                                valueByStringPathInstance.getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
+                                        </ng-contaniner>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint === 'hired'
+                                            "
+                                        >
+                                            {{
+                                                valueByStringPathInstance.getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint,
+                                                    'date'
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <!-- Driver Cdl Progres Bar -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableMedicalData.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <!-- Driver Medical Progres Bar -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableCdlDetailExpiration.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <!-- Driver MVR Progres Bar -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsBack.endpoint ===
+                                                'tableMvrDetailsExpiration.expirationDaysText'
+                                            "
+                                        >
+                                            <app-progres-bar
+                                                [percents]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsBack.secondEndpoint
+                                                    )
+                                                "
+                                                [text]="
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsBack.endpoint
+                                                    )
+                                                "
+                                            ></app-progres-bar>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="selectedTab === 'applicants'"
+                                        >
+                                            {{
+                                                valueByStringPathInstance.getValueByStringPath(
+                                                    card,
+                                                    rowsBack.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+                                    </div>
+                                </div>
                             </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Right side of card -->
+
+                <div class="card-body-right">
+                    <div class="top-side">
+                        <!-- Open dropdown element-->
+
+                        <app-table-card-dropdown-actions
+                            [card]="card"
+                        ></app-table-card-dropdown-actions>
+
+                        <!-- Note element -->
+
+                        <div
+                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
+                        >
+                            <app-ta-note
+                                [note]="card.note"
+                                [mainData]="card"
+                                [entityId]="card.id"
+                                [openedAll]="false"
+                                [parking]="false"
+                            >
+                            </app-ta-note>
                         </div>
-                        <div class="driver-card-phone-frame">
-                            <div class="driver-phone-img">
-                                <svg-icon
-                                    src="assets/svg/common/ic_email.svg"
-                                ></svg-icon>
+
+                        <ng-container *ngIf="selectedTab === 'applicants'">
+                            <!-- Favorite element -->
+
+                            <div
+                                class="right-side-svg-favorite d-flex align-items-center justify-content-center flex-column"
+                                (click)="onFavorite(card)"
+                            >
+                                <span
+                                    class="tooltip-card d-flex align-items-center"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Mark as Favourite"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        class="favorite"
+                                        [src]="
+                                            'assets/svg/truckassist-table/favorite.svg'
+                                        "
+                                    ></svg-icon>
+                                </span>
                             </div>
-                            <div class="driver-phone">{{ item.email }}</div>
+
+                            <!-- Hire Driver -->
+
+                            <div
+                                class="right-side-svg-favorite d-flex align-items-center justify-content-center flex-column"
+                                (click)="onFavorite(card)"
+                            >
+                                <span
+                                    class="tooltip-card d-flex align-items-center"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Hire"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        class="favorite"
+                                        [src]="
+                                            'assets/svg/truckassist-table/hire-applicant.svg'
+                                        "
+                                    ></svg-icon>
+                                </span>
+                            </div>
+                        </ng-container>
+
+                        <!-- Expand element -->
+
+                        <div
+                            class="bottom-side d-flex justify-content-center"
+                            (click)="flipCard(i)"
+                        >
+                            <span
+                                class="expand-card"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Expand Card"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/resize-arrow.svg'"
+                                ></svg-icon>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </ng-container>
 </div>

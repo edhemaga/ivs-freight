@@ -99,7 +99,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public columns: TableColumnConfig[] = [];
     public selectedTab: ConstantStringTableComponentsEnum | string =
         ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
     public repairShops: ShopState[] = [];

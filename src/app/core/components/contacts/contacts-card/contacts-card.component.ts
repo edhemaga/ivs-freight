@@ -11,16 +11,13 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
-    selector: 'app-owner-card',
-    templateUrl: './owner-card.component.html',
-    styleUrls: ['./owner-card.component.scss'],
+    selector: 'app-contacts-card',
+    templateUrl: './contacts-card.component.html',
+    styleUrls: ['./contacts-card.component.scss'],
 })
-export class OwnerCardComponent {
+export class ContactsCardComponent {
     // All data
     @Input() viewData: CardDetails[];
-
-    // Page
-    @Input() selectedTab: string;
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -30,8 +27,6 @@ export class OwnerCardComponent {
     @Input() cardTitleLink: string;
 
     public valueByStringPathInstance = new ValueByStringPath();
-
-    public cardData: CardDetails;
 
     public isCardFlippedCheckInCards: number[] = [];
 

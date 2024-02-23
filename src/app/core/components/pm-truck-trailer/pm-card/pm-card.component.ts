@@ -11,11 +11,11 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
-    selector: 'app-owner-card',
-    templateUrl: './owner-card.component.html',
-    styleUrls: ['./owner-card.component.scss'],
+    selector: 'app-pm-card',
+    templateUrl: './pm-card.component.html',
+    styleUrls: ['./pm-card.component.scss'],
 })
-export class OwnerCardComponent {
+export class PmCardComponent {
     // All data
     @Input() viewData: CardDetails[];
 
