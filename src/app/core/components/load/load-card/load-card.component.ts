@@ -7,7 +7,7 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
 
 // models
-import { CardRows, LoadTableData } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/cardData';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -20,7 +20,7 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
-    providers: [FormatNumberMiPipe, formatCurrency],
+    providers: [FormatNumberMiPipe, formatCurrency, ValueByStringPath],
 })
 export class LoadCardComponent {
     // All data
@@ -36,8 +36,6 @@ export class LoadCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public valueByStringPathInstance = new ValueByStringPath();
-
     public cardData: CardDetails;
 
     public isCardFlippedCheckInCards: number[] = [];
@@ -45,14 +43,15 @@ export class LoadCardComponent {
     constructor(
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
-        private router: Router
+        private router: Router,
+        private valueByStringPath: ValueByStringPath
     ) {}
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+        const checkedCard = this.valueByStringPath.onCheckboxSelect(
             index,
             card
         );
@@ -67,17 +66,14 @@ export class LoadCardComponent {
         value: string
     ): boolean {
         return (
-            this.valueByStringPathInstance.getValueByStringPath(
-                card,
-                endpoint
-            ) === value
+            this.valueByStringPath.getValueByStringPath(card, endpoint) ===
+            value
         );
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards =
-            this.valueByStringPathInstance.flipCard(index);
+        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {
