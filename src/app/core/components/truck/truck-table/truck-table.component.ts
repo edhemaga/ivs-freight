@@ -35,7 +35,10 @@ import { TruckListResponse, TruckResponse } from 'appcoretruckassist';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 import { BodyResponseTruck, FilterOptions } from '../truck.modal';
-import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    DropdownItem,
+    ToolbarActions,
+} from '../../shared/model/card-table-data.model';
 import {
     DataForCardsAndTables,
     TableColumnConfig,

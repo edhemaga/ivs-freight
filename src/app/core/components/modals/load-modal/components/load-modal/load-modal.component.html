@@ -731,6 +731,9 @@
                                     [createNewStopItemsRow]="
                                         isCreatedNewStopItemsRow.pickup
                                     "
+                                    [stopItemDropdownLists]="
+                                        stopItemDropdownLists
+                                    "
                                     (stopItemsDataValueEmitter)="
                                         handleStopItemsDataValueEmit(
                                             $event,
@@ -1410,6 +1413,9 @@
                                 <app-load-modal-stop-items
                                     [createNewStopItemsRow]="
                                         isCreatedNewStopItemsRow.delivery
+                                    "
+                                    [stopItemDropdownLists]="
+                                        stopItemDropdownLists
                                     "
                                     (stopItemsDataValueEmitter)="
                                         handleStopItemsDataValueEmit(

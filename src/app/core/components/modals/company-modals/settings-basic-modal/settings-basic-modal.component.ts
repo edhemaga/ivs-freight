@@ -90,9 +90,13 @@ import {
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
     CompanyResponse,
+    BankResponse,
+    EnumValue,
 } from 'appcoretruckassist';
 import { CroppieOptions } from 'croppie';
 import { Tabs } from '../../../shared/model/modal-tabs';
+import { EditData } from '../../load-modal/state/models/load-modal-model/edit-data.model';
+import { AnimationObject } from 'src/app/core/model/animation-object.model';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -122,137 +126,81 @@ import { Tabs } from '../../../shared/model/modal-tabs';
     ],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+    @Input() editData: EditData;
 
     private destroy$ = new Subject<void>();
 
-    public isFormDirty: boolean;
-
-    public isSetupCompany: boolean = false;
-
     public companyForm: UntypedFormGroup;
 
+    public isFormDirty: boolean;
+    public isSetupCompany: boolean = false;
+
+    public disableCardAnimation: boolean = false;
+
+    // tabs
     public selectedTab: number = 1;
 
-    public tabs: Tabs[] = SettingsModalConstants.TABS;
-    public tabsDivision: Tabs[] = SettingsModalConstants.TABS_DIVISION;
-    public prefferedLoadBtns: Tabs[] =
-        SettingsModalConstants.PREFERED_LOAD_BTNS;
-    public fleetTypeBtns: Tabs[] = SettingsModalConstants.FLEET_TYPE_BTNS;
+    public tabs: Tabs[];
+    public tabsDivision: Tabs[];
+    public prefferedLoadTabs: Tabs[];
+    public fleetTypeTabs: Tabs[];
 
-    public driverCommissionOptions: Options = {
-        floor: 5,
-        ceil: 50,
-        step: 1,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
+    // options
+    public driverCommissionOptions: Options;
+    public ownerCommissionOptions: Options;
+    public commonOptions: Options;
+    public dispatcherOptions: Options;
+    public managerOptions: Options;
 
-    public ownerCommissionOptions: Options = {
-        floor: 2,
-        ceil: 30,
-        step: 0.5,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
+    public dropZoneConfig: DropZoneConfig;
 
-    public commonOptions: Options = {
-        floor: 2,
-        ceil: 30,
-        step: 0.5,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
+    public animationObject: AnimationObject;
 
-    public dispatcherOptions: Options = {
-        floor: 0.1,
-        ceil: 10,
-        step: 0.1,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
-
-    public managerOptions: Options = {
-        floor: 0.1,
-        ceil: 5,
-        step: 0.05,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
-
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
-    public dropZoneConfig: DropZoneConfig = {
-        dropZoneType: 'image',
-        dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-        dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-        multiple: false,
-        globalDropZone: true,
-    };
-
-    // Basic Tab
+    // basic tab
     public selectedAddress: AddressEntity;
     public selectedTimeZone: any = null;
     public selectedCurrency: any = null;
 
-    // Additional Tab
+    // additional tab
     public selectedDepartmentFormArray: any[] = [];
 
     public selectedBankAccountFormArray: any[] = [];
     public isBankSelectedFormArray: boolean[] = [];
 
-    // Dropdowns
-    public banks: any[] = [];
-    public payPeriods: any[] = [];
-    public endingIns: any[] = [];
-    public timeZones: any[] = [];
-    public currencies: any[] = [];
-    public departments: any[] = [];
-    public companyData: any[] = [];
+    // dropdowns
+    public banks: BankResponse[] = [];
+    public payPeriods: EnumValue[] = [];
+    public endingIns: EnumValue[] = [];
+    public timeZones: EnumValue[] = [];
+    public currencies: EnumValue[] = [];
+    public departments: EnumValue[] = [];
+    public companyData: EnumValue[] = [];
 
-    public selectedCompanyData: any = null;
-    public selectedDriverPayPeriod: any = null;
-    public selectedDriverEndingIn: any = null;
-    public selectedAccountingPayPeriod: any = null;
-    public selectedAccountingEndingIn: any = null;
-    public selectedCompanyPayPeriod: any = null;
-    public selectedCompanyEndingIn: any = null;
-    public selectedDispatchPayPeriod: any = null;
-    public selectedDispatchEndingIn: any = null;
-    public selectedManagerPayPeriod: any = null;
-    public selectedManagerEndingIn: any = null;
-    public selectedRecPayPeriod: any = null;
-    public selectedRecEndingIn: any = null;
-    public selectedRepairPayPeriod: any = null;
-    public selectedRepairEndingIn: any = null;
-    public selectedSafetyPayPeriod: any = null;
-    public selectedSafetyEndingIn: any = null;
-    public selectedOtherPayPeriod: any = null;
-    public selectedOtherEndingIn: any = null;
+    public selectedCompanyData: EnumValue = null;
+    public selectedDriverPayPeriod: EnumValue = null;
+    public selectedDriverEndingIn: EnumValue = null;
+    public selectedAccountingPayPeriod: EnumValue = null;
+    public selectedAccountingEndingIn: EnumValue = null;
+    public selectedCompanyPayPeriod: EnumValue = null;
+    public selectedCompanyEndingIn: EnumValue = null;
+    public selectedDispatchPayPeriod: EnumValue = null;
+    public selectedDispatchEndingIn: EnumValue = null;
+    public selectedManagerPayPeriod: EnumValue = null;
+    public selectedManagerEndingIn: EnumValue = null;
+    public selectedRecPayPeriod: EnumValue = null;
+    public selectedRecEndingIn: EnumValue = null;
+    public selectedRepairPayPeriod: EnumValue = null;
+    public selectedRepairEndingIn: EnumValue = null;
+    public selectedSafetyPayPeriod: EnumValue = null;
+    public selectedSafetyEndingIn: EnumValue = null;
+    public selectedOtherPayPeriod: EnumValue = null;
+    public selectedOtherEndingIn: EnumValue = null;
     public selectedFleetType: string = null;
 
-    // Logo Actions
-    public croppieOptions: CroppieOptions = {
-        enableExif: true,
-        viewport: {
-            width: 616,
-            height: 194,
-            type: 'square',
-        },
-        boundary: {
-            width: 616,
-            height: 194,
-        },
-        enforceBoundary: false,
-    };
-
+    // logo actions
+    public croppieOptions: CroppieOptions;
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
-
-    public disableCardAnimation: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -266,9 +214,33 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
+        this.getConstantData();
+
         this.checkForCompany();
 
         this.getModalDropdowns();
+    }
+
+    private getConstantData(): void {
+        // tabs
+        this.tabs = SettingsModalConstants.TABS;
+        this.tabsDivision = SettingsModalConstants.TABS_DIVISION;
+        this.prefferedLoadTabs = SettingsModalConstants.PREFERED_LOAD_BTNS;
+        this.fleetTypeTabs = SettingsModalConstants.FLEET_TYPE_BTNS;
+
+        // options
+        this.driverCommissionOptions =
+            SettingsModalConstants.DRIVER_COMMISSION_OPTIONS;
+        this.ownerCommissionOptions =
+            SettingsModalConstants.OWNER_COMMISSION_OPTIONS;
+        this.commonOptions = SettingsModalConstants.COMMON_OPTIONS;
+        this.dispatcherOptions = SettingsModalConstants.DISPATCHER_OPTIONS;
+        this.managerOptions = SettingsModalConstants.MANAGER_OPTIONS;
+        this.croppieOptions = SettingsModalConstants.CROPPIE_OPTIONS;
+
+        this.animationObject = SettingsModalConstants.ANIMATION_OPTIONS;
+
+        this.dropZoneConfig = SettingsModalConstants.DROPZONE_CONFIG;
     }
 
     private checkForCompany() {
@@ -526,7 +498,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
             case 'delete':
                 if (!this.editData.company?.divisions.length) {
-                    this.deleteCompanyDivisionById(this.editData.id);
+                    this.deleteCompanyDivisionById(this.editData.company.id);
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
@@ -754,6 +726,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropdown(event: any, action: string) {
+        console.log('event', event);
         switch (action) {
             case 'timezone':
                 this.selectedTimeZone = event;
@@ -880,11 +853,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setEndingInInputOptions(payPeriod: string): {
-        id: number;
-        name: string;
-    } {
-        let selectedEndingIn: { id: number; name: string };
+    private setEndingInInputOptions(payPeriod: string): EnumValue {
+        let selectedEndingIn: EnumValue;
 
         if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
             if (payPeriod === 'Semi Monthly') {
@@ -1014,7 +984,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onPrefferedLoadCheck(event: any) {
-        this.prefferedLoadBtns = this.prefferedLoadBtns.map((item) => {
+        this.prefferedLoadTabs = this.prefferedLoadTabs.map((item) => {
             if (item.name === event.name) {
                 this.companyForm.get('preferredLoadType').patchValue(item.name);
             }
@@ -1026,7 +996,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onFleetTypeCheck(event: any) {
-        this.fleetTypeBtns = this.fleetTypeBtns.map((item) => {
+        this.fleetTypeTabs = this.fleetTypeTabs.map((item) => {
             if (item.id === event.id) {
                 this.companyForm.get('fleetType').patchValue(item.name);
             }
@@ -1102,24 +1072,26 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.departments = res.departments;
                     this.companyData = res.companyTypes;
 
-                    this.selectedDriverPayPeriod = res.payPeriods[0];
-                    this.selectedDriverEndingIn = res.endingIns[0];
-                    /*                 this.selectedAccountingPayPeriod = res.payPeriods[0];
-                    this.selectedAccountingEndingIn = res.endingIns[0]; */
-                    this.selectedCompanyPayPeriod = res.payPeriods[0];
-                    this.selectedCompanyEndingIn = res.endingIns[0];
-                    this.selectedDispatchPayPeriod = res.payPeriods[0];
-                    this.selectedDispatchEndingIn = res.endingIns[0];
-                    this.selectedManagerPayPeriod = res.payPeriods[0];
-                    this.selectedManagerEndingIn = res.endingIns[0];
-                    this.selectedRecPayPeriod = res.payPeriods[0];
-                    this.selectedRecEndingIn = res.endingIns[0];
-                    this.selectedRepairPayPeriod = res.payPeriods[0];
-                    this.selectedRepairEndingIn = res.endingIns[0];
-                    this.selectedSafetyPayPeriod = res.payPeriods[0];
-                    this.selectedSafetyEndingIn = res.endingIns[0];
-                    this.selectedOtherPayPeriod = res.payPeriods[0];
-                    this.selectedOtherEndingIn = res.endingIns[0];
+                    if (this.editData.type === 'edit-company-first-login') {
+                        this.selectedDriverPayPeriod = res.payPeriods[0];
+                        this.selectedDriverEndingIn = res.endingIns[0];
+                        this.selectedAccountingPayPeriod = res.payPeriods[0];
+                        this.selectedAccountingEndingIn = res.endingIns[0];
+                        this.selectedCompanyPayPeriod = res.payPeriods[0];
+                        this.selectedCompanyEndingIn = res.endingIns[0];
+                        this.selectedDispatchPayPeriod = res.payPeriods[0];
+                        this.selectedDispatchEndingIn = res.endingIns[0];
+                        this.selectedManagerPayPeriod = res.payPeriods[0];
+                        this.selectedManagerEndingIn = res.endingIns[0];
+                        this.selectedRecPayPeriod = res.payPeriods[0];
+                        this.selectedRecEndingIn = res.endingIns[0];
+                        this.selectedRepairPayPeriod = res.payPeriods[0];
+                        this.selectedRepairEndingIn = res.endingIns[0];
+                        this.selectedSafetyPayPeriod = res.payPeriods[0];
+                        this.selectedSafetyEndingIn = res.endingIns[0];
+                        this.selectedOtherPayPeriod = res.payPeriods[0];
+                        this.selectedOtherEndingIn = res.endingIns[0];
+                    }
                 },
                 error: () => {},
             });
@@ -1310,7 +1282,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         email: department.email,
                     })
                 );
-                this.selectedDepartmentFormArray.push(department);
+                this.selectedDepartmentFormArray.push(department.department);
             }
         }
 
@@ -1615,8 +1587,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const accountingPayroll = {
             departmentId: 1,
-            payPeriod: this.selectedAccountingPayPeriod.id,
-            endingIn: this.selectedAccountingEndingIn.id,
+            payPeriod: this.selectedAccountingPayPeriod?.id,
+            endingIn: this.selectedAccountingEndingIn?.id,
             defaultBase: accountingDefaultBase
                 ? convertThousanSepInNumber(accountingDefaultBase)
                 : null,
@@ -1624,8 +1596,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const dispatchPayroll = {
             departmentId: 2,
-            payPeriod: this.selectedDispatchPayPeriod.id,
-            endingIn: this.selectedDispatchEndingIn.id,
+            payPeriod: this.selectedDispatchPayPeriod?.id,
+            endingIn: this.selectedDispatchEndingIn?.id,
             defaultBase: dispatchDefaultBase
                 ? convertThousanSepInNumber(dispatchDefaultBase)
                 : null,
@@ -1634,8 +1606,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const recruitingPayroll = {
             departmentId: 3,
-            payPeriod: this.selectedRecPayPeriod.id,
-            endingIn: this.selectedRecEndingIn.id,
+            payPeriod: this.selectedRecPayPeriod?.id,
+            endingIn: this.selectedRecEndingIn?.id,
             defaultBase: recruitingDefaultBase
                 ? convertThousanSepInNumber(recruitingDefaultBase)
                 : null,
@@ -1643,8 +1615,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const repairPayroll = {
             departmentId: 4,
-            payPeriod: this.selectedRepairPayPeriod.id,
-            endingIn: this.selectedRepairEndingIn.id,
+            payPeriod: this.selectedRepairPayPeriod?.id,
+            endingIn: this.selectedRepairEndingIn?.id,
             defaultBase: repairDefaultBase
                 ? convertThousanSepInNumber(repairDefaultBase)
                 : null,
@@ -1652,8 +1624,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const safetyPayroll = {
             departmentId: 5,
-            payPeriod: this.selectedSafetyPayPeriod.id,
-            endingIn: this.selectedSafetyEndingIn.id,
+            payPeriod: this.selectedSafetyPayPeriod?.id,
+            endingIn: this.selectedSafetyEndingIn?.id,
             defaultBase: safetyDefaultBase
                 ? convertThousanSepInNumber(safetyDefaultBase)
                 : null,
@@ -1661,8 +1633,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const managerPayroll = {
             departmentId: 7,
-            payPeriod: this.selectedManagerPayPeriod.id,
-            endingIn: this.selectedManagerEndingIn.id,
+            payPeriod: this.selectedManagerPayPeriod?.id,
+            endingIn: this.selectedManagerEndingIn?.id,
             defaultBase: managerDefaultBase
                 ? convertThousanSepInNumber(managerDefaultBase)
                 : null,
@@ -1672,8 +1644,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         const companyOwnerPayroll = {
             // Company Owner
             departmentId: 8,
-            payPeriod: this.selectedCompanyPayPeriod.id,
-            endingIn: this.selectedCompanyEndingIn.id,
+            payPeriod: this.selectedCompanyPayPeriod?.id,
+            endingIn: this.selectedCompanyEndingIn?.id,
             defaultBase: companyOwnerDefaultBase
                 ? convertThousanSepInNumber(companyOwnerDefaultBase)
                 : null,
@@ -1681,8 +1653,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const otherPayroll = {
             departmentId: 9,
-            payPeriod: this.selectedOtherPayPeriod.id,
-            endingIn: this.selectedOtherEndingIn.id,
+            payPeriod: this.selectedOtherPayPeriod?.id,
+            endingIn: this.selectedOtherEndingIn?.id,
             defaultBase: otherDefaultBase
                 ? convertThousanSepInNumber(otherDefaultBase)
                 : null,
@@ -1690,8 +1662,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         const driverOwnerPayroll = {
             departmentId: 10,
-            payPeriod: this.selectedDriverPayPeriod.id,
-            endingIn: this.selectedDriverEndingIn.id,
+            payPeriod: this.selectedDriverPayPeriod?.id,
+            endingIn: this.selectedDriverEndingIn?.id,
             solo: {
                 emptyMile: !loadedAndEmptySameRate
                     ? ['Solo', 'Combined'].includes(this.selectedFleetType)
@@ -1802,7 +1774,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompany(data: any) {
-        console.log('data', data);
         this.companyForm.patchValue({
             // -------------------- Basic Tab
             name: data.name,
@@ -1864,7 +1835,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.selectedFleetType = data.additionalInfo.fleetType;
 
         this.onFleetTypeCheck(
-            this.fleetTypeBtns.find(
+            this.fleetTypeTabs.find(
                 (item) => item.name === this.selectedFleetType
             )
         );
@@ -1947,14 +1918,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         this.selectedAccountingPayPeriod = payroll.payPeriod;
                         this.selectedAccountingEndingIn = payroll.endingIn;
 
-                        console.log(
-                            'this.selectedAccountingPayPeriod',
-                            this.selectedAccountingPayPeriod
-                        );
-                        console.log(
-                            'this.selectedAccountingEndingIn',
-                            this.selectedAccountingEndingIn
-                        );
                         break;
                     }
                     case 2: {
@@ -2027,6 +1990,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                                       )
                                     : null
                             );
+
+                        this.selectedRepairPayPeriod = payroll.payPeriod;
+                        this.selectedRepairEndingIn = payroll.endingIn;
                         break;
                     }
                     case 5: {
