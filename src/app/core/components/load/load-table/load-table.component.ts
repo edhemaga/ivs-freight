@@ -10,6 +10,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Models
 import {
@@ -24,7 +25,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data.model';
 import {
     CardRows,
     Search,
@@ -81,7 +82,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
     public selectedTab: string = ConstantStringTableComponentsEnum.PENDING;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     public resizeObserver: ResizeObserver;
     public loadActive: LoadActiveState[] = [];
     public loadClosed: LoadClosedState[] = [];
@@ -127,6 +128,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private modalService: ModalService,
         private loadServices: LoadTService,
+        private tableDropdownService: TableCardDropdownActionsService,
         private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
@@ -158,6 +160,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setTableFilter();
 
         this.commentsUpdate();
+
+        this.onDropdownActions();
     }
 
     ngAfterViewInit(): void {
@@ -640,20 +644,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapLoadData(data: LoadModel): LoadModel {
-        const commentsWithAvatarColor = Object.values(data?.comments).map(
-            (comment) => {
-                this.mapingIndex++;
-                return {
-                    ...comment,
-                    avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
-                        this.mapingIndex
-                    ),
-                    textShortName: this.nameInitialsPipe.transform(
-                        comment.companyUser.fullName
-                    ),
-                };
-            }
-        );
+        let commentsWithAvatarColor;
+
+        if (data.comments) {
+            commentsWithAvatarColor = Object.values(data?.comments).map(
+                (comment) => {
+                    this.mapingIndex++;
+                    return {
+                        ...comment,
+                        avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                            this.mapingIndex
+                        ),
+                        textShortName: this.nameInitialsPipe.transform(
+                            comment.companyUser.fullName
+                        ),
+                    };
+                }
+            );
+        }
 
         return {
             ...data,
@@ -937,6 +945,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.sendLoadData();
             }
         }
+    }
+
+    public onDropdownActions(): void {
+        this.tableDropdownService.openModal$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.onTableBodyActions(res);
+            });
     }
 
     private onTableBodyActions(event: { type: string; id?: number }): void {

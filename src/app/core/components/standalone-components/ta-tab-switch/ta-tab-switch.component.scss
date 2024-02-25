@@ -1,3 +1,4 @@
+@import '/src/theme/variables.scss';
 $tab-colors: '26A690', 'EF5350', '3074D3';
 
 .tab-switch-holder {
@@ -232,6 +233,34 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 .custom-popover-holder {
     width: 300px;
     margin-top: -4px;
+}
+
+.rating-review {
+    width: 252px;
+    height: 26px;
+    background: $ta-black-3;
+    border-radius: 1px;
+
+    .tab-switch-items-holder {
+        width: 33.33%;
+
+        .tab-switch-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: $muted;
+        }
+    }
+
+    .slide-active-holder {
+        background: $ta-black;
+        border-radius: 1px;
+    }
+
+    .tab-switch-items-holder.active {
+        .tab-switch-name {
+            color: $white;
+        }
+    }
 }
 
 @each $col in $tab-colors {

@@ -41,7 +41,10 @@ import {
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
 import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
-import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    DropdownItem,
+    ToolbarActions,
+} from '../../shared/model/card-table-data.model';
 
 // Store
 import { ShopQuery } from '../state/shop-state/shop.query';
@@ -96,7 +99,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public columns: TableColumnConfig[] = [];
     public selectedTab: ConstantStringTableComponentsEnum | string =
         ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
     public repairShops: ShopState[] = [];

@@ -7,7 +7,7 @@ import {
     RepairServiceTypeResponse,
 } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
-import { DropdownItem } from '../shared/model/cardTableData';
+import { DropdownItem } from '../shared/model/card-table-data.model';
 
 export interface BodyResponseRepair {
     data?: RepairResponse;

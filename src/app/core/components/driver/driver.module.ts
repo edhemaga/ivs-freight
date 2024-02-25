@@ -27,7 +27,13 @@ import { TaReCardComponent } from '../shared/ta-common-card/ta-re-card.component
 import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
 
 import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
-import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
+
+import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+
+import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+
+import { ProgresBarComponent } from '../standalone-components/progres-bar/progres-bar.component';
+
 //pipes
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
 @NgModule({
@@ -55,7 +61,9 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         TaReCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
-        TruckassistCardsComponent,
+        TaNoteComponent,
+        TableCardDropdownActionsComponent,
+        ProgresBarComponent,
 
         //pipes
         formatDatePipe,

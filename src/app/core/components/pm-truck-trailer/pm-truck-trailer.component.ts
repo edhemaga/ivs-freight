@@ -12,7 +12,10 @@ import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-compo
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
 // Models
-import { GridColumn, ToolbarActions } from '../shared/model/cardTableData';
+import {
+    GridColumn,
+    ToolbarActions,
+} from '../shared/model/card-table-data.model';
 import { Truck, Trailer } from '../shared/model/pm';
 import { DataForCardsAndTables } from '../shared/model/table-components/all-tables.modal';
 import { CardRows } from '../shared/model/cardData';

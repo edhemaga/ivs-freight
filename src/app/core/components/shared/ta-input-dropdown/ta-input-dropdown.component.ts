@@ -174,7 +174,8 @@ export class TaInputDropdownComponent
     // when send SVG, please premmaped object: add 'folder' | 'subfolder'
     public _options: any[] = [];
     @Input() set options(values: any[]) {
-        this._options = [...values];
+        if (values) this._options = [...values];
+
         switch (this._sort) {
             case 'active-drivers': {
                 this._options = values.sort(

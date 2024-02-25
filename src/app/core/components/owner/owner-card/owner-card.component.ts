@@ -1,18 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+// models
+import { CardDetails } from '../../shared/model/card-table-data.model';
+import { CardRows } from '../../shared/model/cardData';
+
+// helpers
+import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-owner-card',
     templateUrl: './owner-card.component.html',
     styleUrls: ['./owner-card.component.scss'],
 })
-export class OwnerCardComponent implements OnInit {
-    ownerCard: any[] = [
-        {
-            unit: '',
-        },
-    ];
+export class OwnerCardComponent {
+    // All data
+    @Input() viewData: CardDetails[];
 
-    constructor() {}
+    // Page
+    @Input() selectedTab: string;
 
-    ngOnInit(): void {}
+    // Card body endpoints
+    @Input() cardTitle: string;
+    @Input() rows: number[];
+    @Input() displayRowsFront: CardRows;
+    @Input() displayRowsBack: CardRows;
+    @Input() cardTitleLink: string;
+
+    public valueByStringPathInstance = new ValueByStringPath();
+
+    public cardData: CardDetails;
+
+    public isCardFlippedCheckInCards: number[] = [];
+
+    constructor(private tableService: TruckassistTableService) {}
+
+    // When checkbox is selected
+    public onCheckboxSelect(index: number, card: CardDetails): void {
+        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+
+        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+            index,
+            card
+        );
+
+        this.tableService.sendRowsSelected(checkedCard);
+    }
+
+    // Flip card based on card index
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
+    }
+
+    public trackCard(item: number): number {
+        return item;
+    }
 }

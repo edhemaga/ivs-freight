@@ -1,83 +1,37 @@
-import { DriverTService } from './../state/driver.service';
-import {
-    Component,
-    OnInit,
-    Input,
-    OnDestroy,
-    ChangeDetectorRef,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
-import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { Component, Input } from '@angular/core';
+
+// model
+import { CardDetails } from '../../shared/model/card-table-data.model';
+import { CardRows } from '../../shared/model/cardData';
+
+// helpers
+import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 @Component({
     selector: 'app-driver-card',
     templateUrl: './driver-card.component.html',
     styleUrls: ['./driver-card.component.scss'],
 })
-export class DriverCardComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-    @Input() viewData: any;
-    public selectedData: any;
+export class DriverCardComponent {
+    // All data
+    @Input() viewData: CardDetails[];
+    @Input() selectedTab: string;
 
-    constructor(
-        private driverService: DriverTService,
-        private notificationService: NotificationService,
-        private detailsPageDriverService: DetailsPageService,
-        private driverDetailsQuery: DriversDetailsQuery,
-        private cdRef: ChangeDetectorRef,
-        private router: Router,
-        private imageBase64Service: ImageBase64Service
-    ) {}
+    @Input() cardTitle: string;
+    @Input() displayRowsFront: CardRows;
+    @Input() displayRowsBack: CardRows;
 
-    ngOnInit(): void {
-        this.detailsPageDriverService.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                this.driverDetailsQuery
-                    .selectEntity(id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: any) => {
-                            this.selectedData = res;
-                            if (this.router.url.includes('details')) {
-                                this.router.navigate([
-                                    `/driver/${res.id}/details`,
-                                ]);
-                            }
-        
-                            this.cdRef.detectChanges();
-                        },
-                        error: () => {
-                        
-                        },
-                    });
-            });
-        this.transformImage();
-    }
-    public transformImage() {
-        return this.imageBase64Service.sanitizer(
-            this.viewData.avatar
-                ? this.viewData.avatar
-                : 'assets/svg/common/ic_no_avatar_driver.svg'
-        );
-    }
-    changeChatBox(e: number) {
-        this.driverService
-            .getDriverById(e)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (x) => (this.selectedData = x),
-                (err) => console.error(err)
-            );
+    public valueByStringPathInstance = new ValueByStringPath();
 
-        //this.driverBox[indx].checked = e.target.checked;
+    public isCardFlippedCheckInCards: number[] = [];
+
+    // Flip card based on card index
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+
+    public trackCard(id: number): number {
+        return id;
     }
 }

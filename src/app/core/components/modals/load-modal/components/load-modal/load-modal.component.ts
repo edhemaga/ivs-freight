@@ -97,6 +97,7 @@ import {
     TruckTypeResponse,
     TrailerTypeResponse,
     TagResponse,
+    LoadStopItemCommand,
 } from 'appcoretruckassist';
 import { ITaInput } from '../../../../shared/ta-input/ta-input.config';
 import {
@@ -111,7 +112,6 @@ import { Tags } from '../../state/models/load-modal-model/tags.model';
 import { CommentCompanyUser } from '../../state/models/load-modal-model/comment-company-user';
 import { CommentData } from 'src/app/core/model/comment-data';
 import { StopItemDropdownLists } from '../../state/models/load-modal-stop-items-model/load-stop-item-dropdowns.model';
-import { StopItemsData } from '../../state/models/load-modal-stop-items-model/load-stop-items-data.model';
 import { IsCreatedNewStopItemsRow } from '../../state/models/load-modal-stop-items-model/is-created-new-stop-items-row.model';
 import { EditData } from '../../state/models/load-modal-model/edit-data.model';
 import { FileEvent } from 'src/app/core/model/file-event.model';
@@ -265,9 +265,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public previousDeliveryStopOrder: number;
 
     // stop items
-    public pickupStopItems: StopItemsData[] = [];
-    public deliveryStopItems: StopItemsData[] = [];
-    public extraStopItems: StopItemsData[][] = [];
+    public pickupStopItems: LoadStopItemCommand[] = [];
+    public deliveryStopItems: LoadStopItemCommand[] = [];
+    public extraStopItems: LoadStopItemCommand[][] = [];
 
     public isCreatedNewStopItemsRow: IsCreatedNewStopItemsRow;
     public isEachStopItemsRowValid: boolean = true;
@@ -3254,6 +3254,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     if (this.editData)
                         this.populateLoadModalData(this.editData.data);
+
+                    // stop items
+                    this.stopItemDropdownLists = {
+                        quantityDropdownList: res.loadItemUnits,
+                        stackDropdownList: res.stackable,
+                        secureDropdownList: res.secures,
+                    };
                 },
 
                 error: () => {},
