@@ -10,6 +10,7 @@ import {
     EventEmitter,
     Input,
     Output,
+    ViewChild,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -36,12 +37,21 @@ export class TaNgxSliderComponent {
     @Input() sliderOptions: Options;
     @Input() startedValue: number = 50;
     @Input() customClass: string = null;
-    @Input() minValue: any = 0;
-    @Input() maxValue: any = 5000;
+    @Input() minValue: number = 0;
+    @Input() maxValue: number = 5000;
 
-    @Output() onUserValueChange: EventEmitter<any> = new EventEmitter<any>();
-    @Output() onUserHighValueChange: EventEmitter<any> =
-        new EventEmitter<any>();
+    @Output() onUserValueChange: EventEmitter<ChangeContext | number> =
+        new EventEmitter<ChangeContext | number>();
+    @Output() onUserHighValueChange: EventEmitter<ChangeContext> =
+        new EventEmitter<ChangeContext>();
+
+    @ViewChild('slider', { static: false }) slider: any; //leave any for now
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.refreshSlider();
+        }, 500);
+    }
 
     public userChangeEnd(changes: ChangeContext) {
         if (changes) {
@@ -53,19 +63,25 @@ export class TaNgxSliderComponent {
         }
     }
 
-    public valueChange(event) {
+    public valueChange(event: ChangeContext): void {
         if (event) {
             this.onUserValueChange.emit(event);
         }
     }
 
-    public minValueChange(event) {
+    public minValueChange(event: ChangeContext): void {
         this.onUserValueChange.emit(event);
     }
 
-    public highValueChange(event) {
+    public highValueChange(event: ChangeContext): void {
         if (event) {
             this.onUserHighValueChange.emit(event);
+        }
+    }
+
+    public refreshSlider(): void {
+        if (this.slider) {
+            this.slider.onResize();
         }
     }
 }
