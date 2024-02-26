@@ -83,20 +83,22 @@ import {
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Constants
-import {
-    TableDropdownCustomerComponentConstants,
-    getDropdownBrokerContent,
-    getDropdownShipperContent,
-} from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Filters
 import {
     calculateDistanceBetweenTwoCitysByCoordinates,
     checkSpecialFilterArray,
 } from 'src/app/core/helpers/dataFilter';
+
+//helpers
+import {
+    getDropdownBrokerContent,
+    getDropdownShipperContent,
+} from 'src/app/core/helpers/dropdown-content';
 
 @Component({
     selector: 'app-customer-table',
@@ -126,9 +128,9 @@ export class CustomerTableComponent
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
     public backBrokerFilterQuery: FilterOptionBroker =
-        TableDropdownCustomerComponentConstants.BROKER_BACK_FILTER;
+        TableDropdownComponentConstants.BROKER_BACK_FILTER;
     public backShipperFilterQuery: FilterOptionshipper =
-        TableDropdownCustomerComponentConstants.SHIPPER_BACK_FILTER;
+        TableDropdownComponentConstants.SHIPPER_BACK_FILTER;
     public mapListData = [];
 
     //Data to display from model Broker
@@ -1308,13 +1310,13 @@ export class CustomerTableComponent
 
                                     this.updateDataCount();
 
-                                    const inetval = setInterval(() => {
+                                    const interval = setInterval(() => {
                                         this.viewData = closeAnimationAction(
                                             true,
                                             this.viewData
                                         );
 
-                                        clearInterval(inetval);
+                                        clearInterval(interval);
                                     }, 900);
                                 });
                         }

@@ -41,7 +41,7 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 
 //Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 //Model
 import { optionsPopupContent } from '../../model/toolbar';

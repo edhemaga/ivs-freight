@@ -54,13 +54,13 @@ import {
 } from '../../../utils/methods.globals';
 
 // Constants
-import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Configuration
 import { DisplayTrailerConfiguration } from '../trailer-card-data';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import {
     TooltipColors,
     TrailerName,
@@ -88,7 +88,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public trailerInactive: TrailerInactiveState[] = [];
     public activeTableData: string;
     public backFilterQuery: backFilterQueryInterface =
-        TableDropdownTrailerComponentConstants.BACK_FILTER_QUERY;
+        TableDropdownComponentConstants.BACK_FILTER_QUERY;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =

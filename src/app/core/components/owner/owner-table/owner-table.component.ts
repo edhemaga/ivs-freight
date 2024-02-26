@@ -33,18 +33,22 @@ import {
 
 // Pipes
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import {
-    TableOwner,
-    getDropdownOwnerContent,
-} from 'src/app/core/utils/constants/table-components.constants';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
-import { MapOwnerData, OwnerBackFilterFilter } from '../owner.modal';
+import {
+    MapOwnerData,
+    OwnerBackFilterFilter,
+    OwnerBodyResponse,
+} from '../owner.modal';
 import { DisplayOwnerConfiguration } from '../owner-card-data';
 import { CardRows } from '../../shared/model/cardData';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
+
+//helpers
+import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
 
 @Component({
     selector: 'app-owner-table',
@@ -65,7 +69,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private ownerActive: OwnerActiveState[] = [];
     private ownerInactive: OwnerInactiveState[] = [];
     private inactiveTabClicked: boolean = false;
-    private backFilterQuery = TableOwner.BACKFILTER_QUERY;
+    private backFilterQuery =
+        TableDropdownComponentConstants.OWNER_BACKFILTER_QUERY;
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
@@ -160,21 +165,20 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res.type) {
-                    case ConstantStringTableComponentsEnum.DELETE: {
+                    case ConstantStringTableComponentsEnum.DELETE:
                         this.deleteOwnerById(res.id);
                         break;
-                    }
-                    case ConstantStringTableComponentsEnum.ACTIVATE: {
+
+                    case ConstantStringTableComponentsEnum.ACTIVATE:
                         this.changeOwnerStatus(res.data);
                         break;
-                    }
-                    case ConstantStringTableComponentsEnum.DEACTIVATE: {
+
+                    case ConstantStringTableComponentsEnum.DEACTIVATE:
                         this.changeOwnerStatus(res.data);
                         break;
-                    }
-                    default: {
+
+                    default:
                         break;
-                    }
                 }
             });
     }
@@ -783,7 +787,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: any): void {
+    public onTableBodyActions(event: OwnerBodyResponse | any): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.active =
                 this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
@@ -801,10 +805,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     ...event,
                     template: ConstantStringTableComponentsEnum.OWNER,
-                    type:
-                        event.data.isSelected === 1
-                            ? ConstantStringTableComponentsEnum.DEACTIVATE
-                            : ConstantStringTableComponentsEnum.ACTIVATE,
+                    type: event.data.isSelected
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
                     svg: true,
                 }
             );

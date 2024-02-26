@@ -1,5 +1,5 @@
 import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DataForCardsAndTables } from './table-components/all-tables.modal';
 import { tableBodyColorLabel } from './tableBody';
 

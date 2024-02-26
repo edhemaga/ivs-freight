@@ -56,13 +56,13 @@ import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 // Constants
-import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Utils
@@ -92,7 +92,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = false;
     public activeTableData: DataForCardsAndTables;
     public backLoadFilterQuery: FilterOptionsLoad =
-        TableDropdownLoadComponentConstants.LOAD_BACK_FILTER;
+        TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
     //Data to display from model
     public displayRowsFrontTemplate: CardRows[] =
@@ -803,7 +803,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownLoadContent(): DropdownItem[] {
-        return TableDropdownLoadComponentConstants.DROPDOWN_DATA;
+        return TableDropdownComponentConstants.DROPDOWN_DATA;
     }
 
     private getTabData(dataType: string): LoadActiveState {

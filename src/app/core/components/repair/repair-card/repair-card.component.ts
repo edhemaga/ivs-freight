@@ -21,7 +21,7 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 // Helpers
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CardArrayHelper } from 'src/app/core/helpers/card-array-helper';
 

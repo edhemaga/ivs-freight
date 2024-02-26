@@ -51,10 +51,10 @@ import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 //Constants
-import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 
@@ -79,7 +79,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
     public backFilterQuery: FilterOptions =
-        TableDriverColorsConstants.BACK_FILTER_QUERY;
+        TableDropdownComponentConstants.BACK_FILTER_QUERY;
 
     public resizeObserver: ResizeObserver;
 

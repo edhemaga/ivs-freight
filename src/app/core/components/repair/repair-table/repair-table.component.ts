@@ -67,10 +67,10 @@ import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Constants
-import { TableRepair } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Animations
 import {
@@ -111,10 +111,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public repairShopTabClicked: boolean = false;
     public activeTableData: string;
     public backFilterQuery: RepairBackFilterModal =
-        TableRepair.BACK_FILTER_QUERY;
+        TableDropdownComponentConstants.REPAIR_BACK_FILTER_QUERY;
 
     public shopFilterQuery: ShopbBckFilterQueryInterface =
-        TableRepair.SHOP_FILTER_QUERY;
+        TableDropdownComponentConstants.SHOP_FILTER_QUERY;
 
     public mapListData: MapList[] = [];
 
@@ -877,8 +877,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableBankDetailsAccount: data?.account
                 ? data.account
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRepairCountBill: ConstantStringTableComponentsEnum.NA,
-            tableRepairCountOrder: data?.order
+            TableDropdownComponentConstantsCountBill:
+                ConstantStringTableComponentsEnum.NA,
+            TableDropdownComponentConstantsCountOrder: data?.order
                 ? this.thousandSeparator.transform(data.order)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopRaiting: {
@@ -927,12 +928,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Get Repair Dropdown Content
     private getRepairDropdownContent(): DropdownItem[] {
-        return TableRepair.DROPDOWN_REPAIR;
+        return TableDropdownComponentConstants.DROPDOWN_REPAIR;
     }
 
     // Get Repair Dropdown Content
     private getShopDropdownContent(): DropdownItem[] {
-        return TableRepair.DROPDOWN_SHOP;
+        return TableDropdownComponentConstants.DROPDOWN_SHOP;
     }
 
     // Repair Back Filters
@@ -1212,7 +1213,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Table Body Actions
-    public onTableBodyActions(event: BodyResponseRepair | any): void {
+    public onTableBodyActions(event: BodyResponseRepair): void {
         // Show More
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             if (

@@ -96,7 +96,7 @@
                     </ng-container>
                 </p>
                 <p class="confirmation-text-2 large-text-2">
-                    {{ formatDate(editData?.dateOfBirth) }}
+                    {{ editData?.dateOfBirth | formatDateP }}
                 </p>
                 <!--
                 <p class="confirmation-text-2">
@@ -311,7 +311,7 @@
                         </ng-container>
                     </p>
                     <p class="confirmation-text-2 large-text-2">
-                        {{ formatDate(item?.data?.dateOfBirth) }}
+                        {{ item?.data?.dateOfBirth | formatDateP }}
                     </p>
 
                     <!--
