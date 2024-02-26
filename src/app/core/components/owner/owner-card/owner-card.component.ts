@@ -43,7 +43,6 @@ export class OwnerCardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.flipAllCards();
-        console.log(this.viewData);
     }
 
     public flipAllCards(): void {
