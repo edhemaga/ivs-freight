@@ -6,23 +6,30 @@ import {
     Input,
     NgZone,
     OnChanges,
+    OnDestroy,
+    OnInit,
     Output,
     QueryList,
     Renderer2,
     ViewChild,
     ViewChildren,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { CardRows } from '../../shared/model/cardData';
 import {
     CardDetails,
     SendDataCard,
 } from '../../shared/model/card-table-data.model';
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+// Services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// Enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
 
 // Helpers
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CardArrayHelper } from 'src/app/core/helpers/card-array-helper';
 
 @Component({
@@ -30,7 +37,9 @@ import { CardArrayHelper } from 'src/app/core/helpers/card-array-helper';
     templateUrl: './repair-card.component.html',
     styleUrls: ['./repair-card.component.scss'],
 })
-export class RepairCardComponent implements OnChanges, AfterViewInit {
+export class RepairCardComponent
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy
+{
     @ViewChild('parentElement', { read: ElementRef })
     private cardBodyElement!: ElementRef;
 
@@ -61,11 +70,18 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
 
     public ValueByStringPath = new ValueByStringPath();
 
+    private destroy$ = new Subject<void>();
+    public allCardsFlipp: boolean = false;
+
     constructor(
         private tableService: TruckassistTableService,
         private ngZone: NgZone,
         private renderer: Renderer2
     ) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
 
     ngOnChanges(): void {
         setTimeout(() => {
@@ -82,6 +98,14 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
         this.windowResizeUpdateDescriptionDropdown();
 
         this.windownResizeUpdateCountNumberInCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.allCardsFlipp = res;
+            });
     }
 
     // When checkbox is selected
@@ -178,5 +202,10 @@ export class RepairCardComponent implements OnChanges, AfterViewInit {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

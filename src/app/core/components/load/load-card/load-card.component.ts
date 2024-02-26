@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CardDetails } from '../../shared/model/card-table-data.model';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
@@ -22,7 +23,7 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     styleUrls: ['./load-card.component.scss'],
     providers: [FormatNumberMiPipe, formatCurrency, ValueByStringPath],
 })
-export class LoadCardComponent {
+export class LoadCardComponent implements OnInit, OnDestroy {
     // All data
     @Input() viewData: CardDetails[];
 
@@ -36,6 +37,9 @@ export class LoadCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
+    private destroy$ = new Subject<void>();
+    public allCardsFlipp: boolean = false;
+
     public cardData: CardDetails;
 
     public isCardFlippedCheckInCards: number[] = [];
@@ -46,6 +50,18 @@ export class LoadCardComponent {
         private router: Router,
         private valueByStringPath: ValueByStringPath
     ) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.allCardsFlipp = res;
+            });
+    }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
@@ -84,5 +100,10 @@ export class LoadCardComponent {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

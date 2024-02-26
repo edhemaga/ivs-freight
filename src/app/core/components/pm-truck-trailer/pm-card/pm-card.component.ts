@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardDetails } from '../../shared/model/card-table-data.model';
@@ -35,7 +36,22 @@ export class PmCardComponent {
 
     public isCardFlippedCheckInCards: number[] = [];
 
+    private destroy$ = new Subject<void>();
+    public allCardsFlipp: boolean = false;
+
     constructor(private tableService: TruckassistTableService) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.allCardsFlipp = res;
+            });
+    }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
@@ -57,5 +73,10 @@ export class PmCardComponent {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardDetails } from '../../shared/model/card-table-data.model';
@@ -15,7 +16,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     templateUrl: './owner-card.component.html',
     styleUrls: ['./owner-card.component.scss'],
 })
-export class OwnerCardComponent {
+export class OwnerCardComponent implements OnInit, OnDestroy {
     // All data
     @Input() viewData: CardDetails[];
 
@@ -35,7 +36,23 @@ export class OwnerCardComponent {
 
     public isCardFlippedCheckInCards: number[] = [];
 
+    private destroy$ = new Subject<void>();
+    public allCardsFlipp: boolean = false;
+
     constructor(private tableService: TruckassistTableService) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+        console.log(this.viewData);
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.allCardsFlipp = res;
+            });
+    }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
@@ -57,5 +74,10 @@ export class OwnerCardComponent {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

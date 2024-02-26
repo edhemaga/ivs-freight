@@ -73,6 +73,7 @@ export class TruckassistTableToolbarComponent
     @Input() tableData: any[];
     @Input() options: any;
     @Input() selectedTab: string;
+    @Input() activeViewMode: string;
     @Input() columns: any[];
     @Input() selectedDispatcher: any;
     @Input() dispathcboardTableLocked: boolean;
@@ -134,6 +135,8 @@ export class TruckassistTableToolbarComponent
     public selectedViewMode: string;
     public selectedTableData: any = {};
 
+    public flipAllCards: boolean = false;
+
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
@@ -187,6 +190,11 @@ export class TruckassistTableToolbarComponent
 
             this.listName = td.gridNameTitle;
         }
+    }
+
+    public flipCards(flip: boolean): void {
+        this.flipAllCards = flip;
+        this.tableService.sendAllCardsFlipped(this.flipAllCards);
     }
 
     private currentSetTableWidth(): void {

@@ -6,7 +6,8 @@
             <div
                 class="card-body d-flex justify-content-between"
                 [ngClass]="{
-                    'body-active': isCardFlippedCheckInCards.includes(i),
+                    'body-active':
+                        isCardFlippedCheckInCards.includes(i) || allCardsFlipp,
                     'body-checked': card.isSelected
                 }"
             >
@@ -95,7 +96,8 @@
                         class="flipped"
                         [ngClass]="{
                             'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i)
+                                !isCardFlippedCheckInCards.includes(i) &&
+                                !allCardsFlipp
                         }"
                     >
                         <ng-container
@@ -329,7 +331,8 @@
                         class="flipped"
                         [ngClass]="{
                             'card-body-content':
-                                isCardFlippedCheckInCards.includes(i)
+                                isCardFlippedCheckInCards.includes(i) ||
+                                allCardsFlipp
                         }"
                     >
                         <ng-container
@@ -494,7 +497,8 @@
                                 position="bottom"
                                 [ngClass]="{
                                     'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i),
+                                        isCardFlippedCheckInCards.includes(i) ||
+                                        allCardsFlipp,
                                     'svg-position':
                                         !isCardFlippedCheckInCards.includes(i)
                                 }"

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import {
@@ -37,6 +38,8 @@ export class CustomerCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
+    private destroy$ = new Subject<void>();
+
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
@@ -44,11 +47,25 @@ export class CustomerCardComponent {
 
     public valueByStringPathInstance = new ValueByStringPath();
 
+    public allCardsFlipp: boolean = false;
+
     constructor(
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
         private router: Router
     ) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.allCardsFlipp = res;
+            });
+    }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
@@ -76,5 +93,10 @@ export class CustomerCardComponent {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
