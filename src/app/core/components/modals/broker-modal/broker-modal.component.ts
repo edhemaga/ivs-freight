@@ -228,6 +228,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
+        if (this.editData.tab) this.selectedTab = this.editData.tab;
+
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
@@ -853,7 +855,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
-
+                    this.tabs = this.tabs.map((tab) => {
+                        if (tab.name === this.editData.openedTab) {
+                            return { ...tab, checked: true };
+                        } else {
+                            return { ...tab, checked: false };
+                        }
+                    });
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {

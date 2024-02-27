@@ -1,0 +1,225 @@
+<div class="cards-container">
+    <ng-container
+        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+    >
+        <div class="custom-card">
+            <!-- Card splited on left and right side -->
+
+            <div
+                class="card-body d-flex justify-content-between"
+                [ngClass]="{
+                    'body-active': isCardFlippedCheckInCards.includes(i),
+                    'body-checked': card.isSelected
+                }"
+            >
+                <!-- Left side of the card -->
+
+                <div class="card-body-left p-1">
+                    <!-- Head of the card -->
+
+                    <div class="card-header d-flex align-items-center">
+                        <div class="checkbox-holder d-flex align-items-center">
+                            <!-- Checkbox -->
+                            <span
+                                class="checkbox-tooltip"
+                                type="button"
+                                ngbTooltip
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <input
+                                    class="table-checkbox"
+                                    type="checkbox"
+                                    id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
+                                    (change)="onCheckboxSelect(i, card)"
+                                />
+                                <label
+                                    class="table-checkbox-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </span>
+                        </div>
+                        <div class="name d-flex ta-font-bold">
+                            <ng-container *ngIf="card.avatarImg">
+                                <div class="image-holder">
+                                    <img
+                                        class="image-hover"
+                                        [src]="card.avatarImg"
+                                    />
+
+                                    <ng-container *ngIf="card.owner !== null">
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/ic_owner-status.svg'
+                                            "
+                                        >
+                                        </svg-icon>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="!card.avatarImg">
+                                <div class="image-holder">
+                                    <span
+                                        class="image-hover d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                        [style.background]="
+                                            card.tableAvatar.avatarColor
+                                                .background
+                                        "
+                                        [style.color]="
+                                            card.tableAvatar?.avatarColor.color
+                                        "
+                                    >
+                                        {{
+                                            card.tableAvatar.textShortName
+                                        }}</span
+                                    >
+                                </div>
+                            </ng-container>
+
+                            <span class="title">
+                                {{
+                                    valueByStringPathInstance.getValueByStringPath(
+                                        card,
+                                        cardTitle
+                                    )
+                                }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card body front-->
+
+                    <div
+                        class="flipped"
+                        [ngClass]="{
+                            'card-body-content':
+                                !isCardFlippedCheckInCards.includes(i)
+                        }"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let rowsFront of displayRowsFront;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ rowsFront.title }}
+                                    </div>
+
+                                    <div
+                                        class="bottom-item-body d-flex align-items-center"
+                                    >
+                                        {{
+                                            valueByStringPathInstance.getValueByStringPath(
+                                                card,
+                                                rowsFront.endpoint
+                                            )
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <!-- Card body Back -->
+
+                    <div
+                        class="flipped"
+                        [ngClass]="{
+                            'card-body-content':
+                                isCardFlippedCheckInCards.includes(i)
+                        }"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let rowsBack of displayRowsBack;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ rowsBack.title }}
+                                    </div>
+                                    <div
+                                        class="bottom-item-body d-flex align-items-center gap"
+                                    >
+                                        {{
+                                            valueByStringPathInstance.getValueByStringPath(
+                                                card,
+                                                rowsBack.endpoint
+                                            )
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Right side of card -->
+
+                <div class="card-body-right">
+                    <div class="top-side">
+                        <!-- Open dropdown element-->
+
+                        <app-table-card-dropdown-actions
+                            [card]="card"
+                        ></app-table-card-dropdown-actions>
+
+                        <!-- Note element -->
+
+                        <div
+                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
+                        >
+                            <app-ta-note
+                                [note]="card.note"
+                                [mainData]="card"
+                                [entityId]="card.id"
+                                [openedAll]="false"
+                                [parking]="false"
+                            >
+                            </app-ta-note>
+                        </div>
+
+                        <!-- Expand element -->
+
+                        <div
+                            class="bottom-side d-flex justify-content-center"
+                            (click)="flipCard(i)"
+                        >
+                            <span
+                                class="expand-card"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Expand Card"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/resize-arrow.svg'"
+                                ></svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

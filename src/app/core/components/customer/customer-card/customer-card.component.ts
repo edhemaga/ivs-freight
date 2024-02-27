@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import {
@@ -37,20 +38,34 @@ export class CustomerCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public isCardFlipped: Array<number> = [];
+    private destroy$ = new Subject<void>();
 
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
 
-    public isCardFlippedArray: number[] = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     public valueByStringPathInstance = new ValueByStringPath();
+
+    public isAllCardsFlipp: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
         private router: Router
     ) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.isAllCardsFlipp = res;
+            });
+    }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
@@ -66,17 +81,8 @@ export class CustomerCardComponent {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        const indexSelected = this.isCardFlippedArray.indexOf(index);
-
-        if (indexSelected !== -1) {
-            this.isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = this.isCardFlippedArray;
-        } else {
-            this.isCardFlippedArray.push(index);
-            this.isCardFlipped = this.isCardFlippedArray;
-        }
-
-        return;
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {
@@ -87,5 +93,10 @@ export class CustomerCardComponent {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

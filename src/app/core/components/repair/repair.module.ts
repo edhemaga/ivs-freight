@@ -17,7 +17,10 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
 import { MapsComponent } from '../shared/maps/maps.component';
 import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
 import { MapListComponent } from '../shared/map-list/map-list.component';
-import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
+
+import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 
 // Pipes
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
@@ -41,7 +44,9 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         MapsComponent,
         MapListCardComponent,
         MapListComponent,
-        TruckassistCardsComponent,
+        TaNoteComponent,
+        TableCardDropdownActionsComponent,
+        AppTooltipComponent,
 
         // Pipes
         formatDatePipe,

@@ -1,16 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-    CardDetails,
-    SendDataCard,
-} from '../../shared/model/card-table-data.model';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CardDetails } from '../../shared/model/card-table-data.model';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
 
 // models
-import { CardRows, LoadTableData } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/cardData';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -23,11 +21,9 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
-    providers: [FormatNumberMiPipe, formatCurrency],
+    providers: [FormatNumberMiPipe, formatCurrency, ValueByStringPath],
 })
-export class LoadCardComponent {
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
-
+export class LoadCardComponent implements OnInit, OnDestroy {
     // All data
     @Input() viewData: CardDetails[];
 
@@ -41,25 +37,37 @@ export class LoadCardComponent {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public valueByStringPathInstance = new ValueByStringPath();
+    private destroy$ = new Subject<void>();
+    public isAllCardsFlipp: boolean = false;
 
-    public isCardFlipped: Array<number> = [];
-    public dropDownActive: number;
     public cardData: CardDetails;
 
-    public isCardFlippedArray: number[] = [];
+    public isCardFlippedCheckInCards: number[] = [];
 
     constructor(
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
-        private router: Router
+        private router: Router,
+        private valueByStringPath: ValueByStringPath
     ) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.isAllCardsFlipp = res;
+            });
+    }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+        const checkedCard = this.valueByStringPath.onCheckboxSelect(
             index,
             card
         );
@@ -74,26 +82,14 @@ export class LoadCardComponent {
         value: string
     ): boolean {
         return (
-            this.valueByStringPathInstance.getValueByStringPath(
-                card,
-                endpoint
-            ) === value
+            this.valueByStringPath.getValueByStringPath(card, endpoint) ===
+            value
         );
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        const indexSelected = this.isCardFlippedArray.indexOf(index);
-
-        if (indexSelected !== -1) {
-            this.isCardFlippedArray.splice(indexSelected, 1);
-            this.isCardFlipped = this.isCardFlippedArray;
-        } else {
-            this.isCardFlippedArray.push(index);
-            this.isCardFlipped = this.isCardFlippedArray;
-        }
-
-        return;
+        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {
@@ -104,5 +100,10 @@ export class LoadCardComponent {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

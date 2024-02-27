@@ -12,17 +12,19 @@ import { Subject, takeUntil } from 'rxjs';
 //Components
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 //Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 //Utils
 import {
     getFuelStopColumnDefinition,
     getFuelTransactionColumnDefinition,
 } from '../../../../../assets/utils/settings/accounting-fuel-columns';
-import { TableFuel } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
@@ -34,12 +36,13 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
 import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
 import { TableColumnConfig } from '../../shared/model/table-components/all-tables.modal';
+import { DropdownItem } from '../../shared/model/card-table-data.model';
 
 //States
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
 
 //Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { SortTypes } from 'src/app/core/model/fuel';
 
 @Component({
@@ -70,9 +73,11 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public searchValue: string = '';
     public locationFilterOn: boolean = false;
 
-    public fuelPriceColors: string[] = TableFuel.FUEL_PRICE_COLORS;
+    public fuelPriceColors: string[] =
+        TableDropdownComponentConstants.FUEL_PRICE_COLORS;
 
-    public fuelPriceHoverColors: string[] = TableFuel.FUEL_PRICE_HOVER_COLORS;
+    public fuelPriceHoverColors: string[] =
+        TableDropdownComponentConstants.FUEL_PRICE_HOVER_COLORS;
 
     public resizeObserver: ResizeObserver;
     public fuelData: FuelTransactionListResponse | FuelStopListResponse;
@@ -85,7 +90,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
         private fuelQuery: FuelQuery,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private confiramtionService: ConfirmationService
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -107,7 +113,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sorting();
 
         // Map
-        this.sortTypes = TableFuel.SORT_TYPES;
+        this.sortTypes = TableDropdownComponentConstants.SORT_TYPES;
 
         this.activeSortType = this.sortTypes[0];
     }
@@ -503,14 +509,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data?.driver?.firstName || data?.driver?.lastName
                     ? data.driver.firstName + ' ' + data.driver.lastName
                     : '',
-            tableFuelCardNumber: data?.fuelCard?.cardNumber
+            TableDropdownComponentConstantsCardNumber: data?.fuelCard
+                ?.cardNumber
                 ? data.fuelCard.cardNumber
                 : '',
             tableTransactionDate: data?.transactionDate
                 ? this.datePipe.transform(data.transactionDate, 'MM/dd/yy')
                 : '',
             tableTransactionTime: 'Treba da se poveze',
-            tableFuelStopName: data?.fuelStopStore?.businessName
+            TableDropdownComponentConstantsStopName: data?.fuelStopStore
+                ?.businessName
                 ? data.fuelStopStore.businessName
                 : '',
             tableLocation: data?.fuelStopStore?.address?.address
@@ -554,22 +562,24 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             isSelected: false,
-            tableName: data?.fuelStopFranchise?.businessName
-                ? data.fuelStopFranchise.businessName
-                : '',
+            tableName: data?.businessName ? data.businessName : '',
             tableStore: data?.store ? data.store : '',
             tableAddress: data?.address?.address ? data.address.address : '',
             tablePPG: data?.pricePerGallon ? data.pricePerGallon : '',
-            tableLast: data?.fuelStopExtensions[0]?.totalCost
-                ? data.fuelStopExtensions[0].totalCost
-                : '',
-            tableUsed: data?.fuelStopExtensions[0]?.lastUsed
-                ? data.fuelStopExtensions[0].lastUsed
-                : '',
+            tableLast: data?.totalCost ?? '',
+            tableUsed: data?.lastUsed ?? '',
             tableTotalCost:
                 'Nema propery ili treba da se mapira iz fuelStopExtensions',
-            isFavorite: data.fuelStopExtensions[0].favourite,
+            isFavorite: data.favourite,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(),
+            },
         };
+    }
+
+    private getDropdownOwnerContent(): DropdownItem[] {
+        return TableDropdownComponentConstants.DROPDOWN_FUEL_CONTENT;
     }
 
     onToolBarAction(event: any) {
@@ -628,6 +638,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 );
             }
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
+        ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.FUEL,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    svg: true,
+                }
+            );
         }
     }
 

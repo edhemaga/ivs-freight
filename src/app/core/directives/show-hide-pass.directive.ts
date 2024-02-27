@@ -6,8 +6,8 @@ import {
     Renderer2,
 } from '@angular/core';
 
-import { ConstantStringDirectiveEnum } from '../utils/enums/directive.enums';
-import { DirectiveConstants } from '../utils/constants/directive.constants';
+import { ShowHidePassDirective } from '../utils/constants/show-hide-pass.constant';
+import { ConstantStringDirectiveEnum } from '../utils/enums/show-hide-directive.enums';
 
 @Directive({
     selector: '[appTextToggle]',
@@ -53,12 +53,12 @@ export class TextToggleDirective {
             ConstantStringDirectiveEnum.PASSWORD_ICON
         );
 
-        Object.keys(DirectiveConstants.SVG_STYLES).forEach(
+        Object.keys(ShowHidePassDirective.SVG_STYLES).forEach(
             (styleKey: string) => {
                 this.renderer.setStyle(
                     this.svg,
                     styleKey,
-                    DirectiveConstants.SVG_STYLES[styleKey]
+                    ShowHidePassDirective.SVG_STYLES[styleKey]
                 );
             }
         );
@@ -76,12 +76,12 @@ export class TextToggleDirective {
         this.renderer.appendChild(this.tooltip, tooltipTextNode);
 
         // Loop trough tooltip styles
-        Object.keys(DirectiveConstants.TOOLTIP_STYLES).forEach(
+        Object.keys(ShowHidePassDirective.TOOLTIP_STYLES).forEach(
             (styleKey: string) => {
                 this.renderer.setStyle(
                     this.tooltip,
                     styleKey,
-                    DirectiveConstants.TOOLTIP_STYLES[styleKey]
+                    ShowHidePassDirective.TOOLTIP_STYLES[styleKey]
                 );
             }
         );
