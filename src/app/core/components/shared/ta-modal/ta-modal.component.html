@@ -8,7 +8,10 @@
         <div class="modal-original-part {{ partClass }}">
             <!-- Modal Header -->
 
-            <div cdkDragHandle class="modal-header">
+            <div
+                cdkDragHandle
+                class="modal-header d-flex justify-content-between"
+            >
                 <div
                     class="modal-header-leftside"
                     [ngClass]="{ 'confirmation-modal': confirmationData }"
@@ -55,6 +58,10 @@
                         "
                     >
                         {{ editName }}
+                    </h5>
+
+                    <h5 class="edit-name">
+                        {{ cardsSecTitle }}
                     </h5>
                 </div>
 
@@ -145,7 +152,9 @@
 
                 <!-- Divider bottom -->
 
-                <div *ngIf="bottomDivider" class="divider"></div>
+                <ng-container *ngIf="bottomDivider">
+                    <div class="divider"></div>
+                </ng-container>
             </div>
 
             <!-- Modal footer Normal -->
@@ -300,7 +309,7 @@
                         >
                             <button
                                 (click)="onAction('convert-to-template')"
-                                class="d-flex align-items-center justify-content-center ta-font-bold modal-convert-to-template-btn"
+                                class="d-flex align-items-center ta-font-bold"
                                 type="button"
                             >
                                 Convert to Template
@@ -438,7 +447,10 @@
 
                     <ng-container
                         *ngIf="
-                            !mapSettingsModal && !mapRouteModal && !isStepper
+                            !mapSettingsModal &&
+                            !mapRouteModal &&
+                            !isStepper &&
+                            !cardsModal
                         "
                     >
                         <button
@@ -478,6 +490,43 @@
                     </ng-container>
                 </div>
             </div>
+
+            <!-- Modal footer for cards -->
+
+            <ng-container *ngIf="cardsModal">
+                <div class="modal-footer d-flex justify-content-between">
+                    <!-- Footer Left Side Cards-->
+
+                    <div
+                        class="ta-modal-footer-left-side d-flex justify-content-start"
+                    >
+                        <!-- Cards buttons reset and save -->
+                        <button
+                            (click)="onAction('Reset to Default')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            type="button"
+                            [ngClass]="{ valid: isModalValid }"
+                        >
+                            Reset to Default
+                        </button>
+                    </div>
+
+                    <!-- Footer right side Cards-->
+
+                    <div
+                        class="ta-modal-footer-right-side d-flex justify-content-end"
+                    >
+                        <button
+                            (click)="onAction('save')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            type="button"
+                            [ngClass]="{ valid: isModalValid }"
+                        >
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
 
             <!-- Modal Footer Confirmation Modal -->
 

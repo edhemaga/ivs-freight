@@ -45,6 +45,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 //Model
 import { optionsPopupContent } from '../../model/toolbar';
+import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal.component';
 
 @Titles()
 @Component({
@@ -62,6 +63,7 @@ import { optionsPopupContent } from '../../model/toolbar';
         NgbModule,
         NgbPopoverModule,
         TaInputDropdownComponent,
+        LoadCardsModalComponent,
     ],
 })
 export class TruckassistTableToolbarComponent
@@ -190,6 +192,12 @@ export class TruckassistTableToolbarComponent
 
             this.listName = td.gridNameTitle;
         }
+    }
+
+    public openCards(): void {
+        this.modalService.openModal(LoadCardsModalComponent, {
+            size: 'small',
+        });
     }
 
     public flipCards(flip: boolean): void {

@@ -1,7 +1,12 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import {
+    FormGroup,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+} from '@angular/forms';
 
 @Component({
     selector: 'app-load-cards-modal',
@@ -10,10 +15,28 @@ import { FormService } from 'src/app/core/services/form/form.service';
     standalone: true,
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
-    imports: [TaModalComponent],
+    imports: [TaModalComponent, ReactiveFormsModule],
 })
 export class LoadCardsModalComponent implements OnInit {
-    constructor() {}
+    // radioButtonsForm: FormGroup;
 
-    ngOnInit(): void {}
+    // public buttons = [
+    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
+    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
+    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
+    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
+    // ];
+
+    // constructor(private formBuilder: UntypedFormBuilder) {}
+
+    ngOnInit(): void {
+        //     this.createForm();
+        //     console.log(this.radioButtonsForm.value);
+    }
+
+    // createForm(): any {
+    //     this.radioButtonsForm = this.formBuilder.group({
+    //         option: [4],
+    //     });
+    // }
 }

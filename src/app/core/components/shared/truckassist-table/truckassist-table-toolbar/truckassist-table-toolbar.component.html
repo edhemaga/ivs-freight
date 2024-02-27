@@ -574,7 +574,7 @@
 
         <ng-container *ngIf="activeViewMode === 'Card'">
             <!-- Columns -->
-            <div class="options">
+            <div class="options" (click)="openCards()">
                 <div class="text">Columns</div>
                 <div class="icon">
                     <svg-icon

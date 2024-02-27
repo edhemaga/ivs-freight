@@ -82,7 +82,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
     public selectedTab: string = ConstantStringTableComponentsEnum.PENDING;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
     public resizeObserver: ResizeObserver;
     public loadActive: LoadActiveState[] = [];
     public loadClosed: LoadClosedState[] = [];
@@ -102,9 +102,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         DisplayLoadConfiguration.displayRowsBackTemplate;
 
     public displayRowsFront: CardRows[] =
-        DisplayLoadConfiguration.displayRowsFront;
+        DisplayLoadConfiguration.displayRowsFrontPending;
     public displayRowsBack: CardRows[] =
-        DisplayLoadConfiguration.displayRowsBack;
+        DisplayLoadConfiguration.displayRowsBackPending;
+
+    public displayRowsBackActive: CardRows[] =
+        DisplayLoadConfiguration.displayRowsBackActive;
 
     public displayRowsFrontClosed: CardRows[] =
         DisplayLoadConfiguration.displayRowsFrontClosed;
@@ -606,17 +609,28 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             // Set data for active tab
-            this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontTemplate),
-                  (this.sendDataToCardsBack = this.displayRowsBackTemplate),
-                  (this.cardTitle = ConstantStringTableComponentsEnum.NAME_1))
-                : this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontClosed),
-                  (this.sendDataToCardsBack = this.displayRowsBackClosed))
-                : ((this.sendDataToCardsFront = this.displayRowsFront),
-                  (this.sendDataToCardsBack = this.displayRowsBack),
-                  (this.cardTitle =
-                      ConstantStringTableComponentsEnum.LOAD_INVOICE));
+            if (
+                this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
+            ) {
+                this.sendDataToCardsFront = this.displayRowsFrontTemplate;
+                this.sendDataToCardsBack = this.displayRowsBackTemplate;
+                this.cardTitle = ConstantStringTableComponentsEnum.NAME_1;
+            } else if (
+                this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
+            ) {
+                this.sendDataToCardsFront = this.displayRowsFrontClosed;
+                this.sendDataToCardsBack = this.displayRowsBackClosed;
+            } else if (
+                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            ) {
+                this.sendDataToCardsFront = this.displayRowsFront;
+                this.sendDataToCardsBack = this.displayRowsBackActive;
+                this.cardTitle = ConstantStringTableComponentsEnum.LOAD_INVOICE;
+            } else {
+                this.sendDataToCardsFront = this.displayRowsFront;
+                this.sendDataToCardsBack = this.displayRowsBack;
+                this.cardTitle = ConstantStringTableComponentsEnum.LOAD_INVOICE;
+            }
 
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
