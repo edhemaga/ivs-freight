@@ -48,7 +48,7 @@ export class DisplayLoadConfiguration {
         },
     ];
 
-    static displayRowsFront: CardRows[] = [
+    static displayRowsFrontPending: CardRows[] = [
         {
             title: 'Status',
             endpoint: 'loadStatus.status',
@@ -72,7 +72,7 @@ export class DisplayLoadConfiguration {
         },
     ];
 
-    static displayRowsBack: CardRows[] = [
+    static displayRowsBackPending: CardRows[] = [
         {
             title: 'Dispatcher',
             endpoint: 'dispatcher.fullName',
@@ -83,6 +83,25 @@ export class DisplayLoadConfiguration {
         },
         {
             title: 'Ref. Number',
+            endpoint: 'referenceNumber',
+        },
+        {
+            title: 'Total Miles',
+            endpoint: 'totalMiles',
+        },
+    ];
+
+    static displayRowsBackActive: CardRows[] = [
+        {
+            title: 'Driver',
+            endpoint: 'dispatcher.fullName',
+        },
+        {
+            title: 'Truck',
+            endpoint: 'broker.businessName',
+        },
+        {
+            title: 'Trailer',
             endpoint: 'referenceNumber',
         },
         {

@@ -6,7 +6,9 @@
             <div
                 class="card-body d-flex justify-content-between"
                 [ngClass]="{
-                    'body-active': isCardFlippedCheckInCards.includes(i),
+                    'body-active':
+                        isCardFlippedCheckInCards.includes(i) ||
+                        isAllCardsFlipp,
                     'body-checked': card.isSelected
                 }"
             >
@@ -69,7 +71,7 @@
                                 >
                                     <ng-container *ngIf="cardTitle !== 'name'">
                                         INV-{{
-                                            valueByStringPathInstance.getValueByStringPath(
+                                            valueByStringPath.getValueByStringPath(
                                                 card,
                                                 cardTitle
                                             )
@@ -78,7 +80,7 @@
 
                                     <ng-container *ngIf="cardTitle === 'name'">
                                         {{
-                                            valueByStringPathInstance.getValueByStringPath(
+                                            valueByStringPath.getValueByStringPath(
                                                 card,
                                                 cardTitle
                                             )
@@ -95,7 +97,8 @@
                         class="flipped"
                         [ngClass]="{
                             'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i)
+                                !isCardFlippedCheckInCards.includes(i) &&
+                                !isAllCardsFlipp
                         }"
                     >
                         <ng-container
@@ -123,7 +126,7 @@
                                     <!-- If Comodity is Hazardous-->
                                     <ng-container
                                         *ngIf="
-                                            valueByStringPathInstance.getValueByStringPath(
+                                            valueByStringPath.getValueByStringPath(
                                                 card,
                                                 rowsFront.endpoint
                                             ) === 'Hazardous'
@@ -137,7 +140,7 @@
                                         </svg-icon>
                                         <span>
                                             {{
-                                                valueByStringPathInstance.getValueByStringPath(
+                                                valueByStringPath.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 )
@@ -192,7 +195,7 @@
                                             }"
                                         >
                                             {{
-                                                valueByStringPathInstance.getValueByStringPath(
+                                                valueByStringPath.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 ) | uppercase
@@ -205,7 +208,7 @@
                                     <ng-container
                                         *ngIf="
                                             rowsFront.title !== 'Status' &&
-                                            valueByStringPathInstance.getValueByStringPath(
+                                            valueByStringPath.getValueByStringPath(
                                                 card,
                                                 rowsFront.endpoint
                                             ) !== 'Hazardous'
@@ -225,7 +228,7 @@
                                             "
                                         >
                                             {{
-                                                valueByStringPathInstance.getValueByStringPath(
+                                                valueByStringPath.getValueByStringPath(
                                                     card,
                                                     rowsFront.endpoint
                                                 )
@@ -238,7 +241,7 @@
                                     <ng-container
                                         *ngIf="
                                             rowsFront.secondEndpoint &&
-                                            valueByStringPathInstance.getValueByStringPath(
+                                            valueByStringPath.getValueByStringPath(
                                                 card,
                                                 rowsFront.secondEndpoint
                                             ) !== '/'
@@ -254,7 +257,7 @@
                                             <span class="muted">x</span>
                                             <span class="muted">
                                                 {{
-                                                    valueByStringPathInstance.getValueByStringPath(
+                                                    valueByStringPath.getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
@@ -278,7 +281,7 @@
                                                 }"
                                             >
                                                 {{
-                                                    valueByStringPathInstance.getValueByStringPath(
+                                                    valueByStringPath.getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
@@ -296,7 +299,7 @@
                                         >
                                             <span>
                                                 {{
-                                                    valueByStringPathInstance.getValueByStringPath(
+                                                    valueByStringPath.getValueByStringPath(
                                                         card,
                                                         rowsFront.secondEndpoint
                                                     )
@@ -312,7 +315,7 @@
                                     >
                                         <span class="muted">
                                             {{
-                                                valueByStringPathInstance.getValueByStringPath(
+                                                valueByStringPath.getValueByStringPath(
                                                     card,
                                                     rowsFront.thirdEndpoint
                                                 )
@@ -329,7 +332,8 @@
                         class="flipped"
                         [ngClass]="{
                             'card-body-content':
-                                isCardFlippedCheckInCards.includes(i)
+                                isCardFlippedCheckInCards.includes(i) ||
+                                isAllCardsFlipp
                         }"
                     >
                         <ng-container
@@ -369,7 +373,7 @@
                                                 "
                                             >
                                                 {{
-                                                    valueByStringPathInstance.getValueByStringPath(
+                                                    valueByStringPath.getValueByStringPath(
                                                         card,
                                                         rowsBack.endpoint
                                                     )
@@ -383,7 +387,7 @@
                                             >
                                                 <span>
                                                     {{
-                                                        valueByStringPathInstance.getValueByStringPath(
+                                                        valueByStringPath.getValueByStringPath(
                                                             card,
                                                             rowsBack.secondEndpoint
                                                         )
@@ -398,7 +402,7 @@
                                             >
                                                 <span class="muted">
                                                     {{
-                                                        valueByStringPathInstance.getValueByStringPath(
+                                                        valueByStringPath.getValueByStringPath(
                                                             card,
                                                             rowsBack.thirdEndpoint
                                                         )
@@ -416,7 +420,7 @@
                                             "
                                         >
                                             {{
-                                                valueByStringPathInstance.getValueByStringPath(
+                                                valueByStringPath.getValueByStringPath(
                                                     card,
                                                     rowsBack.endpoint
                                                 )
@@ -494,7 +498,8 @@
                                 position="bottom"
                                 [ngClass]="{
                                     'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i),
+                                        isCardFlippedCheckInCards.includes(i) ||
+                                        isAllCardsFlipp,
                                     'svg-position':
                                         !isCardFlippedCheckInCards.includes(i)
                                 }"

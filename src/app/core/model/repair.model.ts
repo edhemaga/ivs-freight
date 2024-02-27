@@ -1,19 +1,43 @@
 import {
+    EnumValue,
     FileResponse,
-    PMTrailerShortResponse,
-    PMTruckShortResponse,
     RepairItemResponse,
     RepairResponse,
     RepairServiceTypeResponse,
+    RepairShopShortResponse,
+    TrailerMinimalResponse,
+    TruckMinimalResponse,
 } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
-import { DropdownItem } from '../shared/model/card-table-data.model';
+import { DropdownItem } from '../components/shared/model/card-table-data.model';
 
 export interface BodyResponseRepair {
-    data?: RepairResponse;
+    data?: RepairBodyResponse;
     id?: number;
-    type?: ConstantStringTableComponentsEnum;
+    type?: any;
     subType?: string;
+}
+export interface RepairBodyResponse {
+    id?: number;
+    companyId?: number;
+    repairType?: EnumValue;
+    unitType?: EnumValue;
+    truckId?: number | null;
+    truck?: TruckMinimalResponse;
+    trailerId?: number | null;
+    trailer?: TrailerMinimalResponse;
+    odometer?: number | null;
+    status?: number | null;
+    date?: string | null;
+    invoice?: string | null;
+    repairShop?: RepairShopShortResponse;
+    total?: number | null;
+    serviceTypes?: Array<RepairServiceTypeResponse> | null;
+    note?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
+    items?: Array<RepairItemResponse> | null;
+    files?: Array<FileResponse> | null;
+    fileCount?: number | null;
 }
 
 export interface RepairBackFilterModal {

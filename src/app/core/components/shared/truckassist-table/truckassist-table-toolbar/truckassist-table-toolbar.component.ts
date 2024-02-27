@@ -41,10 +41,11 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 
 //Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 //Model
 import { optionsPopupContent } from '../../model/toolbar';
+import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal.component';
 
 @Titles()
 @Component({
@@ -62,6 +63,7 @@ import { optionsPopupContent } from '../../model/toolbar';
         NgbModule,
         NgbPopoverModule,
         TaInputDropdownComponent,
+        LoadCardsModalComponent,
     ],
 })
 export class TruckassistTableToolbarComponent
@@ -73,6 +75,7 @@ export class TruckassistTableToolbarComponent
     @Input() tableData: any[];
     @Input() options: any;
     @Input() selectedTab: string;
+    @Input() activeViewMode: string;
     @Input() columns: any[];
     @Input() selectedDispatcher: any;
     @Input() dispathcboardTableLocked: boolean;
@@ -134,6 +137,8 @@ export class TruckassistTableToolbarComponent
     public selectedViewMode: string;
     public selectedTableData: any = {};
 
+    public flipAllCards: boolean = false;
+
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
@@ -187,6 +192,17 @@ export class TruckassistTableToolbarComponent
 
             this.listName = td.gridNameTitle;
         }
+    }
+
+    public openCards(): void {
+        this.modalService.openModal(LoadCardsModalComponent, {
+            size: 'small',
+        });
+    }
+
+    public flipCards(flip: boolean): void {
+        this.flipAllCards = flip;
+        this.tableService.sendAllCardsFlipped(this.flipAllCards);
     }
 
     private currentSetTableWidth(): void {

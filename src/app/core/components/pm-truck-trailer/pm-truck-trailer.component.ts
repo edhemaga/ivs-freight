@@ -6,7 +6,7 @@ import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
 } from '../../../../assets/utils/settings/pm-columns';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enum';
 
 // Components
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
@@ -25,7 +25,7 @@ import { ModalService } from '../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../services/truckassist-table/truckassist-table.service';
 
 // Constants
-import { TablePM } from '../../utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from '../../utils/constants/table-components.constants';
 
 // Data
 import { DisplayPMConfiguration } from './pm-card-data';
@@ -128,7 +128,7 @@ export class PmTruckTrailerComponent implements OnInit {
                     },
                 ],
             },
-            actions: TablePM.ACTIONS_DROPDOWN,
+            actions: TableDropdownComponentConstants.ACTIONS_DROPDOWN,
         };
     }
 

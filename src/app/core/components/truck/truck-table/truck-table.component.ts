@@ -51,10 +51,10 @@ import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 //Constants
-import { TableDriverColorsConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 
@@ -67,6 +67,7 @@ import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public tableOptions: TableOptionsInterface;
+    public truckData: any[] = [];
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -78,7 +79,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
     public backFilterQuery: FilterOptions =
-        TableDriverColorsConstants.BACK_FILTER_QUERY;
+        TableDropdownComponentConstants.BACK_FILTER_QUERY;
 
     public resizeObserver: ResizeObserver;
 
@@ -131,6 +132,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.search();
 
         this.getSelectedTabTableData();
+
+        this.setTableFilter();
     }
 
     ngAfterViewInit(): void {
@@ -177,6 +180,25 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((response) => {
                 if (response && !this.loadingPage) {
                     this.sendTruckData();
+                }
+            });
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    if (res.action === ConstantStringTableComponentsEnum.SET) {
+                        this.viewData = this.truckData?.filter((customerData) =>
+                            res.queryParams.some(
+                                (filterData) => filterData === customerData.id
+                            )
+                        );
+                    }
+
+                    if (res.action === ConstantStringTableComponentsEnum.CLEAR)
+                        this.viewData = this.truckData;
                 }
             });
     }
@@ -540,6 +562,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.truckData = this.viewData;
     }
 
     private setTruckTooltipColor(truckName: string): string {
