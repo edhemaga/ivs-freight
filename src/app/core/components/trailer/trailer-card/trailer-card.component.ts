@@ -24,7 +24,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
     @Input() displayRowsBack: CardRows;
 
     private destroy$ = new Subject<void>();
-    public allCardsFlipp: boolean = false;
+    public isAllCardsFlipp: boolean = false;
 
     public valueByStringPathInstance = new ValueByStringPath();
 
@@ -40,7 +40,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.allCardsFlipp = res;
+                this.isAllCardsFlipp = res;
             });
     }
 

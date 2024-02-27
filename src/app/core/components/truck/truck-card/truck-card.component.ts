@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardRows } from '../../shared/model/cardData';
@@ -6,7 +7,6 @@ import { CardDetails } from '../../shared/model/card-table-data.model';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
-import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -28,7 +28,7 @@ export class TruckCardComponent implements OnInit, OnDestroy {
     public isCardFlippedCheckInCards: number[] = [];
 
     private destroy$ = new Subject<void>();
-    public allCardsFlipp: boolean = false;
+    public isAllCardsFlipp: boolean = false;
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -40,7 +40,7 @@ export class TruckCardComponent implements OnInit, OnDestroy {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.allCardsFlipp = res;
+                this.isAllCardsFlipp = res;
             });
     }
 

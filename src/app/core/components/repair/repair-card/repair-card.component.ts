@@ -71,7 +71,7 @@ export class RepairCardComponent
     public ValueByStringPath = new ValueByStringPath();
 
     private destroy$ = new Subject<void>();
-    public allCardsFlipp: boolean = false;
+    public isAllCardsFlipp: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -104,7 +104,7 @@ export class RepairCardComponent
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.allCardsFlipp = res;
+                this.isAllCardsFlipp = res;
             });
     }
 

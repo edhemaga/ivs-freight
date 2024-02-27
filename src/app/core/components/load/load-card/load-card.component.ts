@@ -38,7 +38,7 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
-    public allCardsFlipp: boolean = false;
+    public isAllCardsFlipp: boolean = false;
 
     public cardData: CardDetails;
 
@@ -59,7 +59,7 @@ export class LoadCardComponent implements OnInit, OnDestroy {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.allCardsFlipp = res;
+                this.isAllCardsFlipp = res;
             });
     }
 

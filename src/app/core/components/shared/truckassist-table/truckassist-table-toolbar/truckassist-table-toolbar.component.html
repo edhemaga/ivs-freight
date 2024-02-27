@@ -15,13 +15,13 @@
     </div>
 
     <!-- ONE TAB -->
-    <div
-        class="one-tab-container ta-font-black"
+    <ng-container
         *ngIf="tableData.length === 1 && !options.toolbarActions.hideDataCount"
     >
-        ({{ tableData[0].length }})
-    </div>
-
+        <div class="one-tab-container ta-font-black">
+            ({{ tableData[0].length }})
+        </div>
+    </ng-container>
     <!-- TABS -->
     <ng-container *ngIf="tableData.length > 1">
         <div class="tab-wrapper d-flex align-items-center">
@@ -278,16 +278,17 @@
     </div>
 
     <!-- OPEN GENERAL PM BUTTON -->
-    <div
-        class="general-pm-open-container"
-        *ngIf="options.toolbarActions.showGeneralPmBtn"
-        (click)="onToolBarAction('open-general-pm')"
-    >
-        <svg-icon
-            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-            [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
-        ></svg-icon>
-    </div>
+    <ng-container *ngIf="options.toolbarActions.showGeneralPmBtn">
+        <div
+            class="general-pm-open-container"
+            (click)="onToolBarAction('open-general-pm')"
+        >
+            <svg-icon
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
+            ></svg-icon>
+        </div>
+    </ng-container>
 
     <!-- OPEN MODAL BUTTON -->
 </div>
@@ -297,235 +298,129 @@
         <!-- TOOLBAR OPTIONS -->
 
         <ng-container *ngIf="activeViewMode === 'List'">
-            <div *ngFor="let option of optionsPopupContent">
-                <!-- Option Border -->
-                <div
-                    class="toolbar-option-border-container"
-                    *ngIf="
-                        option.hasTopBorder && !optionsPopupContent[0].active
-                    "
-                >
-                    <div class="option-border"></div>
-                </div>
-
-                <!-- Option -->
-                <div
-                    (click)="onOptions(option)"
-                    [ngClass]="{
-                        'active-option': option.active,
-                        'inactiv-option': option.isInactive
-                    }"
-                    class="options"
-                    [ngStyle]="{ display: option.hide ? 'none' : 'flex' }"
-                    (mouseover)="option.showBackToList = true"
-                    (mouseleave)="option.showBackToList = false"
-                >
-                    <!-- Back To List Icon -->
+            <ng-container *ngFor="let option of optionsPopupContent">
+                <div>
+                    <!-- Option Border -->
                     <div
-                        class="back-to-list-icon"
+                        class="toolbar-option-border-container"
                         *ngIf="
-                            option?.showBackToList &&
-                            option.hasOwnSubOpions &&
-                            option.active
+                            option.hasTopBorder &&
+                            !optionsPopupContent[0].active
                         "
                     >
-                        <svg-icon
-                            [svgStyle]="{
-                                'width.px': 14,
-                                'height.px': 14
-                            }"
-                            [src]="option.backToListIcon"
-                        ></svg-icon>
+                        <div class="option-border"></div>
                     </div>
 
-                    <div class="text">
-                        {{
-                            option?.showBackToList &&
-                            option.hasOwnSubOpions &&
-                            option.active
-                                ? 'Back to Menu'
-                                : option.text
-                        }}
-                    </div>
-
-                    <!-- Normal Icon -->
-                    <div class="icon">
-                        <svg-icon
-                            *ngIf="!option.backToListIcon || !option.active"
-                            class="option-icon"
-                            [svgStyle]="{
-                                'width.px': 18,
-                                'height.px': 18
-                            }"
-                            [src]="option.svgPath"
-                        ></svg-icon>
-
-                        <svg-icon
-                            (click)="
-                                onOptions({
-                                    text: 'Reset Table'
-                                })
+                    <!-- Option -->
+                    <div
+                        (click)="onOptions(option)"
+                        [ngClass]="{
+                            'active-option': option.active,
+                            'inactiv-option': option.isInactive
+                        }"
+                        class="options"
+                        [ngStyle]="{ display: option.hide ? 'none' : 'flex' }"
+                        (mouseover)="option.showBackToList = true"
+                        (mouseleave)="option.showBackToList = false"
+                    >
+                        <!-- Back To List Icon -->
+                        <div
+                            class="back-to-list-icon"
+                            *ngIf="
+                                option?.showBackToList &&
+                                option.hasOwnSubOpions &&
+                                option.active
                             "
-                            *ngIf="option.backToListIcon && option.active"
-                            class="columns-active-icon"
-                            [svgStyle]="{
-                                'width.px': 18,
-                                'height.px': 18
-                            }"
-                            [src]="
-                                'assets/svg/truckassist-table/reset-icon.svg'
-                            "
-                        ></svg-icon>
+                        >
+                            <svg-icon
+                                [svgStyle]="{
+                                    'width.px': 14,
+                                    'height.px': 14
+                                }"
+                                [src]="option.backToListIcon"
+                            ></svg-icon>
+                        </div>
+
+                        <div class="text">
+                            {{
+                                option?.showBackToList &&
+                                option.hasOwnSubOpions &&
+                                option.active
+                                    ? 'Back to Menu'
+                                    : option.text
+                            }}
+                        </div>
+
+                        <!-- Normal Icon -->
+                        <div class="icon">
+                            <svg-icon
+                                *ngIf="!option.backToListIcon || !option.active"
+                                class="option-icon"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                [src]="option.svgPath"
+                            ></svg-icon>
+
+                            <svg-icon
+                                (click)="
+                                    onOptions({
+                                        text: 'Reset Table'
+                                    })
+                                "
+                                *ngIf="option.backToListIcon && option.active"
+                                class="columns-active-icon"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                [src]="
+                                    'assets/svg/truckassist-table/reset-icon.svg'
+                                "
+                            ></svg-icon>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
 
             <!-- Option -->
-            <div
-                class="options-border-container"
-                *ngIf="optionsPopupContent[0].active"
-            >
-                <div class="options-border"></div>
-            </div>
+            <ng-container *ngIf="optionsPopupContent[0].active">
+                <div class="options-border-container">
+                    <div class="options-border"></div>
+                </div>
+            </ng-container>
 
             <!-- COLUMNS LIST  -->
             <div class="columns-options" *ngIf="optionsPopupContent[0].active">
                 <div class="columns-container">
-                    <div
+                    <ng-container
                         *ngFor="
                             let column of columnsOptionsWithGroups;
                             let i = index
                         "
                     >
                         <!-- For Regular Column -->
-                        <div
-                            (click)="onToaggleColumn(column, i)"
-                            class="column"
-                            *ngIf="!column.isGroup"
-                        >
-                            <div class="checkbox" *ngIf="!column.isPined">
-                                <input
-                                    [checked]="!column.hidden"
-                                    class="columns-options-checkbox"
-                                    id="checkbox{{ i }}"
-                                    type="checkbox"
-                                />
-                                <label
-                                    class="columns-options-label"
-                                    for="checkbox{{ i }}"
-                                ></label>
-                            </div>
-
+                        <ng-container *ngIf="!column.isGroup">
                             <div
-                                class="not-allowed-action"
-                                *ngIf="column.isPined"
+                                (click)="onToaggleColumn(column, i)"
+                                class="column"
                             >
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 14,
-                                        'height.px': 14
-                                    }"
-                                    [src]="
-                                        'assets/svg/truckassist-table/user-owner-icon.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-
-                            <div
-                                class="column-text"
-                                [ngClass]="{
-                                    'selectable-text': !column.isPined
-                                }"
-                            >
-                                {{ column.name || column.title }}
-                            </div>
-                        </div>
-
-                        <!-- For Group -->
-                        <div
-                            class="group-columns-container"
-                            *ngIf="column.isGroup"
-                            [ngClass]="{
-                                'group-columns-active': column.isOpen
-                            }"
-                        >
-                            <div class="group-columns-title">
-                                <div class="checkbox">
+                                <div class="checkbox" *ngIf="!column.isPined">
                                     <input
-                                        [checked]="column.areAllActive"
-                                        (click)="onToaggleAllInGroup(i)"
+                                        [checked]="!column.hidden"
                                         class="columns-options-checkbox"
                                         id="checkbox{{ i }}"
                                         type="checkbox"
                                     />
                                     <label
-                                        [ngClass]="{
-                                            'some-selected':
-                                                column.areSomeSelected
-                                        }"
                                         class="columns-options-label"
                                         for="checkbox{{ i }}"
                                     ></label>
                                 </div>
 
-                                <div
-                                    class="column-text selectable-text"
-                                    (click)="openColumnsGroupDropdown(i)"
-                                >
-                                    {{ column.optionsGroupName }}
-                                </div>
-
-                                <div
-                                    class="group-columns-arrow"
-                                    (click)="openColumnsGroupDropdown(i)"
-                                >
-                                    <svg-icon
-                                        [svgStyle]="{
-                                            'width.px': 7.18,
-                                            'height.px': 12.66
-                                        }"
-                                        [src]="
-                                            '../../../../../../assets/svg/truckassist-table/toolbar-group-dropdown-arrow.svg'
-                                        "
-                                    ></svg-icon>
-                                </div>
-                            </div>
-
-                            <div class="group-columns">
-                                <div
-                                    class="group-column"
-                                    (click)="
-                                        onToaggleGroupColumn(columnGroup, j)
-                                    "
-                                    *ngFor="
-                                        let columnGroup of column.group;
-                                        let j = index
-                                    "
-                                >
-                                    <div
-                                        class="checkbox"
-                                        *ngIf="!columnGroup.isPined"
-                                    >
-                                        <input
-                                            [checked]="!columnGroup.hidden"
-                                            class="columns-options-checkbox"
-                                            id="checkbox{{
-                                                columnGroup.groupColumnTitle + j
-                                            }}"
-                                            type="checkbox"
-                                        />
-                                        <label
-                                            class="columns-options-label"
-                                            for="checkbox{{
-                                                columnGroup.groupColumnTitle + j
-                                            }}"
-                                        ></label>
-                                    </div>
-
-                                    <div
-                                        class="not-allowed-action"
-                                        *ngIf="columnGroup.isPined"
-                                    >
+                                <ng-container *ngIf="column.isPined">
+                                    <div class="not-allowed-action">
                                         <svg-icon
                                             [svgStyle]="{
                                                 'width.px': 14,
@@ -536,20 +431,143 @@
                                             "
                                         ></svg-icon>
                                     </div>
+                                </ng-container>
 
-                                    <div
-                                        class="column-text"
-                                        [ngClass]="{
-                                            'selectable-text':
-                                                !columnGroup.isPined
-                                        }"
-                                    >
-                                        {{ columnGroup.groupColumnTitle }}
-                                    </div>
+                                <div
+                                    class="column-text"
+                                    [ngClass]="{
+                                        'selectable-text': !column.isPined
+                                    }"
+                                >
+                                    {{ column.name || column.title }}
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ng-container>
+
+                        <!-- For Group -->
+                        <ng-container *ngIf="column.isGroup">
+                            <div
+                                class="group-columns-container"
+                                [ngClass]="{
+                                    'group-columns-active': column.isOpen
+                                }"
+                            >
+                                <div class="group-columns-title">
+                                    <div class="checkbox">
+                                        <input
+                                            [checked]="column.areAllActive"
+                                            (click)="onToaggleAllInGroup(i)"
+                                            class="columns-options-checkbox"
+                                            id="checkbox{{ i }}"
+                                            type="checkbox"
+                                        />
+                                        <label
+                                            [ngClass]="{
+                                                'some-selected':
+                                                    column.areSomeSelected
+                                            }"
+                                            class="columns-options-label"
+                                            for="checkbox{{ i }}"
+                                        ></label>
+                                    </div>
+
+                                    <div
+                                        class="column-text selectable-text"
+                                        (click)="openColumnsGroupDropdown(i)"
+                                    >
+                                        {{ column.optionsGroupName }}
+                                    </div>
+
+                                    <div
+                                        class="group-columns-arrow"
+                                        (click)="openColumnsGroupDropdown(i)"
+                                    >
+                                        <svg-icon
+                                            [svgStyle]="{
+                                                'width.px': 7.18,
+                                                'height.px': 12.66
+                                            }"
+                                            [src]="
+                                                '../../../../../../assets/svg/truckassist-table/toolbar-group-dropdown-arrow.svg'
+                                            "
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+
+                                <div class="group-columns">
+                                    <ng-container
+                                        *ngFor="
+                                            let columnGroup of column.group;
+                                            let j = index
+                                        "
+                                    >
+                                        <div
+                                            class="group-column"
+                                            (click)="
+                                                onToaggleGroupColumn(
+                                                    columnGroup,
+                                                    j
+                                                )
+                                            "
+                                        >
+                                            <ng-container
+                                                *ngIf="!columnGroup.isPined"
+                                            >
+                                                <div class="checkbox">
+                                                    <input
+                                                        [checked]="
+                                                            !columnGroup.hidden
+                                                        "
+                                                        class="columns-options-checkbox"
+                                                        id="checkbox{{
+                                                            columnGroup.groupColumnTitle +
+                                                                j
+                                                        }}"
+                                                        type="checkbox"
+                                                    />
+                                                    <label
+                                                        class="columns-options-label"
+                                                        for="checkbox{{
+                                                            columnGroup.groupColumnTitle +
+                                                                j
+                                                        }}"
+                                                    ></label>
+                                                </div>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="columnGroup.isPined"
+                                            >
+                                                <div class="not-allowed-action">
+                                                    <svg-icon
+                                                        [svgStyle]="{
+                                                            'width.px': 14,
+                                                            'height.px': 14
+                                                        }"
+                                                        [src]="
+                                                            'assets/svg/truckassist-table/user-owner-icon.svg'
+                                                        "
+                                                    ></svg-icon>
+                                                </div>
+                                            </ng-container>
+
+                                            <div
+                                                class="column-text"
+                                                [ngClass]="{
+                                                    'selectable-text':
+                                                        !columnGroup.isPined
+                                                }"
+                                            >
+                                                {{
+                                                    columnGroup.groupColumnTitle
+                                                }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
                 </div>
             </div>
         </ng-container>

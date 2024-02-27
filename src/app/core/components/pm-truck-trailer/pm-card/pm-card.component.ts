@@ -37,7 +37,7 @@ export class PmCardComponent {
     public isCardFlippedCheckInCards: number[] = [];
 
     private destroy$ = new Subject<void>();
-    public allCardsFlipp: boolean = false;
+    public isAllCardsFlipp: boolean = false;
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -49,7 +49,7 @@ export class PmCardComponent {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.allCardsFlipp = res;
+                this.isAllCardsFlipp = res;
             });
     }
 

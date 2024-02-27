@@ -47,7 +47,7 @@ export class CustomerCardComponent {
 
     public valueByStringPathInstance = new ValueByStringPath();
 
-    public allCardsFlipp: boolean = false;
+    public isAllCardsFlipp: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -63,7 +63,7 @@ export class CustomerCardComponent {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.allCardsFlipp = res;
+                this.isAllCardsFlipp = res;
             });
     }
 
