@@ -79,7 +79,7 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
-import { SettingsModalConstants } from '../utils/constants/settings-modal.constants';
+import { SettingsModalConstants } from '../state/utils/constants/settings-modal.constants';
 
 // models
 import {
@@ -353,7 +353,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             autoInvoicing: [false],
             preferredLoadType: ['FTL'],
             fleetType: ['Solo'],
-            hazmat: [false],
+            hazMat: [false],
             customerPayTerm: [
                 null,
                 [daysValidRegex, ...customerPayTermValidation],
@@ -368,9 +368,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 12,
                 [Validators.required, monthsValidRegex],
             ],
-            shareDriverMiles: [true],
-            shareDriverComission: [true],
-            shareDriverFlatRate: [false],
+            driverMiles: [true],
+            driverComission: [true],
+            driverFlatRate: [false],
             //------------------ Payroll Tab
             useACHPayout: [true],
             // Driver & Owner
@@ -537,7 +537,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Department FormArray
     public get departmentContacts(): UntypedFormArray {
         return this.companyForm.get('departmentContacts') as UntypedFormArray;
     }
@@ -626,7 +625,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    // bankAccounts FormArray
     public get bankAccounts(): UntypedFormArray {
         return this.companyForm.get('bankAccounts') as UntypedFormArray;
     }
@@ -652,9 +650,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public addBankAccount(event: { check: boolean; action: string }) {
-        if (event.check) {
-            this.bankAccounts.push(this.createBankAccount());
-        }
+        if (event.check) this.bankAccounts.push(this.createBankAccount());
     }
 
     public removeBankAccount(id: number) {
@@ -681,7 +677,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    // Bank Card Form Array
     public get bankCards(): UntypedFormArray {
         return this.companyForm.get('bankCards') as UntypedFormArray;
     }
@@ -726,7 +721,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropdown(event: any, action: string) {
-        console.log('event', event);
         switch (action) {
             case 'timezone':
                 this.selectedTimeZone = event;
@@ -875,7 +869,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         return selectedEndingIn;
     }
 
-    private validateMiles() {
+    private validateMiles(): void {
         this.companyForm
             .get('soloEmptyMile')
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -997,12 +991,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public onFleetTypeCheck(event: any) {
         this.fleetTypeTabs = this.fleetTypeTabs.map((item) => {
-            if (item.id === event.id) {
+            if (item.id === event.id)
                 this.companyForm.get('fleetType').patchValue(item.name);
-            }
-            if (item.id === event.id) {
-                this.selectedFleetType = item.name;
-            }
+
+            if (item.id === event.id) this.selectedFleetType = item.name;
+
             return {
                 ...item,
                 checked: item.id === event.id,
@@ -1103,75 +1096,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             departmentContacts,
             bankAccounts,
             bankCards,
-            //----- Exclude Properties From Company Division -----
-            companyType,
-            dateOfIncorporation,
-            prefix,
-            starting,
-            suffix,
-            customerPayTerm,
-            customerCredit,
-            mvrMonths,
-            trailerInspectionMonths,
-            truckInspectionMonths,
-            preferredLoadType,
-            autoInvoicing,
-            factorByDefault,
-            //----- Whole Payroll tab
-            useACHPayout,
-            // Driver & Owner
-            driveOwnerPayPeriod,
-            driverOwnerEndingIn,
-
-            soloEmptyMile,
-            soloLoadedMile,
-            soloPerStop,
-            soloPerLoad,
-
-            teamEmptyMile,
-            teamLoadedMile,
-            teamPerStop,
-            teamPerLoad,
-
-            loadedAndEmptySameRate,
-
-            driverSoloDefaultCommission,
-            driverTeamDefaultCommission,
-            ownerDefaultCommission,
-            // Accounting
-            accountingPayPeriod,
-            accountingEndingIn,
-            accountingDefaultBase,
-            // Company Owner
-            companyOwnerPayPeriod,
-            companyOwnerEndingIn,
-            companyOwnerDefaultBase,
-            // Dispatch
-            dispatchPayPeriod,
-            dispatchEndingIn,
-            dispatchDefaultBase,
-            dispatchDefaultCommission,
-            // Manager
-            managerPayPeriod,
-            managerEndingIn,
-            managerDefaultBase,
-            managerDefaultCommission,
-            // Recruiting
-            recruitingPayPeriod,
-            recruitingEndingIn,
-            recruitingDefaultBase,
-            // Repair
-            repairPayPeriod,
-            repairEndingIn,
-            repairDefaultBase,
-            // Safety
-            safetyPayPeriod,
-            safetyEndingIn,
-            safetyDefaultBase,
-            // Other
-            otherPayPeriod,
-            otherEndingIn,
-            otherDefaultBase,
             ...form
         } = this.companyForm.value;
 
@@ -1339,71 +1263,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             departmentContacts,
             bankAccounts,
             bankCards,
-            //----- Exclude Properties From Company Division -----
-            companyType,
-            dateOfIncorporation,
-            prefix,
-            starting,
-            suffix,
-            customerPayTerm,
-            customerCredit,
-            mvrMonths,
-            trailerInspectionMonths,
-            truckInspectionMonths,
-            preferredLoadType,
-            autoInvoicing,
-            factorByDefault,
-            //----- Whole Payroll tab
-            useACHPayout,
-            // Driver & Owner
-            driveOwnerPayPeriod,
-            driverOwnerEndingIn,
-            soloEmptyMile,
-            soloLoadedMile,
-            soloPerStop,
-            soloPerLoad,
-            teamEmptyMile,
-            teamLoadedMile,
-            teamPerStop,
-            teamPerLoad,
-            loadedAndEmptySameRate,
-            driverSoloDefaultCommission,
-            driverTeamDefaultCommission,
-            ownerDefaultCommission,
-            // Accounting
-            accountingPayPeriod,
-            accountingEndingIn,
-            accountingDefaultBase,
-            // Company Owner
-            companyOwnerPayPeriod,
-            companyOwnerEndingIn,
-            companyOwnerDefaultBase,
-            // Dispatch
-            dispatchPayPeriod,
-            dispatchEndingIn,
-            dispatchDefaultBase,
-            dispatchDefaultCommission,
-            // Manager
-            managerPayPeriod,
-            managerEndingIn,
-            managerDefaultBase,
-            managerDefaultCommission,
-            // Recruiting
-            recruitingPayPeriod,
-            recruitingEndingIn,
-            recruitingDefaultBase,
-            // Repair
-            repairPayPeriod,
-            repairEndingIn,
-            repairDefaultBase,
-            // Safety
-            safetyPayPeriod,
-            safetyEndingIn,
-            safetyDefaultBase,
-            // Other
-            otherPayPeriod,
-            otherEndingIn,
-            otherDefaultBase,
             ...form
         } = this.companyForm.value;
 
@@ -1487,15 +1346,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public updateCompany() {
         const {
             addressUnit,
-            email,
-            ein,
-            name,
             dateOfIncorporation,
             departmentContacts,
             bankAccounts,
             bankCards,
-            driveOwnerPayPeriod,
-            driverOwnerEndingIn,
             soloEmptyMile,
             soloLoadedMile,
             soloPerStop,
@@ -1512,38 +1366,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ownerDefaultCommission,
             suffix,
             // Accounting
-            accountingPayPeriod,
-            accountingEndingIn,
             accountingDefaultBase,
             // Company Owner
-            companyOwnerPayPeriod,
-            companyOwnerEndingIn,
             companyOwnerDefaultBase,
             // Dispatch
-            dispatchPayPeriod,
-            dispatchEndingIn,
             dispatchDefaultBase,
             dispatchDefaultCommission,
             // Manager
-            managerPayPeriod,
-            managerEndingIn,
             managerDefaultBase,
             managerDefaultCommission,
             // Recruiting
-            recruitingPayPeriod,
-            recruitingEndingIn,
             recruitingDefaultBase,
             // Repair
-            repairPayPeriod,
-            repairEndingIn,
             repairDefaultBase,
             // Safety
-            safetyPayPeriod,
-            safetyEndingIn,
             safetyDefaultBase,
             // Other
-            otherPayPeriod,
-            otherEndingIn,
             otherDefaultBase,
             ...form
         } = this.companyForm.value;
@@ -1808,6 +1646,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,
             factorByDefault: data.additionalInfo.factorByDefault,
+            hazMat: data.hazMat,
+            driverMiles: data.driverMiles,
+            driverComission: data.driverComission,
+            driverFlatRate: data.driverFlatRate,
             customerPayTerm: data.additionalInfo.customerPayTerm,
             customerCredit: data.additionalInfo.customerCredit,
             mvrMonths: data.additionalInfo.mvrMonths,

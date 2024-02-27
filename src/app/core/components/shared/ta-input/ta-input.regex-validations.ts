@@ -104,6 +104,7 @@ export const vehicleUnitValidation = [
 export const vinNumberValidation = [
     Validators.minLength(13),
     Validators.maxLength(17),
+    Validators.pattern(/^(?:.{13}|.{17})$/),
 ];
 
 //---------------- Truck Trailer Model

@@ -920,7 +920,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 .subscribe((value) => {
                     this.skipTruckVinDecocerEdit = false;
 
-                    if (value?.length > 13 && value?.length < 17) {
+                    if (!(value?.length === 13 || value?.length === 17)) {
                         this.ownerInfoForm
                             .get('truckVin')
                             .setErrors({ invalid: true });
