@@ -133,6 +133,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.fuelForm = this.formBuilder.group({
             efsAccount: [null],
             fuelCard: [null],
+            invoice: [null, Validators.required],
             truckId: [null, Validators.required],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
