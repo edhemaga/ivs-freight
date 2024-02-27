@@ -23,7 +23,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
 import { SendDataCard } from '../model/card-table-data.model';
 
 // enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({
     selector: 'app-ta-like-dislike',

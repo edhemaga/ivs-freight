@@ -575,74 +575,64 @@
                 </button>
 
                 <!-- Void CDL -->
-
-                <button
-                    *ngIf="confirmationData?.subType === 'cdl void'"
-                    (click)="onAction('cdl-void')"
-                    class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
-                    type="button"
-                >
-                    Void Current CDL
-                </button>
-
-                <!-- DNU -->
-
-                <button
-                    *ngIf="confirmationData?.subType === 'dnu'"
-                    (click)="onAction('dnu')"
-                    class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
-                    type="button"
-                >
-                    {{
-                        confirmationData?.subTypeStatus
-                            ?.substring(0, 1)
-                            .toUpperCase() +
-                            confirmationData?.subTypeStatus?.substring(1)
-                    }}
-                    {{
-                        confirmationData?.subTypeStatus === 'move'
-                            ? 'to'
-                            : 'from'
-                    }}
-                    DNU
-                </button>
+                <ng-container *ngIf="confirmationData?.subType === 'cdl void'">
+                    <button
+                        (click)="onAction('cdl-void')"
+                        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                        type="button"
+                    >
+                        Void Current CDL
+                    </button>
+                </ng-container>
 
                 <!-- DNU -->
+                <ng-container *ngIf="confirmationData?.subType === 'dnu'">
+                    <button
+                        (click)="onAction('dnu')"
+                        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                        type="button"
+                    >
+                        Yes
+                    </button>
+                </ng-container>
 
-                <button
-                    *ngIf="confirmationData?.subType === 'ban list'"
-                    (click)="onAction('bfb')"
-                    class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
-                    type="button"
-                >
-                    {{
-                        confirmationData?.subTypeStatus
-                            ?.substring(0, 1)
-                            .toUpperCase() +
-                            confirmationData?.subTypeStatus?.substring(1)
-                    }}
-                    {{
-                        confirmationData?.subTypeStatus === 'move'
-                            ? 'to'
-                            : 'from'
-                    }}
-                    Ban List
-                </button>
+                <!-- DNU -->
+                <ng-container *ngIf="confirmationData?.subType === 'ban list'">
+                    <button
+                        (click)="onAction('bfb')"
+                        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                        type="button"
+                    >
+                        Yes
+                    </button>
+                </ng-container>
 
                 <!-- Favourite -->
+                <ng-container *ngIf="confirmationData?.subType === 'favorite'">
+                    <button
+                        (click)="onAction('favorite')"
+                        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                        type="button"
+                    >
+                        {{
+                            confirmationData?.subTypeStatus === 'move'
+                                ? 'Mark as Favorite'
+                                : 'Remove from Favorite'
+                        }}
+                    </button>
+                </ng-container>
 
-                <button
-                    *ngIf="confirmationData?.subType === 'favorite'"
-                    (click)="onAction('favorite')"
-                    class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
-                    type="button"
+                <ng-container
+                    *ngIf="confirmationData?.subTypeStatus === 'business'"
                 >
-                    {{
-                        confirmationData?.subTypeStatus === 'move'
-                            ? 'Mark as Favorite'
-                            : 'Remove from Favorite'
-                    }}
-                </button>
+                    <button
+                        (click)="onAction('business')"
+                        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                        type="button"
+                    >
+                        Yes
+                    </button>
+                </ng-container>
             </div>
 
             <!-- End Confirmation Modal -->

@@ -19,7 +19,7 @@ import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
 import { FilterClassPipe } from 'src/app/core/pipes/filterClass.pipe';
 
 //Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({
     selector: 'app-special-filter',
