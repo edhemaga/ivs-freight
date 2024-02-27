@@ -13,12 +13,12 @@ import { Router } from '@angular/router';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-
-// Services
 import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+
+// Services
 import { RepairTService } from '../state/repair.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
@@ -38,7 +38,7 @@ import {
     RepairBackFilterModal,
     ShopBackFilterModal,
     ShopbBckFilterQueryInterface,
-} from '../repair.modal';
+} from '../../../model/repair.model';
 import {
     DataForCardsAndTables,
     TableColumnConfig,

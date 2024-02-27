@@ -277,7 +277,7 @@ export class BrokerTService implements OnDestroy {
     }
 
     // Change Ban Status
-    public changeBanStatus(brokerId: number) {
+    public changeBanStatus(brokerId: number): Observable<BrokerResponse> {
         return this.brokerService.apiBrokerBanIdPut(brokerId, 'response').pipe(
             switchMap(() => this.getBrokerById(brokerId)),
             tap((broker: BrokerResponse) => {
@@ -297,7 +297,7 @@ export class BrokerTService implements OnDestroy {
     }
 
     // Change Dnu Status
-    public changeDnuStatus(brokerId: number): Observable<any> {
+    public changeDnuStatus(brokerId: number): Observable<BrokerResponse> {
         return this.brokerService.apiBrokerDnuIdPut(brokerId, 'response').pipe(
             switchMap(() => this.getBrokerById(brokerId)),
             tap((broker: BrokerResponse) => {
@@ -418,7 +418,7 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
-    public changeBrokerStatus(brokerId: number): Observable<any> {
+    public changeBrokerStatus(brokerId: number): Observable<BrokerResponse> {
         return this.brokerService.apiBrokerStatusIdPut(brokerId).pipe(
             switchMap(() => this.getBrokerById(brokerId)),
             tap((broker: BrokerResponse) => {

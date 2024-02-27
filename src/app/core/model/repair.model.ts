@@ -8,7 +8,7 @@ import {
     TrailerMinimalResponse,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
-import { DropdownItem } from '../shared/model/card-table-data.model';
+import { DropdownItem } from '../components/shared/model/card-table-data.model';
 
 export interface BodyResponseRepair {
     data?: RepairBodyResponse;

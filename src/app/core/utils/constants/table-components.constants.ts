@@ -2,7 +2,7 @@
 import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
-} from '../../components/repair/repair.modal';
+} from '../../model/repair.model';
 import {
     FilterOptionBroker,
     FilterOptionshipper,

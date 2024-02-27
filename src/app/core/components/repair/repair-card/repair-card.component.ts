@@ -12,18 +12,23 @@ import {
     ViewChild,
     ViewChildren,
 } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+//Models
 import { CardRows } from '../../shared/model/cardData';
 import {
     CardDetails,
     SendDataCard,
 } from '../../shared/model/card-table-data.model';
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
-// Helpers
+//Sevices
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+//Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+// Helpers
 import { CardArrayHelper } from 'src/app/core/helpers/card-array-helper';
+import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 @Component({
     selector: 'app-repair-card',

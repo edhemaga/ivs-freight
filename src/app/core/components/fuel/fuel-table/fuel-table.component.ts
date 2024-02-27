@@ -36,6 +36,7 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
 import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
 import { TableColumnConfig } from '../../shared/model/table-components/all-tables.modal';
+import { DropdownItem } from '../../shared/model/card-table-data.model';
 
 //States
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
@@ -577,7 +578,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    private getDropdownOwnerContent() {
+    private getDropdownOwnerContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_FUEL_CONTENT;
     }
 

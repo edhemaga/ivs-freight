@@ -1,6 +1,10 @@
+//Models
+import { DropdownItem } from '../components/shared/model/card-table-data.model';
+
+//Enums
 import { ConstantStringTableComponentsEnum } from '../utils/enums/table-components.enum';
 
-export function getDropdownShipperContent(data) {
+export function getDropdownShipperContent(data): DropdownItem[] {
     return [
         {
             title: ConstantStringTableComponentsEnum.EDIT_2,
@@ -83,7 +87,7 @@ export function getDropdownShipperContent(data) {
     ];
 }
 
-export function getDropdownBrokerContent(data) {
+export function getDropdownBrokerContent(data): DropdownItem[] {
     return [
         {
             title: ConstantStringTableComponentsEnum.EDIT_2,
@@ -243,7 +247,7 @@ export function getDropdownBrokerContent(data) {
     ];
 }
 
-export function getDropdownOwnerContent(data) {
+export function getDropdownOwnerContent(data): DropdownItem[] {
     return [
         {
             title: ConstantStringTableComponentsEnum.EDIT_2,

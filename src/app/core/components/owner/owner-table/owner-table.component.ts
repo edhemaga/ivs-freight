@@ -4,6 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Components
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Models
 import { GetOwnerListResponse } from 'appcoretruckassist';
@@ -13,14 +14,24 @@ import {
 } from '../../../utils/methods.globals';
 import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
 import {
+    DropdownItem,
     GridColumn,
     ToolbarActions,
 } from '../../shared/model/card-table-data.model';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+import {
+    MapOwnerData,
+    OwnerBackFilterFilter,
+    OwnerBodyResponse,
+} from '../owner.modal';
+import { CardRows } from '../../shared/model/cardData';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../state/owner.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
@@ -31,21 +42,15 @@ import {
     OwnerInactiveStore,
 } from '../state/owner-inactive-state/owner-inactive.store';
 
+//Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
 // Pipes
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
+//Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
-import {
-    MapOwnerData,
-    OwnerBackFilterFilter,
-    OwnerBodyResponse,
-} from '../owner.modal';
 import { DisplayOwnerConfiguration } from '../owner-card-data';
-import { CardRows } from '../../shared/model/cardData';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 //helpers
 import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
@@ -655,7 +660,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    private getDropdownOwnerContent() {
+    private getDropdownOwnerContent(): DropdownItem[] {
         return getDropdownOwnerContent(this.selectedTab);
     }
 
@@ -787,7 +792,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: OwnerBodyResponse | any): void {
+    public onTableBodyActions(event: OwnerBodyResponse): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.active =
                 this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
