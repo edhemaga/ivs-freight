@@ -369,6 +369,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
+            case 'business': {
+                this.confirmationAction.emit(this.confirmationData);
+                break;
+            }
             case 'convert-to-template': {
                 this.action.emit({ action: action, bool: false });
                 break;

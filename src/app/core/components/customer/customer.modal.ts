@@ -6,7 +6,7 @@ import {
     ShipperResponse,
     TimeOnly,
 } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enum';
 import { DropdownItem } from '../shared/model/card-table-data.model';
 
 export interface ViewDataResponse {

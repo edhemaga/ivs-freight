@@ -11,7 +11,7 @@ import {
     RatingReviewService,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
@@ -277,58 +277,40 @@ export class BrokerTService implements OnDestroy {
     }
 
     // Change Ban Status
-    public changeBanStatus(brokerId: number): Observable<any> {
+    public changeBanStatus(brokerId: number): Observable<BrokerResponse> {
         return this.brokerService.apiBrokerBanIdPut(brokerId, 'response').pipe(
-            tap(() => {
-                const subBroker = this.getBrokerById(brokerId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (broker: BrokerResponse | any) => {
-                            this.brokerStore.remove(
-                                ({ id }) => id === brokerId
-                            );
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === brokerId
-                            );
-                            this.brokerStore.add(broker);
-                            this.brokerMinimalStore.add(broker);
-                            this.bls.update(broker.id, { ban: broker.ban });
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'broker',
-                                data: broker,
-                                id: broker.id,
-                            });
-
-                            subBroker.unsubscribe();
-                        },
-                    });
+            switchMap(() => this.getBrokerById(brokerId)),
+            tap((broker: BrokerResponse) => {
+                this.brokerStore.remove(({ id }) => id === brokerId);
+                this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+                this.brokerStore.add(broker);
+                this.brokerMinimalStore.add(broker);
+                this.bls.update(broker.id, { ban: broker.ban });
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'broker',
+                    data: broker,
+                    id: broker.id,
+                });
             })
         );
     }
 
     // Change Dnu Status
-    public changeDnuStatus(brokerId: number): Observable<any> {
+    public changeDnuStatus(brokerId: number): Observable<BrokerResponse> {
         return this.brokerService.apiBrokerDnuIdPut(brokerId, 'response').pipe(
-            tap(() => {
-                const subBroker = this.getBrokerById(brokerId).subscribe({
-                    next: (broker: BrokerResponse | any) => {
-                        this.brokerStore.remove(({ id }) => id === brokerId);
-                        this.brokerMinimalStore.remove(
-                            ({ id }) => id === brokerId
-                        );
-                        this.brokerStore.add(broker);
-                        this.brokerMinimalStore.add(broker);
-                        this.bls.update(broker.id, { dnu: broker.dnu });
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: 'broker',
-                            data: broker,
-                            id: broker.id,
-                        });
-
-                        subBroker.unsubscribe();
-                    },
+            switchMap(() => this.getBrokerById(brokerId)),
+            tap((broker: BrokerResponse) => {
+                this.brokerStore.remove(({ id }) => id === brokerId);
+                this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+                this.brokerStore.add(broker);
+                this.brokerMinimalStore.add(broker);
+                this.bls.update(broker.id, { dnu: broker.dnu });
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'broker',
+                    data: broker,
+                    id: broker.id,
                 });
             })
         );
@@ -390,7 +372,7 @@ export class BrokerTService implements OnDestroy {
         this.brokerItemStore.update(brokerData.id, {
             reviews: brokerData.reviews,
         });
-        
+
         this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
 
         this.tableService.sendActionAnimation({
@@ -436,33 +418,23 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
-    public changeBrokerStatus(brokerId: any){
-        return this.brokerService.apiBrokerStatusIdPut(brokerId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    const subBroker = this.getBrokerById(brokerId).subscribe({
-                        next: (broker: BrokerResponse | any) => {
-                            this.brokerStore.remove(({ id }) => id === brokerId);
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === brokerId
-                            );
-                            this.brokerStore.add(broker);
-                            this.brokerMinimalStore.add(broker);
-                            this.bls.replace(broker.id, broker);
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'broker',
-                                data: broker,
-                                id: broker.id,
-                            });
-    
-                            subBroker.unsubscribe();
-                        },
-                    });
-                }
-                
-            });
+    public changeBrokerStatus(brokerId: number): Observable<BrokerResponse> {
+        return this.brokerService.apiBrokerStatusIdPut(brokerId).pipe(
+            switchMap(() => this.getBrokerById(brokerId)),
+            tap((broker: BrokerResponse) => {
+                this.brokerStore.remove(({ id }) => id === brokerId);
+                this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+                this.brokerStore.add(broker);
+                this.brokerMinimalStore.add(broker);
+                this.bls.update(broker.id, { dnu: broker.dnu });
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'broker',
+                    data: broker,
+                    id: broker.id,
+                });
+            })
+        );
     }
 
     ngOnDestroy(): void {

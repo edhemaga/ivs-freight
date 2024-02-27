@@ -24,7 +24,7 @@ import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { DriverModal } from '../../shared/model/table-components/driver-modal';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -126,6 +126,7 @@ export class DriverTService {
                             localStorage.setItem(
                                 ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                                 JSON.stringify({
+                                    applicant: driverCount.applicant,
                                     active: driverCount.active,
                                     inactive: driverCount.inactive,
                                 })
@@ -184,6 +185,7 @@ export class DriverTService {
                 localStorage.setItem(
                     ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                     JSON.stringify({
+                        applicant: driverCount.applicant,
                         active: driverCount.active,
                         inactive: driverCount.inactive,
                     })
@@ -244,6 +246,7 @@ export class DriverTService {
                 localStorage.setItem(
                     ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                     JSON.stringify({
+                        applicant: driverCount.applicant,
                         active: driverCount.active,
                         inactive: driverCount.inactive,
                     })
@@ -454,6 +457,7 @@ export class DriverTService {
                     localStorage.setItem(
                         ConstantStringTableComponentsEnum.DRIVER_TABLE_COUNT,
                         JSON.stringify({
+                            applicant: driverCount.applicant,
                             active: driverCount.active,
                             inactive: driverCount.inactive,
                         })

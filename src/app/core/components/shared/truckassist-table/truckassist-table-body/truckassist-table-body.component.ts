@@ -69,7 +69,7 @@ import {
 } from '../../model/tableBody';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Titles()
 @Component({

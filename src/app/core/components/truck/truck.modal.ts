@@ -1,5 +1,5 @@
 import { TruckResponse } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enum';
 
 export interface BodyResponseTruck {
     data?: TruckResponse;
