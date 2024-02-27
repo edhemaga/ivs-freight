@@ -49,7 +49,7 @@ export class TaNgxSliderComponent {
     @Output() onUserHighValueChange: EventEmitter<ChangeContext> =
         new EventEmitter<ChangeContext>();
 
-    @ViewChild('slider', { static: false }) slider: any; //leave any for now
+    @ViewChild('slider') slider: any; //leave any for now
 
     ngAfterViewInit(): void {
         setTimeout(() => {
