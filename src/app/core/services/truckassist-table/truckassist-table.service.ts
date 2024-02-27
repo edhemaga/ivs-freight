@@ -57,6 +57,11 @@ export class TruckassistTableService {
     /* Showing Scroll */
     private showingScroll = new BehaviorSubject<boolean>(null);
     public currentShowingScroll = this.showingScroll.asObservable();
+    /* Reset Columns */
+
+    // Flip cards
+    private flipCards = new BehaviorSubject<boolean>(false);
+    public isFlipedAllCards = this.flipCards.asObservable();
 
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
@@ -117,6 +122,10 @@ export class TruckassistTableService {
         return this.tableColumnsConfigService.apiTableconfigTableTypeGet(
             tableType
         );
+    }
+
+    public sendAllCardsFlipped(flipCards: boolean): void {
+        this.flipCards.next(flipCards);
     }
 
     // ------------------------------ Table Custom Service Methods --------------------------------
