@@ -7,6 +7,7 @@ import {
     ReactiveFormsModule,
     UntypedFormBuilder,
 } from '@angular/forms';
+import { TaInputRadiobuttonsComponent } from '../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @Component({
     selector: 'app-load-cards-modal',
@@ -15,28 +16,25 @@ import {
     standalone: true,
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
-    imports: [TaModalComponent, ReactiveFormsModule],
+    imports: [
+        TaModalComponent,
+        ReactiveFormsModule,
+        TaInputRadiobuttonsComponent,
+    ],
 })
 export class LoadCardsModalComponent implements OnInit {
-    // radioButtonsForm: FormGroup;
+    public radioButtonsForm: FormGroup;
 
-    // public buttons = [
-    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
-    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
-    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
-    //     { value: 'alcoholTestYes', name: 'alcoholTestYes' },
-    // ];
-
-    // constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(private formBuilder: UntypedFormBuilder) {}
 
     ngOnInit(): void {
-        //     this.createForm();
-        //     console.log(this.radioButtonsForm.value);
+        this.createForm();
+        console.log(this.radioButtonsForm.value);
     }
 
-    // createForm(): any {
-    //     this.radioButtonsForm = this.formBuilder.group({
-    //         option: [4],
-    //     });
-    // }
+    createForm(): any {
+        this.radioButtonsForm = this.formBuilder.group({
+            option: [4],
+        });
+    }
 }
