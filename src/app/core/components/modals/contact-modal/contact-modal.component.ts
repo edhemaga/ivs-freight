@@ -1,8 +1,4 @@
-import {
-    addressUnitValidation,
-    addressValidation,
-    departmentValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
     UntypedFormBuilder,
@@ -13,28 +9,15 @@ import {
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import {
-    AddressEntity,
-    CompanyContactModalResponse,
-    CompanyContactResponse,
-    ContactColorResponse,
-    CreateCompanyContactCommand,
-    CreateResponse,
-    UpdateCompanyContactCommand,
-} from 'appcoretruckassist';
-import {
-    phoneFaxRegex,
-    fullNameValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { ContactTService } from '../../contacts/state/contact.service';
+
 import { Subject, switchMap, takeUntil } from 'rxjs';
+
+// modules
 import Croppie from 'croppie';
-import { FormService } from '../../../services/form/form.service';
-import { phoneExtension } from '../../shared/ta-input/ta-input.regex-validations';
-import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
@@ -46,8 +29,35 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// validations
+import {
+    addressUnitValidation,
+    addressValidation,
+    departmentValidation,
+    phoneFaxRegex,
+    fullNameValidation,
+    phoneExtension,
+} from '../../shared/ta-input/ta-input.regex-validations';
+
+// services
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ContactTService } from '../../contacts/state/contact.service';
+import { FormService } from '../../../services/form/form.service';
+
+// models
+import {
+    AddressEntity,
+    CompanyContactModalResponse,
+    CompanyContactResponse,
+    ContactColorResponse,
+    CreateCompanyContactCommand,
+    CreateResponse,
+    UpdateCompanyContactCommand,
+} from 'appcoretruckassist';
+import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { EditData } from '../load-modal/state/models/load-modal-model/edit-data.model';
 
 @Component({
     selector: 'app-contact-modal',
@@ -56,14 +66,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbModule,
 
-        // Component
+        // components
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
@@ -78,9 +88,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+    @Input() editData: EditData;
+
+    private destroy$ = new Subject<void>();
 
     public contactForm: UntypedFormGroup;
+    public isFormDirty: boolean;
 
     public sharedDepartments: any[] = [];
     public selectedSharedDepartment: any = null;
@@ -92,8 +105,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public selectedContactColor: any;
 
     public selectedAddress: any = null;
-
-    public isFormDirty: boolean;
 
     public labelsContactPhones: any[] = [];
     public isContactPhoneExtExist: boolean[] = [];
@@ -129,8 +140,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
-    private destroy$ = new Subject<void>();
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -141,9 +150,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
         this.getCompanyContactModal();
+
         this.companyContactColorLabels();
-        this.followSharedCheckbox();
+
+        /*  this.followSharedCheckbox(); */
     }
 
     private createForm() {
@@ -166,10 +178,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case 'close':
                 break;
-            }
-            case 'save and add new': {
+            case 'save and add new':
                 if (this.contactForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.contactForm);
                     return;
@@ -181,9 +192,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 this.addNewAfterSave = true;
+
                 break;
-            }
-            case 'save': {
+            case 'save':
                 if (this.contactForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.contactForm);
                     return;
@@ -203,9 +214,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+
                 break;
-            }
-            case 'delete': {
+            case 'delete':
                 if (this.editData) {
                     this.deleteCompanyContactById(this.editData.id);
                     this.modalService.setModalSpinner({
@@ -214,11 +225,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -355,23 +365,21 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.contactService
             .getCompanyContactModal()
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: CompanyContactModalResponse) => {
-                    this.contactLabels = res.labels.map((item) => {
-                        return { ...item, dropLabel: true };
-                    });
-                    this.sharedDepartments = res.departments;
-                    this.labelsContactEmails = res.contactEmailType;
-                    this.labelsContactPhones = res.contactPhoneType;
+            .subscribe((res: CompanyContactModalResponse) => {
+                this.contactLabels = res.labels.map((item) => {
+                    return { ...item, dropLabel: true };
+                });
 
-                    if (this.editData) {
-                        this.disableCardAnimation = true;
-                        this.getCompanyContactById(this.editData.id);
-                    } else {
-                        this.startFormChanges();
-                    }
-                },
-                error: () => {},
+                this.sharedDepartments = res.departments;
+                this.labelsContactEmails = res.contactEmailType;
+                this.labelsContactPhones = res.contactPhoneType;
+
+                if (this.editData) {
+                    this.disableCardAnimation = true;
+                    this.getCompanyContactById(this.editData.id);
+                } else {
+                    this.startFormChanges();
+                }
             });
     }
 
@@ -392,7 +400,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                             ? res.address.addressUnit
                             : null,
                         shared: res.shared,
-                        sharedLabelId: null, // TODO: Ceka se BACK
+                        sharedLabelId: 'Recruitment', // TODO: Ceka se BACK
                         note: res.note,
                     });
 
@@ -433,7 +441,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.selectedContactLabel = res.companyContactLabel;
 
                     this.selectedAddress = res.address;
-                    // TODO: shared departments label selected
+                    // TODO: Ceka se BACK
+                    this.selectedSharedDepartment = {
+                        id: 3,
+                        name: 'Recruitment',
+                        count: 0,
+                        companyUsers: [],
+                    };
+
                     setTimeout(() => {
                         this.startFormChanges();
                         this.disableCardAnimation = false;
@@ -444,7 +459,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
 
     private addCompanyContact(): void {
-        const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
+        const { addressUnit, ...form } = this.contactForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {
@@ -461,6 +476,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            companyContactUsers: [
+                {
+                    departmentId: this.selectedSharedDepartment.id,
+                    companyUserIds: [],
+                },
+            ],
         };
 
         this.contactService
@@ -510,7 +531,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
 
     private updateCompanyContact(id: number): void {
-        const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
+        const { addressUnit, ...form } = this.contactForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {
@@ -528,6 +549,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            companyContactUsers: [
+                {
+                    departmentId: this.selectedSharedDepartment.id,
+                    companyUserIds: [],
+                },
+            ],
         };
 
         this.contactService
@@ -577,6 +604,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         switch (action) {
             case 'departments': {
                 this.selectedSharedDepartment = event;
+
                 break;
             }
             case 'contact-email': {
