@@ -398,6 +398,7 @@
                             dropdownWidthClass: 'w-col-456'
                         }"
                         [options]="sharedDepartments"
+                        [activeItem]="selectedSharedDepartment"
                         (selectedItem)="onSelectDropdown($event, 'departments')"
                     ></app-ta-input-dropdown>
                 </div>
