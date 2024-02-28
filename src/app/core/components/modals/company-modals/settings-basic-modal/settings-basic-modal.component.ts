@@ -81,6 +81,9 @@ import {
 // constants
 import { SettingsModalConstants } from '../state/utils/constants/settings-modal.constants';
 
+// enums
+import { ConstantStringEnum } from '../state/enums/settings-modal.enum';
+
 // models
 import {
     AddressEntity,
@@ -243,86 +246,101 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.dropZoneConfig = SettingsModalConstants.DROPZONE_CONFIG;
     }
 
-    private checkForCompany() {
-        if (['new-division', 'edit-division'].includes(this.editData.type)) {
+    private checkForCompany(): void {
+        if (
+            [
+                ConstantStringEnum.NEW_DIVISION as string,
+                ConstantStringEnum.EDIT_DIVISION,
+            ].includes(this.editData.type)
+        ) {
             this.createDivisionForm();
 
-            if (this.editData.type === 'edit-division') {
+            if (this.editData.type === ConstantStringEnum.EDIT_DIVISION) {
                 const timeout = setTimeout(() => {
                     this.disableCardAnimation = true;
+
                     this.editCompanyDivision();
+
                     clearTimeout(timeout);
                 });
             }
         } else {
-            this.onPrefferedLoadCheck({ name: 'FTL' });
+            this.onPrefferedLoadCheck({ name: ConstantStringEnum.FTL });
             this.onFleetTypeCheck({ id: 1 });
             this.validateMiles();
             this.onSamePerMileCheck();
         }
 
-        if (this.editData.type === 'edit-company') {
+        if (this.editData.type === ConstantStringEnum.EDIT_COMPANY) {
             this.editCompany(this.editData.company);
+
             this.disableCardAnimation = true;
         }
 
-        if (this.editData?.type === 'payroll-tab') {
+        if (this.editData?.type === ConstantStringEnum.PAYROLL_TAB) {
             this.tabChange({ id: 3 });
-            this.disableCardAnimation = true;
             this.editCompany(this.editData.company);
+
+            this.disableCardAnimation = true;
         }
 
-        if (this.editData?.type === 'edit-company-first-login') {
+        if (
+            this.editData?.type === ConstantStringEnum.EDIT_COMPANY_FIRST_LOGIN
+        ) {
             this.isSetupCompany = true;
             this.disableCardAnimation = true;
 
             this.settingsCompanyService
                 .getCompany()
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (data: CompanyResponse) => {
-                        this.editCompany(data);
-                        this.editData.data = data;
-                    },
-                    error: () => {},
+                .subscribe((data: CompanyResponse) => {
+                    this.editCompany(data);
+
+                    this.editData.data = data;
                 });
         }
     }
 
-    private createDivisionForm() {
+    private createDivisionForm(): void {
         this.inputService.changeValidators(
-            this.companyForm.get('starting'),
+            this.companyForm.get(ConstantStringEnum.STARTING),
             false
         );
+
         this.inputService.changeValidators(
-            this.companyForm.get('usDot'),
+            this.companyForm.get(ConstantStringEnum.US_DOT),
             false
         );
+
         this.inputService.changeValidators(
-            this.companyForm.get('timeZone'),
+            this.companyForm.get(ConstantStringEnum.TIMEZONE),
             false
         );
+
         this.inputService.changeValidators(
-            this.companyForm.get('currency'),
+            this.companyForm.get(ConstantStringEnum.CURRENCY),
             false
         );
+
         this.inputService.changeValidators(
-            this.companyForm.get('mvrMonths'),
+            this.companyForm.get(ConstantStringEnum.MVR_MONTHS),
             false
         );
+
         this.inputService.changeValidators(
-            this.companyForm.get('truckInspectionMonths'),
+            this.companyForm.get(ConstantStringEnum.TRUCK_INSPECTION_MONTHS),
             false
         );
+
         this.inputService.changeValidators(
-            this.companyForm.get('trailerInspectionMonths'),
+            this.companyForm.get(ConstantStringEnum.TRAILER_INSPECTION_MONTHS),
             false
         );
     }
 
-    private createForm() {
+    private createForm(): void {
         this.companyForm = this.formBuilder.group({
-            //----------------- Basic Tab
+            // basic tab
             name: [null, Validators.required],
             usDot: [null, [Validators.required, ...usdotValidation]],
             ein: [null, einNumberRegex],
@@ -342,7 +360,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             companyType: [null],
             dateOfIncorporation: [null],
             logo: [null],
-            //------------------ Additional Tab
+            // additional tab
             departmentContacts: this.formBuilder.array([]),
             bankAccounts: this.formBuilder.array([]),
             bankCards: this.formBuilder.array([]),
@@ -351,8 +369,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             suffix: [null, suffixValidation],
             factorByDefault: [false],
             autoInvoicing: [false],
-            preferredLoadType: ['FTL'],
-            fleetType: ['Solo'],
+            preferredLoadType: [ConstantStringEnum.FTL],
+            fleetType: [ConstantStringEnum.SOLO],
             hazMat: [false],
             customerPayTerm: [
                 null,
@@ -371,11 +389,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             driverMiles: [true],
             driverComission: [true],
             driverFlatRate: [false],
-            //------------------ Payroll Tab
+            // payroll tab
             useACHPayout: [true],
-            // Driver & Owner
-            driveOwnerPayPeriod: ['Weekly', Validators.required],
-            driverOwnerEndingIn: ['Monday', Validators.required],
+            // driver & owner
+            driveOwnerPayPeriod: [
+                ConstantStringEnum.WEEKLY,
+                Validators.required,
+            ],
+            driverOwnerEndingIn: [
+                ConstantStringEnum.MONDAY,
+                Validators.required,
+            ],
 
             soloEmptyMile: [null, mileValidation],
             soloLoadedMile: [null, mileValidation],
@@ -393,57 +417,81 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             driverSoloDefaultCommission: [25],
             driverTeamDefaultCommission: [25],
             ownerDefaultCommission: [15],
-            // Accounting
-            accountingPayPeriod: ['Weekly', Validators.required],
-            accountingEndingIn: ['Monday', Validators.required],
+            // accounting
+            accountingPayPeriod: [
+                ConstantStringEnum.WEEKLY,
+                Validators.required,
+            ],
+            accountingEndingIn: [
+                ConstantStringEnum.MONDAY,
+                Validators.required,
+            ],
             accountingDefaultBase: [null, defaultBaseValidation],
-            // Company Owner
-            companyOwnerPayPeriod: ['Weekly', Validators.required],
-            companyOwnerEndingIn: ['Monday', Validators.required],
+            // company owner
+            companyOwnerPayPeriod: [
+                ConstantStringEnum.WEEKLY,
+                Validators.required,
+            ],
+            companyOwnerEndingIn: [
+                ConstantStringEnum.MONDAY,
+                Validators.required,
+            ],
             companyOwnerDefaultBase: [null, defaultBaseValidation],
-            // Dispatch
-            dispatchPayPeriod: ['Weekly', Validators.required],
-            dispatchEndingIn: ['Monday', Validators.required],
+            // dispatch
+            dispatchPayPeriod: [ConstantStringEnum.WEEKLY, Validators.required],
+            dispatchEndingIn: [ConstantStringEnum.MONDAY, Validators.required],
             dispatchDefaultBase: [null, defaultBaseValidation],
             dispatchDefaultCommission: [5],
-            // Manager
-            managerPayPeriod: ['Weekly', Validators.required],
-            managerEndingIn: ['Monday', Validators.required],
+            // manager
+            managerPayPeriod: [ConstantStringEnum.WEEKLY, Validators.required],
+            managerEndingIn: [ConstantStringEnum.MONDAY, Validators.required],
             managerDefaultBase: [null, defaultBaseValidation],
             managerDefaultCommission: [2.5],
-            // Recruiting
-            recruitingPayPeriod: ['Weekly', Validators.required],
-            recruitingEndingIn: ['Monday', Validators.required],
+            // recruiting
+            recruitingPayPeriod: [
+                ConstantStringEnum.WEEKLY,
+                Validators.required,
+            ],
+            recruitingEndingIn: [
+                ConstantStringEnum.MONDAY,
+                Validators.required,
+            ],
             recruitingDefaultBase: [null, defaultBaseValidation],
-            // Repair
-            repairPayPeriod: ['Weekly', Validators.required],
-            repairEndingIn: ['Monday', Validators.required],
+            // repair
+            repairPayPeriod: [ConstantStringEnum.WEEKLY, Validators.required],
+            repairEndingIn: [ConstantStringEnum.MONDAY, Validators.required],
             repairDefaultBase: [null, defaultBaseValidation],
-            // Safety
-            safetyPayPeriod: ['Weekly', Validators.required],
-            safetyEndingIn: ['Monday', Validators.required],
+            // safety
+            safetyPayPeriod: [ConstantStringEnum.WEEKLY, Validators.required],
+            safetyEndingIn: [ConstantStringEnum.MONDAY, Validators.required],
             safetyDefaultBase: [null, defaultBaseValidation],
-            // Other
-            otherPayPeriod: ['Weekly', Validators.required],
-            otherEndingIn: ['Monday', Validators.required],
+            // other
+            otherPayPeriod: [ConstantStringEnum.WEEKLY, Validators.required],
+            otherEndingIn: [ConstantStringEnum.MONDAY, Validators.required],
             otherDefaultBase: [null, defaultBaseValidation],
         });
 
         this.inputService.customInputValidator(
-            this.companyForm.get('email'),
-            'email',
+            this.companyForm.get(ConstantStringEnum.EMAIL),
+            ConstantStringEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.companyForm.get('webUrl'),
-            'url',
+            this.companyForm.get(ConstantStringEnum.WEB_URL),
+            ConstantStringEnum.URL,
             this.destroy$
         );
 
-        if (['new-division', 'edit-division'].includes(this.editData.type)) {
-            this.companyForm.get('email').setValidators(Validators.required);
-        }
+        if (
+            [
+                ConstantStringEnum.NEW_DIVISION as string,
+                ConstantStringEnum.EDIT_DIVISION,
+            ].includes(this.editData.type)
+        )
+            this.companyForm
+                .get(ConstantStringEnum.EMAIL)
+                .setValidators(Validators.required);
 
         this.formService.checkFormChange(this.companyForm);
         this.formService.formValueChange$
@@ -453,22 +501,23 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close':
+            case ConstantStringEnum.CLOSE:
                 break;
-
-            case 'save':
-            case 'stepper-save':
-                // If Form not valid
+            case ConstantStringEnum.SAVE:
+            case ConstantStringEnum.STEPPER_SAVE:
                 if (this.companyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.companyForm);
+
                     return;
                 }
 
                 if (
-                    this.editData.type.includes('edit-company') ||
-                    this.editData.type.includes('payroll-tab')
+                    this.editData.type.includes(
+                        ConstantStringEnum.EDIT_COMPANY
+                    ) ||
+                    this.editData.type.includes(ConstantStringEnum.PAYROLL_TAB)
                 ) {
                     this.updateCompany();
                     this.modalService.setModalSpinner({
@@ -477,8 +526,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 } else {
-                    if (this.editData.type === 'new-division') {
+                    if (
+                        this.editData.type === ConstantStringEnum.NEW_DIVISION
+                    ) {
                         this.addCompanyDivision();
+
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
@@ -486,6 +538,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         });
                     } else {
                         this.updateCompanyDivision(this.editData.company.id);
+
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
@@ -495,7 +548,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-
             case 'delete':
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.company.id);
@@ -573,8 +625,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
+            form.get(ConstantStringEnum.EMAIL),
+            ConstantStringEnum.EMAIL,
             this.destroy$
         );
     }
@@ -726,7 +778,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 this.selectedTimeZone = event;
 
                 break;
-            case 'currency':
+            case ConstantStringEnum.CURRENCY:
                 this.selectedCurrency = event;
 
                 break;
@@ -1009,7 +1061,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((val) => {
                 if (val) {
-                    if (['Solo', 'Combined'].includes(this.selectedFleetType)) {
+                    if (
+                        [ConstantStringEnum.SOLO, 'Combined'].includes(
+                            this.selectedFleetType
+                        )
+                    ) {
                         if (this.companyForm.get('soloLoadedMile').value) {
                             this.companyForm
                                 .get('perMileSolo')
@@ -1029,7 +1085,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 } else {
-                    if (['Solo', 'Combined'].includes(this.selectedFleetType)) {
+                    if (
+                        [ConstantStringEnum.SOLO, 'Combined'].includes(
+                            this.selectedFleetType
+                        )
+                    ) {
                         if (this.companyForm.get('perMileSolo').value) {
                             this.companyForm
                                 .get('soloLoadedMile')
@@ -1065,7 +1125,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.departments = res.departments;
                     this.companyData = res.companyTypes;
 
-                    if (this.editData.type === 'edit-company-first-login') {
+                    if (
+                        this.editData.type ===
+                        ConstantStringEnum.EDIT_COMPANY_FIRST_LOGIN
+                    ) {
                         this.selectedDriverPayPeriod = res.payPeriods[0];
                         this.selectedDriverEndingIn = res.endingIns[0];
                         this.selectedAccountingPayPeriod = res.payPeriods[0];
@@ -1402,7 +1465,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 ? convertDateToBackend(dateOfIncorporation)
                 : null,
             preferredLoadType:
-                this.companyForm.get('preferredLoadType').value === 'FTL'
+                this.companyForm.get('preferredLoadType').value ===
+                ConstantStringEnum.FTL
                     ? 1
                     : 2,
         };
@@ -1504,16 +1568,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             endingIn: this.selectedDriverEndingIn?.id,
             solo: {
                 emptyMile: !loadedAndEmptySameRate
-                    ? ['Solo', 'Combined'].includes(this.selectedFleetType)
+                    ? [ConstantStringEnum.SOLO, 'Combined'].includes(
+                          this.selectedFleetType
+                      )
                         ? parseFloat(soloEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
-                    ? ['Solo', 'Combined'].includes(this.selectedFleetType)
+                    ? [ConstantStringEnum.SOLO, 'Combined'].includes(
+                          this.selectedFleetType
+                      )
                         ? parseFloat(soloLoadedMile)
                         : null
                     : null,
-                perStop: ['Solo', 'Combined'].includes(this.selectedFleetType)
+                perStop: [ConstantStringEnum.SOLO, 'Combined'].includes(
+                    this.selectedFleetType
+                )
                     ? soloPerStop
                         ? convertThousanSepInNumber(soloPerStop)
                         : null
@@ -1536,7 +1606,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         : null
                     : null,
             },
-            perMileSolo: ['Solo', 'Combined'].includes(this.selectedFleetType)
+            perMileSolo: [ConstantStringEnum.SOLO, 'Combined'].includes(
+                this.selectedFleetType
+            )
                 ? loadedAndEmptySameRate
                     ? perMileSolo
                         ? parseFloat(perMileSolo)
@@ -1556,9 +1628,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             teamPerLoad: teamPerLoad
                 ? convertThousanSepInNumber(teamPerLoad)
                 : null,
-            defaultSoloDriverCommission: ['Solo', 'Combined'].includes(
-                this.selectedFleetType
-            )
+            defaultSoloDriverCommission: [
+                ConstantStringEnum.SOLO,
+                'Combined',
+            ].includes(this.selectedFleetType)
                 ? driverSoloDefaultCommission
                 : null,
             defaultTeamDriverCommission: ['Team', 'Combined'].includes(
@@ -1670,7 +1743,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.selectedCurrency = data.currency.id !== 0 ? data.currency : null;
 
         this.onPrefferedLoadCheck({
-            id: data.additionalInfo.preferredLoadType === 'FTL' ? 1 : 2,
+            id:
+                data.additionalInfo.preferredLoadType === ConstantStringEnum.FTL
+                    ? 1
+                    : 2,
             name: data.additionalInfo.preferredLoadType,
         });
 
