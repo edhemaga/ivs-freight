@@ -41,6 +41,7 @@ export interface CompanyResponse {
     currency?: EnumValue;
     companyType?: EnumValue;
     dateOfIncorporation?: string | null;
+    hazMat?: boolean | null;
     additionalInfo?: CompanyAdditionalInfo;
     factoringCompany?: FactoringCompany;
     departmentContacts?: Array<DepartmentContactResponse> | null;
@@ -54,5 +55,8 @@ export interface CompanyResponse {
     logo?: string | null;
     createdAt?: string;
     updatedAt?: string;
+    driverMiles?: boolean | null;
+    driverComission?: boolean | null;
+    driverFlatRate?: boolean | null;
 }
 

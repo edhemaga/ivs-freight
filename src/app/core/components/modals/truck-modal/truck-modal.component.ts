@@ -519,7 +519,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             )
             .subscribe((value) => {
                 this.skipVinDecocerEdit = false;
-                if (value?.length < 13 || value?.length > 17) {
+                if (!(value?.length === 13 || value?.length === 17)) {
                     this.truckForm
                         .get('vin')
                         .setErrors({ incorrectVinNumber: true });

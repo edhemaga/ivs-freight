@@ -306,12 +306,13 @@
                             *ngIf="
                                 loadModalTemplate &&
                                 !isConvertedToTemplate &&
-                                !editData
+                                !editData &&
+                                !cardsModal
                             "
                         >
                             <button
                                 (click)="onAction('convert-to-template')"
-                                class="d-flex align-items-center ta-font-bold"
+                                class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
                                 type="button"
                             >
                                 Convert to Template

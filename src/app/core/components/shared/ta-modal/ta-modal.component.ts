@@ -202,10 +202,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnChanges() {
-        console.log(this.editName);
-    }
-
     public dragOver() {
         // $("body").on('dragenter', (event) => {
         //     event.preventDefault();
