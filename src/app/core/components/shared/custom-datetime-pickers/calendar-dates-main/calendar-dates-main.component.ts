@@ -6,9 +6,13 @@ import {
     OnInit,
     Output,
     OnChanges,
+    OnDestroy,
     forwardRef,
 } from '@angular/core';
-import { ScrollingModule, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import {
+    ScrollingModule,
+    VIRTUAL_SCROLL_STRATEGY,
+} from '@angular/cdk/scrolling';
 import {
     CalendarStrategy,
     STARTING_YEAR,
@@ -50,10 +54,10 @@ const MONTHS = [
     styleUrls: ['./calendar-dates-main.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                ScrollingModule,
-                CalendarDaysComponent
+        CommonModule,
+        FormsModule,
+        ScrollingModule,
+        CalendarDaysComponent,
     ],
     providers: [
         {
@@ -63,13 +67,17 @@ const MONTHS = [
         },
     ],
 })
-export class CalendarDatesMainComponent implements OnInit, OnChanges {
+export class CalendarDatesMainComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() months: any;
     @Input() dateTime: any;
     @Input() currentIndex: any;
     @Input() monthYearsIndx: any;
     @Input() listPreview: any;
+    @Input() monthAndYearOnly: boolean = false;
     @Output() setListPreviewToFull: EventEmitter<any> = new EventEmitter();
+    @Output() setAutoIndex: EventEmitter<any> = new EventEmitter();
 
     scrollStrategy: CalendarStrategy = new CalendarStrategy(
         this.calendarService,
@@ -158,6 +166,12 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
                     }
                 }, 200);
             });
+
+        if (this.monthAndYearOnly) {
+            setTimeout(() => {
+                this.scrollStrategy.updateScrollHeights(CYCLE_HEIGHT_BY_MONTHS);
+            }, 200);
+        }
     }
 
     findIndexInMonth(date: string): number {
@@ -185,9 +199,19 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
         this.calendarService.scrolledScrollItem = 'main';
     }
 
-    setCalendarListPreview(num) {
+    setCalendarListPreview(num, index) {
         this.selMonth = num;
-        this.setListPreviewToFull.emit(num);
+
+        if (this.monthAndYearOnly) {
+            this.setAutoIndex.emit(num);
+            const selectedMonth = this.months[index];
+            const new_date = moment(
+                new Date(selectedMonth.getFullYear(), num + 1, 0)
+            ).format();
+            this.calendarService.dateChanged.next(new_date);
+        } else {
+            this.setListPreviewToFull.emit(num);
+        }
     }
 
     public selectDay(data): void {

@@ -36,6 +36,8 @@ import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component
 import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+import { BankCardTypesPipe } from 'src/app/core/pipes/bankCardType.pipe';
+import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
 
 @NgModule({
     imports: [
@@ -69,6 +71,8 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
         // PIPES
         HidePasswordPipe,
         SafeHtmlPipe,
+        BankCardTypesPipe,
+        TaSvgPipe
     ],
     exports: [SharedModule],
     declarations: [

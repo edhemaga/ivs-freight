@@ -532,8 +532,13 @@
                         <p class="item-body-nick-name">{{ bankC?.nickname }}</p>
                         <div class="item-body-icon-text">
                             <svg-icon
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                                 class="svg-bank"
-                                src="assets/svg/common/ic_visa.svg"
+                                [src]="
+                                    bankC.cardType
+                                        | bankCardTypesPipe
+                                        | taSvg : 'common'
+                                "
                             ></svg-icon>
 
                             <p class="item-body-cvc">

@@ -76,6 +76,7 @@ import {
     phoneFaxRegex,
     startingValidation,
     cvcValidation,
+    bankCardTypeValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
@@ -253,6 +254,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public displayUploadZone: boolean = false;
 
     public disableCardAnimation: boolean = false;
+    public bankCardTypes: string[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -269,6 +271,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.checkForCompany();
 
         this.getModalDropdowns();
+
+        this.validateCreditCards();
     }
 
     private checkForCompany() {
@@ -729,7 +733,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ],
             card: [
                 data?.card ? data.card : null,
-                [Validators.minLength(16), Validators.maxLength(16)],
+                [Validators.minLength(15), Validators.maxLength(16)],
             ],
             cvc: [data?.cvc ? data.cvc : null, cvcValidation],
             expireDate: [data?.expireDate ? data.expireDate : null],
@@ -988,6 +992,34 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.companyForm.get('perMileTeam').setErrors(null);
                 }
+            });
+    }
+
+    private validateCreditCards() {
+        this.companyForm
+            .get('bankCards')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                let hasDuplicates =
+                    value.map((v) => v.card).length >
+                    new Set(value.map((v) => v.card)).size
+                        ? true
+                        : false;
+
+                if (hasDuplicates) {
+                    this.companyForm
+                        .get('bankCards')
+                        .setErrors({ invalid: true });
+                } else {
+                    this.companyForm.get('bankCards').setErrors(null);
+                }
+
+                let cardTypes: string[] = [];
+                value.map((card) => {
+                    let cardType = bankCardTypeValidation(card.card);
+                    cardTypes.push(cardType);
+                });
+                this.bankCardTypes = cardTypes;
             });
     }
 
@@ -1802,7 +1834,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompany(data: any) {
-        console.log('data', data);
         this.companyForm.patchValue({
             // -------------------- Basic Tab
             name: data.name,
@@ -1947,14 +1978,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         this.selectedAccountingPayPeriod = payroll.payPeriod;
                         this.selectedAccountingEndingIn = payroll.endingIn;
 
-                        console.log(
-                            'this.selectedAccountingPayPeriod',
-                            this.selectedAccountingPayPeriod
-                        );
-                        console.log(
-                            'this.selectedAccountingEndingIn',
-                            this.selectedAccountingEndingIn
-                        );
                         break;
                     }
                     case 2: {

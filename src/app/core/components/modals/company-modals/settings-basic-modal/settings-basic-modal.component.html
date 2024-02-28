@@ -723,6 +723,11 @@
                                 *ngIf="bankCards.length"
                             >
                                 <div class="common-fake-table-label">
+                                    <p>
+                                        <svg-icon
+                                            src="assets/svg/common/ic_modal_card_sort.svg"
+                                        ></svg-icon>
+                                    </p>
                                     <p>NICKNAME</p>
                                     <p>CARD NO.</p>
                                     <p>CVC</p>
@@ -740,15 +745,22 @@
                                             [formGroupName]="ind"
                                             class="common-fake-table-card"
                                         >
+                                            <div
+                                                class="common-fake-table-card-number"
+                                            >
+                                                {{ ind + 1 }}
+                                            </div>
                                             <app-ta-input
                                                 formControlName="nickname"
                                                 [inputConfig]="{
                                                     id: 'Nickname' + ind,
                                                     name: 'Nickname',
                                                     type: 'text',
+                                                    label: 'Nickname',
+                                                    placeholderInsteadOfLabel: true,
                                                     hideErrorMessage: true,
                                                     blackInput: true,
-                                                    hideRequiredCheck: true,
+                                                    isRequired: true,
                                                     minLength: 2,
                                                     maxLength: 128
                                                 }"
@@ -760,12 +772,19 @@
                                                     id: 'Card Number' + ind,
                                                     name: 'Card Number',
                                                     type: 'text',
-                                                    placeholderIcon: 'visa',
+                                                    placeholderIcon:
+                                                        bankCardTypes[ind] &&
+                                                        bankCardTypes[ind] !==
+                                                            'unknown'
+                                                            ? bankCardTypes[ind]
+                                                            : 'password',
+                                                    label: 'Card No.',
+                                                    placeholderInsteadOfLabel: true,
                                                     maxLength: 16,
-                                                    minLength: 16,
+                                                    minLength: 15,
                                                     hideErrorMessage: true,
-                                                    blackInput: true,
-                                                    hideRequiredCheck: true
+                                                    isRequired: true,
+                                                    blackInput: true
                                                 }"
                                             ></app-ta-input>
 
@@ -776,22 +795,29 @@
                                                     name: 'CVC',
                                                     type: 'text',
                                                     placeholderIcon: 'password',
+                                                    label: 'CVC',
+                                                    placeholderInsteadOfLabel: true,
                                                     maxLength: 4,
                                                     minLength: 3,
                                                     hideErrorMessage: true,
                                                     blackInput: true,
-                                                    hideRequiredCheck: true
+                                                    isRequired: true
                                                 }"
                                             ></app-ta-input>
                                             <app-ta-input
                                                 formControlName="expireDate"
                                                 [inputConfig]="{
                                                     id: 'Datepicker' + ind,
-                                                    name: 'datepicker',
+                                                    name: 'datepickerBankCard',
                                                     type: 'text',
                                                     isDropdown: true,
                                                     placeholderIcon: 'date',
-                                                    customClass: 'datetimeclass'
+                                                    label: 'Exp.',
+                                                    placeholderInsteadOfLabel: true,
+                                                    customClass:
+                                                        'datetimeclass',
+                                                    expiredDateInvalid: true,
+                                                    hideErrorMessage: true
                                                 }"
                                             ></app-ta-input>
                                             <div

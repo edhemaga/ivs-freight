@@ -1,5 +1,12 @@
 import { CalendarScrollService } from './../calendar-scroll.service';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    OnDestroy,
+} from '@angular/core';
 
 import { RANGE, STARTING_YEAR } from './calendar_strategy';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -30,15 +37,16 @@ const MONTHS = [
     styleUrls: ['./date-calendars.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            CalendarDatesMainComponent, 
-            CalendarLeftComponent
-    ]
+        CommonModule,
+        FormsModule,
+        CalendarDatesMainComponent,
+        CalendarLeftComponent,
+    ],
 })
-export class DateCalendarsComponent implements OnInit {
+export class DateCalendarsComponent implements OnInit, OnDestroy {
     @Input() listPreview: string;
     @Input() dateTime: any;
+    @Input() monthAndYearOnly: boolean = false;
     @Output() setListPreviewValue = new EventEmitter();
 
     currentYear: any = new Date().getFullYear();
@@ -97,6 +105,12 @@ export class DateCalendarsComponent implements OnInit {
                 this.activeIndex = res.indx;
                 this.onMonthChange(res.indx);
             });
+
+        if (this.monthAndYearOnly) {
+            this.calendarService.setAutoIndex = Math.floor(
+                this.activeIndex / 12
+            );
+        }
     }
 
     onMonthChange(month: number) {
@@ -125,6 +139,10 @@ export class DateCalendarsComponent implements OnInit {
 
     public setListPreviewToFull(num) {
         this.setListPreviewValue.emit('full_list');
+        this.setAutoIndex(num);
+    }
+
+    public setAutoIndex(num) {
         this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
     }
 

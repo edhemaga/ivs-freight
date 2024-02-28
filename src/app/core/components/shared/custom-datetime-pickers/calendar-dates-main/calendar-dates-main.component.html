@@ -31,7 +31,7 @@
                 <div class="month_list">
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(0)"
+                        (click)="setCalendarListPreview(0, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             0 == selMonth
@@ -41,7 +41,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(1)"
+                        (click)="setCalendarListPreview(1, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             1 == selMonth
@@ -51,7 +51,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(2)"
+                        (click)="setCalendarListPreview(2, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             2 == selMonth
@@ -61,7 +61,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(3)"
+                        (click)="setCalendarListPreview(3, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             3 == selMonth
@@ -71,7 +71,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(4)"
+                        (click)="setCalendarListPreview(4, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             4 == selMonth
@@ -81,7 +81,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(5)"
+                        (click)="setCalendarListPreview(5, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             5 == selMonth
@@ -91,7 +91,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(6)"
+                        (click)="setCalendarListPreview(6, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             6 == selMonth
@@ -101,7 +101,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(7)"
+                        (click)="setCalendarListPreview(7, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             7 == selMonth
@@ -111,7 +111,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(8)"
+                        (click)="setCalendarListPreview(8, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             8 == selMonth
@@ -121,7 +121,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(9)"
+                        (click)="setCalendarListPreview(9, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             9 == selMonth
@@ -131,7 +131,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(10)"
+                        (click)="setCalendarListPreview(10, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             10 == selMonth
@@ -141,7 +141,7 @@
                     </div>
                     <div
                         class="month_list_item"
-                        (click)="setCalendarListPreview(11)"
+                        (click)="setCalendarListPreview(11, indx)"
                         [class.current_month]="
                             selectedYearFromInput == month.getFullYear() &&
                             11 == selMonth

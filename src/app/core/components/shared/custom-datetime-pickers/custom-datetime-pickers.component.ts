@@ -9,11 +9,14 @@ import {
     Output,
     ViewChild,
     ViewContainerRef,
+    OnDestroy,
+    AfterViewInit
 } from '@angular/core';
 
 import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ITaInput } from '../ta-input/ta-input.config';
 
 @Component({
     selector: 'app-custom-datetime-pickers',
@@ -22,10 +25,16 @@ import { FormsModule } from '@angular/forms';
     standalone: true,
     imports: [CommonModule, FormsModule, DateCalendarsComponent],
 })
-export class CustomDatetimePickersComponent implements OnInit {
+export class CustomDatetimePickersComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
-    @Input() inputConfig: any;
+    public _inputConfig: ITaInput = null;
+    @Input() set inputConfig(config: ITaInput) {
+        this._inputConfig = config;
+        if (this._inputConfig.name === 'datepickerBankCard') {
+            this.listPreview = 'month_list';
+        }
+    }
 
     @Output() closePopover: EventEmitter<any> = new EventEmitter();
 

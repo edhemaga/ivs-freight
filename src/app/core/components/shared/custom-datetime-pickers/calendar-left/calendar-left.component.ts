@@ -1,6 +1,6 @@
 import { CalendarScrollService } from './../calendar-scroll.service';
-import { Component, forwardRef, Input, OnChanges, OnInit } from '@angular/core';
-import { CdkScrollableModule, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { Component, forwardRef, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { Subject, takeUntil } from 'rxjs';
 import {
     CalendarStrategy,
@@ -26,12 +26,7 @@ function factory(dir: CalendarLeftComponent) {
     templateUrl: './calendar-left.component.html',
     styleUrls: ['./calendar-left.component.scss'],
     standalone: true,
-    imports: [
-                CommonModule, 
-                FormsModule, 
-                ScrollingModule,
-                CalendarMonthsPipe
-    ],
+    imports: [CommonModule, FormsModule, ScrollingModule, CalendarMonthsPipe],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,
@@ -40,10 +35,11 @@ function factory(dir: CalendarLeftComponent) {
         },
     ],
 })
-export class CalendarLeftComponent implements OnInit, OnChanges {
+export class CalendarLeftComponent implements OnInit, OnChanges, OnDestroy {
     @Input() months: any;
     @Input() currentIndex: any;
     @Input() listPreview: any;
+    @Input() monthAndYearOnly: boolean = false;
     isHovered: boolean;
 
     private destroy$ = new Subject<void>();
@@ -103,6 +99,12 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
                         );
                 });
             });
+
+        if (this.monthAndYearOnly) {
+            setTimeout(() => {
+                this.scrollStrategy.updateScrollHeights(CYCLE_HEIGHT_BY_MONTHS);
+            }, 200);
+        }
     }
 
     findIndexInMonth(date: string): number {

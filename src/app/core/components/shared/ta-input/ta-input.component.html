@@ -312,7 +312,8 @@
                 !_inputConfig.multiSelectDropdownActive &&
                 !_inputConfig.isDisabled) ||
             ((_inputConfig.name === 'datepicker' ||
-                _inputConfig.name === 'timepicker') &&
+                _inputConfig.name === 'timepicker' ||
+                _inputConfig.name == 'datepickerBankCard') &&
                 !_inputConfig.incorrectInput &&
                 !_inputConfig.isDisabled)
         "
@@ -428,7 +429,8 @@
         [ngbPopover]="dateTimePopover"
         [disablePopover]="
             (_inputConfig.name !== 'datepicker' &&
-                _inputConfig.name !== 'timepicker') ||
+                _inputConfig.name !== 'timepicker' &&
+                _inputConfig.name !== 'datepickerBankCard') ||
             _inputConfig.isDisabled
         "
         [placement]="['left', 'left-top']"
@@ -692,6 +694,111 @@
             (keydown)="changeSelection($event)"
             (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
+        ></span>
+    </div>
+
+    <!-- Bank Card Expire Date Picker -->
+    <div
+        #holder1
+        class="date_time_holder date_time_holder_bank_card input-control"
+        *ngIf="
+            _inputConfig.name === 'datepickerBankCard' &&
+            !_inputConfig.isDisabled
+        "
+        [class.active]="showDateInput"
+        tabindex="-1"
+        (mousedown)="selectLastOneForSelection()"
+        (mouseup)="selectLastOneAfterMoseUp()"
+        (paste)="onDatePaste($event)"
+        (blur)="onBlur()"
+        (keydown)="changeSelection($event, true)"
+        [ngClass]="{
+            focus: focusInput,
+            'valid-focus-in':
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisibleCommands &&
+                    !_inputConfig?.dropdownImageInput?.url &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    focusInput &&
+                    !_inputConfig.isInvalidSearchInDropdown &&
+                    !_inputConfig.isDisabled),
+            'valid-focus-out-filled':
+                (((getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !isVisibleCommands &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                    (!focusInput && _inputConfig.dropdownImageInput?.url)) &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.dropdownLabel &&
+                    getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    !focusInput),
+            'invalid-focus-in':
+                getSuperControl.invalid &&
+                getSuperControl.value &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !(
+                    _inputConfig.dropdownImageInput?.url ||
+                    _inputConfig.dropdownImageInput?.nameInitialsInsteadUrl
+                ) &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out-filled':
+                ((getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput) ||
+                    (!_inputConfig.dropdownImageInput?.url &&
+                        (touchedInput || getSuperControl.touched) &&
+                        getSuperControl.invalid &&
+                        !focusInput &&
+                        !_inputConfig.isDisabled)) &&
+                !_inputConfig.blackInput,
+            'invalid-focus-out-empty':
+                !focusInput &&
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                _inputConfig.multipleLabel?.labels.length &&
+                !_inputConfig.multipleInputValues?.options.length &&
+                !_inputConfig.isDisabled,
+            dark: _inputConfig.customClass === 'datetimeclass dark'
+        }"
+    >
+        <span
+            #span1
+            class="main"
+            tabindex="0"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="'mm'"
+        ></span>
+        <span>
+            <div class="border-picker" [innerHTML]="'/'"></div>
+        </span>
+        <span
+            #span2
+            class="main"
+            tabindex="1"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="'yy'"
         ></span>
     </div>
 
@@ -1272,9 +1379,12 @@
     <div class="datetime-dropdown-holder">
         <app-custom-datetime-pickers
             [calendarType]="
-                _inputConfig.name === 'datepicker' ? 'date' : 'time'
+                _inputConfig.name === 'datepicker' ||
+                _inputConfig.name === 'datepickerBankCard'
+                    ? 'date'
+                    : 'time'
             "
-            [_inputConfig]="_inputConfig"
+            [inputConfig]="_inputConfig"
             [placeholder]="'MM/DD/YY'"
             [dateTime]="dateTimeInputDate"
             (closePopover)="closePopover()"
