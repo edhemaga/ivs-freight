@@ -102,11 +102,7 @@
                                         name: 'USDOT',
                                         type: 'text',
                                         label: 'USDOT',
-                                        isRequired:
-                                            this.editData.type ===
-                                            'new-division'
-                                                ? false
-                                                : true,
+                                        isRequired: true,
                                         textTransform: 'capitalize',
                                         minLength: 6,
                                         maxLength: 8
@@ -324,10 +320,7 @@
                                         type: 'text',
                                         label: 'Time Zone',
                                         isDropdown: true,
-                                        isRequired:
-                                            editData.type === 'new-division'
-                                                ? false
-                                                : true,
+                                        isRequired: true,
                                         dropdownWidthClass: 'w-col-403'
                                     }"
                                     [options]="timeZones"
@@ -347,10 +340,7 @@
                                         type: 'text',
                                         label: 'Currency',
                                         isDropdown: true,
-                                        isRequired:
-                                            editData.type === 'new-division'
-                                                ? false
-                                                : true,
+                                        isRequired: true,
                                         dropdownWidthClass: 'w-col-201'
                                     }"
                                     [options]="currencies"
@@ -506,7 +496,8 @@
                                                         type: 'text',
                                                         mask: '(000) 000-0000',
                                                         maxLength: 14,
-                                                        hideRequiredCheck: true
+                                                        hideRequiredCheck: true,
+                                                        hideErrorMessage: true
                                                     }"
                                                 ></app-ta-input>
                                                 <app-ta-input
@@ -532,7 +523,8 @@
                                                         maxLength: 64,
                                                         textTransform:
                                                             'lowercase',
-                                                        hideRequiredCheck: true
+                                                        hideRequiredCheck: true,
+                                                        hideErrorMessage: true
                                                     }"
                                                 ></app-ta-input>
                                                 <div

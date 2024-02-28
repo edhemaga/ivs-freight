@@ -226,10 +226,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     private getConstantData(): void {
         // tabs
-        this.tabs = SettingsModalConstants.TABS;
-        this.tabsDivision = SettingsModalConstants.TABS_DIVISION;
-        this.prefferedLoadTabs = SettingsModalConstants.PREFERED_LOAD_BTNS;
-        this.fleetTypeTabs = SettingsModalConstants.FLEET_TYPE_BTNS;
+        this.tabs = JSON.parse(JSON.stringify(SettingsModalConstants.TABS));
+        this.tabsDivision = JSON.parse(
+            JSON.stringify(SettingsModalConstants.TABS_DIVISION)
+        );
+        this.prefferedLoadTabs = JSON.parse(
+            JSON.stringify(SettingsModalConstants.PREFERED_LOAD_BTNS)
+        );
+        this.fleetTypeTabs = JSON.parse(
+            JSON.stringify(SettingsModalConstants.FLEET_TYPE_BTNS)
+        );
 
         // options
         this.driverCommissionOptions =
@@ -304,21 +310,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private createDivisionForm(): void {
         this.inputService.changeValidators(
             this.companyForm.get(ConstantStringEnum.STARTING),
-            false
-        );
-
-        this.inputService.changeValidators(
-            this.companyForm.get(ConstantStringEnum.US_DOT),
-            false
-        );
-
-        this.inputService.changeValidators(
-            this.companyForm.get(ConstantStringEnum.TIMEZONE),
-            false
-        );
-
-        this.inputService.changeValidators(
-            this.companyForm.get(ConstantStringEnum.CURRENCY),
             false
         );
 
