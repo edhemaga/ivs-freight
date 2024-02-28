@@ -5,6 +5,7 @@
         [tableData]="tableData"
         [selectedTab]="selectedTab"
         [columns]="columns"
+        [activeViewMode]="activeViewMode"
     ></app-truckassist-table-toolbar>
 
     <ng-container *ngIf="activeViewMode === 'List'">
@@ -27,15 +28,16 @@
     </ng-container>
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
-            <app-truckassist-cards
+            <app-customer-card
                 (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
+                [cardTitleLink]="cardTitleLink"
                 [displayRowsFront]="sendDataToCardsFront"
                 [displayRowsBack]="sendDataToCardsBack"
-                [page]="page"
-            ></app-truckassist-cards>
+                [selectedTab]="selectedTab"
+            ></app-customer-card>
 
             <!-- Show More -->
             <ng-container *ngIf="viewData.length">

@@ -14,7 +14,6 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
 import { MapsComponent } from '../shared/maps/maps.component';
 import { MapListComponent } from '../shared/map-list/map-list.component';
 import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
-import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
 
 @NgModule({
     declarations: [FuelTableComponent],
@@ -34,7 +33,6 @@ import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassi
         MapsComponent,
         MapListComponent,
         MapListCardComponent,
-        TruckassistCardsComponent,
     ],
 })
 export class FuelModule {}

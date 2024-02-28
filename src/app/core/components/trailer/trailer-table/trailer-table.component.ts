@@ -20,7 +20,10 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
-import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    DropdownItem,
+    ToolbarActions,
+} from '../../shared/model/card-table-data.model';
 import {
     DataForCardsAndTables,
     TableColumnConfig,
@@ -51,13 +54,13 @@ import {
 } from '../../../utils/methods.globals';
 
 // Constants
-import { TableDropdownTrailerComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Configuration
 import { DisplayTrailerConfiguration } from '../trailer-card-data';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import {
     TooltipColors,
     TrailerName,
@@ -71,7 +74,7 @@ import {
 })
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-
+    public trailerData: any[] = [];
     public tableOptions: TableOptionsInterface;
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -85,7 +88,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public trailerInactive: TrailerInactiveState[] = [];
     public activeTableData: string;
     public backFilterQuery: backFilterQueryInterface =
-        TableDropdownTrailerComponentConstants.BACK_FILTER_QUERY;
+        TableDropdownComponentConstants.BACK_FILTER_QUERY;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =
@@ -133,12 +136,35 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRows();
 
         this.search();
+
+        this.setTableFilter();
     }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    if (res.action === ConstantStringTableComponentsEnum.SET) {
+                        this.viewData = this.trailerData?.filter(
+                            (customerData) =>
+                                res.queryParams.some(
+                                    (filterData) =>
+                                        filterData === customerData.id
+                                )
+                        );
+                    }
+
+                    if (res.action === ConstantStringTableComponentsEnum.CLEAR)
+                        this.viewData = this.trailerData;
+                }
+            });
     }
 
     private confirmationSubscribe(): void {
@@ -514,6 +540,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+        this.trailerData = this.viewData;
     }
 
     private setTrailerTooltipColor(trailerName: string): string {

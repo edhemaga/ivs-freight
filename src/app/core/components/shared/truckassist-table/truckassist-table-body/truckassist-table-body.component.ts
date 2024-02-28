@@ -48,6 +48,7 @@ import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.co
 import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
+import { TaInputDropdownTableComponent } from '../../../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 
 //modul
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -66,6 +67,9 @@ import {
     tableBodyColumns,
     tableBodyOptions,
 } from '../../model/tableBody';
+
+// Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Titles()
 @Component({
@@ -88,6 +92,7 @@ import {
         TaInputDropdownLabelComponent,
         TaInputDropdownComponent,
         NgbPopoverModule,
+        TaInputDropdownTableComponent,
         NgbModule,
         AppTooltipComponent,
     ],
@@ -408,7 +413,12 @@ export class TruckassistTableBodyComponent
         if (this.activeAttachment !== -1) {
             let entity = this.activeTableData?.gridNameTitle;
 
-            if (entity === 'Repair' && this.selectedTab === 'repair-shop') entity = 'Repair-Shop';
+            if (
+                entity === ConstantStringTableComponentsEnum.REPAIR &&
+                this.selectedTab ===
+                    ConstantStringTableComponentsEnum.REPAIR_SHOP
+            )
+                entity = ConstantStringTableComponentsEnum.REPAIR_SHOP_2;
 
             this.filesService
                 .getFiles(entity, this.activeAttachment)
@@ -826,7 +836,12 @@ export class TruckassistTableBodyComponent
         if (this.activeAttachment !== row.id) {
             let entity = this.activeTableData?.gridNameTitle?.toLowerCase();
 
-            if (entity === 'repair' && this.selectedTab === 'repair-shop') entity = 'repair-shop';
+            if (
+                entity === ConstantStringTableComponentsEnum.REPAIR &&
+                this.selectedTab ===
+                    ConstantStringTableComponentsEnum.REPAIR_SHOP
+            )
+                entity = ConstantStringTableComponentsEnum.REPAIR_SHOP_2;
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 if (res?.length) {

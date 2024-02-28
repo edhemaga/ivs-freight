@@ -425,6 +425,10 @@
                     display: flex;
                     width: 14px;
                     height: 14px;
+
+                    path {
+                        fill: $white;
+                    }
                 }
             }
         }

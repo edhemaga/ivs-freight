@@ -1,0 +1,216 @@
+<div class="cards-container">
+    <ng-container
+        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+    >
+        <div class="custom-card">
+            <!-- Card splited on left and right side -->
+
+            <div class="card-body d-flex justify-content-between">
+                <!-- Left side of the card -->
+
+                <div class="card-body-left p-1">
+                    <!-- Head of the card -->
+
+                    <div class="card-header d-flex align-items-center">
+                        <div class="checkbox-holder d-flex align-items-center">
+                            <!-- Checkbox -->
+
+                            <span
+                                class="checkbox-tooltip"
+                                type="button"
+                                ngbTooltip
+                                tooltipBackground="#424242"
+                                position="bottom"
+                            >
+                                <input
+                                    class="table-checkbox"
+                                    type="checkbox"
+                                    id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
+                                    (change)="onCheckboxSelect(i, card)"
+                                />
+                                <label
+                                    class="table-checkbox-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </span>
+                        </div>
+
+                        <!-- Card Title -->
+
+                        <div class="name d-flex ta-font-bold">
+                            <span class="title">
+                                {{
+                                    valueByStringPathInstance.getValueByStringPath(
+                                        card,
+                                        cardTitle
+                                    )
+                                }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card body front-->
+                    <div class="card-body-content">
+                        <ng-container
+                            *ngFor="
+                                let rowsFront of displayRowsFront;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ rowsFront.title }}
+                                    </div>
+
+                                    <div
+                                        class="bottom-item-body d-flex align-items-center"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title !== 'Label' &&
+                                                rowsFront.title !== 'Password'
+                                            "
+                                        >
+                                            {{
+                                                valueByStringPathInstance.getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                )
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.title === 'Password'
+                                            "
+                                        >
+                                            <div
+                                                appTextToggle="{{
+                                                    valueByStringPathInstance.getValueByStringPath(
+                                                        card,
+                                                        rowsFront.endpoint
+                                                    )
+                                                }}"
+                                            ></div>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="rowsFront.title === 'Label'"
+                                        >
+                                            <div
+                                                [style.width.px]="elementWidth"
+                                            >
+                                                <app-ta-input-dropdown-label
+                                                    [formControl]="
+                                                        dropdownSelectionArray
+                                                            .controls[i]
+                                                    "
+                                                    [inputConfig]="{
+                                                        name: 'Input Dropdown Label',
+                                                        type: 'text',
+                                                        placeholderIcon:
+                                                            'ic_dynamic_label',
+                                                        dropdownLabel: true,
+                                                        dropdownWidthClass:
+                                                            'w-col-' +
+                                                            elementWidth,
+                                                        textTransform:
+                                                            'lowercase',
+                                                        minLength: 1,
+                                                        blackInput: true,
+                                                        hideClear: true,
+                                                        hideDropdownArrow: true,
+                                                        multiselectDropdown: true,
+                                                        maxLength: 12,
+                                                        showCount: false,
+                                                        customClass:
+                                                            'input-dropdown-table',
+                                                        commands: {
+                                                            active: false,
+                                                            type: 'confirm-cancel',
+                                                            firstCommand: {
+                                                                popup: {
+                                                                    name: 'Confirm',
+                                                                    backgroundColor:
+                                                                        '#3074d3'
+                                                                },
+                                                                name: 'confirm',
+                                                                svg: 'assets/svg/ic_spec-confirm.svg'
+                                                            },
+                                                            secondCommand: {
+                                                                popup: {
+                                                                    name: 'Cancel',
+                                                                    backgroundColor:
+                                                                        '#2f2f2f'
+                                                                },
+                                                                name: 'cancel',
+                                                                svg: 'assets/svg/ic_x.svg'
+                                                            }
+                                                        }
+                                                    }"
+                                                    [colors]="card.colorRes"
+                                                    [options]="card.colorLabels"
+                                                    [selectedLabel]="
+                                                        selectedContactLabel[i]
+                                                    "
+                                                    [selectedLabelColor]="
+                                                        selectedContactColor
+                                                    "
+                                                    (pickExistLabel)="
+                                                        onPickExistLabel(
+                                                            $event,
+                                                            i
+                                                        )
+                                                    "
+                                                    (pickColorLabel)="
+                                                        onSelectColorLabel(
+                                                            $event,
+                                                            i
+                                                        )
+                                                    "
+                                                    (saveLabel)="
+                                                        onSaveLabel($event, i)
+                                                    "
+                                                >
+                                                </app-ta-input-dropdown-label>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Right side of the card -->
+
+                <div class="card-body-right">
+                    <div class="top-side">
+                        <!-- Open dropdown element-->
+
+                        <app-table-card-dropdown-actions
+                            [card]="card"
+                        ></app-table-card-dropdown-actions>
+
+                        <!-- Note element -->
+
+                        <div
+                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
+                        >
+                            <app-ta-note
+                                [note]="card.note"
+                                [mainData]="card"
+                                [entityId]="card.id"
+                                [openedAll]="false"
+                                [parking]="false"
+                            >
+                            </app-ta-note>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

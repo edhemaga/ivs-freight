@@ -3,6 +3,7 @@ import { TruckRoutingModule } from './truck-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
 import { TruckTableComponent } from './truck-table/truck-table.component';
@@ -11,7 +12,10 @@ import { TruckCardComponent } from './truck-card/truck-card.component';
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { TruckassistCardsComponent } from '../shared/truckassist-cards/truckassist-cards.component';
+
+import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+import { ProgresBarComponent } from '../standalone-components/progres-bar/progres-bar.component';
 
 //pipes
 import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
@@ -22,12 +26,15 @@ import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
         CommonModule,
         TruckRoutingModule,
         AngularSvgIconModule,
+        NgbModule,
 
         //components
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
-        TruckassistCardsComponent,
+        TaNoteComponent,
+        TableCardDropdownActionsComponent,
+        ProgresBarComponent,
 
         //pipes
         TaThousandSeparatorPipe,

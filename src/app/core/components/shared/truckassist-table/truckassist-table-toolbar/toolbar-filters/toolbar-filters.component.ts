@@ -18,7 +18,7 @@ import { FilterComponent } from '../../../../standalone-components/filter/filter
 import { SpecialFilterComponent } from 'src/app/core/components/standalone-components/special-filter/special-filter.component';
 
 //Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 //Pipe
 import { moneyFilterPipe } from 'src/app/core/pipes/moneyFilter.pipe';

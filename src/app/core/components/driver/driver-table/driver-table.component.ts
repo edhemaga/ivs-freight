@@ -71,16 +71,13 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data.model';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Constants
-import {
-    TableDriverColorsConstants,
-    TableDropdownDriverComponentConstants,
-} from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Helpers
 import {
@@ -111,9 +108,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public applicantTabActive: boolean = false;
     public activeTableData: DataForCardsAndTables;
     public driverBackFilterQuery: FilterOptionDriver =
-        TableDropdownDriverComponentConstants.DRIVER_BACK_FILTER;
+        TableDropdownComponentConstants.DRIVER_BACK_FILTER;
     public applicantBackFilterQuery: FilterOptionApplicant =
-        TableDropdownDriverComponentConstants.APPLICANT_BACK_FILTER;
+        TableDropdownComponentConstants.APPLICANT_BACK_FILTER;
     public resizeObserver: ResizeObserver;
     public mapingIndex: number = 0;
     public isSearching: boolean = false;
@@ -1187,15 +1184,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownApplicantContent(): DropdownItem[] {
-        return TableDropdownDriverComponentConstants.DROPDOWN_APPLICANT;
+        return TableDropdownComponentConstants.DROPDOWN_APPLICANT;
     }
 
     // Get Avatar Color
     private getAvatarColors(): AvatarColors {
-        const textColors: string[] = TableDriverColorsConstants.TEXT_COLORS;
+        const textColors: string[] =
+            TableDropdownComponentConstants.TEXT_COLORS;
 
         const backgroundColors: string[] =
-            TableDriverColorsConstants.BACKGROUND_COLORS;
+            TableDropdownComponentConstants.BACKGROUND_COLORS;
 
         this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 

@@ -10,6 +10,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Models
 import {
@@ -24,7 +25,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/cardTableData';
+} from '../../shared/model/card-table-data.model';
 import {
     CardRows,
     Search,
@@ -55,13 +56,13 @@ import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 // Constants
-import { TableDropdownLoadComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Utils
@@ -91,7 +92,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = false;
     public activeTableData: DataForCardsAndTables;
     public backLoadFilterQuery: FilterOptionsLoad =
-        TableDropdownLoadComponentConstants.LOAD_BACK_FILTER;
+        TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
     //Data to display from model
     public displayRowsFrontTemplate: CardRows[] =
@@ -101,9 +102,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         DisplayLoadConfiguration.displayRowsBackTemplate;
 
     public displayRowsFront: CardRows[] =
-        DisplayLoadConfiguration.displayRowsFront;
+        DisplayLoadConfiguration.displayRowsFrontPending;
     public displayRowsBack: CardRows[] =
-        DisplayLoadConfiguration.displayRowsBack;
+        DisplayLoadConfiguration.displayRowsBackPending;
+
+    public displayRowsBackActive: CardRows[] =
+        DisplayLoadConfiguration.displayRowsBackActive;
 
     public displayRowsFrontClosed: CardRows[] =
         DisplayLoadConfiguration.displayRowsFrontClosed;
@@ -127,6 +131,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private modalService: ModalService,
         private loadServices: LoadTService,
+        private tableDropdownService: TableCardDropdownActionsService,
         private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
@@ -158,6 +163,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setTableFilter();
 
         this.commentsUpdate();
+
+        this.onDropdownActions();
     }
 
     ngAfterViewInit(): void {
@@ -602,17 +609,28 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             // Set data for active tab
-            this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontTemplate),
-                  (this.sendDataToCardsBack = this.displayRowsBackTemplate),
-                  (this.cardTitle = ConstantStringTableComponentsEnum.NAME_1))
-                : this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
-                ? ((this.sendDataToCardsFront = this.displayRowsFrontClosed),
-                  (this.sendDataToCardsBack = this.displayRowsBackClosed))
-                : ((this.sendDataToCardsFront = this.displayRowsFront),
-                  (this.sendDataToCardsBack = this.displayRowsBack),
-                  (this.cardTitle =
-                      ConstantStringTableComponentsEnum.LOAD_INVOICE));
+            if (
+                this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
+            ) {
+                this.sendDataToCardsFront = this.displayRowsFrontTemplate;
+                this.sendDataToCardsBack = this.displayRowsBackTemplate;
+                this.cardTitle = ConstantStringTableComponentsEnum.NAME_1;
+            } else if (
+                this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
+            ) {
+                this.sendDataToCardsFront = this.displayRowsFrontClosed;
+                this.sendDataToCardsBack = this.displayRowsBackClosed;
+            } else if (
+                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            ) {
+                this.sendDataToCardsFront = this.displayRowsFront;
+                this.sendDataToCardsBack = this.displayRowsBackActive;
+                this.cardTitle = ConstantStringTableComponentsEnum.LOAD_INVOICE;
+            } else {
+                this.sendDataToCardsFront = this.displayRowsFront;
+                this.sendDataToCardsBack = this.displayRowsBack;
+                this.cardTitle = ConstantStringTableComponentsEnum.LOAD_INVOICE;
+            }
 
             // Get Tab Table Data For Selected Tab
             this.getSelectedTabTableData();
@@ -640,20 +658,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapLoadData(data: LoadModel): LoadModel {
-        const commentsWithAvatarColor = Object.values(data?.comments).map(
-            (comment) => {
-                this.mapingIndex++;
-                return {
-                    ...comment,
-                    avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
-                        this.mapingIndex
-                    ),
-                    textShortName: this.nameInitialsPipe.transform(
-                        comment.companyUser.fullName
-                    ),
-                };
-            }
-        );
+        let commentsWithAvatarColor;
+
+        if (data.comments) {
+            commentsWithAvatarColor = Object.values(data?.comments).map(
+                (comment) => {
+                    this.mapingIndex++;
+                    return {
+                        ...comment,
+                        avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                            this.mapingIndex
+                        ),
+                        textShortName: this.nameInitialsPipe.transform(
+                            comment.companyUser.fullName
+                        ),
+                    };
+                }
+            );
+        }
 
         return {
             ...data,
@@ -795,7 +817,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownLoadContent(): DropdownItem[] {
-        return TableDropdownLoadComponentConstants.DROPDOWN_DATA;
+        return TableDropdownComponentConstants.DROPDOWN_DATA;
     }
 
     private getTabData(dataType: string): LoadActiveState {
@@ -937,6 +959,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.sendLoadData();
             }
         }
+    }
+
+    public onDropdownActions(): void {
+        this.tableDropdownService.openModal$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.onTableBodyActions(res);
+            });
     }
 
     private onTableBodyActions(event: { type: string; id?: number }): void {

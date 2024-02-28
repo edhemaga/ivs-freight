@@ -2448,7 +2448,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/cdlcard/`;
+        let localVarPath = `/api/applicant/cdlcard/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<MvrAuthFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -5200,7 +5200,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/ownerinfo/company/`;
+        let localVarPath = `/api/applicant/ownerinfo/company/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<CompanyOwnerInfoFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -7340,7 +7340,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/ssn/`;
+        let localVarPath = `/api/applicant/ssn/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<MvrAuthFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

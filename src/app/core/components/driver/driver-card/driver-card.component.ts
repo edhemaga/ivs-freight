@@ -1,17 +1,15 @@
-import { DriverTService } from './../state/driver.service';
-import {
-    Component,
-    OnInit,
-    Input,
-    OnDestroy,
-    ChangeDetectorRef,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
+
+// model
+import { CardDetails } from '../../shared/model/card-table-data.model';
+import { CardRows } from '../../shared/model/cardData';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// helpers
+import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 @Component({
     selector: 'app-driver-card',
@@ -19,64 +17,46 @@ import { ImageBase64Service } from '../../../utils/base64.image';
     styleUrls: ['./driver-card.component.scss'],
 })
 export class DriverCardComponent implements OnInit, OnDestroy {
+    // All data
+    @Input() viewData: CardDetails[];
+    @Input() selectedTab: string;
+
+    @Input() cardTitle: string;
+    @Input() displayRowsFront: CardRows;
+    @Input() displayRowsBack: CardRows;
+
     private destroy$ = new Subject<void>();
-    @Input() viewData: any;
-    public selectedData: any;
+    public isAllCardsFlipp: boolean = false;
 
-    constructor(
-        private driverService: DriverTService,
-        private notificationService: NotificationService,
-        private detailsPageDriverService: DetailsPageService,
-        private driverDetailsQuery: DriversDetailsQuery,
-        private cdRef: ChangeDetectorRef,
-        private router: Router,
-        private imageBase64Service: ImageBase64Service
-    ) {}
+    public valueByStringPathInstance = new ValueByStringPath();
 
-    ngOnInit(): void {
-        this.detailsPageDriverService.pageDetailChangeId$
+    public isCardFlippedCheckInCards: number[] = [];
+
+    constructor(private tableService: TruckassistTableService) {}
+
+    ngOnInit() {
+        this.flipAllCards();
+    }
+
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                this.driverDetailsQuery
-                    .selectEntity(id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: any) => {
-                            this.selectedData = res;
-                            if (this.router.url.includes('details')) {
-                                this.router.navigate([
-                                    `/driver/${res.id}/details`,
-                                ]);
-                            }
-        
-                            this.cdRef.detectChanges();
-                        },
-                        error: () => {
-                        
-                        },
-                    });
+            .subscribe((res) => {
+                this.isAllCardsFlipp = res;
             });
-        this.transformImage();
     }
-    public transformImage() {
-        return this.imageBase64Service.sanitizer(
-            this.viewData.avatar
-                ? this.viewData.avatar
-                : 'assets/svg/common/ic_no_avatar_driver.svg'
-        );
-    }
-    changeChatBox(e: number) {
-        this.driverService
-            .getDriverById(e)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (x) => (this.selectedData = x),
-                (err) => console.error(err)
-            );
 
-        //this.driverBox[indx].checked = e.target.checked;
+    // Flip card based on card index
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards =
+            this.valueByStringPathInstance.flipCard(index);
     }
-    ngOnDestroy(): void {
+
+    public trackCard(id: number): number {
+        return id;
+    }
+
+    ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }

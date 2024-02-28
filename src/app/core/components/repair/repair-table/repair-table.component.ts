@@ -13,9 +13,12 @@ import { Router } from '@angular/router';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { RepairTService } from '../state/repair.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
@@ -35,13 +38,16 @@ import {
     RepairBackFilterModal,
     ShopBackFilterModal,
     ShopbBckFilterQueryInterface,
-} from '../repair.modal';
+} from '../../../model/repair.model';
 import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
 import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
-import { DropdownItem, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    DropdownItem,
+    ToolbarActions,
+} from '../../shared/model/card-table-data.model';
 
 // Store
 import { ShopQuery } from '../state/shop-state/shop.query';
@@ -61,10 +67,10 @@ import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Constants
-import { TableRepair } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Animations
 import {
@@ -96,7 +102,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public columns: TableColumnConfig[] = [];
     public selectedTab: ConstantStringTableComponentsEnum | string =
         ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
     public repairShops: ShopState[] = [];
@@ -105,10 +111,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public repairShopTabClicked: boolean = false;
     public activeTableData: string;
     public backFilterQuery: RepairBackFilterModal =
-        TableRepair.BACK_FILTER_QUERY;
+        TableDropdownComponentConstants.REPAIR_BACK_FILTER_QUERY;
 
     public shopFilterQuery: ShopbBckFilterQueryInterface =
-        TableRepair.SHOP_FILTER_QUERY;
+        TableDropdownComponentConstants.SHOP_FILTER_QUERY;
 
     public mapListData: MapList[] = [];
 
@@ -179,6 +185,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.repair();
 
         this.getSelectedTabTableData();
+
+        this.confiramtionSubscribe();
+    }
+
+    private confiramtionSubscribe(): void {
+        this.confiramtionService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: Confirmation) => {
+                if (res.template === ConstantStringTableComponentsEnum.INFO)
+                    this.changeRepairShopStatus(res.data);
+            });
+    }
+
+    public changeRepairShopStatus(data): void {
+        this.repairService.changeShopStatus(data.id);
     }
 
     ngAfterViewInit(): void {
@@ -856,8 +877,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableBankDetailsAccount: data?.account
                 ? data.account
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableRepairCountBill: ConstantStringTableComponentsEnum.NA,
-            tableRepairCountOrder: data?.order
+            TableDropdownComponentConstantsCountBill:
+                ConstantStringTableComponentsEnum.NA,
+            TableDropdownComponentConstantsCountOrder: data?.order
                 ? this.thousandSeparator.transform(data.order)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopRaiting: {
@@ -906,12 +928,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Get Repair Dropdown Content
     private getRepairDropdownContent(): DropdownItem[] {
-        return TableRepair.DROPDOWN_REPAIR;
+        return TableDropdownComponentConstants.DROPDOWN_REPAIR;
     }
 
     // Get Repair Dropdown Content
     private getShopDropdownContent(): DropdownItem[] {
-        return TableRepair.DROPDOWN_SHOP;
+        return TableDropdownComponentConstants.DROPDOWN_SHOP;
     }
 
     // Repair Back Filters
@@ -1193,7 +1215,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // Table Body Actions
     public onTableBodyActions(event: BodyResponseRepair): void {
         // Show More
-
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             if (
                 this.selectedTab !==
@@ -1216,7 +1237,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // Edit
-        else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        else if (
+            event.type === ConstantStringTableComponentsEnum.EDIT ||
+            event.type === ConstantStringTableComponentsEnum.WRITE_REVIEW
+        ) {
             switch (this.selectedTab) {
                 case ConstantStringTableComponentsEnum.ACTIVE: {
                     this.modalService.openModal(
@@ -1244,13 +1268,30 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.modalService.openModal(
                         RepairShopModalComponent,
                         { size: ConstantStringTableComponentsEnum.SMALL },
-                        event
+                        {
+                            ...event,
+                            openedTab:
+                                event.type ===
+                                ConstantStringTableComponentsEnum.ADD_CONTRACT
+                                    ? ConstantStringTableComponentsEnum.CONTRACT
+                                    : event.type ===
+                                      ConstantStringTableComponentsEnum.WRITE_REVIEW
+                                    ? ConstantStringTableComponentsEnum.REVIEW
+                                    : ConstantStringTableComponentsEnum.DETAILS,
+                        }
                     );
                     break;
                 }
             }
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.VIEW_DETAILS
+        ) {
+            if (
+                this.selectedTab ===
+                ConstantStringTableComponentsEnum.REPAIR_SHOP
+            )
+                this.router.navigate([`/list/repair/${event.id}/shop-details`]);
         }
-
         // Delete
         else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_REPAIR ||
@@ -1311,8 +1352,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
                     break;
             }
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.CLOSE_BUSINESS
+        ) {
+            const mappedEvent = {
+                ...event,
+                type:
+                    !event.data.status && event.data.status == 0
+                        ? ConstantStringTableComponentsEnum.OPEN
+                        : ConstantStringTableComponentsEnum.CLOSE,
+            };
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    template: ConstantStringTableComponentsEnum.INFO,
+                    subType: 'repair shop',
+                    subTypeStatus: ConstantStringTableComponentsEnum.BUSINESS,
+                }
+            );
         }
-
         // Finish Order
         else if (
             event.type === ConstantStringTableComponentsEnum.FINISH_ORDER

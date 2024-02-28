@@ -506,8 +506,6 @@
                                                     type: 'text',
                                                     mask: '(000) 000-0000',
                                                     maxLength: 14,
-                                                    hideErrorMessage: true,
-                                                    blackInput: true,
                                                     hideRequiredCheck: true
                                                 }"
                                             ></app-ta-input>
@@ -519,8 +517,6 @@
                                                     type: 'text',
                                                     minLength: 1,
                                                     maxLength: 8,
-                                                    hideErrorMessage: true,
-                                                    blackInput: true,
                                                     hideRequiredCheck: true
                                                 }"
                                             ></app-ta-input>
@@ -533,8 +529,6 @@
                                                     minLength: 5,
                                                     maxLength: 64,
                                                     textTransform: 'lowercase',
-                                                    hideErrorMessage: true,
-                                                    blackInput: true,
                                                     hideRequiredCheck: true
                                                 }"
                                             ></app-ta-input>
@@ -918,7 +912,7 @@
                                         </p>
 
                                         <app-ta-tab-switch
-                                            [tabs]="prefferedLoadBtns"
+                                            [tabs]="prefferedLoadTabs"
                                             (switchClicked)="
                                                 onPrefferedLoadCheck($event)
                                             "
@@ -935,7 +929,7 @@
                                         </p>
 
                                         <app-ta-tab-switch
-                                            [tabs]="fleetTypeBtns"
+                                            [tabs]="fleetTypeTabs"
                                             (switchClicked)="
                                                 onFleetTypeCheck($event)
                                             "

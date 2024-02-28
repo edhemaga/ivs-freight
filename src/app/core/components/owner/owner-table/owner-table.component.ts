@@ -4,20 +4,34 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Components
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Models
-import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
+import { GetOwnerListResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
-import { GridColumn, ToolbarActions } from '../../shared/model/cardTableData';
+import {
+    DropdownItem,
+    GridColumn,
+    ToolbarActions,
+} from '../../shared/model/card-table-data.model';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+import {
+    MapOwnerData,
+    OwnerBackFilterFilter,
+    OwnerBodyResponse,
+} from '../owner.modal';
+import { CardRows } from '../../shared/model/cardData';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../state/owner.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
@@ -28,18 +42,18 @@ import {
     OwnerInactiveStore,
 } from '../state/owner-inactive-state/owner-inactive.store';
 
+//Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
 // Pipes
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
-import { TableOwner } from 'src/app/core/utils/constants/table-components.constants';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
-import {
-    MapOwnerData,
-    OwnerBackFilterFilter,
-    OwnerBodyResponse,
-} from '../owner.modal';
+
+//Constants
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 import { DisplayOwnerConfiguration } from '../owner-card-data';
-import { CardRows } from '../../shared/model/cardData';
+
+//helpers
+import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
 
 @Component({
     selector: 'app-owner-table',
@@ -60,7 +74,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private ownerActive: OwnerActiveState[] = [];
     private ownerInactive: OwnerInactiveState[] = [];
     private inactiveTabClicked: boolean = false;
-    private backFilterQuery = TableOwner.BACKFILTER_QUERY;
+    private backFilterQuery =
+        TableDropdownComponentConstants.OWNER_BACKFILTER_QUERY;
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
@@ -86,7 +101,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
         private phonePipe: formatPhonePipe,
-        private ownerInactiveStore: OwnerInactiveStore
+        private ownerInactiveStore: OwnerInactiveStore,
+        private confirmationService: ConfirmationService,
+        private sharedService: SharedService
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -106,6 +123,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRows();
 
         this.ownerActions();
+
+        this.confirmationSubscribe();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -143,6 +162,57 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         return col;
                     });
                 }
+            });
+    }
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                switch (res.type) {
+                    case ConstantStringTableComponentsEnum.DELETE:
+                        this.deleteOwnerById(res.id);
+                        break;
+
+                    case ConstantStringTableComponentsEnum.ACTIVATE:
+                        this.changeOwnerStatus(res.data);
+                        break;
+
+                    case ConstantStringTableComponentsEnum.DEACTIVATE:
+                        this.changeOwnerStatus(res.data);
+                        break;
+
+                    default:
+                        break;
+                }
+            });
+    }
+    private changeOwnerStatus(data): void {
+        this.ownerService
+            .updateOwner(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+    private deleteOwnerById(id: number): void {
+        this.ownerService
+            .deleteOwnerById(id, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((owner) => {
+                    if (owner.id === id)
+                        owner.actionAnimation =
+                            ConstantStringTableComponentsEnum.DELETE;
+
+                    return owner;
+                });
+
+                this.sendOwnerData();
+
+                const interval = setInterval(() => {
+                    this.viewData = closeAnimationAction(true, this.viewData);
+
+                    clearInterval(interval);
+                }, 900);
             });
     }
 
@@ -590,8 +660,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    private getDropdownOwnerContent() {
-        return TableOwner.DROPDOWN_OWNER_CONTENT;
+    private getDropdownOwnerContent(): DropdownItem[] {
+        return getDropdownOwnerContent(this.selectedTab);
     }
 
     private getTabData(dataType: string) {
@@ -732,8 +802,21 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.ownerBackFilter(this.backFilterQuery, true);
         } else if (
-            event.type === ConstantStringTableComponentsEnum.EDIT_OWNER
+            event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
         ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.OWNER,
+                    type: event.data.isSelected
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
+        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
             this.modalService.openModal(
                 OwnerModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },
@@ -744,12 +827,14 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         } else if (
-            event.type === ConstantStringTableComponentsEnum.DELETE_OWNER
+            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
         ) {
             this.ownerService
                 .deleteOwnerById(event.id, this.selectedTab)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe();
+                .subscribe(() => {
+                    this.sendOwnerData();
+                });
         }
     }
 

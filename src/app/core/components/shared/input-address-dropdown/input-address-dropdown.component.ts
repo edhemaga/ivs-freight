@@ -255,6 +255,8 @@ export class InputAddressDropdownComponent
                 isValid = this.checkAddressValidation(
                     this.activeAddress?.address
                 );
+
+                if (!isValid) this.getSuperControl.setErrors({ invalid: true });
             }
             if (!this.requestSent && isValid) {
                 this.getSuperControl.setErrors({ invalid: true });

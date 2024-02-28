@@ -26,10 +26,10 @@ import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/se
 
 //enums
 import { ContractComponentEnum } from '../state/enum/contract-string.enum';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // constants
-import { TableContacts } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //model
 import {
@@ -48,7 +48,7 @@ import {
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
-import { DropdownItem } from '../../shared/model/cardTableData';
+import { DropdownItem } from '../../shared/model/card-table-data.model';
 import { CardRows } from '../../shared/model/cardData';
 
 // data for cards
@@ -501,13 +501,15 @@ export class ContactsTableComponent
         };
     }
     public getDropdownContactContent(): DropdownItem[] {
-        return TableContacts.DROPDOWN_CONTACTS_CONTENT;
+        return TableDropdownComponentConstants.DROPDOWN_CONTACTS_CONTENT;
     }
     // Get Avatar Color
     public getAvatarColors(): { background: string; color: string } {
-        const textColors: string[] = TableContacts.TEXT_COLORS;
+        const textColors: string[] =
+            TableDropdownComponentConstants.TEXT_COLORS;
 
-        const backgroundColors: string[] = TableContacts.BACKGROUND_COLORS;
+        const backgroundColors: string[] =
+            TableDropdownComponentConstants.BACKGROUND_COLORS;
 
         this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 

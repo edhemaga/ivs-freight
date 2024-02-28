@@ -1,6 +1,6 @@
 import { TrailerResponse } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enums';
-import { DropdownItem } from '../shared/model/cardTableData';
+import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enum';
+import { DropdownItem } from '../shared/model/card-table-data.model';
 
 export interface BodyResponseTrailer {
     data?: TrailerResponse;
