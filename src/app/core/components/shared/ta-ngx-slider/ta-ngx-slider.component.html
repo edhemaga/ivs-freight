@@ -1,33 +1,37 @@
-<div [ngSwitch]="sliderTemplate">
-    <div *ngSwitchCase="'commission'">
+<ng-container [ngSwitch]="sliderTemplate">
+    <ng-container *ngSwitchCase="'commission'">
         <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
             <p class="custom-slider-text">{{ sliderName }}</p>
             <ngx-slider
+                #slider
                 [options]="sliderOptions"
                 [(value)]="startedValue"
                 (userChangeEnd)="userChangeEnd($event)"
             ></ngx-slider>
         </div>
-    </div>
-    <div *ngSwitchCase="'logo-change'">
+    </ng-container>
+    <ng-container *ngSwitchCase="'logo-change'">
         <div class="ta-ngx-slider custom-slider-logo-change {{ customClass }}">
             <ngx-slider
+                #slider
                 [options]="sliderOptions"
                 [(value)]="startedValue"
                 (valueChange)="valueChange($event)"
             ></ngx-slider>
         </div>
-    </div>
-    <div *ngSwitchCase="'hos-change'">
+    </ng-container>
+    <ng-container *ngSwitchCase="'hos-change'">
         <ngx-slider
+            #slider
             [options]="sliderOptions"
             [(value)]="startedValue"
             (userChangeEnd)="userChangeEnd($event)"
         ></ngx-slider>
-    </div>
-    <div *ngSwitchCase="'range-slider'" class="range-slider-holder">
+    </ng-container>
+    <ng-container *ngSwitchCase="'range-slider'" class="range-slider-holder">
         <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
             <ngx-slider
+                #slider
                 [(value)]="minValue"
                 [(highValue)]="maxValue"
                 [options]="sliderOptions"
@@ -35,5 +39,5 @@
                 (highValueChange)="highValueChange($event)"
             ></ngx-slider>
         </div>
-    </div>
-</div>
+    </ng-container>
+</ng-container>

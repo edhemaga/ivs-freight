@@ -60,9 +60,11 @@
                         {{ editName }}
                     </h5>
 
-                    <h5 class="edit-name">
-                        {{ cardsSecTitle }}
-                    </h5>
+                    <ng-container *ngIf="cardsModal">
+                        <h5 class="edit-name">
+                            {{ cardsSecTitle }}
+                        </h5>
+                    </ng-container>
                 </div>
 
                 <div class="modal-header-rightside">
