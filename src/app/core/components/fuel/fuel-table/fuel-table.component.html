@@ -26,10 +26,6 @@
         ></app-truckassist-table-body>
     </ng-container>
 
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <app-truckassist-cards [viewData]="viewData"></app-truckassist-cards>
-    </ng-container>
-
     <ng-container *ngIf="activeViewMode === 'Map'">
         <div class="customer-map-container">
             <app-map-list

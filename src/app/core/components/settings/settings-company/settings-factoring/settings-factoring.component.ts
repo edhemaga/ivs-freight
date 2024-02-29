@@ -83,7 +83,7 @@ export class SettingsFactoringComponent
             ConfirmationModalComponent,
             { size: 'small' },
             {
-                id: this.companyStore.getValue().ids[0],
+                id: this.factoringData.id,
                 template: 'factoring',
                 type: 'delete',
                 image: false,

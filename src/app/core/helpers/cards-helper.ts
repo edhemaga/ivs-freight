@@ -1,7 +1,7 @@
 // model
 import { CardDetails } from '../components/shared/model/card-table-data.model';
 // enums
-import { ConstantStringTableComponentsEnum } from '../utils/enums/table-components.enums';
+import { ConstantStringTableComponentsEnum } from '../utils/enums/table-components.enum';
 
 // pipes
 import { formatCurrency } from '../pipes/formatCurrency.pipe';

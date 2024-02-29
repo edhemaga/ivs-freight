@@ -94,11 +94,11 @@ export class SettingsCompanyService implements OnDestroy {
     // Main Company
     public updateCompany(data: UpdateCompanyCommand): Observable<object> {
         return this.settingService.apiCompanyPut(data).pipe(
-            tap((y) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.companyStore.update(
                                 ({ id }) => id === company.id,
@@ -142,7 +142,7 @@ export class SettingsCompanyService implements OnDestroy {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             const companiesCount = JSON.parse(
                                 localStorage.getItem('companiesCount')
                             );
@@ -177,7 +177,7 @@ export class SettingsCompanyService implements OnDestroy {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
@@ -202,7 +202,7 @@ export class SettingsCompanyService implements OnDestroy {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             const companiesCount = JSON.parse(
                                 localStorage.getItem('companiesCount')
                             );
@@ -228,11 +228,11 @@ export class SettingsCompanyService implements OnDestroy {
 
     public deleteInsurancePolicyById(id: number): Observable<any> {
         return this.settingService.apiCompanyInsurancepolicyIdDelete(id).pipe(
-            tap((r) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.tableService.sendActionAnimation({
                                 animation: 'delete',
                                 data: company,
@@ -253,7 +253,7 @@ export class SettingsCompanyService implements OnDestroy {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
                                 animation: 'add',
@@ -275,7 +275,7 @@ export class SettingsCompanyService implements OnDestroy {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
@@ -299,11 +299,11 @@ export class SettingsCompanyService implements OnDestroy {
         data: UpdateFactoringCompanyCommand
     ): Observable<object> {
         return this.settingService.apiCompanyFactoringcompanyPut(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
@@ -320,11 +320,11 @@ export class SettingsCompanyService implements OnDestroy {
 
     public deleteFactoringCompanyById(id: number): Observable<any> {
         return this.settingService.apiCompanyFactoringcompanyIdDelete(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (company: CompanyResponse | any) => {
+                        next: (company: CompanyResponse) => {
                             this.tableService.sendActionAnimation({
                                 animation: 'delete',
                                 data: company,

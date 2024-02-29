@@ -363,6 +363,24 @@
                 }
             }
 
+            .flipped-cards {
+                svg {
+                    transform: rotate(180deg);
+                    path {
+                        fill: $ta-blue-13;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-blue-19;
+                            transition: fill 0.3s;
+                        }
+                    }
+                }
+            }
+
             .active-option {
                 .text {
                     font-weight: bold;
