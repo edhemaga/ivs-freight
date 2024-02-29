@@ -125,7 +125,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() mapRouteModal: boolean = false;
     @Input() resetMapVisibility: boolean = false;
     @Input() showCounter: boolean = false;
-    @Input() cardsModal: boolean = false;
+    @Input() isCardsModal: boolean = false;
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -200,10 +200,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     this.dragDrop();
                 }
             });
-    }
-
-    ngOnChanges() {
-        console.log(this.editName);
     }
 
     public dragOver() {

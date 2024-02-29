@@ -1,24 +1,267 @@
 <app-ta-modal
     [modalTitle]="'Columns'"
-    [cardsSecTitle]="'Driver | Active'"
-    cardsModal="true"
+    [cardsSecTitle]="'Load | Pending'"
+    isCardsModal="true"
 >
     <div origin>
-        <!-- <form [formGroup]="radioButtonsForm" class="form-container">
-            <label>
-                <input type="radio" formControlName="option" value="3" /> 3
-            </label>
-            <label>
-                <input type="radio" formControlName="option" value="4" /> 4
-            </label>
-            <label>
-                <input type="radio" formControlName="option" value="5" /> 5
-            </label>
-            <label>
-                <input type="radio" formControlName="option" value="6" /> 6
-            </label>
-        </form>
+        <!-- Number of rows -->
+        <form [formGroup]="Cardsform">
+            <div class="d-flex justify-content-between form-holder modal-cards">
+                <div class="ta-font-extra-bold title-card-modal">
+                    No. of Rows
+                </div>
+                <div class="form-radio-btns d-flex">
+                    <label class="d-flex align-items-center radio-label">
+                        <input
+                            type="radio"
+                            formControlName="option"
+                            [value]="3"
+                            class="radio-input"
+                        />
+                        <span class="ta-font-semi-bold radio-span"> 3 </span>
+                    </label>
 
-        {{ radioButtonsForm.get('option').value }} -->
+                    <label class="d-flex align-items-center radio-label">
+                        <input
+                            type="radio"
+                            formControlName="option"
+                            [value]="4"
+                            class="radio-input"
+                        />
+                        <span class="ta-font-semi-bold radio-span"> 4 </span>
+                    </label>
+
+                    <label class="d-flex align-items-center radio-label">
+                        <input
+                            type="radio"
+                            formControlName="option"
+                            [value]="5"
+                            class="radio-input"
+                        />
+                        <span class="ta-font-semi-bold radio-span"> 5 </span>
+                    </label>
+
+                    <label class="d-flex align-items-center radio-label">
+                        <input
+                            type="radio"
+                            formControlName="option"
+                            [value]="6"
+                            class="radio-input"
+                        />
+                        <span class="ta-font-semi-bold radio-span"> 6 </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider"></div>
+
+            <!-- Front Side -->
+            <div class="modal-cards">
+                <!-- For Front side of cards -->
+                <div class="front-side-body">
+                    <div class="ta-font-extra-bold title-card-modal">
+                        Front Side
+                    </div>
+
+                    <div class="d-grid inputs-holder">
+                        <div>
+                            <span class="input-title ta-font-semi-bold"
+                                >1st</span
+                            >
+
+                            <app-ta-input-dropdown-table
+                                [type]="'cards-modal'"
+                                [dataCardModal]="cardsAllData"
+                                [defaultValue]="cardsAllData[0]"
+                                [formControl]="'selectedTitle'"
+                            >
+                            </app-ta-input-dropdown-table>
+                        </div>
+
+                        <div>
+                            <span class="input-title ta-font-semi-bold"
+                                >2nd</span
+                            >
+
+                            <app-ta-input-dropdown-table
+                                [type]="'cards-modal'"
+                                [dataCardModal]="cardsAllData"
+                                [defaultValue]="cardsAllData[1]"
+                                [formControl]="'selectedTitle'"
+                            >
+                            </app-ta-input-dropdown-table>
+                        </div>
+
+                        <div>
+                            <span class="input-title ta-font-semi-bold"
+                                >3rd</span
+                            >
+
+                            <app-ta-input-dropdown-table
+                                [type]="'cards-modal'"
+                                [dataCardModal]="cardsAllData"
+                                [defaultValue]="cardsAllData[2]"
+                                [formControl]="'selectedTitle'"
+                            >
+                            </app-ta-input-dropdown-table>
+                        </div>
+
+                        <ng-container *ngIf="numberOfRows > 3">
+                            <div>
+                                <span class="input-title ta-font-semi-bold"
+                                    >4th</span
+                                >
+
+                                <app-ta-input-dropdown-table
+                                    [type]="'cards-modal'"
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="cardsAllData[3]"
+                                    [formControl]="'selectedTitle'"
+                                >
+                                </app-ta-input-dropdown-table>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="numberOfRows > 4">
+                            <div>
+                                <span class="input-title ta-font-semi-bold"
+                                    >5th</span
+                                >
+
+                                <app-ta-input-dropdown-table
+                                    [type]="'cards-modal'"
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="null"
+                                    [emptyValue]="'5th'"
+                                    [formControl]="'selectedTitle'"
+                                >
+                                </app-ta-input-dropdown-table>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="numberOfRows > 5">
+                            <div>
+                                <span class="input-title ta-font-semi-bold"
+                                    >6th</span
+                                >
+
+                                <app-ta-input-dropdown-table
+                                    [type]="'cards-modal'"
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="null"
+                                    [emptyValue]="'6th'"
+                                    [formControl]="'selectedTitle'"
+                                >
+                                </app-ta-input-dropdown-table>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider"></div>
+
+                <!-- For Back side of cards -->
+                <div class="back-side-body">
+                    <div class="checkbox-modal">
+                        <app-ta-checkbox
+                            formControlName="checked"
+                            [label]="'Back Side'"
+                        ></app-ta-checkbox>
+                    </div>
+
+                    <ng-container *ngIf="Cardsform.get('checked').value">
+                        <div class="d-grid inputs-holder">
+                            <div>
+                                <span class="input-title ta-font-semi-bold"
+                                    >1st</span
+                                >
+
+                                <app-ta-input-dropdown-table
+                                    [type]="'cards-modal'"
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="cardsAllData[0]"
+                                >
+                                </app-ta-input-dropdown-table>
+                            </div>
+
+                            <div>
+                                <span class="input-title ta-font-semi-bold"
+                                    >2nd</span
+                                >
+
+                                <app-ta-input-dropdown-table
+                                    [type]="'cards-modal'"
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="cardsAllData[1]"
+                                >
+                                </app-ta-input-dropdown-table>
+                            </div>
+
+                            <div>
+                                <span class="input-title ta-font-semi-bold"
+                                    >3rd</span
+                                >
+
+                                <app-ta-input-dropdown-table
+                                    [type]="'cards-modal'"
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="cardsAllData[2]"
+                                >
+                                </app-ta-input-dropdown-table>
+                            </div>
+
+                            <ng-container *ngIf="numberOfRows > 3">
+                                <div>
+                                    <span class="input-title ta-font-semi-bold"
+                                        >4th</span
+                                    >
+
+                                    <app-ta-input-dropdown-table
+                                        [type]="'cards-modal'"
+                                        [dataCardModal]="cardsAllData"
+                                        [defaultValue]="cardsAllData[3]"
+                                    >
+                                    </app-ta-input-dropdown-table>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="numberOfRows > 4">
+                                <div>
+                                    <span class="input-title ta-font-semi-bold"
+                                        >5th</span
+                                    >
+
+                                    <app-ta-input-dropdown-table
+                                        [type]="'cards-modal'"
+                                        [dataCardModal]="cardsAllData"
+                                        [defaultValue]="null"
+                                        [emptyValue]="'5th'"
+                                    >
+                                    </app-ta-input-dropdown-table>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="numberOfRows > 5">
+                                <div>
+                                    <span class="input-title ta-font-semi-bold"
+                                        >6th</span
+                                    >
+
+                                    <app-ta-input-dropdown-table
+                                        [type]="'cards-modal'"
+                                        [dataCardModal]="cardsAllData"
+                                        [defaultValue]="null"
+                                        [emptyValue]="'6th'"
+                                    >
+                                    </app-ta-input-dropdown-table>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </form>
     </div>
 </app-ta-modal>

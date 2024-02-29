@@ -60,7 +60,7 @@
                         {{ editName }}
                     </h5>
 
-                    <ng-container *ngIf="cardsModal">
+                    <ng-container *ngIf="isCardsModal">
                         <h5 class="edit-name">
                             {{ cardsSecTitle }}
                         </h5>
@@ -144,7 +144,9 @@
 
             <!-- Divider top -->
 
-            <div *ngIf="topDivider" class="divider"></div>
+            <ng-container *ngIf="topDivider">
+                <div class="divider"></div>
+            </ng-container>
             <!-- Modal body -->
 
             <div class="modal-body">
@@ -306,12 +308,13 @@
                             *ngIf="
                                 loadModalTemplate &&
                                 !isConvertedToTemplate &&
-                                !editData
+                                !editData &&
+                                !isCardsModal
                             "
                         >
                             <button
                                 (click)="onAction('convert-to-template')"
-                                class="d-flex align-items-center ta-font-bold"
+                                class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
                                 type="button"
                             >
                                 Convert to Template
@@ -452,7 +455,7 @@
                             !mapSettingsModal &&
                             !mapRouteModal &&
                             !isStepper &&
-                            !cardsModal
+                            !isCardsModal
                         "
                     >
                         <button
@@ -495,7 +498,7 @@
 
             <!-- Modal footer for cards -->
 
-            <ng-container *ngIf="cardsModal">
+            <ng-container *ngIf="isCardsModal">
                 <div class="modal-footer d-flex justify-content-between">
                     <!-- Footer Left Side Cards-->
 
@@ -708,13 +711,14 @@
 
         <!-- Modal Additional Part -->
 
-        <div
+        <ng-container
             *ngIf="
                 modalAdditionalPart && (mapVisibility || hazardousVisibility)
             "
-            class="modal-additional-part"
         >
-            <ng-content select="[additional]"></ng-content>
-        </div>
+            <div class="modal-additional-part">
+                <ng-content select="[additional]"></ng-content>
+            </div>
+        </ng-container>
     </div>
 </app-custom-scrollbar>

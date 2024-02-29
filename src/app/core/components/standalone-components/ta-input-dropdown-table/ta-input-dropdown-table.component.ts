@@ -1,12 +1,24 @@
 import { Subject, takeUntil } from 'rxjs';
-import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    Self,
+} from '@angular/core';
 import {
     NgbModule,
     NgbPopoverModule,
     NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -21,6 +33,7 @@ import {
     Rating,
 } from '../../shared/model/card-table-data.model';
 import { Tabs } from '../../shared/model/modal-tabs';
+import { CardRows } from '../../shared/model/cardData';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -39,6 +52,8 @@ import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SharedModule } from '../../shared/shared.module';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -51,6 +66,8 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
         NgbPopoverModule,
         FormsModule,
         SafeHtmlPipe,
+        ReactiveFormsModule,
+        SharedModule,
 
         // Components
         TaCommentComponent,
@@ -60,14 +77,29 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
-export class TaInputDropdownTableComponent implements OnDestroy {
+export class TaInputDropdownTableComponent
+    implements OnDestroy, ControlValueAccessor
+{
     public _data: CardDetails;
+    public filteredData: CardDetails;
     @Input() set data(value: CardDetails) {
         this._data = value;
         this.filteredData = { ...value };
 
         this.cdr.detectChanges();
     }
+
+    public _dataCardsModal: any;
+    public filteredCardsModalData: any;
+    @Input() set dataCardModal(value: any) {
+        this._dataCardsModal = value;
+        this.filteredCardsModalData = value;
+
+        this.cdr.detectChanges();
+    }
+    @Input() defaultValue: CardRows;
+    @Input() emptyValue: boolean;
+
     @Input() svg: string;
 
     @Input() type: string;
@@ -79,8 +111,6 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
     public tooltip: NgbTooltip;
     public dropDownActive: number;
-
-    public filteredData: CardDetails;
 
     public filteredTruckCount: number;
     public filteredTrailerCount: number;
@@ -94,12 +124,27 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
     public loggedUserCommented: boolean;
 
+    public commentHighlight: string;
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
         public imageBase64Service: ImageBase64Service,
-        private cdr: ChangeDetectorRef
-    ) {}
+        private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer,
+        @Self() public superControl: NgControl
+    ) {
+        this.superControl.valueAccessor = this;
+    }
+
+    public writeValue(_: any): void {}
+    public registerOnChange(_: any): void {}
+    public onChange(_: any): void {}
+    public registerOnTouched(_: any): void {}
+
+    get getSuperControl() {
+        return this.superControl.control;
+    }
 
     ngOnInit() {
         if (this.checkForLoggedUser)
@@ -304,6 +349,52 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         }
     }
 
+    public filterArrayCardsModalDropdown(event: KeyboardEvent): void {
+        if (event.target instanceof HTMLInputElement) {
+            const searchTerm = event.target.value.toLowerCase();
+
+            if (searchTerm.length >= 2) {
+                const filteredInModalTitles = this.filterModal(searchTerm);
+
+                this.lattersToHighlight = searchTerm;
+
+                if (!filteredInModalTitles.length) {
+                    this.filteredCardsModalData = this._dataCardsModal;
+                } else {
+                    this.filteredCardsModalData = [...filteredInModalTitles];
+                }
+                console.log(filteredInModalTitles);
+            }
+        }
+    }
+
+    public higlitsPartOfCommentSearchValue(commentTitle: string): string {
+        if (!commentTitle || !this.commentHighlight) return commentTitle;
+
+        const sanitizedHtml = commentTitle.replace(
+            new RegExp(this.commentHighlight, 'gi'),
+            (match) => {
+                return (
+                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
+                    match +
+                    '</span>'
+                );
+            }
+        );
+
+        return this.sanitizer.bypassSecurityTrustHtml(sanitizedHtml) as string;
+    }
+
+    private filterModal(searchString: string): Trucks[] {
+        const filterTrucks = this.filteredCardsModalData.filter((title) =>
+            title.title.toLowerCase().includes(searchString)
+        );
+
+        this.filteredTruckCount = filterTrucks.length;
+
+        return filterTrucks;
+    }
+
     private filterTrucks(searchString: string): Trucks[] {
         const filterTrucks = this.filteredData.trucks.filter((truck) =>
             truck.truckNumber.toLowerCase().includes(searchString)
@@ -344,6 +435,16 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         this.detailsDataService.setNewData(card);
 
         this.router.navigate([link]);
+    }
+
+    public toggleCardsModalDropdown(
+        tooltip: NgbTooltip,
+        card: CardDetails
+    ): void {
+        this.tooltip = tooltip;
+
+        this.dropDownActive = tooltip.isOpen() ? card.id : -1;
+        tooltip.open({ titles: card });
     }
 
     public toggleDropdownComments(
