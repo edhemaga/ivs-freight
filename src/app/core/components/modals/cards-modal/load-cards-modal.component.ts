@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
+    FormControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -44,9 +45,14 @@ export class LoadCardsModalComponent implements OnInit {
 
     public Cardsform: UntypedFormGroup;
 
-    public defaultCardsValues: { numberOfRows: number; checked: boolean } = {
+    public defaultCardsValues: {
+        numberOfRows: number;
+        checked: boolean;
+        selectedTitle: string[];
+    } = {
         numberOfRows: 4,
         checked: true,
+        selectedTitle: [],
     };
 
     public cardsAllData = loadCardsModuleData.allDataLoad;

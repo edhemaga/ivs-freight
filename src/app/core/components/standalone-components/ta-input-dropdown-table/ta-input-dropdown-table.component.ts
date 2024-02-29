@@ -3,8 +3,10 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    EventEmitter,
     Input,
     OnDestroy,
+    Output,
     Self,
 } from '@angular/core';
 import {
@@ -64,8 +66,8 @@ import { SharedModule } from '../../shared/shared.module';
         AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,
-        FormsModule,
         SafeHtmlPipe,
+        FormsModule,
         ReactiveFormsModule,
         SharedModule,
 
@@ -126,6 +128,8 @@ export class TaInputDropdownTableComponent
 
     public commentHighlight: string;
 
+    @Output() valueChanged = new EventEmitter<any>();
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
@@ -137,14 +141,19 @@ export class TaInputDropdownTableComponent
         this.superControl.valueAccessor = this;
     }
 
-    public writeValue(_: any): void {}
-    public registerOnChange(_: any): void {}
-    public onChange(_: any): void {}
-    public registerOnTouched(_: any): void {}
-
     get getSuperControl() {
         return this.superControl.control;
     }
+
+    public writeValue(_: any): void {}
+
+    public registerOnChange(fn: any): void {
+        this.onChange = fn;
+    }
+
+    public onChange(_: any): void {}
+
+    public registerOnTouched(_: any): void {}
 
     ngOnInit() {
         if (this.checkForLoggedUser)

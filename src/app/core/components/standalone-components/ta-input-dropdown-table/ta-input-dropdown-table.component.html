@@ -706,7 +706,12 @@
         <ng-container *ngIf="defaultValue || emptyValue">
             <!-- Input Search -->
             <div class="input-holder">
-                <div
+                <input
+                    type="checkbox"
+                    [checked]="getSuperControl.value"
+                    (change)="onChange($event.target.checked)"
+                />
+                <!-- <div
                     [ngbPopover]="cardsModalInputDropdown"
                     #cardsModal="ngbPopover"
                     [autoClose]="'outside'"
@@ -745,7 +750,7 @@
                         [style.width.px]="10"
                         [style.height.px]="6"
                     ></svg-icon>
-                </div>
+                </div> -->
             </div>
         </ng-container>
     </div>
@@ -755,11 +760,18 @@
 <ng-template #cardsModalInputDropdown let-titles="titles">
     <div class="table-list-dropdown modals-width">
         <div class="table-inner-modal d-grid">
-            <ng-container
+            <input
+                type="checkbox"
+                [checked]="getSuperControl.value"
+                (change)="onChange($event.target.checked)"
+                name="{{ name }}"
+                id="{{ name }}"
+            />
+            <!-- <ng-container
                 *ngFor="let title of titles; trackBy: trackByIdentity"
-            >
-                <!-- If selected title is equal to title in loop -->
-                <ng-contaner *ngIf="title.title === defaultValue.title">
+            > -->
+            <!-- If selected title is equal to title in loop -->
+            <!-- <ng-contaner *ngIf="title.title === defaultValue.title">
                     <div class="title-holder d-flex align-items-center">
                         <span class="selected-input ta-font-bold">
                             {{ title.title }}
@@ -772,26 +784,23 @@
                             [style.height.px]="14"
                         ></svg-icon>
                     </div>
-                </ng-contaner>
+                </ng-contaner> -->
 
-                <!-- If it is not selected title -->
-                <ng-contaner *ngIf="!title.selected">
+            <!-- If it is not selected title -->
+            <!-- <ng-contaner *ngIf="!title.selected">
                     <div class="title-holder d-flex align-items-center">
                         <span class="text-white">
                             {{ title.title }}
                         </span>
                     </div>
-                </ng-contaner>
+                </ng-contaner> -->
 
-                <!-- If it is any selected title -->
-                <ng-contaner
+            <!-- If it is any selected title -->
+            <!-- <ng-contaner
                     *ngIf="title.selected && title.title !== defaultValue.title"
                 >
                     <div class="title-holder d-flex align-items-center">
-                        <span
-                            class="selected-in-other-input"
-                            [formControl]="getSuperControl"
-                        >
+                        <span class="selected-in-other-input">
                             {{ title.title }}
                         </span>
 
@@ -802,8 +811,8 @@
                             [style.height.px]="13"
                         ></svg-icon>
                     </div>
-                </ng-contaner>
-            </ng-container>
+                </ng-contaner> -->
+            <!-- </ng-container> -->
         </div>
     </div>
 </ng-template>
