@@ -6,17 +6,25 @@ import {
     Output,
     ViewChild,
     ViewEncapsulation,
+    ChangeDetectionStrategy,
 } from '@angular/core';
-import { card_modal_animation } from '../animations/card-modal.animation';
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { CommonModule } from '@angular/common';
+
+// animations
+import { card_modal_animation } from '../animations/card-modal.animation';
+
+// services
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// components
 import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { PayrollStatusesComponent } from '../payroll-statuses/payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 
 @Component({
@@ -28,13 +36,13 @@ import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-c
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
         NgbModule,
 
-        // Component
+        // components
         TaCheckboxComponent,
         TaCounterComponent,
         PayrollStatusesComponent,
@@ -85,7 +93,7 @@ export class TaCustomCardComponent {
     };
     @Input() has24Hours: boolean = false;
     @Input() is24Hours: boolean = false;
-    @Input() disableAnimation: boolean = false; // forward true for disable
+    @Input() disableAnimation: boolean = false;
     @Input() set isCardOpen(value: boolean) {
         this.noActive = value ? 'active' : 'innactive';
         this._isCardOpen = value;
@@ -99,7 +107,7 @@ export class TaCustomCardComponent {
 
     public zoneTriger: boolean = false;
     public isHeaderHover: boolean = false;
-    public noActive: string;
+    public noActive: string = 'innactive';
     public _isCardOpen: string | boolean = 'null';
 
     constructor(private uploadFileService: TaUploadFileService) {}
@@ -108,10 +116,17 @@ export class TaCustomCardComponent {
         if (!this.disabledCard) {
             event.preventDefault();
             event.stopPropagation();
-            const oldNoActive = this.noActive;
-            this.noActive = '';
-            this._isCardOpen =
-                oldNoActive == 'innactive' ? true : !this._isCardOpen;
+
+            if (this.noActive === 'innactive') {
+                this.noActive = 'active';
+
+                this._isCardOpen = true;
+            } else {
+                this.noActive = 'innactive';
+
+                this._isCardOpen = false;
+            }
+
             this.zoneTriger = !this.zoneTriger;
             this.uploadFileService.visibilityDropZone(this.zoneTriger);
             this.onOpenCard.emit(this._isCardOpen);
@@ -125,37 +140,37 @@ export class TaCustomCardComponent {
     ): void {
         event.preventDefault();
         event.stopPropagation();
+
         switch (action) {
-            case 'add': {
+            case 'add':
                 this.onActionEvent.emit({ check: true, action: 'add' });
+
                 break;
-            }
-            case 'download': {
+            case 'download':
                 this.onActionEvent.emit({ check: true, action: 'download' });
+
                 break;
-            }
-            case 'custom': {
+            case 'custom':
                 this.onActionEvent.emit({
                     check: true,
                     action: customTextAction,
                 });
+
                 break;
-            }
-            case 'delete': {
+            case 'delete':
                 this.onActionEvent.emit({ check: true, action: 'delete' });
+
                 break;
-            }
-            case 'hours-24': {
+            case 'hours-24':
                 this.is24Hours = !this.is24Hours;
                 this.onActionEvent.emit({
                     check: this.is24Hours,
                     action: 'hours-24',
                 });
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 }

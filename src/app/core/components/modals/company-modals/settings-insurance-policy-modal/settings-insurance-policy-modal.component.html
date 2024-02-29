@@ -639,7 +639,7 @@
                 [isCardOpen]="documents?.length > 0"
             >
                 <app-ta-upload-files
-                    [files]="documents"
+                    [files]="documents ?? []"
                     [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
                     [customClassName]="'modals'"

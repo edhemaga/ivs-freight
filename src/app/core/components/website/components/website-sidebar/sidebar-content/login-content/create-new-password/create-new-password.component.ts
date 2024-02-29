@@ -89,10 +89,9 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                    this.createNewPasswordForm
-                        .get(ConstantString.PASSWORD)
-                        .value?.toLowerCase()
+                    value ===
+                    this.createNewPasswordForm.get(ConstantString.PASSWORD)
+                        .value
                 ) {
                     this.createNewPasswordForm
                         .get(ConstantString.CONFIRM_PASSWORD)
@@ -111,10 +110,10 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                    this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .value?.toLowerCase()
+                    value ===
+                    this.createNewPasswordForm.get(
+                        ConstantString.CONFIRM_PASSWORD
+                    ).value
                 ) {
                     this.createNewPasswordForm
                         .get(ConstantString.CONFIRM_PASSWORD)

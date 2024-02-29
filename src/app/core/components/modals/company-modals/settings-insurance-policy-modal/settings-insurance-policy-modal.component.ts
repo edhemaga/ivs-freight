@@ -1,3 +1,32 @@
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+    AbstractControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
+// models
+import {
+    AddressEntity,
+    InsurancePolicyModalResponse,
+} from 'appcoretruckassist';
+
+// moment
+import moment from 'moment';
+
+// services
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../services/form/form.service';
+
+// validations
 import {
     phoneFaxRegex,
     addressValidation,
@@ -17,33 +46,19 @@ import {
     comprehenCollisionValidation,
     trailerValueInsurancePolicyValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-    AddressEntity,
-    InsurancePolicyModalResponse,
-} from 'appcoretruckassist';
 
-import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import {
-    UntypedFormGroup,
-    UntypedFormBuilder,
-    Validators,
-    AbstractControl,
-    FormsModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { FormService } from '../../../../services/form/form.service';
+// helpers 
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
-import { CommonModule } from '@angular/common';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
@@ -390,7 +405,7 @@ export class SettingsInsurancePolicyModalComponent
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
+        this.documents = event.files?.length ? event.files : [];
         switch (event.action) {
             case 'add': {
                 this.insurancePolicyForm
@@ -637,6 +652,7 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
+            isDivision: !company.divisions.length
         };
 
         this.settingsCompanyService
@@ -922,6 +938,7 @@ export class SettingsInsurancePolicyModalComponent
             address: insurance.address.address,
             addressUnit: insurance.address.addressUnit,
             note: insurance.note,
+            files: insurance.files
         });
 
         this.onHandleAddress({
@@ -1190,6 +1207,50 @@ export class SettingsInsurancePolicyModalComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
+            });
+
+        this.issueExpireDateChanges();
+    }
+
+    private issueExpireDateChanges(): void {
+        this.insurancePolicyForm
+            .get('issued')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    moment(
+                        this.insurancePolicyForm.get('expires').value
+                    ).isBefore(moment(value)) ||
+                    moment(
+                        this.insurancePolicyForm.get('expires').value
+                    ).isSame(moment(value))
+                ) {
+                    this.insurancePolicyForm
+                        .get('expires')
+                        .setErrors({ invalid: true });
+                } else {
+                    this.insurancePolicyForm.get('expires').setErrors(null);
+                }
+            });
+
+        this.insurancePolicyForm
+            .get('expires')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    moment(value).isBefore(
+                        moment(this.insurancePolicyForm.get('issued').value)
+                    ) ||
+                    moment(value).isSame(
+                        moment(this.insurancePolicyForm.get('issued').value)
+                    )
+                ) {
+                    this.insurancePolicyForm
+                        .get('expires')
+                        .setErrors({ invalid: true });
+                } else {
+                    this.insurancePolicyForm.get('expires').setErrors(null);
+                }
             });
     }
 

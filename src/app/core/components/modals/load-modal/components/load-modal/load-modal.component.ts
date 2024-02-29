@@ -454,11 +454,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.tabs = LoadModalConstants.LOAD_MODAL_TABS;
 
         // tabs
-        this.typeOfExtraStops = LoadModalConstants.TYPE_OF_EXTRA_STOPS;
-        this.stopTimeTabsPickup = LoadModalConstants.STOP_TIME_TABS_PICKUP;
-        this.stopTimeTabsDelivery = LoadModalConstants.STOP_TIME_TABS_DELIVERY;
-        this.stopTimeTabsExtraStops =
-            LoadModalConstants.STOP_TIME_TABS_EXTRA_STOPS;
+        this.typeOfExtraStops = JSON.parse(
+            JSON.stringify(LoadModalConstants.TYPE_OF_EXTRA_STOPS)
+        );
+        this.stopTimeTabsPickup = JSON.parse(
+            JSON.stringify(LoadModalConstants.STOP_TIME_TABS_PICKUP)
+        );
+        this.stopTimeTabsDelivery = JSON.parse(
+            JSON.stringify(LoadModalConstants.STOP_TIME_TABS_DELIVERY)
+        );
+        this.stopTimeTabsExtraStops = JSON.parse(
+            JSON.stringify(LoadModalConstants.STOP_TIME_TABS_EXTRA_STOPS)
+        );
 
         // configurations
         this.loadDispatchesTTDInputConfig =

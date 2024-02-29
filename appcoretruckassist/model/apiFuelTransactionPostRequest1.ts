@@ -13,6 +13,7 @@ import { CreateFuelItemCommand } from './createFuelItemCommand';
 
 
 export interface ApiFuelTransactionPostRequest1 { 
+    Invoice?: string;
     DriverId?: number;
     TruckId?: number;
     TrailerId?: number;
