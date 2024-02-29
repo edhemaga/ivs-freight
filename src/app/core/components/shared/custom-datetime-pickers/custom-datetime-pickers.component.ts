@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewContainerRef,
     OnDestroy,
-    AfterViewInit
+    AfterViewInit,
 } from '@angular/core';
 
 import moment from 'moment';
@@ -25,15 +25,16 @@ import { ITaInput } from '../ta-input/ta-input.config';
     standalone: true,
     imports: [CommonModule, FormsModule, DateCalendarsComponent],
 })
-export class CustomDatetimePickersComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CustomDatetimePickersComponent
+    implements OnInit, OnDestroy, AfterViewInit
+{
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
     public _inputConfig: ITaInput = null;
     @Input() set inputConfig(config: ITaInput) {
         this._inputConfig = config;
-        if (this._inputConfig.name === 'datepickerBankCard') {
+        if (this._inputConfig.name === 'datepickerBankCard')
             this.listPreview = 'month_list';
-        }
     }
 
     @Output() closePopover: EventEmitter<any> = new EventEmitter();

@@ -1,3 +1,32 @@
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+    AbstractControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
+// models
+import {
+    AddressEntity,
+    InsurancePolicyModalResponse,
+} from 'appcoretruckassist';
+
+// moment
+import moment from 'moment';
+
+// services
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../services/form/form.service';
+
+// validations
 import {
     phoneFaxRegex,
     addressValidation,
@@ -17,33 +46,19 @@ import {
     comprehenCollisionValidation,
     trailerValueInsurancePolicyValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-    AddressEntity,
-    InsurancePolicyModalResponse,
-} from 'appcoretruckassist';
 
-import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import {
-    UntypedFormGroup,
-    UntypedFormBuilder,
-    Validators,
-    AbstractControl,
-    FormsModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { FormService } from '../../../../services/form/form.service';
+// helpers 
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
-import { CommonModule } from '@angular/common';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
@@ -53,7 +68,6 @@ import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-
 import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
-import moment from 'moment';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -1198,7 +1212,7 @@ export class SettingsInsurancePolicyModalComponent
         this.issueExpireDateChanges();
     }
 
-    private issueExpireDateChanges() {
+    private issueExpireDateChanges(): void {
         this.insurancePolicyForm
             .get('issued')
             .valueChanges.pipe(takeUntil(this.destroy$))

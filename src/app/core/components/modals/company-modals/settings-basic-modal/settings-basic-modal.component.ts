@@ -1002,14 +1002,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private validateCreditCards() {
+    private validateCreditCards(): void {
         this.companyForm
             .get('bankCards')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                let hasDuplicates =
-                    value.map((v) => v.card).length >
-                    new Set(value.map((v) => v.card)).size
+            .subscribe((bankCards) => {
+                const hasDuplicates =
+                    bankCards.map((bankCard) => bankCard.card).length >
+                    new Set(bankCards.map((bankCard) => bankCard.card)).size
                         ? true
                         : false;
 
@@ -1022,8 +1022,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 }
 
                 let cardTypes: string[] = [];
-                value.map((card) => {
-                    let cardType = bankCardTypeValidation(card.card);
+                bankCards.map((card) => {
+                    const cardType = bankCardTypeValidation(card.card);
                     cardTypes.push(cardType);
                 });
                 this.bankCardTypes = cardTypes;

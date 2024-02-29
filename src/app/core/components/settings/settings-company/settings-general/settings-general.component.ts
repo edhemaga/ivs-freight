@@ -101,7 +101,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         ) {
             this.companyData = changes?.companyData?.currentValue;
         }
-        console.log('companyData', this.companyData);
 
         if (this.companyData?.name?.length > 13) {
             this.changeFont = true;

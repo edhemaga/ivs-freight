@@ -1,4 +1,3 @@
-import { CalendarScrollService } from './../calendar-scroll.service';
 import {
     Component,
     EventEmitter,
@@ -9,19 +8,30 @@ import {
     OnDestroy,
     forwardRef,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import {
     ScrollingModule,
     VIRTUAL_SCROLL_STRATEGY,
 } from '@angular/cdk/scrolling';
+
+// moment
+import moment from 'moment';
+
+// services
+import { CalendarScrollService } from './../calendar-scroll.service';
+
+// components
+import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
+
+// strategy
 import {
     CalendarStrategy,
     STARTING_YEAR,
 } from './../date-calendars/calendar_strategy';
-import moment from 'moment';
-import { Subject, takeUntil } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
 
 export const FULL_SIZE = 182;
 // UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
@@ -75,9 +85,9 @@ export class CalendarDatesMainComponent
     @Input() currentIndex: any;
     @Input() monthYearsIndx: any;
     @Input() listPreview: any;
-    @Input() monthAndYearOnly: boolean = false;
-    @Output() setListPreviewToFull: EventEmitter<any> = new EventEmitter();
-    @Output() setAutoIndex: EventEmitter<any> = new EventEmitter();
+    @Input() isMonthAndYearOnly: boolean = false;
+    @Output() setListPreviewToFull: EventEmitter<Number> = new EventEmitter();
+    @Output() setAutoIndex: EventEmitter<Number> = new EventEmitter();
 
     scrollStrategy: CalendarStrategy = new CalendarStrategy(
         this.calendarService,
@@ -167,7 +177,7 @@ export class CalendarDatesMainComponent
                 }, 200);
             });
 
-        if (this.monthAndYearOnly) {
+        if (this.isMonthAndYearOnly) {
             setTimeout(() => {
                 this.scrollStrategy.updateScrollHeights(CYCLE_HEIGHT_BY_MONTHS);
             }, 200);
@@ -199,11 +209,12 @@ export class CalendarDatesMainComponent
         this.calendarService.scrolledScrollItem = 'main';
     }
 
-    setCalendarListPreview(num, index) {
+    public setCalendarListPreview(num, index): void {
         this.selMonth = num;
 
-        if (this.monthAndYearOnly) {
+        if (this.isMonthAndYearOnly) {
             this.setAutoIndex.emit(num);
+            
             const selectedMonth = this.months[index];
             const new_date = moment(
                 new Date(selectedMonth.getFullYear(), num + 1, 0)

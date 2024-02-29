@@ -2380,13 +2380,13 @@ export class TaInputComponent
                 }
             }
         } else if (this._inputConfig.name === 'datepickerBankCard') {
-            if (this.selectionInput == 0) {
+            if (!this.selectionInput) {
                 if (isRestart) {
                     this.span1.nativeElement.innerHTML = 'mm';
                     this.selectionInput = 0;
                     this.selectSpanByTabIndex(0);
-                } else if (span1Value != undefined) {
-                    let final_value = parseInt(`${span1Value}${e.key}`);
+                } else if (span1Value) {
+                    const final_value = parseInt(`${span1Value}${e.key}`);
                     if (final_value > 12) {
                         this.span1.nativeElement.innerHTML = (
                             '0' + parseInt(e.key)
@@ -2438,7 +2438,7 @@ export class TaInputComponent
                     this.span2.nativeElement.innerHTML = 'yy';
                     this.selectionInput = 2;
                     this.selectSpanByTabIndex(2, true);
-                } else if (!span2Value || span2Value.toString().length == 2) {
+                } else if (!span2Value || span2Value.toString().length === 2) {
                     this.span2.nativeElement.innerHTML = (
                         '0' + parseInt(e.key)
                     ).slice(-2);
@@ -2561,8 +2561,8 @@ export class TaInputComponent
                 }
             }
         } else if (this._inputConfig.name === 'datepickerBankCard') {
-            if (direction == 'up') {
-                if (this.selectionInput == 0) {
+            if (direction === 'up') {
+                if (!this.selectionInput) {
                     this.dateTimeInputDate = new Date(
                         this.dateTimeInputDate.setMonth(
                             this.dateTimeInputDate.getMonth() + 1
@@ -2586,7 +2586,7 @@ export class TaInputComponent
                     this.setSpanSelection(this.span2.nativeElement);
                 }
             } else {
-                if (this.selectionInput == 0) {
+                if (!this.selectionInput) {
                     this.dateTimeInputDate = new Date(
                         this.dateTimeInputDate.setMonth(
                             this.dateTimeInputDate.getMonth() - 1

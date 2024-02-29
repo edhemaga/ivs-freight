@@ -1,4 +1,3 @@
-import { CalendarScrollService } from './../calendar-scroll.service';
 import {
     Component,
     Input,
@@ -7,12 +6,21 @@ import {
     EventEmitter,
     OnDestroy,
 } from '@angular/core';
-
-import { RANGE, STARTING_YEAR } from './calendar_strategy';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { Subject, Subscription, takeUntil } from 'rxjs';
+
+// moment
+import moment from 'moment';
+
+// services
+import { CalendarScrollService } from './../calendar-scroll.service';
+
+// constants
+import { RANGE, STARTING_YEAR } from './calendar_strategy';
+
+// components
 import { CalendarDatesMainComponent } from '../calendar-dates-main/calendar-dates-main.component';
 import { CalendarLeftComponent } from '../calendar-left/calendar-left.component';
 
@@ -46,7 +54,7 @@ const MONTHS = [
 export class DateCalendarsComponent implements OnInit, OnDestroy {
     @Input() listPreview: string;
     @Input() dateTime: any;
-    @Input() monthAndYearOnly: boolean = false;
+    @Input() isMonthAndYearOnly: boolean = false;
     @Output() setListPreviewValue = new EventEmitter();
 
     currentYear: any = new Date().getFullYear();
@@ -106,11 +114,10 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
                 this.onMonthChange(res.indx);
             });
 
-        if (this.monthAndYearOnly) {
+        if (this.isMonthAndYearOnly)
             this.calendarService.setAutoIndex = Math.floor(
                 this.activeIndex / 12
             );
-        }
     }
 
     onMonthChange(month: number) {
@@ -142,7 +149,7 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
         this.setAutoIndex(num);
     }
 
-    public setAutoIndex(num) {
+    public setAutoIndex(num: number): void {
         this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
     }
 

@@ -23,7 +23,7 @@ export const accountBankValidation = [
     Validators.maxLength(17),
 ];
 
-export const bankCardTypeValidation = (cardNumber: string) => {
+export const bankCardTypeValidation = (cardNumber: string): string => {
     const patterns = {
         visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
         mastercard: /^5[1-5][0-9]{14}$/,

@@ -1,11 +1,3 @@
-import {
-    addressUnitValidation,
-    addressValidation,
-    firstNameValidation,
-    lastNameValidation,
-    passwordValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,
@@ -14,20 +6,33 @@ import {
     Validators,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import {
-    AddressEntity,
-    SignInResponse,
-    UpdateUserCommand,
-    UserResponse,
-} from 'appcoretruckassist';
+import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// validations
+import {
+    addressUnitValidation,
+    addressValidation,
+    firstNameValidation,
+    lastNameValidation,
+    passwordValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
+
+// animations
+import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+
+// services
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUserService } from '../../../services/user/user.service';
-import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
-import { CommonModule } from '@angular/common';
+
+// modules
+import Croppie from 'croppie';
+
+// components
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
@@ -35,7 +40,17 @@ import { InputAddressDropdownComponent } from '../../shared/input-address-dropdo
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+
+// enums
 import { ConstantString } from '../../website/state/enum/const-string.enum';
+
+// models
+import {
+    AddressEntity,
+    SignInResponse,
+    UpdateUserCommand,
+    UserResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-profile-update-modal',

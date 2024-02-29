@@ -5,7 +5,7 @@
             [currentIndex]="currentIndex"
             [months]="listPreview == 'full_list' ? months : justYears"
             [listPreview]="listPreview"
-            [monthAndYearOnly]="monthAndYearOnly"
+            [isMonthAndYearOnly]="isMonthAndYearOnly"
         >
         </app-calendar-left>
     </div>
@@ -44,7 +44,7 @@
                         "
                         [listPreview]="listPreview"
                         [dateTime]="dateTime"
-                        [monthAndYearOnly]="monthAndYearOnly"
+                        [isMonthAndYearOnly]="isMonthAndYearOnly"
                         (setListPreviewToFull)="setListPreviewToFull($event)"
                         (setAutoIndex)="setAutoIndex($event)"
                     ></app-calendar-dates-main>

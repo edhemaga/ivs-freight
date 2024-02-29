@@ -31,9 +31,7 @@
             <app-ta-re-card
                 [cardNameCommon]="insurance?.producerName"
                 [haveHeaderText]="true"
-                [cardDocumentCounter]="
-                    insurance?.files?.length ? insurance?.files.length : 0
-                "
+                [cardDocumentCounter]="insurance?.files?.length ?? 0"
                 [options]="dropOptions"
                 [optionsId]="insurance.id"
                 (resizePage)="toggleResizePage(i)"

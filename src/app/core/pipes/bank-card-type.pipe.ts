@@ -1,11 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-const BankCardTypes = {
-    VISA: 'visa',
-    AMERICAN: 'amex',
-    MASTERCARD: 'mastercard',
-    DISCOVER: 'discover',
-};
+// enum
+import { BankCardTypesEnum } from '../utils/enums/bank-card-types.enum';
 
 @Pipe({
     name: 'bankCardTypesPipe',
@@ -15,6 +11,6 @@ export class BankCardTypesPipe implements PipeTransform {
     constructor() {}
 
     transform(cardType: string) {
-        return BankCardTypes[cardType];
+        return BankCardTypesEnum[cardType];
     }
 }
