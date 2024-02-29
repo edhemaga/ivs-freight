@@ -32,7 +32,7 @@
                 [cardNameCommon]="insurance?.producerName"
                 [haveHeaderText]="true"
                 [cardDocumentCounter]="
-                    insurance?.files.length ? insurance?.files.length : 0
+                    insurance?.files?.length ? insurance?.files.length : 0
                 "
                 [options]="dropOptions"
                 [optionsId]="insurance.id"

@@ -53,6 +53,7 @@ import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-
 import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import moment from 'moment';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -390,7 +391,7 @@ export class SettingsInsurancePolicyModalComponent
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
+        this.documents = event.files?.length ? event.files : [];
         switch (event.action) {
             case 'add': {
                 this.insurancePolicyForm
@@ -637,6 +638,7 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
+            isDivision: !company.divisions.length
         };
 
         this.settingsCompanyService
@@ -922,6 +924,7 @@ export class SettingsInsurancePolicyModalComponent
             address: insurance.address.address,
             addressUnit: insurance.address.addressUnit,
             note: insurance.note,
+            files: insurance.files
         });
 
         this.onHandleAddress({
@@ -1190,6 +1193,50 @@ export class SettingsInsurancePolicyModalComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
+            });
+
+        this.issueExpireDateChanges();
+    }
+
+    private issueExpireDateChanges() {
+        this.insurancePolicyForm
+            .get('issued')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    moment(
+                        this.insurancePolicyForm.get('expires').value
+                    ).isBefore(moment(value)) ||
+                    moment(
+                        this.insurancePolicyForm.get('expires').value
+                    ).isSame(moment(value))
+                ) {
+                    this.insurancePolicyForm
+                        .get('expires')
+                        .setErrors({ invalid: true });
+                } else {
+                    this.insurancePolicyForm.get('expires').setErrors(null);
+                }
+            });
+
+        this.insurancePolicyForm
+            .get('expires')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    moment(value).isBefore(
+                        moment(this.insurancePolicyForm.get('issued').value)
+                    ) ||
+                    moment(value).isSame(
+                        moment(this.insurancePolicyForm.get('issued').value)
+                    )
+                ) {
+                    this.insurancePolicyForm
+                        .get('expires')
+                        .setErrors({ invalid: true });
+                } else {
+                    this.insurancePolicyForm.get('expires').setErrors(null);
+                }
             });
     }
 

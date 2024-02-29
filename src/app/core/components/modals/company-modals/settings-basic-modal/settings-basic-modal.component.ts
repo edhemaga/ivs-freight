@@ -291,6 +291,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     error: () => {},
                 });
         }
+
+        this.formService.checkFormChange(this.companyForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     private createDivisionForm() {
@@ -448,13 +455,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (['new-division', 'edit-division'].includes(this.editData.type)) {
             this.companyForm.get('email').setValidators(Validators.required);
         }
-
-        this.formService.checkFormChange(this.companyForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
