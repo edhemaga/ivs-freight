@@ -353,6 +353,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 form.transactionDate,
                 form.transactionTime
             ),
+            invoice: this.fuelForm.get('invoice').value,
             total: this.sumArrays.transform(this.subtotal),
             fuelItems: this.premmapedItems('update') as any,
             files: [],
@@ -420,6 +421,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 ? this.selectedDispatchHistory.driverId
                 : null,
             truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
+            invoice: this.fuelForm.get('invoice').value,
             trailerId: this.selectedTrailerType
                 ? this.selectedTrailerType.id
                 : null,
@@ -468,6 +470,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         efsAccount: null,
                         fuelCard: res.fuelCard,
                         truckId: res.truck ? res.truck.truckNumber : null,
+                        invoice: res.invoice,
                         trailerId: res.trailer
                             ? res.trailer.trailerNumber
                             : null,

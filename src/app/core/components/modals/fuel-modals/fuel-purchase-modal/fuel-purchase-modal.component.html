@@ -47,18 +47,56 @@
             </div>
         </div>
         <div class="row">
-            <app-ta-input
-                formControlName="invoice"
-                [inputConfig]="{
-                    name: 'Invoice',
-                    type: 'text',
-                    label: 'Invoice',
-                    textTransform: 'uppercase',
-                    isRequired: true,
-                    minLength: 1,
-                    maxLength: 22
-                }"
-            ></app-ta-input>
+            <div class="col-4">
+                <app-ta-input
+                    formControlName="invoice"
+                    [inputConfig]="{
+                        name: 'Invoice',
+                        type: 'text',
+                        label: 'Invoice',
+                        textTransform: 'uppercase',
+                        isRequired: true,
+                        minLength: 1,
+                        maxLength: 22
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-4">
+                <app-ta-input
+                    formControlName="transactionDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        label: 'Date',
+                        placeholderIcon: 'date',
+                        isRequired: true,
+                        isDropdown: true,
+                        isDisabled:
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual',
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-4">
+                <!-- Time Picker -->
+                <app-ta-input
+                    formControlName="transactionTime"
+                    [inputConfig]="{
+                        name: 'timepicker',
+                        type: 'text',
+                        label: 'Time',
+                        placeholderIcon: 'time',
+                        isDropdown: true,
+                        isDisabled:
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual',
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="row">
             <div
                 [ngClass]="fuelForm.get('trailerId').value ? 'col-4' : 'col-6'"
             >
@@ -141,42 +179,6 @@
                         textTransform: 'capitalize',
                         minLength: 2,
                         maxLength: 32
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="transactionDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Date',
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        isDropdown: true,
-                        isDisabled:
-                            editData?.type === 'edit' &&
-                            fuelTransactionType?.name !== 'Manual',
-                        customClass: 'datetimeclass'
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-6">
-                <!-- Time Picker -->
-                <app-ta-input
-                    formControlName="transactionTime"
-                    [inputConfig]="{
-                        name: 'timepicker',
-                        type: 'text',
-                        label: 'Time',
-                        placeholderIcon: 'time',
-                        isDropdown: true,
-                        isDisabled:
-                            editData?.type === 'edit' &&
-                            fuelTransactionType?.name !== 'Manual',
-                        customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
             </div>
