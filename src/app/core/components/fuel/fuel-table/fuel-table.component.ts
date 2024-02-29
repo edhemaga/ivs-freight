@@ -482,7 +482,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columns = td.gridColumns;
         if (td.data?.length) {
             this.viewData = [...td.data];
-
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data) => {
@@ -555,6 +554,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTotal: data?.total
                 ? '$ ' + this.thousandSeparator.transform(data.total)
                 : '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(),
+            },
         };
     }
 

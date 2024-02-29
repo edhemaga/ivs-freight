@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -619,6 +618,7 @@ model/payrollBonusDeductionResponse.ts
 model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
+model/payrollCommissionTotalSum.ts
 model/payrollCountItemResponse.ts
 model/payrollCountsResponse.ts
 model/payrollCreditDescriptionAutocompleteResponse.ts
@@ -637,7 +637,9 @@ model/payrollDeductionType.ts
 model/payrollDriverCommissionByIdResponse.ts
 model/payrollDriverCommissionResponse.ts
 model/payrollDriverCommissionResponsePagination.ts
+model/payrollDriverMileageListResponse.ts
 model/payrollDriverMileageResponse.ts
+model/payrollFuelMinimalResponse.ts
 model/payrollListResponse.ts
 model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
@@ -655,7 +657,7 @@ model/payrollPaymentShortResponse.ts
 model/payrollPaymentType.ts
 model/payrollResponse.ts
 model/payrollResponsePagination.ts
-model/payrollTotalSum.ts
+model/payrollStatus.ts
 model/perMileEntity.ts
 model/performanceGraphListResponse.ts
 model/performanceGraphMetric.ts

@@ -3535,6 +3535,7 @@ export class FuelService {
 
     /**
      * @param id 
+     * @param invoice 
      * @param truckId 
      * @param driverId 
      * @param trailerId 
@@ -3547,10 +3548,10 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiFuelTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelTransactionPut(id?: number, invoice?: string, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiFuelTransactionPut(id?: number, invoice?: string, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelTransactionPut(id?: number, invoice?: string, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelTransactionPut(id?: number, invoice?: string, truckId?: number, driverId?: number, trailerId?: number, fuelStopStoreId?: number, transactionDate?: string, total?: number, fuelItems?: Array<EditFuelItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -3601,6 +3602,9 @@ export class FuelService {
 
         if (id !== undefined) {
             localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (invoice !== undefined) {
+            localVarFormParams = localVarFormParams.append('Invoice', <any>invoice) as any || localVarFormParams;
         }
         if (truckId !== undefined) {
             localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;

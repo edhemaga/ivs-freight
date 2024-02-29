@@ -11,10 +11,11 @@
  */
 
 
-export interface PayrollLoadStopMinimalResponse { 
-    id?: number;
-    loadStopName?: string | null;
-    address?: string | null;
-    date?: string | null;
+export interface PayrollCommissionTotalSum { 
+    totalEmptyMiles?: number | null;
+    totalLoadedMiles?: number | null;
+    totalMiles?: number | null;
+    totalRevenue?: number | null;
+    totalSubtotal?: number | null;
 }
 

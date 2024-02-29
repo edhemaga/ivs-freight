@@ -11,10 +11,13 @@
  */
 
 
-export interface PayrollLoadStopMinimalResponse { 
-    id?: number;
-    loadStopName?: string | null;
-    address?: string | null;
-    date?: string | null;
-}
+export type PayrollStatus = 'Open' | 'NotPaid' | 'ShortPaid' | 'Paid' | 'Next';
+
+export const PayrollStatus = {
+    Open: 'Open' as PayrollStatus,
+    NotPaid: 'NotPaid' as PayrollStatus,
+    ShortPaid: 'ShortPaid' as PayrollStatus,
+    Paid: 'Paid' as PayrollStatus,
+    Next: 'Next' as PayrollStatus
+};
 

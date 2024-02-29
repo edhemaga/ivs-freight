@@ -14,6 +14,10 @@ import { PayrollPaymentCommand } from './payrollPaymentCommand';
 
 export interface ClosePayrollDriverMileageCommand { 
     id?: number;
+    lastLoadDate?: string | null;
+    selectedDeducionIds?: Array<number> | null;
+    selectedCreditIds?: Array<number> | null;
+    selectedBonusIds?: Array<number> | null;
     pay?: PayrollPaymentCommand;
 }
 

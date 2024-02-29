@@ -138,7 +138,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
             transactionDate: [null, Validators.required],
-            transactionTime: [null],
+            transactionTime: [null, Validators.required],
             fuelStopStoreId: [null, Validators.required],
             fuelItems: this.formBuilder.array([]),
             total: [null],

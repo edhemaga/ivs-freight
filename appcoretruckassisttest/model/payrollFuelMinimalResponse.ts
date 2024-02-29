@@ -11,10 +11,12 @@
  */
 
 
-export interface PayrollLoadStopMinimalResponse { 
+export interface PayrollFuelMinimalResponse { 
     id?: number;
-    loadStopName?: string | null;
-    address?: string | null;
-    date?: string | null;
+    description?: string | null;
+    galons?: number;
+    pricePerGalon?: number;
+    subtotal?: number;
+    date?: string;
 }
 
