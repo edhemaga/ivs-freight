@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -850,7 +849,6 @@ model/trailerMakeResponse.ts
 model/trailerMinimalListResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
-model/trailerOwnerResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
@@ -876,7 +874,6 @@ model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
-model/truckOwnerResponse.ts
 model/truckResponse.ts
 model/truckRevenueChartResponse.ts
 model/truckRevenueResponse.ts

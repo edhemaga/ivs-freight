@@ -141,12 +141,12 @@
             <ng-container *ngIf="hasActionSvg && !disableMultipleReviews">
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
+                    (click)="onAction($event, 'add')"
                 >
                     <svg-icon
                         class="action-plus-icon"
                         [src]="'assets/svg/common/ic_plus.svg'"
                         [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                        (click)="onAction($event, 'add')"
                     ></svg-icon>
                 </div>
             </ng-container>
@@ -157,11 +157,10 @@
                 *ngIf="hasPlusHeader || stayOpen"
                 class="arrow-down-plus"
             >
-                <div class="add-custom-card">
+                <div class="add-custom-card" (click)="onAction($event, 'add')">
                     <svg-icon
                         class="plus-custom-card"
                         src="assets/svg/common/ic_plus.svg"
-                        (click)="onAction($event, 'add')"
                     ></svg-icon>
                 </div>
             </ng-container>

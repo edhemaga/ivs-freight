@@ -1,8 +1,4 @@
-import {
-    EnumValue,
-    TrailerOwnerResponse,
-    TruckOwnerResponse,
-} from 'appcoretruckassist';
+import { EnumValue, TrailerResponse, TruckResponse } from 'appcoretruckassist';
 
 export interface OwnerBackFilterQuery {
     active: number;
@@ -69,6 +65,6 @@ export interface OwnerTableBodyResponse {
     routingNumber?: string | null;
     address?: string | null;
     fileCount?: number | null;
-    trucks?: Array<TruckOwnerResponse> | null;
-    trailers?: Array<TrailerOwnerResponse> | null;
+    trucks?: Array<TruckResponse> | null;
+    trailers?: Array<TrailerResponse> | null;
 }
