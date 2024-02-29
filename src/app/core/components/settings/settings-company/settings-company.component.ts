@@ -62,8 +62,15 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
             .subscribe((res: any) => {
                 if (res?.animation) {
                     this.dataCompany = res.data.divisions;
-                    this.data = res.data;
+                    
                     this.getCompanyDivision();
+                    
+                    if ( !res.editedDivisionCompId ) {
+                        this.data = res.data;
+                    } else {
+                        this.selectCompany({id: res.editedDivisionCompId});
+                    }
+
                     this.cdRef.detectChanges();
                 }
             });

@@ -1,6 +1,10 @@
+import { SettingsCompanyRoutes } from './settings-company.routing';
+
+// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SettingsCompanyRoutes } from './settings-company.routing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 // Components
 import { SettingsCompanyComponent } from './settings-company.component';
@@ -8,10 +12,6 @@ import { SettingsGeneralComponent } from './settings-general/settings-general.co
 import { SettingsPayrollComponent } from './settings-payroll/settings-payroll.component';
 import { SettingsInsurancepolicyComponent } from './settings-insurancepolicy/settings-insurancepolicy.component';
 import { SettingsFactoringComponent } from './settings-factoring/settings-factoring.component';
-
-// Modals
-import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../../shared/shared.module';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
@@ -25,17 +25,20 @@ import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.compon
 import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { TaNoticeOfAsignmentComponent } from '../../shared/ta-notice-of-asignment/ta-notice-of-asignment.component';
+import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
+import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+
+// Pipes
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
-
-import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
-import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
-import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+import { BankCardTypesPipe } from 'src/app/core/pipes/bank-card-type.pipe';
+import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
 
 @NgModule({
     imports: [
@@ -69,6 +72,8 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
         // PIPES
         HidePasswordPipe,
         SafeHtmlPipe,
+        BankCardTypesPipe,
+        TaSvgPipe
     ],
     exports: [SharedModule],
     declarations: [
