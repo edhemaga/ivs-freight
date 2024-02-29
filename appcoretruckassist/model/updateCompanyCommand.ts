@@ -44,6 +44,10 @@ export interface UpdateCompanyCommand {
     factorByDefault?: boolean | null;
     customerPayTerm?: string | null;
     customerCredit?: string | null;
+    driverMiles?: boolean | null;
+    driverComission?: boolean | null;
+    driverFlatRate?: boolean | null;
+    hazMat?: boolean | null;
     mvrMonths?: number;
     truckInspectionMonths?: number;
     trailerInspectionMonths?: number;
