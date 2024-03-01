@@ -1,0 +1,33 @@
+<div class="modal-table-container">
+    <!-- Phone Table -->
+
+    <ng-container *ngIf="isPhoneTable">
+        <div class="d-flex flex-column phone-table-container">
+            <!-- Phone Table Header -->
+
+            <div class="align-items-center table-header phone-table-header">
+                <ng-container
+                    *ngFor="
+                        let headerItem of modalTableHeaders;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center table-header-box"
+                        [ngClass]="{
+                            'justify-content-center': i === 0
+                        }"
+                    >
+                        <p class="m-0 ta-font-bold">
+                            {{ headerItem }}
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+
+            <!-- Phone Table Body -->
+            <
+        </div>
+    </ng-container>
+</div>

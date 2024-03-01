@@ -1,4 +1,15 @@
 import { Injectable } from '@angular/core';
+
+import { Observable, tap } from 'rxjs';
+
+// services
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+// store
+import { ContactQuery } from './contact-state/contact.query';
+import { ContactStore } from './contact-state/contact.store';
+
+// models
 import {
     AccountColorResponse,
     CompanyAccountLabelResponse,
@@ -15,19 +26,15 @@ import {
     UpdateCompanyContactCommand,
     UpdateCompanyContactLabelCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
-import { ContactQuery } from './contact-state/contact.query';
-import { ContactStore } from './contact-state/contact.store';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ContactTService {
     constructor(
-        private contactService: CompanyContactService,
         private contactStore: ContactStore,
         private contactQuery: ContactQuery,
+        private contactService: CompanyContactService,
         private tableService: TruckassistTableService,
         private companyLabelService: CompanyContactLabelService
     ) {}
