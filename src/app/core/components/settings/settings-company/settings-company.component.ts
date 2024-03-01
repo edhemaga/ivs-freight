@@ -65,7 +65,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                     
                     this.getCompanyDivision();
 
-                    const activeCompanyId: number = this.optionsCmp.find(
+                    const activeCompanyId = this.optionsCmp.find(
                         (company) => company.active
                     ).id;
 
@@ -163,7 +163,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     }
 
     public getCompanyDivision(): void {
-        const previousActiveCompanyId: number = this.optionsCmp?.length
+        const previousActiveCompanyId = this.optionsCmp?.length
             ? this.optionsCmp.find((company) => company.active).id
             : 0;
 
@@ -173,7 +173,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                 id: item.id,
                 name: item.companyName,
                 active: previousActiveCompanyId
-                    ? previousActiveCompanyId == item.id
+                    ? previousActiveCompanyId === item.id
                         ? true
                         : false
                     : !item.isDivision,
