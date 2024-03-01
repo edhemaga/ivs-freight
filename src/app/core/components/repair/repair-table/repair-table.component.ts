@@ -102,7 +102,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public columns: TableColumnConfig[] = [];
     public selectedTab: ConstantStringTableComponentsEnum | string =
         ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
+    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
     public repairShops: ShopState[] = [];
@@ -867,7 +867,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? data.address.address
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopServices: data?.serviceTypes ? data?.serviceTypes : null,
-            tableOpenHours: 'Treba Novi Template',
+            tableOpenHours: data?.openHoursToday,
             tableBankDetailsBankName: data?.bank?.name
                 ? data.bank.name
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
