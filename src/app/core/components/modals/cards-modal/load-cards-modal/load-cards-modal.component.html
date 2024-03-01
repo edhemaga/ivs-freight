@@ -70,27 +70,25 @@
                                 >1st</span
                             >
 
-                            <app-ta-input-dropdown-table
-                                [type]="'cards-modal'"
+                            <app-modal-input-form
                                 [dataCardModal]="cardsAllData"
                                 [defaultValue]="cardsAllData[0]"
-                                formControlName="checked"
+                                formControlName="selectedTitle_0"
                             >
-                            </app-ta-input-dropdown-table>
+                            </app-modal-input-form>
                         </div>
 
-                        <!-- <div>
+                        <div>
                             <span class="input-title ta-font-semi-bold"
                                 >2nd</span
                             >
 
-                            <app-ta-input-dropdown-table
-                                [type]="'cards-modal'"
+                            <app-modal-input-form
                                 [dataCardModal]="cardsAllData"
                                 [defaultValue]="cardsAllData[1]"
-                                formControlName="checked"
+                                formControlName="selectedTitle_1"
                             >
-                            </app-ta-input-dropdown-table>
+                            </app-modal-input-form>
                         </div>
 
                         <div>
@@ -98,13 +96,12 @@
                                 >3rd</span
                             >
 
-                            <app-ta-input-dropdown-table
-                                [type]="'cards-modal'"
+                            <app-modal-input-form
                                 [dataCardModal]="cardsAllData"
                                 [defaultValue]="cardsAllData[2]"
-                                formControlName="checked"
+                                formControlName="selectedTitle_2"
                             >
-                            </app-ta-input-dropdown-table>
+                            </app-modal-input-form>
                         </div>
 
                         <ng-container *ngIf="numberOfRows > 3">
@@ -113,13 +110,12 @@
                                     >4th</span
                                 >
 
-                                <app-ta-input-dropdown-table
-                                    [type]="'cards-modal'"
+                                <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="cardsAllData[3]"
-                                    formControlName="checked"
+                                    formControlName="selectedTitle_3"
                                 >
-                                </app-ta-input-dropdown-table>
+                                </app-modal-input-form>
                             </div>
                         </ng-container>
 
@@ -129,14 +125,13 @@
                                     >5th</span
                                 >
 
-                                <app-ta-input-dropdown-table
-                                    [type]="'cards-modal'"
+                                <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="null"
                                     [emptyValue]="'5th'"
-                                    formControlName="checked"
+                                    formControlName="selectedTitle_4"
                                 >
-                                </app-ta-input-dropdown-table>
+                                </app-modal-input-form>
                             </div>
                         </ng-container>
 
@@ -146,16 +141,15 @@
                                     >6th</span
                                 >
 
-                                <app-ta-input-dropdown-table
-                                    [type]="'cards-modal'"
+                                <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="null"
                                     [emptyValue]="'6th'"
-                                    formControlName="checked"
+                                    formControlName="selectedTitle_5"
                                 >
-                                </app-ta-input-dropdown-table>
+                                </app-modal-input-form>
                             </div>
-                        </ng-container> -->
+                        </ng-container>
                     </div>
                 </div>
 
@@ -163,7 +157,7 @@
                 <div class="divider"></div>
 
                 <!-- For Back side of cards -->
-                <!-- <div class="back-side-body">
+                <div class="back-side-body">
                     <div class="checkbox-modal">
                         <app-ta-checkbox
                             formControlName="checked"
@@ -178,13 +172,12 @@
                                     >1st</span
                                 >
 
-                                <app-ta-input-dropdown-table
-                                    [type]="'cards-modal'"
+                                <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="cardsAllData[0]"
-                                    formControlName="checked"
+                                    formControlName="selectedTitle_back_0"
                                 >
-                                </app-ta-input-dropdown-table>
+                                </app-modal-input-form>
                             </div>
 
                             <div>
@@ -192,13 +185,12 @@
                                     >2nd</span
                                 >
 
-                                <app-ta-input-dropdown-table
-                                    [type]="'cards-modal'"
+                                <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="cardsAllData[1]"
-                                    formControlName="checked"
+                                    formControlName="selectedTitle_back_1"
                                 >
-                                </app-ta-input-dropdown-table>
+                                </app-modal-input-form>
                             </div>
 
                             <div>
@@ -206,13 +198,12 @@
                                     >3rd</span
                                 >
 
-                                <app-ta-input-dropdown-table
-                                    [type]="'cards-modal'"
+                                <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="cardsAllData[2]"
-                                    formControlName="checked"
+                                    formControlName="selectedTitle_back_2"
                                 >
-                                </app-ta-input-dropdown-table>
+                                </app-modal-input-form>
                             </div>
 
                             <ng-container *ngIf="numberOfRows > 3">
@@ -221,13 +212,12 @@
                                         >4th</span
                                     >
 
-                                    <app-ta-input-dropdown-table
-                                        [type]="'cards-modal'"
+                                    <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="cardsAllData[3]"
-                                        formControlName="checked"
+                                        formControlName="selectedTitle_back_3"
                                     >
-                                    </app-ta-input-dropdown-table>
+                                    </app-modal-input-form>
                                 </div>
                             </ng-container>
 
@@ -237,14 +227,13 @@
                                         >5th</span
                                     >
 
-                                    <app-ta-input-dropdown-table
-                                        [type]="'cards-modal'"
+                                    <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="null"
                                         [emptyValue]="'5th'"
-                                        formControlName="checked"
+                                        formControlName="selectedTitle_back_4"
                                     >
-                                    </app-ta-input-dropdown-table>
+                                    </app-modal-input-form>
                                 </div>
                             </ng-container>
 
@@ -254,19 +243,19 @@
                                         >6th</span
                                     >
 
-                                    <app-ta-input-dropdown-table
-                                        [type]="'cards-modal'"
+                                    <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="null"
                                         [emptyValue]="'6th'"
-                                        formControlName="checked"
+                                        formControlName="selectedTitle_back_5"
                                     >
-                                    </app-ta-input-dropdown-table>
+                                    </app-modal-input-form>
                                 </div>
                             </ng-container>
                         </div>
+                        <button (click)="test()">TEST</button>
                     </ng-container>
-                </div> -->
+                </div>
             </div>
         </form>
     </div>

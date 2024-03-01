@@ -45,7 +45,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 //Model
 import { optionsPopupContent } from '../../model/toolbar';
-import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal.component';
+import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal/load-cards-modal.component';
 
 @Titles()
 @Component({

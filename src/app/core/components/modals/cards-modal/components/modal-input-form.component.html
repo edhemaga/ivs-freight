@@ -1,0 +1,104 @@
+<div class="modal-body-holder d-grid">
+    <div class="input-holder">
+        <div
+            [ngbPopover]="cardsModalInputDropdown"
+            #cardsModal="ngbPopover"
+            [autoClose]="'outside'"
+            class="table-dropdown-container modal-cards-popover d-flex align-items-center"
+            [placement]="['bottom-left']"
+            popoverClass="table-dropdown-popover"
+            triggers="manual"
+            (click)="
+                toggleCardsModalDropdown(cardsModal, filteredCardsModalData)
+            "
+        >
+            <ng-container *ngIf="defaultValue">
+                <input
+                    #inputTitleValue
+                    [placeholder]="defaultValue.title"
+                    (keyup)="filterArrayCardsModalDropdown($event)"
+                    class="input-search cards-modal"
+                    spellcheck="false"
+                />
+            </ng-container>
+
+            <ng-container *ngIf="!defaultValue">
+                <input
+                    #inputTitleValue
+                    [placeholder]="emptyValue"
+                    (keyup)="filterArrayCardsModalDropdown($event)"
+                    class="input-search cards-modal empty-input"
+                    spellcheck="false"
+                />
+            </ng-container>
+
+            <svg-icon
+                class="dropdown-icon"
+                [ngClass]="{ 'empty-svg': !defaultValue }"
+                [src]="'assets/svg/common/arrow-right-details.svg'"
+                [style.width.px]="10"
+                [style.height.px]="6"
+            ></svg-icon>
+        </div>
+    </div>
+</div>
+
+<ng-template #cardsModalInputDropdown let-titles="titles">
+    <div class="table-list-dropdown modals-width">
+        <div class="table-inner-modal d-grid">
+            <ng-container
+                *ngFor="let title of titles; trackBy: trackByIdentity"
+            >
+                <!-- If selected title is selected in this input -->
+                <ng-contaner *ngIf="title.title === defaultValue.title">
+                    <div class="title-holder d-flex align-items-center">
+                        <span class="selected-input ta-font-bold">
+                            {{ title.title }}
+                        </span>
+
+                        <svg-icon
+                            class="checked svg-icons"
+                            [src]="'assets/svg/truckassist-table/check-new.svg'"
+                            [style.width.px]="14"
+                            [style.height.px]="14"
+                        ></svg-icon>
+                    </div>
+                </ng-contaner>
+
+                <!-- If it is any selected title -->
+                <ng-contaner
+                    *ngIf="title.selected && title.title !== defaultValue.title"
+                >
+                    <div class="title-holder d-flex align-items-center">
+                        <span class="selected-in-other-input">
+                            {{ title.title }}
+                        </span>
+
+                        <svg-icon
+                            class="disabled svg-icons"
+                            [src]="'assets/svg/common/ic_disable.svg'"
+                            [style.width.px]="13"
+                            [style.height.px]="13"
+                        ></svg-icon>
+                    </div>
+                </ng-contaner>
+
+                <!-- If it is not selected title -->
+                <ng-contaner
+                    *ngIf="
+                        !title.selected && title.title !== defaultValue.title
+                    "
+                >
+                    <div
+                        class="title-holder d-flex align-items-center hoverable"
+                        (click)="cardTitleSelected(title, cardsModal)"
+                    >
+                        <span class="text-white">
+                            {{ title.title }}
+                        </span>
+                    </div>
+                </ng-contaner>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
