@@ -12,14 +12,16 @@
         [formGroup]="contactForm"
         class="form-container form-container-without-mb"
     >
+        <!-- Name, Company -->
+
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <app-ta-input
                     formControlName="name"
                     [inputConfig]="{
-                        name: 'Full Name',
+                        name: 'Name',
                         type: 'text',
-                        label: 'Full Name',
+                        label: 'Name',
                         isRequired: true,
                         minLength: 2,
                         maxLength: 32,
@@ -28,7 +30,22 @@
                     }"
                 ></app-ta-input>
             </div>
+
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="company"
+                    [inputConfig]="{
+                        name: 'Company name',
+                        type: 'text',
+                        label: 'Company',
+                        textTransform: 'uppercase'
+                    }"
+                ></app-ta-input>
+            </div>
         </div>
+
+        <!-- Label -->
+
         <div class="row">
             <div class="col-12">
                 <app-ta-input-dropdown-label
@@ -77,6 +94,9 @@
                 </app-ta-input-dropdown-label>
             </div>
         </div>
+
+        <!-- Address -->
+
         <div class="row last-row">
             <div class="col-10">
                 <app-input-address-dropdown
@@ -96,6 +116,7 @@
                     (selectedAddress)="onHandleAddress($event)"
                 ></app-input-address-dropdown>
             </div>
+
             <div class="col-2">
                 <app-ta-input
                     formControlName="addressUnit"
@@ -110,15 +131,16 @@
                 ></app-ta-input>
             </div>
         </div>
-        <!-- Contact phones -->
+
+        <!-- Contact Phones -->
+
         <app-ta-custom-card
             [hasCounter]="contactPhones.length ? contactPhones.length : 0"
             [cardName]="'Phone'"
             [headerSvgEnabled]="true"
-            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-            [actionText]="'ADD PHONE'"
+            [hasActionSvg]="true"
+            [subText]="'You can add up to 3 max. First one is primary.'"
             [isCardOpen]="contactPhones.length > 0"
-            [hasBodyData]="contactPhones.length > 0"
             [disabledCard]="!contactPhones.length"
             [disableAnimation]="disableCardAnimation"
             [animationMarginParams]="{
@@ -127,6 +149,8 @@
             }"
             (onActionEvent)="addContactPhones($event)"
         >
+            <app-ta-modal-table [isPhoneTable]="true"></app-ta-modal-table>
+
             <div
                 formArrayName="contactPhones"
                 class="common-table-modal-container"
@@ -262,7 +286,7 @@
             [cardName]="'Email'"
             [headerSvgEnabled]="true"
             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-            [actionText]="'ADD EMAIL'"
+            [capsulaText]="'ADD EMAIL'"
             [isCardOpen]="contactEmails.length > 0"
             [hasBodyData]="contactEmails.length > 0"
             [disabledCard]="!contactEmails.length"

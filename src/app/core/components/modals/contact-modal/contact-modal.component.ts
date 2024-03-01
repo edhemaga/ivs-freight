@@ -29,6 +29,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaModalTableComponent } from '../../standalone-components/ta-modal-table/ta-modal-table.component';
 
 // validations
 import {
@@ -85,6 +86,7 @@ import { EditData } from '../load-modal/state/models/load-modal-model/edit-data.
         TaInputComponent,
         InputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
+        TaModalTableComponent,
     ],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
@@ -155,12 +157,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
         this.companyContactColorLabels();
 
-        /*  this.followSharedCheckbox(); */
+        this.followSharedCheckbox();
     }
 
     private createForm() {
         this.contactForm = this.formBuilder.group({
             name: [null, [Validators.required, ...fullNameValidation]],
+            company: [null],
             companyContactLabelId: [null],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
