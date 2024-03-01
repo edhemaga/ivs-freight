@@ -64,11 +64,15 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                     this.dataCompany = res.data.divisions;
                     
                     this.getCompanyDivision();
-                    
-                    if ( !res.editedDivisionCompId ) {
+
+                    const activeCompanyId: number = this.optionsCmp.find(
+                        (company) => company.active
+                    ).id;
+
+                    if (activeCompanyId === res.data.id) {
                         this.data = res.data;
                     } else {
-                        this.selectCompany({id: res.editedDivisionCompId});
+                        this.selectCompany({ id: activeCompanyId });
                     }
 
                     this.cdRef.detectChanges();
@@ -159,12 +163,20 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     }
 
     public getCompanyDivision(): void {
+        const previousActiveCompanyId: number = this.optionsCmp?.length
+            ? this.optionsCmp.find((company) => company.active).id
+            : 0;
+
         this.optionsCmp = this.dataCompany?.map((item) => {
             return {
                 ...item,
                 id: item.id,
                 name: item.companyName,
-                active: !item.isDivision,
+                active: previousActiveCompanyId
+                    ? previousActiveCompanyId == item.id
+                        ? true
+                        : false
+                    : !item.isDivision,
             };
         });
     }
