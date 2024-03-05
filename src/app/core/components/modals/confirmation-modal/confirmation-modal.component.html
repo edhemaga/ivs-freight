@@ -332,6 +332,25 @@
                         VIN: {{ item?.data?.vin }}
                     </p>
                 </div>
+                <ng-container
+                    *ngIf="['fuel transaction'].includes(editData?.template)"
+                >
+                    <div class="confirmation-info">
+                        <p class="confirmation-text-1">
+                            Unit {{ item?.data?.tableTruckNumber }} - ${{
+                                item?.data.total
+                            }}
+                        </p>
+                        <div class="confirmation-text-holder">
+                            <p class="confirmation-text-2">
+                                {{ item?.data?.date }}
+                            </p>
+                            <p class="confirmation-text-2">
+                                {{ item?.data?.time }}
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
                 <!-- Shipper, Repair Shop -->
                 <div
                     *ngIf="

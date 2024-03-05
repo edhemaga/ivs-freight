@@ -101,6 +101,11 @@ export const convertDateFromBackend = (date: string) => {
     return moment.utc(date).local().format('MM/DD/YY');
 };
 
+//------------------------------- TIME FROM DATE FROM BACKEND -------------------------------
+export const convertDateToTimeFromBackend = (date: string, show_am_ap?: boolean) => {
+    return moment.utc(date).local().format(show_am_ap ? 'HH:mm a' : 'HH:mm:SS');
+};
+
 //------------------------------- TIME FROM BACKEND -------------------------------
 export const convertTimeFromBackend = (time: string) => {
     return moment(time, 'HH:mm:SS A').toDate();

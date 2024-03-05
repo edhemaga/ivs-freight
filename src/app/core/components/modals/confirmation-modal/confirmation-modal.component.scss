@@ -177,6 +177,11 @@
                     margin-top: 20px;
                 }
             }
+
+            .confirmation-text-holder {
+                display: flex;
+                gap: 16px;
+            }
         }
 
         .confirmation-state {

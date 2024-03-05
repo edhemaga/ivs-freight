@@ -14,6 +14,7 @@ import { EditFuelItemCommand } from './editFuelItemCommand';
 
 export interface ApiFuelTransactionPostRequest { 
     Id?: number;
+    Invoice?: string;
     TruckId?: number;
     DriverId?: number;
     TrailerId?: number;
