@@ -47,7 +47,7 @@ import {
     trailerValueInsurancePolicyValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
-// helpers 
+// helpers
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
@@ -652,7 +652,7 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
-            isDivision: !company.divisions.length
+            isDivision: !company.divisions.length,
         };
 
         this.settingsCompanyService
@@ -938,7 +938,7 @@ export class SettingsInsurancePolicyModalComponent
             address: insurance.address.address,
             addressUnit: insurance.address.addressUnit,
             note: insurance.note,
-            files: insurance.files
+            files: insurance.files,
         });
 
         this.onHandleAddress({
@@ -946,7 +946,7 @@ export class SettingsInsurancePolicyModalComponent
             valid: insurance.address.address ? true : false,
         });
 
-        this.documents = insurance.files;
+        this.documents = insurance.files?.length ? insurance.files : [];
 
         if (insurance.insurancePolicyAddons.length) {
             for (const insur of insurance.insurancePolicyAddons) {
