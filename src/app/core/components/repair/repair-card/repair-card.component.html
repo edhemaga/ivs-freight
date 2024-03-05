@@ -94,16 +94,19 @@
                         >
                             <div class="one-row">
                                 <div class="item-body">
-                                    <div class="top-item-body">
+                                    <div
+                                        class="top-item-body d-flex align-items-center"
+                                    >
                                         <ng-container
                                             *ngIf="card.isRepairOrder"
                                         >
                                             Repair Shop
                                         </ng-container>
+
                                         <ng-container
                                             *ngIf="!card.isRepairOrder"
                                         >
-                                            Cost
+                                            {{ rowsFront.title }}
                                         </ng-container>
                                     </div>
                                 </div>
@@ -244,7 +247,9 @@
                         >
                             <div class="one-row">
                                 <div class="item-body">
-                                    <div class="top-item-body">
+                                    <div
+                                        class="top-item-body d-flex align-items-center"
+                                    >
                                         {{ rowsBack.title }}
                                     </div>
 
