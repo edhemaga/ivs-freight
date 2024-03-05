@@ -83,6 +83,8 @@ export class CalendarDatesMainComponent
     @Input() months: any;
     @Input() dateTime: any;
     @Input() currentIndex: any;
+    @Input() currentYearIndex: number;
+    @Input() activeIndex: number;
     @Input() monthYearsIndx: any;
     @Input() listPreview: any;
     @Input() isMonthAndYearOnly: boolean = false;
@@ -180,6 +182,13 @@ export class CalendarDatesMainComponent
         if (this.isMonthAndYearOnly) {
             setTimeout(() => {
                 this.scrollStrategy.updateScrollHeights(CYCLE_HEIGHT_BY_MONTHS);
+
+                setTimeout(() => {
+                    this.scrollStrategy.scrollToIndex(
+                        this.currentYearIndex,
+                        'auto'
+                    );
+                }, 200);
             }, 200);
         }
     }

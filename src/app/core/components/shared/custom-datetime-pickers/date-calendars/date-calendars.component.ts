@@ -60,8 +60,9 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
     currentYear: any = new Date().getFullYear();
     currentMonth: any = new Date().getMonth();
     currentDay: any = new Date().getDate();
-    private activeIndex = 0;
+    activeIndex = 0;
     currentIndex: number;
+    currentYearIndex: number;
     monthYearsIndx: any[] = [];
     months = Array.from({ length: RANGE }, (_, i) => {
         let year = STARTING_YEAR + Math.floor(i / 12);
@@ -76,6 +77,11 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
     });
 
     justYears = Array.from({ length: 100 }, (_, i) => {
+        let year = STARTING_YEAR + i;
+        if (year == this.currentYear) {
+            this.currentYearIndex = i;
+        }
+
         return new Date(STARTING_YEAR + i, 1, 1);
     });
 
@@ -106,7 +112,9 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
         this.selectedMonth = this.monthNames[this.dateTime.getMonth()];
         this.selectedYear = this.dateTime.getFullYear();
 
-        this.activeIndex = this.calendarService.selectedIndex;
+        if (this.calendarService.selectedIndex)
+            this.activeIndex = this.calendarService.selectedIndex;
+
         this.calendarService.scrolledIndexChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -115,8 +123,8 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
             });
 
         if (this.isMonthAndYearOnly)
-            this.calendarService.setAutoIndex = Math.floor(
-                this.activeIndex / 12
+            this.currentYearIndex = this.justYears.findIndex(
+                (year) => year.getFullYear() === this.selectedYear
             );
     }
 

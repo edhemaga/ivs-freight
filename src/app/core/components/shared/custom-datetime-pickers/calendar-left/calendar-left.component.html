@@ -14,7 +14,12 @@
             <div
                 (click)="selectMonth(indx)"
                 class="month-year-item"
-                [innerHTML]="month | calendarmonths: listPreview"
+                [class.current_month_year]="
+                    isMonthAndYearOnly
+                        ? indx === _currentYearIndex
+                        : indx === _activeIndex
+                "
+                [innerHTML]="month | calendarmonths : listPreview"
             ></div>
         </ng-container>
     </cdk-virtual-scroll-viewport>

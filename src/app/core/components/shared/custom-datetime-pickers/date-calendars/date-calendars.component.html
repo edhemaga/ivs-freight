@@ -3,6 +3,8 @@
         <div class="calendar_border"></div>
         <app-calendar-left
             [currentIndex]="currentIndex"
+            [currentYearIndex]="currentYearIndex"
+            [activeIndex]="activeIndex"
             [months]="listPreview == 'full_list' ? months : justYears"
             [listPreview]="listPreview"
             [isMonthAndYearOnly]="isMonthAndYearOnly"
@@ -25,7 +27,7 @@
                 </div>
                 <div class="calendars_list_view">
                     <div
-                        class="calendar_month_days d-flex"
+                        class="calendar_month_days"
                         [class.hideVisibility]="listPreview != 'full_list'"
                     >
                         <div class="cal_day">S</div>
@@ -38,6 +40,8 @@
                     </div>
                     <app-calendar-dates-main
                         [currentIndex]="currentIndex"
+                        [currentYearIndex]="currentYearIndex"
+                        [activeIndex]="activeIndex"
                         [monthYearsIndx]="monthYearsIndx"
                         [months]="
                             listPreview == 'full_list' ? months : justYears

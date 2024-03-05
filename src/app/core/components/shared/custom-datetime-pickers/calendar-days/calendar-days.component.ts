@@ -19,6 +19,7 @@ export class CalendarDaysComponent implements OnInit {
     @Input() year: string;
     @Input() selectedMonth: string;
     @Input() index: number;
+    @Input() activeMonth: boolean;
     @Output() selectDay = new EventEmitter();
     days: ReadonlyArray<string | number> = [];
     selectedDay: any = -1;

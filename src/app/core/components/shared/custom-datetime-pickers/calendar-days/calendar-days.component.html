@@ -9,6 +9,7 @@
             selectedYearFromInput == selectedYear
         "
         [class.empty_day]="!day"
+        [class.day_in_current_month]="activeMonth"
         class="calendar_day"
     >
         <span>{{ day }}</span>

@@ -11,7 +11,16 @@
                 templateCacheSize: 10
             "
         >
-            <div class="calendar_indicator">
+            <div
+                class="calendar_indicator"
+                [class.full_calendar]="listPreview == 'full_list'"
+                [class.current_year]="
+                    isMonthAndYearOnly
+                        ? selectedYearFromInput == month.getFullYear()
+                        : selectedYearFromInput == month.getFullYear() &&
+                          selMonth == month.getMonth()
+                "
+            >
                 <span *ngIf="listPreview == 'full_list'"
                     >{{ getMonth(month.getMonth()) }}
                 </span>
@@ -25,10 +34,19 @@
                     [selectedMonth]="month.getMonth()"
                     [year]="selectedYear"
                     [dateTime]="dateTime"
+                    [activeMonth]="
+                        selectedYearFromInput == month.getFullYear() &&
+                        selMonth == month.getMonth()
+                    "
                 ></app-calendar-days>
             </div>
             <div *ngIf="listPreview == 'month_list'">
-                <div class="month_list">
+                <div
+                    class="month_list"
+                    [class.current_year]="
+                        selectedYearFromInput == month.getFullYear()
+                    "
+                >
                     <div
                         class="month_list_item"
                         (click)="setCalendarListPreview(0, indx)"
