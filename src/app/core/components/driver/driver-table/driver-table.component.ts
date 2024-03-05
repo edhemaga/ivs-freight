@@ -717,6 +717,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
+        console.log('tableColumnsConfig', tableColumnsConfig);
+
         if (activeTab === ConstantStringTableComponentsEnum.APPLICANTS) {
             return tableColumnsConfig
                 ? tableColumnsConfig
@@ -774,9 +776,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // TODO find model for this data
     private mapDriverData(data): DriverResponse {
-        if (!data?.avatar) {
-            this.mapingIndex++;
-        }
+        if (!data?.avatar) this.mapingIndex++;
 
         return {
             ...data,
@@ -836,7 +836,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCdlDetailEndorsment: ConstantStringTableComponentsEnum.NA,
+            tableCdlDetailEndorsment: data.cdls[0]
+                ? data.cdls[0]?.cdlEndorsements[0]?.code +
+                  data.cdls[0]?.cdlEndorsements[1]?.code
+                : ConstantStringTableComponentsEnum.NA,
             tableCdlDetailRestriction: ConstantStringTableComponentsEnum.NA,
             tableCdlDetailExpiration: {
                 expirationDays:
