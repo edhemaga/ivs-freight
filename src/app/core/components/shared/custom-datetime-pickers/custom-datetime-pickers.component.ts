@@ -1,5 +1,3 @@
-import { CalendarScrollService } from './calendar-scroll.service';
-import { DateCalendarsComponent } from './date-calendars/date-calendars.component';
 import {
     Component,
     ElementRef,
@@ -12,10 +10,19 @@ import {
     OnDestroy,
     AfterViewInit,
 } from '@angular/core';
-
-import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// moment
+import moment from 'moment';
+
+// services
+import { CalendarScrollService } from './calendar-scroll.service';
+
+// components
+import { DateCalendarsComponent } from './date-calendars/date-calendars.component';
+
+// models
 import { ITaInput } from '../ta-input/ta-input.config';
 
 @Component({
@@ -130,7 +137,9 @@ export class CustomDatetimePickersComponent
         const dateInputArray = moment(this.dateTime)
             .format('H/mm/A')
             .split('/');
-        this.scrollTypes.hourScroll = dateInputArray[0];
+        this.scrollTypes.hourScroll = this.hourTimes.indexOf(
+            parseInt(dateInputArray[0])
+        );
         this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
             dateInputArray[1]
         );
