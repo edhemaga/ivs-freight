@@ -20,11 +20,11 @@
                 </div>
                 <div class="time_picker_body">
                     <div class="picker_body_head">
-                        <div [class.active]="hoveredItem == 'hours'">Hour</div>
-                        <div [class.active]="hoveredItem == 'minutes'">
+                        <div [class.active]="hoveredItem === 'hours'">Hour</div>
+                        <div [class.active]="hoveredItem === 'minutes'">
                             Minute
                         </div>
-                        <div [class.active]="hoveredItem == 'times'">AM/PM</div>
+                        <div [class.active]="hoveredItem === 'times'">AM/PM</div>
                     </div>
                     <div class="picker_body">
                         <div

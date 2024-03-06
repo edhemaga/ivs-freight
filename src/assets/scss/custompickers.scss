@@ -1,4 +1,5 @@
 @import '/src/theme/variables.scss';
+@import './details_page_ske.scss';
 
 .datetime-dropdown-holder {
     position: relative;
@@ -160,14 +161,14 @@
 
                 font-size: 14px;
                 color: $bw5;
-                font-weight: 400;
+                font-weight: $font-regular;
                 text-align: center;
                 text-transform: uppercase;
 
                 .left-year-show {
                     color: $bw5;
                     font-size: 14px;
-                    font-weight: 700;
+                    font-weight: $font-bold;
                 }
 
                 &:hover {
@@ -223,14 +224,14 @@
 
             .selected_time {
                 font-size: 14px;
-                font-weight: 800;
+                font-weight: $font-extrabold;
                 color: $bw6-2;
             }
 
             .sel_now {
                 color: $primary;
                 font-size: 14px;
-                font-weight: 700;
+                font-weight: $font-bold;
 
                 &:hover {
                     cursor: pointer;
@@ -254,7 +255,7 @@
                     text-align: center;
 
                     font-size: 10px;
-                    font-weight: 700;
+                    font-weight: $font-bold;
                     color: $bw5;
 
                     &.active {
@@ -318,7 +319,7 @@
                         left: 30%;
 
                         font-size: 14px;
-                        font-weight: 400;
+                        font-weight: $font-regular;
                         color: $bw5;
                     }
                 }
@@ -363,7 +364,7 @@
 
                         font-size: 14px;
                         color: $bw5;
-                        font-weight: 400;
+                        font-weight: $font-regular;
                         user-select: none;
 
                         &:hover {
@@ -395,7 +396,7 @@
                 border-radius: 2px;
 
                 font-size: 12px;
-                font-weight: 700;
+                font-weight: $font-bold;
                 color: #919191b3;
 
                 &:hover {
@@ -439,21 +440,21 @@
                 height: 22px;
                 color: $ta-light-grey-6;
                 font-size: 11px;
-                font-weight: 500;
+                font-weight: $font-medium;
                 
                 .left-year-show {
                     color: $ta-light-grey-6;
                     font-size: 11px;
-                    font-weight: 400;
+                    font-weight: $font-regular;
                 }
 
                 &.current_month_year {
                     color: $white;
-                    font-weight: 700;
+                    font-weight: $font-bold;
 
                     .left-year-show {
                         color: $white;
-                        font-weight: 700;
+                        font-weight: $font-bold;
                     }
                 }
 
@@ -488,7 +489,7 @@
 
                             color: $white;
                             font-size: 11px;
-                            font-weight: 700;
+                            font-weight: $font-bold;
 
                             .year_hold {
                                 margin-right: 0;
@@ -502,7 +503,7 @@
 
                             color: $ta-blue-19;
                             font-size: 11px;
-                            font-weight: 700;
+                            font-weight: $font-bold;
                             text-transform: uppercase;
 
                             &:hover {
@@ -517,12 +518,12 @@
 
                             color: $bw5;
                             font-size: 11px;
-                            font-weight: 700;
+                            font-weight: $font-bold;
                             text-transform: uppercase;
 
                             &.current_year {
                                 color: $white;
-                                font-weight: 700;
+                                font-weight: $font-bold;
                             }
 
                             &.full_calendar {
@@ -543,7 +544,7 @@
                                 margin: 0;
                 
                                 font-size: 9px;
-                                font-weight: 700;
+                                font-weight: $font-bold;
                                 color: $ta-light-grey-2;
                                 text-align: center;
                             }
@@ -563,7 +564,7 @@
 
                                 color: $bw5;
                                 font-size: 11px;
-                                font-weight: 500;
+                                font-weight: $font-medium;
 
                                 &:hover:not(.current_month) {
                                     background-color: $ta-black;
@@ -574,7 +575,7 @@
                     
                                 &.current_month {
                                     color: $white;
-                                    font-weight: 700;
+                                    font-weight: $font-bold;
                                     background-color: $ta-blue-21;
                                     border-radius: 2px;
                                     cursor: pointer;
@@ -602,7 +603,7 @@
                                 margin: 0;
                                 color: $bw5;
                                 font-size: 11px;
-                                font-weight: 500;
+                                font-weight: $font-medium;
                 
                                 &.current_day {
                                     color: $white;
@@ -613,7 +614,7 @@
                                 &.selected_day {
                                     background-color: $ta-blue-21;
                                     color: $white;
-                                    font-weight: 700;
+                                    font-weight: $font-bold;
                                     border-radius: 2px;
                                 }
 
@@ -651,13 +652,13 @@
                 .selected_time {
                     color: $white;
                     font-size: 11px;
-                    font-weight: 700;
+                    font-weight: $font-bold;
                 }
 
                 .sel_now {
                     color: $ta-blue-19;
                     font-size: 11px;
-                    font-weight: 700;
+                    font-weight: $font-bold;
                     text-transform: uppercase;
                 }
             }
@@ -674,7 +675,7 @@
                     div {
                         color: $ta-light-grey-2;
                         font-size: 9px;
-                        font-weight: 700;
+                        font-weight: $font-bold;
                         text-align: center;
                         text-transform: uppercase;
                     }
@@ -722,11 +723,11 @@
                         .scroll_item {
                             color: $ta-light-grey-2;
                             font-size: 11px;
-                            font-weight: 500;
+                            font-weight: $font-medium;
 
                             &.active_item {
                                 color: $white;
-                                font-weight: 700;
+                                font-weight: $font-bold;
                             }
                         }
                     }
@@ -747,7 +748,7 @@
 
                         color: $white;
                         font-size: 11px;
-                        font-weight: 700;
+                        font-weight: $font-bold;
                         text-transform: uppercase;
 
                         border-radius: 1px;
@@ -776,7 +777,7 @@
 
         .month_name {
             font-size: 12px;
-            font-weight: 700;
+            font-weight: $font-bold;
             color: $bw6-2;
 
             .year_hold {
@@ -794,7 +795,7 @@
 
         .today {
             font-size: 12px;
-            font-weight: 700;
+            font-weight: $font-bold;
             color: #5673aab3;
             cursor: pointer;
 
@@ -827,7 +828,7 @@
 
             font-size: 12px;
             color: #6c6c6c66;
-            font-weight: 700;
+            font-weight: $font-bold;
         }
 
         .calendar_month_days {
@@ -842,7 +843,7 @@
                 margin: 0 6px;
 
                 font-size: 12px;
-                font-weight: 700;
+                font-weight: $font-bold;
                 color: $bw4;
             }
         }
@@ -863,7 +864,7 @@
                 margin: 0 6px;
 
                 font-size: 14px;
-                font-weight: 400;
+                font-weight: $font-regular;
                 color: $bw6-2;
 
                 &.current_day {
@@ -905,7 +906,7 @@
             border-radius: 3px;
             font-size: 12px;
             color: $bw6-2;
-            font-weight: 400;
+            font-weight: $font-regular;
 
             &:hover:not(.current_month) {
                 background-color: $ta-light-grey-5;

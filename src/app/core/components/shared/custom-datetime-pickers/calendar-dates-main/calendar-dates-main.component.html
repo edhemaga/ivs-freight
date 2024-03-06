@@ -13,12 +13,12 @@
         >
             <div
                 class="calendar_indicator"
-                [class.full_calendar]="listPreview == 'full_list'"
+                [class.full_calendar]="listPreview === 'full_list'"
                 [class.current_year]="
                     isMonthAndYearOnly
-                        ? selectedYearFromInput == month.getFullYear()
-                        : selectedYearFromInput == month.getFullYear() &&
-                          selMonth == month.getMonth()
+                        ? selectedYearFromInput === month.getFullYear()
+                        : selectedYearFromInput === month.getFullYear() &&
+                          selMonth === month.getMonth()
                 "
             >
                 <span *ngIf="listPreview == 'full_list'"
@@ -35,8 +35,8 @@
                     [year]="selectedYear"
                     [dateTime]="dateTime"
                     [activeMonth]="
-                        selectedYearFromInput == month.getFullYear() &&
-                        selMonth == month.getMonth()
+                        selectedYearFromInput === month.getFullYear() &&
+                        selMonth === month.getMonth()
                     "
                 ></app-calendar-days>
             </div>
@@ -44,7 +44,7 @@
                 <div
                     class="month_list"
                     [class.current_year]="
-                        selectedYearFromInput == month.getFullYear()
+                        selectedYearFromInput === month.getFullYear()
                     "
                 >
                     <div

@@ -53,39 +53,16 @@ const MONTHS = [
 })
 export class DateCalendarsComponent implements OnInit, OnDestroy {
     @Input() listPreview: string;
-    @Input() dateTime: any;
+    @Input() dateTime: Date;
     @Input() isMonthAndYearOnly: boolean = false;
     @Output() setListPreviewValue = new EventEmitter();
 
-    currentYear: any = new Date().getFullYear();
-    currentMonth: any = new Date().getMonth();
-    currentDay: any = new Date().getDate();
-    activeIndex = 0;
-    currentIndex: number;
-    currentYearIndex: number;
-    monthYearsIndx: any[] = [];
-    months = Array.from({ length: RANGE }, (_, i) => {
-        let year = STARTING_YEAR + Math.floor(i / 12);
-        let month = i % 12;
-        if (year == this.currentYear && month == this.currentMonth) {
-            this.currentIndex = i;
-            this.activeIndex = i;
-        }
-        const sendDate = new Date(year, month, 1);
-        this.monthYearsIndx.push(moment(sendDate).format('MM/DD/YY'));
-        return sendDate;
-    });
-
-    justYears = Array.from({ length: 100 }, (_, i) => {
-        let year = STARTING_YEAR + i;
-        if (year == this.currentYear) {
-            this.currentYearIndex = i;
-        }
-
-        return new Date(STARTING_YEAR + i, 1, 1);
-    });
-
-    monthNames = [
+    private currentYear: number = new Date().getFullYear();
+    private currentMonth: number = new Date().getMonth();
+    private activeMonth = 0;
+    private subscription?: Subscription;
+    private destroy$ = new Subject<void>();
+    private monthNames: string[] = [
         'January',
         'February',
         'March',
@@ -99,12 +76,32 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
         'November',
         'December',
     ];
-    selectedYear: any;
-    scrollTodayDate: boolean;
-    selectedMonth: any;
-    private activeMonth = 0;
-    private subscription?: Subscription;
-    private destroy$ = new Subject<void>();
+
+    public activeIndex: number = 0;
+    public currentIndex: number;
+    public currentYearIndex: number;
+    public monthYearsIndx: string[] = [];
+    public months: Date[] = Array.from({ length: RANGE }, (_, i) => {
+        const year = STARTING_YEAR + Math.floor(i / 12);
+        const month = i % 12;
+        if (year === this.currentYear && month === this.currentMonth) {
+            this.currentIndex = i;
+            this.activeIndex = i;
+        }
+        const sendDate = new Date(year, month, 1);
+        this.monthYearsIndx.push(moment(sendDate).format('MM/DD/YY'));
+        return sendDate;
+    });
+
+    public justYears: Date[] = Array.from({ length: 100 }, (_, i) => {
+        const year = STARTING_YEAR + i;
+        if (year === this.currentYear) this.currentYearIndex = i;
+
+        return new Date(STARTING_YEAR + i, 1, 1);
+    });
+
+    public selectedYear: number;
+    public selectedMonth: string;
 
     constructor(private calendarService: CalendarScrollService) {}
 
@@ -126,6 +123,10 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
             this.currentYearIndex = this.justYears.findIndex(
                 (year) => year.getFullYear() === this.selectedYear
             );
+
+        console.log('monthYearsIndx', this.monthYearsIndx);
+        console.log('months', this.months);
+        console.log('justYears', this.justYears);
     }
 
     onMonthChange(month: number) {

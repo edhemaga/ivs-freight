@@ -33,11 +33,8 @@ import {
     STARTING_YEAR,
 } from './../date-calendars/calendar_strategy';
 
-export const FULL_SIZE = 182;
-// UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
-export const CYCLE_HEIGHT = 100 * (12 * FULL_SIZE) + 50;
-
-export const CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 65;
+// enums
+import { CalendarMainEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
 
 function factory(dir: CalendarDatesMainComponent) {
     return dir.scrollStrategy;
@@ -93,8 +90,8 @@ export class CalendarDatesMainComponent
 
     scrollStrategy: CalendarStrategy = new CalendarStrategy(
         this.calendarService,
-        CYCLE_HEIGHT,
-        FULL_SIZE,
+        CalendarMainEnum.CYCLE_HEIGHT,
+        CalendarMainEnum.FULL_SIZE,
         'main'
     );
 
@@ -128,8 +125,8 @@ export class CalendarDatesMainComponent
             if (!change.listPreview.firstChange) {
                 this.scrollStrategy.updateScrollHeights(
                     change.listPreview.currentValue === 'month_list'
-                        ? CYCLE_HEIGHT_BY_MONTHS
-                        : CYCLE_HEIGHT
+                        ? CalendarMainEnum.CYCLE_HEIGHT_BY_MONTHS
+                        : CalendarMainEnum.CYCLE_HEIGHT
                 );
             }
         }
@@ -155,7 +152,8 @@ export class CalendarDatesMainComponent
                     res.type != 'main' &&
                     this.calendarService.selectedScroll != 'main'
                 ) {
-                    const sizeTimes = FULL_SIZE / res.cycleSize;
+                    const sizeTimes =
+                        CalendarMainEnum.FULL_SIZE / res.cycleSize;
                     const newScrollSize = Math.ceil(
                         sizeTimes * res.scrollOffset
                     );
@@ -181,7 +179,9 @@ export class CalendarDatesMainComponent
 
         if (this.isMonthAndYearOnly) {
             setTimeout(() => {
-                this.scrollStrategy.updateScrollHeights(CYCLE_HEIGHT_BY_MONTHS);
+                this.scrollStrategy.updateScrollHeights(
+                    CalendarMainEnum.CYCLE_HEIGHT_BY_MONTHS
+                );
 
                 setTimeout(() => {
                     this.scrollStrategy.scrollToIndex(
@@ -223,7 +223,7 @@ export class CalendarDatesMainComponent
 
         if (this.isMonthAndYearOnly) {
             this.setAutoIndex.emit(num);
-            
+
             const selectedMonth = this.months[index];
             const new_date = moment(
                 new Date(selectedMonth.getFullYear(), num + 1, 0)
