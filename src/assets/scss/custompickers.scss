@@ -1,5 +1,6 @@
 @import '/src/theme/variables.scss';
 @import './details_page_ske.scss';
+@import './fonts.scss';
 
 .datetime-dropdown-holder {
     position: relative;
@@ -440,17 +441,14 @@
                 height: 22px;
                 color: $ta-light-grey-6;
                 font-size: 11px;
-                font-weight: $font-medium;
                 
                 .left-year-show {
                     color: $ta-light-grey-6;
                     font-size: 11px;
-                    font-weight: $font-regular;
                 }
 
                 &.current_month_year {
                     color: $white;
-                    font-weight: $font-bold;
 
                     .left-year-show {
                         color: $white;
@@ -489,7 +487,6 @@
 
                             color: $white;
                             font-size: 11px;
-                            font-weight: $font-bold;
 
                             .year_hold {
                                 margin-right: 0;
@@ -503,7 +500,6 @@
 
                             color: $ta-blue-19;
                             font-size: 11px;
-                            font-weight: $font-bold;
                             text-transform: uppercase;
 
                             &:hover {
@@ -518,12 +514,10 @@
 
                             color: $bw5;
                             font-size: 11px;
-                            font-weight: $font-bold;
                             text-transform: uppercase;
 
                             &.current_year {
                                 color: $white;
-                                font-weight: $font-bold;
                             }
 
                             &.full_calendar {
@@ -544,7 +538,6 @@
                                 margin: 0;
                 
                                 font-size: 9px;
-                                font-weight: $font-bold;
                                 color: $ta-light-grey-2;
                                 text-align: center;
                             }
@@ -564,7 +557,6 @@
 
                                 color: $bw5;
                                 font-size: 11px;
-                                font-weight: $font-medium;
 
                                 &:hover:not(.current_month) {
                                     background-color: $ta-black;
@@ -575,7 +567,6 @@
                     
                                 &.current_month {
                                     color: $white;
-                                    font-weight: $font-bold;
                                     background-color: $ta-blue-21;
                                     border-radius: 2px;
                                     cursor: pointer;
@@ -603,7 +594,6 @@
                                 margin: 0;
                                 color: $bw5;
                                 font-size: 11px;
-                                font-weight: $font-medium;
                 
                                 &.current_day {
                                     color: $white;
@@ -614,7 +604,6 @@
                                 &.selected_day {
                                     background-color: $ta-blue-21;
                                     color: $white;
-                                    font-weight: $font-bold;
                                     border-radius: 2px;
                                 }
 
@@ -652,13 +641,11 @@
                 .selected_time {
                     color: $white;
                     font-size: 11px;
-                    font-weight: $font-bold;
                 }
 
                 .sel_now {
                     color: $ta-blue-19;
                     font-size: 11px;
-                    font-weight: $font-bold;
                     text-transform: uppercase;
                 }
             }
@@ -675,7 +662,6 @@
                     div {
                         color: $ta-light-grey-2;
                         font-size: 9px;
-                        font-weight: $font-bold;
                         text-align: center;
                         text-transform: uppercase;
                     }
@@ -723,11 +709,9 @@
                         .scroll_item {
                             color: $ta-light-grey-2;
                             font-size: 11px;
-                            font-weight: $font-medium;
 
                             &.active_item {
                                 color: $white;
-                                font-weight: $font-bold;
                             }
                         }
                     }
@@ -748,7 +732,6 @@
 
                         color: $white;
                         font-size: 11px;
-                        font-weight: $font-bold;
                         text-transform: uppercase;
 
                         border-radius: 1px;

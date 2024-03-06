@@ -123,10 +123,6 @@ export class DateCalendarsComponent implements OnInit, OnDestroy {
             this.currentYearIndex = this.justYears.findIndex(
                 (year) => year.getFullYear() === this.selectedYear
             );
-
-        console.log('monthYearsIndx', this.monthYearsIndx);
-        console.log('months', this.months);
-        console.log('justYears', this.justYears);
     }
 
     onMonthChange(month: number) {

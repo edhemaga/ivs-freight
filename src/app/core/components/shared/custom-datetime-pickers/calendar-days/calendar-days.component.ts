@@ -45,14 +45,18 @@ export class CalendarDaysComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {
+        this.setSelectedDate();
+    }
+
+    chooseDay(day): void {
+        this.selectDay.emit({ index: this.index, day });
+    }
+
+    private setSelectedDate(): void {
         this.selectedDay = parseInt(('0' + this.dateTime.getDate()).slice(-2));
         this.selMonth = parseInt(
             ('0' + this.dateTime.getMonth() + 1).slice(-2)
         );
         this.selectedYear = this.dateTime.getFullYear();
-    }
-
-    chooseDay(day): void {
-        this.selectDay.emit({ index: this.index, day });
     }
 }

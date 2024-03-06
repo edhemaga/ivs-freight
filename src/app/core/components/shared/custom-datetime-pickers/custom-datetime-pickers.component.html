@@ -13,18 +13,36 @@
             </div>
             <div *ngIf="calendarMainType == 'time'" class="time_picker">
                 <div class="time_picker_head d-flex">
-                    <div class="selected_time">{{ selectedTime }}</div>
-                    <div class="sel_now" (click)="setDefaultTime()">
+                    <div class="selected_time ta-font-bold">
+                        {{ selectedTime }}
+                    </div>
+                    <div
+                        class="sel_now ta-font-bold"
+                        (click)="setDefaultTime()"
+                    >
                         Default
                     </div>
                 </div>
                 <div class="time_picker_body">
                     <div class="picker_body_head">
-                        <div [class.active]="hoveredItem === 'hours'">Hour</div>
-                        <div [class.active]="hoveredItem === 'minutes'">
+                        <div
+                            class="ta-font-bold"
+                            [class.active]="hoveredItem === 'hours'"
+                        >
+                            Hour
+                        </div>
+                        <div
+                            class="ta-font-bold"
+                            [class.active]="hoveredItem === 'minutes'"
+                        >
                             Minute
                         </div>
-                        <div [class.active]="hoveredItem === 'times'">AM/PM</div>
+                        <div
+                            class="ta-font-bold"
+                            [class.active]="hoveredItem === 'times'"
+                        >
+                            AM/PM
+                        </div>
                     </div>
                     <div class="picker_body">
                         <div
@@ -36,10 +54,11 @@
                         >
                             <div
                                 *ngFor="let hour of hourTimes; let indx = index"
-                                class="scroll_item"
-                                [class.active_item]="
-                                    scrollTypes.hourScroll === indx
-                                "
+                                class="scroll_item ta-font-medium"
+                                [ngClass]="{
+                                    'active_item ta-font-bold':
+                                        scrollTypes.hourScroll === indx
+                                }"
                                 (click)="onScroll($event, 'hourScroll', indx)"
                             >
                                 {{ hour }}
@@ -57,10 +76,11 @@
                                     let minutes of timeMinutes;
                                     let indx = index
                                 "
-                                class="scroll_item"
-                                [class.active_item]="
-                                    scrollTypes.minutesScroll === indx
-                                "
+                                class="scroll_item ta-font-medium"
+                                [ngClass]="{
+                                    'active_item ta-font-bold':
+                                        scrollTypes.minutesScroll === indx
+                                }"
                                 (click)="
                                     onScroll($event, 'minutesScroll', indx)
                                 "
@@ -77,10 +97,11 @@
                         >
                             <div
                                 *ngFor="let when of timeOfDay; let indx = index"
-                                class="scroll_item"
-                                [class.active_item]="
-                                    scrollTypes.pmAmScroll === indx
-                                "
+                                class="scroll_item ta-font-medium"
+                                [ngClass]="{
+                                    'active_item ta-font-bold':
+                                        scrollTypes.pmAmScroll === indx
+                                }"
                                 (click)="onScroll($event, 'pmAmScroll', indx)"
                             >
                                 {{ when }}
@@ -92,10 +113,10 @@
                         </div>
                     </div>
                     <div class="picker_buttons">
-                        <div (click)="closePopup()" class="pick_button">
+                        <div (click)="closePopup()" class="pick_button ta-font-bold">
                             Cancel
                         </div>
-                        <div (click)="setTime()" class="pick_button set_button">
+                        <div (click)="setTime()" class="pick_button set_button ta-font-bold">
                             Set
                         </div>
                     </div>

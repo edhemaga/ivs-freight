@@ -13,12 +13,12 @@
         >
             <div
                 (click)="selectMonth(indx)"
-                class="month-year-item"
-                [class.current_month_year]="
-                    isMonthAndYearOnly
+                class="month-year-item ta-font-medium"
+                [ngClass]="{
+                    'current_month_year ta-font-bold': isMonthAndYearOnly
                         ? indx === _currentYearIndex
                         : indx === _activeIndex
-                "
+                }"
                 [innerHTML]="month | calendarmonths : listPreview"
             ></div>
         </ng-container>
