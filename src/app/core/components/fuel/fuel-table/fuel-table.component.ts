@@ -12,7 +12,10 @@ import { Subject, takeUntil } from 'rxjs';
 //Components
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
 
 //Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -31,6 +34,11 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+    convertDateFromBackend,
+    convertDateToTimeFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 //Models
 import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
@@ -44,6 +52,9 @@ import { FuelQuery } from '../state/fule-state/fuel-state.query';
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { SortTypes } from 'src/app/core/model/fuel';
+
+//Services
+import { FuelTService } from '../state/fuel.service';
 
 @Component({
     selector: 'app-fuel-table',
@@ -91,7 +102,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         public datePipe: DatePipe,
         private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef,
-        private confiramtionService: ConfirmationService
+        private confiramtionService: ConfirmationService,
+        private fuelService: FuelTService
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------
@@ -105,6 +117,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleColumns();
 
         this.search();
+
+        this.confiramtionSubscribe();
 
         this.deleteSelectedRows();
 
@@ -200,14 +214,104 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Delete Selected Rows
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
+            .subscribe((response) => {
                 if (response.length) {
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                                date: convertDateFromBackend(
+                                    item.tableData.transactionDate
+                                ),
+                                time: convertDateToTimeFromBackend(
+                                    item.tableData.transactionDate,
+                                    true
+                                ),
+                            },
+                        };
+                    });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template:
+                                ConstantStringTableComponentsEnum.FUEL_TRANSACTION_TEXT,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            svg: true,
+                        }
+                    );
                 }
             });
+    }
+
+    private confiramtionSubscribe(): void {
+        this.confiramtionService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    switch (res.type) {
+                        case ConstantStringTableComponentsEnum.DELETE:
+                            this.multipleDeleteTransactions([res.id]);
+                            break;
+
+                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
+                            this.multipleDeleteTransactions(res.array);
+                            break;
+
+                        default:
+                            break;
+                    }
+                },
+            });
+    }
+
+    private multipleDeleteTransactions(response: number[]): void {
+        this.fuelService
+            .deleteFuelList(response)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((fuel) => {
+                    response.map((id) => {
+                        if (fuel.id === id)
+                            fuel.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                    });
+
+                    return fuel;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.tableData[0].data = this.viewData;
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    private updateDataCount(): void {
+        const fuelCount = JSON.parse(
+            localStorage.getItem(
+                ConstantStringTableComponentsEnum.FUEL_TABLE_COUNT
+            )
+        );
+
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = fuelCount.fuelTransactions;
+
+        this.tableData = [...updatedTableData];
     }
 
     // Fuel Actions
@@ -482,7 +586,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columns = td.gridColumns;
         if (td.data?.length) {
             this.viewData = [...td.data];
-
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data) => {
@@ -555,6 +658,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTotal: data?.total
                 ? '$ ' + this.thousandSeparator.transform(data.total)
                 : '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(),
+            },
         };
     }
 
