@@ -50,12 +50,19 @@ import {
     FuelTruckType,
 } from './state/models/fuel.model';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
+import { Trailer } from '../../../shared/model/card-table-data.model';
 
 //Pipes
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 
 //Enums
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
+import {
+    FuelDropdownOptions,
+    FuelValues,
+    FuelModalActions,
+    FuelDataOptions,
+} from './state/enums/fuel.enum';
 
 //Validations
 import {
@@ -73,13 +80,6 @@ import {
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
-import { Trailer } from '../../../shared/model/card-table-data.model';
-import {
-    FuelDropdownOptions,
-    FuelValues,
-    FuelModalActions,
-    FuelDataOptions,
-} from './state/enums/fuel.enum';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
@@ -182,10 +182,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case FuelModalActions.CLOSE: {
+            case FuelModalActions.CLOSE:
                 break;
-            }
-            case FuelModalActions.SAVE: {
+
+            case FuelModalActions.SAVE:
                 if (this.fuelForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
@@ -209,10 +209,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
@@ -345,23 +344,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public onSelectDropDown(event: any, action: string, index?: number): void {
         //leave any for now
         switch (action) {
-            case FuelDropdownOptions.TRUCK: {
+            case FuelDropdownOptions.TRUCK:
                 this.selectedTruckType = event;
                 this.getDriverTrailerBySelectedTruck(FuelValues.TRUCK_ID);
-
                 break;
-            }
-            case FuelDropdownOptions.FUEL: {
+            case FuelDropdownOptions.FUEL:
                 this.selectedFuelStop = event;
                 break;
-            }
-            case FuelDropdownOptions.FUEL_ITEMS: {
+            case FuelDropdownOptions.FUEL_ITEMS:
                 this.selectedFuelItemDropFArray[index] = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 

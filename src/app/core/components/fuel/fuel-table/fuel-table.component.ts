@@ -34,6 +34,11 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+    convertDateFromBackend,
+    convertDateToTimeFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 //Models
 import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
@@ -47,12 +52,9 @@ import { FuelQuery } from '../state/fule-state/fuel-state.query';
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { SortTypes } from 'src/app/core/model/fuel';
+
+//Services
 import { FuelTService } from '../state/fuel.service';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
-import {
-    convertDateFromBackend,
-    convertDateToTimeFromBackend,
-} from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-fuel-table',
@@ -254,17 +256,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: (res: Confirmation) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE: {
+                        case ConstantStringTableComponentsEnum.DELETE:
                             this.multipleDeleteTransactions([res.id]);
                             break;
-                        }
-                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
+
+                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
                             this.multipleDeleteTransactions(res.array);
                             break;
-                        }
-                        default: {
+
+                        default:
                             break;
-                        }
                     }
                 },
             });
@@ -277,10 +278,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(() => {
                 this.viewData = this.viewData.map((fuel) => {
                     response.map((id) => {
-                        if (fuel.id === id) {
+                        if (fuel.id === id)
                             fuel.actionAnimation =
                                 ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
-                        }
                     });
 
                     return fuel;
@@ -288,11 +288,11 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
 
-                const inetval = setInterval(() => {
+                const interval = setInterval(() => {
                     this.viewData = closeAnimationAction(true, this.viewData);
                     this.tableData[0].data = this.viewData;
 
-                    clearInterval(inetval);
+                    clearInterval(interval);
                 }, 900);
 
                 this.tableService.sendRowsSelected([]);
