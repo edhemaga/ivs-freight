@@ -134,6 +134,11 @@
             align-items: center;
             .svg-bank {
                 margin-right: 6px;
+                svg {
+                    path {
+                        fill: $bw5;
+                    }
+                }
             }
         }
     }

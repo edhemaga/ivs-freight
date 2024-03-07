@@ -1,11 +1,26 @@
-import { CalendarScrollService } from './../calendar-scroll.service';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-
-import { RANGE, STARTING_YEAR } from './calendar_strategy';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import moment from 'moment';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { Subject, Subscription, takeUntil } from 'rxjs';
+
+// moment
+import moment from 'moment';
+
+// services
+import { CalendarScrollService } from './../calendar-scroll.service';
+
+// constants
+import { RANGE, STARTING_YEAR } from './calendar_strategy';
+
+// components
 import { CalendarDatesMainComponent } from '../calendar-dates-main/calendar-dates-main.component';
 import { CalendarLeftComponent } from '../calendar-left/calendar-left.component';
 
@@ -30,40 +45,24 @@ const MONTHS = [
     styleUrls: ['./date-calendars.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            CalendarDatesMainComponent, 
-            CalendarLeftComponent
-    ]
+        CommonModule,
+        FormsModule,
+        CalendarDatesMainComponent,
+        CalendarLeftComponent,
+    ],
 })
-export class DateCalendarsComponent implements OnInit {
+export class DateCalendarsComponent implements OnInit, OnDestroy {
     @Input() listPreview: string;
-    @Input() dateTime: any;
+    @Input() dateTime: Date;
+    @Input() isMonthAndYearOnly: boolean = false;
     @Output() setListPreviewValue = new EventEmitter();
 
-    currentYear: any = new Date().getFullYear();
-    currentMonth: any = new Date().getMonth();
-    currentDay: any = new Date().getDate();
-    private activeIndex = 0;
-    currentIndex: number;
-    monthYearsIndx: any[] = [];
-    months = Array.from({ length: RANGE }, (_, i) => {
-        let year = STARTING_YEAR + Math.floor(i / 12);
-        let month = i % 12;
-        if (year == this.currentYear && month == this.currentMonth) {
-            this.currentIndex = i;
-            this.activeIndex = i;
-        }
-        const sendDate = new Date(year, month, 1);
-        this.monthYearsIndx.push(moment(sendDate).format('MM/DD/YY'));
-        return sendDate;
-    });
-
-    justYears = Array.from({ length: 100 }, (_, i) => {
-        return new Date(STARTING_YEAR + i, 1, 1);
-    });
-
-    monthNames = [
+    private currentYear: number = new Date().getFullYear();
+    private currentMonth: number = new Date().getMonth();
+    private activeMonth = 0;
+    private subscription?: Subscription;
+    private destroy$ = new Subject<void>();
+    private monthNames: string[] = [
         'January',
         'February',
         'March',
@@ -77,12 +76,32 @@ export class DateCalendarsComponent implements OnInit {
         'November',
         'December',
     ];
-    selectedYear: any;
-    scrollTodayDate: boolean;
-    selectedMonth: any;
-    private activeMonth = 0;
-    private subscription?: Subscription;
-    private destroy$ = new Subject<void>();
+
+    public activeIndex: number = 0;
+    public currentIndex: number;
+    public currentYearIndex: number;
+    public monthYearsIndx: string[] = [];
+    public months: Date[] = Array.from({ length: RANGE }, (_, i) => {
+        const year = STARTING_YEAR + Math.floor(i / 12);
+        const month = i % 12;
+        if (year === this.currentYear && month === this.currentMonth) {
+            this.currentIndex = i;
+            this.activeIndex = i;
+        }
+        const sendDate = new Date(year, month, 1);
+        this.monthYearsIndx.push(moment(sendDate).format('MM/DD/YY'));
+        return sendDate;
+    });
+
+    public justYears: Date[] = Array.from({ length: 100 }, (_, i) => {
+        const year = STARTING_YEAR + i;
+        if (year === this.currentYear) this.currentYearIndex = i;
+
+        return new Date(STARTING_YEAR + i, 1, 1);
+    });
+
+    public selectedYear: number;
+    public selectedMonth: string;
 
     constructor(private calendarService: CalendarScrollService) {}
 
@@ -90,13 +109,20 @@ export class DateCalendarsComponent implements OnInit {
         this.selectedMonth = this.monthNames[this.dateTime.getMonth()];
         this.selectedYear = this.dateTime.getFullYear();
 
-        this.activeIndex = this.calendarService.selectedIndex;
+        if (this.calendarService.selectedIndex)
+            this.activeIndex = this.calendarService.selectedIndex;
+
         this.calendarService.scrolledIndexChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.activeIndex = res.indx;
                 this.onMonthChange(res.indx);
             });
+
+        if (this.isMonthAndYearOnly)
+            this.currentYearIndex = this.justYears.findIndex(
+                (year) => year.getFullYear() === this.selectedYear
+            );
     }
 
     onMonthChange(month: number) {
@@ -125,6 +151,10 @@ export class DateCalendarsComponent implements OnInit {
 
     public setListPreviewToFull(num) {
         this.setListPreviewValue.emit('full_list');
+        this.setAutoIndex(num);
+    }
+
+    public setAutoIndex(num: number): void {
         this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
     }
 

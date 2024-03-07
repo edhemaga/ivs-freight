@@ -183,6 +183,7 @@ export class SettingsCompanyService implements OnDestroy {
                                 animation: 'update',
                                 data: company,
                                 id: company.id,
+                                editedDivisionCompId: data.id,
                             });
 
                             companySub.unsubscribe();
@@ -259,6 +260,9 @@ export class SettingsCompanyService implements OnDestroy {
                                 animation: 'add',
                                 data: company,
                                 id: company.id,
+                                editedDivisionCompId: data.isDivision
+                                    ? data.companyId
+                                    : null,
                             });
 
                             companySub.unsubscribe();

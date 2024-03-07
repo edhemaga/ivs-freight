@@ -1,3 +1,5 @@
+@import '../../theme/variables.scss';
+
 //----------------  Common-fake-table-modal  ----------------
 .common-fake-table-modal {
     overflow-x: scroll;
@@ -231,6 +233,14 @@
                 }
             }
 
+            .common-fake-table-card-number {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 18px;
+                color: $bw5;
+                text-align: center;
+            }
+
             &:hover {
                 background-color: #eeeeee;
 
@@ -238,6 +248,10 @@
                     display: flex !important;
                     align-items: center;
                     justify-content: center;
+                }
+
+                .common-fake-table-card-number {
+                    opacity: 0;
                 }
             }
         }
@@ -373,23 +387,42 @@
     // Bank Card Template
     &-bank-cards {
         .common-fake-table-label {
+            padding: 0;
+
             p {
+                &:nth-child(1) {
+                    margin-left: 7px;
+                }
+
                 &:nth-child(2) {
-                    margin-left: 81px;
+                    margin-left: 17px;
                 }
 
                 &:nth-child(3) {
-                    margin-left: 126px;
+                    margin-left: 122px;
                 }
 
                 &:nth-child(4) {
-                    margin-left: 83px;
+                    margin-left: 159px;
+                }
+
+                &:nth-child(5) {
+                    margin-left: 85px;
                 }
             }
         }
         .common-fake-table-body {
             .common-fake-table-card {
-                grid-template-columns: 132px 172px 94px 140px 1fr;
+                grid-template-columns: 26px 150px 214px 100px 110px 1fr;
+                grid-template-rows: 26px;
+                column-gap: 4px;
+                padding: 0;
+                margin-bottom: 4px;
+            }
+
+            .common-fake-table-delete {
+                left: 0;
+                top: 0;
             }
         }
     }

@@ -37,7 +37,7 @@ export class DisplayRepairConfiguration {
 
         {
             title: 'Shop Address',
-            endpoint: 'tableShopAdress',
+            endpoint: 'address',
         },
 
         {
@@ -111,7 +111,7 @@ export class DisplayRepairConfiguration {
 
         {
             title: 'Address',
-            endpoint: 'tableAddress',
+            endpoint: 'address',
         },
 
         {
