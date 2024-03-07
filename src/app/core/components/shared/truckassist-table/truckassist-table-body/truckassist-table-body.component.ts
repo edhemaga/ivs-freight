@@ -304,6 +304,8 @@ export class TruckassistTableBodyComponent
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
             this.getSelectedTabTableData();
+
+            this.labelDropdown();
         }
 
         if (
@@ -366,17 +368,17 @@ export class TruckassistTableBodyComponent
 
     // Render Row One By One
     renderOneByOne() {
-        // clearInterval(this.renderInterval);
-        // if(this.viewData.length - 1 <= this.tableRowCounter){
-        //     this.tableRowCounter = 0;
-        // }
-        // this.renderInterval = setInterval(() => {
-        //     this.tableRowCounter++;
-        //     this.changeDetectorRef.detectChanges();
-        //     if (this.tableRowCounter >= this.viewData.length - 1) {
-        //         clearInterval(this.renderInterval);
-        //     }
-        // }, 1);
+        clearInterval(this.renderInterval);
+        if (this.viewData.length - 1 <= this.tableRowCounter) {
+            this.tableRowCounter = 0;
+        }
+        this.renderInterval = setInterval(() => {
+            this.tableRowCounter++;
+            this.changeDetectorRef.detectChanges();
+            if (this.tableRowCounter >= this.viewData.length - 1) {
+                clearInterval(this.renderInterval);
+            }
+        }, 1);
     }
 
     // Track By For Table Row
@@ -399,6 +401,8 @@ export class TruckassistTableBodyComponent
         return item.columnId;
     }
     public labelDropdown(): void {
+        this.selectedContactLabel = [];
+
         for (let row of this.viewData) {
             this.dropdownSelectionArray.push(new FormControl());
             if (row['companyContactLabel']) {
