@@ -59,9 +59,9 @@ export class NotificationService {
             httpRequest.url.indexOf('setnewpassword') > -1 ||
             httpRequest.url.indexOf('verifyforgotpassword') > -1 ||
             httpRequest.url.indexOf('resendsignupuser') > -1 ||
-            httpRequest.url.indexOf('selectcompany') > -1  ||
-            httpRequest.url.indexOf('account/login') > -1  
-            
+            httpRequest.url.indexOf('selectcompany') > -1 ||
+            httpRequest.url.indexOf('account/login') > -1 ||
+            httpRequest.url.indexOf('user/check') > -1
         ) {
             return false;
         }
@@ -91,7 +91,8 @@ export class NotificationService {
             httpRequest.url.indexOf('verifyforgotpassword') > -1 ||
             httpRequest.url.indexOf('resendsignupuser') > -1 ||
             httpRequest.url.indexOf('selectcompany') > -1 ||
-            httpRequest.url.indexOf('account/login') > -1 
+            httpRequest.url.indexOf('account/login') > -1 ||
+            httpRequest.url.indexOf('user/check') > -1
         ) {
             return false;
         }
@@ -114,11 +115,10 @@ export class NotificationService {
         //this.toastr.warning(message, title, notificationOptions);
     }
 
-
-    public triggerToastMessage(type: any, title: any, message: any){
-        if ( type == 'success' ) {
+    public triggerToastMessage(type: any, title: any, message: any) {
+        if (type == 'success') {
             this.toastr.success(message, title, notificationOptions);
-        } else if ( type == 'error' ) {
+        } else if (type == 'error') {
             this.toastr.error(message, title, notificationOptions);
         }
     }

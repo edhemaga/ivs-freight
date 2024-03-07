@@ -81,29 +81,29 @@
             </div>
             <!---------------------------------------------- Different templates for body --------------------------------------------->
             <!-- Driver, Owner -->
-            <div
-                *ngIf="['driver', 'owner'].includes(editData?.template)"
-                class="confirmation-info"
+            <ng-container
+                *ngIf="['driver', 'user', 'owner'].includes(editData?.template)"
             >
-                <p class="confirmation-text-1 large-text-1">
-                    {{ editData?.data?.name }}
-                    <ng-container *ngIf="!editData?.data?.status">
-                        <span class="inactive-icon-holder">
-                            <svg-icon
-                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
-                            ></svg-icon>
-                        </span>
-                    </ng-container>
-                </p>
-                <p class="confirmation-text-2 large-text-2">
-                    {{ editData?.dateOfBirth | formatDateP }}
-                </p>
-                <!--
+                <div class="confirmation-info">
+                    <p class="confirmation-text-1 large-text-1">
+                        {{ editData?.data?.name }}
+                        <ng-container *ngIf="!editData?.data?.status">
+                            <span class="inactive-icon-holder">
+                                <svg-icon
+                                    src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
+                    </p>
+                    <p class="confirmation-text-2 large-text-2">
+                        {{ editData?.dateOfBirth | formatDateP }}
+                    </p>
+                    <!--
                 <p class="confirmation-text-2">
                     SSN: {{ editData?.data?.ssn }}
                 </p>
-                -->
-            </div>
+                --></div>
+            </ng-container>
             <!-- Truck, Trailer -->
             <div
                 *ngIf="['truck', 'trailer'].includes(editData?.template)"
@@ -295,31 +295,33 @@
                 </div>
                 <!---------------------------------------------- Different templates for body --------------------------------------------->
                 <!-- Driver, Owner -->
-                <div
-                    *ngIf="['driver', 'owner'].includes(editData?.template)"
-                    class="confirmation-info"
+                <ng-container
+                    *ngIf="
+                        ['driver', 'user', 'owner'].includes(editData?.template)
+                    "
                 >
-                    <p class="confirmation-text-1 large-text-1">
-                        {{ item?.data?.name }}
+                    <div class="confirmation-info">
+                        <p class="confirmation-text-1 large-text-1">
+                            {{ item?.data?.name }}
 
-                        <ng-container *ngIf="!editData?.data?.status">
-                            <span class="inactive-icon-holder">
-                                <svg-icon
-                                    src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
-                                ></svg-icon>
-                            </span>
-                        </ng-container>
-                    </p>
-                    <p class="confirmation-text-2 large-text-2">
-                        {{ item?.data?.dateOfBirth | formatDateP }}
-                    </p>
+                            <ng-container *ngIf="!editData?.data?.status">
+                                <span class="inactive-icon-holder">
+                                    <svg-icon
+                                        src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                    ></svg-icon>
+                                </span>
+                            </ng-container>
+                        </p>
+                        <p class="confirmation-text-2 large-text-2">
+                            {{ item?.data?.dateOfBirth | formatDateP }}
+                        </p>
 
-                    <!--
+                        <!--
                     <p class="confirmation-text-2">
                         SSN: {{ item?.data?.ssn }}
                     </p>
-                    -->
-                </div>
+                    --></div>
+                </ng-container>
                 <!-- Truck, Trailer -->
                 <div
                     *ngIf="['truck', 'trailer'].includes(editData?.template)"
