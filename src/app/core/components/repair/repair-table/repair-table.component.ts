@@ -77,7 +77,7 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { DisplayRepairConfiguration } from '../repair-card-data';
+import { DisplayRepairConfiguration } from '../state/constants/repair-card.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';

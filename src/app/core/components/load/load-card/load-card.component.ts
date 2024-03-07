@@ -14,10 +14,11 @@ import { CardRows } from '../../shared/model/cardData';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
+// store
+import { LoadQuery } from '../../modals/cards-modal/state/store/load-modal.query';
+
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
-import { LoadServiceModal } from '../../modals/cards-modal/state/service/load.service';
-import { LoadQuery } from '../../modals/cards-modal/state/store/load-modal.query';
 
 @Component({
     selector: 'app-load-card',
@@ -40,16 +41,13 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
+
     public isAllCardsFlipp: boolean = false;
+    public expandCardChecked: boolean = true;
 
     public cardData: CardDetails;
 
     public isCardFlippedCheckInCards: number[] = [];
-
-    templateData: any;
-    pendingData: any;
-    activeData: any;
-    closedData: any;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -62,13 +60,15 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.flipAllCards();
 
-        this.getAllData();
+        this.expandCard();
     }
 
-    getAllData() {
-        this.loadQuery.pending$.subscribe((data) => {
-            console.log(data);
-        });
+    public expandCard(): void {
+        this.loadQuery.pending$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.expandCardChecked = res.checked;
+            });
     }
 
     public flipAllCards(): void {

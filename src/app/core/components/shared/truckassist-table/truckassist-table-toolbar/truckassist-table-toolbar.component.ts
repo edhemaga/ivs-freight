@@ -9,6 +9,7 @@ import {
     OnDestroy,
     ChangeDetectorRef,
     TemplateRef,
+    ViewChild,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -18,7 +19,11 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 //Type
 import { TableType } from 'appcoretruckassist';
@@ -69,6 +74,8 @@ import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-
 export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
 {
+    @ViewChild('op') popover: NgbPopover;
+
     private destroy$ = new Subject<void>();
     public dropdownSelection = new UntypedFormControl();
     @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
@@ -196,8 +203,10 @@ export class TruckassistTableToolbarComponent
 
     public openCards(): void {
         this.modalService.openModal(LoadCardsModalComponent, {
-            size: 'small',
+            size: ConstantStringTableComponentsEnum.SMALL,
         });
+
+        this.popover.close();
     }
 
     public flipCards(flip: boolean): void {

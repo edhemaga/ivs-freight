@@ -499,7 +499,9 @@
             <!-- Modal footer for cards -->
 
             <ng-container *ngIf="isCardsModal">
-                <div class="modal-footer d-flex justify-content-between">
+                <div
+                    class="modal-footer modal-footer-cards d-flex justify-content-between"
+                >
                     <!-- Footer Left Side Cards-->
 
                     <div
@@ -507,10 +509,10 @@
                     >
                         <!-- Cards buttons reset and save -->
                         <button
-                            (click)="onAction('Reset to Default')"
-                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            (click)="onAction('reset-to-default')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-convert-to-template-btn modal-reset-to-default"
                             type="button"
-                            [ngClass]="{ valid: isModalValid }"
+                            [ngClass]="{ 'valid-reset': resetFormCards }"
                         >
                             Reset to Default
                         </button>
@@ -522,7 +524,7 @@
                         class="ta-modal-footer-right-side d-flex justify-content-end"
                     >
                         <button
-                            (click)="onAction('save')"
+                            (click)="onAction('cards-modal')"
                             class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                             type="button"
                             [ngClass]="{ valid: isModalValid }"

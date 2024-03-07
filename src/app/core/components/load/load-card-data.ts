@@ -70,6 +70,8 @@ export class DisplayLoadConfiguration {
             endpoint: 'loadTotal.total',
             secondEndpoint: 'loadTotal.subTotal',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackPending: CardRows[] = [
@@ -89,6 +91,8 @@ export class DisplayLoadConfiguration {
             title: 'Total Miles',
             endpoint: 'totalMiles',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackActive: CardRows[] = [

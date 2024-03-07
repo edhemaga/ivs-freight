@@ -1,8 +1,6 @@
 @import '/src/theme/variables.scss';
 
 .input-holder {
-    margin-bottom: 4px;
-
     .search-icon {
         left: 6px;
 
@@ -26,7 +24,7 @@
         color: $white;
 
         &::placeholder {
-            color: $muted;
+            color: $ta-black-2;
         }
 
         &:focus {
@@ -69,6 +67,10 @@
             }
         }
     }
+
+    .default-input {
+        background: $bw2;
+    }
 }
 
 .modal-body-holder {
@@ -87,16 +89,25 @@
             }
         }
 
+        .clear-icon {
+            right: 25px;
+            svg {
+                rect {
+                    fill: $ta-white-3;
+                }
+
+                path {
+                    fill: $ta-blue-15;
+                }
+            }
+        }
+
         .empty-svg {
             svg {
                 path {
                     fill: $muted;
                 }
             }
-        }
-
-        .empty-input {
-            background: $bw2;
         }
     }
 }
@@ -107,7 +118,7 @@
     padding: 4px 2px 4px 4px !important;
 
     .table-inner-modal {
-        width: 208px;
+        width: 216px;
         height: 244px;
         overflow-y: scroll;
 
@@ -158,13 +169,13 @@
             }
         }
 
-        .selected-in-other-input {
-            color: $muted;
+        .selected-input {
+            color: $white;
             cursor: default;
         }
 
-        .selected-input {
-            color: $white;
+        .selected-in-other-input {
+            color: $muted !important;
             cursor: default;
         }
     }

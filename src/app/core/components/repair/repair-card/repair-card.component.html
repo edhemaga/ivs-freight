@@ -94,17 +94,10 @@
                         >
                             <div class="one-row">
                                 <div class="item-body">
-                                    <div class="top-item-body">
-                                        <ng-container
-                                            *ngIf="card.isRepairOrder"
-                                        >
-                                            Repair Shop
-                                        </ng-container>
-                                        <ng-container
-                                            *ngIf="!card.isRepairOrder"
-                                        >
-                                            Cost
-                                        </ng-container>
+                                    <div
+                                        class="top-item-body d-flex align-items-center"
+                                    >
+                                        {{ rowsFront.title }}
                                     </div>
                                 </div>
 

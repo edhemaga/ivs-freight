@@ -9,8 +9,17 @@ import {
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
+
+// model
 import { CardRows } from '../../../shared/model/cardData';
+
+// store
+import { LoadQuery } from '../state/store/load-modal.query';
+
+// enum
+import { CardModalEnums } from '../utils/enums/card-modals.enums';
 
 @Component({
     selector: 'app-modal-input-form',
@@ -25,22 +34,40 @@ export class ModalInputFormComponent implements ControlValueAccessor {
     public _dataCardsModal: CardRows[];
     public filteredCardsModalData: CardRows[];
 
-    @Input() emptyValue: string;
     @Input() set dataCardModal(value: CardRows[]) {
         this._dataCardsModal = value;
+
         this.filteredCardsModalData = value;
 
         this.cdr.detectChanges();
     }
 
-    @Input() defaultValue: string;
+    @Input() defaultValue: CardRows;
+    @Input() backupValue: string;
+
+    private destroy$ = new Subject<void>();
 
     public tooltip: NgbTooltip;
 
     public lattersToHighlight: string;
 
+    public selectedValueInInput: string;
+    public allSelectedValuesInAllInputs: CardRows[];
+    public titleAlredySelectedInotherInput: boolean = false;
+
+    public showRemoveIcon: boolean = false;
+    public valueChangedInput: boolean = false;
+
     get getSuperControl() {
-        return this.superControl.control;
+        if (
+            this.superControl &&
+            this.superControl.control &&
+            this.superControl.control.value
+        ) {
+            return this.superControl.control.value;
+        } else {
+            return null;
+        }
     }
 
     public writeValue(_: any): void {}
@@ -51,32 +78,74 @@ export class ModalInputFormComponent implements ControlValueAccessor {
     public registerOnTouched(_: any): void {}
 
     constructor(
-        
+        @Self() public superControl: NgControl,
         private cdr: ChangeDetectorRef,
-        @Self() public superControl: NgControl
+        private loadQuery: LoadQuery
     ) {
         this.superControl.valueAccessor = this;
     }
 
-    public cardTitleSelected(selectedRow: CardRows, popover) {
-        console.log(selectedRow);
-        this.inputTitleValue.nativeElement.value = selectedRow.title;
-
-        this.onChange({ ...selectedRow, selected: true });
-
-        
-
-        if (popover) {
-            popover.close();
-        }
+    ngOnInit() {
+        this.getDataFromStore();
     }
+
+    public getDataFromStore(): void {
+        this.loadQuery.pending$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                this.allSelectedValuesInAllInputs = data.front_side;
+            });
+    }
+
+    public hasMatchingTitle(title: string): boolean {
+        return this.allSelectedValuesInAllInputs.some(
+            (item) => item && title === item.title
+        );
+    }
+
     public toggleCardsModalDropdown(
         tooltip: NgbTooltip,
         card: CardRows[]
     ): void {
-        this.tooltip = tooltip;
+        this.selectedValueInInput = this.inputTitleValue.nativeElement.value;
+
+        this.showRemoveIcon = true;
 
         tooltip.open({ titles: card });
+    }
+
+    public cardTitleSelected(selectedRow: CardRows, popover: NgbPopover): void {
+        switch (selectedRow.title) {
+            case CardModalEnums.EMPTY:
+                this.showRemoveIcon = false;
+
+                const emptyObj = {
+                    title: CardModalEnums.EMPTY,
+                    endpoint: CardModalEnums.EMPTY,
+                };
+
+                this.inputTitleValue.nativeElement.value = this.backupValue;
+
+                this.valueChangedInput = false;
+
+                this.onChange({ ...emptyObj });
+
+                break;
+
+            default:
+                this.inputTitleValue.nativeElement.value = selectedRow.title;
+
+                this.valueChangedInput = true;
+
+                this.onChange({ ...selectedRow });
+
+                if (popover) {
+                    this.showRemoveIcon = false;
+
+                    popover.close();
+                }
+                break;
+        }
     }
 
     public filterArrayCardsModalDropdown(event: KeyboardEvent): void {
@@ -93,7 +162,6 @@ export class ModalInputFormComponent implements ControlValueAccessor {
                 } else {
                     this.filteredCardsModalData = [...filteredInModalTitles];
                 }
-                console.log(filteredInModalTitles);
             }
         }
     }

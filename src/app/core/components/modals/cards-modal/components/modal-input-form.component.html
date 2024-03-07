@@ -12,34 +12,59 @@
                 toggleCardsModalDropdown(cardsModal, filteredCardsModalData)
             "
         >
-            <ng-container *ngIf="defaultValue">
-                <input
-                    #inputTitleValue
-                    [placeholder]="defaultValue.title"
-                    (keyup)="filterArrayCardsModalDropdown($event)"
-                    class="input-search cards-modal"
-                    spellcheck="false"
-                />
-            </ng-container>
-
-            <ng-container *ngIf="!defaultValue">
-                <input
-                    #inputTitleValue
-                    [placeholder]="emptyValue"
-                    (keyup)="filterArrayCardsModalDropdown($event)"
-                    class="input-search cards-modal empty-input"
-                    spellcheck="false"
-                />
-            </ng-container>
+            <input
+                #inputTitleValue
+                [placeholder]="
+                    getSuperControl?.title
+                        ? getSuperControl.title
+                        : defaultValue?.title === 'empty'
+                        ? backupValue
+                        : defaultValue?.title
+                "
+                (keyup)="filterArrayCardsModalDropdown($event)"
+                class="input-search cards-modal"
+                [ngClass]="{
+                    'default-input':
+                        (defaultValue?.title === 'empty' ||
+                            defaultValue?.title === '1st' ||
+                            defaultValue?.title === '2nd' ||
+                            defaultValue?.title === '3rd' ||
+                            defaultValue?.title === '4th' ||
+                            defaultValue?.title === '5th' ||
+                            defaultValue?.title === '6th') &&
+                        !valueChangedInput
+                }"
+                spellcheck="false"
+            />
 
             <svg-icon
                 class="dropdown-icon"
-                [ngClass]="{ 'empty-svg': !defaultValue }"
+                [ngClass]="{
+                    'empty-svg':
+                        (defaultValue?.title === 'empty' ||
+                            defaultValue?.title === '1st' ||
+                            defaultValue?.title === '2nd' ||
+                            defaultValue?.title === '3rd' ||
+                            defaultValue?.title === '4th' ||
+                            defaultValue?.title === '5th' ||
+                            defaultValue?.title === '6th') &&
+                        !valueChangedInput
+                }"
                 [src]="'assets/svg/common/arrow-right-details.svg'"
                 [style.width.px]="10"
                 [style.height.px]="6"
             ></svg-icon>
         </div>
+
+        <ng-container *ngIf="showRemoveIcon">
+            <svg-icon
+                class="clear-icon"
+                [src]="'assets/svg/applicant/cancel.svg'"
+                [style.width.px]="18"
+                [style.height.px]="18"
+                (click)="cardTitleSelected({ title: 'empty' }, cardsModal)"
+            ></svg-icon>
+        </ng-container>
     </div>
 </div>
 
@@ -49,55 +74,41 @@
             <ng-container
                 *ngFor="let title of titles; trackBy: trackByIdentity"
             >
-                <!-- If selected title is selected in this input -->
-                <ng-contaner *ngIf="title.title === defaultValue.title">
-                    <div class="title-holder d-flex align-items-center">
-                        <span class="selected-input ta-font-bold">
-                            {{ title.title }}
-                        </span>
-
-                        <svg-icon
-                            class="checked svg-icons"
-                            [src]="'assets/svg/truckassist-table/check-new.svg'"
-                            [style.width.px]="14"
-                            [style.height.px]="14"
-                        ></svg-icon>
-                    </div>
-                </ng-contaner>
-
-                <!-- If it is any selected title -->
-                <ng-contaner
-                    *ngIf="title.selected && title.title !== defaultValue.title"
+                <div
+                    class="title-holder d-flex align-items-center hoverable"
+                    (click)="cardTitleSelected(title, cardsModal)"
                 >
-                    <div class="title-holder d-flex align-items-center">
-                        <span class="selected-in-other-input">
-                            {{ title.title }}
-                        </span>
+                    <span
+                        class="text-white"
+                        [ngClass]="{
+                            'selected-input ta-font-bold':
+                                selectedValueInInput === title?.title,
+                            'selected-in-other-input': hasMatchingTitle(
+                                title.title
+                            )
+                        }"
+                    >
+                        {{ title.title }}
+                    </span>
 
+                    <ng-container *ngIf="hasMatchingTitle(title.title)">
                         <svg-icon
                             class="disabled svg-icons"
                             [src]="'assets/svg/common/ic_disable.svg'"
                             [style.width.px]="13"
                             [style.height.px]="13"
                         ></svg-icon>
-                    </div>
-                </ng-contaner>
+                    </ng-container>
 
-                <!-- If it is not selected title -->
-                <ng-contaner
-                    *ngIf="
-                        !title.selected && title.title !== defaultValue.title
-                    "
-                >
-                    <div
-                        class="title-holder d-flex align-items-center hoverable"
-                        (click)="cardTitleSelected(title, cardsModal)"
-                    >
-                        <span class="text-white">
-                            {{ title.title }}
-                        </span>
-                    </div>
-                </ng-contaner>
+                    <ng-container *ngIf="selectedValueInInput === title?.title">
+                        <svg-icon
+                            class="checked svg-icons"
+                            [src]="'assets/svg/truckassist-table/check-new.svg'"
+                            [style.width.px]="14"
+                            [style.height.px]="14"
+                        ></svg-icon>
+                    </ng-container>
+                </div>
             </ng-container>
         </div>
     </div>

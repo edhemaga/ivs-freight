@@ -107,223 +107,240 @@
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsFront.title }}
+                            <ng-container *ngIf="rowsFront">
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div
+                                            class="top-item-body d-flex align-items-center"
+                                        >
+                                            <ng-contanier
+                                                *ngIf="
+                                                    rowsFront.title !== 'empty'
+                                                "
+                                            >
+                                                {{ rowsFront?.title }}
+                                            </ng-contanier>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div
-                                    #parentElement
-                                    class="bottom-item-body d-flex align-items-center"
-                                    [ngClass]="{
-                                        gap: rowsFront.title !== 'VIN No.',
-                                        'line-height':
-                                            rowsFront.title === 'Fleet'
-                                    }"
-                                >
-                                    <!-- If Comodity is Hazardous-->
-                                    <ng-container
-                                        *ngIf="
-                                            valueByStringPath.getValueByStringPath(
-                                                card,
-                                                rowsFront.endpoint
-                                            ) === 'Hazardous'
-                                        "
+                                    <div
+                                        #parentElement
+                                        class="bottom-item-body d-flex align-items-center"
+                                        [ngClass]="{
+                                            gap: rowsFront.title !== 'VIN No.',
+                                            'line-height':
+                                                rowsFront.title === 'Fleet'
+                                        }"
                                     >
-                                        <svg-icon
-                                            [src]="
-                                                'assets/svg/common/load/ic_hazardous_triangle.svg'
-                                            "
-                                        >
-                                        </svg-icon>
-                                        <span>
-                                            {{
-                                                valueByStringPath.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}</span
-                                        >
-                                    </ng-container>
-
-                                    <!-- If STATUS title this will be aplied in body -->
-
-                                    <ng-container
-                                        *ngIf="rowsFront.title === 'Status'"
-                                    >
-                                        <span
-                                            class="ta-font-black status"
-                                            [ngClass]="{
-                                                assigned: checkLoadStatus(
-                                                    card,
-                                                    rowsFront.endpoint,
-                                                    'Assigned'
-                                                ),
-                                                dispatched: checkLoadStatus(
-                                                    card,
-                                                    rowsFront.endpoint,
-                                                    'Dispatched'
-                                                ),
-                                                loaded: checkLoadStatus(
-                                                    card,
-                                                    rowsFront.endpoint,
-                                                    'Loaded'
-                                                ),
-                                                paid:
-                                                    checkLoadStatus(
-                                                        card,
-                                                        rowsFront.endpoint,
-                                                        'Short-paid'
-                                                    ) ||
-                                                    checkLoadStatus(
-                                                        card,
-                                                        rowsFront.endpoint,
-                                                        'Unpaid'
-                                                    ) ||
-                                                    checkLoadStatus(
-                                                        card,
-                                                        rowsFront.endpoint,
-                                                        'Paid'
-                                                    ),
-                                                tonu: checkLoadStatus(
-                                                    card,
-                                                    rowsFront.endpoint,
-                                                    'Tonu'
-                                                )
-                                            }"
-                                        >
-                                            {{
-                                                valueByStringPath.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                ) | uppercase
-                                            }}</span
-                                        >
-                                    </ng-container>
-
-                                    <!-- If not STATUS title this will be in body -->
-
-                                    <ng-container
-                                        *ngIf="
-                                            rowsFront.title !== 'Status' &&
-                                            valueByStringPath.getValueByStringPath(
-                                                card,
-                                                rowsFront.endpoint
-                                            ) !== 'Hazardous'
-                                        "
-                                    >
-                                        <span
-                                            class="d-flex justify-content-center align-items-center"
-                                            [ngClass]="
-                                                rowsFront.endpoint ===
-                                                'loadPickup.count'
-                                                    ? 'load-span pickup ta-font-bold'
-                                                    : '' ||
-                                                      rowsFront.endpoint ===
-                                                          'loadDelivery.count'
-                                                    ? 'load-span delivery ta-font-bold'
-                                                    : ''
-                                            "
-                                        >
-                                            {{
-                                                valueByStringPath.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
-                                        </span>
-                                    </ng-container>
-
-                                    <!-- If there is seccond endpoint  -->
-
-                                    <ng-container
-                                        *ngIf="
-                                            rowsFront.secondEndpoint &&
-                                            valueByStringPath.getValueByStringPath(
-                                                card,
-                                                rowsFront.secondEndpoint
-                                            ) !== '/'
-                                        "
-                                    >
-                                        <!-- If phone extension exist -->
+                                        <!-- If Comodity is Hazardous-->
                                         <ng-container
                                             *ngIf="
-                                                rowsFront.secondEndpoint ===
-                                                'brokerContact.extensionPhone'
+                                                valueByStringPath.getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                ) === 'Hazardous'
                                             "
                                         >
-                                            <span class="muted">x</span>
-                                            <span class="muted">
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/common/load/ic_hazardous_triangle.svg'
+                                                "
+                                            >
+                                            </svg-icon>
+                                            <span>
                                                 {{
                                                     valueByStringPath.getValueByStringPath(
                                                         card,
-                                                        rowsFront.secondEndpoint
+                                                        rowsFront.endpoint
                                                     )
-                                                }}
-                                            </span>
+                                                }}</span
+                                            >
                                         </ng-container>
 
+                                        <!-- If STATUS title this will be aplied in body -->
+
                                         <ng-container
-                                            *ngIf="
-                                                rowsFront.secondEndpoint !==
-                                                    'brokerContact.extensionPhone' &&
-                                                rowsFront.secondEndpoint !==
-                                                    'adjustedRate'
-                                            "
+                                            *ngIf="rowsFront.title === 'Status'"
                                         >
                                             <span
+                                                class="ta-font-black status"
                                                 [ngClass]="{
-                                                    'subtotal ta-font-medium':
-                                                        rowsFront.secondEndpoint ===
-                                                        'loadTotal.subTotal'
+                                                    assigned: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Assigned'
+                                                    ),
+                                                    dispatched: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Dispatched'
+                                                    ),
+                                                    loaded: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Loaded'
+                                                    ),
+                                                    paid:
+                                                        checkLoadStatus(
+                                                            card,
+                                                            rowsFront.endpoint,
+                                                            'Short-paid'
+                                                        ) ||
+                                                        checkLoadStatus(
+                                                            card,
+                                                            rowsFront.endpoint,
+                                                            'Unpaid'
+                                                        ) ||
+                                                        checkLoadStatus(
+                                                            card,
+                                                            rowsFront.endpoint,
+                                                            'Paid'
+                                                        ),
+                                                    tonu: checkLoadStatus(
+                                                        card,
+                                                        rowsFront.endpoint,
+                                                        'Tonu'
+                                                    )
                                                 }"
                                             >
                                                 {{
                                                     valueByStringPath.getValueByStringPath(
                                                         card,
-                                                        rowsFront.secondEndpoint
-                                                    )
-                                                }}
-                                            </span>
+                                                        rowsFront.endpoint
+                                                    ) | uppercase
+                                                }}</span
+                                            >
                                         </ng-container>
 
-                                        <!-- If it is adjustedrate -->
+                                        <!-- If not STATUS title this will be in body -->
 
                                         <ng-container
                                             *ngIf="
-                                                rowsFront.secondEndpoint ===
-                                                'adjustedRate'
+                                                rowsFront.title !== 'Status' &&
+                                                valueByStringPath.getValueByStringPath(
+                                                    card,
+                                                    rowsFront.endpoint
+                                                ) !== 'Hazardous'
                                             "
                                         >
-                                            <span>
+                                            <span
+                                                class="d-flex justify-content-center align-items-center"
+                                                [ngClass]="
+                                                    rowsFront.endpoint ===
+                                                    'loadPickup.count'
+                                                        ? 'load-span pickup ta-font-bold'
+                                                        : '' ||
+                                                          rowsFront.endpoint ===
+                                                              'loadDelivery.count'
+                                                        ? 'load-span delivery ta-font-bold'
+                                                        : ''
+                                                "
+                                            >
+                                                <ng-container
+                                                    *ngIf="
+                                                        rowsFront.title !==
+                                                        'empty'
+                                                    "
+                                                >
+                                                    {{
+                                                        valueByStringPath.getValueByStringPath(
+                                                            card,
+                                                            rowsFront.endpoint
+                                                        )
+                                                    }}
+                                                </ng-container>
+                                            </span>
+                                        </ng-container>
+
+                                        <!-- If there is seccond endpoint  -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                rowsFront.secondEndpoint &&
+                                                valueByStringPath.getValueByStringPath(
+                                                    card,
+                                                    rowsFront.secondEndpoint
+                                                ) !== '/'
+                                            "
+                                        >
+                                            <!-- If phone extension exist -->
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsFront.secondEndpoint ===
+                                                    'brokerContact.extensionPhone'
+                                                "
+                                            >
+                                                <span class="muted">x</span>
+                                                <span class="muted">
+                                                    {{
+                                                        valueByStringPath.getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsFront.secondEndpoint !==
+                                                        'brokerContact.extensionPhone' &&
+                                                    rowsFront.secondEndpoint !==
+                                                        'adjustedRate'
+                                                "
+                                            >
+                                                <span
+                                                    [ngClass]="{
+                                                        'subtotal ta-font-medium':
+                                                            rowsFront.secondEndpoint ===
+                                                            'loadTotal.subTotal'
+                                                    }"
+                                                >
+                                                    {{
+                                                        valueByStringPath.getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <!-- If it is adjustedrate -->
+
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsFront.secondEndpoint ===
+                                                    'adjustedRate'
+                                                "
+                                            >
+                                                <span>
+                                                    {{
+                                                        valueByStringPath.getValueByStringPath(
+                                                            card,
+                                                            rowsFront.secondEndpoint
+                                                        )
+                                                    }}
+                                                </span>
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <!-- If there is third endpoint -->
+
+                                        <ng-container
+                                            *ngIf="rowsFront.thirdEndpoint"
+                                        >
+                                            <span class="muted">
                                                 {{
                                                     valueByStringPath.getValueByStringPath(
                                                         card,
-                                                        rowsFront.secondEndpoint
+                                                        rowsFront.thirdEndpoint
                                                     )
                                                 }}
                                             </span>
                                         </ng-container>
-                                    </ng-container>
-
-                                    <!-- If there is third endpoint -->
-
-                                    <ng-container
-                                        *ngIf="rowsFront.thirdEndpoint"
-                                    >
-                                        <span class="muted">
-                                            {{
-                                                valueByStringPath.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.thirdEndpoint
-                                                )
-                                            }}
-                                        </span>
-                                    </ng-container>
+                                    </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
 
@@ -342,34 +359,88 @@
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsBack.title }}
-                                    </div>
-
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center gap"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.endpoint ===
-                                                    'loadPickup.count' ||
-                                                rowsBack.endpoint ===
-                                                    'loadDelivery.count'
-                                            "
+                            <ng-container *ngIf="rowsBack">
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div
+                                            class="top-item-body d-flex align-items-center"
                                         >
-                                            <span
-                                                class="d-flex justify-content-center align-items-center mr-4"
-                                                [ngClass]="
+                                            {{ rowsBack.title }}
+                                        </div>
+
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center gap"
+                                        >
+                                            <ng-container
+                                                *ngIf="
                                                     rowsBack.endpoint ===
-                                                    'loadPickup.count'
-                                                        ? 'load-span pickup ta-font-bold'
-                                                        : '' ||
-                                                          rowsBack.endpoint ===
-                                                              'loadDelivery.count'
-                                                        ? 'load-span delivery ta-font-bold'
-                                                        : ''
+                                                        'loadPickup.count' ||
+                                                    rowsBack.endpoint ===
+                                                        'loadDelivery.count'
+                                                "
+                                            >
+                                                <span
+                                                    class="d-flex justify-content-center align-items-center mr-4"
+                                                    [ngClass]="
+                                                        rowsBack.endpoint ===
+                                                        'loadPickup.count'
+                                                            ? 'load-span pickup ta-font-bold'
+                                                            : '' ||
+                                                              rowsBack.endpoint ===
+                                                                  'loadDelivery.count'
+                                                            ? 'load-span delivery ta-font-bold'
+                                                            : ''
+                                                    "
+                                                >
+                                                    {{
+                                                        valueByStringPath.getValueByStringPath(
+                                                            card,
+                                                            rowsBack.endpoint
+                                                        )
+                                                    }}
+                                                </span>
+
+                                                <!-- If there is seccond endpoint  -->
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        rowsBack.secondEndpoint
+                                                    "
+                                                >
+                                                    <span>
+                                                        {{
+                                                            valueByStringPath.getValueByStringPath(
+                                                                card,
+                                                                rowsBack.secondEndpoint
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </ng-container>
+
+                                                <!-- If there is third endpoint -->
+
+                                                <ng-container
+                                                    *ngIf="
+                                                        rowsBack.thirdEndpoint
+                                                    "
+                                                >
+                                                    <span class="muted">
+                                                        {{
+                                                            valueByStringPath.getValueByStringPath(
+                                                                card,
+                                                                rowsBack.thirdEndpoint
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </ng-container>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    rowsBack.endpoint !==
+                                                        'loadPickup.count' &&
+                                                    rowsBack.endpoint !==
+                                                        'loadDelivery.count'
                                                 "
                                             >
                                                 {{
@@ -378,69 +449,23 @@
                                                         rowsBack.endpoint
                                                     )
                                                 }}
-                                            </span>
 
-                                            <!-- If there is seccond endpoint  -->
+                                                <!-- if miles add mi -->
 
-                                            <ng-container
-                                                *ngIf="rowsBack.secondEndpoint"
-                                            >
-                                                <span>
-                                                    {{
-                                                        valueByStringPath.getValueByStringPath(
-                                                            card,
-                                                            rowsBack.secondEndpoint
-                                                        )
-                                                    }}
-                                                </span>
+                                                <ng-container
+                                                    *ngIf="
+                                                        rowsBack.endpoint ===
+                                                        'totalMiles'
+                                                    "
+                                                    ><span class="muted"
+                                                        >mi</span
+                                                    ></ng-container
+                                                >
                                             </ng-container>
-
-                                            <!-- If there is third endpoint -->
-
-                                            <ng-container
-                                                *ngIf="rowsBack.thirdEndpoint"
-                                            >
-                                                <span class="muted">
-                                                    {{
-                                                        valueByStringPath.getValueByStringPath(
-                                                            card,
-                                                            rowsBack.thirdEndpoint
-                                                        )
-                                                    }}
-                                                </span>
-                                            </ng-container>
-                                        </ng-container>
-
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.endpoint !==
-                                                    'loadPickup.count' &&
-                                                rowsBack.endpoint !==
-                                                    'loadDelivery.count'
-                                            "
-                                        >
-                                            {{
-                                                valueByStringPath.getValueByStringPath(
-                                                    card,
-                                                    rowsBack.endpoint
-                                                )
-                                            }}
-
-                                            <!-- if miles add mi -->
-
-                                            <ng-container
-                                                *ngIf="
-                                                    rowsBack.endpoint ===
-                                                    'totalMiles'
-                                                "
-                                                ><span class="muted"
-                                                    >mi</span
-                                                ></ng-container
-                                            >
-                                        </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>
@@ -485,30 +510,37 @@
 
                         <!-- Expand element -->
 
-                        <div
-                            class="bottom-side d-flex justify-content-center"
-                            (click)="flipCard(i)"
-                        >
-                            <span
-                                class="expand-card"
-                                type="button"
-                                ngbTooltip
-                                mainTooltip="Expand Card"
-                                tooltipBackground="#424242"
-                                position="bottom"
-                                [ngClass]="{
-                                    'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i) ||
-                                        isAllCardsFlipp,
-                                    'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
-                                }"
+                        <ng-container *ngIf="expandCardChecked">
+                            <div
+                                class="bottom-side d-flex justify-content-center"
+                                (click)="flipCard(i)"
                             >
-                                <svg-icon
-                                    [src]="'assets/svg/common/resize-arrow.svg'"
-                                ></svg-icon>
-                            </span>
-                        </div>
+                                <span
+                                    class="expand-card"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Expand Card"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                    [ngClass]="{
+                                        'rotate-svg':
+                                            isCardFlippedCheckInCards.includes(
+                                                i
+                                            ) || isAllCardsFlipp,
+                                        'svg-position':
+                                            !isCardFlippedCheckInCards.includes(
+                                                i
+                                            )
+                                    }"
+                                >
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/common/resize-arrow.svg'
+                                        "
+                                    ></svg-icon>
+                                </span>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>

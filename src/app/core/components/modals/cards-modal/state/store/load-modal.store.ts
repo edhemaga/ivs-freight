@@ -1,31 +1,46 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-export interface MyData {
-    numberOfRows: number;
-    checked: boolean;
-    selectedTitle_0: string;
-    selectedTitle_1: string;
-    selectedTitle_2: string;
-    selectedTitle_3: string;
-    selectedTitle_4: string;
-    selectedTitle_5: string;
-    selectedTitle_back_0: string[];
-    selectedTitle_back_1: string[];
-    selectedTitle_back_2: string[];
-    selectedTitle_back_3: string[];
-    selectedTitle_back_4: string[];
-    selectedTitle_back_5: string[];
-}
+// model
+import { DisplayLoadConfiguration } from 'src/app/core/components/load/load-card-data';
+import { CardRows } from 'src/app/core/components/shared/model/cardData';
 
-export interface LoadDataState extends EntityState<any> {}
+export interface LoadDataState extends EntityState<CardRows> {}
 
 export const initialState = (): LoadDataState => {
+    const template = {
+        numberOfRows: 4,
+        checked: true,
+        front_side: DisplayLoadConfiguration.displayRowsFrontTemplate,
+        back_side: DisplayLoadConfiguration.displayRowsBackTemplate,
+    };
+
+    const pending = {
+        numberOfRows: 4,
+        checked: true,
+        front_side: DisplayLoadConfiguration.displayRowsFrontPending,
+        back_side: DisplayLoadConfiguration.displayRowsBackPending,
+    };
+
+    const active = {
+        numberOfRows: 4,
+        checked: true,
+        front_side: DisplayLoadConfiguration.displayRowsFrontTemplate,
+        back_side: DisplayLoadConfiguration.displayRowsBackActive,
+    };
+
+    const closed = {
+        numberOfRows: 4,
+        checked: true,
+        front_side: DisplayLoadConfiguration.displayRowsFrontClosed,
+        back_side: DisplayLoadConfiguration.displayRowsBackClosed,
+    };
+
     return {
-        template: null,
-        pending: null,
-        active: null,
-        closed: null,
+        template: template,
+        pending: pending,
+        active: active,
+        closed: closed,
     };
 };
 

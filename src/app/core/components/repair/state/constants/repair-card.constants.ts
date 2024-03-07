@@ -1,4 +1,4 @@
-import { CardRows } from '../shared/model/cardData';
+import { CardRows } from '../../../shared/model/cardData';
 
 export class DisplayRepairConfiguration {
     static rows: number = 4;
