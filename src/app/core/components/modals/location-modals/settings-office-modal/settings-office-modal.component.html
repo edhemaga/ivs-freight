@@ -332,6 +332,7 @@
                         </div>
                         <div class="col-4 no-p-left">
                             <app-ta-input-dropdown
+                                *ngIf="selectedPayPeriod?.name === 'Weekly'"
                                 formControlName="monthlyDay"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
@@ -342,11 +343,23 @@
                                         !officeForm.get('payPeriod').value,
                                     dropdownWidthClass: 'w-col-148'
                                 }"
-                                [options]="
-                                    selectedDay?.name === 'Weekly'
-                                        ? weeklyDays
-                                        : monthlyDays
-                                "
+                                [options]="weeklyDays"
+                                [activeItem]="selectedDay"
+                                (selectedItem)="onSelectDropdown($event, 'day')"
+                            ></app-ta-input-dropdown>
+                            <app-ta-input-dropdown
+                                *ngIf="selectedPayPeriod?.name !== 'Weekly'"
+                                formControlName="monthlyDay"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Day',
+                                    isDropdown: true,
+                                    isDisabled:
+                                        !officeForm.get('payPeriod').value,
+                                    dropdownWidthClass: 'w-col-148'
+                                }"
+                                [options]="monthlyDays"
                                 [activeItem]="selectedDay"
                                 (selectedItem)="onSelectDropdown($event, 'day')"
                             ></app-ta-input-dropdown>
