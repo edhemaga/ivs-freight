@@ -1584,9 +1584,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 ? convertThousanSepInNumber(otherDefaultBase)
                 : null,
         };
-        console.log(accountingPayroll, 'accountingPayroll');
-        console.log(this.selectedAccountingPayPeriod, '');
-        console.log(this.selectedAccountingEndingIn, '');
 
         const driverOwnerPayroll = {
             departmentId: 10,
