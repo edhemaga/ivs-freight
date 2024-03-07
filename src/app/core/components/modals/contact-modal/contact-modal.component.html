@@ -25,7 +25,6 @@
                         isRequired: true,
                         minLength: 2,
                         maxLength: 32,
-                        textTransform: 'capitalize',
                         autoFocus: editData?.type !== 'edit'
                     }"
                 ></app-ta-input>
@@ -149,8 +148,6 @@
             }"
             (onActionEvent)="addContactPhones($event)"
         >
-            <app-ta-modal-table [isPhoneTable]="true"></app-ta-modal-table>
-
             <div
                 formArrayName="contactPhones"
                 class="common-table-modal-container"
