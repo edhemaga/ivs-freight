@@ -33,10 +33,16 @@ import {
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
-import { UserTableDropdown, UserTableOwnerDropdown } from '../state/user-utils';
+import {
+    UserTableDropdown,
+    UserTableOwnerDropdown,
+} from '../utils/constants/user.constants';
 
 //Enum
-import { GetCompanyUserListResponse } from 'appcoretruckassist';
+import {
+    CompanyUserResponse,
+    GetCompanyUserListResponse,
+} from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DisplayUserConfiguration } from '../user-card-data';
 import { CardRows } from '../../shared/model/cardData';
@@ -570,11 +576,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get User Dropdown Content
-    public getOwnerDropdown(data): DropdownItem[] {
+    public getOwnerDropdown(data: CompanyUserResponse): DropdownItem[] {
         return UserTableOwnerDropdown(data);
     }
 
-    public getDropdownContent(data): DropdownItem[] {
+    public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
         const dropdownContent = UserTableDropdown(data);
         data.verified ? dropdownContent.splice(2, 1) : dropdownContent;
         return dropdownContent;

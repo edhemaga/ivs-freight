@@ -1,6 +1,7 @@
+import { CompanyUserResponse } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
-export function UserTableDropdown(data) {
+export function UserTableDropdown(data: CompanyUserResponse) {
     return [
         {
             title: ConstantStringTableComponentsEnum.EDIT_2,
@@ -77,7 +78,7 @@ export function UserTableDropdown(data) {
         },
     ];
 }
-export function UserTableOwnerDropdown(data) {
+export function UserTableOwnerDropdown(data: CompanyUserResponse) {
     return [
         {
             title: ConstantStringTableComponentsEnum.EDIT_2,
