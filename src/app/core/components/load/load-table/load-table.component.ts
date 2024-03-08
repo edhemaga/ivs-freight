@@ -11,6 +11,7 @@ import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { CardsModalConfigService } from '../../modals/cards-modal/utils/services/cards-modal-config.service';
 
 // Models
 import {
@@ -96,29 +97,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
-    //Data to display from model
-    // public displayRowsFrontTemplate: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsFrontTemplate;
-
-    // public displayRowsBackTemplate: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsBackTemplate;
-
-    // public displayRowsFront: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsFrontPending;
-    // public displayRowsBack: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsBackPending;
-
-    // public displayRowsBackActive: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsBackActive;
-
-    // public displayRowsFrontClosed: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsFrontClosed;
-    // public displayRowsBackClosed: CardRows[] =
-    //     DisplayLoadConfiguration.displayRowsBackClosed;
-
-    // public page: string = DisplayLoadConfiguration.page;
-    // public rows: number = DisplayLoadConfiguration.rows;
-
     public cardTitleLink: string =
         ConstantStringTableComponentsEnum.LOAD_DETAILS;
 
@@ -143,7 +121,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         public datePipe: DatePipe,
         private confiramtionService: ConfirmationService,
         private nameInitialsPipe: NameInitialsPipe,
-        private loadQuery: LoadQuery
+        private loadQuery: LoadQuery,
+        private cardsModalService: CardsModalConfigService
     ) {}
 
     ngOnInit(): void {
@@ -179,7 +158,98 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private updateCardView(): void {
+        switch (this.selectedTab) {
+            case ConstantStringTableComponentsEnum.PENDING:
+                this.pendingTabCardsConfig();
+                break;
+
+            case ConstantStringTableComponentsEnum.TEMPLATE:
+                this.templateTabCardsConfig();
+                break;
+
+            case ConstantStringTableComponentsEnum.ACTIVE:
+                this.activeTabCardsConfig();
+                break;
+
+            case ConstantStringTableComponentsEnum.CLOSED:
+                this.closedTabCardsConfig();
+                break;
+
+            default:
+                break;
+        }
+
+        this.cardsModalService.updateTab(this.selectedTab);
+    }
+
+    private pendingTabCardsConfig(): void {
         this.loadQuery.pending$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private templateTabCardsConfig(): void {
+        this.loadQuery.template$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront = res.front_side.filter(
+                        (row) => row !== null
+                    );
+
+                    const filteredCardRowsBack = res.back_side.filter(
+                        (row) => row !== null
+                    );
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private activeTabCardsConfig(): void {
+        this.loadQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront = res.front_side.filter(
+                        (row) => row !== null
+                    );
+
+                    const filteredCardRowsBack = res.back_side.filter(
+                        (row) => row !== null
+                    );
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private closedTabCardsConfig(): void {
+        this.loadQuery.closed$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
@@ -605,6 +675,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
         this.setLoadData(td);
+        this.updateCardView();
     }
 
     private getGridColumns(activeTab: string, configType: string): void {

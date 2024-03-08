@@ -127,7 +127,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     // Cards Modal
     @Input() isCardsModal: boolean = false;
-    @Input() resetFormCards: boolean = false;
+    @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
 
     // -----------------

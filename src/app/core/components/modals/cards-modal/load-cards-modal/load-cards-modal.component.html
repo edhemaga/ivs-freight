@@ -1,14 +1,14 @@
 <app-ta-modal
     [modalTitle]="'Columns'"
-    [cardsSecTitle]="'Load | Pending'"
+    [cardsSecTitle]="'Load | ' + tabSelected | titlecase"
     isCardsModal="true"
     (action)="onActionModal($event)"
-    [isModalValid]="formChanged"
-    [resetFormCards]="resetForm"
+    [isModalValid]="hasFormChanged"
+    [isResetFormCards]="resetForm"
 >
     <div origin>
         <!-- Number of rows -->
-        <form [formGroup]="Cardsform">
+        <form [formGroup]="cardsForm">
             <div class="d-flex justify-content-between form-holder modal-cards">
                 <div class="ta-font-extra-bold title-card-modal">
                     No. of Rows
@@ -62,7 +62,7 @@
             <!-- Front Side -->
             <div class="modal-cards">
                 <!-- For Front side of cards -->
-                <div class="front-side-body" formGroupName="front_side">
+                <div class="front-side-body">
                     <div class="ta-font-extra-bold title-card-modal">
                         Front Side
                     </div>
@@ -72,7 +72,7 @@
                             class="modal-holder d-grid align-items-end d-grid align-items-end"
                         >
                             <ng-cotnainer
-                                *ngIf="pendingDataFront[0]?.title !== 'empty'"
+                                *ngIf="dataFront[0]?.title !== 'empty'"
                             >
                                 <span class="input-title ta-font-semi-bold"
                                     >1st</span
@@ -82,10 +82,10 @@
                             <app-modal-input-form
                                 [dataCardModal]="cardsAllData"
                                 [defaultValue]="
-                                    pendingDataFront[0] || { title: '1st' }
+                                    dataFront[0] || { title: '1st' }
                                 "
                                 [backupValue]="'1st'"
-                                formControlName="selectedTitle_0"
+                                formControlName="frontSelectedTitle_0"
                             >
                             </app-modal-input-form>
                         </div>
@@ -94,7 +94,7 @@
                             class="modal-holder d-grid align-items-end d-grid align-items-end"
                         >
                             <ng-cotnainer
-                                *ngIf="pendingDataFront[1]?.title !== 'empty'"
+                                *ngIf="dataFront[1]?.title !== 'empty'"
                             >
                                 <span class="input-title ta-font-semi-bold"
                                     >2nd</span
@@ -104,17 +104,17 @@
                             <app-modal-input-form
                                 [dataCardModal]="cardsAllData"
                                 [defaultValue]="
-                                    pendingDataFront[1] || { title: '2nd' }
+                                    dataFront[1] || { title: '2nd' }
                                 "
                                 [backupValue]="'2nd'"
-                                formControlName="selectedTitle_1"
+                                formControlName="frontSelectedTitle_1"
                             >
                             </app-modal-input-form>
                         </div>
 
                         <div class="modal-holder d-grid align-items-end">
                             <ng-cotnainer
-                                *ngIf="pendingDataFront[2]?.title !== 'empty'"
+                                *ngIf="dataFront[2]?.title !== 'empty'"
                             >
                                 <span class="input-title ta-font-semi-bold"
                                     >3rd</span
@@ -124,10 +124,10 @@
                             <app-modal-input-form
                                 [dataCardModal]="cardsAllData"
                                 [defaultValue]="
-                                    pendingDataFront[2] || { title: '3rd' }
+                                    dataFront[2] || { title: '3rd' }
                                 "
                                 [backupValue]="'3rd'"
-                                formControlName="selectedTitle_2"
+                                formControlName="frontSelectedTitle_2"
                             >
                             </app-modal-input-form>
                         </div>
@@ -137,9 +137,7 @@
                         >
                             <div class="modal-holder d-grid align-items-end">
                                 <ng-cotnainer
-                                    *ngIf="
-                                        pendingDataFront[3]?.title !== 'empty'
-                                    "
+                                    *ngIf="dataFront[3]?.title !== 'empty'"
                                 >
                                     <span class="input-title ta-font-semi-bold"
                                         >4th</span
@@ -148,10 +146,10 @@
                                 <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
-                                        pendingDataFront[3] || { title: '4th' }
+                                        dataFront[3] || { title: '4th' }
                                     "
                                     [backupValue]="'4th'"
-                                    formControlName="selectedTitle_3"
+                                    formControlName="frontSelectedTitle_3"
                                 >
                                 </app-modal-input-form>
                             </div>
@@ -162,9 +160,7 @@
                         >
                             <div class="modal-holder d-grid align-items-end">
                                 <ng-cotnainer
-                                    *ngIf="
-                                        pendingDataFront[4]?.title !== 'empty'
-                                    "
+                                    *ngIf="dataFront[4]?.title !== 'empty'"
                                 >
                                     <span class="input-title ta-font-semi-bold"
                                         >5th</span
@@ -174,10 +170,10 @@
                                 <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
-                                        pendingDataFront[4] || { title: '5th' }
+                                        dataFront[4] || { title: '5th' }
                                     "
                                     [backupValue]="'5th'"
-                                    formControlName="selectedTitle_4"
+                                    formControlName="frontSelectedTitle_4"
                                 >
                                 </app-modal-input-form>
                             </div>
@@ -188,9 +184,7 @@
                         >
                             <div class="modal-holder d-grid align-items-end">
                                 <ng-cotnainer
-                                    *ngIf="
-                                        pendingDataFront[5]?.title !== 'empty'
-                                    "
+                                    *ngIf="dataFront[5]?.title !== 'empty'"
                                 >
                                     <span class="input-title ta-font-semi-bold"
                                         >6th</span
@@ -200,10 +194,10 @@
                                 <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
-                                        pendingDataFront[5] || { title: '6th' }
+                                        dataFront[5] || { title: '6th' }
                                     "
                                     [backupValue]="'6th'"
-                                    formControlName="selectedTitle_5"
+                                    formControlName="frontSelectedTitle_5"
                                 >
                                 </app-modal-input-form>
                             </div>
@@ -222,17 +216,11 @@
                             [label]="'Back Side'"
                         ></app-ta-checkbox>
                     </div>
-
-                    <ng-container *ngIf="Cardsform.get('checked').value">
-                        <div
-                            class="d-grid inputs-holder"
-                            formGroupName="back_side"
-                        >
+                    <ng-container *ngIf="cardsForm.get('checked').value">
+                        <div class="d-grid inputs-holder">
                             <div class="modal-holder d-grid align-items-end">
                                 <ng-cotnainer
-                                    *ngIf="
-                                        pendingDataBack[0]?.title !== 'empty'
-                                    "
+                                    *ngIf="dataBack[0]?.title !== 'empty'"
                                 >
                                     <span class="input-title ta-font-semi-bold"
                                         >1st</span
@@ -241,18 +229,16 @@
                                 <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
-                                        pendingDataBack[0] || { title: '1st' }
+                                        dataBack[0] || { title: '1st' }
                                     "
-                                    formControlName="selectedTitle_back_0"
+                                    formControlName="backSelectedTitle_0"
                                 >
                                 </app-modal-input-form>
                             </div>
 
                             <div class="modal-holder d-grid align-items-end">
                                 <ng-cotnainer
-                                    *ngIf="
-                                        pendingDataBack[1]?.title !== 'empty'
-                                    "
+                                    *ngIf="dataBack[1]?.title !== 'empty'"
                                 >
                                     <span class="input-title ta-font-semi-bold"
                                         >2nd</span
@@ -262,18 +248,16 @@
                                 <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
-                                        pendingDataBack[1] || { title: '2nd' }
+                                        dataBack[1] || { title: '2nd' }
                                     "
-                                    formControlName="selectedTitle_back_1"
+                                    formControlName="backSelectedTitle_1"
                                 >
                                 </app-modal-input-form>
                             </div>
 
                             <div class="modal-holder d-grid align-items-end">
                                 <ng-cotnainer
-                                    *ngIf="
-                                        pendingDataBack[2]?.title !== 'empty'
-                                    "
+                                    *ngIf="dataBack[2]?.title !== 'empty'"
                                 >
                                     <span class="input-title ta-font-semi-bold"
                                         >3rd</span
@@ -283,9 +267,9 @@
                                 <app-modal-input-form
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
-                                        pendingDataBack[2] || { title: '3rd' }
+                                        dataBack[2] || { title: '3rd' }
                                     "
-                                    formControlName="selectedTitle_back_2"
+                                    formControlName="backSelectedTitle_2"
                                 >
                                 </app-modal-input-form>
                             </div>
@@ -297,10 +281,7 @@
                                     class="modal-holder d-grid align-items-end"
                                 >
                                     <ng-cotnainer
-                                        *ngIf="
-                                            pendingDataBack[3]?.title !==
-                                            'empty'
-                                        "
+                                        *ngIf="dataBack[3]?.title !== 'empty'"
                                     >
                                         <span
                                             class="input-title ta-font-semi-bold"
@@ -311,11 +292,11 @@
                                     <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
-                                            pendingDataBack[3] || {
+                                            dataBack[3] || {
                                                 title: '4th'
                                             }
                                         "
-                                        formControlName="selectedTitle_back_3"
+                                        formControlName="backSelectedTitle_3"
                                     >
                                     </app-modal-input-form>
                                 </div>
@@ -328,10 +309,7 @@
                                     class="modal-holder d-grid align-items-end"
                                 >
                                     <ng-cotnainer
-                                        *ngIf="
-                                            pendingDataBack[4]?.title !==
-                                            'empty'
-                                        "
+                                        *ngIf="dataBack[4]?.title !== 'empty'"
                                     >
                                         <span
                                             class="input-title ta-font-semi-bold"
@@ -342,11 +320,11 @@
                                     <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
-                                            pendingDataBack[4] || {
+                                            dataBack[4] || {
                                                 title: '5th'
                                             }
                                         "
-                                        formControlName="selectedTitle_back_4"
+                                        formControlName="backSelectedTitle_4"
                                     >
                                     </app-modal-input-form>
                                 </div>
@@ -359,10 +337,7 @@
                                     class="modal-holder d-grid align-items-end"
                                 >
                                     <ng-cotnainer
-                                        *ngIf="
-                                            pendingDataBack[5]?.title !==
-                                            'empty'
-                                        "
+                                        *ngIf="dataBack[5]?.title !== 'empty'"
                                     >
                                         <span
                                             class="input-title ta-font-semi-bold"
@@ -373,11 +348,11 @@
                                     <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
-                                            pendingDataBack[5] || {
+                                            dataBack[5] || {
                                                 title: '6th'
                                             }
                                         "
-                                        formControlName="selectedTitle_back_5"
+                                        formControlName="backSelectedTitle_5"
                                     >
                                     </app-modal-input-form>
                                 </div>

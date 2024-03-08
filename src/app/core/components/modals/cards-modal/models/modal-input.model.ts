@@ -1,3 +1,5 @@
+import { CardRows } from '../../../shared/model/cardData';
+
 export interface InputModels {
     numberOfRows: number;
     checked: boolean;
@@ -20,4 +22,11 @@ export interface InputModel {
     key: string;
     selected: boolean;
     title: string;
+}
+
+export interface ModalModelData {
+    checked: boolean;
+    front_side: CardRows[];
+    back_side: CardRows[];
+    numberOfRows: number;
 }

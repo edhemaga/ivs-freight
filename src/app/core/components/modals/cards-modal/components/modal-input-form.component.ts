@@ -19,7 +19,7 @@ import { CardRows } from '../../../shared/model/cardData';
 import { LoadQuery } from '../state/store/load-modal.query';
 
 // enum
-import { CardModalEnums } from '../utils/enums/card-modals.enums';
+import { CardModalEnum } from '../utils/enums/card-modals.enums';
 
 @Component({
     selector: 'app-modal-input-form',
@@ -53,10 +53,9 @@ export class ModalInputFormComponent implements ControlValueAccessor {
 
     public selectedValueInInput: string;
     public allSelectedValuesInAllInputs: CardRows[];
-    public titleAlredySelectedInotherInput: boolean = false;
 
-    public showRemoveIcon: boolean = false;
-    public valueChangedInput: boolean = false;
+    public isShowRemoveIcon: boolean = false;
+    public isValueChangedInput: boolean = false;
 
     get getSuperControl() {
         if (
@@ -109,24 +108,24 @@ export class ModalInputFormComponent implements ControlValueAccessor {
     ): void {
         this.selectedValueInInput = this.inputTitleValue.nativeElement.value;
 
-        this.showRemoveIcon = true;
+        this.isShowRemoveIcon = true;
 
         tooltip.open({ titles: card });
     }
 
     public cardTitleSelected(selectedRow: CardRows, popover: NgbPopover): void {
         switch (selectedRow.title) {
-            case CardModalEnums.EMPTY:
-                this.showRemoveIcon = false;
+            case CardModalEnum.EMPTY:
+                this.isShowRemoveIcon = false;
 
                 const emptyObj = {
-                    title: CardModalEnums.EMPTY,
-                    endpoint: CardModalEnums.EMPTY,
+                    title: CardModalEnum.EMPTY,
+                    endpoint: CardModalEnum.EMPTY,
                 };
 
                 this.inputTitleValue.nativeElement.value = this.backupValue;
 
-                this.valueChangedInput = false;
+                this.isValueChangedInput = false;
 
                 this.onChange({ ...emptyObj });
 
@@ -135,12 +134,12 @@ export class ModalInputFormComponent implements ControlValueAccessor {
             default:
                 this.inputTitleValue.nativeElement.value = selectedRow.title;
 
-                this.valueChangedInput = true;
+                this.isValueChangedInput = true;
 
                 this.onChange({ ...selectedRow });
 
                 if (popover) {
-                    this.showRemoveIcon = false;
+                    this.isShowRemoveIcon = false;
 
                     popover.close();
                 }

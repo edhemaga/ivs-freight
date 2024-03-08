@@ -43,7 +43,7 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public isAllCardsFlipp: boolean = false;
-    public expandCardChecked: boolean = true;
+    public isExpandCardChecked: boolean = true;
 
     public cardData: CardDetails;
 
@@ -67,7 +67,7 @@ export class LoadCardComponent implements OnInit, OnDestroy {
         this.loadQuery.pending$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.expandCardChecked = res.checked;
+                this.isExpandCardChecked = res.checked;
             });
     }
 

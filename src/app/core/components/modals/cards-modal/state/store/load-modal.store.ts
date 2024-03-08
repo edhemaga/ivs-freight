@@ -4,32 +4,33 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 // model
 import { DisplayLoadConfiguration } from 'src/app/core/components/load/load-card-data';
 import { CardRows } from 'src/app/core/components/shared/model/cardData';
+import { ModalModelData } from '../../models/modal-input.model';
 
 export interface LoadDataState extends EntityState<CardRows> {}
 
 export const initialState = (): LoadDataState => {
-    const template = {
+    const template: ModalModelData = {
         numberOfRows: 4,
         checked: true,
         front_side: DisplayLoadConfiguration.displayRowsFrontTemplate,
         back_side: DisplayLoadConfiguration.displayRowsBackTemplate,
     };
 
-    const pending = {
+    const pending: ModalModelData = {
         numberOfRows: 4,
         checked: true,
         front_side: DisplayLoadConfiguration.displayRowsFrontPending,
         back_side: DisplayLoadConfiguration.displayRowsBackPending,
     };
 
-    const active = {
+    const active: ModalModelData = {
         numberOfRows: 4,
         checked: true,
-        front_side: DisplayLoadConfiguration.displayRowsFrontTemplate,
+        front_side: DisplayLoadConfiguration.displayRowsFrontPending,
         back_side: DisplayLoadConfiguration.displayRowsBackActive,
     };
 
-    const closed = {
+    const closed: ModalModelData = {
         numberOfRows: 4,
         checked: true,
         front_side: DisplayLoadConfiguration.displayRowsFrontClosed,

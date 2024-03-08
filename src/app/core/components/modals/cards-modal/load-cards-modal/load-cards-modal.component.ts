@@ -14,9 +14,9 @@ import {
 import { CommonModule } from '@angular/common';
 
 // Models
-import { loadCardsModuleData } from '../state/load.data';
+import { loadCardsModuleData } from '../utils/constants/load-card.constants';
 import { CardRows } from '../../../shared/model/cardData';
-import { compareObjectsModal } from '../utils/compare-objects';
+import { ModalModelData } from '../models/modal-input.model';
 
 // Configuration for modals
 import { DisplayLoadConfiguration } from '../../../load/load-card-data';
@@ -26,11 +26,19 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 // Store
-import { LoadDataStore } from '../state/store/load-modal.store';
 import { LoadQuery } from '../state/store/load-modal.query';
 
+// helpers
+import { compareObjectsModal } from '../utils/card-modal-helpers';
+
 // Enum
-import { CardModalEnums } from '../utils/enums/card-modals.enums';
+import { CardModalEnum } from '../utils/enums/card-modals.enums';
+
+// Services
+import { CardsModalConfigService } from '../utils/services/cards-modal-config.service';
+
+// constants
+import { LoadModalConstants } from '../utils/constants/load-modal.constants';
 
 // Components
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
@@ -59,34 +67,30 @@ import { ModalInputFormComponent } from '../components/modal-input-form.componen
 export class LoadCardsModalComponent implements OnInit {
     private destroy$ = new Subject<void>();
 
-    public Cardsform: FormGroup;
+    public cardsForm: FormGroup;
 
-    public pendingDataFront: CardRows[];
-    public pendingDataBack: CardRows[];
+    public dataFront: CardRows[];
+    public dataBack: CardRows[];
 
-    public defaultCardsValues: {
-        numberOfRows: number;
-        checked: boolean;
-        front_side: CardRows[];
-        back_side: CardRows[];
-    } = {
-        numberOfRows: 4,
-        checked: true,
-        front_side: [],
-        back_side: [],
-    };
+    public defaultCardsValues: ModalModelData =
+        LoadModalConstants.defaultCardsValues;
 
     public cardsAllData: CardRows[] = loadCardsModuleData.allDataLoad;
 
-    public formChanged: boolean = false;
+    public hasFormChanged: boolean = false;
     public isChecked: boolean = false;
     public resetForm: boolean = false;
 
+    public tabSelected: string;
+
+    public setDefaultDataFront;
+    public setDefaultDataBack;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private loadStore: LoadDataStore,
         private loadQuery: LoadQuery,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private modalService: CardsModalConfigService
     ) {}
 
     ngOnInit(): void {
@@ -99,54 +103,131 @@ export class LoadCardsModalComponent implements OnInit {
         this.compareDataInStoreAndDefaultData();
     }
 
-    public createForm(): void {
-        this.Cardsform = this.formBuilder.group({
-            numberOfRows: [this.defaultCardsValues.numberOfRows],
-            checked: [this.defaultCardsValues.checked],
-            front_side: this.formBuilder.group({
-                selectedTitle_0: [''],
-                selectedTitle_1: [''],
-                selectedTitle_2: [''],
-                selectedTitle_3: [''],
-                selectedTitle_4: null,
-                selectedTitle_5: null,
-            }),
-            back_side: this.formBuilder.group({
-                selectedTitle_back_0: [''],
-                selectedTitle_back_1: [''],
-                selectedTitle_back_2: [''],
-                selectedTitle_back_3: [''],
-                selectedTitle_back_4: null,
-                selectedTitle_back_5: null,
-            }),
-        });
+    public getDataFromStore(): void {
+        this.modalService.tabObservable$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.tabSelected = res;
+
+                switch (res) {
+                    case CardModalEnum.PENDING:
+                        this.pendingTabModalConfig();
+                        break;
+
+                    case CardModalEnum.TEMPLATE:
+                        this.templateTabModalConfig();
+                        break;
+
+                    case CardModalEnum.ACTIVE:
+                        this.activeTabModalConfig();
+                        break;
+
+                    case CardModalEnum.CLOSED:
+                        this.closedTabModalConfig();
+                        break;
+                }
+            });
     }
 
-    public getDataFromStore(): void {
+    private templateTabModalConfig(): void {
+        this.loadQuery.template$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: ModalModelData) => {
+                this.setDataForModal(data);
+
+                this.setDefaultDataFront =
+                    DisplayLoadConfiguration.displayRowsFrontTemplate;
+
+                this.setDefaultDataBack =
+                    DisplayLoadConfiguration.displayRowsBackTemplate;
+            });
+    }
+
+    private pendingTabModalConfig(): void {
         this.loadQuery.pending$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                this.defaultCardsValues.checked = data.checked;
+            .subscribe((data: ModalModelData) => {
+                this.setDataForModal(data);
 
-                this.pendingDataFront = data.front_side;
+                this.setDefaultDataFront =
+                    DisplayLoadConfiguration.displayRowsFrontPending;
 
-                this.pendingDataBack = data.back_side;
-
-                this.defaultCardsValues.numberOfRows = data.numberOfRows;
-
-                this.defaultCardsValues.front_side = data.front_side;
-
-                this.defaultCardsValues.back_side = data.back_side;
+                this.setDefaultDataBack =
+                    DisplayLoadConfiguration.displayRowsBackPending;
             });
+    }
+
+    private activeTabModalConfig(): void {
+        this.loadQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: ModalModelData) => {
+                this.setDataForModal(data);
+
+                this.setDefaultDataFront =
+                    DisplayLoadConfiguration.displayRowsFrontPending;
+
+                this.setDefaultDataBack =
+                    DisplayLoadConfiguration.displayRowsBackActive;
+            });
+    }
+
+    private closedTabModalConfig(): void {
+        this.loadQuery.closed$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: ModalModelData) => {
+                this.setDataForModal(data);
+
+                this.setDefaultDataFront =
+                    DisplayLoadConfiguration.displayRowsFrontClosed;
+
+                this.setDefaultDataBack =
+                    DisplayLoadConfiguration.displayRowsBackClosed;
+            });
+    }
+
+    private setDataForModal(data: ModalModelData): void {
+        this.dataFront = data.front_side;
+
+        this.dataBack = data.back_side;
+
+        this.defaultCardsValues.checked = data.checked;
+
+        this.defaultCardsValues.numberOfRows = data.numberOfRows;
+
+        this.defaultCardsValues.front_side = data.front_side;
+
+        this.defaultCardsValues.back_side = data.back_side;
+    }
+
+    public createForm(): void {
+        this.cardsForm = this.formBuilder.group({
+            numberOfRows: this.defaultCardsValues.numberOfRows,
+
+            checked: this.defaultCardsValues.checked,
+
+            frontSelectedTitle_0: this.dataFront[0],
+            frontSelectedTitle_1: this.dataFront[1],
+            frontSelectedTitle_2: this.dataFront[2],
+            frontSelectedTitle_3: this.dataFront[3],
+            frontSelectedTitle_4: null,
+            frontSelectedTitle_5: null,
+
+            backSelectedTitle_0: this.dataBack[0],
+            backSelectedTitle_1: this.dataBack[1],
+            backSelectedTitle_2: this.dataBack[2],
+            backSelectedTitle_3: this.dataBack[3],
+            backSelectedTitle_4: null,
+            backSelectedTitle_5: null,
+        });
     }
 
     public onActionModal(event): void {
         switch (event.action) {
-            case CardModalEnums.CARDS_MODAL:
+            case CardModalEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
 
-            case CardModalEnums.RESET_TO_DEFAULT:
+            case CardModalEnum.RESET_TO_DEFAULT:
                 this.setTodefaultCards();
                 break;
 
@@ -156,112 +237,143 @@ export class LoadCardsModalComponent implements OnInit {
     }
 
     private updateStore(): void {
-        this.defaultCardsValues = {
-            numberOfRows: this.Cardsform.value.numberOfRows,
-            checked: this.Cardsform.value.checked,
-            front_side: [
-                this.Cardsform.value.front_side.selectedTitle_0 !== ''
-                    ? this.Cardsform.value.front_side.selectedTitle_0
-                    : this.pendingDataFront[0],
-                this.Cardsform.value.front_side.selectedTitle_1 !== ''
-                    ? this.Cardsform.value.front_side.selectedTitle_1
-                    : this.pendingDataFront[1],
-                this.Cardsform.value.front_side.selectedTitle_2 !== ''
-                    ? this.Cardsform.value.front_side.selectedTitle_2
-                    : this.pendingDataFront[2],
-                this.Cardsform.value.front_side.selectedTitle_3 !== '' &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.Cardsform.value.front_side.selectedTitle_3
-                    : this.defaultCardsValues.numberOfRows < 4
-                    ? null
-                    : this.pendingDataFront[3],
-                this.Cardsform.value.front_side.selectedTitle_4 !== '' &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.Cardsform.value.front_side.selectedTitle_4
-                    : this.defaultCardsValues.numberOfRows < 5
-                    ? null
-                    : this.pendingDataFront[4],
-                this.Cardsform.value.front_side.selectedTitle_5 !== '' &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.Cardsform.value.front_side.selectedTitle_5
-                    : this.defaultCardsValues.numberOfRows < 6
-                    ? null
-                    : this.pendingDataFront[5],
-            ],
-
-            back_side: [
-                this.Cardsform.value.back_side.selectedTitle_back_0 !== ''
-                    ? this.Cardsform.value.back_side.selectedTitle_back_0
-                    : this.pendingDataBack[0],
-
-                this.Cardsform.value.back_side.selectedTitle_back_1 !== ''
-                    ? this.Cardsform.value.back_side.selectedTitle_back_1
-                    : this.pendingDataBack[1],
-
-                this.Cardsform.value.back_side.selectedTitle_back_2 !== ''
-                    ? this.Cardsform.value.back_side.selectedTitle_back_2
-                    : this.pendingDataBack[2],
-
-                this.Cardsform.value.back_side.selectedTitle_back_3 !== '' &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.Cardsform.value.back_side.selectedTitle_back_3
-                    : this.defaultCardsValues.numberOfRows < 4
-                    ? null
-                    : this.pendingDataBack[3],
-                this.Cardsform.value.back_side.selectedTitle_back_4 !== '' &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.Cardsform.value.back_side.selectedTitle_back_4
-                    : this.defaultCardsValues.numberOfRows < 5
-                    ? null
-                    : this.pendingDataBack[4],
-                this.Cardsform.value.back_side.selectedTitle_back_5 !== '' &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.Cardsform.value.back_side.selectedTitle_back_5
-                    : this.defaultCardsValues.numberOfRows < 6
-                    ? null
-                    : this.pendingDataBack[5],
-            ],
-        };
-
-        this.loadStore.update((store) => {
-            return {
-                ...store,
-                pending: {
-                    ...store.pending,
-                    ...this.defaultCardsValues,
-                },
-            };
+        this.cardsForm.patchValue({
+            checked: this.cardsForm.get(CardModalEnum.CHECKED).value,
         });
+
+        this.cardsForm.patchValue({
+            numberOfRows: this.cardsForm.get(CardModalEnum.NUMBER_OF_ROWS)
+                .value,
+        });
+
+        this.cardsForm.patchValue({
+            frontSelectedTitle_0: this.cardsForm.get(
+                CardModalEnum.FRONT_SELECTED_0
+            ).value
+                ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_0).value
+                : this.dataFront[0],
+        });
+
+        this.cardsForm.patchValue({
+            frontSelectedTitle_1: this.cardsForm.get(
+                CardModalEnum.FRONT_SELECTED_1
+            ).value
+                ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_1).value
+                : this.dataFront[1],
+        });
+
+        this.cardsForm.patchValue({
+            frontSelectedTitle_2: this.cardsForm.get(
+                CardModalEnum.FRONT_SELECTED_2
+            ).value
+                ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_2).value
+                : this.dataFront[2],
+        });
+
+        this.cardsForm.patchValue({
+            frontSelectedTitle_3:
+                this.cardsForm.get(CardModalEnum.FRONT_SELECTED_3).value &&
+                this.defaultCardsValues.numberOfRows > 3
+                    ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_3).value
+                    : this.defaultCardsValues.numberOfRows < 4
+                    ? null
+                    : this.dataFront[3],
+        });
+
+        this.cardsForm.patchValue({
+            frontSelectedTitle_4:
+                this.cardsForm.get(CardModalEnum.FRONT_SELECTED_4).value &&
+                this.defaultCardsValues.numberOfRows > 4
+                    ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_4).value
+                    : this.defaultCardsValues.numberOfRows < 5
+                    ? null
+                    : this.dataFront[4],
+        });
+
+        this.cardsForm.patchValue({
+            frontSelectedTitle_5:
+                this.cardsForm.get(CardModalEnum.FRONT_SELECTED_5).value &&
+                this.defaultCardsValues.numberOfRows > 5
+                    ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_5).value
+                    : this.defaultCardsValues.numberOfRows < 6
+                    ? null
+                    : this.dataFront[5],
+        });
+
+        this.cardsForm.patchValue({
+            backSelectedTitle_0: this.cardsForm.get(
+                CardModalEnum.BACK_SELECTED_0
+            ).value
+                ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_0).value
+                : this.dataBack[0],
+        });
+
+        this.cardsForm.patchValue({
+            backSelectedTitle_1: this.cardsForm.get(
+                CardModalEnum.BACK_SELECTED_1
+            ).value
+                ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_1).value
+                : this.dataBack[1],
+        });
+
+        this.cardsForm.patchValue({
+            backSelectedTitle_2: this.cardsForm.get(
+                CardModalEnum.BACK_SELECTED_2
+            ).value
+                ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_2).value
+                : this.dataBack[2],
+        });
+
+        this.cardsForm.patchValue({
+            backSelectedTitle_3:
+                this.cardsForm.get(CardModalEnum.BACK_SELECTED_3).value &&
+                this.defaultCardsValues.numberOfRows > 3
+                    ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_3).value
+                    : this.defaultCardsValues.numberOfRows < 4
+                    ? null
+                    : this.dataBack[3],
+        });
+
+        this.cardsForm.patchValue({
+            backSelectedTitle_4:
+                this.cardsForm.get(CardModalEnum.BACK_SELECTED_4).value &&
+                this.defaultCardsValues.numberOfRows > 4
+                    ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_4).value
+                    : this.defaultCardsValues.numberOfRows < 5
+                    ? null
+                    : this.dataBack[4],
+        });
+
+        this.cardsForm.patchValue({
+            backSelectedTitle_5:
+                this.cardsForm.get(CardModalEnum.BACK_SELECTED_5).value &&
+                this.defaultCardsValues.numberOfRows > 5
+                    ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_5).value
+                    : this.defaultCardsValues.numberOfRows < 6
+                    ? null
+                    : this.dataBack[5],
+        });
+
+        this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
     }
 
     private setTodefaultCards(): void {
-        this.Cardsform.patchValue({
+        this.cardsForm.patchValue({
             numberOfRows: 4,
             checked: true,
-            front_side: {
-                selectedTitle_0:
-                    DisplayLoadConfiguration.displayRowsFrontPending[0],
-                selectedTitle_1:
-                    DisplayLoadConfiguration.displayRowsFrontPending[1],
-                selectedTitle_2:
-                    DisplayLoadConfiguration.displayRowsFrontPending[2],
-                selectedTitle_3:
-                    DisplayLoadConfiguration.displayRowsFrontPending[3],
-                selectedTitle_4: null,
-                selectedTitle_5: null,
-            },
-            back_side: {
-                selectedTitle_back_0:
-                    DisplayLoadConfiguration.displayRowsBackPending[0],
-                selectedTitle_back_1:
-                    DisplayLoadConfiguration.displayRowsBackPending[1],
-                selectedTitle_back_2:
-                    DisplayLoadConfiguration.displayRowsBackPending[2],
-                selectedTitle_back_3:
-                    DisplayLoadConfiguration.displayRowsBackPending[3],
-                selectedTitle_back_4: null,
-                selectedTitle_back_5: null,
-            },
+            frontSelectedTitle_0: this.setDefaultDataFront[0],
+            frontSelectedTitle_1: this.setDefaultDataFront[1],
+            frontSelectedTitle_2: this.setDefaultDataFront[2],
+            frontSelectedTitle_3: this.setDefaultDataFront[3],
+            frontSelectedTitle_4: null,
+            frontSelectedTitle_5: null,
+
+            backSelectedTitle_0: this.setDefaultDataBack[0],
+            backSelectedTitle_1: this.setDefaultDataBack[1],
+            backSelectedTitle_2: this.setDefaultDataBack[2],
+            backSelectedTitle_3: this.setDefaultDataBack[3],
+            backSelectedTitle_4: null,
+            backSelectedTitle_5: null,
         });
 
         this.resetForm = false;
@@ -270,7 +382,7 @@ export class LoadCardsModalComponent implements OnInit {
     }
 
     public getValueForm(): void {
-        this.Cardsform.valueChanges
+        this.cardsForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.defaultCardsValues.numberOfRows = parseInt(
@@ -278,24 +390,23 @@ export class LoadCardsModalComponent implements OnInit {
                 );
 
                 this.resetForm = true;
-
-                this.formChanged = true;
+                this.hasFormChanged = true;
             });
     }
 
     private compareDataInStoreAndDefaultData(): void {
-        const areFrontSidesEqual = compareObjectsModal.areArraysOfObjectsEqual(
+        const isFrontSidesEqual = compareObjectsModal.areArraysOfObjectsEqual(
             this.defaultCardsValues.front_side,
-            DisplayLoadConfiguration.displayRowsFrontPending
+            this.setDefaultDataFront
         );
 
         const areBackSidesEqual = compareObjectsModal.areArraysOfObjectsEqual(
             this.defaultCardsValues.back_side,
-            DisplayLoadConfiguration.displayRowsBackPending
+            this.setDefaultDataBack
         );
 
         if (
-            areFrontSidesEqual &&
+            isFrontSidesEqual &&
             areBackSidesEqual &&
             this.defaultCardsValues.checked &&
             this.defaultCardsValues.numberOfRows === 4

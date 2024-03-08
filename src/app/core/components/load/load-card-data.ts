@@ -23,6 +23,8 @@ export class DisplayLoadConfiguration {
             endpoint: 'brokerContact.phone',
             secondEndpoint: 'brokerContact.extensionPhone',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackTemplate: CardRows[] = [
@@ -46,6 +48,8 @@ export class DisplayLoadConfiguration {
             title: 'Rate',
             endpoint: 'textBase',
         },
+        null,
+        null,
     ];
 
     static displayRowsFrontPending: CardRows[] = [
@@ -112,6 +116,8 @@ export class DisplayLoadConfiguration {
             title: 'Total Miles',
             endpoint: 'totalMiles',
         },
+        null,
+        null,
     ];
 
     static displayRowsFrontClosed: CardRows[] = [
@@ -132,6 +138,8 @@ export class DisplayLoadConfiguration {
             title: 'Due',
             endpoint: 'no-endpoint',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackClosed: CardRows[] = [
@@ -155,5 +163,7 @@ export class DisplayLoadConfiguration {
             title: 'Age',
             endpoint: 'no-ednpoint',
         },
+        null,
+        null,
     ];
 }

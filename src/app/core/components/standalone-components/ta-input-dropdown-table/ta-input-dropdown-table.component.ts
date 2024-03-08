@@ -14,10 +14,12 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '../../shared/shared.module';
 
 // models
 import {
@@ -47,8 +49,7 @@ import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SharedModule } from '../../shared/shared.module';
+import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -110,8 +111,6 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     public loggedUserCommented: boolean;
 
     public commentHighlight: string;
-
-    @Output() valueChanged = new EventEmitter<any>();
 
     constructor(
         private router: Router,
@@ -325,20 +324,11 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        if (!commentTitle || !this.commentHighlight) return commentTitle;
-
-        const sanitizedHtml = commentTitle.replace(
-            new RegExp(this.commentHighlight, 'gi'),
-            (match) => {
-                return (
-                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
-                    match +
-                    '</span>'
-                );
-            }
+        return higlihtComment.higlitsPartOfCommentSearchValue(
+            commentTitle,
+            this.commentHighlight,
+            this.sanitizer
         );
-
-        return this.sanitizer.bypassSecurityTrustHtml(sanitizedHtml) as string;
     }
 
     private filterTrucks(searchString: string): Trucks[] {
