@@ -102,7 +102,7 @@ export class TaInputService {
         } else if ('first name' === inputName) {
             return /^[A-Za-z',\s.-]*$/;
         } else if ('last name' === inputName) {
-            return /^[A-Za-z\s]*$/;
+            return /^[A-Za-z',\s.-]*$/;
         } else if ('bank name' === inputName) {
             return /^[A-Za-z0-9!#'$&%()*+,./:;=<>?-^[]*$/;
         } else if (
@@ -128,7 +128,7 @@ export class TaInputService {
         } else if (
             ['emergency name', 'relationship', 'scac'].includes(inputName)
         ) {
-            return /^[A-Za-z\s]*$/;
+            return /^[A-Za-z',\s.-]*$/;
         } else if ('fuel store' === inputName) {
             return /^[A-Za-z0-9-]*$/;
         } else if ('hos' === inputName) {

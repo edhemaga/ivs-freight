@@ -63,6 +63,7 @@ export class ModalService {
     }) {
         // Closing Modal and Open New One
         if (data.action === 'open') {
+            sessionStorage.clear();
             const timeout = setTimeout(() => {
                 sessionStorage.setItem(
                     data.payload.key,
@@ -96,10 +97,9 @@ export class ModalService {
                         data.component,
                         { size: data.size },
                         {
-                            storageData:
-                                this.encryptionDecryptionService.getLocalStorage(
-                                    data.payload.key
-                                ),
+                            ...this.encryptionDecryptionService.getLocalStorage(
+                                data.payload.key
+                            ),
                             type: data.type,
                         }
                     );
