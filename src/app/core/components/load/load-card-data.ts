@@ -1,4 +1,4 @@
-import { CardRows } from '../shared/model/cardData';
+import { CardRows } from '../shared/model/card-data.model';
 
 export class DisplayLoadConfiguration {
     static rows: number = 4;
@@ -23,6 +23,8 @@ export class DisplayLoadConfiguration {
             endpoint: 'brokerContact.phone',
             secondEndpoint: 'brokerContact.extensionPhone',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackTemplate: CardRows[] = [
@@ -46,6 +48,8 @@ export class DisplayLoadConfiguration {
             title: 'Rate',
             endpoint: 'textBase',
         },
+        null,
+        null,
     ];
 
     static displayRowsFrontPending: CardRows[] = [
@@ -70,6 +74,8 @@ export class DisplayLoadConfiguration {
             endpoint: 'loadTotal.total',
             secondEndpoint: 'loadTotal.subTotal',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackPending: CardRows[] = [
@@ -89,6 +95,8 @@ export class DisplayLoadConfiguration {
             title: 'Total Miles',
             endpoint: 'totalMiles',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackActive: CardRows[] = [
@@ -108,6 +116,8 @@ export class DisplayLoadConfiguration {
             title: 'Total Miles',
             endpoint: 'totalMiles',
         },
+        null,
+        null,
     ];
 
     static displayRowsFrontClosed: CardRows[] = [
@@ -128,6 +138,8 @@ export class DisplayLoadConfiguration {
             title: 'Due',
             endpoint: 'no-endpoint',
         },
+        null,
+        null,
     ];
 
     static displayRowsBackClosed: CardRows[] = [
@@ -151,5 +163,7 @@ export class DisplayLoadConfiguration {
             title: 'Age',
             endpoint: 'no-ednpoint',
         },
+        null,
+        null,
     ];
 }

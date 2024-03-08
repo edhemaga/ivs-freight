@@ -45,7 +45,7 @@ import {
 } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DisplayUserConfiguration } from '../user-card-data';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
 
 @Component({

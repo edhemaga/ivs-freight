@@ -95,7 +95,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() modalTitle: string;
     @Input() editName: string;
-    @Input() cardsSecTitle: string;
     @Input() loadModalTemplate: boolean;
     @Input() isVisibleHazardous?: boolean;
     @Input() isVisibleMap?: boolean;
@@ -125,7 +124,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() mapRouteModal: boolean = false;
     @Input() resetMapVisibility: boolean = false;
     @Input() showCounter: boolean = false;
-    @Input() cardsModal: boolean = false;
+
+    // Cards Modal
+    @Input() isCardsModal: boolean = false;
+    @Input() isResetFormCards: boolean = false;
+    @Input() cardsSecTitle: string;
+
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -395,6 +399,15 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
 
                 break;
+            case 'cards-modal': {
+                this.action.emit({ action: action, bool: false });
+                this.ngbActiveModal.close();
+                break;
+            }
+            case 'reset-to-default': {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
             default: {
                 break;
             }

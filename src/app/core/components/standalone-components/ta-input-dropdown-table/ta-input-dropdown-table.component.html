@@ -130,6 +130,92 @@
     </div>
 </ng-container>
 
+<!------------------------------------------------- RATING DROPDOWN ----------------------------------------------------------------->
+<ng-container *ngIf="type === 'rating-shipper'">
+    <div
+        [ngbPopover]="ratingShipper"
+        #shipperRating="ngbPopover"
+        [autoClose]="'outside'"
+        class="table-dropdown-container"
+        [placement]="['bottom-left']"
+        popoverClass="table-dropdown-popover"
+        triggers="manual"
+        (click)="toggleDropdownRating(shipperRating, filteredData)"
+        [ngClass]="
+            shipperRating.isOpen()
+                ? 'owner-dropdown-opened rating-dropdown-opened'
+                : ''
+        "
+    >
+        <div class="fleet-holder gap-big d-flex">
+            <!-- like -->
+            <div class="ta-font-semi-bold d-flex fleet align-items-center">
+                <svg-icon
+                    class="d-flex justify-content-center svg-holder"
+                    [src]="'assets/svg/common/ic_like.svg'"
+                    [ngClass]="{
+                        'no-count': !filteredData.total.totalLikes,
+                        'user-liked': filteredData.total.liked
+                    }"
+                ></svg-icon>
+
+                <span
+                    class="d-flex justify-content-center"
+                    [ngClass]="{
+                        'no-count-text': !filteredData.total.totalLikes
+                    }"
+                >
+                    {{ filteredData.total.totalLikes }}
+                </span>
+            </div>
+
+            <!-- dislike -->
+            <div class="ta-font-semi-bold d-flex fleet align-items-center">
+                <svg-icon
+                    class="d-flex justify-content-center svg-holder"
+                    [src]="'assets/svg/common/ic_dislike.svg'"
+                    [ngClass]="{
+                        'no-count': !filteredData.total.totalDislikes,
+                        'user-disliked': filteredData.total.disliked
+                    }"
+                ></svg-icon>
+
+                <span
+                    class="d-flex justify-content-center"
+                    [ngClass]="{
+                        'no-count-text': !filteredData.total.totalDislikes
+                    }"
+                >
+                    {{ filteredData.total.totalDislikes }}
+                </span>
+            </div>
+
+            <div class="ta-font-semi-bold d-flex fleet align-items-center">
+                <svg-icon
+                    class="d-flex justify-content-center svg-holder align-items-center"
+                    [src]="'assets/svg/common/review-pen.svg'"
+                    [ngClass]="{
+                        'no-count': !filteredData.total.totalComments
+                    }"
+                    [svgStyle]="{
+                        'width.px': 14,
+                        'height.px': 14
+                    }"
+                ></svg-icon>
+
+                <span
+                    class="d-flex justify-content-center"
+                    [ngClass]="{
+                        'no-count-text': !filteredData.total.totalComments
+                    }"
+                >
+                    {{ filteredData.total.totalComments }}
+                </span>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
 <!------------------------------------------------- OWNER FLEET DROPDOWN ----------------------------------------------------------------->
 <ng-template #dropdownOwnerFleet let-ownerFleet="data">
     <div class="table-list-dropdown">
@@ -529,92 +615,6 @@
         </div>
     </div>
 </ng-template>
-
-<!------------------------------------------------- RATING DROPDOWN ----------------------------------------------------------------->
-<ng-container *ngIf="type === 'rating-shipper'">
-    <div
-        [ngbPopover]="ratingShipper"
-        #shipperRating="ngbPopover"
-        [autoClose]="'outside'"
-        class="table-dropdown-container"
-        [placement]="['bottom-left']"
-        popoverClass="table-dropdown-popover"
-        triggers="manual"
-        (click)="toggleDropdownRating(shipperRating, filteredData)"
-        [ngClass]="
-            shipperRating.isOpen()
-                ? 'owner-dropdown-opened rating-dropdown-opened'
-                : ''
-        "
-    >
-        <div class="fleet-holder gap-big d-flex">
-            <!-- like -->
-            <div class="ta-font-semi-bold d-flex fleet align-items-center">
-                <svg-icon
-                    class="d-flex justify-content-center svg-holder"
-                    [src]="'assets/svg/common/ic_like.svg'"
-                    [ngClass]="{
-                        'no-count': !filteredData.total.totalLikes,
-                        'user-liked': filteredData.total.liked
-                    }"
-                ></svg-icon>
-
-                <span
-                    class="d-flex justify-content-center"
-                    [ngClass]="{
-                        'no-count-text': !filteredData.total.totalLikes
-                    }"
-                >
-                    {{ filteredData.total.totalLikes }}
-                </span>
-            </div>
-
-            <!-- dislike -->
-            <div class="ta-font-semi-bold d-flex fleet align-items-center">
-                <svg-icon
-                    class="d-flex justify-content-center svg-holder"
-                    [src]="'assets/svg/common/ic_dislike.svg'"
-                    [ngClass]="{
-                        'no-count': !filteredData.total.totalDislikes,
-                        'user-disliked': filteredData.total.disliked
-                    }"
-                ></svg-icon>
-
-                <span
-                    class="d-flex justify-content-center"
-                    [ngClass]="{
-                        'no-count-text': !filteredData.total.totalDislikes
-                    }"
-                >
-                    {{ filteredData.total.totalDislikes }}
-                </span>
-            </div>
-
-            <div class="ta-font-semi-bold d-flex fleet align-items-center">
-                <svg-icon
-                    class="d-flex justify-content-center svg-holder align-items-center"
-                    [src]="'assets/svg/common/review-pen.svg'"
-                    [ngClass]="{
-                        'no-count': !filteredData.total.totalComments
-                    }"
-                    [svgStyle]="{
-                        'width.px': 14,
-                        'height.px': 14
-                    }"
-                ></svg-icon>
-
-                <span
-                    class="d-flex justify-content-center"
-                    [ngClass]="{
-                        'no-count-text': !filteredData.total.totalComments
-                    }"
-                >
-                    {{ filteredData.total.totalComments }}
-                </span>
-            </div>
-        </div>
-    </div>
-</ng-container>
 
 <!------------------------------------------------- RATING DROPDOWN ----------------------------------------------------------------->
 <ng-template #ratingShipper let-rating="rating">
