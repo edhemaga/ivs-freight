@@ -33,12 +33,20 @@ import {
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import {
+    UserTableDropdown,
+    UserTableOwnerDropdown,
+} from '../utils/constants/user.constants';
 
 //Enum
-import { GetCompanyUserListResponse } from 'appcoretruckassist';
+import {
+    CompanyUserResponse,
+    GetCompanyUserListResponse,
+} from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DisplayUserConfiguration } from '../user-card-data';
 import { CardRows } from '../../shared/model/card-data.model';
+import { DropdownItem } from '../../shared/model/card-table-data.model';
 
 @Component({
     selector: 'app-user-table',
@@ -182,7 +190,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         {
                             data: null,
                             array: mappedRes,
-                            template: ConstantStringTableComponentsEnum.USER,
+                            template: ConstantStringTableComponentsEnum.USER_1,
                             type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
                             image: true,
                         }
@@ -559,88 +567,23 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownContent(data),
+                content:
+                    data.userType.name.toLowerCase() === 'owner'
+                        ? this.getOwnerDropdown(data)
+                        : this.getDropdownContent(data),
             },
         };
     }
 
     // Get User Dropdown Content
-    getDropdownContent(data: any) {
-        return [
-            {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: ConstantStringTableComponentsEnum.EDIT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: 'Reset Password',
-                name: ConstantStringTableComponentsEnum.RESET_PASSWORD,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                mutedStyle: !data.verified,
-            },
-            {
-                title: 'Resend Invitation',
-                name: ConstantStringTableComponentsEnum.RESEND_INVITATION,
-                svgUrl: !data.verified
-                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
-                    : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
-                svgStyle: {
-                    width: !data.verified ? 18 : 14,
-                    height: !data.verified ? 18 : 14,
-                },
-                svgClass: data.verified
-                    ? ConstantStringTableComponentsEnum.CHECK
-                    : ConstantStringTableComponentsEnum.REGULAR,
-                hasBorder: true,
-                mutedStyle: data.verified,
-            },
-            {
-                title: data.status
-                    ? ConstantStringTableComponentsEnum.DEACTIVATE_2
-                    : ConstantStringTableComponentsEnum.ACTIVATE_2,
-                name: data.status
-                    ? ConstantStringTableComponentsEnum.DEACTIVATE
-                    : ConstantStringTableComponentsEnum.ACTIVATE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: !data.verified
-                    ? ConstantStringTableComponentsEnum.REGULAR
-                    : data.status
-                    ? ConstantStringTableComponentsEnum.DEACTIVATE
-                    : ConstantStringTableComponentsEnum.ACTIVATE,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                mutedStyle: !data.verified,
-            },
-            {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
-            },
-        ];
+    public getOwnerDropdown(data: CompanyUserResponse): DropdownItem[] {
+        return UserTableOwnerDropdown(data);
+    }
+
+    public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
+        const dropdownContent = UserTableDropdown(data);
+        data.verified ? dropdownContent.splice(2, 1) : dropdownContent;
+        return dropdownContent;
     }
 
     // User Back Filter Query
@@ -817,9 +760,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...event,
             data: {
                 ...event.data,
-                name: event.data?.userAvatar?.name
-                    ? event.data.userAvatar.name
-                    : '',
+                name: event.data?.firstName,
             },
         };
 
