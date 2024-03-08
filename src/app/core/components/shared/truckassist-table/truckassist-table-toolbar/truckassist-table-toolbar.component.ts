@@ -526,7 +526,6 @@ export class TruckassistTableToolbarComponent
     // Show Toolbar Options Popup
     public onShowOptions(optionsPopup): void {
         this.optionsPopupContent[0].active = false;
-        console.log(this.optionsPopupContent);
         this.optionsPopupContent.map((option) => {
             if (option.text !== ConstantStringTableComponentsEnum.COLUMNS) {
                 option.hide = false;

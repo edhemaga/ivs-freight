@@ -9,28 +9,27 @@ import {
 } from '@angular/forms';
 import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
 
-import {
-    AddressEntity,
-    CompanyOfficeModalResponse,
-    CompanyOfficeResponse,
-    CreateCompanyOfficeCommand,
-    EnumValue,
-    UpdateCompanyOfficeCommand,
-} from 'appcoretruckassist';
-
-import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
+// services
 import { FormService } from '../../../../services/form/form.service';
-import {
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../utils/methods.calculations';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+
+// enums
+import { PayPeriodEnum } from './state/enums/settings-office-modal.enum';
+
+// components
 import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { UserModalComponent } from '../../user-modal/user-modal.component';
+
+// validations
 import {
     addressUnitValidation,
     addressValidation,
@@ -40,12 +39,26 @@ import {
     phoneFaxRegex,
     rentValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { UserModalComponent } from '../../user-modal/user-modal.component';
-import { PayPeriodEnum } from './state/enums/settings-office-modal.enum';
+
+// types
+import {
+    AddressEntity,
+    CompanyOfficeModalResponse,
+    CompanyOfficeResponse,
+    CreateCompanyOfficeCommand,
+    EnumValue,
+    UpdateCompanyOfficeCommand,
+} from 'appcoretruckassist';
+
+// icons
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// utils
+import {
+    convertNumberInThousandSep,
+    convertThousanSepInNumber,
+} from '../../../../utils/methods.calculations';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -80,12 +93,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity = null;
     public isPhoneExtExist: boolean = false;
 
-    public payPeriods: Array<EnumValue> | null = [];
-    public selectedPayPeriod: EnumValue | null = null;
+    public payPeriods: EnumValue[] = [];
+    public selectedPayPeriod: EnumValue = null;
 
-    public weeklyDays: Array<EnumValue> | null = [];
-    public monthlyDays: Array<EnumValue> | null = [];
-    public selectedDay: EnumValue | null = null;
+    public weeklyDays: EnumValue[] = [];
+    public monthlyDays: EnumValue[] = [];
+    public selectedDay: EnumValue = null;
 
     public departments: any[] = [];
     public selectedDepartmentFormArray: any[] = [];
@@ -116,7 +129,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         params: { height: '0px' },
     };
 
-    public dayOptions: Array<EnumValue> | null;
+    public dayOptions: EnumValue[];
 
     private destroy$ = new Subject<void>();
 
