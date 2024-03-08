@@ -1,5 +1,4 @@
 @import '/src/theme/variables.scss';
-@import '/src/assets/scss/fonts.scss';
 
 .owner-dropdown-opened {
     background: $ta-black-2;
@@ -78,7 +77,7 @@
             position: absolute;
             color: $white;
             font-size: 9px;
-            top: 5.5px;
+            top: 5px;
         }
 
         .comment {

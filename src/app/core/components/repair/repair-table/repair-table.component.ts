@@ -43,7 +43,10 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
-import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from '../../shared/model/card-data.model';
 import {
     DropdownItem,
     ToolbarActions,
@@ -77,7 +80,7 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { DisplayRepairConfiguration } from '../repair-card-data';
+import { DisplayRepairConfiguration } from '../state/constants/repair-card.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';

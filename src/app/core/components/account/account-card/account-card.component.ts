@@ -3,7 +3,7 @@ import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
 import { CardDetails } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';

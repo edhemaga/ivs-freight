@@ -60,7 +60,7 @@
                         {{ editName }}
                     </h5>
 
-                    <ng-container *ngIf="cardsModal">
+                    <ng-container *ngIf="isCardsModal">
                         <h5 class="edit-name">
                             {{ cardsSecTitle }}
                         </h5>
@@ -144,7 +144,9 @@
 
             <!-- Divider top -->
 
-            <div *ngIf="topDivider" class="divider"></div>
+            <ng-container *ngIf="topDivider">
+                <div class="divider"></div>
+            </ng-container>
             <!-- Modal body -->
 
             <div class="modal-body">
@@ -453,7 +455,7 @@
                             !mapSettingsModal &&
                             !mapRouteModal &&
                             !isStepper &&
-                            !cardsModal
+                            !isCardsModal
                         "
                     >
                         <button
@@ -496,8 +498,10 @@
 
             <!-- Modal footer for cards -->
 
-            <ng-container *ngIf="cardsModal">
-                <div class="modal-footer d-flex justify-content-between">
+            <ng-container *ngIf="isCardsModal">
+                <div
+                    class="modal-footer modal-footer-cards d-flex justify-content-between"
+                >
                     <!-- Footer Left Side Cards-->
 
                     <div
@@ -505,10 +509,10 @@
                     >
                         <!-- Cards buttons reset and save -->
                         <button
-                            (click)="onAction('Reset to Default')"
-                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            (click)="onAction('reset-to-default')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-convert-to-template-btn modal-reset-to-default"
                             type="button"
-                            [ngClass]="{ valid: isModalValid }"
+                            [ngClass]="{ 'valid-reset': isResetFormCards }"
                         >
                             Reset to Default
                         </button>
@@ -520,7 +524,7 @@
                         class="ta-modal-footer-right-side d-flex justify-content-end"
                     >
                         <button
-                            (click)="onAction('save')"
+                            (click)="onAction('cards-modal')"
                             class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                             type="button"
                             [ngClass]="{ valid: isModalValid }"
@@ -709,13 +713,14 @@
 
         <!-- Modal Additional Part -->
 
-        <div
+        <ng-container
             *ngIf="
                 modalAdditionalPart && (mapVisibility || hazardousVisibility)
             "
-            class="modal-additional-part"
         >
-            <ng-content select="[additional]"></ng-content>
-        </div>
+            <div class="modal-additional-part">
+                <ng-content select="[additional]"></ng-content>
+            </div>
+        </ng-container>
     </div>
 </app-custom-scrollbar>
