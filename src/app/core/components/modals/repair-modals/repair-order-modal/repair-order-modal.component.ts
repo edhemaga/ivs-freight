@@ -769,8 +769,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairType: ['Order'],
             unitType: ['Truck'],
             unit: [null, [Validators.required, ...vehicleUnitValidation]],
+            paid: [null],
             odometer: [null, repairOdometerValidation],
+            driver: [null],
             date: [null],
+            datePaid: [null],
             invoice: [null, invoiceValidation],
             repairShopId: [null],
             items: this.formBuilder.array([]),
@@ -1482,7 +1485,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             this.selectedPMIndex = res.items.length;
                         }
                     }
-                
+
                     setTimeout(() => {
                         this.startFormChanges();
                         this.disableCardAnimation = false;
