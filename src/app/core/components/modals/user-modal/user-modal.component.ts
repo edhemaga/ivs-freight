@@ -364,7 +364,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             case 'office': {
                 let newData = { data: {} };
                 if (!this.editData?.id) {
-                    console.log();
                     const {
                         addressUnit,
                         includeInPayroll,
@@ -383,7 +382,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     }
                     newData.data = {
                         ...form,
-                        phone: form.phone ? form.phone : null,
+                        phone: form.phone ?? null,
                         address: this.selectedAddress?.address
                             ? this.selectedAddress
                             : null,
@@ -398,10 +397,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                 ? this.selectedUserType.id
                                 : 0
                             : 0,
-                        email: form.email ? form.email : null,
-                        isAdmin: this.selectedUserAdmin
-                            ? this.selectedUserAdmin.name === 'Admin'
-                            : false,
+                        email: form.email ?? null,
+                        isAdmin:
+                            this.selectedUserAdmin.name === 'User'
+                                ? false
+                                : true,
                         includeInPayroll: includeInPayroll,
                         paymentType: this.selectedPayment
                             ? this.selectedPayment.id
@@ -1010,12 +1010,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.userForm.patchValue({
                             firstName: this.editData.data.firstName,
                             lastName: this.editData.data.lastName,
-                            address: this.editData.data.address?.address
-                                ? this.editData.data.address?.address
-                                : null,
-                            addressUnit: this.editData.data.address?.addressUnit
-                                ? this.editData.data.address?.addressUnit
-                                : null,
+                            address:
+                                this.editData.data.address?.address ?? null,
+                            addressUnit:
+                                this.editData.data.address?.addressUnit ?? null,
                             personalPhone: this.editData.data.personalPhone,
                             personalEmail: this.editData.data.personalEmail,
                             departmentId: this.editData.data.departmentId
@@ -1023,9 +1021,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                       this.editData.data.departmentId - 1
                                   ].name
                                 : null,
-                            companyOfficeId: this.editData.data.companyOfficeId
-                                ? this.editData.data.companyOfficeId
-                                : null,
+                            companyOfficeId:
+                                this.editData.data.companyOfficeId ?? null,
                             userType: this.editData.data.userType
                                 ? this.editData.data.userType.name
                                 : null,
@@ -1107,8 +1104,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                 return {
                                     ...item,
                                     checked:
-                                        this.editData.data.isAdmin &&
-                                        index === 1,
+                                        item.id === 3
+                                            ? !this.editData.data.isAdmin
+                                            : this.editData.data.isAdmin,
                                 };
                             }
                         );
@@ -1118,8 +1116,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                 return {
                                     ...item,
                                     checked:
-                                        !this.editData.data.is1099 &&
-                                        index === 1,
+                                        item.id === 6
+                                            ? !this.editData.data.is1099
+                                            : this.editData.data.is1099,
                                 };
                             }
                         );

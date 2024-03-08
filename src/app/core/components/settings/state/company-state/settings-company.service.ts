@@ -8,6 +8,7 @@ import {
     CreateResponse,
     InsurancePolicyModalResponse,
     UpdateCompanyCommand,
+    UpdateDivisionCompanyCommand,
     UpdateFactoringCompanyCommand,
 } from 'appcoretruckassist';
 
@@ -184,7 +185,9 @@ export class SettingsCompanyService implements OnDestroy {
         );
     }
 
-    public updateCompanyDivision(data: any): Observable<object> {
+    public updateCompanyDivision(
+        data: UpdateDivisionCompanyCommand
+    ): Observable<object> {
         return this.settingService.apiCompanyDivisionPut(data).pipe(
             tap(() => {
                 const companySub = this.getCompany()
