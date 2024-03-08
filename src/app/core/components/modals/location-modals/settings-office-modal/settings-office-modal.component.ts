@@ -6,7 +6,13 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    SimpleChanges,
+} from '@angular/core';
 
 import {
     AddressEntity,
@@ -112,6 +118,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         value: this.selectedTab,
         params: { height: '0px' },
     };
+
+    public dayOptions: any;
 
     private destroy$ = new Subject<void>();
 
@@ -287,6 +295,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 this.officeForm.get('monthlyDay').patchValue(null);
                 this.officeForm.get('weeklyDay').patchValue(null);
                 this.selectedDay = null;
+                this.dayOptions =
+                    event?.name === 'Weekly'
+                        ? this.weeklyDays
+                        : this.monthlyDays;
                 break;
             }
             case 'day': {
