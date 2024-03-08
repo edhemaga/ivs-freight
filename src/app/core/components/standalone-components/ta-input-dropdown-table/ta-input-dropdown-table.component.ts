@@ -30,7 +30,7 @@ import {
     Rating,
 } from '../../shared/model/card-table-data.model';
 import { Tabs } from '../../shared/model/modal-tabs';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -76,14 +76,15 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent implements OnDestroy {
-    public _data: CardDetails;
-    public filteredData: CardDetails;
     @Input() set data(value: CardDetails) {
         this._data = value;
         this.filteredData = { ...value };
 
         this.cdr.detectChanges();
     }
+
+    public _data: CardDetails;
+    public filteredData: CardDetails;
 
     @Input() defaultValue: CardRows;
     @Input() emptyValue: boolean;

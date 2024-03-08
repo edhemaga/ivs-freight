@@ -3,7 +3,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
 // model
 import { DisplayLoadConfiguration } from 'src/app/core/components/load/load-card-data';
-import { CardRows } from 'src/app/core/components/shared/model/cardData';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 import { ModalModelData } from '../../models/modal-input.model';
 
 export interface LoadDataState extends EntityState<CardRows> {}

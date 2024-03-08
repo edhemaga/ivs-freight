@@ -2,7 +2,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 // models
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 import { CardDetails } from '../../shared/model/card-table-data.model';
 
 // helpers

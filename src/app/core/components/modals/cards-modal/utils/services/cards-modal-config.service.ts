@@ -3,10 +3,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 // model
 import { ModalModelData } from '../../models/modal-input.model';
+import { CompareObjectsModal } from '../card-modal-helper';
 
 // store
 import { LoadDataStore } from '../../state/store/load-modal.store';
-import { compareObjectsModal } from '../card-modal-helpers';
 
 @Injectable({
     providedIn: 'root',
@@ -25,11 +25,11 @@ export class CardsModalConfigService {
     }
 
     public updateStore(data: ModalModelData, tab: string): void {
-        const front_side = compareObjectsModal.filterOutOBjects(
+        const front_side = CompareObjectsModal.filterOutOBjects(
             data,
             'frontSelectedTitle_'
         );
-        const back_side = compareObjectsModal.filterOutOBjects(
+        const back_side = CompareObjectsModal.filterOutOBjects(
             data,
             'backSelectedTitle_'
         );
@@ -86,6 +86,9 @@ export class CardsModalConfigService {
                         },
                     };
                 });
+                break;
+
+            default:
                 break;
         }
     }

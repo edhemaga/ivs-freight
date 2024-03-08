@@ -38,7 +38,7 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { GetCompanyUserListResponse } from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DisplayUserConfiguration } from '../user-card-data';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 @Component({
     selector: 'app-user-table',

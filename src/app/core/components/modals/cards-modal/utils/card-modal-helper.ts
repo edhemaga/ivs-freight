@@ -1,14 +1,12 @@
-import { CardRows } from '../../../shared/model/cardData';
+import { CardRows } from '../../../shared/model/card-data.model';
 import { ModalModelData } from '../models/modal-input.model';
 
-export class compareObjectsModal {
+export class CompareObjectsModal {
     static areArraysOfObjectsEqual(
         arr1: CardRows[],
         arr2: CardRows[]
     ): boolean {
-        if (arr1.length !== arr2.length) {
-            return false;
-        }
+        if (arr1.length !== arr2.length) return false;
 
         for (let i = 0; i < arr1.length; i++) {
             if (!this.areObjectsEqual(arr1[i], arr2[i])) return false;

@@ -30,7 +30,7 @@ import {
     CardRows,
     Search,
     TableOptionsInterface,
-} from '../../shared/model/cardData';
+} from '../../shared/model/card-data.model';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
     FilterOptionsLoad,
@@ -230,13 +230,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    const filteredCardRowsFront = res.front_side.filter(
-                        (row) => row !== null
-                    );
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
 
-                    const filteredCardRowsBack = res.back_side.filter(
-                        (row) => row !== null
-                    );
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
 
                     this.cardTitle =
                         ConstantStringTableComponentsEnum.LOAD_INVOICE;
@@ -253,13 +250,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    const filteredCardRowsFront = res.front_side.filter(
-                        (row) => row !== null
-                    );
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
 
-                    const filteredCardRowsBack = res.back_side.filter(
-                        (row) => row !== null
-                    );
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
 
                     this.cardTitle =
                         ConstantStringTableComponentsEnum.LOAD_INVOICE;

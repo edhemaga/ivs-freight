@@ -1,4 +1,4 @@
-import { CardRows } from '../../../shared/model/cardData';
+import { CardRows } from '../../../shared/model/card-data.model';
 
 export interface InputModels {
     numberOfRows: number;

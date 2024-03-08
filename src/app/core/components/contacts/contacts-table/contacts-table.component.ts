@@ -49,7 +49,7 @@ import {
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // data for cards
 import { DisplayContactsConfiguration } from '../contacts-card-data';

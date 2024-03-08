@@ -13,13 +13,13 @@ import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
 
 // model
-import { CardRows } from '../../../shared/model/cardData';
+import { CardRows } from '../../../shared/model/card-data.model';
 
 // store
 import { LoadQuery } from '../state/store/load-modal.query';
 
 // enum
-import { CardModalEnum } from '../utils/enums/card-modals.enums';
+import { CardModalEnum } from '../utils/enums/card-modals.enum';
 
 @Component({
     selector: 'app-modal-input-form',

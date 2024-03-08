@@ -14,8 +14,8 @@ import {
 import { CommonModule } from '@angular/common';
 
 // Models
-import { loadCardsModuleData } from '../utils/constants/load-card.constants';
-import { CardRows } from '../../../shared/model/cardData';
+import { LoadCardsModuleData } from '../utils/constants/load-card.constants';
+import { CardRows } from '../../../shared/model/card-data.model';
 import { ModalModelData } from '../models/modal-input.model';
 
 // Configuration for modals
@@ -29,10 +29,10 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { LoadQuery } from '../state/store/load-modal.query';
 
 // helpers
-import { compareObjectsModal } from '../utils/card-modal-helpers';
+import { CompareObjectsModal } from '../utils/card-modal-helper';
 
 // Enum
-import { CardModalEnum } from '../utils/enums/card-modals.enums';
+import { CardModalEnum } from '../utils/enums/card-modals.enum';
 
 // Services
 import { CardsModalConfigService } from '../utils/services/cards-modal-config.service';
@@ -75,7 +75,7 @@ export class LoadCardsModalComponent implements OnInit {
     public defaultCardsValues: ModalModelData =
         LoadModalConstants.defaultCardsValues;
 
-    public cardsAllData: CardRows[] = loadCardsModuleData.allDataLoad;
+    public cardsAllData: CardRows[] = LoadCardsModuleData.allDataLoad;
 
     public hasFormChanged: boolean = false;
     public isChecked: boolean = false;
@@ -124,6 +124,9 @@ export class LoadCardsModalComponent implements OnInit {
 
                     case CardModalEnum.CLOSED:
                         this.closedTabModalConfig();
+                        break;
+
+                    default:
                         break;
                 }
             });
@@ -239,38 +242,28 @@ export class LoadCardsModalComponent implements OnInit {
     private updateStore(): void {
         this.cardsForm.patchValue({
             checked: this.cardsForm.get(CardModalEnum.CHECKED).value,
-        });
 
-        this.cardsForm.patchValue({
             numberOfRows: this.cardsForm.get(CardModalEnum.NUMBER_OF_ROWS)
                 .value,
-        });
 
-        this.cardsForm.patchValue({
             frontSelectedTitle_0: this.cardsForm.get(
                 CardModalEnum.FRONT_SELECTED_0
             ).value
                 ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_0).value
                 : this.dataFront[0],
-        });
 
-        this.cardsForm.patchValue({
             frontSelectedTitle_1: this.cardsForm.get(
                 CardModalEnum.FRONT_SELECTED_1
             ).value
                 ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_1).value
                 : this.dataFront[1],
-        });
 
-        this.cardsForm.patchValue({
             frontSelectedTitle_2: this.cardsForm.get(
                 CardModalEnum.FRONT_SELECTED_2
             ).value
                 ? this.cardsForm.get(CardModalEnum.FRONT_SELECTED_2).value
                 : this.dataFront[2],
-        });
 
-        this.cardsForm.patchValue({
             frontSelectedTitle_3:
                 this.cardsForm.get(CardModalEnum.FRONT_SELECTED_3).value &&
                 this.defaultCardsValues.numberOfRows > 3
@@ -278,9 +271,7 @@ export class LoadCardsModalComponent implements OnInit {
                     : this.defaultCardsValues.numberOfRows < 4
                     ? null
                     : this.dataFront[3],
-        });
 
-        this.cardsForm.patchValue({
             frontSelectedTitle_4:
                 this.cardsForm.get(CardModalEnum.FRONT_SELECTED_4).value &&
                 this.defaultCardsValues.numberOfRows > 4
@@ -288,9 +279,7 @@ export class LoadCardsModalComponent implements OnInit {
                     : this.defaultCardsValues.numberOfRows < 5
                     ? null
                     : this.dataFront[4],
-        });
 
-        this.cardsForm.patchValue({
             frontSelectedTitle_5:
                 this.cardsForm.get(CardModalEnum.FRONT_SELECTED_5).value &&
                 this.defaultCardsValues.numberOfRows > 5
@@ -298,33 +287,25 @@ export class LoadCardsModalComponent implements OnInit {
                     : this.defaultCardsValues.numberOfRows < 6
                     ? null
                     : this.dataFront[5],
-        });
 
-        this.cardsForm.patchValue({
             backSelectedTitle_0: this.cardsForm.get(
                 CardModalEnum.BACK_SELECTED_0
             ).value
                 ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_0).value
                 : this.dataBack[0],
-        });
 
-        this.cardsForm.patchValue({
             backSelectedTitle_1: this.cardsForm.get(
                 CardModalEnum.BACK_SELECTED_1
             ).value
                 ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_1).value
                 : this.dataBack[1],
-        });
 
-        this.cardsForm.patchValue({
             backSelectedTitle_2: this.cardsForm.get(
                 CardModalEnum.BACK_SELECTED_2
             ).value
                 ? this.cardsForm.get(CardModalEnum.BACK_SELECTED_2).value
                 : this.dataBack[2],
-        });
 
-        this.cardsForm.patchValue({
             backSelectedTitle_3:
                 this.cardsForm.get(CardModalEnum.BACK_SELECTED_3).value &&
                 this.defaultCardsValues.numberOfRows > 3
@@ -332,9 +313,7 @@ export class LoadCardsModalComponent implements OnInit {
                     : this.defaultCardsValues.numberOfRows < 4
                     ? null
                     : this.dataBack[3],
-        });
 
-        this.cardsForm.patchValue({
             backSelectedTitle_4:
                 this.cardsForm.get(CardModalEnum.BACK_SELECTED_4).value &&
                 this.defaultCardsValues.numberOfRows > 4
@@ -342,9 +321,7 @@ export class LoadCardsModalComponent implements OnInit {
                     : this.defaultCardsValues.numberOfRows < 5
                     ? null
                     : this.dataBack[4],
-        });
 
-        this.cardsForm.patchValue({
             backSelectedTitle_5:
                 this.cardsForm.get(CardModalEnum.BACK_SELECTED_5).value &&
                 this.defaultCardsValues.numberOfRows > 5
@@ -395,12 +372,12 @@ export class LoadCardsModalComponent implements OnInit {
     }
 
     private compareDataInStoreAndDefaultData(): void {
-        const isFrontSidesEqual = compareObjectsModal.areArraysOfObjectsEqual(
+        const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
             this.defaultCardsValues.front_side,
             this.setDefaultDataFront
         );
 
-        const areBackSidesEqual = compareObjectsModal.areArraysOfObjectsEqual(
+        const areBackSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
             this.defaultCardsValues.back_side,
             this.setDefaultDataBack
         );
