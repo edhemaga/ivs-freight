@@ -178,7 +178,6 @@ export class TaInputDropdownTableComponent implements OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchParam.length >= 2) {
                 this.tabs = this.tabs.map((tab) => {
-                    console.log(tab);
                     if (tab.id === 1) {
                         return { ...tab, checked: true };
                     } else {
