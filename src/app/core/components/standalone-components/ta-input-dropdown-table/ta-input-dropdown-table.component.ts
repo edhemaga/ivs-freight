@@ -45,11 +45,13 @@ import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-inp
 // constants
 import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
 
+// helpers
+import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
+
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
-import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -352,18 +354,10 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     }
 
     public highlightPartOfTheTextString(trailerTruckNumber: string): string {
-        if (!trailerTruckNumber || !this.lattersToHighlight)
-            return trailerTruckNumber;
-
-        return trailerTruckNumber.replace(
-            new RegExp(this.lattersToHighlight, 'gi'),
-            (match) => {
-                return (
-                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
-                    match +
-                    '</span>'
-                );
-            }
+        return higlihtComment.higlitsPartOfCommentSearchValue(
+            trailerTruckNumber,
+            this.commentHighlight,
+            this.sanitizer
         );
     }
 
