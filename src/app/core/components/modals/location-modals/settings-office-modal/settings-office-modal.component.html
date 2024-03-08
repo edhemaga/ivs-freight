@@ -342,11 +342,7 @@
                                         !officeForm.get('payPeriod').value,
                                     dropdownWidthClass: 'w-col-148'
                                 }"
-                                [options]="
-                                    selectedDay?.name === 'Weekly'
-                                        ? weeklyDays
-                                        : monthlyDays
-                                "
+                                [options]="dayOptions"
                                 [activeItem]="selectedDay"
                                 (selectedItem)="onSelectDropdown($event, 'day')"
                             ></app-ta-input-dropdown>

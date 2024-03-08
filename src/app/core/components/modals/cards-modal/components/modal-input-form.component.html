@@ -56,7 +56,7 @@
             ></svg-icon>
         </div>
 
-        <ng-container *ngIf="isShowRemoveIcon">
+        <ng-container *ngIf="cardsModal?.isOpen()">
             <svg-icon
                 class="clear-icon"
                 [src]="'assets/svg/applicant/cancel.svg'"
@@ -68,14 +68,17 @@
     </div>
 </div>
 
-<ng-template #cardsModalInputDropdown let-titles="titles">
+<ng-template #cardsModalInputDropdown>
     <div class="table-list-dropdown modals-width">
         <div class="table-inner-modal d-grid">
-            <ng-container
-                *ngFor="let title of titles; trackBy: trackByIdentity"
-            >
+            <ng-container *ngFor="let title of filteredCardsModalData">
                 <div
                     class="title-holder d-flex align-items-center hoverable"
+                    [ngClass]="{
+                        'not-clickable':
+                            titlesInForm.includes(title?.title) ||
+                            selectedValueInInput === title?.title
+                    }"
                     (click)="cardTitleSelected(title, cardsModal)"
                 >
                     <span
@@ -83,15 +86,22 @@
                         [ngClass]="{
                             'selected-input ta-font-bold':
                                 selectedValueInInput === title?.title,
-                            'selected-in-other-input': hasMatchingTitle(
-                                title.title
-                            )
+                            'selected-in-other-input':
+                                titlesInForm.includes(title?.title) &&
+                                selectedValueInInput !== title?.title
                         }"
+                        [innerHTML]="
+                            higlitsPartOfCommentSearchValue(title.title)
+                        "
                     >
-                        {{ title.title }}
                     </span>
 
-                    <ng-container *ngIf="hasMatchingTitle(title.title)">
+                    <ng-container
+                        *ngIf="
+                            titlesInForm.includes(title?.title) &&
+                            selectedValueInInput !== title?.title
+                        "
+                    >
                         <svg-icon
                             class="disabled svg-icons"
                             [src]="'assets/svg/common/ic_disable.svg'"

@@ -1,6 +1,8 @@
 export enum CardModalEnum {
     EMPTY = 'empty',
 
+    STRING = 'string',
+
     CARDS_MODAL = 'cards-modal',
     RESET_TO_DEFAULT = 'reset-to-default',
 
