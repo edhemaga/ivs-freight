@@ -72,6 +72,9 @@ export class LoadCardsModalComponent implements OnInit {
     public dataFront: CardRows[];
     public dataBack: CardRows[];
 
+    public setDefaultDataFront: CardRows[];
+    public setDefaultDataBack: CardRows[];
+
     public defaultCardsValues: ModalModelData =
         LoadModalConstants.defaultCardsValues;
 
@@ -83,8 +86,7 @@ export class LoadCardsModalComponent implements OnInit {
 
     public tabSelected: string;
 
-    public setDefaultDataFront;
-    public setDefaultDataBack;
+    public titlesInForm: string[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -98,9 +100,33 @@ export class LoadCardsModalComponent implements OnInit {
 
         this.createForm();
 
+        this.getFormValueOnInit();
+
         this.getValueForm();
 
         this.compareDataInStoreAndDefaultData();
+    }
+
+    public createForm(): void {
+        this.cardsForm = this.formBuilder.group({
+            numberOfRows: this.defaultCardsValues.numberOfRows,
+
+            checked: this.defaultCardsValues.checked,
+
+            frontSelectedTitle_0: this.dataFront[0],
+            frontSelectedTitle_1: this.dataFront[1],
+            frontSelectedTitle_2: this.dataFront[2],
+            frontSelectedTitle_3: this.dataFront[3],
+            frontSelectedTitle_4: null,
+            frontSelectedTitle_5: null,
+
+            backSelectedTitle_0: this.dataBack[0],
+            backSelectedTitle_1: this.dataBack[1],
+            backSelectedTitle_2: this.dataBack[2],
+            backSelectedTitle_3: this.dataBack[3],
+            backSelectedTitle_4: null,
+            backSelectedTitle_5: null,
+        });
     }
 
     public getDataFromStore(): void {
@@ -200,28 +226,6 @@ export class LoadCardsModalComponent implements OnInit {
         this.defaultCardsValues.front_side = data.front_side;
 
         this.defaultCardsValues.back_side = data.back_side;
-    }
-
-    public createForm(): void {
-        this.cardsForm = this.formBuilder.group({
-            numberOfRows: this.defaultCardsValues.numberOfRows,
-
-            checked: this.defaultCardsValues.checked,
-
-            frontSelectedTitle_0: this.dataFront[0],
-            frontSelectedTitle_1: this.dataFront[1],
-            frontSelectedTitle_2: this.dataFront[2],
-            frontSelectedTitle_3: this.dataFront[3],
-            frontSelectedTitle_4: null,
-            frontSelectedTitle_5: null,
-
-            backSelectedTitle_0: this.dataBack[0],
-            backSelectedTitle_1: this.dataBack[1],
-            backSelectedTitle_2: this.dataBack[2],
-            backSelectedTitle_3: this.dataBack[3],
-            backSelectedTitle_4: null,
-            backSelectedTitle_5: null,
-        });
     }
 
     public onActionModal(event): void {
@@ -358,10 +362,20 @@ export class LoadCardsModalComponent implements OnInit {
         this.cdr.detectChanges();
     }
 
+    public getFormValueOnInit(): void {
+        const formValue = Object.values(this.cardsForm.value);
+
+        this.filterTitlesFromForm(formValue);
+    }
+
     public getValueForm(): void {
         this.cardsForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                const valuesInform = Object.values(value);
+
+                this.filterTitlesFromForm(valuesInform);
+
                 this.defaultCardsValues.numberOfRows = parseInt(
                     value.numberOfRows
                 );
@@ -369,6 +383,18 @@ export class LoadCardsModalComponent implements OnInit {
                 this.resetForm = true;
                 this.hasFormChanged = true;
             });
+    }
+
+    private filterTitlesFromForm(valuesInform: CardRows[]): void {
+        this.titlesInForm = valuesInform
+            .map((item) => {
+                if (item && typeof item.title === CardModalEnum.STRING) {
+                    return item.title;
+                } else {
+                    return;
+                }
+            })
+            .filter((title) => title);
     }
 
     private compareDataInStoreAndDefaultData(): void {

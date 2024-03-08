@@ -3,7 +3,6 @@ import { CardRows } from '../../../../shared/model/card-data.model';
 export class LoadCardsModuleData {
     static frontDataLoad: CardRows[] = [
         {
-            id: 1,
             title: 'Comodity',
             endpoint: 'generalCommodity.name',
             selected: true,
@@ -53,73 +52,60 @@ export class LoadCardsModuleData {
     ];
     static allDataLoad: CardRows[] = [
         {
+            id: 1,
+
             title: 'Comodity',
             endpoint: 'generalCommodity.name',
         },
         {
+            id: 2,
             title: 'Broker',
             endpoint: 'broker.businessName',
         },
         {
+            id: 3,
             title: 'Contact Name',
             endpoint: 'brokerContact.contactName',
         },
         {
+            id: 4,
             title: 'Contact Phone',
             endpoint: 'brokerContact.phone',
             secondEndpoint: 'brokerContact.extensionPhone',
         },
 
         {
+            id: 5,
             title: 'Pickup',
             endpoint: 'loadPickup.count',
             secondEndpoint: 'loadPickup.location',
             thirdEndpoint: 'loadPickup.date',
         },
         {
+            id: 6,
             title: 'Rate',
             endpoint: 'loadTotal.total',
             secondEndpoint: 'loadTotal.subTotal',
         },
 
-        {
-            title: 'Dispatcher',
-            endpoint: 'dispatcher.fullName',
-        },
-        {
-            title: 'Ref. Number',
-            endpoint: 'referenceNumber',
-        },
-        {
-            title: 'Total Miles',
-            endpoint: 'totalMiles',
-        },
+        { id: 7, title: 'Dispatcher', endpoint: 'dispatcher.fullName' },
+        { id: 8, title: 'Ref. Number', endpoint: 'referenceNumber' },
+        { id: 9, title: 'Total Miles', endpoint: 'totalMiles' },
 
-        {
-            title: 'Driver',
-            endpoint: 'dispatcher.fullName',
-        },
-        {
-            title: 'Truck',
-            endpoint: 'broker.businessName',
-        },
-        {
-            title: 'Trailer',
-            endpoint: 'referenceNumber',
-        },
+        { id: 10, title: 'Driver', endpoint: 'dispatcher.fullName' },
+        { id: 11, title: 'Truck', endpoint: 'broker.businessName' },
+        { id: 12, title: 'Trailer', endpoint: 'referenceNumber' },
 
+        { id: 13, title: 'Status', endpoint: 'loadStatus.status' },
+        { id: 14, title: 'Paid', endpoint: 'totalPaid' },
+        { id: 15, title: 'Due', endpoint: 'no-endpoint' },
         {
-            title: 'Status',
-            endpoint: 'loadStatus.status',
-        },
-        { title: 'Paid', endpoint: 'totalPaid' },
-        { title: 'Due', endpoint: 'no-endpoint' },
-        {
+            id: 16,
             title: 'Delivery',
             endpoint: 'loadDelivery.count',
             secondEndpoint: 'loadDelivery.location',
             thirdEndpoint: 'loadDelivery.date',
         },
-        { title: 'Age', endpoint: 'no-ednpoint' },
+        { id: 17, title: 'Age', endpoint: 'no-ednpoint' },
     ];
 }

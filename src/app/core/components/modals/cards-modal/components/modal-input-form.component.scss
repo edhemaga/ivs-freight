@@ -119,7 +119,7 @@
 
     .table-inner-modal {
         width: 216px;
-        height: 244px;
+        max-height: 244px;
         overflow-y: scroll;
 
         &::-webkit-scrollbar {
@@ -160,6 +160,11 @@
                     }
                 }
             }
+        }
+
+        .not-clickable {
+            pointer-events: none;
+            cursor: not-allowed;
         }
 
         .hoverable {
