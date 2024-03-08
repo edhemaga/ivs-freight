@@ -1,4 +1,5 @@
 import {
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
@@ -6,6 +7,7 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -21,6 +23,9 @@ import { LoadQuery } from '../state/store/load-modal.query';
 // enum
 import { CardModalEnum } from '../utils/enums/card-modals.enum';
 
+// helper
+import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
+
 @Component({
     selector: 'app-modal-input-form',
     standalone: true,
@@ -31,19 +36,21 @@ import { CardModalEnum } from '../utils/enums/card-modals.enum';
 export class ModalInputFormComponent implements ControlValueAccessor {
     @ViewChild('inputTitleValue') public inputTitleValue: ElementRef;
 
-    public _dataCardsModal: CardRows[];
-    public filteredCardsModalData: CardRows[];
-
     @Input() set dataCardModal(value: CardRows[]) {
         this._dataCardsModal = value;
 
-        this.filteredCardsModalData = value;
+        this.filteredCardsModalData = [...value];
 
         this.cdr.detectChanges();
     }
 
+    public _dataCardsModal: CardRows[];
+    public filteredCardsModalData: CardRows[];
+
     @Input() defaultValue: CardRows;
     @Input() backupValue: string;
+
+    @Input() titlesInForm: string;
 
     private destroy$ = new Subject<void>();
 
@@ -54,7 +61,6 @@ export class ModalInputFormComponent implements ControlValueAccessor {
     public selectedValueInInput: string;
     public allSelectedValuesInAllInputs: CardRows[];
 
-    public isShowRemoveIcon: boolean = false;
     public isValueChangedInput: boolean = false;
 
     get getSuperControl() {
@@ -79,7 +85,8 @@ export class ModalInputFormComponent implements ControlValueAccessor {
     constructor(
         @Self() public superControl: NgControl,
         private cdr: ChangeDetectorRef,
-        private loadQuery: LoadQuery
+        private loadQuery: LoadQuery,
+        private sanitizer: DomSanitizer
     ) {
         this.superControl.valueAccessor = this;
     }
@@ -96,28 +103,9 @@ export class ModalInputFormComponent implements ControlValueAccessor {
             });
     }
 
-    public hasMatchingTitle(title: string): boolean {
-        return this.allSelectedValuesInAllInputs.some(
-            (item) => item && title === item.title
-        );
-    }
-
-    public toggleCardsModalDropdown(
-        tooltip: NgbTooltip,
-        card: CardRows[]
-    ): void {
-        this.selectedValueInInput = this.inputTitleValue.nativeElement.value;
-
-        this.isShowRemoveIcon = true;
-
-        tooltip.open({ titles: card });
-    }
-
     public cardTitleSelected(selectedRow: CardRows, popover: NgbPopover): void {
         switch (selectedRow.title) {
             case CardModalEnum.EMPTY:
-                this.isShowRemoveIcon = false;
-
                 const emptyObj = {
                     title: CardModalEnum.EMPTY,
                     endpoint: CardModalEnum.EMPTY,
@@ -139,8 +127,6 @@ export class ModalInputFormComponent implements ControlValueAccessor {
                 this.onChange({ ...selectedRow });
 
                 if (popover) {
-                    this.isShowRemoveIcon = false;
-
                     popover.close();
                 }
                 break;
@@ -155,12 +141,15 @@ export class ModalInputFormComponent implements ControlValueAccessor {
                 const filteredInModalTitles = this.filterModal(searchTerm);
 
                 this.lattersToHighlight = searchTerm;
-
                 if (!filteredInModalTitles.length) {
                     this.filteredCardsModalData = this._dataCardsModal;
                 } else {
-                    this.filteredCardsModalData = [...filteredInModalTitles];
+                    this.filteredCardsModalData = filteredInModalTitles;
                 }
+                this.cdr.detectChanges();
+            } else {
+                this.filteredCardsModalData = this._dataCardsModal;
+                this.lattersToHighlight = '';
             }
         }
     }
@@ -171,5 +160,26 @@ export class ModalInputFormComponent implements ControlValueAccessor {
         );
 
         return filterTrucks;
+    }
+
+    public higlitsPartOfCommentSearchValue(commentTitle: string): string {
+        return higlihtComment.higlitsPartOfCommentSearchValue(
+            commentTitle,
+            this.lattersToHighlight,
+            this.sanitizer
+        );
+    }
+
+    public toggleCardsModalDropdown(
+        tooltip: NgbTooltip,
+        card: CardRows[]
+    ): void {
+        this.selectedValueInInput = this.inputTitleValue.nativeElement.value;
+
+        tooltip.open({ titles: card });
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 }
