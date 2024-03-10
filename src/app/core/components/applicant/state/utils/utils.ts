@@ -68,3 +68,12 @@ export const filterUnceckedRadiosId = (
         .filter(({ isChecked }) => isChecked === null)
         .map((item) => item.id);
 };
+
+export const removeFileExtension = (filename: string): string => {
+    if (!filename) return '';
+
+    const lastDotIndex = filename.lastIndexOf('.');
+    if (lastDotIndex <= 0) return filename;
+
+    return filename.substring(0, lastDotIndex);
+};
