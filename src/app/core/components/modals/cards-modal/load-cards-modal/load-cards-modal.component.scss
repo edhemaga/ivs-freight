@@ -49,30 +49,48 @@
 }
 
 .modal-cards {
-    margin: 4px 0;
-
     .inputs-holder {
-        gap: 4px 12px;
+        gap: 0px 12px;
         grid-template-columns: repeat(auto-fill, minmax(47%, 1fr));
-        margin-bottom: 22px;
 
         .modal-holder {
-            height: 54px;
+            position: relative;
 
             .input-title {
+                padding-left: 6px;
+                bottom: 26px;
                 font-size: 11px;
                 color: $ta-black;
+                position: absolute;
             }
+        }
+
+        .first-row {
+            margin-top: 26px;
+        }
+
+        .sec-row {
+            margin-top: 32px;
+        }
+
+        .last-row {
+            margin-bottom: 22px;
         }
     }
 
     .title-card-modal {
+        font-size: 14px;
         color: $ta-black;
+        line-height: 18px;
+    }
+
+    .title-margin {
+        margin-top: 4px;
     }
 
     .back-side-body {
         .checkbox-modal {
-            margin: 4px 0;
+            margin: 4px 0 0 0;
         }
     }
 }
