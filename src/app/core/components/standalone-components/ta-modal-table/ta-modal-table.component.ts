@@ -191,7 +191,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             newFormArrayRow = this.formBuilder.group({
                 phone: [null, [Validators.required, phoneFaxRegex]],
                 phoneExt: [null, phoneExtension],
-                phoneType: [null],
+                contactPhoneType: [null],
             });
 
             this.isContactPhoneExtExist = [
@@ -203,7 +203,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isEmailTable) {
             newFormArrayRow = this.formBuilder.group({
                 email: [null, [Validators.required]],
-                emailType: [null],
+                contactEmailType: [null],
             });
 
             this.inputService.customInputValidator(

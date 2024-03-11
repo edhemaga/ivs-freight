@@ -141,7 +141,7 @@
                         <!-- Phone Type -->
 
                         <app-ta-input-dropdown
-                            formControlName="phoneType"
+                            formControlName="contactPhoneType"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -153,7 +153,7 @@
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 blackInput:
-                                    getFormArray().at(i).get('phoneType')
+                                    getFormArray().at(i).get('contactPhoneType')
                                         .value && !isInputHoverRows[i][2]
                             }"
                             [activeItem]="selectedContactPhoneType[i]"
@@ -233,7 +233,7 @@
                         <!-- Email Type -->
 
                         <app-ta-input-dropdown
-                            formControlName="emailType"
+                            formControlName="contactEmailType"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -245,7 +245,7 @@
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 blackInput:
-                                    getFormArray().at(i).get('emailType')
+                                    getFormArray().at(i).get('contactEmailType')
                                         .value && !isInputHoverRows[i][1]
                             }"
                             [activeItem]="selectedContactEmailType[i]"
