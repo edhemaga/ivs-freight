@@ -117,4 +117,14 @@
             color: $valid-focus-content;
         }
     }
+
+    &.invalid-focus-out-filled {
+        opacity: 1;
+    }
+
+    &.date_time_holder_bank_card {
+        span.main {
+            padding: 0 3px;
+        }
+    }
 }

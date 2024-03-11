@@ -307,6 +307,7 @@ export enum ConstantStringTableComponentsEnum {
     FUEL = 'Fuel',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
+    FUEL_TRANSACTION_TEXT = 'fuel transaction',
     FUEL_STOP = 'FUEL_STOP',
     STOP = 'Stop',
     TRANSACTIONS = 'Transactions',

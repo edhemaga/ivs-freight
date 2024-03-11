@@ -24,7 +24,7 @@ import {
     OwnerBackFilterFilter,
     OwnerBodyResponse,
 } from '../owner.modal';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';

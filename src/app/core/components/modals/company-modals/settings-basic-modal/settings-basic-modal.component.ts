@@ -76,6 +76,7 @@ import {
     phoneFaxRegex,
     startingValidation,
     cvcValidation,
+    bankCardTypeValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 // constants
@@ -169,6 +170,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public selectedBankAccountFormArray: any[] = [];
     public isBankSelectedFormArray: boolean[] = [];
+    public bankCardTypes: string[] = [];
 
     // dropdowns
     public banks: BankResponse[] = [];
@@ -222,6 +224,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.checkForCompany();
 
         this.getModalDropdowns();
+
+        this.validateCreditCards();
     }
 
     private getConstantData(): void {
@@ -305,6 +309,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.editData.data = data;
                 });
         }
+
+        this.formService.checkFormChange(this.companyForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     private createDivisionForm(): void {
@@ -483,13 +494,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.companyForm
                 .get(ConstantStringEnum.EMAIL)
                 .setValidators(Validators.required);
-
-        this.formService.checkFormChange(this.companyForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -739,7 +743,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ],
             card: [
                 data?.card ? data.card : null,
-                [Validators.minLength(16), Validators.maxLength(16)],
+                [Validators.minLength(15), Validators.maxLength(16)],
             ],
             cvc: [data?.cvc ? data.cvc : null, cvcValidation],
             expireDate: [data?.expireDate ? data.expireDate : null],
@@ -896,12 +900,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
             if (payPeriod === 'Semi Monthly') {
                 selectedEndingIn = {
-                    id: null,
+                    id: 7,
                     name: '15th / Last day',
                 };
             } else {
                 selectedEndingIn = {
-                    id: null,
+                    id: 8,
                     name: 'Last Day',
                 };
             }
@@ -995,6 +999,34 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.companyForm.get('perMileTeam').setErrors(null);
                 }
+            });
+    }
+
+    private validateCreditCards(): void {
+        this.companyForm
+            .get('bankCards')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((bankCards) => {
+                const hasDuplicates =
+                    bankCards.map((bankCard) => bankCard.card).length >
+                    new Set(bankCards.map((bankCard) => bankCard.card)).size
+                        ? true
+                        : false;
+
+                if (hasDuplicates) {
+                    this.companyForm
+                        .get('bankCards')
+                        .setErrors({ invalid: true });
+                } else {
+                    this.companyForm.get('bankCards').setErrors(null);
+                }
+
+                let cardTypes: string[] = [];
+                bankCards.map((card) => {
+                    const cardType = bankCardTypeValidation(card.card);
+                    cardTypes.push(cardType);
+                });
+                this.bankCardTypes = cardTypes;
             });
     }
 
@@ -1282,7 +1314,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     })
                 );
                 this.selectedBankAccountFormArray.push(
-                    this.editData.company.bankAccounts[index]
+                    this.editData.company.bankAccounts[index].bank
                 );
                 this.isBankSelectedFormArray.push(
                     this.editData.company.bankAccounts[index].id ? true : false
@@ -1776,7 +1808,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     })
                 );
                 this.selectedBankAccountFormArray.push(
-                    data.bankAccounts[index]
+                    data.bankAccounts[index].bank
                 );
                 this.isBankSelectedFormArray.push(
                     data.bankAccounts[index].id ? true : false

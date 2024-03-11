@@ -1,48 +1,64 @@
-import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-    UntypedFormArray,
-    Validators,
     FormsModule,
     ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
 } from '@angular/forms';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
 
+import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
+// services
+import { FormService } from '../../../../services/form/form.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+
+// enums
+import { PayPeriodEnum } from './state/enums/settings-office-modal.enum';
+
+// components
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { UserModalComponent } from '../../user-modal/user-modal.component';
+
+// validations
+import {
+    addressUnitValidation,
+    addressValidation,
+    departmentValidation,
+    officeNameValidation,
+    phoneExtension,
+    phoneFaxRegex,
+    rentValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+
+// types
 import {
     AddressEntity,
     CompanyOfficeModalResponse,
     CompanyOfficeResponse,
     CreateCompanyOfficeCommand,
+    EnumValue,
     UpdateCompanyOfficeCommand,
 } from 'appcoretruckassist';
 
-import { Subject, takeUntil } from 'rxjs';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { rentValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
-import { UserModalComponent } from '../../user-modal/user-modal.component';
-import { CommonModule } from '@angular/common';
+// icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+
+// utils
 import {
-    addressValidation,
-    addressUnitValidation,
-    phoneFaxRegex,
-    phoneExtension,
-    departmentValidation,
-    officeNameValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
-import {
-    convertThousanSepInNumber,
     convertNumberInThousandSep,
+    convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -77,12 +93,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity = null;
     public isPhoneExtExist: boolean = false;
 
-    public payPeriods: any[] = [];
-    public selectedPayPeriod: any = null;
+    public payPeriods: EnumValue[] = [];
+    public selectedPayPeriod: EnumValue = null;
 
-    public weeklyDays: any[] = [];
-    public monthlyDays: any[] = [];
-    public selectedDay: any = null;
+    public weeklyDays: EnumValue[] = [];
+    public monthlyDays: EnumValue[] = [];
+    public selectedDay: EnumValue = null;
 
     public departments: any[] = [];
     public selectedDepartmentFormArray: any[] = [];
@@ -112,6 +128,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         value: this.selectedTab,
         params: { height: '0px' },
     };
+
+    public dayOptions: EnumValue[];
 
     private destroy$ = new Subject<void>();
 
@@ -279,7 +297,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         if (event.valid) this.selectedAddress = event.address;
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: EnumValue, action: string) {
         switch (action) {
             case 'pay-period': {
                 this.selectedPayPeriod = event;
@@ -287,6 +305,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 this.officeForm.get('monthlyDay').patchValue(null);
                 this.officeForm.get('weeklyDay').patchValue(null);
                 this.selectedDay = null;
+                this.dayOptions =
+                    event?.name === PayPeriodEnum.WEEKLY
+                        ? this.weeklyDays
+                        : this.monthlyDays;
                 break;
             }
             case 'day': {

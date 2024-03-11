@@ -43,7 +43,10 @@ import {
     ShipperListResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from '../../shared/model/card-data.model';
 import {
     BodyResponse,
     UpdateRating,

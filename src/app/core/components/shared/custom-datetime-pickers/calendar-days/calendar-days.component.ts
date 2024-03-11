@@ -10,26 +10,27 @@ import { FormsModule } from '@angular/forms';
     imports: [CommonModule, FormsModule],
 })
 export class CalendarDaysComponent implements OnInit {
-    currentYear: any = new Date().getFullYear();
-    currentMonth: any = new Date().getMonth();
-    currentDay: any = new Date().getDate();
-    selectedMonthFromInput: any;
-    selectedYearFromInput: any;
-    @Input() dateTime: any;
+    @Input() dateTime: Date;
     @Input() year: string;
     @Input() selectedMonth: string;
     @Input() index: number;
+    @Input() activeMonth: boolean;
     @Output() selectDay = new EventEmitter();
-    days: ReadonlyArray<string | number> = [];
-    selectedDay: any = -1;
-    selMonth: any = -1;
-    selectedYear: any = -1;
-
-    constructor() {}
+    public currentYear: number = new Date().getFullYear();
+    public currentMonth: number = new Date().getMonth();
+    public currentDay: number = new Date().getDate();
+    public selectedMonthFromInput: number;
+    public selectedYearFromInput: number;
+    public days: ReadonlyArray<string | number> = [];
+    public selectedDay: number = -1;
+    public selMonth: number = -1;
+    public selectedYear: number = -1;
 
     @Input()
     set month(month: Date) {
-        this.selectedMonthFromInput = ('0' + month.getMonth() + 1).slice(-2);
+        this.selectedMonthFromInput = parseInt(
+            ('0' + month.getMonth() + 1).slice(-2)
+        );
         this.selectedYearFromInput = month.getFullYear();
         const fillerCount = month.getDay();
         const lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
@@ -41,13 +42,21 @@ export class CalendarDaysComponent implements OnInit {
         ];
     }
 
+    constructor() {}
+
     ngOnInit(): void {
-        this.selectedDay = ('0' + this.dateTime.getDate()).slice(-2);
-        this.selMonth = ('0' + this.dateTime.getMonth() + 1).slice(-2);
-        this.selectedYear = this.dateTime.getFullYear();
+        this.setSelectedDate();
     }
 
     chooseDay(day): void {
         this.selectDay.emit({ index: this.index, day });
+    }
+
+    private setSelectedDate(): void {
+        this.selectedDay = parseInt(('0' + this.dateTime.getDate()).slice(-2));
+        this.selMonth = parseInt(
+            ('0' + this.dateTime.getMonth() + 1).slice(-2)
+        );
+        this.selectedYear = this.dateTime.getFullYear();
     }
 }

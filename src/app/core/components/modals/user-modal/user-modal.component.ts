@@ -1,4 +1,28 @@
 import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
+import {
+    distinctUntilChanged,
+    Subject,
+    takeUntil,
+    switchMap,
+    of,
+    debounceTime,
+    takeWhile,
+} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Options } from 'ng5-slider';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { HttpResponseBase } from '@angular/common/http';
+
+//Regex
+import {
     accountBankValidation,
     addressUnitValidation,
     addressValidation,
@@ -11,49 +35,39 @@ import {
     routingBankValidation,
     salaryValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import {
-    FormsModule,
-    ReactiveFormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
-} from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+//Services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import {
-    distinctUntilChanged,
-    Subject,
-    takeUntil,
-    switchMap,
-    of,
-    debounceTime,
-    takeWhile,
-} from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
 import { UserTService } from '../../user/state/user.service';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { TaUserService } from '../../../services/user/user.service';
+
+//Animation
+import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+
+//Core
+import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
 import {
     CompanyUserModalResponse,
     CompanyUserResponse,
     CreateCompanyUserCommand,
     UpdateCompanyUserCommand,
 } from '../../../../../../appcoretruckassist';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
-import { Options } from 'ng5-slider';
+
+//Utils
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
-import { HttpResponseBase } from '@angular/common/http';
-import { TaUserService } from '../../../services/user/user.service';
+
+//Models
 import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
-import { CommonModule } from '@angular/common';
+
+//Components
+import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
@@ -64,7 +78,6 @@ import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkb
 import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-user-modal',
@@ -209,7 +222,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
                     return;
                 }
-                if (this.editData) {
+                if (this.editData?.id) {
                     this.updateUser(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -349,13 +362,71 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'office': {
+                let newData = { data: {} };
+                if (!this.editData?.id) {
+                    const {
+                        addressUnit,
+                        includeInPayroll,
+                        salary,
+                        startDate,
+                        base,
+                        commission,
+                        ...form
+                    } = this.userForm.value;
+
+                    if (this.selectedAddress) {
+                        this.selectedAddress = {
+                            ...this.selectedAddress,
+                            addressUnit: addressUnit,
+                        };
+                    }
+                    newData.data = {
+                        ...form,
+                        phone: form.phone ?? null,
+                        address: this.selectedAddress?.address
+                            ? this.selectedAddress
+                            : null,
+                        departmentId: this.selectedDepartment
+                            ? this.selectedDepartment.id
+                            : null,
+                        companyOfficeId: this.selectedOffice
+                            ? this.selectedOffice.id
+                            : null,
+                        userType: this.selectedUserType
+                            ? this.selectedUserType.name === 'Owner'
+                                ? this.selectedUserType.id
+                                : 0
+                            : 0,
+                        email: form.email ?? null,
+                        isAdmin:
+                            this.selectedUserAdmin.name === 'User'
+                                ? false
+                                : true,
+                        includeInPayroll: includeInPayroll,
+                        paymentType: this.selectedPayment
+                            ? this.selectedPayment.id
+                            : null,
+                        salary: salary
+                            ? convertThousanSepInNumber(salary)
+                            : null,
+                        startDate: startDate
+                            ? convertDateToBackend(startDate)
+                            : null,
+                        is1099: this.selectedW21099
+                            ? this.selectedW21099.name === '1099'
+                            : false,
+                        bankId: this.selectedBank ? this.selectedBank.id : null,
+                        base: base ? convertThousanSepInNumber(base) : null,
+                        commission: commission ? parseFloat(commission) : null,
+                    };
+                }
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
                     this.modalService.setProjectionModal({
                         action: 'open',
                         payload: {
                             key: 'user-modal',
-                            value: {},
+                            value: this.editData?.id ? this.editData : newData,
                         },
                         component: SettingsOfficeModalComponent,
                         size: 'small',
@@ -931,9 +1002,154 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.helperForManagers = res.managerResponses;
                     this.heleperForDispatchers = res.dispatcherResponses;
 
-                    if (this.editData) {
+                    if (this.editData?.id) {
                         this.disableCardAnimation = true;
                         this.getUserById(this.editData.id);
+                    }
+                    if (this.editData?.data && !this.editData?.id) {
+                        this.userForm.patchValue({
+                            firstName: this.editData.data.firstName,
+                            lastName: this.editData.data.lastName,
+                            address:
+                                this.editData.data.address?.address ?? null,
+                            addressUnit:
+                                this.editData.data.address?.addressUnit ?? null,
+                            personalPhone: this.editData.data.personalPhone,
+                            personalEmail: this.editData.data.personalEmail,
+                            departmentId: this.editData.data.departmentId
+                                ? this.departments[
+                                      this.editData.data.departmentId - 1
+                                  ].name
+                                : null,
+                            companyOfficeId:
+                                this.editData.data.companyOfficeId ?? null,
+                            userType: this.editData.data.userType
+                                ? this.editData.data.userType.name
+                                : null,
+                            isAdmin: this.editData.data.isAdmin,
+                            phone: this.editData.data.phone,
+                            extensionPhone: this.editData.data.extensionPhone,
+                            email: this.editData.data.email,
+                            includeInPayroll: this.editData.data
+                                .includeInPayroll
+                                ? true
+                                : false,
+                            paymentType: this.editData.data.paymentType
+                                ? this.editData.data.paymentType.name
+                                : null,
+                            salary: this.editData.data.salary
+                                ? convertNumberInThousandSep(
+                                      this.editData.data.salary
+                                  )
+                                : null,
+                            startDate: this.editData.data.startDate
+                                ? convertDateFromBackend(
+                                      this.editData.data.startDate
+                                  )
+                                : null,
+                            is1099: this.editData.data.is1099,
+                            bankId: this.editData.data.bank
+                                ? this.editData.data.bank.name
+                                : null,
+                            routingNumber: this.editData.data.routingNumber,
+                            accountNumber: this.editData.data.accountNumber,
+                            base: this.editData.data.base
+                                ? convertNumberInThousandSep(
+                                      this.editData.data.base
+                                  )
+                                : null,
+                            commission: this.editData.data.commission,
+                            note: this.editData.data.note,
+                        });
+
+                        this.selectedAddress = this.editData.data.address;
+                        this.selectedDepartment =
+                            this.departments[
+                                this.editData.data.departmentId - 1
+                            ];
+                        this.selectedOffice = this.editData.data.companyOffice;
+                        this.selectedUserType = this.editData.data.userType;
+                        this.selectedPayment = this.editData.data.paymentType;
+
+                        this.allowOnlyCommission = [
+                            'Load %',
+                            'Revenue %',
+                        ].includes(this.selectedPayment?.name);
+
+                        this.allowPairCommissionBase = [
+                            'Base + Load %',
+                            'Base + Revenue %',
+                        ].includes(this.selectedPayment?.name);
+
+                        this.userStatus = this.editData.data.status !== 1;
+
+                        this.isPaymentTypeAvailable = [
+                            'Dispatch',
+                            'Manager',
+                        ].includes(this.selectedDepartment?.name);
+
+                        if (
+                            ['Dispatch', 'Manager'].includes(
+                                this.selectedDepartment?.name
+                            )
+                        ) {
+                            this.paymentOptions =
+                                this.selectedDepartment.name === 'Dispatch'
+                                    ? this.heleperForDispatchers
+                                    : this.helperForManagers;
+                        }
+
+                        this.typeOfEmploye = this.typeOfEmploye.map(
+                            (item, index) => {
+                                return {
+                                    ...item,
+                                    checked:
+                                        item.id === 3
+                                            ? !this.editData.data.isAdmin
+                                            : this.editData.data.isAdmin,
+                                };
+                            }
+                        );
+
+                        this.typeOfPayroll = this.typeOfPayroll.map(
+                            (item, index) => {
+                                return {
+                                    ...item,
+                                    checked:
+                                        item.id === 6
+                                            ? !this.editData.data.is1099
+                                            : this.editData.data.is1099,
+                                };
+                            }
+                        );
+
+                        this.onSelectedTab(
+                            this.editData.data.isAdmin
+                                ? this.typeOfEmploye[1]
+                                : this.typeOfEmploye[0],
+                            'user-admin'
+                        );
+
+                        this.onSelectedTab(
+                            this.editData.data.is1099
+                                ? this.typeOfPayroll[0]
+                                : this.typeOfPayroll[1],
+                            '1099-w2'
+                        );
+
+                        this.selectedBank = this.editData.data.bank;
+
+                        this.isBankSelected = !!this.selectedBank;
+
+                        this.userFullName =
+                            this.editData.data.firstName?.concat(
+                                ' ',
+                                this.editData.data.lastName
+                            );
+
+                        this.isPhoneExtExist =
+                            !!this.editData.data.extensionPhone;
+                        this.startFormChanges();
                     } else {
                         this.startFormChanges();
                     }

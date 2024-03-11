@@ -3,7 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // model
 import { CardDetails } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

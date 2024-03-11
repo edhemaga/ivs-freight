@@ -82,10 +82,8 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                    this.registerCompanyForm
-                        .get(ConstantString.PASSWORD)
-                        .value?.toLowerCase()
+                    value ===
+                    this.registerCompanyForm.get(ConstantString.PASSWORD).value
                 ) {
                     this.registerCompanyForm
                         .get(ConstantString.CONFIRM_PASSWORD)
@@ -94,7 +92,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
                     this.registerCompanyForm
                         .get(ConstantString.CONFIRM_PASSWORD)
                         .setErrors({
-                            invalid: true,
+                            passwordDontMatch: true,
                         });
                 }
             });
@@ -104,10 +102,10 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                    this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .value?.toLowerCase()
+                    value ===
+                    this.registerCompanyForm.get(
+                        ConstantString.CONFIRM_PASSWORD
+                    ).value
                 ) {
                     this.registerCompanyForm
                         .get(ConstantString.CONFIRM_PASSWORD)
@@ -116,7 +114,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
                     this.registerCompanyForm
                         .get(ConstantString.CONFIRM_PASSWORD)
                         .setErrors({
-                            invalid: true,
+                            passwordDontMatch: true,
                         });
                 }
             });
