@@ -158,7 +158,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private createForm(): void {
         this.contactForm = this.formBuilder.group({
             name: [null, [Validators.required, ...fullNameValidation]],
-            company: [null],
+            companyName: [null],
             companyContactLabelId: [null],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
@@ -203,31 +203,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                 if (this.editData) {
                     this.updateCompanyContact(this.editData.id);
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addCompanyContact();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
             case ConstantStringEnum.DELETE:
                 if (this.editData) {
                     this.deleteCompanyContactById(this.editData.id);
-
-                    this.modalService.setModalSpinner({
-                        action: ConstantStringEnum.DELETE,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
@@ -400,17 +383,33 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         if (this.selectedAddress)
             this.selectedAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             };
+
+        const contactPhones = this.contactPhones.map((contactPhone, index) => {
+            return {
+                ...contactPhone,
+                primary: !index,
+            };
+        });
+
+        const contactEmails = this.contactEmails.map((contactEmail, index) => {
+            return {
+                ...contactEmail,
+                primary: !index,
+            };
+        });
 
         const newData: CreateCompanyContactCommand = {
             ...form,
-            companyContactLabelId: this.selectedContactLabel
-                ? this.selectedContactLabel.id
-                : null,
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            companyContactLabelId: this.selectedContactLabel
+                ? this.selectedContactLabel.id
+                : null,
+            contactPhones,
+            contactEmails,
             companyContactUsers: [
                 {
                     departmentId: this.selectedSharedDepartment.id,
@@ -419,7 +418,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             ],
         };
 
-        this.contactService
+        console.log('newData', newData);
+
+        /*   this.contactService
             .addCompanyContact(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -458,7 +459,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 },
-            });
+            }); */
     }
 
     private updateCompanyContact(id: number): void {

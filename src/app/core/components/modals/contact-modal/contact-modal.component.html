@@ -36,7 +36,7 @@
 
             <div class="col-6">
                 <app-ta-input
-                    formControlName="company"
+                    formControlName="companyName"
                     [inputConfig]="{
                         name: 'Company name',
                         type: 'text',
@@ -222,9 +222,33 @@
                         [activeItem]="selectedSharedDepartment"
                         (selectedItem)="onSelectDropdown($event)"
                     ></app-ta-input-dropdown>
+                    <!-- 
+                    <app-ta-input-dropdown
+                    formControlName="sharedLabelId"
+                    [template]="'multiselect'"
+                    [multiselectTemplate]="'multiselect-2-columns'"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        minLength: 2,
+                            maxLength: 36,
+                        type: 'text',
+                        label: 'Department',
+                        isDropdown: true,
+                        isRequired: true,
+                        textTransform: 'capitalize',
+                        multiselectDropdown: true,
+                        dropdownWidthClass: 'w-col-456'
+                    }"
+                    [options]="sharedDepartments"
+                    [preloadMultiselectItems]="selectedEndorsments"
+                    (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
+                ></app-ta-input-dropdown> -->
                 </div>
             </div>
         </app-ta-checkbox-card>
+
+        <!-- Contact Image -->
+
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [cardName]="'Contact Image'"
@@ -240,7 +264,9 @@
                 ></app-ta-logo-change>
             </app-ta-custom-card>
         </div>
+
         <!-- Note -->
+
         <app-ta-input-note
             formControlName="note"
             [isVisibleNote]="
