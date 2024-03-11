@@ -1,10 +1,7 @@
+@import 'src/theme/variables.scss';
+
 .modal-open {
     overflow: hidden !important;
-
-    .table-container {
-        // TODO in cards view mode this line makes cards shift
-        // padding-right: 16px;
-    }
 
     &::-webkit-scrollbar-track {
         background-color: rgba(0, 0, 0, 0.3);
@@ -149,6 +146,11 @@
 
     .divider-bottom {
         margin-bottom: 12px !important;
+    }
+
+    .card-divider {
+        background-color: $bw-9 !important;
+        height: 1px !important;
     }
 
     &.modal-container-sph-applicant {

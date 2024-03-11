@@ -655,6 +655,7 @@ ngb-modal-window[aria-hidden='true'] {
                         pointer-events: all;
                         background: $bw2;
                         color: $ta-black;
+                        min-width: 150px;
 
                         &:hover {
                             background: $ta-black;
