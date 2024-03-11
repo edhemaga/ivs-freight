@@ -250,7 +250,7 @@ export class DirectiveConstants {
         {
             id: 6,
             name: 'Alignment',
-            icon: 'assets/svg/common/repair-pm/ic_alignment.svg',
+            icon: 'assets/svg/common/category/ic_alignment.svg',
         },
         {
             id: 7,

@@ -390,9 +390,8 @@ export class LoadCardsModalComponent implements OnInit {
             .map((item) => {
                 if (item && typeof item.title === CardModalEnum.STRING) {
                     return item.title;
-                } else {
-                    return;
                 }
+                return;
             })
             .filter((title) => title);
     }
