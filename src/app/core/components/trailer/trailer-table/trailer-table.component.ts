@@ -34,7 +34,10 @@ import {
     TraillerData,
     backFilterQueryInterface,
 } from '../trailer.modal';
-import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from '../../shared/model/card-data.model';
 
 // Store
 import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';

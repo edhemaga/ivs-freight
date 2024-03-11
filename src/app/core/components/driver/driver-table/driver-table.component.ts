@@ -65,7 +65,7 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 import { DisplayDriverConfiguration } from '../driver-card-data';
 import {
     DropdownItem,

@@ -18,7 +18,7 @@ import {
 } from '../shared/model/card-table-data.model';
 import { Truck, Trailer } from '../shared/model/pm';
 import { DataForCardsAndTables } from '../shared/model/table-components/all-tables.modal';
-import { CardRows } from '../shared/model/cardData';
+import { CardRows } from '../shared/model/card-data.model';
 
 // Services
 import { ModalService } from '../shared/ta-modal/modal.service';

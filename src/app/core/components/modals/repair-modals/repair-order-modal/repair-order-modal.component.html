@@ -28,6 +28,67 @@
         origin
     >
         <div class="repair-modal-bill-first-row">
+            <ng-container *ngIf="selectedHeaderTab === 2">
+                <app-ta-input
+                    formControlName="invoice"
+                    [inputConfig]="{
+                        name: 'Invoice',
+                        type: 'text',
+                        label: 'Invoice',
+                        textTransform: 'uppercase',
+                        isRequired: true,
+                        minLength: 1,
+                        maxLength: 22
+                    }"
+                ></app-ta-input>
+            </ng-container>
+
+            <app-ta-input
+                formControlName="date"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    isDropdown: true,
+                    label: 'Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    isDisabled: selectedHeaderTab !== 2,
+                    customClass: 'datetimeclass'
+                }"
+            ></app-ta-input>
+
+            <ng-container *ngIf="selectedHeaderTab === 2">
+                <app-ta-input
+                    formControlName="paid"
+                    [inputConfig]="{
+                        name: 'Paid',
+                        type: 'text',
+                        label: 'Paid',
+                        isDisabled: false,
+                        textTransform: 'uppercase',
+                        isRequired: true,
+                        minLength: 1,
+                        maxLength: 22
+                    }"
+                ></app-ta-input>
+
+                <app-ta-input
+                    formControlName="datePaid"
+                    [inputConfig]="{
+                        name: 'datepaid',
+                        type: 'text',
+                        isDropdown: true,
+                        label: 'Date Paid',
+                        placeholderIcon: 'Date Paid',
+                        isDisabled: true,
+                        isRequired: false,
+                        customClass: 'datetimeclass'
+                    }"
+                ></app-ta-input>
+            </ng-container>
+        </div>
+
+        <div class="repair-modal-bill-first-row">
             <app-ta-tab-switch
                 (switchClicked)="onTypeOfRepair($event)"
                 [tabs]="typeOfRepair"
@@ -56,6 +117,20 @@
                 [options]="labelsUnit"
                 (selectedItem)="onSelectDropDown($event, 'repair-unit')"
             ></app-ta-input-dropdown>
+
+            <app-ta-input
+                formControlName="driver"
+                [inputConfig]="{
+                    name: 'Driver',
+                    type: 'text',
+                    label: 'Driver',
+                    isDisabled: true,
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 22
+                }"
+            ></app-ta-input>
+
             <app-ta-input
                 formControlName="odometer"
                 [inputConfig]="{
@@ -69,33 +144,8 @@
                     maxLength: 9
                 }"
             ></app-ta-input>
-            <app-ta-input
-                formControlName="date"
-                [inputConfig]="{
-                    name: 'datepicker',
-                    type: 'text',
-                    isDropdown: true,
-                    label: 'Date',
-                    placeholderIcon: 'date',
-                    isRequired: true,
-                    isDisabled: selectedHeaderTab !== 2,
-                    customClass: 'datetimeclass'
-                }"
-            ></app-ta-input>
-            <app-ta-input
-                formControlName="invoice"
-                [inputConfig]="{
-                    name: 'Invoice',
-                    type: 'text',
-                    label: 'Invoice',
-                    isDisabled: selectedHeaderTab !== 2,
-                    textTransform: 'uppercase',
-                    isRequired: true,
-                    minLength: 1,
-                    maxLength: 22
-                }"
-            ></app-ta-input>
         </div>
+
         <div class="row last-row">
             <div class="col-12">
                 <div *ngIf="selectedRepairShop" class="selected-item-container">
@@ -453,8 +503,8 @@
                     class="repair-shop-service"
                     (click)="activeRepairService(repair)"
                 >
-                    <svg-icon src="{{ repair.svg }}"></svg-icon>
-                    <p>{{ repair.serviceType }}</p>
+                    <svg-icon [src]="repair?.svg"></svg-icon>
+                    <p>{{ repair?.serviceType }}</p>
                 </div>
             </div>
         </app-ta-custom-card>

@@ -43,7 +43,10 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
-import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from '../../shared/model/card-data.model';
 import { DisplayTruckConfiguration } from '../truck-card-data';
 
 // Pipes

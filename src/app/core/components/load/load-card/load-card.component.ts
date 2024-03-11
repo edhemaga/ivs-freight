@@ -8,11 +8,14 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
 
 // models
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+
+// store
+import { LoadQuery } from '../../modals/cards-modal/state/store/load-modal.query';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
@@ -38,7 +41,9 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
+
     public isAllCardsFlipp: boolean = false;
+    public isExpandCardChecked: boolean = true;
 
     public cardData: CardDetails;
 
@@ -48,11 +53,22 @@ export class LoadCardComponent implements OnInit, OnDestroy {
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
         private router: Router,
-        private valueByStringPath: ValueByStringPath
+        private valueByStringPath: ValueByStringPath,
+        private loadQuery: LoadQuery
     ) {}
 
     ngOnInit() {
         this.flipAllCards();
+
+        this.expandCard();
+    }
+
+    public expandCard(): void {
+        this.loadQuery.pending$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.isExpandCardChecked = res.checked;
+            });
     }
 
     public flipAllCards(): void {
