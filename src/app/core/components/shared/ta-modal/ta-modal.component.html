@@ -156,345 +156,367 @@
 
                 <!-- Divider bottom -->
 
-                <ng-container *ngIf="bottomDivider">
+                <ng-container *ngIf="bottomDivider && !isCardsModal">
                     <div class="divider"></div>
+                </ng-container>
+
+                <ng-container *ngIf="isCardsModal">
+                    <div class="divider divider-bottom"></div>
                 </ng-container>
             </div>
 
             <!-- Modal footer Normal -->
 
-            <div
-                *ngIf="!disableFooter && !confirmationData"
-                class="modal-footer d-flex"
-                cdkDragHandle
-                [ngClass]="{
-                    'mutliple-buttons': editData?.type?.includes('edit'),
-                    'load-template': loadModalTemplate,
-                    'map-settings-template': mapSettingsModal || mapRouteModal,
-                    'justify-content-between':
-                        editData?.type?.includes('edit') ||
-                        loadModalTemplate ||
-                        mapSettingsModal ||
-                        mapRouteModal,
-                    'justify-content-end': !(
-                        editData?.type?.includes('edit') ||
-                        loadModalTemplate ||
-                        mapSettingsModal ||
-                        mapRouteModal
-                    )
-                }"
+            <ng-container
+                *ngIf="!disableFooter && !confirmationData && !isCardsModal"
             >
-                <!-- Footer Left Side -->
-                <ng-container
-                    *ngIf="
-                        editData?.type?.includes('edit') ||
-                        loadModalTemplate ||
-                        mapSettingsModal ||
-                        mapRouteModal
-                    "
-                >
-                    <div
-                        class="ta-modal-footer-left-side d-flex justify-content-start"
-                    >
-                        <!-- Delete -->
-
-                        <ng-container
-                            *ngIf="
-                                !disableDelete &&
-                                !resendEmail &&
-                                !loadModalTemplate &&
-                                !mapSettingsModal &&
-                                !mapRouteModal
-                            "
-                        >
-                            <button
-                                (click)="onAction('delete')"
-                                class="modal-delete-btn"
-                                type="button"
-                            >
-                                Delete
-                            </button>
-                        </ng-container>
-
-                        <!-- Map Settings Reset -->
-
-                        <ng-container
-                            *ngIf="
-                                (mapSettingsModal || mapRouteModal) &&
-                                resetMapVisibility
-                            "
-                        >
-                            <button
-                                (click)="onAction('reset-map-routing')"
-                                class="modal-map-settings-reset-btn"
-                                type="button"
-                            >
-                                Reset
-                            </button>
-                        </ng-container>
-
-                        <!-- Resend Email -->
-
-                        <ng-container *ngIf="resendEmail">
-                            <button
-                                (click)="onAction('resend email')"
-                                class="modal-resend-email-btn"
-                                type="button"
-                            >
-                                {{
-                                    resendEmailSpinnerVisibility
-                                        ? 'Sending'
-                                        : 'Resend Application Email'
-                                }}
-                                <div
-                                    *ngIf="resendEmailSpinnerVisibility"
-                                    class="modal-spinner"
-                                >
-                                    <app-ta-spinner
-                                        [size]="'small'"
-                                        [color]="'white'"
-                                    ></app-ta-spinner>
-                                </div>
-                            </button>
-                        </ng-container>
-
-                        <!-- Deactivated -->
-
-                        <ng-container *ngIf="editData?.disableButton">
-                            <button
-                                (click)="onAction('deactivate')"
-                                class="modal-deactivate-btn"
-                                type="button"
-                            >
-                                {{ isDeactivated ? 'Activate' : 'Deactivate' }}
-                            </button>
-                        </ng-container>
-
-                        <!-- DNU -->
-
-                        <ng-container *ngIf="editData?.dnuButton">
-                            <button
-                                (click)="onAction('dnu')"
-                                class="modal-deactivate-btn"
-                                type="button"
-                                ngbTooltip
-                                mainTooltip="Do Not Use List"
-                                tooltipBackground="#6c6c6c"
-                                position="top"
-                            >
-                                {{ isDNU ? 'Remove from DNU' : 'Move to DNU' }}
-                            </button>
-                        </ng-container>
-
-                        <!-- BFB -->
-
-                        <ng-container *ngIf="editData?.bfbButton">
-                            <button
-                                (click)="onAction('bfb')"
-                                class="modal-deactivate-btn"
-                                type="button"
-                                ngbTooltip
-                                mainTooltip="Banned from Broker List"
-                                tooltipBackground="#6c6c6c"
-                                position="top"
-                            >
-                                {{ isBFB ? 'Remove from BFB' : 'Move to BFB' }}
-                            </button>
-                        </ng-container>
-
-                        <!-- Convert to Template -->
-
-                        <ng-container
-                            *ngIf="
-                                loadModalTemplate &&
-                                !isConvertedToTemplate &&
-                                !editData &&
-                                !cardsModal
-                            "
-                        >
-                            <button
-                                (click)="onAction('convert-to-template')"
-                                class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
-                                type="button"
-                            >
-                                Convert to Template
-                            </button>
-                        </ng-container>
-                    </div>
-                </ng-container>
-
-                <!-- Footer right side -->
-
                 <div
-                    class="ta-modal-footer-right-side d-flex justify-content-end"
+                    class="modal-footer d-flex"
+                    cdkDragHandle
+                    [ngClass]="{
+                        'mutliple-buttons': editData?.type?.includes('edit'),
+                        'load-template': loadModalTemplate,
+                        'map-settings-template':
+                            mapSettingsModal || mapRouteModal,
+                        'justify-content-between':
+                            editData?.type?.includes('edit') ||
+                            loadModalTemplate ||
+                            mapSettingsModal ||
+                            mapRouteModal,
+                        'justify-content-end': !(
+                            editData?.type?.includes('edit') ||
+                            loadModalTemplate ||
+                            mapSettingsModal ||
+                            mapRouteModal
+                        )
+                    }"
                 >
-                    <!-- Save and Add New button -->
-
-                    <button
-                        *ngIf="saveAndAddNew"
-                        (click)="onAction('save and add new')"
-                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
-                        [ngClass]="{ valid: isModalValid }"
-                        type="button"
-                    >
-                        {{
-                            saveAddNewSpinnerVisibility
-                                ? 'Saving'
-                                : customTextSaveAndAddNew
-                                ? customTextSaveAndAddNew
-                                : 'Save and Add New'
-                        }}
-                        <div
-                            *ngIf="saveAddNewSpinnerVisibility"
-                            class="modal-spinner"
-                        >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
-
-                    <!-- Set Map Settings -->
-
-                    <button
-                        *ngIf="mapSettingsModal"
-                        (click)="onAction('set-map-settings')"
-                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
-                        [ngClass]="{ valid: isModalValid }"
-                        type="button"
-                    >
-                        {{
-                            setMapSettingsSpinnerVisibility ? 'Saving' : 'Save'
-                        }}
-                        <div
-                            *ngIf="setMapSettingsSpinnerVisibility"
-                            class="modal-spinner"
-                        >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
-
-                    <!-- Create Map Route -->
-
-                    <button
-                        *ngIf="mapRouteModal"
-                        (click)="onAction('create-map-route')"
-                        class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
-                        [ngClass]="{ valid: isModalValid }"
-                        type="button"
-                    >
-                        {{
-                            setMapRouteSpinnerVisibility
-                                ? 'Saving'
-                                : editData.id
-                                ? 'Save Changes'
-                                : 'Save'
-                        }}
-                        <div
-                            *ngIf="setMapRouteSpinnerVisibility"
-                            class="modal-spinner"
-                        >
-                            <app-ta-spinner
-                                [size]="'small'"
-                                [color]="'white'"
-                            ></app-ta-spinner>
-                        </div>
-                    </button>
-
-                    <!-- Stepper -->
-
-                    <ng-container *ngIf="isStepper && stepperCounter">
-                        <button
-                            (click)="onAction('stepper-back')"
-                            class="d-flex align-items-center justify-content-center ta-font-bold modal-stepper-back-btn"
-                            type="button"
-                        >
-                            Back
-                        </button>
-                    </ng-container>
-
-                    <ng-container *ngIf="isStepper && stepperCounter !== 2">
-                        <button
-                            (click)="onAction('stepper-next')"
-                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
-                            [ngClass]="{ valid: isModalValid }"
-                            type="button"
-                        >
-                            Next
-                        </button>
-                    </ng-container>
-
-                    <ng-container *ngIf="isStepper && stepperCounter === 2">
-                        <button
-                            (click)="onAction('stepper-save')"
-                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
-                            [ngClass]="{ valid: isModalValid }"
-                            type="button"
-                        >
-                            Finish
-
-                            <ng-container *ngIf="saveSpinnerVisibility">
-                                <div class="modal-spinner">
-                                    <app-ta-spinner
-                                        [size]="'small'"
-                                        [color]="'white'"
-                                    ></app-ta-spinner>
-                                </div>
-                            </ng-container>
-                        </button>
-                    </ng-container>
-
-                    <!-- Save button -->
-
+                    <!-- Footer Left Side -->
                     <ng-container
                         *ngIf="
-                            !mapSettingsModal &&
-                            !mapRouteModal &&
-                            !isStepper &&
-                            !isCardsModal
+                            editData?.type?.includes('edit') ||
+                            loadModalTemplate ||
+                            mapSettingsModal ||
+                            mapRouteModal
                         "
                     >
+                        <div
+                            class="ta-modal-footer-left-side d-flex justify-content-start"
+                        >
+                            <!-- Delete -->
+
+                            <ng-container
+                                *ngIf="
+                                    !disableDelete &&
+                                    !resendEmail &&
+                                    !loadModalTemplate &&
+                                    !mapSettingsModal &&
+                                    !mapRouteModal
+                                "
+                            >
+                                <button
+                                    (click)="onAction('delete')"
+                                    class="modal-delete-btn"
+                                    type="button"
+                                >
+                                    Delete
+                                </button>
+                            </ng-container>
+
+                            <!-- Map Settings Reset -->
+
+                            <ng-container
+                                *ngIf="
+                                    (mapSettingsModal || mapRouteModal) &&
+                                    resetMapVisibility
+                                "
+                            >
+                                <button
+                                    (click)="onAction('reset-map-routing')"
+                                    class="modal-map-settings-reset-btn"
+                                    type="button"
+                                >
+                                    Reset
+                                </button>
+                            </ng-container>
+
+                            <!-- Resend Email -->
+
+                            <ng-container *ngIf="resendEmail">
+                                <button
+                                    (click)="onAction('resend email')"
+                                    class="modal-resend-email-btn"
+                                    type="button"
+                                >
+                                    {{
+                                        resendEmailSpinnerVisibility
+                                            ? 'Sending'
+                                            : 'Resend Application Email'
+                                    }}
+                                    <div
+                                        *ngIf="resendEmailSpinnerVisibility"
+                                        class="modal-spinner"
+                                    >
+                                        <app-ta-spinner
+                                            [size]="'small'"
+                                            [color]="'white'"
+                                        ></app-ta-spinner>
+                                    </div>
+                                </button>
+                            </ng-container>
+
+                            <!-- Deactivated -->
+
+                            <ng-container *ngIf="editData?.disableButton">
+                                <button
+                                    (click)="onAction('deactivate')"
+                                    class="modal-deactivate-btn"
+                                    type="button"
+                                >
+                                    {{
+                                        isDeactivated
+                                            ? 'Activate'
+                                            : 'Deactivate'
+                                    }}
+                                </button>
+                            </ng-container>
+
+                            <!-- DNU -->
+
+                            <ng-container *ngIf="editData?.dnuButton">
+                                <button
+                                    (click)="onAction('dnu')"
+                                    class="modal-deactivate-btn"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Do Not Use List"
+                                    tooltipBackground="#6c6c6c"
+                                    position="top"
+                                >
+                                    {{
+                                        isDNU
+                                            ? 'Remove from DNU'
+                                            : 'Move to DNU'
+                                    }}
+                                </button>
+                            </ng-container>
+
+                            <!-- BFB -->
+
+                            <ng-container *ngIf="editData?.bfbButton">
+                                <button
+                                    (click)="onAction('bfb')"
+                                    class="modal-deactivate-btn"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="Banned from Broker List"
+                                    tooltipBackground="#6c6c6c"
+                                    position="top"
+                                >
+                                    {{
+                                        isBFB
+                                            ? 'Remove from BFB'
+                                            : 'Move to BFB'
+                                    }}
+                                </button>
+                            </ng-container>
+
+                            <!-- Convert to Template -->
+
+                            <ng-container
+                                *ngIf="
+                                    loadModalTemplate &&
+                                    !isConvertedToTemplate &&
+                                    !editData &&
+                                    !cardsModal
+                                "
+                            >
+                                <button
+                                    (click)="onAction('convert-to-template')"
+                                    class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
+                                    type="button"
+                                >
+                                    Convert to Template
+                                </button>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+
+                    <!-- Footer right side -->
+
+                    <div
+                        class="ta-modal-footer-right-side d-flex justify-content-end"
+                    >
+                        <!-- Save and Add New button -->
+
                         <button
-                            (click)="onAction('save')"
+                            *ngIf="saveAndAddNew"
+                            (click)="onAction('save and add new')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
+                            [ngClass]="{ valid: isModalValid }"
+                            type="button"
+                        >
+                            {{
+                                saveAddNewSpinnerVisibility
+                                    ? 'Saving'
+                                    : customTextSaveAndAddNew
+                                    ? customTextSaveAndAddNew
+                                    : 'Save and Add New'
+                            }}
+                            <div
+                                *ngIf="saveAddNewSpinnerVisibility"
+                                class="modal-spinner"
+                            >
+                                <app-ta-spinner
+                                    [size]="'small'"
+                                    [color]="'white'"
+                                ></app-ta-spinner>
+                            </div>
+                        </button>
+
+                        <!-- Set Map Settings -->
+
+                        <button
+                            *ngIf="mapSettingsModal"
+                            (click)="onAction('set-map-settings')"
                             class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                             [ngClass]="{ valid: isModalValid }"
                             type="button"
                         >
                             {{
-                                profileUpdateText
-                                    ? saveSpinnerVisibility
-                                        ? 'Saving'
-                                        : 'Save Changes'
-                                    : applicantText
-                                    ? saveSpinnerVisibility
-                                        ? 'Inviting'
-                                        : 'Invite'
-                                    : saveSpinnerVisibility
+                                setMapSettingsSpinnerVisibility
                                     ? 'Saving'
-                                    : editData?.type?.includes('edit') ||
-                                      editData?.type?.includes('payroll')
-                                    ? editData?.type?.includes('fo')
-                                        ? 'Save'
-                                        : 'Save Changes'
                                     : 'Save'
                             }}
-
-                            <ng-container *ngIf="saveSpinnerVisibility">
-                                <div class="modal-spinner">
-                                    <app-ta-spinner
-                                        [size]="'small'"
-                                        [color]="'white'"
-                                    ></app-ta-spinner>
-                                </div>
-                            </ng-container>
+                            <div
+                                *ngIf="setMapSettingsSpinnerVisibility"
+                                class="modal-spinner"
+                            >
+                                <app-ta-spinner
+                                    [size]="'small'"
+                                    [color]="'white'"
+                                ></app-ta-spinner>
+                            </div>
                         </button>
-                    </ng-container>
+
+                        <!-- Create Map Route -->
+
+                        <button
+                            *ngIf="mapRouteModal"
+                            (click)="onAction('create-map-route')"
+                            class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                            [ngClass]="{ valid: isModalValid }"
+                            type="button"
+                        >
+                            {{
+                                setMapRouteSpinnerVisibility
+                                    ? 'Saving'
+                                    : editData.id
+                                    ? 'Save Changes'
+                                    : 'Save'
+                            }}
+                            <div
+                                *ngIf="setMapRouteSpinnerVisibility"
+                                class="modal-spinner"
+                            >
+                                <app-ta-spinner
+                                    [size]="'small'"
+                                    [color]="'white'"
+                                ></app-ta-spinner>
+                            </div>
+                        </button>
+
+                        <!-- Stepper -->
+
+                        <ng-container *ngIf="isStepper && stepperCounter">
+                            <button
+                                (click)="onAction('stepper-back')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-stepper-back-btn"
+                                type="button"
+                            >
+                                Back
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="isStepper && stepperCounter !== 2">
+                            <button
+                                (click)="onAction('stepper-next')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Next
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="isStepper && stepperCounter === 2">
+                            <button
+                                (click)="onAction('stepper-save')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Finish
+
+                                <ng-container *ngIf="saveSpinnerVisibility">
+                                    <div class="modal-spinner">
+                                        <app-ta-spinner
+                                            [size]="'small'"
+                                            [color]="'white'"
+                                        ></app-ta-spinner>
+                                    </div>
+                                </ng-container>
+                            </button>
+                        </ng-container>
+
+                        <!-- Save button -->
+
+                        <ng-container
+                            *ngIf="
+                                !mapSettingsModal &&
+                                !mapRouteModal &&
+                                !isStepper &&
+                                !isCardsModal
+                            "
+                        >
+                            <button
+                                (click)="onAction('save')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                {{
+                                    profileUpdateText
+                                        ? saveSpinnerVisibility
+                                            ? 'Saving'
+                                            : 'Save Changes'
+                                        : applicantText
+                                        ? saveSpinnerVisibility
+                                            ? 'Inviting'
+                                            : 'Invite'
+                                        : saveSpinnerVisibility
+                                        ? 'Saving'
+                                        : editData?.type?.includes('edit') ||
+                                          editData?.type?.includes('payroll')
+                                        ? editData?.type?.includes('fo')
+                                            ? 'Save'
+                                            : 'Save Changes'
+                                        : 'Save'
+                                }}
+
+                                <ng-container *ngIf="saveSpinnerVisibility">
+                                    <div class="modal-spinner">
+                                        <app-ta-spinner
+                                            [size]="'small'"
+                                            [color]="'white'"
+                                        ></app-ta-spinner>
+                                    </div>
+                                </ng-container>
+                            </button>
+                        </ng-container>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
 
             <!-- Modal footer for cards -->
 
