@@ -107,6 +107,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -1152,7 +1153,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private multipleDeleteTrailers(response): void {
         this.trailerService
-            .deleteTrailerList(response)
+            .deleteTrailerList(response, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 let trailerNumber: string =
