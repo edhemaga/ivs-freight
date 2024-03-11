@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { toString } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Pipe({
     name: 'tableHighlightSearchText',

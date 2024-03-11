@@ -717,8 +717,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        console.log('tableColumnsConfig', tableColumnsConfig);
-
         if (activeTab === ConstantStringTableComponentsEnum.APPLICANTS) {
             return tableColumnsConfig
                 ? tableColumnsConfig
@@ -836,11 +834,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCdlDetailEndorsment: data.cdls[0]
-                ? data.cdls[0]?.cdlEndorsements[0]?.code +
-                  data.cdls[0]?.cdlEndorsements[1]?.code
-                : ConstantStringTableComponentsEnum.NA,
-            tableCdlDetailRestriction: ConstantStringTableComponentsEnum.NA,
+            tableCdlDetailEndorsment: data.cdls[0]?.cdlEndorsements.map(
+                (endorsement) => endorsement.code
+            ),
+            tableCdlDetailRestriction: data.cdls[0]?.cdlRestrictions.map(
+                (restriction) => restriction.code
+            ),
             tableCdlDetailExpiration: {
                 expirationDays:
                     data?.cdlExpirationDays || data?.cdlExpirationDays === 0

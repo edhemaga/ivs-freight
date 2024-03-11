@@ -1157,7 +1157,6 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
                                         <span
                                             class="table-text"
                                             [innerHtml]="'$0'"
@@ -1985,7 +1984,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- ! Highlight Ne Moze na ovaj template -->
                                     <!-- VIN COLUMN -->
                                     <div
                                         class="td-content"
@@ -2792,8 +2790,6 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
-highlightingWords) : '' " -->
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
@@ -2910,7 +2906,6 @@ highlightingWords) : '' " -->
                                                 : 'unset'
                                         }"
                                     >
-                                        <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
                                         <span
                                             class="table-text"
                                             [innerHtml]="'$0'"
@@ -3109,7 +3104,11 @@ highlightingWords) : '' " -->
                                     <!-- TEXT COLUMN -->
                                     <div
                                         class="td-content"
-                                        *ngIf="column.ngTemplate === 'text'"
+                                        *ngIf="
+                                            column.ngTemplate === 'text' &&
+                                            column.title !== 'Endorsement' &&
+                                            column.title !== 'Restriction'
+                                        "
                                         [ngStyle]="{
                                             width: column.width + 'px',
                                             'min-width.px': column?.minWidth
@@ -3129,6 +3128,32 @@ highlightingWords) : '' " -->
                                             "
                                         ></span>
                                     </div>
+
+                                    <!-- ENDORSEMENT & RESTRICTIONS COLUMN -->
+                                    <ng-container
+                                        *ngIf="
+                                            column.title === 'Endorsement' ||
+                                            column.title === 'Restriction'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <p
+                                                class="d-flex align-items-center m-0 table-text-count"
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        | tableTextCount
+                                                "
+                                            ></p>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
                                     <div
