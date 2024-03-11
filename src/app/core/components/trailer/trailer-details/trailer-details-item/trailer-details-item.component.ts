@@ -2,20 +2,24 @@ import {
     Component,
     ViewEncapsulation,
     OnInit,
+    OnChanges,
     OnDestroy,
     Input,
     ViewChildren,
-    SimpleChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+
+// services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+
+// components
+import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+
+// animations
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import {
     animate,
@@ -25,9 +29,14 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
+
+// decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
-import { OnChanges } from '@angular/core';
+
+// helpers
 import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+
+// moment
 import moment from 'moment';
 
 @Titles()
@@ -67,8 +76,8 @@ export class TrailerDetailsItemComponent
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
-    private destroy$ = new Subject<void>();
     @Input() trailer: any = null;
+    private destroy$ = new Subject<void>();
     public note: UntypedFormControl = new UntypedFormControl();
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public fhwaNote: UntypedFormControl = new UntypedFormControl();
@@ -79,12 +88,11 @@ export class TrailerDetailsItemComponent
     public dataTest: any;
     public dataFHWA: any;
     public toggler: boolean[] = [];
-    public registrationArray: any = [];
-    public currentDate: any;
+    public currentDate: string;
+
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
-        private notificationService: NotificationService,
         private commonTrailerService: CommonTruckTrailerService,
         private dropDownService: DropDownService
     ) {}
@@ -118,7 +126,7 @@ export class TrailerDetailsItemComponent
     }
 
     /**Function for toggle page in cards */
-    public toggleResizePage(value: number, indexName: string) {
+    public toggleResizePage(value: number, indexName: string): void {
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
 
@@ -274,11 +282,13 @@ export class TrailerDetailsItemComponent
             export: true,
         };
     }
+
     /**Function retrun id */
     public identity(index: number, item: any): number {
         return item.id;
     }
-    public optionsEvent(file: any, data: any, action: string) {
+
+    public optionsEvent(file: any, data: any, action: string): void {
         data = this.trailer[0]?.data;
         const name = dropActionNameTrailerTruck(file, action);
         this.dropDownService.dropActions(
@@ -295,27 +305,28 @@ export class TrailerDetailsItemComponent
             'trailer'
         );
     }
-    private deleteRegistrationByIdFunction(id: number) {
+
+    private deleteRegistrationByIdFunction(id: number): void {
         this.commonTrailerService
             .deleteRegistrationById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    private deleteInspectionByIdFunction(id: number) {
+    private deleteInspectionByIdFunction(id: number): void {
         this.commonTrailerService
             .deleteInspectionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
-    private deleteTitleByIdFunction(id: number) {
+    private deleteTitleByIdFunction(id: number): void {
         this.commonTrailerService
             .deleteTitleById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    public downloadAllFiles(type: string, index: number) {
+    public downloadAllFiles(type: string, index: number): void {
         switch (type) {
             case 'fhwa': {
                 if (
@@ -350,7 +361,7 @@ export class TrailerDetailsItemComponent
         }
     }
 
-    public formatDate(mod) {
+    public formatDate(mod): string {
         return convertDateFromBackend(mod);
     }
 
@@ -360,5 +371,5 @@ export class TrailerDetailsItemComponent
         this.destroy$.complete();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {}
+    ngOnChanges(): void {}
 }

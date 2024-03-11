@@ -1,4 +1,4 @@
-import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
+import { Observable, Subject, tap, takeUntil } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import {
     GetTrailerModalResponse,
@@ -253,26 +253,42 @@ export class TrailerTService implements OnDestroy {
     }
 
     public deleteTrailerList(
-        trailerToDelete: TrailerListResponse[]
+        trailersToDelete: number[],
+        tableSelectedTab?: string
     ): Observable<any> {
-        // let deleteOnBack = trailerToDelete.map((trailer: any) => {
-        //   return trailer.id;
-        // });
+        return this.trailerService.apiTrailerListDelete(trailersToDelete).pipe(
+            tap(() => {
+                const trailerCount = JSON.parse(
+                    localStorage.getItem('trailerTableCount')
+                );
 
-        // return this.trailerService.apiTrailerListDelete({ ids: deleteOnBack }).pipe(
-        //   tap(() => {
-        //     let storeTrailer = this.trailerQuery.getAll();
+                trailersToDelete.map((trailerId) => {
+                    this.tadl.remove(({ id }) => id === trailerId);
 
-        //     storeTrailer.map((trailer: any) => {
-        //       deleteOnBack.map((d) => {
-        //         if (d === trailer.id) {
-        //           this.trailerStore.remove(({ id }) => id === trailer.id);
-        //         }
-        //       });
-        //     });
-        //   })
-        // );
-        return of(null);
+                    if (tableSelectedTab === 'active') {
+                        this.trailerActiveStore.remove(
+                            ({ id }) => id === trailerId
+                        );
+
+                        trailerCount.active--;
+                    } else if (tableSelectedTab === 'inactive') {
+                        this.trailerInactiveStore.remove(
+                            ({ id }) => id === trailerId
+                        );
+
+                        trailerCount.inactive--;
+                    }
+                });
+
+                localStorage.setItem(
+                    'trailerTableCount',
+                    JSON.stringify({
+                        active: trailerCount.active,
+                        inactive: trailerCount.inactive,
+                    })
+                );
+            })
+        );
     }
 
     public getTrailerById(
@@ -428,7 +444,7 @@ export class TrailerTService implements OnDestroy {
             .apiTrailerStatusIdPut(trailerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: () => {
                     const storedTrailerData = {
                         ...this.trailerItemStore?.getValue()?.entities[
                             trailerId
