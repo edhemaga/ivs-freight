@@ -15,6 +15,7 @@ import {
     OnInit,
     Output,
     Self,
+    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
@@ -301,6 +302,12 @@ export class TaInputDropdownComponent
                 }
                 this.search(searchText);
             });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.options && changes.options.currentValue) {
+            this.originalOptions = changes.options.currentValue;
+        }
     }
 
     ngAfterViewInit() {

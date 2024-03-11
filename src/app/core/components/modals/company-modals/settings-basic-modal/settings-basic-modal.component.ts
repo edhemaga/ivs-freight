@@ -900,12 +900,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
             if (payPeriod === 'Semi Monthly') {
                 selectedEndingIn = {
-                    id: null,
+                    id: 7,
                     name: '15th / Last day',
                 };
             } else {
                 selectedEndingIn = {
-                    id: null,
+                    id: 8,
                     name: 'Last Day',
                 };
             }
@@ -1314,7 +1314,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     })
                 );
                 this.selectedBankAccountFormArray.push(
-                    this.editData.company.bankAccounts[index]
+                    this.editData.company.bankAccounts[index].bank
                 );
                 this.isBankSelectedFormArray.push(
                     this.editData.company.bankAccounts[index].id ? true : false
@@ -1808,7 +1808,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     })
                 );
                 this.selectedBankAccountFormArray.push(
-                    data.bankAccounts[index]
+                    data.bankAccounts[index].bank
                 );
                 this.isBankSelectedFormArray.push(
                     data.bankAccounts[index].id ? true : false

@@ -1,4 +1,4 @@
-import { CardRows } from '../shared/model/cardData';
+import { CardRows } from '../../../shared/model/card-data.model';
 
 export class DisplayRepairConfiguration {
     static rows: number = 4;
@@ -37,7 +37,7 @@ export class DisplayRepairConfiguration {
 
         {
             title: 'Shop Address',
-            endpoint: 'tableShopAdress',
+            endpoint: 'address',
         },
 
         {
@@ -111,7 +111,7 @@ export class DisplayRepairConfiguration {
 
         {
             title: 'Address',
-            endpoint: 'tableAddress',
+            endpoint: 'address',
         },
 
         {

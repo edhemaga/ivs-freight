@@ -7,7 +7,7 @@ import {
     CardDetails,
     SendDataCard,
 } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';

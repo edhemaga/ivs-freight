@@ -90,7 +90,7 @@ body {
     overflow-y: scroll !important;
 }
 
-*:not(.scroll-input-drodpwon):not(.description-item) {
+*:not(.scroll-input-drodpwon):not(.description-item):not(.table-inner-modal) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
