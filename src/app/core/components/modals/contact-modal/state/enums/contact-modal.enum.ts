@@ -1,0 +1,16 @@
+export enum ConstantStringEnum {
+    PHONE = 'phone',
+    EMAIL = 'email',
+
+    CLOSE = 'close',
+    SAVE_AND_ADD_NEW = 'save and add new',
+    SAVE = 'save',
+    DELETE = 'delete',
+    EDIT = 'edit',
+    NEW = 'new',
+
+    SHARED = 'shared',
+    SHARED_LABEL_ID = 'sharedLabelId',
+
+    AVATAR = 'avatar',
+}

@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    OnDestroy,
+    ChangeDetectorRef,
+} from '@angular/core';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
-    UntypedFormArray,
-    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
@@ -13,7 +17,7 @@ import {
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // modules
-import Croppie from 'croppie';
+import { CroppieOptions } from 'croppie';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -36,9 +40,7 @@ import {
     addressUnitValidation,
     addressValidation,
     departmentValidation,
-    phoneFaxRegex,
     fullNameValidation,
-    phoneExtension,
 } from '../../shared/ta-input/ta-input.regex-validations';
 
 // services
@@ -47,17 +49,27 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ContactTService } from '../../contacts/state/contact.service';
 import { FormService } from '../../../services/form/form.service';
 
+// enums
+import { ConstantStringEnum } from './state/enums/contact-modal.enum';
+
+// constants
+import { ContactModalConstants } from './state/utils/constants/contact-modal.constants';
+
 // models
 import {
     AddressEntity,
+    CompanyContactLabelResponse,
     CompanyContactModalResponse,
     CompanyContactResponse,
     ContactColorResponse,
     CreateCompanyContactCommand,
+    CreateContactEmailCommand,
+    CreateContactPhoneCommand,
     CreateResponse,
+    DepartmentResponse,
+    EnumValue,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { EditData } from '../load-modal/state/models/load-modal-model/edit-data.model';
 
 @Component({
@@ -97,53 +109,36 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public contactForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
-    public sharedDepartments: any[] = [];
-    public selectedSharedDepartment: any = null;
+    public isFormValidationDisabled: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
-    public contactLabels: any[] = [];
-    public selectedContactLabel: any = null;
+    public isAddNewAfterSave: boolean = false;
 
-    public colors: any[] = [];
-    public selectedContactColor: any;
+    public croppieOptions: CroppieOptions =
+        ContactModalConstants.CROPIE_OPTIONS;
 
-    public selectedAddress: any = null;
+    public contactLabels: EnumValue[] = [];
+    public selectedContactLabel: CompanyContactLabelResponse = null;
 
-    public labelsContactPhones: any[] = [];
-    public isContactPhoneExtExist: boolean[] = [];
-    public selectedContactPhone: any[] = [];
+    public colors: ContactColorResponse[] = [];
+    public selectedContactColor: ContactColorResponse;
 
-    public labelsContactEmails: any[] = [];
-    public selectedContactEmail: any[] = [];
+    public selectedAddress: AddressEntity = null;
 
-    public disabledFormValidation: boolean = false;
+    public sharedDepartments: EnumValue[] = [];
+    public selectedSharedDepartment: DepartmentResponse = null;
 
-    public disableCardAnimation: boolean = false;
+    public isPhoneRowCreated: boolean = false;
+    public isEachPhoneRowValid: boolean = true;
+    public contactPhones: CreateContactPhoneCommand[] = [];
 
-    public dropZoneConfig: DropZoneConfig = {
-        dropZoneType: 'image',
-        dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-        dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-        multiple: false,
-        globalDropZone: true,
-    };
-
-    public croppieOptions: Croppie.CroppieOptions = {
-        enableExif: true,
-        viewport: {
-            width: 194,
-            height: 194,
-            type: 'circle',
-        },
-        boundary: {
-            width: 456,
-            height: 194,
-        },
-    };
-
-    public addNewAfterSave: boolean = false;
+    public isEmailRowCreated: boolean = false;
+    public isEachEmailRowValid: boolean = true;
+    public contactEmails: CreateContactEmailCommand[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private changeDetector: ChangeDetectorRef,
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactTService,
@@ -155,20 +150,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
         this.getCompanyContactModal();
 
-        this.companyContactColorLabels();
+        this.getCompanyContactColorLabels();
 
         this.followSharedCheckbox();
     }
 
-    private createForm() {
+    private createForm(): void {
         this.contactForm = this.formBuilder.group({
             name: [null, [Validators.required, ...fullNameValidation]],
             company: [null],
             companyContactLabelId: [null],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            contactPhones: this.formBuilder.array([]),
-            contactEmails: this.formBuilder.array([]),
             shared: [true],
             sharedLabelId: [
                 null,
@@ -179,31 +172,38 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close':
+            case ConstantStringEnum.CLOSE:
                 break;
-            case 'save and add new':
+            case ConstantStringEnum.SAVE_AND_ADD_NEW:
                 if (this.contactForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.contactForm);
+
                     return;
                 }
+
                 this.addCompanyContact();
+
                 this.modalService.setModalSpinner({
-                    action: 'save and add new',
+                    action: ConstantStringEnum.SAVE_AND_ADD_NEW,
                     status: true,
                     close: false,
                 });
-                this.addNewAfterSave = true;
+
+                this.isAddNewAfterSave = true;
 
                 break;
-            case 'save':
+            case ConstantStringEnum.SAVE:
                 if (this.contactForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.contactForm);
+
                     return;
                 }
+
                 if (this.editData) {
                     this.updateCompanyContact(this.editData.id);
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -219,11 +219,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-            case 'delete':
+            case ConstantStringEnum.DELETE:
                 if (this.editData) {
                     this.deleteCompanyContactById(this.editData.id);
+
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: ConstantStringEnum.DELETE,
                         status: true,
                         close: false,
                     });
@@ -235,136 +236,103 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get contactPhones(): UntypedFormArray {
-        return this.contactForm.get('contactPhones') as UntypedFormArray;
-    }
-
-    public createContactPhones(element?: any) {
-        return this.formBuilder.group({
-            id: [element?.id ? element.id : 0],
-            phone: [element?.phone ? element.phone : null, phoneFaxRegex],
-            phoneExt: [
-                element?.phoneExt ? element.phoneExt : null,
-                phoneExtension,
-            ],
-            contactPhoneType: [
-                element?.contactPhoneType
-                    ? element.contactPhoneType.name
-                    : null,
-            ],
-            primary: element?.primary
-                ? element.primary
-                : this.editData
-                ? false
-                : !this.contactPhones.length,
-        });
-    }
-
-    public addContactPhones(event: { check: boolean; action: string }) {
-        if (event.check) {
-            this.contactPhones.push(this.createContactPhones());
-            this.isContactPhoneExtExist.push(false);
-        }
-    }
-
-    public get contactEmails(): UntypedFormArray {
-        return this.contactForm.get('contactEmails') as UntypedFormArray;
-    }
-
-    public createContactEmails(element?: any) {
-        return this.formBuilder.group({
-            id: [element?.id ? element.id : 0],
-            email: [element?.email ? element.email : null],
-            contactEmailType: [
-                element?.contactEmailType
-                    ? element.contactEmailType.name
-                    : null,
-            ],
-            primary: element?.primary
-                ? element.primary
-                : this.editData
-                ? false
-                : !this.contactEmails.length,
-        });
-    }
-
-    public addContactEmails(event: { check: boolean; action: string }) {
-        const form = this.createContactEmails();
-        if (event.check) {
-            this.contactEmails.push(form);
-        }
-
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-    }
-
-    public removeContactFeature(action: string, index: number) {
-        switch (action) {
-            case 'contact-phone': {
-                this.contactPhones.removeAt(index);
-                this.selectedContactPhone.splice(index, 1);
-                this.isContactPhoneExtExist.splice(index, 1);
-                break;
-            }
-            case 'contact-email': {
-                this.contactEmails.removeAt(index);
-                this.selectedContactEmail.splice(index, 1);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public setPrimary(formControl: AbstractControl, action: string) {
-        switch (action) {
-            case 'phone': {
-                this.contactPhones.controls.map((item) =>
-                    item.get('primary').patchValue(false)
-                );
-                formControl
-                    .get('primary')
-                    .patchValue(!formControl.get('primary').value);
-                break;
-            }
-            case 'email': {
-                this.contactEmails.controls.map((item) =>
-                    item.get('primary').patchValue(false)
-                );
-                formControl
-                    .get('primary')
-                    .patchValue(!formControl.get('primary').value);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    private followSharedCheckbox() {
+    private followSharedCheckbox(): void {
         this.contactForm
-            .get('shared')
+            .get(ConstantStringEnum.SHARED)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value) {
                     this.inputService.changeValidators(
-                        this.contactForm.get('sharedLabelId')
+                        this.contactForm.get(ConstantStringEnum.SHARED_LABEL_ID)
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.contactForm.get('sharedLabelId'),
+                        this.contactForm.get(
+                            ConstantStringEnum.SHARED_LABEL_ID
+                        ),
                         false
                     );
                 }
             });
     }
 
-    private getCompanyContactModal() {
+    public addContactPhoneOrEmail(
+        _: { check: boolean; action: string },
+        type: string
+    ): void {
+        switch (type) {
+            case ConstantStringEnum.PHONE:
+                if (
+                    !this.isEachPhoneRowValid ||
+                    this.contactPhones.length === 3
+                )
+                    return;
+
+                this.isPhoneRowCreated = true;
+
+                setTimeout(() => {
+                    this.isPhoneRowCreated = false;
+                }, 400);
+
+                break;
+            case ConstantStringEnum.EMAIL:
+                if (
+                    !this.isEachEmailRowValid ||
+                    this.contactEmails.length === 2
+                )
+                    return;
+
+                this.isEmailRowCreated = true;
+
+                setTimeout(() => {
+                    this.isEmailRowCreated = false;
+                }, 400);
+
+                break;
+            default:
+                break;
+        }
+
+        this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: CreateContactPhoneCommand[],
+        type: string
+    ): void {
+        switch (type) {
+            case ConstantStringEnum.PHONE:
+                this.contactPhones = modalTableDataValue;
+
+                break;
+            case ConstantStringEnum.EMAIL:
+                this.contactEmails = modalTableDataValue;
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public handleModalTableValidStatusEmit(
+        validStatus: boolean,
+        type: string
+    ): void {
+        switch (type) {
+            case ConstantStringEnum.PHONE:
+                this.isEachPhoneRowValid = validStatus;
+
+                break;
+            case ConstantStringEnum.EMAIL:
+                this.isEachEmailRowValid = validStatus;
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    private getCompanyContactModal(): void {
         this.contactService
             .getCompanyContactModal()
             .pipe(takeUntil(this.destroy$))
@@ -374,11 +342,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 });
 
                 this.sharedDepartments = res.departments;
-                this.labelsContactEmails = res.contactEmailType;
-                this.labelsContactPhones = res.contactPhoneType;
 
                 if (this.editData) {
-                    this.disableCardAnimation = true;
+                    this.isCardAnimationDisabled = true;
+
                     this.getCompanyContactById(this.editData.id);
                 } else {
                     this.startFormChanges();
@@ -386,7 +353,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getCompanyContactById(id: number) {
+    private getCompanyContactById(id: number): void {
         this.contactService
             .getCompanyContactById(id)
             .pipe(takeUntil(this.destroy$))
@@ -407,40 +374,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
 
-                    if (res.contactPhones.length) {
-                        for (
-                            let index = 0;
-                            index < res.contactPhones.length;
-                            index++
-                        ) {
-                            this.contactPhones.push(
-                                this.createContactPhones(
-                                    res.contactPhones[index]
-                                )
-                            );
-                            this.selectedContactPhone[index] =
-                                res.contactPhones[index].contactPhoneType;
-                            this.isContactPhoneExtExist[index] =
-                                !!res.contactPhones[index].phoneExt;
-                        }
-                    }
-
-                    if (res.contactEmails.length) {
-                        for (
-                            let index = 0;
-                            index < res.contactEmails.length;
-                            index++
-                        ) {
-                            this.contactEmails.push(
-                                this.createContactEmails(
-                                    res.contactEmails[index]
-                                )
-                            );
-                            this.selectedContactEmail[index] =
-                                res.contactEmails[index].contactEmailType;
-                        }
-                    }
-
                     this.selectedContactLabel = res.companyContactLabel;
 
                     this.selectedAddress = res.address;
@@ -454,22 +387,21 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
     private addCompanyContact(): void {
         const { addressUnit, ...form } = this.contactForm.value;
 
-        if (this.selectedAddress) {
+        if (this.selectedAddress)
             this.selectedAddress = {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
             };
-        }
 
         const newData: CreateCompanyContactCommand = {
             ...form,
@@ -492,9 +424,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.addNewAfterSave) {
+                    if (this.isAddNewAfterSave) {
                         this.modalService.setModalSpinner({
-                            action: 'save and add new',
+                            action: ConstantStringEnum.SAVE_AND_ADD_NEW,
                             status: false,
                             close: false,
                         });
@@ -503,18 +435,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                         this.selectedAddress = null;
                         this.selectedContactColor = null;
-                        this.selectedContactEmail = [];
                         this.selectedContactLabel = null;
-                        this.selectedContactPhone = [];
-                        this.isContactPhoneExtExist = [];
                         this.selectedSharedDepartment = null;
 
-                        this.contactForm.get('shared').patchValue(true);
+                        this.contactForm
+                            .get(ConstantStringEnum.SHARED)
+                            .patchValue(true);
 
-                        this.contactPhones.controls = [];
-                        this.contactEmails.controls = [];
-
-                        this.addNewAfterSave = false;
+                        this.isAddNewAfterSave = false;
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
@@ -536,12 +464,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private updateCompanyContact(id: number): void {
         const { addressUnit, ...form } = this.contactForm.value;
 
-        if (this.selectedAddress) {
+        if (this.selectedAddress)
             this.selectedAddress = {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
             };
-        }
 
         const newData: UpdateCompanyContactCommand = {
             id: id,
@@ -588,14 +515,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: ConstantStringEnum.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: ConstantStringEnum.DELETE,
                         status: false,
                         close: false,
                     });
@@ -603,25 +530,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectDropdown(event: any, action: string, index?: number): void {
-        switch (action) {
-            case 'departments': {
-                this.selectedSharedDepartment = event;
-
-                break;
-            }
-            case 'contact-email': {
-                this.selectedContactEmail[index] = event;
-                break;
-            }
-            case 'contact-phone': {
-                this.selectedContactPhone[index] = event;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+    public onSelectDropdown(event: EnumValue): void {
+        this.selectedSharedDepartment = event;
     }
 
     public onHandleAddress(event: {
@@ -631,40 +541,40 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         if (event.valid) this.selectedAddress = event.address;
     }
 
-    public onUploadImage(event: any) {
-        this.contactForm.get('avatar').patchValue(event);
-        this.contactForm.get('avatar').setErrors(null);
+    public onUploadImage(event) {
+        this.contactForm.get(ConstantStringEnum.AVATAR).patchValue(event);
+        this.contactForm.get(ConstantStringEnum.AVATAR).setErrors(null);
     }
 
-    public onImageValidation(event: boolean) {
+    public onImageValidation(event: boolean): void {
         if (!event) {
-            this.contactForm.get('avatar').setErrors({ invalid: true });
+            this.contactForm
+                .get(ConstantStringEnum.AVATAR)
+                .setErrors({ invalid: true });
         } else {
             this.inputService.changeValidators(
-                this.contactForm.get('avatar'),
+                this.contactForm.get(ConstantStringEnum.AVATAR),
                 false
             );
         }
     }
 
-    private companyContactColorLabels() {
+    private getCompanyContactColorLabels(): void {
         this.contactService
             .companyContactLabelsColorList()
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: Array<ContactColorResponse>) => {
-                    this.colors = res;
-                },
-                error: () => {},
+            .subscribe((res) => {
+                this.colors = res;
             });
     }
 
-    public onPickExistLabel(event: any) {
+    public onPickExistLabel(event: EnumValue): void {
         this.selectedContactLabel = event;
     }
 
-    public onSelectColorLabel(event: any): void {
+    public onSelectColorLabel(event: EnumValue): void {
         this.selectedContactColor = event;
+
         this.selectedContactLabel = {
             ...this.selectedContactLabel,
             colorId: this.selectedContactColor.id,
@@ -674,10 +584,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    public onSaveLabel(data: { data: any; action: string }) {
+    public onSaveLabel(data: { data: EnumValue; action: string }): void {
         switch (data.action) {
-            case 'edit': {
+            case ConstantStringEnum.EDIT:
                 this.selectedContactLabel = data.data;
+
                 this.contactService
                     .updateCompanyContactLabel({
                         id: this.selectedContactLabel.id,
@@ -690,15 +601,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                             return this.contactService.getCompanyContactModal();
                         })
                     )
-                    .subscribe({
-                        next: (res: CompanyContactModalResponse) => {
-                            this.contactLabels = res.labels;
-                        },
-                        error: () => {},
+                    .subscribe((res) => {
+                        this.contactLabels = res.labels;
                     });
+
                 break;
-            }
-            case 'new': {
+            case ConstantStringEnum.NEW:
                 this.selectedContactLabel = {
                     id: data.data.id,
                     name: data.data.name,
@@ -734,26 +642,23 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                             return this.contactService.getCompanyContactModal();
                         })
                     )
-                    .subscribe({
-                        next: (res: CompanyContactModalResponse) => {
-                            this.contactLabels = res.labels;
-                        },
-                        error: () => {},
+                    .subscribe((res) => {
+                        this.contactLabels = res.labels;
                     });
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public companyContactLabelMode(event: boolean) {
-        this.disabledFormValidation = event;
+    public companyContactLabelMode(event: boolean): void {
+        this.isFormValidationDisabled = event;
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.contactForm);
+
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
