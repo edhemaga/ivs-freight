@@ -1,0 +1,56 @@
+<div
+    class="ta-upload {{ customClassName }} documents"
+    [ngClass]="{
+        'ta-upload-small': _files?.length && size === 'small',
+        'ta-upload-medium-file':
+            _files?.length && _files?.length < 2 && size === 'medium',
+        'ta-upload-medium-files':
+            _files?.length && _files?.length > 1 && size === 'medium',
+        'ta-upload-large-file':
+            _files?.length && _files?.length < 2 && size === 'large',
+        'ta-upload-large-twofiles':
+            _files?.length && _files?.length >= 2 && size === 'large',
+        'ta-upload-large-threefiles':
+            _files?.length && _files?.length >= 3 && size === 'large',
+        'ta-upload-review-mode': isReview
+    }"
+>
+    <div class="documents_holder">
+        <app-ta-upload-dropzone
+            *ngIf="showDropzone"
+            (onFileEvent)="onUploadFiles($event)"
+            [isRequired]="isRequired"
+            [showRequired]="showRequired"
+            [dropzoneClose]="true"
+            [dropzoneFocus]="dropzoneFocus"
+            (closeDropzone)="dropZoneClose()"
+            [customClassName]="customClassName"
+        ></app-ta-upload-dropzone>
+        <ng-container
+            *ngFor="let file of _files; let ind = index; trackBy: identity"
+        >
+            <div class="ta-upload-carousel-container">
+                <div>
+                    <app-ta-upload-file
+                        [file]="file"
+                        [hasTagsDropdown]="hasTagsDropdown"
+                        [isReview]="isReview"
+                        [reviewMode]="reviewMode"
+                        [feedbackText]="feedbackText"
+                        [hasNumberOfPages]="hasNumberOfPages"
+                        [customClassName]="customClassName"
+                        (fileAction)="onFileAction($event)"
+                        (landscapeCheck)="onLandscapeCheck($event)"
+                        (documentReviewInputEvent)="
+                            documentReviewInputEventMethod($event)
+                        "
+                        [tags]="tags"
+                        [type]="type"
+                        [categoryTag]="categoryTag"
+                        [hasLandscapeOption]="hasLandscapeOption"
+                    ></app-ta-upload-file>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

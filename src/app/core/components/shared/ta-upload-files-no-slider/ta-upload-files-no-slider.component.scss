@@ -1,0 +1,126 @@
+.ta-card-body {
+    overflow: visible !important;
+}
+.ta-upload {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 194px;
+    align-items: center;
+
+    
+    .ta-upload-dropzone {
+        height: 186px;
+        width: calc(100% - 10px);
+        margin: 0px 6px;
+    }
+
+    .documents_holder {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 4px;
+        transition: all 0.3s ease-in-out;
+
+        .ta-upload-carousel-container {
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    &.documents {
+        display: block !important;
+
+        .ta-upload-dropzone {
+            height: 332px;
+            width: 100%;
+            margin: 0px;
+        }
+    }
+
+    &-small {
+        grid-template-columns: 164px 1fr;
+        grid-template-rows: 194px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-medium-file {
+        grid-template-columns: 164px 1fr;
+        grid-template-rows: 194px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-medium-files {
+        grid-template-columns: 344px 1fr;
+        grid-template-rows: 194px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-large-file {
+        grid-template-columns: 164px 1fr;
+        grid-template-rows: 194px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-large-twofiles {
+        grid-template-columns: 344px 1fr;
+        grid-template-rows: 194px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-large-threefiles {
+        grid-template-columns: 524px 1fr;
+        grid-template-rows: 194px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    &-review-mode {
+        grid-template-columns: 1fr;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.driver-details-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 312px;
+    }
+
+    &.company-documents {
+        grid-template-columns: 1fr;
+        grid-template-rows: 332px;
+    }
+
+    &.driver-card-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 416px;
+    }
+
+    &.company-details-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 378px;
+    }
+
+    &.landscape-details-view {
+        grid-template-columns: 1fr;
+        grid-template-rows: 200px;
+    }
+
+    &.todo-details {
+        grid-template-columns: 100% 1fr;
+        grid-template-rows: 200px;
+    }
+
+    &.table-details {
+        grid-template-columns: 100% 1fr;
+        grid-template-rows: 200px;
+    }
+}

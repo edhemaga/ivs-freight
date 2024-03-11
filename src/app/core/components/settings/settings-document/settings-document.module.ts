@@ -8,6 +8,7 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
 import { TruckassistTableToolbarComponent } from '../../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaUploadFilesNoSliderComponent } from '../../shared/ta-upload-files-no-slider/ta-upload-files-no-slider.component';
 
 @NgModule({
     imports: [
@@ -16,9 +17,10 @@ import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/tr
         SharedModule,
         CarrierSearchComponent,
         TaUploadFilesComponent,
+        TaUploadFilesNoSliderComponent,
         TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent, 
-        TruckassistTableHeadComponent
+        TruckassistTableBodyComponent,
+        TruckassistTableHeadComponent,
     ],
     declarations: [SettingsDocumentComponent],
 })

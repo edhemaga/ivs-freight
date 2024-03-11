@@ -5,7 +5,6 @@ import {
     Input,
     OnInit,
     Output,
-    SimpleChanges,
     ViewChild,
     ViewChildren,
     ViewEncapsulation,
@@ -119,12 +118,6 @@ export class TaUploadFilesComponent implements OnInit {
             });
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.files && changes.files.currentValue) {
-            this._files = changes.files.currentValue;
-        }
-    }
-
     /**
      *
      * @param data - returned data from file action (one or multiple)
@@ -140,6 +133,19 @@ export class TaUploadFilesComponent implements OnInit {
             }
             case 'delete': {
                 let isLastDeleted = false;
+                this._files.map((item, index) => {
+                    if (
+                        item.fileName == data.file.fileName &&
+                        (index == this._files.length - 1 ||
+                            index == this._files.length - 2)
+                    ) {
+                        isLastDeleted = true;
+                    }
+                });
+
+                this._files = this._files.filter(
+                    (item) => item.fileName !== data.file.fileName
+                );
 
                 if (data.file['fileId']) {
                     this.onFileEvent.emit({
@@ -157,10 +163,8 @@ export class TaUploadFilesComponent implements OnInit {
                 this.currentSlide = this._files.length - 1;
 
                 if (
-                    (this.size === FilesSize.MODAL_LARGE &&
-                        this._files.length < 4) ||
-                    (this.size === FilesSize.MODAL_MEDIUM &&
-                        this._files.length < 3)
+                    (this.size === FilesSize.MODAL_LARGE && this._files.length < 4) ||
+                    (this.size === FilesSize.MODAL_MEDIUM && this._files.length < 3)
                 ) {
                     this.modalCarousel.currentSlide = 0;
                     this.modalCarousel.translateXMultipleSlides = 0;
@@ -237,8 +241,31 @@ export class TaUploadFilesComponent implements OnInit {
         const uploadedFiles = [...data.files];
         switch (data.action) {
             case 'add': {
-                this.onFileEvent.emit({ files: uploadedFiles, action: 'add' });
-                // todo: review the logic bellow:
+                uploadedFiles.map((files, i) => {
+                    for (var a = 0; a < this._files.length; a++) {
+                        if (
+                            files.realFile?.name ==
+                            this._files[a].realFile?.name
+                        ) {
+                            uploadedFiles.splice(i);
+                        }
+                    }
+                });
+
+                uploadedFiles.map((file) => {
+                    let setName = '';
+                    const name = file.realFile?.name.split('');
+                    name.map((item, i) => {
+                        if (i < name.length - 4) {
+                            setName = setName + item;
+                        }
+                    });
+                    file.fileName = setName;
+                });
+                const oldFiles = this._files.length ? this._files : [];
+
+                this._files = [...oldFiles, ...uploadedFiles];
+                this.onFileEvent.emit({ files: this._files, action: 'add' });
                 const slideTo =
                     this.modalCarousel?.customClass == 'large'
                         ? 3
@@ -276,8 +303,7 @@ export class TaUploadFilesComponent implements OnInit {
         });
     }
 
-    public identity(index: number, item: any): number {
-        //leave any for now
+    public identity(index: number, item: any): number { //leave any for now
         return item.name;
     }
 
