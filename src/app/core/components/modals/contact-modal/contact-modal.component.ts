@@ -126,7 +126,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity = null;
 
     public sharedDepartments: EnumValue[] = [];
-    public selectedSharedDepartment: DepartmentResponse = null;
+    public selectedSharedDepartment: DepartmentResponse[] = [];
 
     public isPhoneRowCreated: boolean = false;
     public isEachPhoneRowValid: boolean = true;
@@ -342,8 +342,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyContactResponse) => {
+                    console.log('res by id', res);
                     this.contactForm.patchValue({
                         name: res.name,
+                        companyName: res.companyName,
                         companyContactLabelId: res.companyContactLabel
                             ? res.companyContactLabel.name
                             : null,
@@ -353,7 +355,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                             ? res.address.addressUnit
                             : null,
                         shared: res.shared,
-                        sharedLabelId: 'Recruitment', // TODO: Ceka se BACK
+                        sharedLabelId: 1, // TODO: Ceka se BACK
                         note: res.note,
                     });
 
@@ -361,12 +363,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                     this.selectedAddress = res.address;
                     // TODO: Ceka se BACK
-                    this.selectedSharedDepartment = {
-                        id: 3,
-                        name: 'Recruitment',
-                        count: 0,
-                        companyUsers: [],
-                    };
+                    this.selectedSharedDepartment = res.departmentContacts; /* [
+                        {
+                            id: 3,
+                            name: 'Recruitment',
+                            count: 0,
+                            companyUsers: [],
+                        },
+                    ]; */
+
+                    console.log('this.contactForm', this.contactForm);
+
+                    this.changeDetector.detectChanges();
 
                     setTimeout(() => {
                         this.startFormChanges();
@@ -410,17 +418,19 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 : null,
             contactPhones,
             contactEmails,
-            companyContactUsers: [
-                {
-                    departmentId: this.selectedSharedDepartment.id,
-                    companyUserIds: [],
-                },
-            ],
+            companyContactUsers: this.selectedSharedDepartment.map(
+                (department) => {
+                    return {
+                        departmentId: department.id,
+                        companyUserIds: department.companyUsers.map(
+                            (companyUser) => companyUser.id
+                        ),
+                    };
+                }
+            ),
         };
 
-        console.log('newData', newData);
-
-        /*   this.contactService
+        this.contactService
             .addCompanyContact(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -437,7 +447,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = null;
                         this.selectedContactColor = null;
                         this.selectedContactLabel = null;
-                        this.selectedSharedDepartment = null;
+                        this.selectedSharedDepartment = [];
 
                         this.contactForm
                             .get(ConstantStringEnum.SHARED)
@@ -459,7 +469,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 },
-            }); */
+            });
     }
 
     private updateCompanyContact(id: number): void {
@@ -482,8 +492,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 : null,
             companyContactUsers: [
                 {
-                    departmentId: this.selectedSharedDepartment.id,
-                    companyUserIds: [],
+                    /*  departmentId: this.selectedSharedDepartment.id,
+                    companyUserIds: [], */
                 },
             ],
         };
@@ -531,8 +541,19 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectDropdown(event: EnumValue): void {
+    public onSelectDropdown(event: DepartmentResponse[]): void {
         this.selectedSharedDepartment = event;
+
+        if (this.selectedSharedDepartment.length) {
+            this.inputService.changeValidators(
+                this.contactForm.get('sharedLabelId'),
+                false
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.contactForm.get('sharedLabelId')
+            );
+        }
     }
 
     public onHandleAddress(event: {

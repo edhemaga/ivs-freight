@@ -205,7 +205,7 @@
         >
             <div body class="row row-no-m">
                 <div class="col-12">
-                    <app-ta-input-dropdown
+                    <!-- <app-ta-input-dropdown
                         formControlName="sharedLabelId"
                         [inputConfig]="{
                             name: 'Input Dropdown Department',
@@ -221,28 +221,29 @@
                         [options]="sharedDepartments"
                         [activeItem]="selectedSharedDepartment"
                         (selectedItem)="onSelectDropdown($event)"
-                    ></app-ta-input-dropdown>
-                    <!-- 
+                    ></app-ta-input-dropdown> -->
+
                     <app-ta-input-dropdown
-                    formControlName="sharedLabelId"
-                    [template]="'multiselect'"
-                    [multiselectTemplate]="'multiselect-2-columns'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        minLength: 2,
+                        formControlName="sharedLabelId"
+                        [template]="'multiselect'"
+                        [multiselectTemplate]="'multiselect-2-columns'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            minLength: 2,
                             maxLength: 36,
-                        type: 'text',
-                        label: 'Department',
-                        isDropdown: true,
-                        isRequired: true,
-                        textTransform: 'capitalize',
-                        multiselectDropdown: true,
-                        dropdownWidthClass: 'w-col-456'
-                    }"
-                    [options]="sharedDepartments"
-                    [preloadMultiselectItems]="selectedEndorsments"
-                    (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
-                ></app-ta-input-dropdown> -->
+                            type: 'text',
+                            label: 'Department',
+                            isDropdown: true,
+                            textTransform: 'capitalize',
+                            multiselectDropdown: true,
+                            dropdownWidthClass: 'w-col-456'
+                        }"
+                        [options]="sharedDepartments"
+                        [preloadMultiselectItems]="
+                            editData && selectedSharedDepartment
+                        "
+                        (selectedItems)="onSelectDropdown($event)"
+                    ></app-ta-input-dropdown>
                 </div>
             </div>
         </app-ta-checkbox-card>
