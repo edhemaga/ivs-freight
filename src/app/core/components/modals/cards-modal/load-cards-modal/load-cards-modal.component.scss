@@ -1,7 +1,7 @@
 @import 'src/theme/variables.scss';
 
 .form-holder {
-    margin: 4px 0;
+    margin: 8px 0;
     padding: 0 8px 0 0;
 
     .form-radio-btns {
@@ -20,7 +20,7 @@
                 &::before {
                     content: '';
                     position: absolute;
-                    top: 4px;
+                    top: 2px;
                     right: 14px;
                     height: 12px;
                     width: 12px;
@@ -48,6 +48,15 @@
     }
 }
 
+.head-title {
+    line-height: 16px;
+}
+
+.card-color {
+    background-color: $bw-9 !important;
+    height: 1px !important;
+}
+
 .modal-cards {
     .inputs-holder {
         gap: 0px 12px;
@@ -62,6 +71,7 @@
                 font-size: 11px;
                 color: $ta-black;
                 position: absolute;
+                line-height: 14px;
             }
         }
 
@@ -85,12 +95,13 @@
     }
 
     .title-margin {
-        margin-top: 4px;
+        margin-top: 8px;
     }
 
     .back-side-body {
         .checkbox-modal {
-            margin: 4px 0 0 0;
+            margin: 8px 0 0 0;
+            line-height: 18px;
         }
     }
 }
