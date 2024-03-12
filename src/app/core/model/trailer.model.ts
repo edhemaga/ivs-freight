@@ -1,58 +1,9 @@
-// import { Color } from './shared/color';
-
-import { HistoryData } from '../components/shared/history-data/history-data.component';
-
-export interface TrailerTabData {
-    activeTrailers: TrailerData[];
-    allTrailers: TrailerData[];
-    inactiveTrailers: TrailerData[];
-}
-
-export interface TrailerData {
-    guid?: string;
-    id?: number;
-    companyId?: number;
-    companyOwned: number;
-    ownerId?: number;
-    trailerNumber: number;
-    divisionFlag: number;
-    vin: string;
-    status: number;
-    categoryId: number;
-    doc?: TrailerDoc;
-    meta?: any;
-    year?: string;
-    animationType?: string;
-    isSelected?: boolean;
-    ownerName?: string;
-    length?: string;
-}
-
-export interface TrailerDoc {
-    additionalData: TrailerAdditional;
-    licenseData?: TrailerLicense[];
-    inspectionData?: TrailerInspection[];
-    titleData?: TrailerTitle[];
-    trailerLeaseData?: TrailerLease[];
-    activityHistory?: HistoryData[];
-}
-
-export interface TrailerAdditional {
-    axises?: string;
-    color?: ColorData;
-    emptyWeight?: string;
-    engine?: any;
-    insurancePolicyNumber?: string;
-    make?: MakeData;
-    mileage?: string;
-    model?: string;
-    note?: string;
-    tireSize?: number;
-    length?: LengthData;
-    type?: TypeData;
-    year?: string;
-    reeferUnit?: ReeferUnitData;
-}
+import {
+    InspectionResponse,
+    RegistrationResponse,
+    TitleResponse,
+    TrailerResponse,
+} from 'appcoretruckassist';
 
 export interface LengthData {
     id: number;
@@ -133,4 +84,28 @@ export interface TrailerOwner {
     ownerName: string;
     ownerType: string;
     divisionFlag: number;
+}
+
+export interface TrailerDropdown {
+    id: number;
+    name: string;
+    svg: string;
+    folder: string;
+    status: number;
+    active: boolean;
+}
+
+export interface TrailerDetailsConfig {
+    id: number;
+    name: string;
+    template: string;
+    data: any;
+    status: boolean;
+    length?: number;
+}
+
+export interface TrailerConfigData extends TrailerResponse {
+    registrations?: RegistrationResponse[];
+    inspections?: InspectionResponse[];
+    titles?: TitleResponse[];
 }

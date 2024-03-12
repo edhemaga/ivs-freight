@@ -787,6 +787,7 @@ export class TruckassistTableToolbarComponent
         this.tableService.sendUnlockTable({});
         this.tableService.sendToaggleColumn(null);
         this.tableService.sendResetColumns(false);
+        this.tableService.sendDeleteSelectedRows([]);
 
         const tableConfig = localStorage.getItem(
             `table-${this.tableConfigurationType}-Configuration`
