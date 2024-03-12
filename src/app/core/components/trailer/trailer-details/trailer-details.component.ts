@@ -24,11 +24,11 @@ import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/tr
 
 // models
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
-import { TableOptions } from 'src/app/core/model/table';
+import { TableOptions } from 'src/app/core/model/table.model';
 import {
     TrailerConfigData,
     TrailerDetailsConfig,
-} from 'src/app/core/model/trailer';
+} from 'src/app/core/model/trailer.model';
 
 // enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

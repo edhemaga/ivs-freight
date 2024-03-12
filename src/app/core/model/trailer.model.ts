@@ -5,58 +5,6 @@ import {
     TrailerResponse,
 } from 'appcoretruckassist';
 
-export interface TrailerTabData {
-    activeTrailers: TrailerData[];
-    allTrailers: TrailerData[];
-    inactiveTrailers: TrailerData[];
-}
-
-export interface TrailerData {
-    guid?: string;
-    id?: number;
-    companyId?: number;
-    companyOwned: number;
-    ownerId?: number;
-    trailerNumber: number;
-    divisionFlag: number;
-    vin: string;
-    status: number;
-    categoryId: number;
-    doc?: TrailerDoc;
-    meta?: any;
-    year?: string;
-    animationType?: string;
-    isSelected?: boolean;
-    ownerName?: string;
-    length?: string;
-}
-
-export interface TrailerDoc {
-    additionalData: TrailerAdditional;
-    licenseData?: TrailerLicense[];
-    inspectionData?: TrailerInspection[];
-    titleData?: TrailerTitle[];
-    trailerLeaseData?: TrailerLease[];
-    activityHistory?: any[];
-}
-
-export interface TrailerAdditional {
-    axises?: string;
-    color?: ColorData;
-    emptyWeight?: string;
-    engine?: any;
-    insurancePolicyNumber?: string;
-    make?: MakeData;
-    mileage?: string;
-    model?: string;
-    note?: string;
-    tireSize?: number;
-    length?: LengthData;
-    type?: TypeData;
-    year?: string;
-    reeferUnit?: ReeferUnitData;
-}
-
 export interface LengthData {
     id: number;
     key: string;
