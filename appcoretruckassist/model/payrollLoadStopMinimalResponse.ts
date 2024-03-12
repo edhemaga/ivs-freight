@@ -12,6 +12,7 @@
 
 
 export interface PayrollLoadStopMinimalResponse { 
+    id?: number;
     loadStopName?: string | null;
     address?: string | null;
     date?: string | null;

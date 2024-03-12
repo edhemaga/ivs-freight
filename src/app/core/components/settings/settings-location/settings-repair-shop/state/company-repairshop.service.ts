@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RepairShopService } from '../../../../../../../../appcoretruckassist/api/repairShop.service';
-import { RepairShopListResponse } from '../../../../../../../../appcoretruckassist/model/repairShopListResponse';
+import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -21,6 +21,8 @@ export class CompanyRepairShopService {
         distance?: number,
         costFrom?: number,
         costTo?: number,
+        visitedByMe?: boolean,
+        driverId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -28,17 +30,19 @@ export class CompanyRepairShopService {
         search?: string,
         search1?: string,
         search2?: string
-    ): Observable<RepairShopListResponse> {
+    ): Observable<RepairShopNewListResponse> {
         return this.companyRepairShop.apiRepairshopListGet(
             active,
             pinned,
-            true,
+            companyOwned,
             categoryIds,
             _long,
             lat,
             distance,
             costFrom,
             costTo,
+            visitedByMe,
+            driverId,
             pageIndex,
             pageSize,
             companyId,

@@ -1,5 +1,5 @@
 <app-ta-modal
-    [customClass]="'modal-container-L'"
+    [customClass]="'modal-container-M'"
     [disableDelete]="editData?.type?.includes('edit-fo')"
     [editData]="editData"
     [editName]="editData?.data?.textUnit"
@@ -28,7 +28,7 @@
         origin
     >
         <div class="repair-modal-bill-first-row">
-            <ng-container *ngIf="selectedHeaderTab === 2">
+            <ng-container *ngIf="selectedHeaderTab === 1">
                 <app-ta-input
                     formControlName="invoice"
                     [inputConfig]="{
@@ -52,34 +52,36 @@
                     label: 'Date',
                     placeholderIcon: 'date',
                     isRequired: true,
-                    isDisabled: selectedHeaderTab !== 2,
                     customClass: 'datetimeclass'
                 }"
             ></app-ta-input>
 
-            <ng-container *ngIf="selectedHeaderTab === 2">
-                <app-ta-input
+            <ng-container *ngIf="selectedHeaderTab === 1">
+                <app-ta-input-dropdown
                     formControlName="paid"
+                    [canOpenModal]="true"
                     [inputConfig]="{
-                        name: 'Paid',
+                        name: 'paid',
                         type: 'text',
                         label: 'Paid',
-                        isDisabled: false,
+                        isDropdown: true,
                         textTransform: 'uppercase',
-                        isRequired: true,
                         minLength: 1,
-                        maxLength: 22
+                        maxLength: 8,
+                        dropdownWidthClass: 'w-col-145'
                     }"
-                ></app-ta-input>
+                    [options]="paid"
+                    (selectedItem)="onSelectDropDown($event, 'paid')"
+                ></app-ta-input-dropdown>
 
                 <app-ta-input
                     formControlName="datePaid"
                     [inputConfig]="{
-                        name: 'datepaid',
+                        name: 'datepicker',
                         type: 'text',
                         isDropdown: true,
                         label: 'Date Paid',
-                        placeholderIcon: 'Date Paid',
+                        placeholderIcon: 'date',
                         isDisabled: true,
                         isRequired: false,
                         customClass: 'datetimeclass'
@@ -98,7 +100,7 @@
             <app-ta-input-dropdown
                 formControlName="unit"
                 [activeItem]="selectedUnit"
-                [canAddNew]="true"
+                [template]="'svgtext-template'"
                 [canOpenModal]="true"
                 [inputConfig]="{
                     name: 'Input Dropdown vehicle-unit',
@@ -109,27 +111,30 @@
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 8,
-                    dropdownWidthClass: 'w-col-119',
-                    autoFocus:
-                        !editData?.type?.includes('edit') &&
-                        !editData?.storageData?.unit
+                    dropdownWidthClass: 'w-col-145'
                 }"
                 [options]="labelsUnit"
                 (selectedItem)="onSelectDropDown($event, 'repair-unit')"
             ></app-ta-input-dropdown>
 
-            <app-ta-input
+            <app-ta-input-dropdown
                 formControlName="driver"
+                [activeItem]="''"
+                [canOpenModal]="true"
                 [inputConfig]="{
-                    name: 'Driver',
+                    name: 'driver',
                     type: 'text',
                     label: 'Driver',
+                    isDropdown: true,
                     isDisabled: true,
                     textTransform: 'uppercase',
                     minLength: 1,
-                    maxLength: 22
+                    maxLength: 8,
+                    dropdownWidthClass: 'w-col-119'
                 }"
-            ></app-ta-input>
+                [options]="labelsUnit"
+                (selectedItem)="onSelectDropDown($event, 'repair-unit')"
+            ></app-ta-input-dropdown>
 
             <app-ta-input
                 formControlName="odometer"
@@ -138,7 +143,7 @@
                     type: 'text',
                     label: 'Odometer',
                     isRequired: selectedPM[selectedPMIndex]?.id,
-                    isDisabled: selectedHeaderTab !== 2,
+                    isDisabled: selectedHeaderTab !== 1,
                     thousandSeparator: true,
                     minLength: 1,
                     maxLength: 9
@@ -151,7 +156,7 @@
                 <div *ngIf="selectedRepairShop" class="selected-item-container">
                     <div class="selected-item-label">
                         Repair Shop
-                        <span *ngIf="selectedHeaderTab === 2">*</span>
+                        <span *ngIf="selectedHeaderTab === 1">*</span>
                     </div>
                     <p class="selected-item-name">
                         {{ selectedRepairShop?.name }}
@@ -264,7 +269,7 @@
                         type: 'text',
                         label: 'Repair Shop',
                         isDropdown: true,
-                        isRequired: selectedHeaderTab === 2,
+                        isRequired: selectedHeaderTab === 1,
                         dropdownWidthClass: 'w-col-686'
                     }"
                     [options]="labelsRepairShop"
@@ -273,7 +278,7 @@
             </div>
         </div>
         <!-- Fake Table Card -->
-        <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 2 }">
+        <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 1 }">
             <app-ta-custom-card
                 (onActionEvent)="addItems($event)"
                 [cardName]="'Item'"
@@ -289,7 +294,7 @@
                 <div
                     *ngIf="items.length"
                     [ngClass]="
-                        selectedHeaderTab === 2
+                        selectedHeaderTab === 1
                             ? 'common-fake-table-modal-repair-bill-item'
                             : 'common-fake-table-modal-repair-order-item'
                     "
@@ -303,11 +308,11 @@
                             <span *ngIf="headerTabs[1].checked">*</span>
                         </p>
                         <p>PM</p>
-                        <p *ngIf="selectedHeaderTab === 2">
+                        <p *ngIf="selectedHeaderTab === 1">
                             PRICE <span>*</span>
                         </p>
                         <p>QTY <span *ngIf="headerTabs[1].checked">*</span></p>
-                        <p *ngIf="selectedHeaderTab === 2">SUBTOTAL</p>
+                        <p *ngIf="selectedHeaderTab === 1">SUBTOTAL</p>
                     </div>
                     <div class="common-fake-table-body">
                         <div
@@ -414,7 +419,7 @@
                                 </div>
 
                                 <app-ta-input
-                                    *ngIf="selectedHeaderTab === 2"
+                                    *ngIf="selectedHeaderTab === 1"
                                     formControlName="price"
                                     [inputConfig]="{
                                         id: 'Price' + ind,
@@ -459,7 +464,7 @@
                                 ></app-ta-input>
 
                                 <p
-                                    *ngIf="selectedHeaderTab === 2"
+                                    *ngIf="selectedHeaderTab === 1"
                                     class="item-subtotal"
                                 >
                                     {{ subtotal[ind].value | currency }}
@@ -481,7 +486,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="selectedHeaderTab === 2" class="row item-total-row">
+                <div *ngIf="selectedHeaderTab === 1" class="row item-total-row">
                     <p class="item-total">
                         <span class="item-total-text">TOTAL</span>
                         {{ subtotal | priceCalculationArray }}
