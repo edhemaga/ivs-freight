@@ -40,7 +40,7 @@ import { convertDateFromBackend } from '../../../../utils/methods.calculations';
 import moment from 'moment';
 
 // models
-import { TableOptions } from 'src/app/core/model/table';
+import { TableOptions } from 'src/app/core/model/table.model';
 
 @Titles()
 @Component({

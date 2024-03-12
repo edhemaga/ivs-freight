@@ -32,7 +32,8 @@ import { Tags } from '../../modals/load-modal/state/models/load-modal-model/tags
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 
 //Enums
-import { FileTypes, FilesSize } from '../ta-upload-files/enums/files-enum';
+import { FileTypes } from '../ta-upload-files/enums/files-enum';
+import { FileAction } from './enums/ta-upload-files-no-slider.enum';
 
 @Component({
     selector: 'app-ta-upload-files-no-slider',
@@ -61,7 +62,7 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
     @Output() onFileEvent: EventEmitter<FileEvent> =
         new EventEmitter<FileEvent>(null);
-    @Output() closeDropzone = new EventEmitter<{}>();
+    @Output() closeDropzone = new EventEmitter();
 
     //General
     @Input() set files(value: UploadFile[]) {
@@ -70,7 +71,6 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
     @Input() customClassName: string;
     @Input() type: FileTypes;
     @Input() hasNumberOfPages: boolean = false;
-    @Input() size: string = FilesSize.LARGE;
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
     @Input() hasLandscapeOption: boolean = false;
@@ -99,16 +99,13 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
         this.uploadFileService.uploadedFiles$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: { files: UploadFile[]; action: string }) => {
-                if (data) {
-                    this.onUploadFiles(data);
-                }
+                if (data) this.onUploadFiles(data);
             });
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.files && changes.files.currentValue) {
+        if (changes.files && changes.files.currentValue)
             this._files = changes.files.currentValue;
-        }
     }
 
     /**
@@ -117,14 +114,14 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
      */
     public onFileAction(data: { file: UploadFile; action: string }): void {
         switch (data.action) {
-            case 'tag': {
+            case FileAction.TAG:
                 this.onFileEvent.emit({
                     files: [data.file],
                     action: data.action,
                 });
                 break;
-            }
-            case 'delete': {
+
+            case FileAction.DELETE:
                 if (data.file['fileId']) {
                     this.onFileEvent.emit({
                         files: this._files,
@@ -138,11 +135,11 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
                     });
                 }
                 break;
-            }
-            case 'mark-incorrect': {
+
+            case FileAction.MARK_INCORRECT:
                 let incorrectIndx: number;
                 this._files.map((item, index) => {
-                    if (item.fileName == data.file.fileName) {
+                    if (item.fileName === data.file.fileName) {
                         incorrectIndx = index;
                     }
                 });
@@ -153,11 +150,11 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
                     index: incorrectIndx,
                 });
                 break;
-            }
-            case 'mark-correct': {
+
+            case FileAction.MARK_CORRECT:
                 let correctIndx: number;
                 this._files.map((item, index) => {
-                    if (item.fileName == data.file.fileName) {
+                    if (item.fileName === data.file.fileName) {
                         correctIndx = index;
                     }
                 });
@@ -168,21 +165,17 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
                     index: correctIndx,
                 });
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
     public onUploadFiles(data: { files: UploadFile[]; action: string }): void {
+        if (data.action !== FileAction.ADD) return;
+
         const uploadedFiles = [...data.files];
-        switch (data.action) {
-            case 'add': {
-                this.onFileEvent.emit({ files: uploadedFiles, action: 'add' });
-                break;
-            }
-        }
+        this.onFileEvent.emit({ files: uploadedFiles, action: 'add' });
     }
 
     public documentReviewInputEventMethod(data: {

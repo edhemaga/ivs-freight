@@ -11,15 +11,15 @@ import { File } from '../../shared/model/card-table-data.model';
 import { FileEvent } from 'src/app/core/model/file-event.model';
 import { DocumentAction } from './state/enum/settings-document.enum';
 import { tableBodyOptions as TableBodyOptions } from '../../shared/model/tableBody';
-import {
-    INITIAL_TABLE_DATA,
-    SELECTED_TAB,
-} from './state/constants/settings-document.constants';
 import { UploadFile } from '../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
 import {
     CreateWithUploadsResponse,
     FileResponse,
 } from 'appcoretruckassist/model/models';
+import { DocumentActionConfig } from 'src/app/core/model/document-action-config';
+
+// constants
+import { SettingsDocumentsConstants } from './state/constants/settings-document.constants';
 
 @Component({
     selector: 'app-settings-document',
@@ -38,18 +38,17 @@ export class SettingsDocumentComponent implements OnInit {
     public tags: string[] = [];
     public showDropzone: boolean = false;
 
-    selectedTab: string = SELECTED_TAB;
-    tableOptions: TableBodyOptions = {
-        toolbarActions: {
-            showArhiveFilter: false,
-            viewModeOptions: [],
-        },
-        actions: [],
-    };
+    public selectedTab: string = SettingsDocumentsConstants.SELECTED_TAB;
+    public tableOptions: TableBodyOptions =
+        SettingsDocumentsConstants.INITIAL_TABLE_OPTIONS;
+    public tableData = SettingsDocumentsConstants.INITIAL_TABLE_DATA;
+    public resizeObserver: ResizeObserver;
 
-    tableData = INITIAL_TABLE_DATA;
-    columns = [];
-    resizeObserver: ResizeObserver;
+    private documentActionConfig: DocumentActionConfig = {
+        [DocumentAction.ADD]: this.addDocument,
+        [DocumentAction.DELETE]: this.deleteDocument,
+        [DocumentAction.TAG]: this.tagDocument,
+    };
 
     ngOnInit() {
         this.companyDocumentsGet();
@@ -101,7 +100,7 @@ export class SettingsDocumentComponent implements OnInit {
      * It calls the service and updates the array of documents after successfull request.
      * @param event - object containing files to be added
      */
-    private addDocument = (event: FileEvent) => {
+    private addDocument(event: FileEvent): void {
         const dataToSubmit = {
             files: event.files.map((file: UploadFile) => file.realFile),
         };
@@ -122,14 +121,14 @@ export class SettingsDocumentComponent implements OnInit {
                 this.documents.push(...responseFiles);
             });
         this.tableData[0].length = this.documents.length;
-    };
+    }
 
     /**
      * Method used to delete a single document.
      * It calls the service and updates the array of documents after successfull request.
      * @param event - object containing file to be deleted
      */
-    private deleteDocument = (event: FileEvent) => {
+    private deleteDocument(event: FileEvent): void {
         if (!event.deleteId) return;
         const dataToSubmit = {
             filesForDeleteIds: [event.deleteId],
@@ -145,7 +144,7 @@ export class SettingsDocumentComponent implements OnInit {
             });
         // todo: check why tableData is array and find out if we can update it on documents change
         this.tableData[0].length = this.documents.length;
-    };
+    }
 
     /**
      * Method used to tag or untag a single document.
@@ -153,7 +152,7 @@ export class SettingsDocumentComponent implements OnInit {
      * inside ta-upload-files. Consider changing this
      * @param event - object containing file to be tagged, and information about tag
      */
-    private tagDocument = (event: FileEvent) => {
+    private tagDocument(event: FileEvent): void {
         // because of type that has set the files to be an array, we need to pop document
         // on this page, only one document can be tagged at the time
         const fileToUpdate = event.files.pop();
@@ -162,7 +161,7 @@ export class SettingsDocumentComponent implements OnInit {
                 ? fileToUpdate.tagId.pop()
                 : fileToUpdate.tagId;
 
-        let tags = [
+        const tags = [
             {
                 storageId: fileToUpdate.fileId,
                 tagId: tagId,
@@ -170,16 +169,10 @@ export class SettingsDocumentComponent implements OnInit {
         ];
 
         this.tagsService.updateTag({ tags: tags }).subscribe();
-    };
+    }
 
-    private documentActionConfig = {
-        [DocumentAction.ADD]: this.addDocument,
-        [DocumentAction.DELETE]: this.deleteDocument,
-        [DocumentAction.TAG]: this.tagDocument,
-    };
-
-    public onFilesEvent(event: FileEvent) {
-        this.documentActionConfig[event.action](event);
+    public onFilesEvent(event: FileEvent): void {
+        this.documentActionConfig[event.action].bind(this)(event);
     }
 
     ngOnDestroy() {

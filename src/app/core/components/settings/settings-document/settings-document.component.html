@@ -4,13 +4,12 @@
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
             [tableData]="tableData"
-            [columns]="columns"
+            [columns]="[]"
             [selectedTab]="selectedTab"
         ></app-truckassist-table-toolbar>
     </div>
     <app-ta-upload-files-no-slider
         [files]="documents"
-        [size]="'large'"
         [showDropzone]="showDropzone"
         (onFileEvent)="onFilesEvent($event)"
         (closeDropzone)="hideDropzone()"

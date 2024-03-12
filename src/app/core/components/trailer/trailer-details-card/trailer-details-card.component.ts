@@ -28,8 +28,8 @@ import { card_component_animation } from '../../shared/animations/card-component
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 
 // models
-import { TableOptions } from 'src/app/core/model/table';
-import { TrailerDropdown } from 'src/app/core/model/trailer';
+import { TableOptions } from 'src/app/core/model/table.model';
+import { TrailerDropdown } from 'src/app/core/model/trailer.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
 
 @Component({
@@ -243,18 +243,18 @@ export class TrailerDetailsCardComponent
         return a.value.id > b.value.id ? -1 : 1;
     };
 
-    public onOpenCloseCard(openCard: boolean): void {
-        this.ownerCardOpened = openCard;
+    public onOpenCloseCard(isCardOpen: boolean): void {
+        this.ownerCardOpened = isCardOpen;
     }
 
     public getLastSixChars(copyValue): string | string[] {
-        var lastSixChars = copyValue;
+        let lastSixChars = copyValue;
 
         if (copyValue.length > 6) {
             lastSixChars = copyValue.slice(-6);
 
-            let stringLength = copyValue.length;
-            let firsNum = stringLength - 6;
+            const stringLength = copyValue.length;
+            const firsNum = stringLength - 6;
             lastSixChars = [copyValue.slice(0, firsNum), copyValue.slice(-6)];
         }
 
