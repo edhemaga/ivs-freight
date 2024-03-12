@@ -7,12 +7,12 @@ import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import {
     CreateResponse,
     RepairResponse,
-    RepairShopListResponse,
     RepairShopModalResponse,
     RepairShopService,
     RepairListResponse,
     ClusterResponse,
     RepairShopMinimalResponse,
+    RepairShopNewListResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
@@ -359,6 +359,8 @@ export class RepairTService implements OnDestroy {
         distance?: number,
         costFrom?: number,
         costTo?: number,
+        visitedByMe?: boolean,
+        driverId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -366,7 +368,7 @@ export class RepairTService implements OnDestroy {
         search?: string,
         search1?: string,
         search2?: string
-    ): Observable<RepairShopListResponse> {
+    ): Observable<RepairShopNewListResponse> {
         return this.shopServices.apiRepairshopListGet(
             active,
             pinned,
@@ -377,6 +379,8 @@ export class RepairTService implements OnDestroy {
             distance,
             costFrom,
             costTo,
+            visitedByMe,
+            driverId,
             pageIndex,
             pageSize,
             companyId,

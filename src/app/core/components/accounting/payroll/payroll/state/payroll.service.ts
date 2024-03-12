@@ -30,16 +30,17 @@ export class PayrollStoreService {
         private ps: PayrollService
     ) {}
 
+    // This gives error changed on back check what it is
     getPayrollOwnerOpenReport(id: number) {
-        return this.ps.apiPayrollOwnerIdGet(id);
+        // return this.ps.apiPayrollOwnerIdGet(id);
     }
 
     getPayrollCommisionDriverOpenReport(id: number) {
         return this.ps.apiPayrollDriverCommissionGet(id);
     }
-
+    // This gives error as with getPayrollOwnerOpenReport
     getPayrollMileageDriverOpenReport(id: number) {
-        return this.ps.apiPayrollDriverMileageIdGet(id);
+        // return this.ps.apiPayrollDriverMileageIdGet(id);
     }
 
     getPayrollList() {

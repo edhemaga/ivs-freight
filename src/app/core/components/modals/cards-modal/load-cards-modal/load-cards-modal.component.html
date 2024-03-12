@@ -9,7 +9,9 @@
     <div origin>
         <!-- Number of rows -->
         <form [formGroup]="cardsForm">
-            <div class="d-flex justify-content-between form-holder modal-cards">
+            <div
+                class="d-flex justify-content-between form-holder head-title modal-cards align-items-center"
+            >
                 <div class="ta-font-extra-bold title-card-modal">
                     No. of Rows
                 </div>
@@ -57,19 +59,21 @@
             </div>
 
             <!-- Divider -->
-            <div class="divider"></div>
+            <div class="divider card-color"></div>
 
             <!-- Front Side -->
             <div class="modal-cards">
                 <!-- For Front side of cards -->
                 <div class="front-side-body">
-                    <div class="ta-font-extra-bold title-card-modal">
+                    <div
+                        class="ta-font-extra-bold title-card-modal title-margin"
+                    >
                         Front Side
                     </div>
 
                     <div class="d-grid inputs-holder">
                         <div
-                            class="modal-holder d-grid align-items-end d-grid align-items-end"
+                            class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                         >
                             <ng-cotnainer
                                 *ngIf="dataFront[0]?.title !== 'empty'"
@@ -92,7 +96,7 @@
                         </div>
 
                         <div
-                            class="modal-holder d-grid align-items-end d-grid align-items-end"
+                            class="modal-holder-first first-row modal-holder d-grid align-items-end d-grid align-items-end"
                         >
                             <ng-cotnainer
                                 *ngIf="dataFront[1]?.title !== 'empty'"
@@ -114,7 +118,14 @@
                             </app-modal-input-form>
                         </div>
 
-                        <div class="modal-holder d-grid align-items-end">
+                        <div
+                            class="modal-holder sec-row d-grid align-items-end"
+                            [ngClass]="{
+                                'last-row':
+                                    defaultCardsValues.numberOfRows === 4 ||
+                                    defaultCardsValues.numberOfRows === 3
+                            }"
+                        >
                             <ng-cotnainer
                                 *ngIf="dataFront[2]?.title !== 'empty'"
                             >
@@ -138,7 +149,13 @@
                         <ng-container
                             *ngIf="defaultCardsValues.numberOfRows > 3"
                         >
-                            <div class="modal-holder d-grid align-items-end">
+                            <div
+                                class="modal-holder sec-row d-grid align-items-end"
+                                [ngClass]="{
+                                    'last-row':
+                                        defaultCardsValues.numberOfRows === 4
+                                }"
+                            >
                                 <ng-cotnainer
                                     *ngIf="dataFront[3]?.title !== 'empty'"
                                 >
@@ -162,7 +179,14 @@
                         <ng-container
                             *ngIf="defaultCardsValues.numberOfRows > 4"
                         >
-                            <div class="modal-holder d-grid align-items-end">
+                            <div
+                                class="modal-holder sec-row d-grid align-items-end"
+                                [ngClass]="{
+                                    'last-row':
+                                        defaultCardsValues.numberOfRows === 5 ||
+                                        defaultCardsValues.numberOfRows === 6
+                                }"
+                            >
                                 <ng-cotnainer
                                     *ngIf="dataFront[4]?.title !== 'empty'"
                                 >
@@ -187,7 +211,13 @@
                         <ng-container
                             *ngIf="defaultCardsValues.numberOfRows > 5"
                         >
-                            <div class="modal-holder d-grid align-items-end">
+                            <div
+                                class="modal-holder sec-row d-grid align-items-end"
+                                [ngClass]="{
+                                    'last-row':
+                                        defaultCardsValues.numberOfRows === 6
+                                }"
+                            >
                                 <ng-cotnainer
                                     *ngIf="dataFront[5]?.title !== 'empty'"
                                 >
@@ -213,7 +243,7 @@
                 </div>
 
                 <!-- Divider -->
-                <div class="divider"></div>
+                <div class="divider card-color"></div>
 
                 <!-- For Back side of cards -->
                 <div class="back-side-body">
@@ -225,7 +255,9 @@
                     </div>
                     <ng-container *ngIf="cardsForm.get('checked').value">
                         <div class="d-grid inputs-holder">
-                            <div class="modal-holder d-grid align-items-end">
+                            <div
+                                class="modal-holder first-row d-grid align-items-end"
+                            >
                                 <ng-cotnainer
                                     *ngIf="dataBack[0]?.title !== 'empty'"
                                 >
@@ -244,7 +276,9 @@
                                 </app-modal-input-form>
                             </div>
 
-                            <div class="modal-holder d-grid align-items-end">
+                            <div
+                                class="modal-holder first-row d-grid align-items-end"
+                            >
                                 <ng-cotnainer
                                     *ngIf="dataBack[1]?.title !== 'empty'"
                                 >
@@ -264,7 +298,14 @@
                                 </app-modal-input-form>
                             </div>
 
-                            <div class="modal-holder d-grid align-items-end">
+                            <div
+                                class="modal-holder sec-row d-grid align-items-end"
+                                [ngClass]="{
+                                    'last-row':
+                                        defaultCardsValues.numberOfRows === 4 ||
+                                        defaultCardsValues.numberOfRows === 3
+                                }"
+                            >
                                 <ng-cotnainer
                                     *ngIf="dataBack[2]?.title !== 'empty'"
                                 >
@@ -288,7 +329,12 @@
                                 *ngIf="defaultCardsValues.numberOfRows > 3"
                             >
                                 <div
-                                    class="modal-holder d-grid align-items-end"
+                                    class="modal-holder sec-row d-grid align-items-end"
+                                    [ngClass]="{
+                                        'last-row':
+                                            defaultCardsValues.numberOfRows ===
+                                            4
+                                    }"
                                 >
                                     <ng-cotnainer
                                         *ngIf="dataBack[3]?.title !== 'empty'"
@@ -317,7 +363,14 @@
                                 *ngIf="defaultCardsValues.numberOfRows > 4"
                             >
                                 <div
-                                    class="modal-holder d-grid align-items-end"
+                                    class="modal-holder sec-row d-grid align-items-end"
+                                    [ngClass]="{
+                                        'last-row':
+                                            defaultCardsValues.numberOfRows ===
+                                                5 ||
+                                            defaultCardsValues.numberOfRows ===
+                                                6
+                                    }"
                                 >
                                     <ng-cotnainer
                                         *ngIf="dataBack[4]?.title !== 'empty'"
@@ -346,7 +399,12 @@
                                 *ngIf="defaultCardsValues.numberOfRows > 5"
                             >
                                 <div
-                                    class="modal-holder d-grid align-items-end"
+                                    class="modal-holder sec-row d-grid align-items-end"
+                                    [ngClass]="{
+                                        'last-row':
+                                            defaultCardsValues.numberOfRows ===
+                                            6
+                                    }"
                                 >
                                     <ng-cotnainer
                                         *ngIf="dataBack[5]?.title !== 'empty'"

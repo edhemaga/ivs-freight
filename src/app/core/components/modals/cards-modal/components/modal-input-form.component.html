@@ -71,7 +71,12 @@
 <ng-template #cardsModalInputDropdown>
     <div class="table-list-dropdown modals-width">
         <div class="table-inner-modal d-grid">
-            <ng-container *ngFor="let title of filteredCardsModalData">
+            <ng-container
+                *ngFor="
+                    let title of filteredCardsModalData;
+                    trackBy: trackByIdentity
+                "
+            >
                 <div
                     class="title-holder d-flex align-items-center hoverable"
                     [ngClass]="{

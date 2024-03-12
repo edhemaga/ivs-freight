@@ -33,6 +33,7 @@ export interface FuelTransactionResponse {
     supplierId?: number | null;
     total?: number | null;
     fuelTransactionType?: EnumValue;
+    paidWith?: EnumValue;
     fuelItems?: Array<FuelItemResponse> | null;
     files?: Array<FileResponse> | null;
     createdAt?: string;
