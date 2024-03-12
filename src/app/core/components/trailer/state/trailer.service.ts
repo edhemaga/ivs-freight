@@ -1,5 +1,7 @@
-import { Observable, Subject, tap, takeUntil } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, tap, takeUntil } from 'rxjs';
+
+// models
 import {
     GetTrailerModalResponse,
     TrailerListResponse,
@@ -10,17 +12,21 @@ import {
     TitleService,
     InspectionService,
 } from 'appcoretruckassist';
+import { TrailerAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/trailerAutocompleteModelResponse';
+
+// store
 import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
 import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
+import { TrailersMinimalListStore } from './trailer-minimal-list-state/trailer-minimal.store';
+import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
+import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
 import { TrailerActiveQuery } from './trailer-active-state/trailer-active.query';
 import { TrailerInactiveQuery } from './trailer-inactive-state/trailer-inactive.query';
-import { TrailersMinimalListStore } from './trailer-minimal-list-state/trailer-minimal.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
 import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { FormDataService } from '../../../services/formData/form-data.service';
-import { TrailerAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/trailerAutocompleteModelResponse';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {

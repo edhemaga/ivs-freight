@@ -1,6 +1,9 @@
-// import { Color } from './shared/color';
-
-import { HistoryData } from '../components/shared/history-data/history-data.component';
+import {
+    InspectionResponse,
+    RegistrationResponse,
+    TitleResponse,
+    TrailerResponse,
+} from 'appcoretruckassist';
 
 export interface TrailerTabData {
     activeTrailers: TrailerData[];
@@ -34,7 +37,7 @@ export interface TrailerDoc {
     inspectionData?: TrailerInspection[];
     titleData?: TrailerTitle[];
     trailerLeaseData?: TrailerLease[];
-    activityHistory?: HistoryData[];
+    activityHistory?: any[];
 }
 
 export interface TrailerAdditional {
@@ -133,4 +136,28 @@ export interface TrailerOwner {
     ownerName: string;
     ownerType: string;
     divisionFlag: number;
+}
+
+export interface TrailerDropdown {
+    id: number;
+    name: string;
+    svg: string;
+    folder: string;
+    status: number;
+    active: boolean;
+}
+
+export interface TrailerDetailsConfig {
+    id: number;
+    name: string;
+    template: string;
+    data: any;
+    status: boolean;
+    length?: number;
+}
+
+export interface TrailerConfigData extends TrailerResponse {
+    registrations?: RegistrationResponse[];
+    inspections?: InspectionResponse[];
+    titles?: TitleResponse[];
 }

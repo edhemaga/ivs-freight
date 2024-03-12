@@ -39,6 +39,9 @@ import { convertDateFromBackend } from '../../../../utils/methods.calculations';
 // moment
 import moment from 'moment';
 
+// models
+import { TableOptions } from 'src/app/core/model/table';
+
 @Titles()
 @Component({
     selector: 'app-trailer-details-item',
@@ -82,11 +85,10 @@ export class TrailerDetailsItemComponent
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public fhwaNote: UntypedFormControl = new UntypedFormControl();
     public titleNote: UntypedFormControl = new UntypedFormControl();
-    public trailerData: any;
     public svgColorVar: string;
     public trailerName: string;
-    public dataTest: any;
-    public dataFHWA: any;
+    public dataTest: TableOptions;
+    public dataFHWA: TableOptions;
     public toggler: boolean[] = [];
     public currentDate: string;
 
@@ -361,8 +363,8 @@ export class TrailerDetailsItemComponent
         }
     }
 
-    public formatDate(mod): string {
-        return convertDateFromBackend(mod);
+    public formatDate(date: string): string {
+        return convertDateFromBackend(date);
     }
 
     ngOnDestroy(): void {
