@@ -1,10 +1,4 @@
 .confirmation-modal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    //gap: 22px;
-    //padding: 22px 6px;
-
     //new design
     padding: 12px 0px;
     gap: 12px;
@@ -33,13 +27,12 @@
             font-weight: 700;
         }
 
-        &.confirmation-header{
+        &.confirmation-header {
             font-weight: 500;
             font-size: 14px;
             line-height: 18px;
             color: #424242;
         }
-
     }
 
     .confirmation-array-body {
@@ -95,24 +88,22 @@
                     color: #6c6c6c;
                 }
 
-                &.large-text-1{
+                &.large-text-1 {
                     font-style: normal;
                     font-weight: 600;
                     font-size: 18px;
                     line-height: 22px;
 
-                    .inactive-icon-holder{
-                        svg-icon{
-                            svg{
-                                path{
+                    .inactive-icon-holder {
+                        svg-icon {
+                            svg {
+                                path {
                                     fill: #919191;
                                 }
                             }
                         }
                     }
-
                 }
-
             }
 
             .confirmation-text-2 {
@@ -142,7 +133,7 @@
                     }
                 }
 
-                &.large-text-2{
+                &.large-text-2 {
                     font-style: normal;
                     font-weight: 500;
                     font-size: 14px;
@@ -151,7 +142,7 @@
                 }
             }
 
-            .cdl-holder{
+            .cdl-holder {
                 width: 150px;
                 padding-top: 15px;
             }

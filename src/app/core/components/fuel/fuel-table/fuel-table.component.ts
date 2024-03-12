@@ -748,6 +748,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
         ) {
+            console.log('uslo');
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },

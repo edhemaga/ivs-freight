@@ -1,20 +1,32 @@
-import { ImageBase64Service } from '../../../utils/base64.image';
 import { Component, Input, OnInit } from '@angular/core';
-import { ConfirmationService } from './confirmation.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
+
+// services
+import { ImageBase64Service } from '../../../utils/base64.image';
+import { ConfirmationService } from './confirmation.service';
+
+// bootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+// helpers
 import { convertDateFromBackend } from '../../../utils/methods.calculations';
+
+// pipes
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
@@ -70,6 +82,7 @@ export class ConfirmationModalComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('editData', this.editData);
         this.cdlForm = this.formBuilder.group({
             cdlId: [null],
         });

@@ -26,13 +26,13 @@
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
     [showCounter]="true"
-    [headerSvg]="
-        editData?.type === 'multiple delete' ? 'delete' : editData?.type
-    "
     [confirmationData]="editData"
     (confirmationAction)="onModalAction($event)"
 >
-    <div origin class="confirmation-modal">
+    <div
+        origin
+        class="d-flex flex-column justify-content-center confirmation-modal"
+    >
         <!-- Renew CDL -->
         <p
             *ngIf="
