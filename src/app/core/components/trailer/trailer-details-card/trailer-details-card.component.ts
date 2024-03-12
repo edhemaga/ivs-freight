@@ -27,6 +27,11 @@ import { card_component_animation } from '../../shared/animations/card-component
 // store
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 
+// models
+import { TableOptions } from 'src/app/core/model/table';
+import { TrailerDropdown } from 'src/app/core/model/trailer';
+import { TrailerMinimalResponse } from 'appcoretruckassist';
+
 @Component({
     selector: 'app-trailer-details-card',
     templateUrl: './trailer-details-card.component.html',
@@ -68,10 +73,11 @@ export class TrailerDetailsCardComponent
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public inspectionNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
-    public dataEdit: any;
+    public dataEdit: TableOptions;
     public toggleOwner: boolean;
-    public trailerDropDowns: any[] = [];
-    public trailer_list: any[] = this.trailerMinimalQuery.getAll();
+    public trailerDropDowns: TrailerDropdown[] = [];
+    public trailer_list: TrailerMinimalResponse[] =
+        this.trailerMinimalQuery.getAll();
     public trailerIndex: number;
     public ownerCardOpened: boolean = true;
 
@@ -86,9 +92,9 @@ export class TrailerDetailsCardComponent
             this.getTrailerDropdown();
             this.note.patchValue(changes.trailer.currentValue.note);
         }
-        this.trailerMinimalQuery
-            .selectAll()
-            .subscribe((item) => (this.trailer_list = item));
+        this.trailerMinimalQuery.selectAll().subscribe((item) => {
+            this.trailer_list = item;
+        });
     }
 
     ngOnInit(): void {
@@ -169,7 +175,7 @@ export class TrailerDetailsCardComponent
         );
     }
 
-    public onSelectedTrailer(event: any): void {
+    public onSelectedTrailer(event: { id: number }): void {
         if (event && event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
@@ -237,19 +243,19 @@ export class TrailerDetailsCardComponent
         return a.value.id > b.value.id ? -1 : 1;
     };
 
-    public onOpenCloseCard(mod: boolean): void {
-        this.ownerCardOpened = mod;
+    public onOpenCloseCard(openCard: boolean): void {
+        this.ownerCardOpened = openCard;
     }
 
-    public getLastSixChars(mod): string[] {
-        var lastSixChars = mod;
+    public getLastSixChars(copyValue): string | string[] {
+        var lastSixChars = copyValue;
 
-        if (mod.length > 6) {
-            lastSixChars = mod.slice(-6);
+        if (copyValue.length > 6) {
+            lastSixChars = copyValue.slice(-6);
 
-            let stringLength = mod.length;
+            let stringLength = copyValue.length;
             let firsNum = stringLength - 6;
-            lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
+            lastSixChars = [copyValue.slice(0, firsNum), copyValue.slice(-6)];
         }
 
         return lastSixChars;

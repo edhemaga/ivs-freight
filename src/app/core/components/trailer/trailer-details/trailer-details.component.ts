@@ -21,7 +21,17 @@ import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trai
 import { TrailersMinimalListStore } from './../state/trailer-minimal-list-state/trailer-minimal.store';
 import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
+
+// models
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
+import { TableOptions } from 'src/app/core/model/table';
+import {
+    TrailerConfigData,
+    TrailerDetailsConfig,
+} from 'src/app/core/model/trailer';
+
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({
     selector: 'app-trailer-details',
@@ -29,17 +39,16 @@ import { TrailerResponse } from './../../../../../../appcoretruckassist/model/tr
     styleUrls: ['./trailer-details.component.scss'],
     providers: [DetailsPageService],
 })
-
 export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public trailerDetailsConfig: any[] = [];
+    public trailerDetailsConfig: TrailerDetailsConfig[] = [];
     public trailerId: number;
-    public dataHeaderDropDown: any;
-    public trailerObject: any;
+    public dataHeaderDropDown: TableOptions;
+    public trailerObject: TrailerResponse;
     public trailerList: any = this.trailerMinimalQuery.getAll();
     public currentIndex: number = 0;
     public newTrailerId: number;
-    public trailerConfData: any;
+    public trailerConfData: TrailerConfigData;
 
     constructor(
         private router: Router,
@@ -89,9 +98,10 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         return Object.keys(obj).length === 0;
     }
 
-    public trailerConf(data: any): void {
+    public trailerConf(data: TrailerConfigData): void {
         this.DetailsDataService.setNewData(data);
         this.trailerConfData = data;
+
         this.trailerDetailsConfig = [
             {
                 id: 0,
@@ -272,10 +282,9 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.trailerService.changeActiveStatus(id);
     }
 
-    public onTrailerActions(event: any): void {
-        let trailerData = this.trailerObject
-            ? this.trailerObject
-            : this.trailerConfData;
+    public onTrailerActions(event: { id: number; type: string }): void {
+        const trailerData = this.trailerObject ?? this.trailerConfData;
+
         this.dropService.dropActionHeaderTruck(
             event,
             trailerData,
@@ -334,26 +343,26 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             }
         }
     }
-    
+
     /**Function return id */
     public identity(index: number, item: any): number {
         return item.id;
     }
 
     public setTableData(): void {
-        let dataId = this.activated_route.snapshot.params.id;
-        let trailerData = {
+        const dataId = this.activated_route.snapshot.params.id;
+        const trailerData = {
             ...this.trailerItemStore?.getValue()?.entities[dataId],
         };
         this.initTableOptions(trailerData);
-        
+
         this.trailerConf(trailerData);
     }
 
     public actionAnimationSubscribe(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res?.animation) {
                     this.trailerConf(res.data);
                     this.initTableOptions(res.data);
@@ -366,22 +375,20 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'trailer') {
+                        case ConstantStringTableComponentsEnum.DELETE:
+                            if (res.template === 'trailer')
                                 this.deleteTrailerById(res?.id);
-                            }
                             break;
-                        }
-                        case 'activate':
-                        case 'deactivate': {
+
+                        case ConstantStringTableComponentsEnum.ACTIVATE:
+                        case ConstantStringTableComponentsEnum.DEACTIVATE:
                             this.changeTrailerStatus(res?.id);
                             break;
-                        }
-                        default: {
+
+                        default:
                             break;
-                        }
                     }
                 },
             });
@@ -416,8 +423,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         error: () => {},
                     });
                 } else {
-                    //query = this.trailerService.getTrailerById(id);
-
                     this.newTrailerId = id;
                     this.router.navigate([`/list/trailer/${id}/details`]);
                     this.cdRef.detectChanges();
