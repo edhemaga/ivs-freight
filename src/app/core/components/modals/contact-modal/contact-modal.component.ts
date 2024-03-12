@@ -59,12 +59,10 @@ import { ContactModalConstants } from './state/utils/constants/contact-modal.con
 import {
     AddressEntity,
     CompanyContactLabelResponse,
-    CompanyContactModalResponse,
-    CompanyContactResponse,
     ContactColorResponse,
+    ContactEmailResponse,
+    ContactPhoneResponse,
     CreateCompanyContactCommand,
-    CreateContactEmailCommand,
-    CreateContactPhoneCommand,
     CreateResponse,
     DepartmentResponse,
     EnumValue,
@@ -130,11 +128,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public isPhoneRowCreated: boolean = false;
     public isEachPhoneRowValid: boolean = true;
-    public contactPhones: CreateContactPhoneCommand[] = [];
+    public contactPhones: ContactPhoneResponse[] = [];
+    public updateContactPhones: ContactPhoneResponse[] = [];
 
     public isEmailRowCreated: boolean = false;
     public isEachEmailRowValid: boolean = true;
-    public contactEmails: CreateContactEmailCommand[] = [];
+    public contactEmails: ContactEmailResponse[] = [];
+    public updateContactEmails: ContactEmailResponse[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -162,11 +162,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             companyContactLabelId: [null],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
+            contactPhones: [null],
+            contactEmails: [null],
             shared: [true],
             sharedLabelId: [
                 null,
                 [Validators.required, ...departmentValidation],
             ],
+            departmentHelper: [null],
             avatar: [null],
             note: [null],
         });
@@ -184,12 +187,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.addCompanyContact();
-
-                this.modalService.setModalSpinner({
-                    action: ConstantStringEnum.SAVE_AND_ADD_NEW,
-                    status: true,
-                    close: false,
-                });
 
                 this.isAddNewAfterSave = true;
 
@@ -209,9 +206,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                 break;
             case ConstantStringEnum.DELETE:
-                if (this.editData) {
+                if (this.editData)
                     this.deleteCompanyContactById(this.editData.id);
-                }
 
                 break;
             default:
@@ -280,16 +276,24 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
 
     public handleModalTableValueEmit(
-        modalTableDataValue: CreateContactPhoneCommand[],
+        modalTableDataValue: ContactPhoneResponse[] | ContactEmailResponse[],
         type: string
     ): void {
         switch (type) {
             case ConstantStringEnum.PHONE:
                 this.contactPhones = modalTableDataValue;
 
+                this.contactForm
+                    .get(ConstantStringEnum.CONTACT_PHONES)
+                    .patchValue(this.contactPhones);
+
                 break;
             case ConstantStringEnum.EMAIL:
                 this.contactEmails = modalTableDataValue;
+
+                this.contactForm
+                    .get(ConstantStringEnum.CONTACT_EMAILS)
+                    .patchValue(this.contactPhones);
 
                 break;
             default:
@@ -319,7 +323,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.contactService
             .getCompanyContactModal()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: CompanyContactModalResponse) => {
+            .subscribe((res) => {
                 this.contactLabels = res.labels.map((item) => {
                     return { ...item, dropLabel: true };
                 });
@@ -341,8 +345,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .getCompanyContactById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: CompanyContactResponse) => {
-                    console.log('res by id', res);
+                next: (res) => {
+                    console.log('res', res);
                     this.contactForm.patchValue({
                         name: res.name,
                         companyName: res.companyName,
@@ -355,24 +359,25 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                             ? res.address.addressUnit
                             : null,
                         shared: res.shared,
-                        sharedLabelId: 1, // TODO: Ceka se BACK
+                        contactPhones: res.contactPhones,
+                        contactEmails: res.contactEmails,
+                        departmentHelper: JSON.stringify(
+                            res.departmentContacts
+                        ),
                         note: res.note,
                     });
 
                     this.selectedContactLabel = res.companyContactLabel;
-
                     this.selectedAddress = res.address;
-                    // TODO: Ceka se BACK
-                    this.selectedSharedDepartment = res.departmentContacts; /* [
-                        {
-                            id: 3,
-                            name: 'Recruitment',
-                            count: 0,
-                            companyUsers: [],
-                        },
-                    ]; */
+                    this.selectedSharedDepartment = res.departmentContacts;
 
-                    console.log('this.contactForm', this.contactForm);
+                    this.updateContactPhones = res.contactPhones;
+                    this.updateContactEmails = res.contactEmails;
+
+                    this.inputService.changeValidators(
+                        this.contactForm.get('sharedLabelId'),
+                        false
+                    );
 
                     this.changeDetector.detectChanges();
 
@@ -481,21 +486,42 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 addressUnit: addressUnit,
             };
 
+        const contactPhones = this.contactPhones.map((contactPhone, index) => {
+            return {
+                ...contactPhone,
+                primary: !index,
+            };
+        });
+
+        const contactEmails = this.contactEmails.map((contactEmail, index) => {
+            return {
+                ...contactEmail,
+                primary: !index,
+            };
+        });
+
         const newData: UpdateCompanyContactCommand = {
             id: id,
             ...form,
-            companyContactLabelId: this.selectedContactLabel
-                ? this.selectedContactLabel.id
-                : null,
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            companyContactUsers: [
-                {
-                    /*  departmentId: this.selectedSharedDepartment.id,
-                    companyUserIds: [], */
-                },
-            ],
+            companyContactLabelId: this.selectedContactLabel
+                ? this.selectedContactLabel.id
+                : null,
+
+            contactPhones,
+            contactEmails,
+            companyContactUsers: this.selectedSharedDepartment.map(
+                (department) => {
+                    return {
+                        departmentId: department.id,
+                        companyUserIds: department.companyUsers.map(
+                            (companyUser) => companyUser.id
+                        ),
+                    };
+                }
+            ),
         };
 
         this.contactService
@@ -544,14 +570,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public onSelectDropdown(event: DepartmentResponse[]): void {
         this.selectedSharedDepartment = event;
 
-        if (this.selectedSharedDepartment.length) {
+        this.contactForm
+            .get(ConstantStringEnum.DEPARTMENT_HELPER)
+            .patchValue(JSON.stringify(event));
+
+        if (this.selectedSharedDepartment?.length) {
             this.inputService.changeValidators(
-                this.contactForm.get('sharedLabelId'),
+                this.contactForm.get(ConstantStringEnum.SHARED_LABEL_ID),
                 false
             );
         } else {
             this.inputService.changeValidators(
-                this.contactForm.get('sharedLabelId')
+                this.contactForm.get(ConstantStringEnum.SHARED_LABEL_ID)
             );
         }
     }
