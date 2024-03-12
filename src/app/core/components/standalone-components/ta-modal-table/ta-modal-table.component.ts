@@ -43,7 +43,12 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 
 // models
-import { CreateContactPhoneCommand, EnumValue } from 'appcoretruckassist';
+import {
+    ContactEmailResponse,
+    ContactPhoneResponse,
+    CreateContactPhoneCommand,
+    EnumValue,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -65,6 +70,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isPhoneTable: boolean = false;
     @Input() isEmailTable: boolean = false;
     @Input() isNewRowCreated: boolean = false;
+    @Input() modalTableData: ContactPhoneResponse[] | ContactEmailResponse[] =
+        [];
 
     @Output() modalTableValueEmitter = new EventEmitter<
         CreateContactPhoneCommand[]
@@ -105,9 +112,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (changes.modalTableData?.currentValue)
+            this.updateModalTableData(changes.modalTableData.currentValue);
+
         if (
-            !changes.isNewRowCreated.firstChange &&
-            changes.isNewRowCreated.currentValue
+            !changes.isNewRowCreated?.firstChange &&
+            changes.isNewRowCreated?.currentValue
         ) {
             this.createFormArrayRow();
 
@@ -249,6 +259,47 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         this.isInputHoverRows[isInputHoverRowIndex][inputIndex] = isHovering;
     }
 
+    private updateModalTableData(
+        modalTableData: (ContactPhoneResponse | ContactEmailResponse)[]
+    ): void {
+        for (let i = 0; i < modalTableData.length; i++) {
+            this.createFormArrayRow();
+
+            if (this.isPhoneTable) {
+                const data = modalTableData[i] as ContactPhoneResponse;
+
+                this.getFormArray().at(i).patchValue({
+                    phone: data.phone,
+                    phoneExt: data.phoneExt,
+                    contactPhoneType: data.contactPhoneType.name,
+                });
+
+                if (data.phoneExt) this.isContactPhoneExtExist[i] = true;
+
+                if (data.contactPhoneType.name)
+                    this.selectedContactPhoneType[i] = data.contactPhoneType;
+            }
+
+            if (this.isEmailTable) {
+                const data = modalTableData[i] as ContactEmailResponse;
+
+                this.getFormArray().at(i).patchValue({
+                    email: data.email,
+                    contactEmailType: data.contactEmailType.name,
+                });
+
+                this.inputService.customInputValidator(
+                    this.getFormArray().at(i).get(ConstantStringEnum.EMAIL),
+                    ConstantStringEnum.EMAIL,
+                    this.destroy$
+                );
+
+                if (data.contactEmailType.name)
+                    this.selectedContactEmailType[i] = data.contactEmailType;
+            }
+        }
+    }
+
     private checkForInputChanges(): void {
         this.getFormArray()
             .valueChanges.pipe(
@@ -256,7 +307,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 throttleTime(2),
                 takeUntil(this.destroy$)
             )
-            .subscribe((res: CreateContactPhoneCommand[]) => {
+            .subscribe((res) => {
                 if (res) {
                     this.getModalTableDataValue();
 

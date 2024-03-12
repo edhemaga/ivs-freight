@@ -154,6 +154,7 @@
             <app-ta-modal-table
                 [isPhoneTable]="true"
                 [isNewRowCreated]="isPhoneRowCreated"
+                [modalTableData]="updateContactPhones"
                 (modalTableValueEmitter)="
                     handleModalTableValueEmit($event, 'phone')
                 "
@@ -182,6 +183,7 @@
             <app-ta-modal-table
                 [isEmailTable]="true"
                 [isNewRowCreated]="isEmailRowCreated"
+                [modalTableData]="updateContactEmails"
                 (modalTableValueEmitter)="
                     handleModalTableValueEmit($event, 'email')
                 "
@@ -205,24 +207,6 @@
         >
             <div body class="row row-no-m">
                 <div class="col-12">
-                    <!-- <app-ta-input-dropdown
-                        formControlName="sharedLabelId"
-                        [inputConfig]="{
-                            name: 'Input Dropdown Department',
-                            minLength: 2,
-                            maxLength: 36,
-                            type: 'text',
-                            label: 'Department',
-                            isDropdown: true,
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-456'
-                        }"
-                        [options]="sharedDepartments"
-                        [activeItem]="selectedSharedDepartment"
-                        (selectedItem)="onSelectDropdown($event)"
-                    ></app-ta-input-dropdown> -->
-
                     <app-ta-input-dropdown
                         formControlName="sharedLabelId"
                         [template]="'multiselect'"
@@ -239,9 +223,7 @@
                             dropdownWidthClass: 'w-col-456'
                         }"
                         [options]="sharedDepartments"
-                        [preloadMultiselectItems]="
-                            editData && selectedSharedDepartment
-                        "
+                        [preloadMultiselectItems]="selectedSharedDepartment"
                         (selectedItems)="onSelectDropdown($event)"
                     ></app-ta-input-dropdown>
                 </div>

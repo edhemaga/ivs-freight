@@ -11,6 +11,9 @@ export enum ConstantStringEnum {
 
     SHARED = 'shared',
     SHARED_LABEL_ID = 'sharedLabelId',
+    CONTACT_PHONES = 'contactPhones',
+    CONTACT_EMAILS = 'contactEmails',
+    DEPARTMENT_HELPER = 'departmentHelper',
 
     AVATAR = 'avatar',
 }
