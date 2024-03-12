@@ -1,10 +1,3 @@
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertNumberInThousandSep,
-    convertNumberWithCurrencyFormatterToBackend,
-    convertThousanSepInNumber,
-} from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
     FormsModule,
@@ -14,23 +7,45 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { RepairTService } from '../../../repair/state/repair.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
 import {
     NgbActiveModal,
     NgbModule,
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
-import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
-import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
+// helpers
+import {
+    convertDateFromBackend,
+    convertDateToBackend,
+    convertNumberInThousandSep,
+    convertNumberWithCurrencyFormatterToBackend,
+    convertThousanSepInNumber,
+} from '../../../../utils/methods.calculations';
+
+// pipes
+import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
+import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
+import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
+
+// services
+import { RepairTService } from '../../../repair/state/repair.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { FormService } from '../../../../services/form/form.service';
-import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+
+// models
+import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
 import { RepairAutocompleteDescriptionResponse } from '../../../../../../../appcoretruckassist/model/repairAutocompleteDescriptionResponse';
+import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// validators
 import {
     descriptionValidation,
     invoiceValidation,
@@ -38,10 +53,18 @@ import {
     repairOdometerValidation,
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { CommonModule } from '@angular/common';
+
+// constants
+import { RepairOrder } from './state/constants/repair-order.constant';
+
+// enums
+import { RepairValues } from './state/enums/repair.enum';
+
+// components
+import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
+import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
+import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
@@ -50,10 +73,8 @@ import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
-import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
-import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
+import { RepairData } from './state/models/repair.model';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -92,32 +113,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
     public repairOrderForm: UntypedFormGroup;
     public selectedHeaderTab: number = 1;
-    public headerTabs = [
-        {
-            id: 1,
-            name: 'Order',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Bill',
-            checked: false,
-        },
-    ];
-    public typeOfRepair = [
-        {
-            id: 3,
-            name: 'Truck',
-            checked: true,
-        },
-        {
-            id: 4,
-            name: 'Trailer',
-            checked: false,
-        },
-    ];
+
+    public headerTabs: RepairData[] = RepairOrder.HEADER_TABS;
+    public typeOfRepair: RepairData[] = RepairOrder.TYPE_OF_REPAIR;
+
     // Unit
     public labelsUnit: any[] = [];
+    // Paid
+    public paid: { name: string }[] = RepairOrder.PAID;
     public unitTrucks: any[] = [];
     public unitTrailers: any[] = [];
     public selectedUnit: any = null;
@@ -142,8 +145,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
+    private isTruckOrTrailer: string;
+
     //hide icon copy
-    public hideIconIndex = 0;
+    public hideIconIndex: number = 0;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -434,6 +439,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onTypeOfRepair(event: any, action?: string) {
+        this.isTruckOrTrailer = event.name;
         setTimeout(() => {
             this.typeOfRepair = this.typeOfRepair.map((item) => {
                 if (item.id === event.id) {
@@ -474,10 +480,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { items, ...form } = this.repairOrderForm.value;
         switch (action) {
             case 'repair-unit': {
+                console.log(event, action);
                 if (event?.truckNumber) {
                     this.DetailsDataService.setUnitValue(event.truckNumber);
+                    this.getDriverTrailerBySelectedTruck();
                 } else if (event?.trailerNumber) {
                     this.DetailsDataService.setUnitValue(event.trailerNumber);
+                    this.getDriverTrailerBySelectedTruck();
                 }
 
                 if (event?.canOpenModal) {
@@ -593,6 +602,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    private getDriverTrailerBySelectedTruck(): void {
+        console.log(this.isTruckOrTrailer);
+    }
     public activeRepairService(service) {
         service.active = !service.active;
         this.services = [...this.services];

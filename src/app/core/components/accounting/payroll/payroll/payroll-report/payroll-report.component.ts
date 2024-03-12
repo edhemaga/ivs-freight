@@ -13,7 +13,10 @@ import {
 } from '../state/table-settings/owner_open_load';
 import * as AppConst from 'src/app/const';
 import { UntypedFormControl } from '@angular/forms';
-import { miles_driver_open_loads, miles_driver_open_loads_resizable } from '../state/table-settings/miles_driver_open_loads';
+import {
+    miles_driver_open_loads,
+    miles_driver_open_loads_resizable,
+} from '../state/table-settings/miles_driver_open_loads';
 
 @Component({
     selector: 'app-payroll-report',
@@ -59,10 +62,11 @@ export class PayrollReportComponent implements OnInit {
             case 'Owner':
                 this.tableSettings = owner_open_loads;
                 this.tableSettingsResizable = owner_open_loads_resizable;
-                this.ps.getPayrollOwnerOpenReport(data.id).subscribe((res) => {
-                    this.reportMainData = res;
-                    this.dch.detectChanges();
-                });
+                // They changed back in service is same error it need to be checked further to resolve error
+                // this.ps.getPayrollOwnerOpenReport(data.id).subscribe((res) => {
+                //     this.reportMainData = res;
+                //     this.dch.detectChanges();
+                // });
                 break;
             case 'Driver (Commission)':
                 this.tableSettings = commision_driver_open_loads;
@@ -76,12 +80,12 @@ export class PayrollReportComponent implements OnInit {
             case 'Driver (Miles)':
                 this.tableSettings = miles_driver_open_loads;
                 this.tableSettingsResizable = miles_driver_open_loads_resizable;
-                this.ps
-                    .getPayrollMileageDriverOpenReport(data.id)
-                    .subscribe((res) => {
-                        this.reportMainData = res;
-                        this.dch.detectChanges();
-                    });
+                this.ps.getPayrollMileageDriverOpenReport(data.id);
+                // Same error as above
+                // .subscribe((res) => {
+                //     this.reportMainData = res;
+                //     this.dch.detectChanges();
+                // });
                 break;
         }
     }

@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface GetFuelModalResponse { 
-    itemFuel?: Array<EnumValue> | null;
-    fuelCardBrand?: Array<EnumValue> | null;
-    fuelTransactionType?: Array<EnumValue> | null;
-    paidWith?: Array<EnumValue> | null;
+export interface RepairShopContactListResponse { 
+    id?: number;
+    repairShopId?: number;
+    departmentId?: number;
+    departmentName?: string | null;
+    fullName?: string | null;
+    phone?: string | null;
+    phoneExt?: string | null;
+    email?: string | null;
 }
 
