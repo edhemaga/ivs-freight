@@ -205,6 +205,7 @@ model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
 model/brokerModalResponse.ts
+model/brokerPaidInvoiceChartResponse.ts
 model/brokerPaidInvoiceResponse.ts
 model/brokerPaymentHistoryChartResponse.ts
 model/brokerPaymentHistoryResponse.ts
@@ -700,7 +701,6 @@ model/repairByStateListResponse.ts
 model/repairByStateResponse.ts
 model/repairByStateResponsePagination.ts
 model/repairCategoryFilterResponse.ts
-model/repairDriverResponse.ts
 model/repairIntervalResponse.ts
 model/repairItemCommand.ts
 model/repairItemResponse.ts
@@ -711,7 +711,6 @@ model/repairResponsePagination.ts
 model/repairServiceTypeCommand.ts
 model/repairServiceTypeResponse.ts
 model/repairShopContactCommand.ts
-model/repairShopContactListResponse.ts
 model/repairShopContactResponse.ts
 model/repairShopExpensesChartResponse.ts
 model/repairShopExpensesResponse.ts
