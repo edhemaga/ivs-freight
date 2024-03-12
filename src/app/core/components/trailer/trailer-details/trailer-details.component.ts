@@ -1,23 +1,37 @@
-import { TrailersMinimalListStore } from './../state/trailer-minimal-list-state/trailer-minimal.store';
-import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, take, takeUntil } from 'rxjs';
+
+// components
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+
+// services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../state/trailer.service';
-import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+
+// store
 import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
+import { TrailersMinimalListStore } from './../state/trailer-minimal-list-state/trailer-minimal.store';
+import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
+
+// models
+import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
+import { TableOptions } from 'src/app/core/model/table.model';
+import {
+    TrailerConfigData,
+    TrailerDetailsConfig,
+} from 'src/app/core/model/trailer.model';
+
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({
     selector: 'app-trailer-details',
@@ -27,29 +41,33 @@ import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trai
 })
 export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public trailerDetailsConfig: any[] = [];
+    public trailerDetailsConfig: TrailerDetailsConfig[] = [];
     public trailerId: number;
-    public dataHeaderDropDown: any;
-    public trailerObject: any;
+    public dataHeaderDropDown: TableOptions;
+    public trailerObject: TrailerResponse;
     public trailerList: any = this.trailerMinimalQuery.getAll();
     public currentIndex: number = 0;
     public newTrailerId: number;
-    public trailerConfData: any;
+    public trailerConfData: TrailerConfigData;
+
     constructor(
+        private router: Router,
         private activated_route: ActivatedRoute,
+        private cdRef: ChangeDetectorRef,
+
+        // services
         private modalService: ModalService,
         private trailerService: TrailerTService,
-        private cdRef: ChangeDetectorRef,
-        private router: Router,
-        private notificationService: NotificationService,
         private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
-        private trailerDetailListQuery: TrailersDetailsListQuery,
+        private DetailsDataService: DetailsDataService,
         private dropService: DropDownService,
         private confirmationService: ConfirmationService,
+
+        // store
+        private trailerDetailListQuery: TrailersDetailsListQuery,
         private trailerMinimalQuery: TrailersMinimalListQuery,
         private trailerMinimalStore: TrailersMinimalListStore,
-        private DetailsDataService: DetailsDataService,
         private trailerItemStore: TrailerItemStore
     ) {
         let storeData$ = this.trailerItemStore._select((state) => state);
@@ -66,89 +84,24 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        let dataId = this.activated_route.snapshot.params.id;
-        let trailerData = {
-            ...this.trailerItemStore?.getValue()?.entities[dataId],
-        };
-        this.initTableOptions(trailerData);
+        this.setTableData();
 
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res.animation) {
-                    this.trailerConf(res.data);
-                    this.initTableOptions(res.data);
-                    this.cdRef.detectChanges();
-                }
-            });
+        this.actionAnimationSubscribe();
+
         // Confirmation Subscribe
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'trailer') {
-                                this.deleteTrailerById(res?.id);
-                            }
-                            break;
-                        }
-                        case 'activate': 
-                            case 'deactivate':{
-                            this.changeTrailerStatus(res?.id);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
-            });
-        this.detailsPageDriverSer.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                let query;
-                if (this.trailerDetailListQuery.hasEntity(id)) {
-                    query = this.trailerDetailListQuery
-                        .selectEntity(id)
-                        .pipe(take(1));
+        this.confirmationServiceSubscribe();
 
-                    query.pipe(takeUntil(this.destroy$)).subscribe({
-                        next: (res: TrailerResponse) => {
-                            this.currentIndex = this.trailerList.findIndex(
-                                (trailer) => trailer.id === res.id
-                            );
-
-                            this.DetailsDataService.setNewData(res);
-                            this.trailerConf(res);
-                            this.initTableOptions(res);
-                            this.newTrailerId = id;
-                            this.router.navigate([
-                                `/list/trailer/${res.id}/details`,
-                            ]);
-
-                            this.cdRef.detectChanges();
-                        },
-                        error: () => {},
-                    });
-                } else {
-                    //query = this.trailerService.getTrailerById(id);
-
-                    this.newTrailerId = id;
-                    this.router.navigate([`/list/trailer/${id}/details`]);
-                    this.cdRef.detectChanges();
-                }
-            });
-        this.trailerConf(trailerData);
+        this.pageDetailChangeSubscribe();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
     }
 
-    trailerConf(data: any) {
+    public trailerConf(data: TrailerConfigData): void {
         this.DetailsDataService.setNewData(data);
         this.trailerConfData = data;
+
         this.trailerDetailsConfig = [
             {
                 id: 0,
@@ -195,6 +148,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
         this.trailerId = data?.id ? data.id : 0;
     }
+
     /**Function for dots in cards */
     public initTableOptions(data: any): void {
         this.currentIndex = this.trailerList.findIndex(
@@ -285,11 +239,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             export: true,
         };
     }
+
     public getTrailerById(id: number) {
         this.trailerService
             .getTrailerById(id, true)
             .subscribe((item) => (this.trailerObject = item));
     }
+
     public deleteTrailerById(id: number) {
         let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
         let last = this.trailerList.at(-1);
@@ -321,19 +277,14 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 },
             });
     }
+
     public changeTrailerStatus(id: number) {
         this.trailerService.changeActiveStatus(id);
-        /*
-        let trailerData = this.trailerObject ? this.trailerObject : this.trailerConfData;
-        let status = trailerData == 0 ? 'inactive' : 'active';
-        this.trailerService
-            .changeTrailerStatus(id, status)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
-        */
     }
-    public onTrailerActions(event: any) {
-        let trailerData = this.trailerObject ? this.trailerObject : this.trailerConfData;
+
+    public onTrailerActions(event: { id: number; type: string }): void {
+        const trailerData = this.trailerObject ?? this.trailerConfData;
+
         this.dropService.dropActionHeaderTruck(
             event,
             trailerData,
@@ -341,6 +292,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             event.id
         );
     }
+
     public onModalAction(action: string): void {
         let dataId = this.activated_route.snapshot.params.id;
         let trailer = {
@@ -391,10 +343,93 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             }
         }
     }
+
     /**Function return id */
     public identity(index: number, item: any): number {
         return item.id;
     }
+
+    public setTableData(): void {
+        const dataId = this.activated_route.snapshot.params.id;
+        const trailerData = {
+            ...this.trailerItemStore?.getValue()?.entities[dataId],
+        };
+        this.initTableOptions(trailerData);
+
+        this.trailerConf(trailerData);
+    }
+
+    public actionAnimationSubscribe(): void {
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.animation) {
+                    this.trailerConf(res.data);
+                    this.initTableOptions(res.data);
+                    this.cdRef.detectChanges();
+                }
+            });
+    }
+
+    public confirmationServiceSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case ConstantStringTableComponentsEnum.DELETE:
+                            if (res.template === 'trailer')
+                                this.deleteTrailerById(res?.id);
+                            break;
+
+                        case ConstantStringTableComponentsEnum.ACTIVATE:
+                        case ConstantStringTableComponentsEnum.DEACTIVATE:
+                            this.changeTrailerStatus(res?.id);
+                            break;
+
+                        default:
+                            break;
+                    }
+                },
+            });
+    }
+
+    public pageDetailChangeSubscribe(): void {
+        this.detailsPageDriverSer.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+                if (this.trailerDetailListQuery.hasEntity(id)) {
+                    query = this.trailerDetailListQuery
+                        .selectEntity(id)
+                        .pipe(take(1));
+
+                    query.pipe(takeUntil(this.destroy$)).subscribe({
+                        next: (res: TrailerResponse) => {
+                            this.currentIndex = this.trailerList.findIndex(
+                                (trailer) => trailer.id === res.id
+                            );
+
+                            this.DetailsDataService.setNewData(res);
+                            this.trailerConf(res);
+                            this.initTableOptions(res);
+                            this.newTrailerId = id;
+                            this.router.navigate([
+                                `/list/trailer/${res.id}/details`,
+                            ]);
+
+                            this.cdRef.detectChanges();
+                        },
+                        error: () => {},
+                    });
+                } else {
+                    this.newTrailerId = id;
+                    this.router.navigate([`/list/trailer/${id}/details`]);
+                    this.cdRef.detectChanges();
+                }
+            });
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

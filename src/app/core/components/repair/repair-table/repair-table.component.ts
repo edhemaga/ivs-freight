@@ -1000,6 +1000,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.distance,
                 filter.costFrom,
                 filter.costTo,
+                filter.visitedByMe,
+                filter.driverId,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -1112,6 +1114,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 forkJoin([
                     this.repairService.getRepairShopList(
                         1,
+                        undefined,
                         undefined,
                         undefined,
                         undefined,

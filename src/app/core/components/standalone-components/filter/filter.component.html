@@ -677,11 +677,11 @@
                         class="user-main-holder"
                     >
                         <div class="user-profile-img">
-                            <svg-icon src="{{ item.icon }}"></svg-icon>
+                            <svg-icon [src]="item?.icon"></svg-icon>
                         </div>
                         <div class="user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item?.name }} </span>
                             </div>
                         </div>
                     </div>
