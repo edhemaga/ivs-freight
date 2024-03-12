@@ -117,6 +117,8 @@ export interface ShopBackFilterModal {
     categoryIds?: Array<number> | undefined;
     long?: number | undefined;
     lat?: number | undefined;
+    visitedByMe?: boolean;
+    driverId?: number;
     distance?: number | undefined;
     costFrom?: number | undefined;
     costTo?: number | undefined;

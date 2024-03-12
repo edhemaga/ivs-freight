@@ -6,7 +6,7 @@ export interface ShopState extends EntityState<RepairShopResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'repairShop' })
-export class ShopStore extends EntityStore<ShopState> {
+export class ShopStore extends EntityStore<RepairShopResponse> {
     constructor() {
         super();
     }

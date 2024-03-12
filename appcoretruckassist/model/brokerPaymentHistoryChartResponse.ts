@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { TimeSpan } from './timeSpan';
 
 
-export interface GetFuelModalResponse { 
-    itemFuel?: Array<EnumValue> | null;
-    fuelCardBrand?: Array<EnumValue> | null;
-    fuelTransactionType?: Array<EnumValue> | null;
-    paidWith?: Array<EnumValue> | null;
+export interface BrokerPaymentHistoryChartResponse { 
+    averagePayPeriod?: TimeSpan;
+    payTerm?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 

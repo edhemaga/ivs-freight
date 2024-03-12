@@ -9,6 +9,7 @@ import {
     CompanyRepairShopStore,
 } from './company-repairshop.store';
 import { RepairShopListResponse } from '../../../../../../../../appcoretruckassist/model/repairShopListResponse';
+import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -24,12 +25,13 @@ export class companyRepairShopResolver
         private companyRepairShopStore: CompanyRepairShopStore,
         private companyStore: CompanyStore
     ) {}
-    resolve(): Observable<CompanyRepairShopState | boolean> {
+    resolve(): Observable<RepairShopNewListResponse> {
         return this.companyRepairService
             .getRepairShopList(
                 1,
                 undefined,
                 true,
+                undefined,
                 undefined,
                 undefined,
                 undefined,
@@ -43,7 +45,7 @@ export class companyRepairShopResolver
                 catchError(() => {
                     return of('No RepairData data...');
                 }),
-                tap((repairShopPagination: RepairShopListResponse) => {
+                tap((repairShopPagination: RepairShopNewListResponse) => {
                     localStorage.setItem(
                         'repairShopTableCount',
                         JSON.stringify({

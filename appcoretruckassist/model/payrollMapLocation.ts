@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface PayrollMapLocation { 
     loadNumber?: string | null;
     latitude?: number | null;
     longitude?: number | null;
-    type?: number;
+    type?: EnumValue;
     orderInLoad?: number | null;
 }
 
