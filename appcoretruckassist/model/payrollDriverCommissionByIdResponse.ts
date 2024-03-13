@@ -11,8 +11,8 @@
  */
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
+import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
-import { PayrollTotalSum } from './payrollTotalSum';
 import { PayrollMapLocation } from './payrollMapLocation';
 
 
@@ -36,6 +36,6 @@ export interface PayrollDriverCommissionByIdResponse {
     includedLoads?: Array<PayrollLoadMinimalResponse> | null;
     excludedLoads?: Array<PayrollLoadMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
-    sums?: PayrollTotalSum;
+    sums?: PayrollCommissionTotalSum;
 }
 

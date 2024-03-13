@@ -49,7 +49,7 @@ export class SettingsToolbarComponent implements OnInit, OnDestroy {
         let countLocation;
         countLocation =
             this.terminalStore.getValue().ids.length +
-            this.comRShopStore.getValue().ids.length +
+            // this.comRShopStore.getValue().ids.length + IT GIVES ERROR IT NEED FURTHER INVESTIGATION FROM SOMEONE WHO WOKRED ON IT
             this.parkingStore.getValue().ids.length +
             this.officeStore.getValue().ids.length;
 

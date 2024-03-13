@@ -1,10 +1,5 @@
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
-
-import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
     CompanyModalResponse,
     CompanyResponse,
@@ -16,9 +11,19 @@ import {
     UpdateDivisionCompanyCommand,
     UpdateFactoringCompanyCommand,
 } from 'appcoretruckassist';
+
+//Component
+import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '../../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from '../../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
+
+//Service
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { CompanyStore } from './company-settings.store';
 import { FormDataService } from '../../../../services/formData/form-data.service';
+
+//Store
+import { CompanyStore } from './company-settings.store';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {
@@ -103,6 +108,7 @@ export class SettingsCompanyService implements OnDestroy {
                             this.companyStore.update(
                                 ({ id }) => id === company.id,
                                 {
+                                    ...company,
                                     address: company.address,
                                     phone: company.phone,
                                     ein: company.ein,
@@ -111,7 +117,17 @@ export class SettingsCompanyService implements OnDestroy {
                                     logo: company.logo,
                                 }
                             );
+                            const companiesCount = JSON.parse(
+                                localStorage.getItem('user')
+                            );
 
+                            localStorage.setItem(
+                                'user',
+                                JSON.stringify({
+                                    ...companiesCount,
+                                    areSettingsUpdated: true,
+                                })
+                            );
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: company,

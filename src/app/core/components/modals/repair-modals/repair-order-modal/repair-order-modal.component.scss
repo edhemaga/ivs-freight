@@ -37,8 +37,8 @@
 }
 
 .repair-shop-services {
-    grid-template-columns: 105px repeat(5, 104px);
-    grid-template-rows: repeat(1, 26px);
+    grid-template-columns: 120px repeat(4, 120px);
+    grid-template-rows: repeat(2, 26px);
     .repair-shop-service {
         flex-direction: row;
     }

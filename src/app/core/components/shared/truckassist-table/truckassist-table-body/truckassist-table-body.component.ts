@@ -21,27 +21,28 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
-//scrolling
+import { Subject, takeUntil } from 'rxjs';
+
+// scrolling
 import {
     CdkVirtualScrollViewport,
     VIRTUAL_SCROLL_STRATEGY,
 } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 
-//strategy
+// strategy
 import { TableStrategy } from './table_strategy';
-import { Subject, takeUntil } from 'rxjs';
 
-//services
+// services
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { FilesService } from 'src/app/core/services/shared/files.service';
 
-//decorators
+// decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
 
-//components
+// components
 import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
 import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
@@ -50,26 +51,27 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 import { TaInputDropdownTableComponent } from '../../../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 
-//modul
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-//sanitizer
+// sanitizer
 import { DomSanitizer } from '@angular/platform-browser';
 
-//pipes
+// pipes
 import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
+import { TableTextCountPipe } from 'src/app/core/pipes/table-text-count.pipe';
 
-//models
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
+// models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import {
     tableBodyColorLabel,
     tableBodyColumns,
     tableBodyOptions,
 } from '../../model/tableBody';
-
-// Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Titles()
 @Component({
@@ -95,6 +97,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         TaInputDropdownTableComponent,
         NgbModule,
         AppTooltipComponent,
+        TableTextCountPipe,
     ],
     providers: [
         {

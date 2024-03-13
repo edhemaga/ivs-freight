@@ -1,3 +1,6 @@
+@import '/src/theme/variables.scss';
+@import './details_page_ske.scss';
+
 .datetime-dropdown-holder {
     position: relative;
     top: 16px;
@@ -8,7 +11,7 @@
     min-width: 146px;
     max-width: 260px;
     border-radius: 3px;
-    background-color: #f9f9f9;
+    background-color: $bw1;
 
     input {
         width: 100%;
@@ -28,16 +31,16 @@
 
         &::-webkit-input-placeholder {
             /* Edge */
-            color: #919191 !important;
+            color: $bw5 !important;
         }
 
         &:-ms-input-placeholder {
             /* Internet Explorer 10-11 */
-            color: #919191 !important;
+            color: $bw5 !important;
         }
 
         &::placeholder {
-            color: #919191 !important;
+            color: $bw5 !important;
         }
     }
 
@@ -48,7 +51,7 @@
         width: 26px;
         height: 26px;
         min-width: 26px;
-        background-color: #eeeeee;
+        background-color: $bw2;
 
         border-radius: 3px;
         cursor: pointer;
@@ -65,7 +68,7 @@
                 height: 10px;
 
                 path {
-                    fill: #919191;
+                    fill: $bw5;
                 }
             }
         }
@@ -76,12 +79,12 @@
     }
 
     &.active {
-        background-color: #6c6c6c;
+        background-color: $bw6-2;
 
-        border-left: 3px solid #6c6c6c;
+        border-left: 3px solid $bw6-2;
 
         .toggle_picker {
-            background-color: #919191;
+            background-color: $bw5;
 
             svg-icon {
                 display: flex;
@@ -90,7 +93,7 @@
                     transform: rotate(180deg);
 
                     path {
-                        fill: #fff;
+                        fill: $white;
                     }
                 }
             }
@@ -99,16 +102,16 @@
         input {
             &::-webkit-input-placeholder {
                 /* Edge */
-                color: #fff !important;
+                color: $white !important;
             }
 
             &:-ms-input-placeholder {
                 /* Internet Explorer 10-11 */
-                color: #fff !important;
+                color: $white !important;
             }
 
             &::placeholder {
-                color: #fff !important;
+                color: $white !important;
             }
         }
     }
@@ -120,7 +123,7 @@
     width: auto !important;
     padding: 0;
 
-    background-color: #fff;
+    background-color: $white;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
     z-index: 999;
 
@@ -138,7 +141,7 @@
             position: relative;
             width: 48px;
 
-            background-color: #f9f9f9;
+            background-color: $bw1;
 
             .calendar_border {
                 position: absolute;
@@ -147,7 +150,7 @@
                 height: 24px;
                 transform: translateY(-50%);
 
-                background-color: #fff;
+                background-color: $white;
             }
 
             .month-year-item {
@@ -157,19 +160,19 @@
                 height: 24px;
 
                 font-size: 14px;
-                color: #919191;
-                font-weight: 400;
+                color: $bw5;
+                font-weight: $font-regular;
                 text-align: center;
                 text-transform: uppercase;
 
                 .left-year-show {
-                    color: #919191;
+                    color: $bw5;
                     font-size: 14px;
-                    font-weight: 700;
+                    font-weight: $font-bold;
                 }
 
                 &:hover {
-                    color: #6c6c6c;
+                    color: $bw6-2;
                     cursor: pointer;
 
                     background-color: #f1f1f1;
@@ -221,18 +224,18 @@
 
             .selected_time {
                 font-size: 14px;
-                font-weight: 800;
-                color: #6c6c6c;
+                font-weight: $font-extrabold;
+                color: $bw6-2;
             }
 
             .sel_now {
-                color: #536bc2;
+                color: $primary;
                 font-size: 14px;
-                font-weight: 700;
+                font-weight: $font-bold;
 
                 &:hover {
                     cursor: pointer;
-                    color: #5673aa;
+                    color: $light-blue;
                 }
             }
         }
@@ -243,7 +246,7 @@
                 height: 22px;
                 display: flex;
                 align-items: center;
-                background-color: #f7f7f7;
+                background-color: $ta-light-grey-5;
                 margin: 0 4px 2px 4px;
                 border-radius: 2px;
 
@@ -252,11 +255,11 @@
                     text-align: center;
 
                     font-size: 10px;
-                    font-weight: 700;
-                    color: #919191;
+                    font-weight: $font-bold;
+                    color: $bw5;
 
                     &.active {
-                        color: #919191;
+                        color: $bw5;
                     }
                 }
             }
@@ -316,8 +319,8 @@
                         left: 30%;
 
                         font-size: 14px;
-                        font-weight: 400;
-                        color: #919191;
+                        font-weight: $font-regular;
+                        color: $bw5;
                     }
                 }
 
@@ -360,12 +363,12 @@
                         justify-content: center;
 
                         font-size: 14px;
-                        color: #919191;
-                        font-weight: 400;
+                        color: $bw5;
+                        font-weight: $font-regular;
                         user-select: none;
 
                         &:hover {
-                            color: #5673aa;
+                            color: $light-blue;
                             cursor: pointer;
                         }
                     }
@@ -393,23 +396,349 @@
                 border-radius: 2px;
 
                 font-size: 12px;
-                font-weight: 700;
+                font-weight: $font-bold;
                 color: #919191b3;
 
                 &:hover {
-                    background-color: #f3f3f3;
-                    color: #919191;
+                    background-color: $ta-light-grey-4;
+                    color: $bw5;
                     cursor: pointer;
                 }
 
                 &.set_button {
                     width: 57px;
                     text-align: center;
-                    background-color: #6d82c7;
-                    color: #fff;
+                    background-color: $bc1;
+                    color: $white;
 
                     &:hover {
-                        background-color: #536bc2;
+                        background-color: $primary;
+                    }
+                }
+            }
+        }
+    }
+
+    &.dark_picker {
+        background-color: $ta-black-2;
+
+        .month-years-size {
+            width: 40px;
+            background-color: $ta-black;
+
+            .calendar_border {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                height: 26px;
+                transform: translateY(-50%);
+
+                background-color: $ta-black-2;
+            }
+
+            .month-year-item {
+                height: 22px;
+                color: $ta-light-grey-6;
+                font-size: 11px;
+                
+                .left-year-show {
+                    color: $ta-light-grey-6;
+                    font-size: 11px;
+                }
+
+                &.current_month_year {
+                    color: $white;
+
+                    .left-year-show {
+                        color: $white;
+                        font-weight: $font-bold;
+                    }
+                }
+
+                &:hover {
+                    color: $white;
+
+                    background-color: $ta-black-2;
+                }
+            }
+
+            .cdk-virtual-scroll-content-wrapper {
+                padding: 133px 4px 0 4px;
+            }
+        }
+
+        .date_picker {
+            margin: 4px;
+
+            .full-calendars-list {
+                min-width: 184px;
+
+                .calendar_view {
+                    width: 182px;
+                    padding-top: 6px;
+                    background-color: $ta-black-2;
+
+                    .calendar_view_head {
+                        padding: 0 6px;
+
+                        .month_name {
+                            padding: 0 4px;
+
+                            color: $white;
+                            font-size: 11px;
+
+                            .year_hold {
+                                margin-right: 0;
+
+                                color: $white;
+                            }
+                        }
+
+                        .today {
+                            padding: 0 4px;
+
+                            color: $ta-blue-19;
+                            font-size: 11px;
+                            text-transform: uppercase;
+
+                            &:hover {
+                                color: $white;
+                            }
+                        }
+                    }
+
+                    .calendars_list_view {
+                        .calendar_indicator {
+                            margin: 12px 10px;
+
+                            color: $bw5;
+                            font-size: 11px;
+                            text-transform: uppercase;
+
+                            &.current_year {
+                                color: $white;
+                            }
+
+                            &.full_calendar {
+                                margin-bottom: 4px;
+                            }
+                        }
+
+                        .calendar_month_days {
+                            display: grid;
+                            grid-template-columns: repeat(7, 1fr);
+                            gap: 4px;
+                            margin: 0 6px 4px 6px;
+                            padding: 0;
+                
+                            .cal_day {
+                                width: 22px;
+                                height: 22px;
+                                margin: 0;
+                
+                                font-size: 9px;
+                                color: $ta-light-grey-2;
+                                text-align: center;
+                            }
+                        }
+
+                        .month_list {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            column-gap: 4px;
+                            row-gap: 12px;
+                            justify-content: unset;
+                            margin: 0 6px;
+
+                            .month_list_item {
+                                margin: 0;
+                                height: 22px;
+
+                                color: $bw5;
+                                font-size: 11px;
+
+                                &:hover:not(.current_month) {
+                                    background-color: $ta-black;
+                                    color: $white;
+                                    border-radius: 2px;
+                                    cursor: pointer;
+                                }
+                    
+                                &.current_month {
+                                    color: $white;
+                                    background-color: $ta-blue-21;
+                                    border-radius: 2px;
+                                    cursor: pointer;
+                                }
+                            }
+
+                            &.current_year {
+                                .month_list_item {
+                                    color: $white;
+                                }
+                            }
+                        }
+
+                        .calendar_days {
+                            display: grid;
+                            grid-template-columns: repeat(7, 1fr);
+                            gap: 4px;
+                            margin: 0 6px;
+                            padding: 0;
+                            height: auto;
+                
+                            .calendar_day {
+                                width: 22px;
+                                height: 22px;
+                                margin: 0;
+                                color: $bw5;
+                                font-size: 11px;
+                
+                                &.current_day {
+                                    color: $white;
+                                    background-color: $ta-blue-21;
+                                    border-radius: 2px;
+                                }
+                
+                                &.selected_day {
+                                    background-color: $ta-blue-21;
+                                    color: $white;
+                                    border-radius: 2px;
+                                }
+
+                                &.day_in_current_month {
+                                    color: $white;
+                                }
+
+                                &.weekend_day_in_current_month {
+                                    color: $ta-light-grey-6;
+                                }
+                
+                                &:not(.empty_day):not(.selected_day):hover {
+                                    background-color: $ta-black;
+                                    border-radius: 2px;
+                
+                                    cursor: pointer;
+                                    color: $white;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .time_picker {
+            width: 156px;
+            margin: 4px;
+    
+            .time_picker_head {
+                height: 18px;
+                padding: 0 4px;
+                margin-bottom: 4px;
+
+                .selected_time {
+                    color: $white;
+                    font-size: 11px;
+                }
+
+                .sel_now {
+                    color: $ta-blue-19;
+                    font-size: 11px;
+                    text-transform: uppercase;
+                }
+            }
+
+            .time_picker_body {
+                .picker_body_head {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    column-gap: 4px;
+                    margin: 0 0 4px 0;
+                    padding: 2px;
+                    background: none;
+
+                    div {
+                        color: $ta-light-grey-2;
+                        font-size: 9px;
+                        text-align: center;
+                        text-transform: uppercase;
+                    }
+                }
+
+                .picker_body {
+                    height: 176px;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    column-gap: 4px;
+                    padding: 0 2px;
+
+                    &::before {
+                        display: none;
+                    }
+
+                    &::after {
+                        display: none;
+                    }
+
+                    .picker_line {
+                        left: 0;
+                        width: 100%;
+                        background-color: $ta-blue-20;
+
+                        .border_line {
+                            left: 33.3%;
+                            width: 1px;
+                            height: 12px;
+                            margin-top: 5px;
+                            background-color: $ta-blue-19;
+                            opacity: 0.4;
+                            border-radius: 2px;
+
+                            &.line_2 {
+                                left: 66.6%;
+                            }
+                        }
+                    }
+
+                    .scroll_pickers {
+                        margin: 0;
+                        padding: 77px 0;
+
+                        .scroll_item {
+                            color: $ta-light-grey-2;
+                            font-size: 11px;
+
+                            &.active_item {
+                                color: $white;
+                            }
+                        }
+                    }
+                }
+
+                .picker_buttons {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    column-gap: 4px;
+
+                    margin-top: 6px;
+                    padding: 4px 0 0 0;
+                    border-top: 1px solid $ta-black;
+
+                    .pick_button {
+                        height: 18px;
+                        background-color: $ta-black;
+
+                        color: $white;
+                        font-size: 11px;
+                        text-transform: uppercase;
+
+                        border-radius: 1px;
+
+                        &.set_button {
+                            width: auto;
+                            background-color: $ta-blue-14;
+                        }
                     }
                 }
             }
@@ -420,7 +749,7 @@
 .calendar_view {
     width: 260px;
     padding-top: 12px;
-    background-color: #fff;
+    background-color: $white;
 
     .calendar_view_head {
         display: flex;
@@ -430,16 +759,16 @@
 
         .month_name {
             font-size: 12px;
-            font-weight: 700;
-            color: #6c6c6c;
+            font-weight: $font-bold;
+            color: $bw6-2;
 
             .year_hold {
                 margin-right: 5px;
                 text-transform: uppercase;
-                color: #6c6c6c;
+                color: $bw6-2;
 
                 &:hover {
-                    color: #919191;
+                    color: $bw5;
                 }
 
                 cursor: pointer;
@@ -448,12 +777,12 @@
 
         .today {
             font-size: 12px;
-            font-weight: 700;
+            font-weight: $font-bold;
             color: #5673aab3;
             cursor: pointer;
 
             &:hover {
-                color: #3551b7;
+                color: $ta-blue-2;
             }
         }
     }
@@ -481,7 +810,7 @@
 
             font-size: 12px;
             color: #6c6c6c66;
-            font-weight: 700;
+            font-weight: $font-bold;
         }
 
         .calendar_month_days {
@@ -496,8 +825,8 @@
                 margin: 0 6px;
 
                 font-size: 12px;
-                font-weight: 700;
-                color: #b7b7b7;
+                font-weight: $font-bold;
+                color: $bw4;
             }
         }
 
@@ -517,27 +846,27 @@
                 margin: 0 6px;
 
                 font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
+                font-weight: $font-regular;
+                color: $bw6-2;
 
                 &.current_day {
-                    color: #fff;
-                    background-color: #919191;
+                    color: $white;
+                    background-color: $bw5;
                     border-radius: 2px;
                 }
 
                 &.selected_day {
-                    background-color: #919191;
-                    color: #fff;
+                    background-color: $bw5;
+                    color: $white;
                     border-radius: 2px;
                 }
 
                 &:not(.empty_day):not(.selected_day):hover {
-                    background-color: #f7f7f7;
+                    background-color: $ta-light-grey-5;
                     border-radius: 2px;
 
                     cursor: pointer;
-                    color: #3c3c3c;
+                    color: $ta-light-grey-3;
                 }
             }
         }
@@ -558,19 +887,19 @@
             justify-content: center;
             border-radius: 3px;
             font-size: 12px;
-            color: #6c6c6c;
-            font-weight: 400;
+            color: $bw6-2;
+            font-weight: $font-regular;
 
             &:hover:not(.current_month) {
-                background-color: #f7f7f7;
-                color: #3c3c3c;
+                background-color: $ta-light-grey-5;
+                color: $ta-light-grey-3;
                 border-radius: 2px;
                 cursor: pointer;
             }
 
             &.current_month {
-                color: #3c3c3c;
-                background-color: #f7f7f7;
+                color: $ta-light-grey-3;
+                background-color: $ta-light-grey-5;
                 border-radius: 2px;
                 cursor: pointer;
             }

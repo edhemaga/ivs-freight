@@ -1670,7 +1670,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: null,
+                        action: this.addNewAfterSave
+                            ? 'save and add new'
+                            : null,
                         status: false,
                         close: false,
                     });

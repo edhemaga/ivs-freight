@@ -49,6 +49,7 @@ import { ConfirmationModalComponent } from '../../modals/confirmation-modal/conf
 
 // helpers
 import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
 
 // models
 import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
@@ -240,20 +241,11 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        if (!commentTitle || !this.commentHighlight) return commentTitle;
-
-        const sanitizedHtml = commentTitle.replace(
-            new RegExp(this.commentHighlight, 'gi'),
-            (match) => {
-                return (
-                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
-                    match +
-                    '</span>'
-                );
-            }
+        return higlihtComment.higlitsPartOfCommentSearchValue(
+            commentTitle,
+            this.commentHighlight,
+            this.sanitizer
         );
-
-        return this.sanitizer.bypassSecurityTrustHtml(sanitizedHtml) as string;
     }
 
     private sanitazeAvatar(): void {

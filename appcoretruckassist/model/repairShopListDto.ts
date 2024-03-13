@@ -9,8 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
+import { RepairShopContactListResponse } from './repairShopContactListResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
-import { AddressEntity } from './addressEntity';
+import { ReviewResponse } from './reviewResponse';
 
 
 export interface RepairShopListDto { 
@@ -20,7 +22,8 @@ export interface RepairShopListDto {
     phone?: string | null;
     phoneExt?: string | null;
     email?: string | null;
-    address?: AddressEntity;
+    address?: string | null;
+    stateShortName?: string | null;
     pinned?: boolean;
     order?: number;
     cost?: number;
@@ -30,9 +33,22 @@ export interface RepairShopListDto {
     latitude?: number | null;
     longitude?: number | null;
     distance?: number | null;
+    lastVisited?: string | null;
+    timesVisitedByCompany?: number;
+    isClosed?: boolean;
     createdAt?: string;
     updatedAt?: string;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     fileCount?: number | null;
+    bankName?: string | null;
+    routing?: string | null;
+    account?: string | null;
+    contactCount?: number | null;
+    upCount?: number;
+    downCount?: number;
+    bill?: number;
+    openHours?: Array<RepairShopOpenHoursResponse> | null;
+    reviews?: Array<ReviewResponse> | null;
+    contacts?: Array<RepairShopContactListResponse> | null;
 }
 

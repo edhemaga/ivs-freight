@@ -640,8 +640,7 @@
     display: grid;
     grid-template-rows: repeat(2, 26px);
     -moz-column-gap: 12px;
-    column-gap: 12px;
-    row-gap: 6px;
+    gap: 4px;
     align-items: center;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -913,11 +912,11 @@
 //---------------- Repair Modal Bill ----------------
 .repair-modal-bill-first-row {
     display: grid;
-    grid-template-columns: 129px 119px 125px 145px 125px;
+    grid-template-columns: 145px 145px 145px 145px;
     align-items: center;
     grid-template-rows: 26px;
-    -moz-column-gap: 11px;
-    column-gap: 11px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
     margin-bottom: 32px;
 }
 

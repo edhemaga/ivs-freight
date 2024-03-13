@@ -20,6 +20,7 @@ export interface ApiFuelTransactionPostRequest1 {
     FuelStopStoreId?: number;
     TransactionDate?: string;
     Total?: number;
+    PaidWith?: number;
     FuelItems?: Array<CreateFuelItemCommand>;
     Files?: Array<Blob>;
 }

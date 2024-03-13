@@ -11,7 +11,16 @@
                 templateCacheSize: 10
             "
         >
-            <div class="calendar_indicator">
+            <div
+                class="calendar_indicator ta-font-bold"
+                [class.full_calendar]="listPreview === 'full_list'"
+                [class.current_year]="
+                    isMonthAndYearOnly
+                        ? selectedYearFromInput === month.getFullYear()
+                        : selectedYearFromInput === month.getFullYear() &&
+                          selMonth === month.getMonth()
+                "
+            >
                 <span *ngIf="listPreview == 'full_list'"
                     >{{ getMonth(month.getMonth()) }}
                 </span>
@@ -25,127 +34,148 @@
                     [selectedMonth]="month.getMonth()"
                     [year]="selectedYear"
                     [dateTime]="dateTime"
+                    [activeMonth]="
+                        selectedYearFromInput === month.getFullYear() &&
+                        selMonth === month.getMonth()
+                    "
                 ></app-calendar-days>
             </div>
             <div *ngIf="listPreview == 'month_list'">
-                <div class="month_list">
+                <div
+                    class="month_list"
+                    [class.current_year]="
+                        selectedYearFromInput === month.getFullYear()
+                    "
+                >
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(0, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            0 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                0 == selMonth
+                        }"
                     >
                         JAN
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(1, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            1 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                1 == selMonth
+                        }"
                     >
                         FEB
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(2, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            2 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                2 == selMonth
+                        }"
                     >
                         MAR
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(3, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            3 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                3 == selMonth
+                        }"
                     >
                         APR
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(4, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            4 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                4 == selMonth
+                        }"
                     >
                         MAY
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(5, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            5 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                5 == selMonth
+                        }"
                     >
                         JUN
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(6, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            6 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                6 == selMonth
+                        }"
                     >
                         JUL
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(7, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            7 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                7 == selMonth
+                        }"
                     >
                         AUG
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(8, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            8 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                8 == selMonth
+                        }"
                     >
                         SEP
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(9, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            9 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                9 == selMonth
+                        }"
                     >
                         OCT
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(10, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            10 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                10 == selMonth
+                        }"
                     >
                         NOV
                     </div>
                     <div
-                        class="month_list_item"
+                        class="month_list_item ta-font-medium"
                         (click)="setCalendarListPreview(11, indx)"
-                        [class.current_month]="
-                            selectedYearFromInput == month.getFullYear() &&
-                            11 == selMonth
-                        "
+                        [ngClass]="{
+                            'current_month ta-font-bold':
+                                selectedYearFromInput == month.getFullYear() &&
+                                11 == selMonth
+                        }"
                     >
                         DEC
                     </div>

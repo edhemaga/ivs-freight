@@ -9,10 +9,12 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
+
+// services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerTService } from '../state/trailer.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+
+// animations
 import {
     animate,
     style,
@@ -20,9 +22,15 @@ import {
     trigger,
     state,
 } from '@angular/animations';
-import { TrailerItemStore } from '../state/trailer-details-state/trailer-details.store';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
+
+// store
+import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
+
+// models
+import { TableOptions } from 'src/app/core/model/table.model';
+import { TrailerDropdown } from 'src/app/core/model/trailer.model';
+import { TrailerMinimalResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -58,37 +66,38 @@ export class TrailerDetailsCardComponent
 {
     @Input() trailer: any;
     @Input() templateCard: boolean = false;
+
+    private destroy$ = new Subject<void>();
     public note: UntypedFormControl = new UntypedFormControl();
     public titleNote: UntypedFormControl = new UntypedFormControl();
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public inspectionNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
-    public dataEdit: any;
+    public dataEdit: TableOptions;
     public toggleOwner: boolean;
-    public trailerDropDowns: any[] = [];
-    private destroy$ = new Subject<void>();
-    public trailer_list: any[] = this.trailerMinimalQuery.getAll();
-    public trailerIndex: any;
+    public trailerDropDowns: TrailerDropdown[] = [];
+    public trailer_list: TrailerMinimalResponse[] =
+        this.trailerMinimalQuery.getAll();
+    public trailerIndex: number;
     public ownerCardOpened: boolean = true;
+
     constructor(
+        public imageBase64Service: ImageBase64Service,
         private detailsPageDriverSer: DetailsPageService,
-        private trailerMinimalQuery: TrailersMinimalListQuery,
-        private trailerService: TrailerTService,
-        private trailerItemStore: TrailerItemStore,
-        private activated_route: ActivatedRoute,
-        public imageBase64Service: ImageBase64Service
+        private trailerMinimalQuery: TrailersMinimalListQuery
     ) {}
+
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
             this.getTrailerDropdown();
             this.note.patchValue(changes.trailer.currentValue.note);
         }
-        this.trailerMinimalQuery
-            .selectAll()
-            .subscribe((item) => (this.trailer_list = item));
+        this.trailerMinimalQuery.selectAll().subscribe((item) => {
+            this.trailer_list = item;
+        });
     }
+
     ngOnInit(): void {
-        this.getTrailerById(this.trailer.id);
         this.initTableOptions();
         this.getTrailerDropdown();
 
@@ -101,19 +110,11 @@ export class TrailerDetailsCardComponent
         }, 300);
     }
 
-    public getTrailerById(id: number) {
-        /*
-        this.trailerService
-            .getTrailerById(id, true)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.trailer = item));
-            */
-    }
     /**Function for toggle page in cards */
-    /**Function for toggle page in cards */
-    public toggleResizePage(value: number, indexName: string) {
+    public toggleResizePage(value: number, indexName: string): void {
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
+
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.dataEdit = {
@@ -155,7 +156,7 @@ export class TrailerDetailsCardComponent
         return item.id;
     }
 
-    public getTrailerDropdown() {
+    public getTrailerDropdown(): void {
         this.trailerDropDowns = this.trailerMinimalQuery
             .getAll()
             .map((item) => {
@@ -173,7 +174,8 @@ export class TrailerDetailsCardComponent
             (x, y) => Number(y.status) - Number(x.status)
         );
     }
-    public onSelectedTrailer(event: any) {
+
+    public onSelectedTrailer(event: { id: number }): void {
         if (event && event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
@@ -194,7 +196,8 @@ export class TrailerDetailsCardComponent
             );
         }
     }
-    public onChangeTrailer(action: string) {
+
+    public onChangeTrailer(action: string): void {
         let currentIndex = this.trailerDropDowns.findIndex(
             (trailer) => trailer.id === this.trailer.id
         );
@@ -240,20 +243,21 @@ export class TrailerDetailsCardComponent
         return a.value.id > b.value.id ? -1 : 1;
     };
 
-    public onOpenCloseCard(mod: any) {
-        this.ownerCardOpened = mod;
+    public onOpenCloseCard(isCardOpen: boolean): void {
+        this.ownerCardOpened = isCardOpen;
     }
 
-    getLastSixChars(mod) {
-        var lastSixChars = mod;
+    public getLastSixChars(copyValue): string | string[] {
+        let lastSixChars = copyValue;
 
-        if (mod.length > 6) {
-            lastSixChars = mod.slice(-6);
+        if (copyValue.length > 6) {
+            lastSixChars = copyValue.slice(-6);
 
-            let stringLength = mod.length;
-            let firsNum = stringLength - 6;
-            lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
+            const stringLength = copyValue.length;
+            const firsNum = stringLength - 6;
+            lastSixChars = [copyValue.slice(0, firsNum), copyValue.slice(-6)];
         }
+
         return lastSixChars;
     }
 

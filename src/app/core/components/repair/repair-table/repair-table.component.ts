@@ -43,7 +43,10 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from '../../shared/model/table-components/all-tables.modal';
-import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from '../../shared/model/card-data.model';
 import {
     DropdownItem,
     ToolbarActions,
@@ -77,7 +80,7 @@ import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-import { DisplayRepairConfiguration } from '../repair-card-data';
+import { DisplayRepairConfiguration } from '../state/constants/repair-card.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
@@ -997,6 +1000,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.distance,
                 filter.costFrom,
                 filter.costTo,
+                filter.visitedByMe,
+                filter.driverId,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -1109,6 +1114,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 forkJoin([
                     this.repairService.getRepairShopList(
                         1,
+                        undefined,
                         undefined,
                         undefined,
                         undefined,
