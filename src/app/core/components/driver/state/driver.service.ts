@@ -509,4 +509,8 @@ export class DriverTService {
     public getDriverMvrsByDriverId(driverId: number) {
         return this.MvrService.apiMvrListGet(driverId);
     }
+
+    public getDriverPayroll(id: number, chartType: number) {
+        return this.driverService.apiDriverPayrollGet(id, chartType);
+    }
 }

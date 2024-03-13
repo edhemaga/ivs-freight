@@ -199,10 +199,15 @@ model/brokerIntervalResponse.ts
 model/brokerInvoiceAgeingResponse.ts
 model/brokerLoadModalResponse.ts
 model/brokerLoadsResponse.ts
+model/brokerMileageRateChartResponse.ts
+model/brokerMileageRateResponse.ts
 model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
 model/brokerModalResponse.ts
+model/brokerPaidInvoiceResponse.ts
+model/brokerPaymentHistoryChartResponse.ts
+model/brokerPaymentHistoryResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
 model/brokerShortResponse.ts
@@ -395,6 +400,8 @@ model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
 model/driverMinimalResponsePagination.ts
+model/driverPayrollChartResponse.ts
+model/driverPayrollResponse.ts
 model/driverResponse.ts
 model/driverRightsFeedbackResponse.ts
 model/driverShortResponse.ts
@@ -437,6 +444,8 @@ model/fuelIntervalResponse.ts
 model/fuelItemResponse.ts
 model/fuelModalStopResponse.ts
 model/fuelModalStopResponsePagination.ts
+model/fuelStopExpensesChartResponse.ts
+model/fuelStopExpensesResponse.ts
 model/fuelStopFranchiseListResponse.ts
 model/fuelStopFranchiseMinimalResponse.ts
 model/fuelStopFranchiseMinimalResponsePagination.ts

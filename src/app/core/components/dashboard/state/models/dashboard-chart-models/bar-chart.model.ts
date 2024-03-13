@@ -22,6 +22,15 @@ export interface BarChartAxes {
         maxValue: number;
         stepSize: number;
         showGridLines: boolean;
+        decimal?: boolean;
+    };
+    verticalRightAxes?: {
+        visible: boolean;
+        minValue: number;
+        maxValue: number;
+        stepSize: number;
+        showGridLines: boolean;
+        decimal?: boolean;
     };
     horizontalAxes: {
         visible: boolean;

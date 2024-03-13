@@ -6,13 +6,24 @@ interface ChartDefaultConfig {
     type: string;
     data: number[];
     dataPercentages?: number[];
-    backgroundColor: string | string[];
-    borderColor: string | string;
-    hoverBackgroundColor: string | string[];
-    hoverBorderColor: string;
+    backgroundColor?: string | string[];
+    borderColor?: string | string;
+    hoverBackgroundColor?: string | string[];
+    hoverBorderColor?: string;
     yAxisID?: string;
     label?: string;
     id?: string;
+    pointBackgroundColor?: string;
+    pointHoverBackgroundColor?: string;
+    pointHoverBorderColor?: string;
+    pointHoverRadius?: number;
+    pointBorderWidth?: number;
+    fill?: boolean;
+    hasGradiendBackground?: boolean;
+    colors?: string[];
+    hoverColors?: string[];
+    barThickness?: number;
+    maxBarThickness?: number;
 }
 
 export interface ChartInitProperties {
@@ -44,12 +55,18 @@ export interface DoughnutChartConfig extends ChartConfiguration {
     defaultType: ChartType;
     chartWidth: string;
     chartHeight: string;
-    removeChartMargin: boolean;
+    removeChartMargin?: boolean;
     dataLabels: string[] | string[][];
     driversList?: TopRatedListItem[];
     allowAnimation: boolean;
     noChartImage: string;
     dontUseResponsive?: boolean;
+    annotation?: number;
+    onHoverAnnotation?: boolean;
+    hoverTimeDisplay?: boolean;
+    animationOnlyOnLoad?: boolean;
+    offset?: boolean;
+    hasValue?: boolean;
 }
 
 export interface DoughnutChart extends Chart {
