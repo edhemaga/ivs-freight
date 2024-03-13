@@ -41,8 +41,6 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
 
-                    console.log('config', config);
-
                     localStorage.setItem(
                         `table-${tableConfig.tableType}-Configuration`,
                         JSON.stringify(config)
