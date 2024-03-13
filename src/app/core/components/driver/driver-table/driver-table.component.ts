@@ -834,12 +834,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCdlDetailEndorsment: data.cdls[0]?.cdlEndorsements.map(
-                (endorsement) => endorsement.code
-            ),
-            tableCdlDetailRestriction: data.cdls[0]?.cdlRestrictions.map(
-                (restriction) => restriction.code
-            ),
+            tableCdlDetailEndorsment: data.cdls
+                ? data.cdls[0]?.cdlEndorsements.map(
+                      (endorsement) => endorsement.code
+                  )
+                : null,
+            tableCdlDetailRestriction: data.cdls
+                ? data.cdls[0]?.cdlRestrictions.map(
+                      (restriction) => restriction.code
+                  )
+                : null,
             tableCdlDetailExpiration: {
                 expirationDays:
                     data?.cdlExpirationDays || data?.cdlExpirationDays === 0
