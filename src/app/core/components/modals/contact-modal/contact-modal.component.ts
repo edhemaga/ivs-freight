@@ -169,9 +169,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 null,
                 [Validators.required, ...departmentValidation],
             ],
-            departmentHelper: [null],
             avatar: [null],
             note: [null],
+            departmentHelper: [null],
+            contactPhonesHelper: [null],
+            contactEmailsHelper: [null],
         });
     }
 
@@ -287,13 +289,21 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .get(ConstantStringEnum.CONTACT_PHONES)
                     .patchValue(this.contactPhones);
 
+                this.contactForm
+                    .get('contactPhonesHelper')
+                    .patchValue(JSON.stringify(this.contactPhones));
+
                 break;
             case ConstantStringEnum.EMAIL:
                 this.contactEmails = modalTableDataValue;
 
                 this.contactForm
                     .get(ConstantStringEnum.CONTACT_EMAILS)
-                    .patchValue(this.contactPhones);
+                    .patchValue(this.contactEmails);
+
+                this.contactForm
+                    .get('contactEmailsHelper')
+                    .patchValue(JSON.stringify(this.contactEmails));
 
                 break;
             default:
@@ -364,6 +374,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         departmentHelper: JSON.stringify(
                             res.departmentContacts
                         ),
+                        contactPhonesHelper: JSON.stringify(res.contactPhones),
+                        contactEmailsHelper: JSON.stringify(res.contactEmails),
                         note: res.note,
                     });
 
@@ -375,7 +387,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.updateContactEmails = res.contactEmails;
 
                     this.inputService.changeValidators(
-                        this.contactForm.get('sharedLabelId'),
+                        this.contactForm.get(
+                            ConstantStringEnum.SHARED_LABEL_ID
+                        ),
                         false
                     );
 
