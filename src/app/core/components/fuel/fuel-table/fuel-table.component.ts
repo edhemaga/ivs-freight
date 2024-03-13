@@ -255,15 +255,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
+                    console.log('REEES', res);
+
                     switch (res.type) {
                         case ConstantStringTableComponentsEnum.DELETE:
                             this.multipleDeleteTransactions([res.id]);
-                            break;
 
+                            console.log('uslo');
+
+                            break;
                         case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
                             this.multipleDeleteTransactions(res.array);
-                            break;
 
+                            break;
                         default:
                             break;
                     }
@@ -754,7 +758,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.FUEL,
+                    template: ConstantStringTableComponentsEnum.FUEL_STOP_2,
                     type: ConstantStringTableComponentsEnum.DELETE,
                     svg: true,
                 }

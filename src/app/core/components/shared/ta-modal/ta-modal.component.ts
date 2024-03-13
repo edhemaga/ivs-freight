@@ -119,6 +119,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() bottomDivider: boolean = true;
     @Input() isConvertedToTemplate?: boolean = false;
     @Input() isStepper: boolean = false;
+    @Input() isCloseIconRemoved: boolean = false;
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;

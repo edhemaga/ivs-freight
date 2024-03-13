@@ -128,11 +128,7 @@
 
                     <!-- Header close -->
 
-                    <ng-container
-                        *ngIf="
-                            this.editData?.type !== 'edit-company-first-login'
-                        "
-                    >
+                    <ng-container *ngIf="!isCloseIconRemoved">
                         <svg-icon
                             class="modal-close"
                             src="assets/svg/ic_x.svg"

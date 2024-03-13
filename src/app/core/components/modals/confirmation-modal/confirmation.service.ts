@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+
+// models
 import { Confirmation } from './confirmation-modal.component';
 
 @Injectable({
@@ -9,13 +11,11 @@ export class ConfirmationService {
     private confirmationDataSubject: Subject<Confirmation> =
         new Subject<Confirmation>();
 
-    public get confirmationData$() {
+    public get confirmationData$(): Observable<Confirmation> {
         return this.confirmationDataSubject.asObservable();
     }
 
-    public sendConfirmationData(data: Confirmation) {
+    public sendConfirmationData(data: Confirmation): void {
         this.confirmationDataSubject.next(data);
     }
-
-    constructor() {}
 }

@@ -33,6 +33,7 @@
     [customClass]="'modal-container-M'"
     [dropZoneConfig]="dropZoneConfig"
     [isStepper]="isSetupCompany"
+    [isCloseIconRemoved]="editData?.type === 'edit-company-first-login'"
     (action)="onModalAction($event)"
 >
     <div origin>
