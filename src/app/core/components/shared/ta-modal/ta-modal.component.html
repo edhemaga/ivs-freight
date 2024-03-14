@@ -578,6 +578,7 @@
                     }"
                 >
                     <!-- Cancel -->
+
                     <ng-container
                         *ngIf="confirmationData.subType !== 'cdl void'"
                     >
@@ -586,11 +587,12 @@
                             class="modal-cancel-btn"
                             type="button"
                         >
-                            Cancel
+                            No
                         </button>
                     </ng-container>
 
                     <!-- Delete -->
+
                     <ng-container
                         *ngIf="
                             ['delete', 'multiple delete'].includes(
@@ -609,11 +611,12 @@
                             class="modal-delete-btn modal-red-btn modal-confirmation-btn"
                             type="button"
                         >
-                            Delete
+                            Yes
                         </button>
                     </ng-container>
 
                     <!-- Activate -->
+
                     <ng-container *ngIf="confirmationData?.type === 'activate'">
                         <button
                             (click)="onAction('activate')"
