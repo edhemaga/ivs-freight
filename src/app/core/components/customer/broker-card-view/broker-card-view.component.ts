@@ -599,17 +599,6 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
         config.dataLabels = [];
 
         if (item.brokerMileageRateChartResponse) {
-            item.averageRate = 20;
-            item.brokerMileageRateChartResponse[2].averageRate = 20;
-            item.brokerMileageRateChartResponse[2].lowestRate = 10;
-            item.brokerMileageRateChartResponse[2].highestRate = 30;
-
-            item.brokerMileageRateChartResponse[3].averageRate = 25;
-            item.brokerMileageRateChartResponse[3].lowestRate = 15;
-            item.brokerMileageRateChartResponse[3].highestRate = 35;
-        }
-
-        if (item.brokerMileageRateChartResponse) {
             legend[0].value = item?.averageRate ?? 0;
             legend[1].value = item?.highestRate ?? 0;
             legend[2].value = item?.lowestRate ?? 0;
@@ -620,17 +609,6 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
                 item?.lowestRate ?? 0,
             ];
         } else if (item.brokerPaymentHistoryChartResponse) {
-            item.averagePayPeriod = 30;
-            item.payTerm = 20;
-
-            item.brokerPaymentHistoryChartResponse[1].averagePayPeriod = 20;
-            item.brokerPaymentHistoryChartResponse[2].averagePayPeriod = 10;
-            item.brokerPaymentHistoryChartResponse[0].averagePayPeriod = 30;
-            item.brokerPaymentHistoryChartResponse[4].averagePayPeriod = 40;
-            item.brokerPaymentHistoryChartResponse[5].averagePayPeriod = 11;
-            item.brokerPaymentHistoryChartResponse[6].averagePayPeriod = 8;
-            item.brokerPaymentHistoryChartResponse[7].averagePayPeriod = 24;
-
             legend[0].value = item?.averagePayPeriod ?? 0;
             legend[1].value = item?.payTerm ?? 0;
 
