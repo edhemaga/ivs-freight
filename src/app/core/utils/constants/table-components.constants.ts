@@ -1,4 +1,4 @@
-//interfaces
+// models
 import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
@@ -18,10 +18,8 @@ import { FilterOptions } from '../../components/truck/truck.modal';
 import { OwnerBackFilterQuery } from '../../components/owner/owner.modal';
 import { SortTypes } from '../../model/fuel';
 
-//enums
+// enums
 import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
-
-// Load page
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {

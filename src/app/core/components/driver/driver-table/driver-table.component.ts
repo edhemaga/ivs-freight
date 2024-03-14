@@ -776,6 +776,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapDriverData(data): DriverResponse {
         if (!data?.avatar) this.mapingIndex++;
 
+        console.log('data', data);
+
         return {
             ...data,
             isSelected: false,
