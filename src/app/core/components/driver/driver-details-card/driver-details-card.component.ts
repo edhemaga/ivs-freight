@@ -58,6 +58,7 @@ import {
 } from '../../standalone-components/ta-chart/enums/chart-enums';
 import { SETTINGS_ARROW_ACTIONS } from '../../settings/settings-company/utils/enums/settings.enum';
 import { BrokerTabsEnum } from '../../customer/broker-card-view/state/enums/broker-enums';
+import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
 
 //Models
 import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
@@ -81,7 +82,6 @@ import { DriverDateInfo, DriverDropdowns } from './state/models/driver-models';
 
 //Constants
 import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
-import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
 
 @Component({
     selector: 'app-driver-details-card',
