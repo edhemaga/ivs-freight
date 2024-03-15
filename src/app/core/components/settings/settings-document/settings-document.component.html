@@ -4,22 +4,18 @@
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
             [tableData]="tableData"
-            [columns]="columns"
+            [columns]="[]"
             [selectedTab]="selectedTab"
         ></app-truckassist-table-toolbar>
     </div>
-    <app-ta-upload-files
-        #uploadFiles
+    <app-ta-upload-files-no-slider
         [files]="documents"
-        [size]="'large'"
         [showDropzone]="showDropzone"
-        [dontUseSlider]="true"
         (onFileEvent)="onFilesEvent($event)"
         (closeDropzone)="hideDropzone()"
         [customClassName]="'company-documents'"
         [hasTagsDropdown]="true"
         [dropzoneFocus]="true"
         [tags]="tags"
-        [onlyOneTagFile]="true"
-    ></app-ta-upload-files>
+    ></app-ta-upload-files-no-slider>
 </div>
