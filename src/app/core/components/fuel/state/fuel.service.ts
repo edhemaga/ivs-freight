@@ -1,21 +1,29 @@
-import { Observable } from 'rxjs';
-import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
+import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
+
+//Models
+import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import {
     FuelService,
     FuelStopListResponse,
     FuelTransactionListResponse,
 } from 'appcoretruckassist';
-
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { FuelStore } from './fule-state/fuel-state.store';
 import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { ClusterResponse } from '../../../../../../appcoretruckassist/model/clusterResponse';
+
+//Service
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+//Store
+import { FuelStore } from './fule-state/fuel-state.store';
+
+//Enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -367,6 +375,37 @@ export class FuelTService {
             search,
             search1,
             search2
+        );
+    }
+
+    public deleteFuelList(ids: number[]): Observable<void> {
+        return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
+            tap(() => {
+                ids.forEach((id) => {
+                    this.fuelStore.update((store) => ({
+                        fuelTransactions: store.fuelTransactions.filter(
+                            (transaction: FuelTransactionResponse) =>
+                                transaction.id !== id
+                        ),
+                        fuelStops: store.fuelStops.filter(
+                            (stop: FuelStopResponse) => stop.id !== id
+                        ),
+                    }));
+                });
+
+                let tableCount = JSON.parse(
+                    localStorage.getItem(
+                        ConstantStringTableComponentsEnum.FUEL_TABLE_COUNT
+                    )
+                );
+                tableCount.fuelTransactions =
+                    this.fuelStore.getValue().fuelTransactions.length;
+
+                localStorage.setItem(
+                    ConstantStringTableComponentsEnum.FUEL_TABLE_COUNT,
+                    JSON.stringify(tableCount)
+                );
+            })
         );
     }
 }

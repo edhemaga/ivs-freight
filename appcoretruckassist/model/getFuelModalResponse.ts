@@ -16,5 +16,6 @@ export interface GetFuelModalResponse {
     itemFuel?: Array<EnumValue> | null;
     fuelCardBrand?: Array<EnumValue> | null;
     fuelTransactionType?: Array<EnumValue> | null;
+    paidWith?: Array<EnumValue> | null;
 }
 

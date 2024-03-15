@@ -34,7 +34,10 @@ import {
     TraillerData,
     backFilterQueryInterface,
 } from '../trailer.modal';
-import { CardRows, TableOptionsInterface } from '../../shared/model/cardData';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from '../../shared/model/card-data.model';
 
 // Store
 import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';
@@ -107,6 +110,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -1152,7 +1156,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private multipleDeleteTrailers(response): void {
         this.trailerService
-            .deleteTrailerList(response)
+            .deleteTrailerList(response, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 let trailerNumber: string =

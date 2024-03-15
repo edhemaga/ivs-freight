@@ -1,16 +1,25 @@
 import { Subject, takeUntil } from 'rxjs';
-import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+} from '@angular/core';
 import {
     NgbModule,
     NgbPopoverModule,
     NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '../../shared/shared.module';
 
 // models
 import {
@@ -21,6 +30,7 @@ import {
     Rating,
 } from '../../shared/model/card-table-data.model';
 import { Tabs } from '../../shared/model/modal-tabs';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // services
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -34,6 +44,9 @@ import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-inp
 
 // constants
 import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
+
+// helpers
+import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
@@ -49,8 +62,10 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
         AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,
-        FormsModule,
         SafeHtmlPipe,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
 
         // Components
         TaCommentComponent,
@@ -61,13 +76,19 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent implements OnDestroy {
-    public _data: CardDetails;
     @Input() set data(value: CardDetails) {
         this._data = value;
         this.filteredData = { ...value };
 
         this.cdr.detectChanges();
     }
+
+    public _data: CardDetails;
+    public filteredData: CardDetails;
+
+    @Input() defaultValue: CardRows;
+    @Input() emptyValue: boolean;
+
     @Input() svg: string;
 
     @Input() type: string;
@@ -79,8 +100,6 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
     public tooltip: NgbTooltip;
     public dropDownActive: number;
-
-    public filteredData: CardDetails;
 
     public filteredTruckCount: number;
     public filteredTrailerCount: number;
@@ -94,11 +113,14 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
     public loggedUserCommented: boolean;
 
+    public commentHighlight: string;
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
         public imageBase64Service: ImageBase64Service,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer
     ) {}
 
     ngOnInit() {
@@ -157,7 +179,6 @@ export class TaInputDropdownTableComponent implements OnDestroy {
             // Check if the user has typed at least 2 characters
             if (searchParam.length >= 2) {
                 this.tabs = this.tabs.map((tab) => {
-                    console.log(tab);
                     if (tab.id === 1) {
                         return { ...tab, checked: true };
                     } else {
@@ -304,6 +325,14 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         }
     }
 
+    public higlitsPartOfCommentSearchValue(commentTitle: string): string {
+        return higlihtComment.higlitsPartOfCommentSearchValue(
+            commentTitle,
+            this.commentHighlight,
+            this.sanitizer
+        );
+    }
+
     private filterTrucks(searchString: string): Trucks[] {
         const filterTrucks = this.filteredData.trucks.filter((truck) =>
             truck.truckNumber.toLowerCase().includes(searchString)
@@ -325,18 +354,10 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     }
 
     public highlightPartOfTheTextString(trailerTruckNumber: string): string {
-        if (!trailerTruckNumber || !this.lattersToHighlight)
-            return trailerTruckNumber;
-
-        return trailerTruckNumber.replace(
-            new RegExp(this.lattersToHighlight, 'gi'),
-            (match) => {
-                return (
-                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
-                    match +
-                    '</span>'
-                );
-            }
+        return higlihtComment.higlitsPartOfCommentSearchValue(
+            trailerTruckNumber,
+            this.commentHighlight,
+            this.sanitizer
         );
     }
 

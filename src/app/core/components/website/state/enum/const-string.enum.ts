@@ -19,6 +19,8 @@ export enum ConstantString {
     PASSWORD = 'password',
     CONFIRM_PASSWORD = 'confirmPassword',
     NEW_PASSWORD = 'newPassword',
+    CREATE_PASSWORD_NEW = 'createNewPassword',
+    OLD_PASSWORD = 'oldPassword',
     EIN = 'ein',
     COMPANY_NAME_2 = 'companyName',
     PHONE = 'phone',

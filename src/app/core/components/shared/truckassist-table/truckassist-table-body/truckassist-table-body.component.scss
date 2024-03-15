@@ -748,6 +748,23 @@ table.truckassist-table-body-style {
                             }
                         }
 
+                        // TABLE TEXT COUNT
+                        .table-text-count {
+                            div {
+                                width: 20px;
+                                height: 18px;
+                                border-radius: 50%;
+                                background: $dark-2;
+                                margin-left: 4px;
+
+                                span {
+                                    font-size: 11px;
+                                    line-height: 18px;
+                                    color: $ta-black-2;
+                                }
+                            }
+                        }
+
                         // STATE COLUMN
                         .table-state {
                             width: fit-content;

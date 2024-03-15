@@ -11,10 +11,12 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     Self,
+    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
@@ -73,7 +75,12 @@ import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
     ],
 })
 export class TaInputDropdownComponent
-    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
+    implements
+        OnInit,
+        AfterViewInit,
+        OnChanges,
+        OnDestroy,
+        ControlValueAccessor
 {
     @ViewChild('input') inputRef: TaInputComponent;
     @ViewChild('t2') public popoverRef: NgbPopover;
@@ -207,7 +214,7 @@ export class TaInputDropdownComponent
     // MultiSelect Selected Items From Backend
     @Input() set preloadMultiselectItems(values: any[]) {
         if (this.inputConfig.multiselectDropdown) {
-            if (!values?.length) {
+            if (!values) {
                 this.deleteAllMultiSelectItems(this.inputConfig.label);
                 return;
             }
@@ -301,6 +308,12 @@ export class TaInputDropdownComponent
                 }
                 this.search(searchText);
             });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.options && changes.options.currentValue) {
+            this.originalOptions = changes.options.currentValue;
+        }
     }
 
     ngAfterViewInit() {
@@ -845,7 +858,8 @@ export class TaInputDropdownComponent
             };
         });
         this.originalOptions = this._options;
-        this.selectedItems.emit([]);
+        this.selectedItems.emit(null);
+
         this.lastActiveMultiselectItem = null;
     }
 

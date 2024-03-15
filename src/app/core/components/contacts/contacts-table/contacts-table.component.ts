@@ -1,37 +1,38 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
 
-//components
+// components
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
 
-//service
+// service
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ContactTService } from '../state/contact.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
-//store
+// store
 import { ContactState } from '../state/contact-state/contact.store';
 import { ContactQuery } from '../state/contact-state/contact.query';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 
-//methods
+// methods
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 
-//utils
+// utils
 import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
 
-//enums
+// enums
 import { ContractComponentEnum } from '../state/enum/contract-string.enum';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
-//model
+// models
 import {
     CompanyAccountLabelResponse,
     CompanyContactResponse,
@@ -49,7 +50,7 @@ import {
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/cardData';
+import { CardRows } from '../../shared/model/card-data.model';
 
 // data for cards
 import { DisplayContactsConfiguration } from '../contacts-card-data';
@@ -92,7 +93,7 @@ export class ContactsTableComponent
     // Page
     public page: string = DisplayContactsConfiguration.page;
 
-    //  Number of rows in card
+    // Number of rows in card
     public rows: number = DisplayContactsConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[] =
@@ -216,13 +217,13 @@ export class ContactsTableComponent
                         }
                     );
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
                             this.viewData
                         );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 2300);
 
                     this.updateDataCount();
@@ -246,13 +247,13 @@ export class ContactsTableComponent
                         }
                     );
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
                             this.viewData
                         );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 1000);
                 }
                 // Delete Contact
@@ -274,14 +275,14 @@ export class ContactsTableComponent
                         }
                     );
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
                             this.viewData
                         );
 
                         this.viewData.splice(contactIndex, 1);
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
 
                     this.updateDataCount();
@@ -314,13 +315,13 @@ export class ContactsTableComponent
 
                             this.updateDataCount();
 
-                            const inetval = setInterval(() => {
+                            const interval = setInterval(() => {
                                 this.viewData = closeAnimationAction(
                                     true,
                                     this.viewData
                                 );
 
-                                clearInterval(inetval);
+                                clearInterval(interval);
                             }, 1000);
 
                             this.tableService.sendRowsSelected([]);
@@ -378,7 +379,7 @@ export class ContactsTableComponent
     }
 
     // Send Contact Data
-    sendContactData() {
+    private sendContactData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_VIEW)
         );
@@ -476,7 +477,7 @@ export class ContactsTableComponent
             phone: data?.contactPhones[0]?.phone
                 ? data?.contactPhones[0]?.phone
                 : '',
-            textAddress: data?.address?.address ? data.address.address : '',
+            textAddress: data?.address?.address ?? '',
             textShortName: this.nameInitialsPipe.transform(data.name),
             avatarColor: this.getAvatarColors(),
             avatarImg: data?.avatar
@@ -486,12 +487,8 @@ export class ContactsTableComponent
             textShared: !data?.shared ? 'Only You' : 'Nije povezano',
             lable: data?.companyContactLabel
                 ? {
-                      name: data?.companyContactLabel?.name
-                          ? data.companyContactLabel.name
-                          : '',
-                      color: data?.companyContactLabel?.code
-                          ? data.companyContactLabel.code
-                          : '',
+                      name: data?.companyContactLabel?.name ?? '',
+                      color: data?.companyContactLabel?.code ?? '',
                   }
                 : null,
             tableDropdownContent: {

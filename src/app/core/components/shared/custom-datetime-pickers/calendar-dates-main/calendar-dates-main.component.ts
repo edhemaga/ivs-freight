@@ -1,4 +1,3 @@
-import { CalendarScrollService } from './../calendar-scroll.service';
 import {
     Component,
     EventEmitter,
@@ -6,24 +5,36 @@ import {
     OnInit,
     Output,
     OnChanges,
+    OnDestroy,
     forwardRef,
 } from '@angular/core';
-import { ScrollingModule, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
+import {
+    ScrollingModule,
+    VIRTUAL_SCROLL_STRATEGY,
+} from '@angular/cdk/scrolling';
+
+// moment
+import moment from 'moment';
+
+// services
+import { CalendarScrollService } from './../calendar-scroll.service';
+
+// components
+import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
+
+// strategy
 import {
     CalendarStrategy,
     STARTING_YEAR,
 } from './../date-calendars/calendar_strategy';
-import moment from 'moment';
-import { Subject, takeUntil } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
 
-export const FULL_SIZE = 182;
-// UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
-export const CYCLE_HEIGHT = 100 * (12 * FULL_SIZE) + 50;
-
-export const CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 65;
+// enums
+import { CalendarMainEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
 
 function factory(dir: CalendarDatesMainComponent) {
     return dir.scrollStrategy;
@@ -50,10 +61,10 @@ const MONTHS = [
     styleUrls: ['./calendar-dates-main.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                ScrollingModule,
-                CalendarDaysComponent
+        CommonModule,
+        FormsModule,
+        ScrollingModule,
+        CalendarDaysComponent,
     ],
     providers: [
         {
@@ -63,18 +74,24 @@ const MONTHS = [
         },
     ],
 })
-export class CalendarDatesMainComponent implements OnInit, OnChanges {
+export class CalendarDatesMainComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() months: any;
     @Input() dateTime: any;
     @Input() currentIndex: any;
+    @Input() currentYearIndex: number;
+    @Input() activeIndex: number;
     @Input() monthYearsIndx: any;
     @Input() listPreview: any;
-    @Output() setListPreviewToFull: EventEmitter<any> = new EventEmitter();
+    @Input() isMonthAndYearOnly: boolean = false;
+    @Output() setListPreviewToFull: EventEmitter<Number> = new EventEmitter();
+    @Output() setAutoIndex: EventEmitter<Number> = new EventEmitter();
 
     scrollStrategy: CalendarStrategy = new CalendarStrategy(
         this.calendarService,
-        CYCLE_HEIGHT,
-        FULL_SIZE,
+        CalendarMainEnum.CYCLE_HEIGHT,
+        CalendarMainEnum.FULL_SIZE,
         'main'
     );
 
@@ -108,8 +125,8 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
             if (!change.listPreview.firstChange) {
                 this.scrollStrategy.updateScrollHeights(
                     change.listPreview.currentValue === 'month_list'
-                        ? CYCLE_HEIGHT_BY_MONTHS
-                        : CYCLE_HEIGHT
+                        ? CalendarMainEnum.CYCLE_HEIGHT_BY_MONTHS
+                        : CalendarMainEnum.CYCLE_HEIGHT
                 );
             }
         }
@@ -135,7 +152,8 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
                     res.type != 'main' &&
                     this.calendarService.selectedScroll != 'main'
                 ) {
-                    const sizeTimes = FULL_SIZE / res.cycleSize;
+                    const sizeTimes =
+                        CalendarMainEnum.FULL_SIZE / res.cycleSize;
                     const newScrollSize = Math.ceil(
                         sizeTimes * res.scrollOffset
                     );
@@ -158,6 +176,21 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
                     }
                 }, 200);
             });
+
+        if (this.isMonthAndYearOnly) {
+            setTimeout(() => {
+                this.scrollStrategy.updateScrollHeights(
+                    CalendarMainEnum.CYCLE_HEIGHT_BY_MONTHS
+                );
+
+                setTimeout(() => {
+                    this.scrollStrategy.scrollToIndex(
+                        this.currentYearIndex,
+                        'auto'
+                    );
+                }, 200);
+            }, 200);
+        }
     }
 
     findIndexInMonth(date: string): number {
@@ -185,9 +218,20 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
         this.calendarService.scrolledScrollItem = 'main';
     }
 
-    setCalendarListPreview(num) {
+    public setCalendarListPreview(num, index): void {
         this.selMonth = num;
-        this.setListPreviewToFull.emit(num);
+
+        if (this.isMonthAndYearOnly) {
+            this.setAutoIndex.emit(num);
+
+            const selectedMonth = this.months[index];
+            const new_date = moment(
+                new Date(selectedMonth.getFullYear(), num + 1, 0)
+            ).format();
+            this.calendarService.dateChanged.next(new_date);
+        } else {
+            this.setListPreviewToFull.emit(num);
+        }
     }
 
     public selectDay(data): void {

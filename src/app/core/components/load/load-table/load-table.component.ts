@@ -11,6 +11,7 @@ import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { CardsModalConfigService } from '../../modals/cards-modal/utils/services/cards-modal-config.service';
 
 // Models
 import {
@@ -19,7 +20,6 @@ import {
     getLoadTemplateColumnDefinition,
 } from '../../../../../assets/utils/settings/load-columns';
 import { LoadListResponse } from 'appcoretruckassist';
-import { DisplayLoadConfiguration } from '../load-card-data';
 import {
     DeleteComment,
     DropdownItem,
@@ -30,7 +30,7 @@ import {
     CardRows,
     Search,
     TableOptionsInterface,
-} from '../../shared/model/cardData';
+} from '../../shared/model/card-data.model';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 import {
     FilterOptionsLoad,
@@ -65,6 +65,9 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
+// Store
+import { LoadQuery } from '../../modals/cards-modal/state/store/load-modal.query';
+
 // Utils
 import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
@@ -94,33 +97,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
-    //Data to display from model
-    public displayRowsFrontTemplate: CardRows[] =
-        DisplayLoadConfiguration.displayRowsFrontTemplate;
-
-    public displayRowsBackTemplate: CardRows[] =
-        DisplayLoadConfiguration.displayRowsBackTemplate;
-
-    public displayRowsFront: CardRows[] =
-        DisplayLoadConfiguration.displayRowsFrontPending;
-    public displayRowsBack: CardRows[] =
-        DisplayLoadConfiguration.displayRowsBackPending;
-
-    public displayRowsBackActive: CardRows[] =
-        DisplayLoadConfiguration.displayRowsBackActive;
-
-    public displayRowsFrontClosed: CardRows[] =
-        DisplayLoadConfiguration.displayRowsFrontClosed;
-    public displayRowsBackClosed: CardRows[] =
-        DisplayLoadConfiguration.displayRowsBackClosed;
-
-    public page: string = DisplayLoadConfiguration.page;
-    public rows: number = DisplayLoadConfiguration.rows;
-
-    public cardTitle: string;
     public cardTitleLink: string =
         ConstantStringTableComponentsEnum.LOAD_DETAILS;
 
+    public cardTitle: string;
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
@@ -140,10 +120,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
         private confiramtionService: ConfirmationService,
-        private nameInitialsPipe: NameInitialsPipe
+        private nameInitialsPipe: NameInitialsPipe,
+        private loadQuery: LoadQuery,
+        private cardsModalService: CardsModalConfigService
     ) {}
 
     ngOnInit(): void {
+        this.updateCardView();
+
         this.sendLoadData();
 
         this.resetColumns();
@@ -171,6 +155,114 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    private updateCardView(): void {
+        switch (this.selectedTab) {
+            case ConstantStringTableComponentsEnum.PENDING:
+                this.pendingTabCardsConfig();
+                break;
+
+            case ConstantStringTableComponentsEnum.TEMPLATE:
+                this.templateTabCardsConfig();
+                break;
+
+            case ConstantStringTableComponentsEnum.ACTIVE:
+                this.activeTabCardsConfig();
+                break;
+
+            case ConstantStringTableComponentsEnum.CLOSED:
+                this.closedTabCardsConfig();
+                break;
+
+            default:
+                break;
+        }
+
+        this.cardsModalService.updateTab(this.selectedTab);
+    }
+
+    private pendingTabCardsConfig(): void {
+        this.loadQuery.pending$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private templateTabCardsConfig(): void {
+        this.loadQuery.template$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront = res.front_side.filter(
+                        (row) => row !== null
+                    );
+
+                    const filteredCardRowsBack = res.back_side.filter(
+                        (row) => row !== null
+                    );
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private activeTabCardsConfig(): void {
+        this.loadQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private closedTabCardsConfig(): void {
+        this.loadQuery.closed$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle =
+                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
     }
 
     public commentsUpdate(): void {
@@ -577,6 +669,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
         this.setLoadData(td);
+        this.updateCardView();
     }
 
     private getGridColumns(activeTab: string, configType: string): void {
@@ -607,54 +700,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapLoadData(data);
             });
-
-            // Set data for active tab
-            if (
-                this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
-            ) {
-                this.sendDataToCardsFront = this.displayRowsFrontTemplate;
-                this.sendDataToCardsBack = this.displayRowsBackTemplate;
-                this.cardTitle = ConstantStringTableComponentsEnum.NAME_1;
-            } else if (
-                this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
-            ) {
-                this.sendDataToCardsFront = this.displayRowsFrontClosed;
-                this.sendDataToCardsBack = this.displayRowsBackClosed;
-            } else if (
-                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-            ) {
-                this.sendDataToCardsFront = this.displayRowsFront;
-                this.sendDataToCardsBack = this.displayRowsBackActive;
-                this.cardTitle = ConstantStringTableComponentsEnum.LOAD_INVOICE;
-            } else {
-                this.sendDataToCardsFront = this.displayRowsFront;
-                this.sendDataToCardsBack = this.displayRowsBack;
-                this.cardTitle = ConstantStringTableComponentsEnum.LOAD_INVOICE;
-            }
-
-            // Get Tab Table Data For Selected Tab
-            this.getSelectedTabTableData();
         } else {
             this.viewData = [];
         }
 
         this.loadTableData = this.viewData;
-    }
-
-    public sendDataToCardsOnTabSwitch(): void {
-        if (this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE) {
-            this.cardTitle = ConstantStringTableComponentsEnum.NAME_1;
-            this.sendDataToCardsFront = this.displayRowsFront;
-            this.sendDataToCardsBack = this.displayRowsBack;
-        } else if (
-            this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
-        ) {
-            this.sendDataToCardsFront = this.displayRowsFrontClosed;
-            this.sendDataToCardsBack = this.displayRowsBackClosed;
-        } else {
-            this.sendDataToCardsFront = this.displayRowsFront;
-            this.sendDataToCardsBack = this.displayRowsBack;
-        }
     }
 
     private mapLoadData(data: LoadModel): LoadModel {

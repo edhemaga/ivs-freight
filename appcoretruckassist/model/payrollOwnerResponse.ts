@@ -9,42 +9,38 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelTransactionResponse } from './fuelTransactionResponse';
-import { TruckMinimalResponse } from './truckMinimalResponse';
-import { EnumValue } from './enumValue';
-import { DriverShortResponse } from './driverShortResponse';
-import { OwnerResponse } from './ownerResponse';
-import { PayrollDeductionResponse } from './payrollDeductionResponse';
-import { PayrollPaymentResponse } from './payrollPaymentResponse';
-import { LoadShortResponse } from './loadShortResponse';
-import { PayrollCreditResponse } from './payrollCreditResponse';
+import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
+import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
+import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
+import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
+import { PayrollMapLocation } from './payrollMapLocation';
+import { PayrollFuelMinimalResponse } from './payrollFuelMinimalResponse';
 
 
 export interface PayrollOwnerResponse { 
     id?: number;
-    owner?: OwnerResponse;
+    previousLoadId?: number | null;
+    owner?: string | null;
+    truckNumber?: string | null;
+    truckType?: string | null;
     payrollNumber?: string | null;
-    truck?: TruckMinimalResponse;
-    driver?: DriverShortResponse;
     period?: string;
-    closedDate?: string | null;
-    paidDate?: string | null;
-    status?: EnumValue;
-    mileageAmount?: number;
-    salaryAmount?: number;
-    creditAmount?: number;
-    deductionAmount?: number;
-    totalAmount?: number;
-    loadsCount?: number;
-    additionalDays?: number | null;
-    previousLoad?: LoadShortResponse;
-    lastLoad?: LoadShortResponse;
-    loads?: Array<LoadShortResponse> | null;
-    credits?: Array<PayrollCreditResponse> | null;
-    fuelTransactions?: Array<FuelTransactionResponse> | null;
-    deductions?: Array<PayrollDeductionResponse> | null;
-    payments?: Array<PayrollPaymentResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
+    status?: number;
+    total?: number | null;
+    commission?: number | null;
+    salary?: number | null;
+    includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
+    excludedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
+    totalDeduction?: number;
+    includedCredits?: Array<PayrollCreditMinimalResponse> | null;
+    excludedCredits?: Array<PayrollCreditMinimalResponse> | null;
+    totalCredits?: number;
+    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
+    excludedLoads?: Array<PayrollLoadMinimalResponse> | null;
+    totalFuels?: number;
+    includedFuels?: Array<PayrollFuelMinimalResponse> | null;
+    excludedFuels?: Array<PayrollFuelMinimalResponse> | null;
+    mapLocations?: Array<PayrollMapLocation> | null;
+    sums?: PayrollCommissionTotalSum;
 }
 

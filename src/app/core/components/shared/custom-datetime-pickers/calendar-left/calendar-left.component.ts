@@ -1,21 +1,36 @@
-import { CalendarScrollService } from './../calendar-scroll.service';
-import { Component, forwardRef, Input, OnChanges, OnInit } from '@angular/core';
-import { CdkScrollableModule, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import {
+    Component,
+    forwardRef,
+    Input,
+    OnChanges,
+    OnInit,
+    OnDestroy,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// services
+import { CalendarScrollService } from './../calendar-scroll.service';
+
+// modules
+import {
+    ScrollingModule,
+    VIRTUAL_SCROLL_STRATEGY,
+} from '@angular/cdk/scrolling';
+
+// pipes
+import { CalendarMonthsPipe } from '../../../../pipes/calendarMonths.pipe';
+
+// strategy
 import {
     CalendarStrategy,
     STARTING_YEAR,
 } from '../date-calendars/calendar_strategy';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { CalendarMonthsPipe } from '../../../../pipes/calendarMonths.pipe';
 
-export const FULL_SIZE = 24;
-
-export const CYCLE_HEIGHT = 100 * (12 * FULL_SIZE) + 265;
-
-export const CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 265;
+// enums
+import { CalendarLeftEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
 
 function factory(dir: CalendarLeftComponent) {
     return dir.scrollStrategy;
@@ -26,12 +41,7 @@ function factory(dir: CalendarLeftComponent) {
     templateUrl: './calendar-left.component.html',
     styleUrls: ['./calendar-left.component.scss'],
     standalone: true,
-    imports: [
-                CommonModule, 
-                FormsModule, 
-                ScrollingModule,
-                CalendarMonthsPipe
-    ],
+    imports: [CommonModule, FormsModule, ScrollingModule, CalendarMonthsPipe],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,
@@ -40,11 +50,34 @@ function factory(dir: CalendarLeftComponent) {
         },
     ],
 })
-export class CalendarLeftComponent implements OnInit, OnChanges {
+export class CalendarLeftComponent implements OnInit, OnChanges, OnDestroy {
     @Input() months: any;
     @Input() currentIndex: any;
     @Input() listPreview: any;
+    @Input() isMonthAndYearOnly: boolean = false;
+
+    public _currentYearIndex: number = 0;
+    @Input() set currentYearIndex(value: number) {
+        this._currentYearIndex = value;
+        if (this.isMonthAndYearOnly && this._currentYearIndex)
+            setTimeout(() => {
+                this.scrollStrategy.scrollToIndex(
+                    this._currentYearIndex,
+                    'auto'
+                );
+            }, 200);
+    }
+
+    public _activeIndex: number = 0;
+    @Input() set activeIndex(value: number) {
+        this._activeIndex = value;
+        if (!this.isMonthAndYearOnly && this._activeIndex)
+            setTimeout(() => {
+                this.scrollStrategy.scrollToIndex(this._activeIndex, 'auto');
+            }, 200);
+    }
     isHovered: boolean;
+    private isFirstCall: boolean = true;
 
     private destroy$ = new Subject<void>();
 
@@ -52,8 +85,8 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
 
     scrollStrategy: CalendarStrategy = new CalendarStrategy(
         this.calendarService,
-        CYCLE_HEIGHT,
-        FULL_SIZE,
+        CalendarLeftEnum.CYCLE_HEIGHT,
+        CalendarLeftEnum.FULL_SIZE,
         'left'
     );
 
@@ -62,8 +95,8 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
             if (!change.listPreview.firstChange) {
                 this.scrollStrategy.updateScrollHeights(
                     change.listPreview.currentValue === 'month_list'
-                        ? CYCLE_HEIGHT_BY_MONTHS
-                        : CYCLE_HEIGHT
+                        ? CalendarLeftEnum.CYCLE_HEIGHT_BY_MONTHS
+                        : CalendarLeftEnum.CYCLE_HEIGHT
                 );
             }
         }
@@ -83,7 +116,8 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
                     res.type != 'left' &&
                     this.calendarService.selectedScroll != 'left'
                 ) {
-                    const sizeTimes = FULL_SIZE / res.cycleSize;
+                    const sizeTimes =
+                        CalendarLeftEnum.FULL_SIZE / res.cycleSize;
                     const newScrollSize = sizeTimes * res.scrollOffset;
                     this.scrollStrategy.scrollToOffset(newScrollSize, 'auto');
                 }
@@ -103,6 +137,23 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
                         );
                 });
             });
+
+        if (this.isMonthAndYearOnly) {
+            setTimeout(() => {
+                if (this.isFirstCall) {
+                    this.scrollStrategy.updateScrollHeights(
+                        CalendarLeftEnum.CYCLE_HEIGHT_BY_MONTHS
+                    );
+
+                    this.scrollStrategy.scrollToIndex(
+                        this._currentYearIndex,
+                        'auto'
+                    );
+
+                    this.isFirstCall = false;
+                }
+            }, 200);
+        }
     }
 
     findIndexInMonth(date: string): number {

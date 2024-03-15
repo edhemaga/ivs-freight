@@ -643,7 +643,31 @@ ngb-modal-window[aria-hidden='true'] {
                             background: $ta-blue-15;
                         }
                     }
+
+                    &.modal-reset-to-default {
+                        background: $ta-light-grey-5;
+                        color: $ta-light-grey-6;
+                        pointer-events: none;
+                    }
+
+                    &.valid-reset {
+                        cursor: pointer;
+                        pointer-events: all;
+                        background: $bw2;
+                        color: $ta-black;
+                        min-width: 150px;
+
+                        &:hover {
+                            background: $ta-black;
+                            color: $white;
+                            transition: background 0.3s ease-in-out;
+                        }
+                    }
                 }
+            }
+
+            .modal-footer-cards {
+                padding: 0 12px 12px 12px;
             }
         }
     }

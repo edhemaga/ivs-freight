@@ -141,11 +141,7 @@ export class LoadModalStopItemsComponent
         isInputHoverRowIndex: number,
         inputIndex: number
     ): void {
-        if (isHovering) {
-            this.isInputHoverRows[isInputHoverRowIndex][inputIndex] = true;
-        } else {
-            this.isInputHoverRows[isInputHoverRowIndex][inputIndex] = false;
-        }
+        this.isInputHoverRows[isInputHoverRowIndex][inputIndex] = isHovering;
     }
 
     public getStopItems(): UntypedFormArray {
@@ -193,8 +189,8 @@ export class LoadModalStopItemsComponent
         this.getStopItems().push(newStopItemsRow);
     }
 
-    public deleteStopItemsRow(stopItemsRowId: number): void {
-        this.getStopItems().removeAt(stopItemsRowId);
+    public deleteStopItemsRow(index: number): void {
+        this.getStopItems().removeAt(index);
 
         this.getStopItemsDataValue();
     }

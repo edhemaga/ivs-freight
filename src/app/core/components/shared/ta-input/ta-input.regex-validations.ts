@@ -1,4 +1,5 @@
 import { Validators } from '@angular/forms';
+
 import moment from 'moment';
 
 //---------------- Bank Regex, Routing & Accounting Validation
@@ -22,6 +23,23 @@ export const accountBankValidation = [
     Validators.minLength(5),
     Validators.maxLength(17),
 ];
+
+export const bankCardTypeValidation = (cardNumber: string): string => {
+    const patterns = {
+        visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
+        mastercard: /^5[1-5][0-9]{14}$/,
+        amex: /^3[47][0-9]{13}$/,
+        discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
+    };
+
+    for (const cardType in patterns) {
+        if (patterns[cardType].test(cardNumber)) {
+            return cardType;
+        }
+    }
+
+    return "unknown";
+}
 
 //---------------- Bussiness Name, Repair Shop, Fuel Stop
 export const businessNameValidation = [

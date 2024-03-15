@@ -1,5 +1,3 @@
-import { CalendarScrollService } from './calendar-scroll.service';
-import { DateCalendarsComponent } from './date-calendars/date-calendars.component';
 import {
     Component,
     ElementRef,
@@ -9,11 +7,23 @@ import {
     Output,
     ViewChild,
     ViewContainerRef,
+    OnDestroy,
+    AfterViewInit,
 } from '@angular/core';
-
-import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// moment
+import moment from 'moment';
+
+// services
+import { CalendarScrollService } from './calendar-scroll.service';
+
+// components
+import { DateCalendarsComponent } from './date-calendars/date-calendars.component';
+
+// models
+import { ITaInput } from '../ta-input/ta-input.config';
 
 @Component({
     selector: 'app-custom-datetime-pickers',
@@ -22,10 +32,17 @@ import { FormsModule } from '@angular/forms';
     standalone: true,
     imports: [CommonModule, FormsModule, DateCalendarsComponent],
 })
-export class CustomDatetimePickersComponent implements OnInit {
+export class CustomDatetimePickersComponent
+    implements OnInit, OnDestroy, AfterViewInit
+{
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
-    @Input() inputConfig: any;
+    public _inputConfig: ITaInput = null;
+    @Input() set inputConfig(config: ITaInput) {
+        this._inputConfig = config;
+        if (this._inputConfig.name === 'datepickerBankCard')
+            this.listPreview = 'month_list';
+    }
 
     @Output() closePopover: EventEmitter<any> = new EventEmitter();
 
@@ -120,7 +137,9 @@ export class CustomDatetimePickersComponent implements OnInit {
         const dateInputArray = moment(this.dateTime)
             .format('H/mm/A')
             .split('/');
-        this.scrollTypes.hourScroll = dateInputArray[0];
+        this.scrollTypes.hourScroll = this.hourTimes.indexOf(
+            parseInt(dateInputArray[0])
+        );
         this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
             dateInputArray[1]
         );

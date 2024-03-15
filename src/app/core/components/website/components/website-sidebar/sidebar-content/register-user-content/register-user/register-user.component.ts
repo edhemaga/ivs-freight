@@ -124,10 +124,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                    this.registerUserForm
-                        .get(ConstantString.PASSWORD)
-                        .value?.toLowerCase()
+                    value ===
+                    this.registerUserForm.get(ConstantString.PASSWORD).value
                 ) {
                     this.registerUserForm
                         .get(ConstantString.CONFIRM_PASSWORD)
@@ -136,7 +134,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                     this.registerUserForm
                         .get(ConstantString.CONFIRM_PASSWORD)
                         .setErrors({
-                            invalid: true,
+                            passwordDontMatch: true,
                         });
                 }
             });
@@ -146,10 +144,9 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                    this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .value?.toLowerCase()
+                    value ===
+                    this.registerUserForm.get(ConstantString.CONFIRM_PASSWORD)
+                        .value
                 ) {
                     this.registerUserForm
                         .get(ConstantString.CONFIRM_PASSWORD)
@@ -158,7 +155,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                     this.registerUserForm
                         .get(ConstantString.CONFIRM_PASSWORD)
                         .setErrors({
-                            invalid: true,
+                            passwordDontMatch: true,
                         });
                 }
             });
