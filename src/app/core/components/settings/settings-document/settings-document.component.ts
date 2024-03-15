@@ -1,8 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+
+// services
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// model
+import { File } from '../../shared/model/card-table-data.model';
+import { FileEvent } from 'src/app/core/model/file-event.model';
+import { DocumentAction } from './state/enum/settings-document.enum';
+import { tableBodyOptions as TableBodyOptions } from '../../shared/model/tableBody';
+import { UploadFile } from '../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
+import {
+    CreateWithUploadsResponse,
+    FileResponse,
+} from 'appcoretruckassist/model/models';
+import { DocumentActionConfig } from 'src/app/core/model/document-action-config';
+
+// constants
+import { SettingsDocumentsConstants } from './state/constants/settings-document.constants';
 
 @Component({
     selector: 'app-settings-document',
@@ -10,40 +27,28 @@ import { SettingsCompanyService } from '../state/company-state/settings-company.
     styleUrls: ['./settings-document.component.scss'],
 })
 export class SettingsDocumentComponent implements OnInit {
-    @ViewChild('uploadFiles', { static: false }) public uploadFiles: any;
     private destroy$ = new Subject<void>();
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         private tagsService: EditTagsService,
-        private tableService: TruckassistTableService,
+        private tableService: TruckassistTableService
     ) {}
 
-    public documents: any = [];
-    public tags: any = [];
+    public documents: File[] = [];
+    public tags: string[] = [];
     public showDropzone: boolean = false;
-    selectedTab: string = 'active';
-    tableOptions: any = {
-        toolbarActions: {
-            showArhiveFilter: false,
-            viewModeOptions: [],
-        },
-        actions: [],
+
+    public selectedTab: string = SettingsDocumentsConstants.SELECTED_TAB;
+    public tableOptions: TableBodyOptions =
+        SettingsDocumentsConstants.INITIAL_TABLE_OPTIONS;
+    public tableData = SettingsDocumentsConstants.INITIAL_TABLE_DATA;
+    public resizeObserver: ResizeObserver;
+
+    private documentActionConfig: DocumentActionConfig = {
+        [DocumentAction.ADD]: this.addDocument,
+        [DocumentAction.DELETE]: this.deleteDocument,
+        [DocumentAction.TAG]: this.tagDocument,
     };
-    tableData: any[] = [
-        {
-            title: 'Document',
-            field: 'active',
-            length: 0,
-            data: [],
-            gridNameTitle: 'Document',
-            tableConfiguration: null,
-            isActive: true,
-            gridColumns: [],
-        },
-    ];
-    viewData: any[] = [];
-    columns: any[] = [];
-    resizeObserver: any;
 
     ngOnInit() {
         this.companyDocumentsGet();
@@ -90,66 +95,88 @@ export class SettingsDocumentComponent implements OnInit {
         this.showDropzone = false;
     }
 
-    public onFilesEvent(event: any) {
-        //this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.tableData[0].length = event.files.length;
-                let documents = [];
-                event.files.map((item) => {
-                    if (item.realFile && !item.alreadyUploaded) {
-                        item.alreadyUploaded = true;
-                        documents.push(item.realFile);
-                    }
-                });
+    /**
+     * Method used to add new documents.
+     * It calls the service and updates the array of documents after successfull request.
+     * @param event - object containing files to be added
+     */
+    private addDocument(event: FileEvent): void {
+        const dataToSubmit = {
+            files: event.files.map((file: UploadFile) => file.realFile),
+        };
 
-                let newData: any = {
-                    files: documents,
-                    filesForDeleteIds: [],
-                };
+        this.settingsCompanyService
+            .addCompanyDocuments(dataToSubmit)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: CreateWithUploadsResponse) => {
+                const responseFiles: File[] = res.uploads.map(
+                    (fileResponse: FileResponse) =>
+                        // FileResponse should not have fileId optional
+                        ({
+                            ...fileResponse,
+                            fileId: fileResponse!.fileId,
+                        } as File)
+                );
 
-                this.settingsCompanyService
-                    .addCompanyDocuments(newData)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((res: any) => {
-                        if (this.uploadFiles?.files?.length) {
-                            this.uploadFiles.files.map((item, index) => {
-                                res.uploads.map((upl, indx) => {
-                                    if (item.realFile?.name == upl.fileName) {
-                                        item.fileId = upl.fileId;
-                                    }
-                                });
-                            });
-                        }
-                    });
-                break;
-            }
-            case 'delete': {
-                this.tableData[0].length = event.files.length;
-                if (event.deleteId) {
-                    let newData: any = {
-                        files: [],
-                        filesForDeleteIds: [event.deleteId],
-                    };
+                this.documents.push(...responseFiles);
+            });
+        this.tableData[0].length = this.documents.length;
+    }
 
-                    this.settingsCompanyService
-                        .addCompanyDocuments(newData)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe();
-                }
-                break;
-            }
-            case 'tag': {
-                let tags = [{
-                    storageId: event.files.fileId,
-                    tagId: event.files?.tagId?.length ? event.files.tagId[0] : null
-                }];
+    /**
+     * Method used to delete a single document.
+     * It calls the service and updates the array of documents after successfull request.
+     * @param event - object containing file to be deleted
+     */
+    private deleteDocument(event: FileEvent): void {
+        if (!event.deleteId) return;
+        const dataToSubmit = {
+            filesForDeleteIds: [event.deleteId],
+        };
 
-                this.tagsService.updateTag({ tags: tags }).subscribe();
-            }
-            default: {
-                break;
-            }
-        }
+        this.settingsCompanyService
+            .addCompanyDocuments(dataToSubmit)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.documents = this.documents.filter(
+                    (document) => document.fileId !== event.deleteId
+                );
+            });
+        // todo: check why tableData is array and find out if we can update it on documents change
+        this.tableData[0].length = this.documents.length;
+    }
+
+    /**
+     * Method used to tag or untag a single document.
+     * It calls the service, but documents are being manually updated
+     * inside ta-upload-files. Consider changing this
+     * @param event - object containing file to be tagged, and information about tag
+     */
+    private tagDocument(event: FileEvent): void {
+        // because of type that has set the files to be an array, we need to pop document
+        // on this page, only one document can be tagged at the time
+        const fileToUpdate = event.files.pop();
+        const tagId =
+            fileToUpdate.tagId instanceof Array
+                ? fileToUpdate.tagId.pop()
+                : fileToUpdate.tagId;
+
+        const tags = [
+            {
+                storageId: fileToUpdate.fileId,
+                tagId: tagId,
+            },
+        ];
+
+        this.tagsService.updateTag({ tags: tags }).subscribe();
+    }
+
+    public onFilesEvent(event: FileEvent): void {
+        this.documentActionConfig[event.action].bind(this)(event);
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

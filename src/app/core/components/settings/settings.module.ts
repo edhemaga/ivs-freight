@@ -15,6 +15,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { formatEinPipe } from '../../pipes/formatEin.pipe';
 import { RouterModule } from '@angular/router';
 import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
+import { TaUploadFilesNoSliderComponent } from '../shared/ta-upload-files-no-slider/ta-upload-files-no-slider.component';
 
 @NgModule({
     imports: [
@@ -27,14 +28,15 @@ import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
         AngularSvgIconModule,
         formatEinPipe,
         RouterModule,
-        TaCounterComponent
+        TaCounterComponent,
+        TaUploadFilesNoSliderComponent,
     ],
     declarations: [
         SettingsComponent,
         SettingsToolbarComponent,
         SettingsToollbarCardComponent,
         TrainingMaterialComponent,
-        CustomAgreementComponent
+        CustomAgreementComponent,
     ],
 })
 export class SettingsModule {}
