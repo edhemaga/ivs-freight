@@ -27,6 +27,16 @@ export enum DriverEnum {
     PRINT = 'Print',
     ACTIVATE = 'Activate',
     DEACTIVATE = 'Deactivate',
+    DELETE_2 = 'delete',
+    CDL_2 = 'cdl',
+    MEDICAL_2 = 'medical',
+    MVR_2 = 'mvr',
+    TEST_2 = 'test',
+    EDIT_2 = 'edit',
+    DRIVER_2 = 'driver',
+    RENEW_2 = 'renew',
+    PRINT_2 = 'print',
+    DEACTIVATE_2 = 'deactivate',
 }
 
 export enum DriverImagesEnum {

@@ -27,11 +27,12 @@ import {
     LegendAttributes,
 } from '../../standalone-components/ta-chart/models/chart-models';
 import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
-import { BrokerDropdown } from './state/models/broker-models';
+import { BrokerDropdown } from './state/models/broker-model';
 import { TabOptions } from '../../standalone-components/ta-tab-switch/state/models/tab-models';
 
 //Constants
 import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
+import { BrokerConstants } from './state/constants/broker.constants';
 
 //Components
 import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
@@ -40,16 +41,8 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
-import {
-    ChartTypesEnum,
-    ChartColorsEnum,
-    ChartDefaultsEnum,
-    ChartImagesEnum,
-    ChartLegendDataEnum,
-    AxisPositionEnum,
-} from '../../standalone-components/ta-chart/enums/chart-enums';
 import { SETTINGS_ARROW_ACTIONS } from '../../settings/settings-company/utils/enums/settings.enum';
-import { BrokerTabsEnum } from './state/enums/broker-enums';
+import { BrokerTabEnum } from './state/enums/broker-enum';
 
 @Component({
     selector: 'app-broker-card-view',
@@ -82,238 +75,25 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
     public note: UntypedFormControl = new UntypedFormControl();
 
     //Mileage chart
-    public mileageChartConfig: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.LINE,
-                    data: [],
-                    label: ChartLegendDataEnum.SALARY,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.BAR,
-                    data: [],
-                    label: ChartLegendDataEnum.MILES,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.PEACH,
-                    backgroundColor: ChartColorsEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsEnum.ORANGE,
-                    hasGradiendBackground: true,
-                    colors: [ChartColorsEnum.CYAN, ChartColorsEnum.APRICOT],
-                    hoverColors: [ChartColorsEnum.TEAL, ChartColorsEnum.AMBER],
-                    maxBarThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
-        onHoverAnnotation: true,
-        offset: true,
-        hoverTimeDisplay: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [],
-        noChartImage: ChartImagesEnum.MIXED_NO_DATA,
-    };
-    public mileageBarAxes: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 1,
-            maxValue: 3,
-            stepSize: 0.5,
-            showGridLines: true,
-            decimal: true,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: AxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
-    public mileageBarChartLegend: LegendAttributes[] = [
-        {
-            title: ChartLegendDataEnum.AVG_RATE,
-            value: 2.37,
-            image: ChartImagesEnum.BLUE_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
-            elementId: 0,
-        },
-        {
-            title: ChartLegendDataEnum.HIGHEST_RATE,
-            value: 2.86,
-            image: ChartImagesEnum.GREEN_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
-            elementId: [1, 0],
-        },
-        {
-            title: ChartLegendDataEnum.LOWEST_RATE,
-            value: 1.29,
-            image: ChartImagesEnum.YELLOW_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
-            elementId: [1, 1],
-        },
-    ];
+    public mileageChartConfig: DoughnutChartConfig =
+        BrokerConstants.MILEAGE_CHART_CONFIG;
+    public mileageBarAxes: BarChartAxes = BrokerConstants.MILEAGE_BAR_AXES;
+    public mileageBarChartLegend: LegendAttributes[] =
+        BrokerConstants.MILEAGE_CHART_LEGEND;
 
     //Paymeent chart
-    public paymentChartConfig: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.LINE,
-                    data: [],
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: true,
-                    hasGradiendBackground: true,
-                    colors: [
-                        ChartColorsEnum.PASTEL_BLUE,
-                        ChartColorsEnum.RGB_WHITE,
-                    ],
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
-        annotation: 0,
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [],
-        noChartImage: ChartImagesEnum.NO_DATA_PAY,
-    };
-    public paymentChartLegend: LegendAttributes[] = [
-        {
-            title: ChartLegendDataEnum.AVG_PAY_PERIODD,
-            value: 27,
-            image: ChartImagesEnum.BLUE_RED_CIRCLE,
-            sufix: ChartLegendDataEnum.DAYS,
-            elementId: 0,
-            titleReplace: ChartLegendDataEnum.PAY_PERIOD,
-            imageReplace: ChartImagesEnum.BLUE_CIRCLE,
-        },
-        {
-            title: ChartLegendDataEnum.PAY_TERM,
-            value: 32,
-            image: ChartImagesEnum.DASH_LINE,
-            sufix: ChartLegendDataEnum.DAYS,
-        },
-    ];
-    public paymentAxes: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 52,
-            stepSize: 13,
-            showGridLines: true,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: AxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
+    public paymentChartConfig: DoughnutChartConfig =
+        BrokerConstants.PAYMENT_CHART_CONFIG;
+    public paymentChartLegend: LegendAttributes[] =
+        BrokerConstants.PAYMENT_CHART_LEGEND;
+    public paymentAxes: BarChartAxes = BrokerConstants.PAYMENT_CHART_AXES;
 
     //Invoice chart
-    public invoiceChartConfig: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.LINE,
-                    data: [],
-                    label: ChartLegendDataEnum.SALARY,
-                    yAxisID: 'y-axis-1', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.BAR,
-                    data: [],
-                    label: ChartLegendDataEnum.MILES,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.PEACH,
-                    backgroundColor: ChartColorsEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsEnum.ORANGE,
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        hoverTimeDisplay: true,
-        noChartImage: ChartImagesEnum.YELLOW_NO_DATA,
-    };
-    public invoiceAxes: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 60,
-            stepSize: 15,
-            showGridLines: false,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 24000,
-            stepSize: 6000,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: AxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
-    public invoiceChartLegend: LegendAttributes[] = [
-        {
-            title: ChartLegendDataEnum.REVENUE,
-            value: 0,
-            image: ChartImagesEnum.YELLOW_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
-            elementId: 1,
-        },
-        {
-            title: ChartLegendDataEnum.LOAD,
-            value: 0,
-            image: ChartImagesEnum.BLUE_CIRCLE,
-            elementId: 0,
-        },
-    ];
+    public invoiceChartConfig: DoughnutChartConfig =
+        BrokerConstants.INVOICE_CHART_CONFIG;
+    public invoiceAxes: BarChartAxes = BrokerConstants.INVOICE_CHART_AXES;
+    public invoiceChartLegend: LegendAttributes[] =
+        BrokerConstants.INVOICE_CHART_LEGEND;
 
     //Chart api calls
     public mileageCall: ChartApiCall = {
@@ -346,23 +126,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
             this.getInvoiceAgeingCount(changes.broker.currentValue);
         }
 
-        this.getMileageChartData(
-            changes.broker.currentValue.id,
-            this.mileageCall.chartType,
-            false
-        );
-
-        this.getPaymentChartData(
-            changes.broker.currentValue.id,
-            this.paymentCall.chartType,
-            false
-        );
-
-        this.getInvoiceChartData(
-            changes.broker.currentValue.id,
-            this.invoiceCall.chartType,
-            false
-        );
+        this.updateCharts(changes.broker?.currentValue.id);
     }
     ngOnInit(): void {
         this.tabsButton();
@@ -376,32 +140,32 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
         this.tabsBroker = [
             {
                 id: 223,
-                name: BrokerTabsEnum.ONE_MONTH,
+                name: BrokerTabEnum.ONE_MONTH,
                 checked: true,
             },
             {
                 id: 313,
-                name: BrokerTabsEnum.THREE_MONTHS,
+                name: BrokerTabEnum.THREE_MONTHS,
                 checked: false,
             },
             {
                 id: 412,
-                name: BrokerTabsEnum.SIX_MONTHS,
+                name: BrokerTabEnum.SIX_MONTHS,
                 checked: false,
             },
             {
                 id: 515,
-                name: BrokerTabsEnum.ONE_YEAR,
+                name: BrokerTabEnum.ONE_YEAR,
                 checked: false,
             },
             {
                 id: 1210,
-                name: BrokerTabsEnum.YEAR_TO_DATE,
+                name: BrokerTabEnum.YEAR_TO_DATE,
                 checked: false,
             },
             {
                 id: 1011,
-                name: BrokerTabsEnum.ALL,
+                name: BrokerTabEnum.ALL,
                 checked: false,
             },
         ];
@@ -599,6 +363,17 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
         config.dataLabels = [];
 
         if (item.brokerMileageRateChartResponse) {
+            item.averageRate = 20;
+            item.brokerMileageRateChartResponse[2].averageRate = 20;
+            item.brokerMileageRateChartResponse[2].lowestRate = 10;
+            item.brokerMileageRateChartResponse[2].highestRate = 30;
+
+            item.brokerMileageRateChartResponse[3].averageRate = 25;
+            item.brokerMileageRateChartResponse[3].lowestRate = 15;
+            item.brokerMileageRateChartResponse[3].highestRate = 35;
+        }
+
+        if (item.brokerMileageRateChartResponse) {
             legend[0].value = item?.averageRate ?? 0;
             legend[1].value = item?.highestRate ?? 0;
             legend[2].value = item?.lowestRate ?? 0;
@@ -609,11 +384,27 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
                 item?.lowestRate ?? 0,
             ];
         } else if (item.brokerPaymentHistoryChartResponse) {
+            item.averagePayPeriod = 30;
+            item.payTerm = 20;
+
+            item.brokerPaymentHistoryChartResponse[1].averagePayPeriod = 20;
+            item.brokerPaymentHistoryChartResponse[2].averagePayPeriod = 10;
+            item.brokerPaymentHistoryChartResponse[0].averagePayPeriod = 30;
+            item.brokerPaymentHistoryChartResponse[4].averagePayPeriod = 40;
+            item.brokerPaymentHistoryChartResponse[5].averagePayPeriod = 11;
+            item.brokerPaymentHistoryChartResponse[6].averagePayPeriod = 8;
+            item.brokerPaymentHistoryChartResponse[7].averagePayPeriod = 24;
+
             legend[0].value = item?.averagePayPeriod ?? 0;
             legend[1].value = item?.payTerm ?? 0;
 
             config.annotation = item?.payTerm ?? 0;
             config.chartValues = [item?.averagePayPeriod, item?.payTerm];
+        } else if (item.brokerPaidInvoiceChartResponse) {
+            legend[0].value = item?.revenue ?? 0;
+            legend[1].value = item?.count ?? 0;
+
+            config.chartValues = [item?.revenue, item?.count];
         }
 
         let hasValue = false;
@@ -633,6 +424,8 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
             ? item.brokerMileageRateChartResponse
             : item?.brokerPaymentHistoryChartResponse
             ? item.brokerPaymentHistoryChartResponse
+            : item?.brokerPaidInvoiceChartResponse
+            ? item.brokerPaidInvoiceChartResponse
             : null;
         if (!item.brokerPaymentHistoryChartResponse) {
             config.dataProperties[0].defaultConfig.barThickness =
@@ -650,6 +443,8 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
                     : item.brokerPaymentHistoryChartResponse &&
                       data.averagePayPeriod
                     ? data.averagePayPeriod
+                    : item.brokerPaidInvoiceChartResponse && data.revenue
+                    ? data.revenue
                     : 0;
 
             if (!first_chart_value && item.brokerMileageRateChartResponse)
@@ -657,6 +452,8 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
 
             let second_chart_value = item.brokerMileageRateChartResponse
                 ? [data.highestRate ?? 0, data.lowestRate ?? 0]
+                : item.brokerPaidInvoiceChartResponse
+                ? data.count ?? 0
                 : 0;
             firstData.push(first_chart_value);
             secondData.push(second_chart_value);
@@ -670,6 +467,13 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
             )
                 second_max_value =
                     second_chart_value[0] + (second_chart_value[0] * 7) / 100;
+
+            if (
+                item.brokerPaidInvoiceChartResponse &&
+                second_chart_value > second_max_value
+            )
+                second_max_value =
+                    second_chart_value + (second_chart_value * 7) / 100;
 
             if (data.day)
                 labels.push([data.day, this.monthList[data.month - 1]]);
@@ -696,6 +500,14 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
         chart.updateChartData(hideAnimation);
         chart.saveValues = JSON.parse(JSON.stringify(legend));
         chart.legendAttributes = JSON.parse(JSON.stringify(legend));
+    }
+
+    public updateCharts(id: number): void {
+        this.getMileageChartData(id, this.mileageCall.chartType, false);
+
+        this.getPaymentChartData(id, this.paymentCall.chartType, false);
+
+        this.getInvoiceChartData(id, this.invoiceCall.chartType, false);
     }
 
     ngOnDestroy(): void {

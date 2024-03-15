@@ -1,4 +1,4 @@
-export enum BrokerTabsEnum {
+export enum BrokerTabEnum {
     ONE_MONTH = '1M',
     THREE_MONTHS = '3M',
     SIX_MONTHS = '6M',

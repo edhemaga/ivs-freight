@@ -687,8 +687,7 @@ p {
     grid-row-gap: 12px;
     row-gap: 12px;
     margin-bottom: 12px;
-    padding-left: 6px;
-    padding-right: 6px;
+    
     .charts-template-item {
         display: flex;
         flex-direction: column;
@@ -698,14 +697,14 @@ p {
             align-items: baseline;
             height: 18px;
             .charts-template-item-name {
-                margin-left: 4px;
+                margin-right: 4px;
             }
         }
         .charts-template-item-name {
-            font-size: $font-size12;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
-            font-weight: 700;
+            font-size: 11px;
+            color: $ta-black;
+            font-weight: $font-bold;
+            line-height: 14px;
 
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -719,8 +718,8 @@ p {
 
         .charts-template-item-value {
             font-size: $font-size18;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
+            font-weight: $font-medium;
+            color: $ta-black;
             width: 220px;
             &::-moz-selection {
                 color: $color-gray-dark;

@@ -58,7 +58,7 @@ $transition: all 0.3s ease-in-out;
         .repair-information-item {
             display: flex;
             align-items: center;
-            padding:0px 4px 4px 4px;
+            padding: 0px 4px 4px 4px;
             svg {
                 &:hover {
                     path {
@@ -116,10 +116,9 @@ $transition: all 0.3s ease-in-out;
     border-radius: 3px;
     max-height: calc(100vh - 62px);
 
-    &.shipper-details-padding{
+    &.shipper-details-padding {
         padding: 8px 8px 12px 8px;
     }
-
 
     .repair-items-wrapper {
         overflow-y: scroll;
@@ -158,7 +157,7 @@ $transition: all 0.3s ease-in-out;
         .repaier-headers {
             font-size: 14px;
             font-weight: $font-bold;
-            
+
             color: #2f2f2f;
             //color: $color-gray;
 
@@ -172,10 +171,9 @@ $transition: all 0.3s ease-in-out;
             }
         }
 
-        &.repair-details-header-columns{
+        &.repair-details-header-columns {
             grid-template-columns: 84px 64px 42px 242px 40px;
         }
-
     }
     .repair-items {
         // padding: 0 6px;
@@ -200,7 +198,7 @@ $transition: all 0.3s ease-in-out;
             padding: 0 4px;
             padding-left: 4px;
             display: grid;
-            //grid-template-columns: 82px 86px 86px 311px 108px;            
+            //grid-template-columns: 82px 86px 86px 311px 108px;
             grid-template-columns: 125px 120px 95px 190px 145px;
 
             //grid-template-columns: 86px 35px 120px 100px 330px !important;
@@ -314,20 +312,18 @@ $transition: all 0.3s ease-in-out;
                 background: rgb(183, 183, 183, 0.2);
             }
 
-            &.last-value-align{
+            &.last-value-align {
                 text-align: right;
             }
         }
-        .repair-svg-holder{
-
-            svg-icon{
-                    svg{
-                        path{
-                            fill: #2f2f2f;
-                        }
+        .repair-svg-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: #2f2f2f;
                     }
                 }
-
+            }
         }
     }
     .repair-items-vehicle {
@@ -434,8 +430,6 @@ $transition: all 0.3s ease-in-out;
     grid-row-gap: 12px;
     row-gap: 12px;
     margin-bottom: 12px;
-    padding-left: 6px;
-    padding-right: 6px;
 
     .charts-item-wrapper {
         margin-left: 4px;
@@ -449,14 +443,14 @@ $transition: all 0.3s ease-in-out;
             align-items: baseline;
             height: 18px;
             .charts-template-item-name {
-                margin-left: 4px;
+                margin-right: 4px;
             }
         }
         .charts-template-item-name {
-            font-size: $font-size12;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
-            font-weight: 700;
+            font-size: 11px;
+            color: $ta-black;
+            font-weight: $font-bold;
+            line-height: 14px;
 
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -470,8 +464,8 @@ $transition: all 0.3s ease-in-out;
 
         .charts-template-item-value {
             font-size: $font-size18;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
+            font-weight: $font-medium;
+            color: $ta-black;
             width: 220px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -712,7 +706,7 @@ $transition: all 0.3s ease-in-out;
     width: 340px;
 }
 
-.review{
+.review {
     width: 280px;
 }
 
@@ -720,6 +714,6 @@ $transition: all 0.3s ease-in-out;
     width: 280px;
 }
 
-.review-container{
+.review-container {
     width: 280px;
 }

@@ -57,7 +57,7 @@ import {
     AxisPositionEnum,
 } from '../../standalone-components/ta-chart/enums/chart-enums';
 import { SETTINGS_ARROW_ACTIONS } from '../../settings/settings-company/utils/enums/settings.enum';
-import { BrokerTabsEnum } from '../../customer/broker-card-view/state/enums/broker-enums';
+import { BrokerTabEnum } from '../../customer/broker-card-view/state/enums/broker-enum';
 import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
 
 //Models
@@ -82,6 +82,7 @@ import { DriverDateInfo, DriverDropdowns } from './state/models/driver-models';
 
 //Constants
 import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
+import { DriverConstants } from './state/constants/driver.constants';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -144,87 +145,12 @@ export class DriverDetailsCardComponent
     public showMoreEmployment: boolean;
 
     //Chart
-    public barChartConfig: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.LINE,
-                    data: [],
-                    label: ChartLegendDataEnum.SALARY,
-                    yAxisID: 'y-axis-1', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: ChartTypesEnum.BAR,
-                    data: [],
-                    label: ChartLegendDataEnum.MILES,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.PEACH,
-                    backgroundColor: ChartColorsEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsEnum.ORANGE,
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [],
-        noChartImage: ChartImagesEnum.YELLOW_NO_DATA,
-    };
+    public barChartConfig: DoughnutChartConfig =
+        DriverConstants.BAR_CHART_CONFIG;
+    public barChartLegend: LegendAttributes[] =
+        DriverConstants.BAR_CHART_LEGEND;
+    public barAxes: BarChartAxes = DriverConstants.BAR_CHART_AXES;
 
-    public barChartLegend: LegendAttributes[] = [
-        {
-            title: ChartLegendDataEnum.MILES,
-            value: 0,
-            image: ChartImagesEnum.YELLOW_CIRCLE,
-            sufix: ChartLegendDataEnum.MI,
-            elementId: 1,
-        },
-        {
-            title: ChartLegendDataEnum.SALARY,
-            value: 0,
-            image: ChartImagesEnum.BLUE_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
-            elementId: 0,
-        },
-    ];
-
-    public barAxes: BarChartAxes = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 4000,
-            stepSize: 1000,
-            showGridLines: true,
-        },
-        verticalRightAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 2800,
-            stepSize: 700,
-            showGridLines: false,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: AxisPositionEnum.BOTTOM,
-            showGridLines: false,
-        },
-    };
     public payrollCall: ChartApiCall = {
         id: -1,
         chartType: 1,
@@ -303,26 +229,14 @@ export class DriverDetailsCardComponent
                 .subscribe({
                     next: (res: Confirmation) => {
                         switch (res.type) {
-                            case DriverEnum.DELETE.toLowerCase():
-                                if (
-                                    res.template ===
-                                    DriverEnum.CDL.toLowerCase()
-                                )
+                            case DriverEnum.DELETE_2:
+                                if (res.template === DriverEnum.CDL_2)
                                     this.deleteCdlByIdFunction(res.id);
-                                else if (
-                                    res.template ===
-                                    DriverEnum.MEDICAL.toLowerCase()
-                                )
+                                else if (res.template === DriverEnum.MEDICAL_2)
                                     this.deleteMedicalByIdFunction(res.id);
-                                else if (
-                                    res.template ===
-                                    DriverEnum.MVR.toLowerCase()
-                                )
+                                else if (res.template === DriverEnum.MVR_2)
                                     this.deleteMvrByIdFunction(res.id);
-                                else if (
-                                    res.template ===
-                                    DriverEnum.TEST.toLowerCase()
-                                )
+                                else if (res.template === DriverEnum.TEST_2)
                                     this.deleteTestByIdFunction(res.id);
                                 break;
                             default: {
@@ -357,20 +271,20 @@ export class DriverDetailsCardComponent
     }
     public getNameForDrop(name: string) {
         switch (name) {
-            case DriverEnum.CDL.toLowerCase():
+            case DriverEnum.CDL_2:
                 this.templateName = false;
                 this.initTableOptions();
                 this.getExpireDate(this.driver);
                 break;
-            case DriverEnum.TEST.toLowerCase():
+            case DriverEnum.TEST_2:
                 this.templateName = true;
                 this.initTableOptions();
                 break;
-            case DriverEnum.MEDICAL.toLowerCase():
+            case DriverEnum.MEDICAL_2:
                 this.templateName = true;
                 this.initTableOptions();
                 break;
-            case DriverEnum.MVR.toLowerCase():
+            case DriverEnum.MVR_2:
                 this.templateName = true;
                 this.initTableOptions();
                 break;
@@ -381,32 +295,32 @@ export class DriverDetailsCardComponent
         this.tabsDriver = [
             {
                 id: 223,
-                name: BrokerTabsEnum.ONE_MONTH,
+                name: BrokerTabEnum.ONE_MONTH,
                 checked: true,
             },
             {
                 id: 313,
-                name: BrokerTabsEnum.THREE_MONTHS,
+                name: BrokerTabEnum.THREE_MONTHS,
                 checked: false,
             },
             {
                 id: 412,
-                name: BrokerTabsEnum.SIX_MONTHS,
+                name: BrokerTabEnum.SIX_MONTHS,
                 checked: false,
             },
             {
                 id: 515,
-                name: BrokerTabsEnum.ONE_YEAR,
+                name: BrokerTabEnum.ONE_YEAR,
                 checked: false,
             },
             {
                 id: 1210,
-                name: BrokerTabsEnum.YEAR_TO_DATE,
+                name: BrokerTabEnum.YEAR_TO_DATE,
                 checked: false,
             },
             {
                 id: 1011,
-                name: BrokerTabsEnum.ALL,
+                name: BrokerTabEnum.ALL,
                 checked: false,
             },
         ];
@@ -535,13 +449,13 @@ export class DriverDetailsCardComponent
             actions: [
                 {
                     title: DriverEnum.EDIT,
-                    name: DriverEnum.EDIT.toLowerCase(),
+                    name: DriverEnum.EDIT_2,
                     svg: DriverImagesEnum.EDIT,
                     show: true,
                 },
                 {
                     title: DriverEnum.RENEW,
-                    name: DriverEnum.RENEW.toLowerCase(),
+                    name: DriverEnum.RENEW_2,
                     svg: DriverImagesEnum.RENEW,
                     show: !this.templateName ? true : false,
                 },
@@ -554,7 +468,7 @@ export class DriverDetailsCardComponent
                 {
                     title: DriverEnum.DELETE,
                     name: DriverEnum.DELETE_ITEM,
-                    type: DriverEnum.DRIVER.toLowerCase(),
+                    type: DriverEnum.DRIVER_2,
                     text: DriverEnum.DELETE_DRIVER_MESSAGE,
                     svg: DriverImagesEnum.DELETE,
                     danger: true,
@@ -585,37 +499,40 @@ export class DriverDetailsCardComponent
                     title: DriverEnum.SEND_MESSAGE,
                     name: DriverEnum.DM,
                     svg: DriverImagesEnum.DM,
-                    show: data.status == 1 ? true : false,
+                    show: data.status === 1 ? true : false,
                 },
                 {
                     title: DriverEnum.PRINT,
-                    name: DriverEnum.PRINT.toLowerCase(),
+                    name: DriverEnum.PRINT_2,
                     svg: DriverImagesEnum.PRINT,
-                    show: data.status == 1 || data.status == 0 ? true : false,
+                    show: data.status === 1 || data.status === 0 ? true : false,
                 },
 
                 {
                     title: DriverEnum.EDIT,
-                    name: DriverEnum.EDIT.toLowerCase(),
+                    name: DriverEnum.EDIT_2,
                     svg: DriverImagesEnum.EDIT,
-                    show: data.status == 1 ? true : false,
+                    show: data.status === 1 ? true : false,
                 },
                 {
-                    title: data.status == 0 ? DriverEnum.ACTIVATE : DriverEnum.DEACTIVATE,
-                    name: DriverEnum.DEACTIVATE.toLowerCase(),
+                    title:
+                        data.status === 0
+                            ? DriverEnum.ACTIVATE
+                            : DriverEnum.DEACTIVATE,
+                    name: DriverEnum.DEACTIVATE_2,
                     svg: DriverImagesEnum.DEACTIVATE,
-                    activate: data.status == 0 ? true : false,
-                    deactivate: data.status == 1 ? true : false,
-                    show: data.status == 1 || data.status == 0 ? true : false,
+                    activate: data.status === 0 ? true : false,
+                    deactivate: data.status === 1 ? true : false,
+                    show: data.status === 1 || data.status === 0 ? true : false,
                 },
                 {
                     title: DriverEnum.DELETE,
                     name: DriverEnum.DELETE_ITEM,
-                    type: DriverEnum.DRIVER.toLowerCase(),
+                    type: DriverEnum.DRIVER_2,
                     text: DriverEnum.DELETE_DRIVER_MESSAGE,
                     svg: DriverImagesEnum.DELETE,
                     danger: true,
-                    show: data.status == 1 || data.status == 0 ? true : false,
+                    show: data.status === 1 || data.status === 0 ? true : false,
                 },
             ],
             export: true,
@@ -772,7 +689,7 @@ export class DriverDetailsCardComponent
         );
     }
 
-    public onSelectedDriver(event: DriverDropdowns) {
+    public onSelectedDriver(event: DriverDropdowns): void {
         if (event && event.id !== this.driver.id) {
             this.driversDropdowns = this.driverMinimalQuery
                 .getAll()
