@@ -1,0 +1,33 @@
+.ta-card-body {
+    overflow: visible !important;
+}
+.ta-upload {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 194px;
+    align-items: center;
+
+    .ta-upload-dropzone {
+        height: 186px;
+        width: calc(100% - 10px);
+        margin: 0px 6px;
+    }
+
+    .documents_holder {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 4px;
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out,
+            color 0.3s ease-in-out;
+    }
+
+    &.documents {
+        display: block !important;
+
+        .ta-upload-dropzone {
+            height: 332px;
+            width: 100%;
+            margin: 0px;
+        }
+    }
+}

@@ -1,4 +1,15 @@
 import { Injectable } from '@angular/core';
+
+import { Observable, forkJoin, tap } from 'rxjs';
+
+// services
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+// store
+import { ContactQuery } from './contact-state/contact.query';
+import { ContactStore } from './contact-state/contact.store';
+
+// models
 import {
     AccountColorResponse,
     CompanyAccountLabelResponse,
@@ -15,19 +26,15 @@ import {
     UpdateCompanyContactCommand,
     UpdateCompanyContactLabelCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
-import { ContactQuery } from './contact-state/contact.query';
-import { ContactStore } from './contact-state/contact.store';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ContactTService {
     constructor(
-        private contactService: CompanyContactService,
         private contactStore: ContactStore,
         private contactQuery: ContactQuery,
+        private contactService: CompanyContactService,
         private tableService: TruckassistTableService,
         private companyLabelService: CompanyContactLabelService
     ) {}
@@ -37,35 +44,55 @@ export class ContactTService {
         data: CreateCompanyContactCommand
     ): Observable<CreateResponse> {
         return this.contactService.apiCompanycontactPost(data).pipe(
-            tap((res: any) => {
-                const subContact = this.getCompanyContactById(res.id).subscribe(
-                    {
-                        next: (contact: CompanyContactResponse | any) => {
-                            this.contactStore.add(contact);
+            tap((res) => {
+                this.getCompanyContactById(res.id).subscribe({
+                    next: (contact: CompanyContactResponse) => {
+                        forkJoin([
+                            this.companyContactLabelsColorList(),
+                            this.getCompanyContactModal(),
+                        ])
+                            .pipe(
+                                tap(([colorRes, { labels }]) => {
+                                    labels = labels.map((label) => {
+                                        return {
+                                            ...label,
+                                            dropLabel: true,
+                                        };
+                                    });
 
-                            const contactCount = JSON.parse(
-                                localStorage.getItem('contactTableCount')
-                            );
+                                    const newContact = {
+                                        ...contact,
+                                        colorLabels: labels,
+                                        colorRes,
+                                    };
 
-                            contactCount.contact++;
+                                    const contactCount = JSON.parse(
+                                        localStorage.getItem(
+                                            'contactTableCount'
+                                        )
+                                    );
 
-                            localStorage.setItem(
-                                'contactTableCount',
-                                JSON.stringify({
-                                    contact: contactCount.contact,
+                                    contactCount.contact++;
+
+                                    localStorage.setItem(
+                                        'contactTableCount',
+                                        JSON.stringify({
+                                            contact: contactCount.contact,
+                                        })
+                                    );
+
+                                    this.tableService.sendActionAnimation({
+                                        animation: 'add',
+                                        data: contact,
+                                        id: contact.id,
+                                    });
+
+                                    this.contactStore.add(newContact);
                                 })
-                            );
-
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                data: contact,
-                                id: contact.id,
-                            });
-
-                            subContact.unsubscribe();
-                        },
-                    }
-                );
+                            )
+                            .subscribe();
+                    },
+                });
             })
         );
     }

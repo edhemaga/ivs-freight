@@ -64,7 +64,7 @@ export class TaCustomCardComponent {
     @Input() headerSvgEnabled: boolean = false;
     @Input() hasHeaderSvg: string = null;
     @Input() hasActionSvg: string = null;
-    @Input() actionText: string = null;
+    @Input() subText: string = null;
     @Input() hasDivider: boolean = true;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
