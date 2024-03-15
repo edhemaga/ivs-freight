@@ -48,14 +48,6 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
-import {
-    ChartTypesEnum,
-    ChartDefaultsEnum,
-    ChartColorsEnum,
-    ChartLegendDataEnum,
-    ChartImagesEnum,
-    AxisPositionEnum,
-} from '../../standalone-components/ta-chart/enums/chart-enums';
 import { SETTINGS_ARROW_ACTIONS } from '../../settings/settings-company/utils/enums/settings.enum';
 import { BrokerTabEnum } from '../../customer/broker-card-view/state/enums/broker-enum';
 import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
