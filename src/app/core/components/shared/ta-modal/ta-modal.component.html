@@ -584,7 +584,12 @@
                     >
                         <button
                             (click)="onAction('close')"
-                            class="modal-cancel-btn"
+                            class="ta-font-bold modal-cancel-btn"
+                            [ngClass]="{
+                                'active-cancel-btn': ['fuel stop'].includes(
+                                    confirmationData?.template
+                                )
+                            }"
                             type="button"
                         >
                             No

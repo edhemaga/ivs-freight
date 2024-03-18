@@ -261,8 +261,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         case ConstantStringTableComponentsEnum.DELETE:
                             this.multipleDeleteTransactions([res.id]);
 
-                            console.log('uslo');
-
                             break;
                         case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
                             this.multipleDeleteTransactions(res.array);
@@ -275,13 +273,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private multipleDeleteTransactions(response: number[]): void {
+    private multipleDeleteTransactions(ids: number[]): void {
+        console.log('ids', ids);
         this.fuelService
-            .deleteFuelList(response)
+            .deleteFuelList(ids)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((fuel) => {
-                    response.map((id) => {
+                    ids.map((id) => {
                         if (fuel.id === id)
                             fuel.actionAnimation =
                                 ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
@@ -752,7 +751,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
         ) {
-            console.log('uslo');
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },

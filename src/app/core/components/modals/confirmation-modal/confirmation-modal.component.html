@@ -59,7 +59,7 @@
             </p>
         </div>
 
-        <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
+        <!---------------------------------------------- Confirmation Body For Single ---------------------------------------------->
         <div
             *ngIf="editData.data"
             class="d-flex align-items-center confirmation-body"
@@ -90,6 +90,29 @@
                 </app-profile-images>
             </div>
             <!---------------------------------------------- Different templates for body --------------------------------------------->
+
+            <!-- Fuel -->
+
+            <ng-container *ngIf="['fuel stop'].includes(editData?.template)">
+                <div
+                    class="d-flex flex-column justify-content-center confirmation-body-content"
+                >
+                    <p class="m-0 ta-font-bold text-1">
+                        {{ editData.data.businessName }}
+                        {{
+                            editData.data.store
+                                ? '- ' + editData.data.store
+                                : ''
+                        }}
+                    </p>
+
+                    <p class="m-0 ta-font-medium text-2">
+                        {{ editData.data.address.state }},
+                        {{ editData.data.address.stateShortName }}
+                    </p>
+                </div>
+            </ng-container>
+
             <!-- Driver, Owner -->
 
             <ng-container
@@ -280,20 +303,6 @@
                     {{ editData?.data?.routeType }}
                 </p>
             </div>
-
-            <!-- Fuel -->
-
-            <ng-container *ngIf="['fuel stop'].includes(editData?.template)">
-                <div
-                    class="d-flex flex-column justify-content-center confirmation-body-content"
-                >
-                    <p class="m-0 ta-font-bold text-1">
-                        LOVES TRAVEL STOP - 398
-                    </p>
-
-                    <p class="m-0 ta-font-medium text-2">Tupelo, MS</p>
-                </div>
-            </ng-container>
         </div>
 
         <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->

@@ -156,7 +156,7 @@ export class FuelTService {
         return this.fuelService.apiFuelTransactionIdGet(id);
     }
 
-    // Get Fule Stops
+    // Get Fuel Stops
     public getFuelStopsList(
         truckIds?: Array<number>,
         categoryIds?: Array<number>,

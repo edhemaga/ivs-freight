@@ -290,7 +290,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .patchValue(this.contactPhones);
 
                 this.contactForm
-                    .get('contactPhonesHelper')
+                    .get(ConstantStringEnum.CONTACT_PHONES_HELPER)
                     .patchValue(JSON.stringify(this.contactPhones));
 
                 break;
@@ -302,7 +302,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .patchValue(this.contactEmails);
 
                 this.contactForm
-                    .get('contactEmailsHelper')
+                    .get(ConstantStringEnum.CONTACT_EMAILS_HELPER)
                     .patchValue(JSON.stringify(this.contactEmails));
 
                 break;
@@ -356,7 +356,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    console.log('res', res);
                     this.contactForm.patchValue({
                         name: res.name,
                         companyName: res.companyName,
