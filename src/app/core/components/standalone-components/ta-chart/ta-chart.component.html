@@ -1,5 +1,5 @@
 <div
-    class="charts-item-wrapper revenue"
+    class="charts-item-wrapper"
     *ngIf="legendAttributes?.length"
     [class.hover]="hoveringStatus && hoverTimeDisplay"
 >
@@ -17,13 +17,13 @@
             *ngFor="let item of legendAttributes; let indx = index"
         >
             <div class="icon-name-item {{ item.customClass }}">
-                <svg-icon src="{{ item.image }}"></svg-icon>
                 <div
                     class="charts-template-item-name"
-                    [ngStyle]="{ 'margin-left': item.image ? '4px' : '0px' }"
+                    [ngStyle]="{ 'margin-right': item.image ? '4px' : '0px' }"
                 >
                     {{ item.title }}
                 </div>
+                <svg-icon src="{{ item.image }}"></svg-icon>
             </div>
             <div class="charts-template-item-value">
                 {{ item.prefix }}{{ item.value | nFormatter }} {{ item.sufix }}

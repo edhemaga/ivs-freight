@@ -1,6 +1,9 @@
-import { ChartColor, ChartType } from 'chart.js';
+import { ChartColor, ChartConfiguration, ChartType } from 'chart.js';
 import { AnnotationPositionEnum, AxisPositionEnum } from '../enums/chart-enums';
 import { BarChartConfig } from '../../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
+import { TopRatedListItem } from '../../../dashboard/state/models/dashboard-top-rated-models/top-rated-list-item.model';
+import { ChartInitProperties } from '../../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
+import { ChartDefaultConfig } from '../../../dashboard/state/models/dashboard-chart-models/line-chart.model';
 
 export interface AxisGridLines {
     display: boolean;
@@ -36,7 +39,11 @@ export interface LegendAttributes {
     title: string;
     value: number;
     image: string;
-    elementId: number | string | number[];
+    elementId?: number | string | number[];
+    prefix?: string;
+    sufix?: string;
+    titleReplace?: string;
+    imageReplace?: string;
 }
 
 export interface OnHoverProperties {
@@ -69,4 +76,9 @@ export interface ChartDataProperties {
     type: ChartType;
     yAxisID: string;
     id: number;
+}
+
+export interface ChartApiCall {
+    id: number;
+    chartType: number;
 }

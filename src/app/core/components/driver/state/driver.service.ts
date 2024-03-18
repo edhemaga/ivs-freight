@@ -12,6 +12,7 @@ import {
     MedicalService,
     MvrService,
     TestService,
+    DriverPayrollResponse,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
@@ -508,5 +509,12 @@ export class DriverTService {
 
     public getDriverMvrsByDriverId(driverId: number) {
         return this.MvrService.apiMvrListGet(driverId);
+    }
+
+    public getDriverPayroll(
+        id: number,
+        chartType: number
+    ): Observable<DriverPayrollResponse> {
+        return this.driverService.apiDriverPayrollGet(id, chartType);
     }
 }
