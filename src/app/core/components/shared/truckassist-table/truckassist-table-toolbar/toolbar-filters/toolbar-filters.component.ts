@@ -64,6 +64,10 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public showLtl: boolean = true;
     public showFtl: boolean = true;
     constructor(private tableSevice: TruckassistTableService) {}
+    customerFilter = {
+        filteredArray: [],
+        selectedFilter: false,
+    };
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {}
@@ -159,13 +163,39 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.activeTableData?.bannedArray)
             this.activeTableData.bannedArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.BAN ?? false;
+                data == ConstantStringTableComponentsEnum.BAN;
 
         if (this.activeTableData?.dnuArray)
             this.activeTableData.dnuArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.DNU ?? false;
+                data == ConstantStringTableComponentsEnum.DNU;
 
-        this.tableSevice.sendCurrentSetTableFilter(event);
+        if (
+            this.activeTableData?.dnuArray ||
+            this.activeTableData?.bannedArray ||
+            this.activeTableData?.closedArray
+        ) {
+            if (event.selectedFilter) {
+                this.customerFilter.filteredArray.push(event.filteredArray[0]);
+                this.customerFilter.selectedFilter = event.selectedFilter;
+            } else {
+                this.customerFilter.filteredArray =
+                    this.customerFilter.filteredArray.filter((item) => {
+                        return !event.filteredArray.some((removeItem) =>
+                            Object.entries(removeItem).every(
+                                ([key, value]) => item[key] === value
+                            )
+                        );
+                    });
+            }
+            if (!this.customerFilter.filteredArray.length) {
+                this.customerFilter.selectedFilter = false;
+            }
+        }
+        this.tableSevice.sendCurrentSetTableFilter(
+            this.customerFilter?.filteredArray.length
+                ? this.customerFilter
+                : event
+        );
     }
     // --------------------------------NgOnDestroy---------------------------------
     ngOnDestroy(): void {

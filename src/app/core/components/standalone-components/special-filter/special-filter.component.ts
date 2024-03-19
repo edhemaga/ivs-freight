@@ -1,12 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -35,7 +27,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         FilterClassPipe,
     ],
 })
-export class SpecialFilterComponent implements OnInit, OnChanges {
+export class SpecialFilterComponent implements OnInit {
     constructor() {}
 
     public activeFilter: boolean = false;
@@ -54,10 +46,6 @@ export class SpecialFilterComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.activeFilter = this.selectedFilter;
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.selectedFilter) this.activeFilter = this.selectedFilter;
     }
 
     public toggleSpecialFilter(): void {
