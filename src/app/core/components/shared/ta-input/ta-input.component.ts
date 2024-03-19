@@ -589,8 +589,7 @@ export class TaInputComponent
     //-------------- Event Input Actions
     public onKeydown(event) {
         if (event) {
-            this.capsLockOn =
-                event?.getModifierState?.('CapsLock') || event?.shiftKey;
+            this.capsLockOn = event?.getModifierState?.('CapsLock');
         }
 
         if (this._inputConfig.priceSeparator) {
@@ -613,6 +612,10 @@ export class TaInputComponent
     }
 
     public onKeyup(event): void {
+        if (event) {
+            this.capsLockOn = event?.getModifierState?.('CapsLock');
+        }
+
         // Reset function property for disabling multiple dots
         if (this.isDotDeleted && !this.getSuperControl?.value?.includes('.')) {
             this.numberOfPoints = 0;
@@ -2836,7 +2839,7 @@ export class TaInputComponent
     }
 
     selectLastOneAfterMoseUp() {
-        if ( this._inputConfig.name === 'datepickerBankCard' ) {
+        if (this._inputConfig.name === 'datepickerBankCard') {
             this.selectionInput = 1;
             this.span2.nativeElement.focus();
             this.setSpanSelection(this.span2.nativeElement);
@@ -2845,7 +2848,7 @@ export class TaInputComponent
             this.span3.nativeElement.focus();
             this.setSpanSelection(this.span3.nativeElement);
         }
-        
+
         this.showDateInput = true;
         this.timeoutCleaner = setTimeout(() => {
             clearTimeout(this.dateTimeMainTimer);
