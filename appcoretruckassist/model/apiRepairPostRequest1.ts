@@ -21,7 +21,6 @@ export interface ApiRepairPostRequest1 {
     UnitType?: RepairUnitType;
     TruckId?: number;
     TrailerId?: number;
-    DriverId?: number;
     Odometer?: number;
     Date?: string;
     Invoice?: string;

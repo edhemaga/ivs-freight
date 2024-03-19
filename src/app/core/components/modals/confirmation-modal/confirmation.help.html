@@ -48,12 +48,10 @@
                 "
                 class="m-0 ta-font-medium"
             >
-                <span class="ta-font-bold">{{
-                    editData.data.data?.firstName?.concat(
-                        ' ',
-                        editData.data.data?.lastName
-                    )
-                }}</span>
+                <span class="ta-font-bold"
+                    >{{ editData.data.data?.firstName?.concat( ' ',
+                    editData.data.data?.lastName ) }}</span
+                >
                 has active CDL. <br />
                 You need to void current CDL first.
             </p>
@@ -98,17 +96,13 @@
                     class="d-flex flex-column justify-content-center confirmation-body-content"
                 >
                     <p class="m-0 ta-font-bold text-1">
-                        {{ editData.data.businessName }}
-                        {{
-                            editData.data.store
-                                ? '- ' + editData.data.store
-                                : ''
-                        }}
+                        {{ editData.data.businessName }} {{ editData.data.store
+                        ? '- ' + editData.data.store : '' }}
                     </p>
 
                     <p class="m-0 ta-font-medium text-2">
-                        {{ editData.data.address.state }},
-                        {{ editData.data.address.stateShortName }}
+                        {{ editData.data.address.state }}, {{
+                        editData.data.address.stateShortName }}
                     </p>
                 </div>
             </ng-container>
@@ -191,11 +185,9 @@
                         {{ editData?.data?.businessName }}
                     </p>
                     <p class="m-0 confirmation-text-2 large-text-2">
-                        {{
-                            editData?.data.mainAddress
-                                ? editData?.data.mainAddress.address
-                                : editData?.data?.address?.address
-                        }}
+                        {{ editData?.data.mainAddress ?
+                        editData?.data.mainAddress.address :
+                        editData?.data?.address?.address }}
                     </p>
                 </div>
             </ng-container>
@@ -207,9 +199,9 @@
                 class="confirmation-info"
             >
                 <p class="m-0 confirmation-text-1 d-flex align-items-center">
-                    <span class="confirmation-state">{{
-                        editData?.data?.state
-                    }}</span>
+                    <span class="confirmation-state"
+                        >{{ editData?.data?.state }}</span
+                    >
                     {{ editData?.data?.cdlNumber }}
                 </p>
                 <p class="m-0 confirmation-text-2">
@@ -256,8 +248,7 @@
                     *ngIf="editData?.template === 'test'"
                 >
                     {{ editData?.data?.testTypeName }} Test ({{
-                        editData?.data?.reasonName
-                    }})
+                    editData?.data?.reasonName }})
                 </p>
                 <p
                     class="m-0 confirmation-text-1"
@@ -272,21 +263,17 @@
                     CDL: {{ editData?.data.cdlNumber }}
                 </p>
                 <p class="m-0 confirmation-text-2">
-                    {{
-                        editData?.template === 'test' ||
-                        editData?.template === 'mvr'
-                            ? 'Issued'
-                            : 'Expires'
-                    }}:
-                    <span *ngIf="editData?.template === 'test'">{{
-                        editData?.data.testingDate | formatDateP
-                    }}</span>
-                    <span *ngIf="editData?.template === 'medical'">{{
-                        editData?.data.expDate | formatDateP
-                    }}</span>
-                    <span *ngIf="editData?.template === 'mvr'">{{
-                        editData?.data.issueDate | formatDateP
-                    }}</span>
+                    {{ editData?.template === 'test' || editData?.template ===
+                    'mvr' ? 'Issued' : 'Expires' }}:
+                    <span *ngIf="editData?.template === 'test'"
+                        >{{ editData?.data.testingDate | formatDateP }}</span
+                    >
+                    <span *ngIf="editData?.template === 'medical'"
+                        >{{ editData?.data.expDate | formatDateP }}</span
+                    >
+                    <span *ngIf="editData?.template === 'mvr'"
+                        >{{ editData?.data.issueDate | formatDateP }}</span
+                    >
                 </p>
             </div>
 
@@ -311,7 +298,7 @@
             class="d-flex flex-column justify-content-center confirmation-array-body"
         >
             <div
-                *ngFor="let item of editData.array; trackBy: trackByIdentity"
+                *ngFor="let item of editData.array; trackBy: identity"
                 class="d-flex align-items-center confirmation-body"
             >
                 <!-- Svg -->
@@ -381,8 +368,7 @@
                     <div class="confirmation-info">
                         <p class="m-0 confirmation-text-1">
                             Unit {{ item?.data?.tableTruckNumber }} - ${{
-                                item?.data.total
-                            }}
+                            item?.data.total }}
                         </p>
                         <div class="confirmation-text-holder d-flex">
                             <p class="m-0 confirmation-text-2">
@@ -418,8 +404,8 @@
         <ng-container *ngIf="editData.rating && editData?.type === 'delete'">
             <div class="confirmation-header">
                 <p class="m-0 ta-font-medium">
-                    Are you sure you want to delete rating for this
-                    {{ editData?.template }}?
+                    Are you sure you want to delete rating for this {{
+                    editData?.template }}?
                 </p>
             </div>
         </ng-container>
@@ -432,17 +418,11 @@
             <div class="confirmation-header">
                 <p class="m-0 ta-font-medium">
                     Are you sure you want to {{ editData?.subTypeStatus }} this
-                    {{ editData?.template }}
-                    {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
-                    {{
-                        editData?.subType === 'archive'
-                            ? 'archive'
-                            : editData?.subType === 'dnu'
-                            ? 'do not use list'
-                            : editData?.subType === 'favorite'
-                            ? 'favorite list'
-                            : 'ban list'
-                    }}?
+                    {{ editData?.template }} {{ editData?.subTypeStatus ===
+                    'move' ? 'to' : 'from' }} {{ editData?.subType === 'archive'
+                    ? 'archive' : editData?.subType === 'dnu' ? 'do not use
+                    list' : editData?.subType === 'favorite' ? 'favorite list' :
+                    'ban list' }}?
                 </p>
             </div>
         </ng-container>
@@ -454,8 +434,8 @@
         >
             <div class="confirmation-header">
                 <p class="m-0 ta-font-medium">
-                    Are you sure you want to {{ editData?.type }} selected
-                    {{ editData?.subType }}?
+                    Are you sure you want to {{ editData?.type }} selected {{
+                    editData?.subType }}?
                 </p>
             </div>
         </ng-container>
@@ -471,20 +451,12 @@
             class="confirmation-header"
         >
             <p class="m-0 ta-font-medium">
-                Are you sure you want to
-                {{
-                    editData?.type === 'info'
-                        ? editData?.subType
-                        : editData?.type === 'multiple delete'
-                        ? 'delete' + ' ' + editData.array.length
-                        : editData.type
-                }}
-                {{ editData?.type === 'multiple delete' ? null : 'selected' }}
-                {{
-                    editData?.type === 'multiple delete'
-                        ? editData?.template + 's'
-                        : editData?.template
-                }}?
+                Are you sure you want to {{ editData?.type === 'info' ?
+                editData?.subType : editData?.type === 'multiple delete' ?
+                'delete' + ' ' + editData.array.length : editData.type }} {{
+                editData?.type === 'multiple delete' ? null : 'selected' }} {{
+                editData?.type === 'multiple delete' ? editData?.template + 's'
+                : editData?.template }}?
             </p>
         </div>
 

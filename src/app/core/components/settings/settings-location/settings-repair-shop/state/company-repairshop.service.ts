@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { RepairShopService } from '../../../../../../../../appcoretruckassist/api/repairShop.service';
 import { RepairShopNewListResponse } from 'appcoretruckassist';
 
@@ -31,7 +31,7 @@ export class CompanyRepairShopService {
         search1?: string,
         search2?: string
     ): Observable<RepairShopNewListResponse> {
-        return this.companyRepairShop.apiRepairshopListGet(
+        return of(null); /* this.companyRepairShop.apiRepairshopListGet(
             active,
             pinned,
             companyOwned,
@@ -50,6 +50,6 @@ export class CompanyRepairShopService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 }
