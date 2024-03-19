@@ -27,14 +27,12 @@
                                 class="checkbox-tooltip"
                                 type="button"
                                 ngbTooltip
+                                [mainTooltip]="
+                                    !card.isSelected ? 'Select' : 'Clear'
+                                "
                                 tooltipBackground="#424242"
                                 position="bottom"
-                                [ngClass]="{
-                                    'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i),
-                                    'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
-                                }"
+                                customClass="mt-1"
                             >
                                 <input
                                     class="table-checkbox"
@@ -55,12 +53,24 @@
                             <div
                                 class="finish-order-holder d-flex justify-content-between"
                             >
-                                <span class="title">{{
-                                    valueByStringPathInstance.getValueByStringPath(
-                                        card,
-                                        cardTitle
-                                    )
-                                }}</span>
+                                <span class="title">
+                                    <span
+                                        class="title-tooltip"
+                                        type="button"
+                                        ngbTooltip
+                                        mainTooltip="View Detail"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
+                                        customClass="mt-1"
+                                    >
+                                        {{
+                                            valueByStringPathInstance.getValueByStringPath(
+                                                card,
+                                                cardTitle
+                                            )
+                                        }}
+                                    </span></span
+                                >
 
                                 <ng-container *ngIf="card.isRepairOrder">
                                     <span
@@ -373,6 +383,7 @@
                                     'svg-position':
                                         !isCardFlippedCheckInCards.includes(i)
                                 }"
+                                customClass="mt-2"
                             >
                                 <svg-icon
                                     [src]="'assets/svg/common/resize-arrow.svg'"
@@ -480,7 +491,6 @@
                     </div>
                 </ng-container>
             </div>
-            <div class="right-background"></div>
         </div>
     </div>
 </ng-template>

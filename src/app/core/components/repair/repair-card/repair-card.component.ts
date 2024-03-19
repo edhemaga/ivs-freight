@@ -83,6 +83,8 @@ export class RepairCardComponent
 
     ngOnInit() {
         this.flipAllCards();
+
+        console.log(this.viewData);
     }
 
     ngOnChanges(): void {

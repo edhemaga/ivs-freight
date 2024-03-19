@@ -46,6 +46,18 @@ export class DriverCardComponent implements OnInit, OnDestroy {
             });
     }
 
+    // When checkbox is selected
+    public onCheckboxSelect(index: number, card: CardDetails): void {
+        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+
+        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+            index,
+            card
+        );
+
+        this.tableService.sendRowsSelected(checkedCard);
+    }
+
     // Flip card based on card index
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards =

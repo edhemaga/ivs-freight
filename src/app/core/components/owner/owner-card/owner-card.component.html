@@ -27,14 +27,12 @@
                                 class="checkbox-tooltip"
                                 type="button"
                                 ngbTooltip
+                                [mainTooltip]="
+                                    !card.isSelected ? 'Select' : 'Clear'
+                                "
                                 tooltipBackground="#424242"
                                 position="bottom"
-                                [ngClass]="{
-                                    'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i),
-                                    'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
-                                }"
+                                customClass="mt-1"
                             >
                                 <input
                                     class="table-checkbox"
@@ -54,12 +52,22 @@
 
                         <div class="name d-flex ta-font-bold">
                             <span class="title">
-                                {{
-                                    valueByStringPathInstance.getValueByStringPath(
-                                        card,
-                                        cardTitle
-                                    )
-                                }}
+                                <span
+                                    class="title-tooltip"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="View Detail"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                    customClass="mt-1"
+                                >
+                                    {{
+                                        valueByStringPathInstance.getValueByStringPath(
+                                            card,
+                                            cardTitle
+                                        )
+                                    }}
+                                </span>
                             </span>
                         </div>
                     </div>
@@ -232,6 +240,7 @@
                                     'svg-position':
                                         !isCardFlippedCheckInCards.includes(i)
                                 }"
+                                customClass="mt-2"
                             >
                                 <svg-icon
                                     [src]="'assets/svg/common/resize-arrow.svg'"

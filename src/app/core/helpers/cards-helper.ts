@@ -1,5 +1,9 @@
 // model
 import { CardDetails } from '../components/shared/model/card-table-data.model';
+import {
+    CardRows,
+    DataResult,
+} from '../components/shared/model/card-data.model';
 // enums
 import { ConstantStringTableComponentsEnum } from '../utils/enums/table-components.enum';
 
@@ -10,6 +14,7 @@ import { FormatNumberMiPipe } from '../pipes/formatMiles.pipe';
 import { TimeFormatPipe } from '../pipes/time-format-am-pm.pipe';
 
 //Remove quotes from string to convert into endpoint
+
 export class ValueByStringPath {
     private formatCurrencyPipe: formatCurrency = new formatCurrency();
     private formatDatePipe: formatDatePipe = new formatDatePipe();
@@ -22,6 +27,69 @@ export class ValueByStringPath {
     public isCardFlippedArrayComparasion: number[] = [];
     public isCardFlippedCheckInCards: number[] = [];
 
+    public dataForRows: DataResult[][] = [];
+    public titleArray: string[] = [];
+
+    public renderCards(
+        viewData: CardDetails[],
+        cardTitle?: string,
+        rowsToDisplay?: CardRows[]
+    ) {
+        this.dataForRows = [];
+        this.titleArray = [];
+        console.log(viewData, rowsToDisplay);
+        viewData.forEach((card) => {
+            let resultsRowsForCards: DataResult[] = [];
+
+            if (cardTitle) {
+                const title = this.getValueByStringPath(card, cardTitle);
+
+                this.titleArray = [...this.titleArray, title];
+            }
+
+            if (rowsToDisplay) {
+                rowsToDisplay.forEach((row) => {
+                    let key;
+
+                    if (row.key) {
+                        key = this.getValueByStringPath(card, row.key);
+                    }
+
+                    let secondKey: string;
+                    let thirdKey: string;
+
+                    if (row?.secondKey) {
+                        secondKey = this.getValueByStringPath(
+                            card,
+                            row?.secondKey
+                        );
+                    }
+
+                    if (row?.thirdKey) {
+                        thirdKey = this.getValueByStringPath(
+                            card,
+                            row?.thirdKey
+                        );
+                    }
+
+                    resultsRowsForCards = [
+                        ...resultsRowsForCards,
+                        {
+                            title: row.title,
+                            key,
+                            secondKey,
+                            thirdKey,
+                        },
+                    ];
+                });
+
+                this.dataForRows = [...this.dataForRows, resultsRowsForCards];
+            }
+        });
+
+        return { cardsTitle: this.titleArray, dataForRows: this.dataForRows };
+    }
+
     public getValueByStringPath(
         obj: CardDetails,
         ObjKey: string,
@@ -30,10 +98,9 @@ export class ValueByStringPath {
         if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
             return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
 
-        const isValueOfKey = !ObjKey.split(
+        const isValueOfKey = !ObjKey?.split(
             ConstantStringTableComponentsEnum.DOT_1
         ).reduce((acc, part) => acc && acc[part], obj);
-
         const isNotZeroValueOfKey =
             ObjKey.split(ConstantStringTableComponentsEnum.DOT_1).reduce(
                 (acc, part) => acc && acc[part],

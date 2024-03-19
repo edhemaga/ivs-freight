@@ -50,6 +50,18 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
             this.valueByStringPathInstance.flipCard(index);
     }
 
+    // When checkbox is selected
+    public onCheckboxSelect(index: number, card: CardDetails): void {
+        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+
+        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+            index,
+            card
+        );
+
+        this.tableService.sendRowsSelected(checkedCard);
+    }
+
     public trackCard(id: number): number {
         return id;
     }

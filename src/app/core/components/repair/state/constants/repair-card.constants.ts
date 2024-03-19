@@ -124,7 +124,7 @@ export class DisplayRepairConfiguration {
     static displayRowsBackRepairShop: CardRows[] = [
         {
             title: 'Bill',
-            endpoint: 'tableRepairCountBill',
+            endpoint: 'bill',
         },
 
         {
