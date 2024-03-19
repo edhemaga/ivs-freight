@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BrokerPaidInvoiceChartResponse } from './brokerPaidInvoiceChartResponse';
 
 
 export interface BrokerPaidInvoiceResponse { 
     count?: number | null;
     revenue?: number | null;
+    brokerPaidInvoiceChartResponse?: Array<BrokerPaidInvoiceChartResponse> | null;
 }
 

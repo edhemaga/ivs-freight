@@ -14,6 +14,8 @@ export enum ConstantStringEnum {
     CONTACT_PHONES = 'contactPhones',
     CONTACT_EMAILS = 'contactEmails',
     DEPARTMENT_HELPER = 'departmentHelper',
+    CONTACT_PHONES_HELPER = 'contactPhonesHelper',
+    CONTACT_EMAILS_HELPER = 'contactEmailsHelper',
 
     AVATAR = 'avatar',
 }
