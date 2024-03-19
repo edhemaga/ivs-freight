@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -7,7 +15,7 @@ import {
     CardDetails,
     SendDataCard,
 } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows, DataResult } from '../../shared/model/card-data.model';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
@@ -24,18 +32,18 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     selector: 'app-customer-card',
     templateUrl: './customer-card.component.html',
     styleUrls: ['./customer-card.component.scss'],
-    providers: [formatCurrency, TimeFormatPipe],
+    providers: [formatCurrency, TimeFormatPipe, ValueByStringPath],
 })
-export class CustomerCardComponent {
+export class CustomerCardComponent implements OnInit, OnChanges {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     @Input() viewData: CardDetails[];
 
-    // Card body endpoints
+    // Card body keys
     @Input() cardTitle: string;
     @Input() rows: number[];
-    @Input() displayRowsFront: CardRows;
-    @Input() displayRowsBack: CardRows;
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
@@ -45,18 +53,59 @@ export class CustomerCardComponent {
 
     public isCardFlippedCheckInCards: number[] = [];
 
-    public valueByStringPathInstance = new ValueByStringPath();
-
     public isAllCardsFlipp: boolean = false;
+
+    public cardsFront: DataResult[][][] = [];
+    public cardsBack: DataResult[][][] = [];
+    public titleArray: string[][] = [];
 
     constructor(
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
-        private router: Router
+        private router: Router,
+        private valueByStringPath: ValueByStringPath
     ) {}
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    ngOnChanges(cardChanges: SimpleChanges) {
+        if (
+            cardChanges.displayRowsBack.currentValue ||
+            cardChanges.displayRowsFront.currentValue
+        )
+            this.getTransformedCardsData();
+    }
+
+    public getTransformedCardsData(): void {
+        this.cardsFront = [];
+        this.cardsBack = [];
+        this.titleArray = [];
+
+        const cardTitles = this.valueByStringPath.renderCards(
+            this.viewData,
+            this.cardTitle,
+            null
+        );
+
+        const frontOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsFront
+        );
+
+        const backOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsBack
+        );
+
+        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
+
+        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
+
+        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
     public flipAllCards(): void {
@@ -71,18 +120,14 @@ export class CustomerCardComponent {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards =
-            this.valueByStringPathInstance.flipCard(index);
+        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

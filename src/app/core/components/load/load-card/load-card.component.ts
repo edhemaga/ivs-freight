@@ -4,6 +4,7 @@ import {
     OnDestroy,
     OnInit,
     SimpleChanges,
+    OnChanges,
 } from '@angular/core';
 import { CardDetails } from '../../shared/model/card-table-data.model';
 import { Router } from '@angular/router';
@@ -32,7 +33,7 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     styleUrls: ['./load-card.component.scss'],
     providers: [FormatNumberMiPipe, formatCurrency, ValueByStringPath],
 })
-export class LoadCardComponent implements OnInit, OnDestroy {
+export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data
     @Input() viewData: CardDetails[];
 

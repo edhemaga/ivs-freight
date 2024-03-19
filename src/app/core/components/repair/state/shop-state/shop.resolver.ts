@@ -35,8 +35,6 @@ export class ShopResolver implements Resolve<ShopState> {
             this.tableService.getTableConfig(11),
         ]).pipe(
             tap(([repairTrailerPagination, tableConfig]) => {
-                console.log(repairTrailerPagination);
-
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
 

@@ -9,22 +9,22 @@ export class DisplayRepairConfiguration {
     static displayRowsFrontTruck: CardRows[] = [
         {
             title: 'Issued',
-            endpoint: 'tableIssued',
+            key: 'tableIssued',
         },
 
         {
             title: 'Unit No.',
-            endpoint: 'tableUnit',
+            key: 'tableUnit',
         },
 
         {
             title: 'Item',
-            endpoint: 'items',
+            key: 'items',
         },
 
         {
             title: 'Repair Shop',
-            endpoint: 'repairShop.name',
+            key: 'repairShop.name',
         },
     ];
 
@@ -32,22 +32,22 @@ export class DisplayRepairConfiguration {
     static displayRowsBackTruck: CardRows[] = [
         {
             title: 'Repair Shop',
-            endpoint: 'repairShop.name',
+            key: 'repairShop.name',
         },
 
         {
             title: 'Shop Address',
-            endpoint: 'address',
+            key: 'address',
         },
 
         {
             title: 'Unit Type',
-            endpoint: 'unitType.name',
+            key: 'unitType.name',
         },
 
         {
             title: 'Odometer',
-            endpoint: 'odometer',
+            key: 'odometer',
         },
     ];
 
@@ -55,22 +55,22 @@ export class DisplayRepairConfiguration {
     static displayRowsFrontTrailer: CardRows[] = [
         {
             title: 'Issued',
-            endpoint: 'tableIssued',
+            key: 'tableIssued',
         },
 
         {
             title: 'Unit No.',
-            endpoint: 'tableUnit',
+            key: 'tableUnit',
         },
 
         {
             title: 'Item',
-            endpoint: 'items',
+            key: 'items',
         },
 
         {
             title: 'Repair Shop',
-            endpoint: 'repairShop.name',
+            key: 'repairShop.name',
         },
     ];
 
@@ -78,22 +78,22 @@ export class DisplayRepairConfiguration {
     static displayRowsBackTrailer: CardRows[] = [
         {
             title: 'Repair Shop',
-            endpoint: 'repairShop.name',
+            key: 'repairShop.name',
         },
 
         {
             title: 'Shop Address',
-            endpoint: 'tableShopAdress',
+            key: 'tableShopAdress',
         },
 
         {
             title: 'Unit Type',
-            endpoint: 'unitType.name',
+            key: 'unitType.name',
         },
 
         {
             title: 'Odometer',
-            endpoint: 'odometer',
+            key: 'odometer',
         },
     ];
 
@@ -101,22 +101,22 @@ export class DisplayRepairConfiguration {
     static displayRowsFrontRepairShop: CardRows[] = [
         {
             title: 'Phone',
-            endpoint: 'phone',
+            key: 'phone',
         },
 
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
 
         {
             title: 'Address',
-            endpoint: 'address',
+            key: 'address',
         },
 
         {
             title: 'Services',
-            endpoint: 'serviceTypes',
+            key: 'serviceTypes',
         },
     ];
 
@@ -124,23 +124,23 @@ export class DisplayRepairConfiguration {
     static displayRowsBackRepairShop: CardRows[] = [
         {
             title: 'Bill',
-            endpoint: 'bill',
+            key: 'bill',
         },
 
         {
             title: 'Expense',
-            endpoint: 'tableExpense',
+            key: 'tableExpense',
         },
 
         {
             title: 'Contact',
-            endpoint: 'contacts',
+            key: 'contacts',
         },
 
         {
             title: 'Rating & Review',
-            endpoint: 'tableRaiting.likeCount',
-            secondEndpoint: 'tableRaiting.dislikeCount',
+            key: 'tableRaiting.likeCount',
+            secondKey: 'tableRaiting.dislikeCount',
             hasLiked: 'hasLiked',
             hasDislike: 'hasDislike',
         },

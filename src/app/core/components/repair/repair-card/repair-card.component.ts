@@ -11,6 +11,7 @@ import {
     Output,
     QueryList,
     Renderer2,
+    SimpleChanges,
     ViewChild,
     ViewChildren,
 } from '@angular/core';
@@ -18,7 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 //Models
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows, DataResult } from '../../shared/model/card-data.model';
 import {
     CardDetails,
     SendDataCard,
@@ -38,6 +39,7 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     selector: 'app-repair-card',
     templateUrl: './repair-card.component.html',
     styleUrls: ['./repair-card.component.scss'],
+    providers: [ValueByStringPath],
 })
 export class RepairCardComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -50,16 +52,14 @@ export class RepairCardComponent
 
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
-    public valueByStringPathInstance = new ValueByStringPath();
-
     // All data
     @Input() viewData: CardDetails[];
 
     // Card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];
-    @Input() displayRowsFront: CardRows;
-    @Input() displayRowsBack: CardRows;
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
 
     public isCardFlippedCheckInCards: number[] = [];
@@ -70,32 +70,69 @@ export class RepairCardComponent
 
     public elementWidth: number;
 
-    public ValueByStringPath = new ValueByStringPath();
-
     private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
+
+    public cardsFront: DataResult[][][] = [];
+    public cardsBack: DataResult[][][] = [];
+    public titleArray: string[][] = [];
 
     constructor(
         private tableService: TruckassistTableService,
         private ngZone: NgZone,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private valueByStringPath: ValueByStringPath
     ) {}
 
     ngOnInit() {
         this.flipAllCards();
-
-        console.log(this.viewData);
     }
 
-    ngOnChanges(): void {
+    ngOnChanges(cardChanges: SimpleChanges): void {
         setTimeout(() => {
             this.itemsContainers.forEach((containerRef: ElementRef) => {
-                this.ValueByStringPath.calculateItemsToFit(
+                this.valueByStringPath.calculateItemsToFit(
                     containerRef.nativeElement,
                     this.renderer
                 );
             });
         }, 500);
+
+        if (
+            cardChanges?.displayRowsBack?.currentValue ||
+            cardChanges?.displayRowsFront?.currentValue
+        )
+            this.getTransformedCardsData();
+    }
+
+    public getTransformedCardsData(): void {
+        this.cardsFront = [];
+        this.cardsBack = [];
+        this.titleArray = [];
+
+        const cardTitles = this.valueByStringPath.renderCards(
+            this.viewData,
+            this.cardTitle,
+            null
+        );
+
+        const frontOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsFront
+        );
+
+        const backOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsBack
+        );
+
+        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
+
+        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
+
+        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
     ngAfterViewInit(): void {
@@ -116,7 +153,7 @@ export class RepairCardComponent
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+        const checkedCard = this.valueByStringPath.onCheckboxSelect(
             index,
             card
         );
@@ -172,7 +209,7 @@ export class RepairCardComponent
                     if (width) {
                         this.itemsContainers.forEach(
                             (containerRef: ElementRef) => {
-                                this.ValueByStringPath.calculateItemsToFit(
+                                this.valueByStringPath.calculateItemsToFit(
                                     containerRef.nativeElement,
                                     this.renderer
                                 );
@@ -200,8 +237,7 @@ export class RepairCardComponent
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards =
-            this.valueByStringPathInstance.flipCard(index);
+        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
     }
 
     public trackCard(item: number): number {

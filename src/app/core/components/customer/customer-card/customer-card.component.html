@@ -67,12 +67,14 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    {{
-                                        valueByStringPathInstance.getValueByStringPath(
-                                            card,
-                                            cardTitle
-                                        )
-                                    }}
+                                    <ng-container
+                                        *ngFor="
+                                            let title of titleArray;
+                                            trackBy: trackCard
+                                        "
+                                    >
+                                        {{ title[i] }}
+                                    </ng-container>
                                 </span>
                             </span>
                         </div>
@@ -91,80 +93,72 @@
 
                         <ng-container
                             *ngFor="
-                                let rowsFront of displayRowsFront;
+                                let rowsFront of cardsFront;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsFront.title }}
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsFront[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div
-                                    #parentElement
-                                    class="bottom-item-body d-flex align-items-center"
-                                    [ngClass]="{
-                                        gap: rowsFront.title !== 'VIN No.',
-                                        'line-height':
-                                            rowsFront.title === 'Fleet'
-                                    }"
-                                >
-                                    <ng-container
-                                        *ngIf="
-                                            rowsFront.endpoint !==
-                                                'tableRaiting.likeCount' &&
-                                            rowsFront.endpoint !==
-                                                'availableCredit'
-                                        "
+                                    <div
+                                        #parentElement
+                                        class="bottom-item-body d-flex align-items-center"
+                                        [ngClass]="{
+                                            gap: row.title !== 'VIN No.',
+                                            'line-height': row.title === 'Fleet'
+                                        }"
                                     >
-                                        <span>
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
-                                        </span>
-                                    </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                row.title !==
+                                                    'Rating & Review' &&
+                                                row.title !== 'Available Credit'
+                                            "
+                                        >
+                                            <span>
+                                                {{ row.key }}
+                                            </span>
+                                        </ng-container>
 
-                                    <!-- Available Credit -->
+                                        <!-- Available Credit -->
 
-                                    <ng-container
-                                        *ngIf="
-                                            rowsFront.endpoint ===
-                                            'availableCredit'
-                                        "
-                                    >
-                                        {{
-                                            valueByStringPathInstance.getValueByStringPath(
-                                                card,
-                                                rowsFront.endpoint,
-                                                'money'
-                                            )
-                                        }}
-                                    </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                row.title === 'Available Credit'
+                                            "
+                                        >
+                                            {{ row.key }}
+                                        </ng-container>
 
-                                    <!-- Rating & Review Shipper-->
+                                        <!-- Rating & Review Shipper-->
 
-                                    <ng-container
-                                        *ngIf="
-                                            rowsFront.endpoint ===
-                                            'tableRaiting.likeCount'
-                                        "
-                                    >
-                                        <div class="rating-holder d-flex">
-                                            <!-- <app-ta-input-dropdown-table
+                                        <ng-container
+                                            *ngIf="
+                                                row.title === 'Rating & Review'
+                                            "
+                                        >
+                                            <div class="rating-holder d-flex">
+                                                <!-- <app-ta-input-dropdown-table
                                                 [data]="card.review"
                                                 [type]="'rating-shipper'"
                                                 [loggedUserCommented]="true"
                                             >
                                             </app-ta-input-dropdown-table> -->
-                                        </div>
-                                    </ng-container>
+                                            </div>
+                                        </ng-container>
+                                    </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
 
@@ -179,98 +173,86 @@
                     >
                         <ng-container
                             *ngFor="
-                                let rowsBack of displayRowsBack;
+                                let rowsBack of cardsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsBack.title }}
-                                    </div>
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsBack[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
 
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center gap"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.endpoint !==
-                                                    'tableAvailableHoursReceiving' &&
-                                                rowsBack.endpoint !==
-                                                    'tableAvailableHoursShipping' &&
-                                                rowsBack.endpoint !==
-                                                    'tableRaiting.likeCount' &&
-                                                rowsBack.endpoint !== 'revenue'
-                                            "
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center gap"
                                         >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsBack.endpoint
-                                                )
-                                            }}
-                                        </ng-container>
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title !==
+                                                        'Receiving Hours' &&
+                                                    row.title !==
+                                                        'Shipping Hours' &&
+                                                    row.title !==
+                                                        'Rating & Review' &&
+                                                    row.title !== 'Revenue'
+                                                "
+                                            >
+                                                {{ row.key }}
+                                            </ng-container>
 
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.endpoint ===
-                                                    'tableAvailableHoursShipping' ||
-                                                rowsBack.endpoint ===
-                                                    'tableAvailableHoursReceiving'
-                                            "
-                                        >
-                                            <div class="d-flex gap">
-                                                <svg-icon
-                                                    [src]="
-                                                        'assets/svg/truckassist-table/customer/calendar.svg'
-                                                    "
-                                                ></svg-icon>
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title ===
+                                                        'Shipping Hours' ||
+                                                    row.title ===
+                                                        'Receiving Hours'
+                                                "
+                                            >
+                                                <div class="d-flex gap">
+                                                    <svg-icon
+                                                        [src]="
+                                                            'assets/svg/truckassist-table/customer/calendar.svg'
+                                                        "
+                                                    ></svg-icon>
 
-                                                <span class="align-span">
-                                                    {{
-                                                        valueByStringPathInstance.getValueByStringPath(
-                                                            card,
-                                                            rowsBack.endpoint,
-                                                            'am-pm'
-                                                        )
-                                                    }}
-                                                </span>
-                                            </div>
-                                        </ng-container>
+                                                    <span class="align-span">
+                                                        {{ row.key }}
+                                                    </span>
+                                                </div>
+                                            </ng-container>
 
-                                        <!-- Rating & Review -->
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.endpoint ===
-                                                'tableRaiting.likeCount'
-                                            "
-                                        >
-                                            <!-- <app-ta-input-dropdown-table
+                                            <!-- Rating & Review -->
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title ===
+                                                    'Rating & Review'
+                                                "
+                                            >
+                                                <!-- <app-ta-input-dropdown-table
                                                 [data]="card.review"
                                                 [type]="'rating-shipper'"
                                                 [loggedUserCommented]="true"
                                             >
                                             </app-ta-input-dropdown-table> -->
-                                        </ng-container>
+                                            </ng-container>
 
-                                        <!-- Format revanue -->
+                                            <!-- Format revanue -->
 
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.endpoint === 'revenue'
-                                            "
-                                        >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsBack.endpoint,
-                                                    'money'
-                                                )
-                                            }}
-                                        </ng-container>
+                                            <ng-container
+                                                *ngIf="row.title === 'Revenue'"
+                                            >
+                                                {{ row.key }}
+                                            </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>
