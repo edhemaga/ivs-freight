@@ -54,18 +54,18 @@ export interface Confirmation {
     styleUrls: ['./confirmation-modal.component.scss'],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         TaModalComponent,
         TaInputDropdownComponent,
         ProfileImagesComponent,
 
-        // Pipe
+        // pipes
         formatDatePipe,
     ],
 })
