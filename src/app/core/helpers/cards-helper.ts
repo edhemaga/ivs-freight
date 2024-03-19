@@ -37,7 +37,7 @@ export class ValueByStringPath {
     ) {
         this.dataForRows = [];
         this.titleArray = [];
-        console.log(viewData, rowsToDisplay);
+
         viewData.forEach((card) => {
             let resultsRowsForCards: DataResult[] = [];
 
