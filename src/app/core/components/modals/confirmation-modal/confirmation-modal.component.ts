@@ -117,5 +117,5 @@ export class ConfirmationModalComponent implements OnInit {
         return convertDateFromBackend(mod);
     }
 
-    public identity = (index: number, _: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 }

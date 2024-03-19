@@ -255,15 +255,27 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
-                    console.log('REEES', res);
-
                     switch (res.type) {
                         case ConstantStringTableComponentsEnum.DELETE:
-                            this.multipleDeleteTransactions([res.id]);
+                            if (
+                                res.template ===
+                                ConstantStringTableComponentsEnum.FUEL_STOP_2
+                            ) {
+                                this.deleteFuelStopById(res.id);
+                            } else {
+                                /*  this.deletFuelTransactionById() */
+                            }
 
                             break;
                         case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
-                            this.multipleDeleteTransactions(res.array);
+                            if (
+                                res.template ===
+                                ConstantStringTableComponentsEnum.FUEL_STOP_2
+                            ) {
+                                /*      this.deleteFuelStopList(res.id); */
+                            } else {
+                                this.deleteFuelTransactionList(res.array);
+                            }
 
                             break;
                         default:
@@ -273,10 +285,26 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private multipleDeleteTransactions(ids: number[]): void {
+    private deleteFuelStopById(fuelStopId: number) {
+        this.fuelService
+            .deleteFuelStopById(fuelStopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private deleteFuelStopList(fuelStopIds: number[]) {
+        this.fuelService
+            .deleteFuelStopList(fuelStopIds)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private deletFuelTransactionById(fuelTransactionId: number) {}
+
+    private deleteFuelTransactionList(ids: number[]): void {
         console.log('ids', ids);
         this.fuelService
-            .deleteFuelList(ids)
+            .deleteFuelTransactionsList(ids)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((fuel) => {
