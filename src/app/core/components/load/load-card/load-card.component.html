@@ -69,7 +69,10 @@
                                         customClass="mt-1"
                                     >
                                         <ng-container
-                                            *ngFor="let title of titleArray"
+                                            *ngFor="
+                                                let title of titleArray;
+                                                trackBy: trackCard
+                                            "
                                         >
                                             {{ title[i] }}
                                         </ng-container>
@@ -97,8 +100,18 @@
                                 !isAllCardsFlipp
                         }"
                     >
-                        <ng-container *ngFor="let rowsFront of cardsFront">
-                            <ng-container *ngFor="let row of rowsFront[i]">
+                        <ng-container
+                            *ngFor="
+                                let rowsFront of cardsFront;
+                                trackBy: trackCard
+                            "
+                        >
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsFront[i];
+                                    trackBy: trackCard
+                                "
+                            >
                                 <div class="one-row">
                                     <div class="item-body">
                                         <div
@@ -220,7 +233,12 @@
                                 trackBy: trackCard
                             "
                         >
-                            <ng-container *ngFor="let row of rowsBack[i]">
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsBack[i];
+                                    trackBy: trackCard
+                                "
+                            >
                                 <ng-container *ngIf="row">
                                     <div class="one-row">
                                         <div class="item-body">

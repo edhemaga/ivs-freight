@@ -75,7 +75,7 @@
 
                         &:hover {
                             background: $muted;
-                            transform: scale(1.286);
+                            transform: scale(1.3);
                             transition: background, transform 0.3s;
                         }
                     }
@@ -89,7 +89,6 @@
 
                         &:hover {
                             background-color: $ta-blue-15;
-                            transition: background-color 0.3s;
                         }
                     }
                 }
