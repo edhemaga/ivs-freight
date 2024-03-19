@@ -437,6 +437,18 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
+    public getMileageChartData(id: number, chartType: number) {
+        return this.brokerService.apiBrokerMileageratehistoryGet(id, chartType);
+    }
+
+    public getPaymentChartData(id: number, chartType: number) {
+        return this.brokerService.apiBrokerPaymenthistoryGet(id, chartType);
+    }
+
+    public getInvoiceChartData(id: number, chartType: number) {
+        return this.brokerService.apiBrokerPaidinvoiceGet(id, chartType);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

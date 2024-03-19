@@ -774,9 +774,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // TODO find model for this data
     private mapDriverData(data): DriverResponse {
-        if (!data?.avatar) {
-            this.mapingIndex++;
-        }
+        if (!data?.avatar) this.mapingIndex++;
+
+        console.log('data', data);
 
         return {
             ...data,
@@ -836,8 +836,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCdlDetailEndorsment: ConstantStringTableComponentsEnum.NA,
-            tableCdlDetailRestriction: ConstantStringTableComponentsEnum.NA,
+            tableCdlDetailEndorsment: data.cdls
+                ? data.cdls[0]?.cdlEndorsements.map(
+                      (endorsement) => endorsement.code
+                  )
+                : null,
+            tableCdlDetailRestriction: data.cdls
+                ? data.cdls[0]?.cdlRestrictions.map(
+                      (restriction) => restriction.code
+                  )
+                : null,
             tableCdlDetailExpiration: {
                 expirationDays:
                     data?.cdlExpirationDays || data?.cdlExpirationDays === 0

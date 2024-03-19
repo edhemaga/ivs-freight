@@ -13,4 +13,19 @@ export class ChartConstants {
         'NOVEMBER',
         'DECEMBER',
     ];
+
+    static MONTH_LIST_SHORT: string[] = [
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC',
+    ];
 }
