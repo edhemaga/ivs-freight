@@ -1,0 +1,33 @@
+image: node:14.20
+
+pipelines:
+  branches:
+    development:
+      - step:
+          name: Installation
+          caches:
+            - node
+          script:
+            - npm install
+          artifacts:
+            - node_modules/** # Save modules for next steps
+      - step:
+          name: Build
+          script:
+            - npm run build:production
+          artifacts:
+            - dist/** # Save build for next steps
+      - step:
+          name: Deploy
+          script:
+            - echo "$(ls -la)"
+            - echo "$(ls -la dist)"
+            - apt-get update && apt-get install -y openssh-client
+            - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            - chmod 600 ~/.ssh/id_rsa
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 mkdir /home/frontdev/www-tmp
+            - scp -P29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./dist/carrierassist-fe/* frontdev@208.70.253.204://home/frontdev/www-tmp
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 rm -rf /home/frontdev/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 mv /home/frontdev/www /home/frontdev/www-old
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 mv /home/frontdev/www-tmp /home/frontdev/www
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 chown frontdev:frontdev /home/frontdev/www -R

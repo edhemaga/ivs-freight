@@ -156,7 +156,7 @@ export class FuelTService {
         return this.fuelService.apiFuelTransactionIdGet(id);
     }
 
-    // Get Fule Stops
+    // Get Fuel Stops
     public getFuelStopsList(
         truckIds?: Array<number>,
         categoryIds?: Array<number>,
@@ -205,6 +205,24 @@ export class FuelTService {
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
+    }
+
+    public deleteFuelStopById(fuelStopId: number): Observable<object> {
+        return this.fuelService.apiFuelFuelstopIdDelete(fuelStopId).pipe(
+            tap(() => {
+                this.fuelStore.update((store) => ({
+                    fuelStops: store.fuelStops.filter(
+                        (stop: FuelStopResponse) => stop.id !== fuelStopId
+                    ),
+                }));
+            })
+        );
+    }
+
+    public deleteFuelStopList(fuelStopIds: number[]) {
+        return this.fuelService
+            .apiFuelFuelstopListDelete(fuelStopIds)
+            .pipe(tap(() => {}));
     }
 
     public addFuelStop(data: any): Observable<CreateResponse> {
@@ -378,7 +396,7 @@ export class FuelTService {
         );
     }
 
-    public deleteFuelList(ids: number[]): Observable<void> {
+    public deleteFuelTransactionsList(ids: number[]): Observable<void> {
         return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
             tap(() => {
                 ids.forEach((id) => {
