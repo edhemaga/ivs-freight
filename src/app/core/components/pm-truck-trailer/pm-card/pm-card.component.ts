@@ -1,9 +1,15 @@
-import { Component, Input } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardDetails } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows, DataResult } from '../../shared/model/card-data.model';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
@@ -15,8 +21,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     selector: 'app-pm-card',
     templateUrl: './pm-card.component.html',
     styleUrls: ['./pm-card.component.scss'],
+    providers: [ValueByStringPath],
 })
-export class PmCardComponent {
+export class PmCardComponent implements OnInit, OnChanges {
     // All data
     @Input() viewData: CardDetails[];
 
@@ -26,11 +33,9 @@ export class PmCardComponent {
     // Card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];
-    @Input() displayRowsFront: CardRows;
-    @Input() displayRowsBack: CardRows;
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
-
-    public valueByStringPathInstance = new ValueByStringPath();
 
     public cardData: CardDetails;
 
@@ -39,10 +44,55 @@ export class PmCardComponent {
     private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
 
-    constructor(private tableService: TruckassistTableService) {}
+    public cardsFront: DataResult[][][] = [];
+    public cardsBack: DataResult[][][] = [];
+    public titleArray: string[][] = [];
+
+    constructor(
+        private tableService: TruckassistTableService,
+        private valueByStringPath: ValueByStringPath
+    ) {}
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    ngOnChanges(cardChanges: SimpleChanges) {
+        if (
+            cardChanges.displayRowsBack.currentValue ||
+            cardChanges.displayRowsFront.currentValue
+        )
+            this.getTransformedCardsData();
+    }
+
+    public getTransformedCardsData(): void {
+        this.cardsFront = [];
+        this.cardsBack = [];
+        this.titleArray = [];
+
+        const cardTitles = this.valueByStringPath.renderCards(
+            this.viewData,
+            this.cardTitle,
+            null
+        );
+
+        const frontOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsFront
+        );
+
+        const backOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsBack
+        );
+
+        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
+
+        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
+
+        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
     public flipAllCards(): void {
@@ -57,7 +107,7 @@ export class PmCardComponent {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+        const checkedCard = this.valueByStringPath.onCheckboxSelect(
             index,
             card
         );
@@ -67,8 +117,7 @@ export class PmCardComponent {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards =
-            this.valueByStringPathInstance.flipCard(index);
+        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
     }
 
     public trackCard(item: number): number {

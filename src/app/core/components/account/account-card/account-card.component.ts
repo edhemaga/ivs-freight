@@ -1,24 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+} from '@angular/core';
 import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
 import { CardDetails } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows, DataResult } from '../../shared/model/card-data.model';
+import { CompanyAccountLabelResponse } from 'appcoretruckassist';
+import { tableBodyColorLabel } from '../../shared/model/tableBody';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { tableBodyColorLabel } from '../../shared/model/tableBody';
-import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-account-card',
     templateUrl: './account-card.component.html',
     styleUrls: ['./account-card.component.scss'],
+    providers: [ValueByStringPath],
 })
-export class AccountCardComponent implements OnInit {
+export class AccountCardComponent implements OnInit, OnChanges {
     // All data
     @Input() viewData: CardDetails[];
 
@@ -28,28 +35,59 @@ export class AccountCardComponent implements OnInit {
     // Card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];
-    @Input() displayRowsFront: CardRows;
-    @Input() displayRowsBack: CardRows;
+    @Input() displayRowsFront: CardRows[];
     @Input() cardTitleLink: string;
-
-    public valueByStringPathInstance = new ValueByStringPath();
 
     public cardData: CardDetails;
 
     public dropdownSelectionArray = new UntypedFormArray([]);
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
-    constructor(private tableService: TruckassistTableService) {}
+    public cardsFront: DataResult[][][] = [];
+    public cardsBack: DataResult[][][] = [];
+    public titleArray: string[][] = [];
+
+    constructor(
+        private tableService: TruckassistTableService,
+        private valueByStringPath: ValueByStringPath
+    ) {}
 
     ngOnInit(): void {
         this.viewData.length && this.labelDropdown();
+    }
+
+    ngOnChanges(cardChanges: SimpleChanges) {
+        if (cardChanges?.displayRowsFront?.currentValue)
+            this.getTransformedCardsData();
+    }
+
+    public getTransformedCardsData(): void {
+        this.cardsFront = [];
+        this.cardsBack = [];
+        this.titleArray = [];
+
+        const cardTitles = this.valueByStringPath.renderCards(
+            this.viewData,
+            this.cardTitle,
+            null
+        );
+
+        const frontOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsFront
+        );
+
+        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
+
+        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPathInstance.onCheckboxSelect(
+        const checkedCard = this.valueByStringPath.onCheckboxSelect(
             index,
             card
         );

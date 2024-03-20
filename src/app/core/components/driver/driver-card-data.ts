@@ -11,24 +11,24 @@ export class DisplayDriverConfiguration {
     static displayRowsFrontApplicants: CardRows[] = [
         {
             title: 'Status',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
 
         {
             title: 'Application Process',
-            endpoint: 'tableApplicantProgress',
+            key: 'tableApplicantProgress',
         },
 
         {
             title: 'CDL Expiration',
-            endpoint: 'tableCdl.expirationDays',
-            secondEndpoint: 'tableCdl.percentage',
+            key: 'tableCdl.expirationDays',
+            secondKey: 'tableCdl.percentage',
         },
 
         {
             title: 'Medical Expiration',
-            endpoint: 'tableMedical.expirationDays',
-            secondEndpoint: 'tableMedical.percentage',
+            key: 'tableMedical.expirationDays',
+            secondKey: 'tableMedical.percentage',
         },
     ];
 
@@ -36,22 +36,22 @@ export class DisplayDriverConfiguration {
     static displayRowsBackApplicants: CardRows[] = [
         {
             title: 'Date of Birth',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
 
         {
             title: 'Phone',
-            endpoint: 'phone',
+            key: 'phone',
         },
 
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
 
         {
             title: 'Date Accepted',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
     ];
 
@@ -59,47 +59,47 @@ export class DisplayDriverConfiguration {
     static displayRowsActiveFront: CardRows[] = [
         {
             title: 'Phone No.',
-            endpoint: 'phone',
+            key: 'phone',
         },
 
         {
             title: 'SSN No.',
-            endpoint: 'ssn',
+            key: 'ssn',
         },
 
         {
             title: 'CDL No.',
-            endpoint: 'cdlNumber',
+            key: 'cdlNumber',
         },
 
         {
             title: 'Pay Type',
-            endpoint: 'payType.name',
+            key: 'payType.name',
         },
     ];
     // Data for active back
     static displayRowsActiveBack: CardRows[] = [
         {
             title: 'Hired',
-            endpoint: 'hired',
+            key: 'hired',
         },
 
         {
             title: 'CDL Exp.',
-            endpoint: 'tableCdlDetailExpiration.expirationDaysText',
-            secondEndpoint: 'tableCdlDetailExpiration.percentage',
+            key: 'tableCdlDetailExpiration.expirationDaysText',
+            secondKey: 'tableCdlDetailExpiration.percentage',
         },
 
         {
             title: 'Medical Exp.',
-            endpoint: 'tableMedicalData.expirationDaysText',
-            secondEndpoint: 'tableMedicalData.percentage',
+            key: 'tableMedicalData.expirationDaysText',
+            secondKey: 'tableMedicalData.percentage',
         },
 
         {
             title: 'MVR Exp.',
-            endpoint: 'tableMvrDetailsExpiration.expirationDaysText',
-            secondEndpoint: 'tableMvrDetailsExpiration.percentage',
+            key: 'tableMvrDetailsExpiration.expirationDaysText',
+            secondKey: 'tableMvrDetailsExpiration.percentage',
         },
     ];
 }

@@ -16,6 +16,7 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
 import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
 import { ProgresBarComponent } from '../standalone-components/progres-bar/progres-bar.component';
+import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 
 //pipes
 import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
@@ -29,6 +30,7 @@ import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
         NgbModule,
 
         //components
+        AppTooltipComponent,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,

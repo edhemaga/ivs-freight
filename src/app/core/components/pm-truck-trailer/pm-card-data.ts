@@ -10,23 +10,23 @@ export class DisplayPMConfiguration {
     static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
         {
             title: 'Oil & Filter',
-            endpoint: 'oilFilter.expirationDaysText',
-            secondEndpoint: 'oilFilter.percentage',
+            key: 'oilFilter.expirationDaysText',
+            secondKey: 'oilFilter.percentage',
         },
         {
             title: 'Air Filter',
-            endpoint: 'airFilter.expirationDaysText',
-            secondEndpoint: 'airFilter.percentage',
+            key: 'airFilter.expirationDaysText',
+            secondKey: 'airFilter.percentage',
         },
         {
             title: 'Trans. Fluid',
-            endpoint: 'transFluid.percentage',
-            secondEndpoint: 'transFluid.percentage',
+            key: 'transFluid.percentage',
+            secondKey: 'transFluid.percentage',
         },
         {
             title: 'Belts',
-            endpoint: 'belts.expirationDaysText',
-            secondEndpoint: 'belts.percentage',
+            key: 'belts.expirationDaysText',
+            secondKey: 'belts.percentage',
         },
     ];
 
@@ -34,19 +34,19 @@ export class DisplayPMConfiguration {
     static DISPLAY_ROWS_BACK_ACTIVE: CardRows[] = [
         {
             title: 'Make',
-            endpoint: 'ruMake',
+            key: 'ruMake',
         },
         {
             title: 'Odometer',
-            endpoint: 'textOdometer',
+            key: 'textOdometer',
         },
         {
             title: 'Last Service',
-            endpoint: 'lastService',
+            key: 'lastService',
         },
         {
             title: 'Repair Shop',
-            endpoint: 'repairShop',
+            key: 'repairShop',
         },
     ];
 
@@ -54,23 +54,23 @@ export class DisplayPMConfiguration {
     static DISPLAY_ROWS_FRONT_INACTIVE: CardRows[] = [
         {
             title: 'General',
-            endpoint: 'general.expirationDaysText',
-            secondEndpoint: 'general.percentage',
+            key: 'general.expirationDaysText',
+            secondKey: 'general.percentage',
         },
         {
             title: 'Alignment',
-            endpoint: 'alignment.expirationDaysText',
-            secondEndpoint: 'alignment.percentage',
+            key: 'alignment.expirationDaysText',
+            secondKey: 'alignment.percentage',
         },
         {
             title: 'Reefer Unit',
-            endpoint: 'reeferUnit.expirationDaysText',
-            secondEndpoint: 'reeferUnit.percentage',
+            key: 'reeferUnit.expirationDaysText',
+            secondKey: 'reeferUnit.percentage',
         },
         {
             title: 'PTO Pump',
-            endpoint: 'ptoNumber.expirationDaysText',
-            secondEndpoint: 'ptoNumber.percentage',
+            key: 'ptoNumber.expirationDaysText',
+            secondKey: 'ptoNumber.percentage',
         },
     ];
 
@@ -78,19 +78,19 @@ export class DisplayPMConfiguration {
     static DISPLAY_ROWS_BACK_INACTIVE: CardRows[] = [
         {
             title: 'Make',
-            endpoint: 'ruMake',
+            key: 'ruMake',
         },
         {
             title: 'Odometer',
-            endpoint: 'textOdometer',
+            key: 'textOdometer',
         },
         {
             title: 'Last Service',
-            endpoint: 'lastService',
+            key: 'lastService',
         },
         {
             title: 'Repair Shop',
-            endpoint: 'repairShop',
+            key: 'repairShop',
         },
     ];
 }
