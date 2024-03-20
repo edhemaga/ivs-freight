@@ -320,6 +320,7 @@ export enum ConstantStringTableComponentsEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    CONTACT = 'contact',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',

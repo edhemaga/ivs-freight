@@ -39,7 +39,7 @@ export class ContactTService {
         private companyLabelService: CompanyContactLabelService
     ) {}
 
-    // Add Contact
+    // add contact
     public addCompanyContact(
         data: CreateCompanyContactCommand
     ): Observable<CreateResponse> {
@@ -97,7 +97,7 @@ export class ContactTService {
         );
     }
 
-    // Update Contact
+    // update contact
     public updateCompanyContact(
         data: UpdateCompanyContactCommand,
         colors?: Array<AccountColorResponse>,
@@ -127,14 +127,14 @@ export class ContactTService {
         );
     }
 
-    // Get Contact By Id
+    // get contact by id
     public getCompanyContactById(
         id: number
     ): Observable<CompanyContactResponse> {
         return this.contactService.apiCompanycontactIdGet(id);
     }
 
-    // Get Contacts List
+    // get contacts list
     public getContacts(
         labelId?: number,
         pageIndex?: number,
@@ -157,46 +157,40 @@ export class ContactTService {
         );
     }
 
-    // Company Contact Modal
+    // company contact modal
     public getCompanyContactModal(): Observable<CompanyContactModalResponse> {
         return this.contactService.apiCompanycontactModalGet();
     }
 
-    // Delete Contact List
-    public deleteAccountList(contactsToDelete: any[]): Observable<any> {
-        let deleteOnBack = contactsToDelete.map((owner: any) => {
-            return owner.id;
-        });
+    // delete contact list
+    public deleteAccountList(contactIds: number[]): Observable<any> {
+        return this.contactService.apiCompanycontactListDelete(contactIds).pipe(
+            tap(() => {
+                let storeContacts = this.contactQuery.getAll();
+                let countDeleted = 0;
 
-        return this.contactService
-            .apiCompanycontactListDelete(deleteOnBack)
-            .pipe(
-                tap(() => {
-                    let storeContacts = this.contactQuery.getAll();
-                    let countDeleted = 0;
-
-                    storeContacts.map((contact: any) => {
-                        deleteOnBack.map((d) => {
-                            if (d === contact.id) {
-                                this.contactStore.remove(
-                                    ({ id }) => id === contact.id
-                                );
-                                countDeleted++;
-                            }
-                        });
+                storeContacts.map((contact: any) => {
+                    contactIds.map((d) => {
+                        if (d === contact.id) {
+                            this.contactStore.remove(
+                                ({ id }) => id === contact.id
+                            );
+                            countDeleted++;
+                        }
                     });
+                });
 
-                    localStorage.setItem(
-                        'contactTableCount',
-                        JSON.stringify({
-                            contact: storeContacts.length - countDeleted,
-                        })
-                    );
-                })
-            );
+                localStorage.setItem(
+                    'contactTableCount',
+                    JSON.stringify({
+                        contact: storeContacts.length - countDeleted,
+                    })
+                );
+            })
+        );
     }
 
-    // Delete Contact By Id
+    // delete contact by id
     public deleteCompanyContactById(contactId: number): Observable<any> {
         return this.contactService.apiCompanycontactIdDelete(contactId).pipe(
             tap(() => {

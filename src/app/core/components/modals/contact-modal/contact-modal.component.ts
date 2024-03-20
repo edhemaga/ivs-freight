@@ -110,8 +110,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public isFormValidationDisabled: boolean = false;
     public isCardAnimationDisabled: boolean = false;
 
-    public isAddNewAfterSave: boolean = false;
-
     public croppieOptions: CroppieOptions =
         ContactModalConstants.CROPIE_OPTIONS;
 
@@ -146,6 +144,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        console.log('editData', this.editData);
         this.createForm();
 
         this.getCompanyContactModal();
@@ -190,7 +189,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                 this.addCompanyContact();
 
-                this.isAddNewAfterSave = true;
+                this.modalService.openModal(ContactModalComponent, {
+                    size: ConstantStringEnum.SMALL,
+                });
 
                 break;
             case ConstantStringEnum.SAVE:
@@ -453,32 +454,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.isAddNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: ConstantStringEnum.SAVE_AND_ADD_NEW,
-                            status: false,
-                            close: false,
-                        });
-
-                        this.formService.resetForm(this.contactForm);
-
-                        this.selectedAddress = null;
-                        this.selectedContactColor = null;
-                        this.selectedContactLabel = null;
-                        this.selectedSharedDepartment = [];
-
-                        this.contactForm
-                            .get(ConstantStringEnum.SHARED)
-                            .patchValue(true);
-
-                        this.isAddNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: false,
-                            close: true,
-                        });
-                    }
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: true,
+                    });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
