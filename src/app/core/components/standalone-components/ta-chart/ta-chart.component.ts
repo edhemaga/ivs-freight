@@ -72,9 +72,12 @@ export class TaChartComponent implements OnInit, OnChanges {
     @Input() public axesProperties: BarChartAxes;
     @Input() public legendAttributes: LegendAttributes[];
     @Input() public multipleVerticalLeftAxes: number[];
+    @Input() public annotationConfig: AnnotationConfig;
 
     @ViewChild(BaseChartDirective) public chart: BaseChartDirective;
     @ViewChild('hoverDataHolder') public hoverDataHolder: ElementRef;
+    @ViewChild('baseChart') public baseChart: Element;
+    @ViewChild('chartToolTip') public chartToolTip: Element;
 
     @Output() hoverOtherChart: EventEmitter<number> = new EventEmitter();
     @Output() chartHovered: EventEmitter<boolean> = new EventEmitter();
@@ -93,8 +96,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     public lineChartLegend: boolean = false;
     public lineChartType: ChartType = 'bar';
     public lineChartPlugins = [];
-    private annotationConfig: AnnotationConfig;
-    
+
     //chart properties
     public chartInnitProperties: ChartInitProperties[] = [];
     private saveChartProperties: ChartInitProperties[] = [];
@@ -102,7 +104,6 @@ export class TaChartComponent implements OnInit, OnChanges {
     //legend
     public doughnutChartLegend: boolean = false;
     public saveValues: LegendAttributes[] = [];
-
 
     //chart style
     public chartWidth: string = '';
@@ -132,6 +133,8 @@ export class TaChartComponent implements OnInit, OnChanges {
     public hoverColumnHeight: number = 0;
     public toolTipData: any = [];
     public hoverDateTitle: string = '';
+    public tooltipLeft: number;
+    public tooltipHeight: number;
 
     //basic config
     public driversList: TopRatedListItem[];
@@ -180,7 +183,6 @@ export class TaChartComponent implements OnInit, OnChanges {
             responsive: this.chartConfig['dontUseResponsive'] ? false : true,
             maintainAspectRatio: false,
             cutoutPercentage: 90,
-
             animation: {
                 duration: this.chartConfig['allowAnimation']
                     ? this.animationDuration
@@ -280,6 +282,10 @@ export class TaChartComponent implements OnInit, OnChanges {
                 custom: (tooltipModel) => {
                     if (tooltipModel?.dataPoints?.[0]) {
                         this.showChartTooltip(tooltipModel.dataPoints[0].index);
+
+                        if (this.chartConfig.showHoverTooltip) {
+                            this.calculateTooltipPosition(tooltipModel.caretX);
+                        }
                     }
                 },
             },
@@ -348,7 +354,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                                     'removeColor'
                                 ]
                                     ? 'rgba(0, 0, 0, 0)'
-                                    : '#AAAAAA',
+                                    : '#919191',
                             fontSize: 11,
                             fontFamily: 'Montserrat',
                             fontStyle: '500',
@@ -532,8 +538,26 @@ export class TaChartComponent implements OnInit, OnChanges {
                 ];
             totalValue = totalValue + chartValue;
             this.legendAttributes.map((item2) => {
-                if (item2['elementId'] == i) {
-                    item2['value'] = Math.abs(chartValue);
+                if (this.chartConfig.hasSameDataIndex) {
+                    if (!item2.elementId) {
+                        item2.value = Math.abs(
+                            item['_chart']['config']['data']['datasets'][0][
+                                'data'
+                            ][elements[0]['_index']]
+                        );
+                    } else if (item2.elementId === 1) {
+                        item2.value = Math.abs(
+                            Math.abs(
+                                item['_chart']['config']['data']['datasets'][1][
+                                    'data'
+                                ][elements[0]['_index']]
+                            )
+                        );
+                    }
+                } else {
+                    if (item2['elementId'] == i) {
+                        item2['value'] = Math.abs(chartValue);
+                    }
                 }
 
                 if (
@@ -1199,12 +1223,12 @@ export class TaChartComponent implements OnInit, OnChanges {
                 : false,
             position: AxisPositionEnum.LEFT,
             gridLines: {
-                display: false,
+                display: this.chartConfig.showZeroLine ?? false,
                 drawBorder: false,
                 borderDash: [2, 3],
-                color: '#DADADA',
-                zeroLineBorderDash: [2, 3],
+                color: 'transparent',
                 zeroLineColor: '#DADADA',
+                zeroLineBorderDash: this.chartConfig.dottedZeroLine ? [2, 3] : false,
             },
             ticks: {
                 display: false,
@@ -1220,7 +1244,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 min: this.axesProperties['verticalLeftAxes']
                     ? this.axesProperties['verticalLeftAxes']['minValue']
                     : 0,
-                fontColor: '#AAAAAA',
+                fontColor: '#919191',
                 fontSize: 11,
                 fontFamily: 'Montserrat',
                 padding: 10,
@@ -1280,7 +1304,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 min: this.axesProperties['verticalRightAxes']
                     ? this.axesProperties['verticalRightAxes']['minValue']
                     : 0,
-                fontColor: '#AAAAAA',
+                fontColor: '#919191',
                 fontFamily: 'Montserrat',
                 fontSize: 11,
                 padding: -4,
@@ -1332,5 +1356,16 @@ export class TaChartComponent implements OnInit, OnChanges {
         let namedChartAnnotation = annotation;
         namedChartAnnotation['id'] = 'annotation';
         Chart.pluginService.register(namedChartAnnotation);
+    }
+
+    private calculateTooltipPosition(xPos: number): void {
+        const x = xPos;
+        const chartEl = this.chart.chart;
+        const chartRect = chartEl.canvas.getBoundingClientRect();
+        const topY = chartRect.top;
+        const bottomY = chartRect.bottom;
+
+        this.tooltipHeight = bottomY - topY - 35;
+        this.tooltipLeft = x - 1;
     }
 }

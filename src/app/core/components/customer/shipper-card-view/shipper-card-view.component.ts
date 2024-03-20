@@ -88,6 +88,8 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         allowAnimation: true,
         animationOnlyOnLoad: true,
         noChartImage: 'assets/svg/common/stacked_no_data.svg',
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
     public stackedBarChartLegend: any[] = [
