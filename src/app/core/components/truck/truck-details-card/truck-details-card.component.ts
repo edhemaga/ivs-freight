@@ -34,7 +34,6 @@ import { ImageBase64Service } from '../../../utils/base64.image';
 //Models
 import { TruckResponse } from 'appcoretruckassist';
 import {
-    AnnotationConfig,
     ChartApiCall,
     LegendAttributes,
 } from '../../standalone-components/ta-chart/models/chart-models';
@@ -303,13 +302,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             elementId: 'total',
         },
     ];
-
-    public stackedBarAnnotation: AnnotationConfig = {
-        type: AnnotationPositionEnum.VERTICAL,
-        axis: 'x-axis-0',
-        color: 'red',
-        dash: 3,
-    };
 
     public barAxes: BarChartAxes = {
         verticalLeftAxes: {
