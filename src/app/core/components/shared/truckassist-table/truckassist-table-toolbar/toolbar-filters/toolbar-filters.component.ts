@@ -64,7 +64,7 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public showLtl: boolean = true;
     public showFtl: boolean = true;
     constructor(private tableSevice: TruckassistTableService) {}
-    customerFilter = {
+    public customerFilter: { filteredArray: any; selectedFilter: boolean } = {
         filteredArray: [],
         selectedFilter: false,
     };

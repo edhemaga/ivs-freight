@@ -27,14 +27,12 @@
                                 class="checkbox-tooltip"
                                 type="button"
                                 ngbTooltip
+                                [mainTooltip]="
+                                    !card.isSelected ? 'Select' : 'Clear'
+                                "
                                 tooltipBackground="#424242"
                                 position="bottom"
-                                [ngClass]="{
-                                    'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i),
-                                    'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
-                                }"
+                                customClass="mt-1"
                             >
                                 <input
                                     class="table-checkbox"
@@ -54,12 +52,24 @@
 
                         <div class="name d-flex ta-font-bold">
                             <span class="title">
-                                {{
-                                    valueByStringPathInstance.getValueByStringPath(
-                                        card,
-                                        cardTitle
-                                    )
-                                }}
+                                <span
+                                    class="title-tooltip"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="View Detail"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                    customClass="mt-1"
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let title of titleArray;
+                                            trackBy: trackCard
+                                        "
+                                    >
+                                        {{ title[i] }}
+                                    </ng-container>
+                                </span>
                             </span>
                         </div>
                     </div>
@@ -78,45 +88,47 @@
 
                         <ng-container
                             *ngFor="
-                                let rowsFront of displayRowsFront;
+                                let rowsFront of cardsFront;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsFront.title }}
-                                    </div>
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsFront[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
 
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center"
-                                        [ngClass]="{
-                                            'line-height':
-                                                rowsFront.title === 'Fleet'
-                                        }"
-                                    >
-                                        <ng-container
-                                            *ngIf="rowsFront.title === 'Fleet'"
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center"
+                                            [ngClass]="{
+                                                'line-height':
+                                                    row.title === 'Fleet'
+                                            }"
                                         >
-                                            <app-ta-input-dropdown-table
-                                                [data]="card"
-                                                [type]="'owner'"
-                                            ></app-ta-input-dropdown-table>
-                                        </ng-container>
+                                            <ng-container
+                                                *ngIf="row.title === 'Fleet'"
+                                            >
+                                                <app-ta-input-dropdown-table
+                                                    [data]="card"
+                                                    [type]="'owner'"
+                                                ></app-ta-input-dropdown-table>
+                                            </ng-container>
 
-                                        <ng-container
-                                            *ngIf="rowsFront.title !== 'Fleet'"
-                                        >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
-                                        </ng-container>
+                                            <ng-container
+                                                *ngIf="row.title !== 'Fleet'"
+                                            >
+                                                {{ row.key }}
+                                            </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
 
@@ -132,57 +144,56 @@
                     >
                         <ng-container
                             *ngFor="
-                                let rowsBack of displayRowsBack;
+                                let rowsBack of cardsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsBack.title }}
-                                    </div>
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsBack[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
 
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center gap"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.title !==
-                                                'Bank Account'
-                                            "
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center gap"
                                         >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsBack.endpoint
-                                                )
-                                            }}
-                                        </ng-container>
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title !== 'Bank Account'
+                                                "
+                                            >
+                                                {{ row.key }}
+                                            </ng-container>
 
-                                        <ng-container
-                                            *ngIf="
-                                                rowsBack.title ===
-                                                'Bank Account'
-                                            "
-                                        >
-                                            <svg-icon
-                                                [src]="
-                                                    'assets/svg/common/ic_password.svg'
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title === 'Bank Account'
                                                 "
-                                            ></svg-icon>
-                                            <span
-                                                class="masked-number"
-                                                [innerHTML]="
-                                                    valueByStringPathInstance.getValueByStringPath(
-                                                        card,
-                                                        rowsBack.endpoint
-                                                    ) | maskNumber : 'masked'
-                                                "
-                                            ></span>
-                                        </ng-container>
+                                            >
+                                                <svg-icon
+                                                    [src]="
+                                                        'assets/svg/common/ic_password.svg'
+                                                    "
+                                                ></svg-icon>
+                                                <span
+                                                    class="masked-number"
+                                                    [innerHTML]="
+                                                        row.key
+                                                            | maskNumber
+                                                                : 'masked'
+                                                    "
+                                                ></span>
+                                            </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>
@@ -232,6 +243,7 @@
                                     'svg-position':
                                         !isCardFlippedCheckInCards.includes(i)
                                 }"
+                                customClass="mt-2"
                             >
                                 <svg-icon
                                     [src]="'assets/svg/common/resize-arrow.svg'"

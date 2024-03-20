@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 
 @NgModule({
     declarations: [AccountCardComponent, AccountTableComponent],
@@ -34,6 +35,7 @@ import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
         TextToggleDirective,
 
         // Components
+        AppTooltipComponent,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,

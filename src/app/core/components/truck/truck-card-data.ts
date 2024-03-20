@@ -10,20 +10,20 @@ export class DisplayTruckConfiguration {
     static displayRowsFrontActive: CardRows[] = [
         {
             title: 'VIN No.',
-            endpoint: 'tableVin.regularText',
-            secondEndpoint: 'tableVin.boldText',
+            key: 'tableVin.regularText',
+            secondKey: 'tableVin.boldText',
         },
         {
             title: 'Make',
-            endpoint: 'truckMake.name',
+            key: 'truckMake.name',
         },
         {
             title: 'Model',
-            endpoint: 'model',
+            key: 'model',
         },
         {
             title: 'Mileage',
-            endpoint: 'mileage',
+            key: 'mileage',
         },
     ];
 
@@ -31,21 +31,21 @@ export class DisplayTruckConfiguration {
     static displayRowsBackActive: CardRows[] = [
         {
             title: 'Owner',
-            endpoint: 'owner.name',
+            key: 'owner.name',
         },
         {
             title: 'Commission',
-            endpoint: 'tabelOwnerDetailsComm',
+            key: 'tabelOwnerDetailsComm',
         },
         {
             title: 'Licence Exp.',
-            endpoint: 'tableLicencePlateDetailExpiration.expirationDaysText',
-            secondEndpoint: 'tableLicencePlateDetailExpiration.percentage',
+            key: 'tableLicencePlateDetailExpiration.expirationDaysText',
+            secondKey: 'tableLicencePlateDetailExpiration.percentage',
         },
         {
             title: 'FHWA Exp.',
-            endpoint: 'tableFhwaInspectionExpiration.expirationDaysText',
-            secondEndpoint: 'tableFhwaInspectionExpiration.percentage',
+            key: 'tableFhwaInspectionExpiration.expirationDaysText',
+            secondKey: 'tableFhwaInspectionExpiration.percentage',
         },
     ];
 
@@ -53,20 +53,20 @@ export class DisplayTruckConfiguration {
     static displayRowsFrontInactive: CardRows[] = [
         {
             title: 'VIN No.',
-            endpoint: 'tableVin.regularText',
-            secondEndpoint: 'tableVin.boldText',
+            key: 'tableVin.regularText',
+            secondKey: 'tableVin.boldText',
         },
         {
             title: 'Make',
-            endpoint: 'truckMake.name',
+            key: 'truckMake.name',
         },
         {
             title: 'Model',
-            endpoint: 'model',
+            key: 'model',
         },
         {
             title: 'Mileage',
-            endpoint: 'mileage',
+            key: 'mileage',
         },
     ];
 
@@ -74,21 +74,21 @@ export class DisplayTruckConfiguration {
     static displayRowsBackInactive: CardRows[] = [
         {
             title: 'Type',
-            endpoint: 'truckType.name',
+            key: 'truckType.name',
         },
         {
             title: 'Licence No.',
-            endpoint: 'licensePlate',
+            key: 'licensePlate',
         },
         {
             title: 'Licence Exp.',
-            endpoint: 'tableLicencePlateDetailExpiration.expirationDaysText',
-            secondEndpoint: 'tableLicencePlateDetailExpiration.percentage',
+            key: 'tableLicencePlateDetailExpiration.expirationDaysText',
+            secondKey: 'tableLicencePlateDetailExpiration.percentage',
         },
         {
             title: 'FHWA Exp.',
-            endpoint: 'tableFhwaInspectionExpiration.expirationDaysText',
-            secondEndpoint: 'tableFhwaInspectionExpiration.percentage',
+            key: 'tableFhwaInspectionExpiration.expirationDaysText',
+            secondKey: 'tableFhwaInspectionExpiration.percentage',
         },
     ];
 }

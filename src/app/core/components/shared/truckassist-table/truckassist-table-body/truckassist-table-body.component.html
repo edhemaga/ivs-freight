@@ -386,98 +386,144 @@
                                         <ng-container
                                             *ngIf="row[column.field]?.name"
                                         >
-                                            <div
-                                                class="td-content"
+                                            <ng-container
                                                 *ngIf="
                                                     column.ngTemplate ===
                                                     'customer-name'
                                                 "
-                                                [ngStyle]="{
-                                                    width: column.width + 'px',
-                                                    'min-width.px':
-                                                        column?.minWidth
-                                                            ? column.minWidth
-                                                            : 'unset'
-                                                }"
                                             >
-                                                <svg-icon
-                                                    *ngIf="
-                                                        row[column.field]
-                                                            .hasBanDnu
-                                                    "
-                                                    class="customer-icon"
-                                                    [src]="
-                                                        row[column.field].isDnu
-                                                            ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
-                                                            : !row[column.field]
-                                                                  .isClosed
-                                                            ? '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
-                                                            : '../../../../../../assets/svg/common/ic_closed_broker.svg'
-                                                    "
-                                                    [svgStyle]="{
-                                                        'width.px': '18',
-                                                        'height.px': '18'
+                                                <div
+                                                    class="td-content"
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width + 'px',
+                                                        'min-width.px':
+                                                            column?.minWidth
+                                                                ? column.minWidth
+                                                                : 'unset'
                                                     }"
-                                                ></svg-icon>
-                                                <ng-container
-                                                    *ngIf="
-                                                        !column.link
-                                                            ?.doesNotHaveRout
-                                                    "
-                                                    ><div
-                                                        class="td-content"
-                                                        [ngStyle]="{
-                                                            width:
-                                                                column.width +
-                                                                'px',
-                                                            'min-width.px':
-                                                                column?.minWidth
-                                                                    ? column.minWidth
-                                                                    : 'unset'
+                                                >
+                                                    <svg-icon
+                                                        *ngIf="
+                                                            row[column.field]
+                                                                .hasBanDnu
+                                                        "
+                                                        class="customer-icon"
+                                                        [src]="
+                                                            row[column.field]
+                                                                .isDnu
+                                                                ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
+                                                                : !row[
+                                                                      column
+                                                                          .field
+                                                                  ].isClosed
+                                                                ? '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
+                                                                : '../../../../../../assets/svg/common/ic_closed_broker.svg'
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px': '18',
+                                                            'height.px': '18'
                                                         }"
-                                                        ngbTooltip
-                                                    >
-                                                        <div
+                                                    ></svg-icon>
+                                                    <ng-container
+                                                        *ngIf="
+                                                            !column.link
+                                                                ?.doesNotHaveRout
+                                                        "
+                                                        ><div
+                                                            class="td-content"
                                                             [ngStyle]="{
                                                                 width:
                                                                     column.width +
-                                                                    'px'
+                                                                    'px',
+                                                                'min-width.px':
+                                                                    column?.minWidth
+                                                                        ? column.minWidth
+                                                                        : 'unset'
                                                             }"
-                                                            class="table-name-link"
+                                                            ngbTooltip
+                                                        >
+                                                            <div
+                                                                [ngStyle]="{
+                                                                    width:
+                                                                        column.width +
+                                                                        'px'
+                                                                }"
+                                                                class="table-name-link"
+                                                                [ngClass]="{
+                                                                    'has-details-page':
+                                                                        !column
+                                                                            .link
+                                                                            ?.doesNotHaveRout
+                                                                }"
+                                                                (click)="
+                                                                    goToDetails(
+                                                                        column,
+                                                                        row
+                                                                    )
+                                                                "
+                                                                #op="ngbPopover"
+                                                                [ngbPopover]="
+                                                                    optionsPopover
+                                                                "
+                                                                [placement]="
+                                                                    'bottom-right'
+                                                                "
+                                                                [autoClose]="
+                                                                    'outside'
+                                                                "
+                                                                popoverClass="toolbar-options-popover"
+                                                                triggers="manual"
+                                                                (hidden)="
+                                                                    otionsPopupOppen = false
+                                                                "
+                                                                mainTooltip="View Detail"
+                                                                [tooltipBackground]="
+                                                                    '#424242'
+                                                                "
+                                                                [tooltipColor]="
+                                                                    '#ffff'
+                                                                "
+                                                                position="bottom"
+                                                            >
+                                                                {{
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ].name
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container
+                                                        *ngIf="
+                                                            column.link
+                                                                ?.doesNotHaveRout
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="customer-name"
+                                                            [ngStyle]="{
+                                                                width: row[
+                                                                    column.field
+                                                                ].hasBanDnu
+                                                                    ? column.width -
+                                                                      22 +
+                                                                      'px'
+                                                                    : column.width +
+                                                                      'px'
+                                                            }"
                                                             [ngClass]="{
-                                                                'has-details-page':
-                                                                    !column.link
-                                                                        ?.doesNotHaveRout
+                                                                'customer-name-ban':
+                                                                    !row[
+                                                                        column
+                                                                            .field
+                                                                    ].isDnu &&
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ].hasBanDnu
                                                             }"
-                                                            (click)="
-                                                                goToDetails(
-                                                                    column,
-                                                                    row
-                                                                )
-                                                            "
-                                                            #op="ngbPopover"
-                                                            [ngbPopover]="
-                                                                optionsPopover
-                                                            "
-                                                            [placement]="
-                                                                'bottom-right'
-                                                            "
-                                                            [autoClose]="
-                                                                'outside'
-                                                            "
-                                                            popoverClass="toolbar-options-popover"
-                                                            triggers="manual"
-                                                            (hidden)="
-                                                                otionsPopupOppen = false
-                                                            "
-                                                            mainTooltip="View Detail"
-                                                            [tooltipBackground]="
-                                                                '#424242'
-                                                            "
-                                                            [tooltipColor]="
-                                                                '#ffff'
-                                                            "
-                                                            position="bottom"
                                                         >
                                                             {{
                                                                 row[
@@ -485,43 +531,9 @@
                                                                 ].name
                                                             }}
                                                         </div>
-                                                    </div>
-                                                </ng-container>
-                                                <ng-container
-                                                    *ngIf="
-                                                        column.link
-                                                            ?.doesNotHaveRout
-                                                    "
-                                                >
-                                                    <div
-                                                        class="customer-name"
-                                                        [ngStyle]="{
-                                                            width: row[
-                                                                column.field
-                                                            ].hasBanDnu
-                                                                ? column.width -
-                                                                  22 +
-                                                                  'px'
-                                                                : column.width +
-                                                                  'px'
-                                                        }"
-                                                        [ngClass]="{
-                                                            'customer-name-ban':
-                                                                !row[
-                                                                    column.field
-                                                                ].isDnu &&
-                                                                row[
-                                                                    column.field
-                                                                ].hasBanDnu
-                                                        }"
-                                                    >
-                                                        {{
-                                                            row[column.field]
-                                                                .name
-                                                        }}
-                                                    </div>
-                                                </ng-container>
-                                            </div>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
                                         </ng-container>
                                         <ng-container
                                             *ngIf="!row[column.field]?.name"

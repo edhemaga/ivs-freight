@@ -156,21 +156,21 @@
                             'th-title-locked-cursor': locked
                         }"
                     >
-                        <div
-                            class="title"
-                            *ngFor="let title of column.headTitle"
-                            [ngStyle]="{
-                                'width.px': title.width
-                            }"
-                        >
-                            {{ title.title }}
-                        </div>
+                        <ng-container *ngFor="let title of column.headTitle">
+                            <div
+                                class="title"
+                                [ngStyle]="{
+                                    'width.px': title.width
+                                }"
+                            >
+                                {{ title.title }}
+                            </div>
+                        </ng-container>
                     </div>
                 </ng-container>
                 <!-- Sw Tw Title -->
                 <ng-container *ngIf="column.ngTemplate === 'sw-tw-total'">
                     <div
-                        *ngIf="column.ngTemplate === 'sw-tw-total'"
                         class="sw-tw-title-container"
                         (click)="sortHeaderClick(column)"
                         [ngClass]="{
