@@ -1,5 +1,5 @@
 <div
-    class="charts-item-wrapper"
+    class="charts-item-wrapper revenue"
     *ngIf="legendAttributes?.length"
     [class.hover]="hoveringStatus && hoverTimeDisplay"
 >
@@ -17,10 +17,7 @@
             *ngFor="let item of legendAttributes; let indx = index"
         >
             <div class="icon-name-item {{ item.customClass }}">
-                <div
-                    class="charts-template-item-name"
-                    [ngStyle]="{ 'margin-right': item.image ? '4px' : '0px' }"
-                >
+                <div class="charts-template-item-name">
                     {{ item.title }}
                 </div>
                 <svg-icon src="{{ item.image }}"></svg-icon>
@@ -41,15 +38,26 @@
         width: chartConfig.extendFull ? chartConfig.chartWidth + 'px' : 'auto'
     }"
 >
-    <div
-        class="chart_hover_background"
-        [ngStyle]="{
-            left: hoverChartLeft + 'px',
-            width: hoverColumnWidth + 'px',
-            height: hoverColumnHeight + 'px'
-        }"
-        *ngIf="showHoverData"
-    ></div>
+    <ng-container *ngIf="showHoverData">
+        <div
+            class="chart_hover_background"
+            [ngStyle]="{
+                left: hoverChartLeft + 'px',
+                width: hoverColumnWidth + 'px',
+                height: hoverColumnHeight + 'px'
+            }"
+        ></div>
+    </ng-container>
+    <ng-container *ngIf="hoveringStatus && chartConfig.showHoverTooltip">
+        <div
+            #chartToolTip
+            class="chart_tooltip"
+            [ngStyle]="{
+                left: tooltipLeft + 'px',
+                height: tooltipHeight + 'px'
+            }"
+        ></div>
+    </ng-container>
     <div class="no_chart_data" *ngIf="noChartData">
         <svg-icon src="{{ noChartImage }}"></svg-icon>
     </div>
