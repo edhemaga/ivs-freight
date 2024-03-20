@@ -67,6 +67,9 @@ export interface DoughnutChartConfig extends ChartConfiguration {
     animationOnlyOnLoad?: boolean;
     offset?: boolean;
     hasValue?: boolean;
+    showHoverTooltip?: boolean;
+    showZeroLine?: boolean;
+    dottedZeroLine?: boolean;
 }
 
 export interface DoughnutChart extends Chart {

@@ -12,7 +12,7 @@ import {
 } from 'src/app/core/components/standalone-components/ta-chart/enums/chart-enums';
 
 export class BrokerConstants {
-    static MILEAGE_CHART_CONFIG = {
+    static MILEAGE_CHART_CONFIG: DoughnutChartConfig = {
         dataProperties: [
             {
                 defaultConfig: {
@@ -101,7 +101,7 @@ export class BrokerConstants {
         },
     ];
 
-    static PAYMENT_CHART_CONFIG = {
+    static PAYMENT_CHART_CONFIG: DoughnutChartConfig = {
         dataProperties: [
             {
                 defaultConfig: {
@@ -173,7 +173,7 @@ export class BrokerConstants {
         },
     };
 
-    static INVOICE_CHART_CONFIG = {
+    static INVOICE_CHART_CONFIG: DoughnutChartConfig = {
         dataProperties: [
             {
                 defaultConfig: {
