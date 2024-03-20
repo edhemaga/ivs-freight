@@ -50,13 +50,7 @@ export class ContactResolver implements Resolve<ContactState> {
                         return { ...item, dropLabel: true };
                     });
 
-                    console.log(
-                        'contactPagination.pagination.data',
-                        contactPagination.pagination.data
-                    );
-
-                    const contractTableData =
-                        contactPagination.pagination.data.reverse();
+                    const contractTableData = contactPagination.pagination.data;
 
                     contractTableData.map(
                         (e: ContactsTableData) => (
