@@ -80,9 +80,9 @@ export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
             this.displayRowsBack
         );
 
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
+        // this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
 
-        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
+        // this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
 
         this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }

@@ -53,12 +53,14 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    {{
-                                        valueByStringPathInstance.getValueByStringPath(
-                                            card,
-                                            cardTitle
-                                        )
-                                    }}
+                                    <ng-container
+                                        *ngFor="
+                                            let title of titleArray;
+                                            trackBy: trackCard
+                                        "
+                                    >
+                                        {{ title[i] }}
+                                    </ng-container>
                                 </span>
                             </span>
                         </div>
@@ -68,132 +70,138 @@
                     <div class="card-body-content">
                         <ng-container
                             *ngFor="
-                                let rowsFront of displayRowsFront;
+                                let rowsFront of cardsFront;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsFront.title }}
-                                    </div>
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsFront[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
 
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                rowsFront.title !== 'Label' &&
-                                                rowsFront.title !== 'Password'
-                                            "
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center"
                                         >
-                                            {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    rowsFront.endpoint
-                                                )
-                                            }}
-                                        </ng-container>
-
-                                        <ng-container
-                                            *ngIf="
-                                                rowsFront.title === 'Password'
-                                            "
-                                        >
-                                            <div
-                                                appTextToggle="{{
-                                                    valueByStringPathInstance.getValueByStringPath(
-                                                        card,
-                                                        rowsFront.endpoint
-                                                    )
-                                                }}"
-                                            ></div>
-                                        </ng-container>
-
-                                        <ng-container
-                                            *ngIf="rowsFront.title === 'Label'"
-                                        >
-                                            <div
-                                                [style.width.px]="elementWidth"
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title !== 'Label' &&
+                                                    row.title !== 'Password'
+                                                "
                                             >
-                                                <app-ta-input-dropdown-label
-                                                    [formControl]="
-                                                        dropdownSelectionArray
-                                                            .controls[i]
-                                                    "
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown Label',
-                                                        type: 'text',
-                                                        placeholderIcon:
-                                                            'ic_dynamic_label',
-                                                        dropdownLabel: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-' +
-                                                            elementWidth,
-                                                        textTransform:
-                                                            'lowercase',
-                                                        minLength: 1,
-                                                        blackInput: true,
-                                                        hideClear: true,
-                                                        hideDropdownArrow: true,
-                                                        multiselectDropdown: true,
-                                                        maxLength: 12,
-                                                        showCount: false,
-                                                        customClass:
-                                                            'input-dropdown-table',
-                                                        commands: {
-                                                            active: false,
-                                                            type: 'confirm-cancel',
-                                                            firstCommand: {
-                                                                popup: {
-                                                                    name: 'Confirm',
-                                                                    backgroundColor:
-                                                                        '#3074d3'
-                                                                },
-                                                                name: 'confirm',
-                                                                svg: 'assets/svg/ic_spec-confirm.svg'
-                                                            },
-                                                            secondCommand: {
-                                                                popup: {
-                                                                    name: 'Cancel',
-                                                                    backgroundColor:
-                                                                        '#2f2f2f'
-                                                                },
-                                                                name: 'cancel',
-                                                                svg: 'assets/svg/ic_x.svg'
-                                                            }
-                                                        }
-                                                    }"
-                                                    [colors]="card.colorRes"
-                                                    [options]="card.colorLabels"
-                                                    [selectedLabel]="
-                                                        selectedContactLabel[i]
-                                                    "
-                                                    [selectedLabelColor]="
-                                                        selectedContactColor
-                                                    "
-                                                    (pickExistLabel)="
-                                                        onPickExistLabel(
-                                                            $event,
-                                                            i
-                                                        )
-                                                    "
-                                                    (pickColorLabel)="
-                                                        onSelectColorLabel(
-                                                            $event,
-                                                            i
-                                                        )
-                                                    "
-                                                    (saveLabel)="
-                                                        onSaveLabel($event, i)
+                                                {{ row.key }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="row.title === 'Password'"
+                                            >
+                                                <div
+                                                    appTextToggle="{{
+                                                        row.key
+                                                    }}"
+                                                ></div>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="row.title === 'Label'"
+                                            >
+                                                <div
+                                                    [style.width.px]="
+                                                        elementWidth
                                                     "
                                                 >
-                                                </app-ta-input-dropdown-label>
-                                            </div>
-                                        </ng-container>
+                                                    <app-ta-input-dropdown-label
+                                                        [formControl]="
+                                                            dropdownSelectionArray
+                                                                .controls[i]
+                                                        "
+                                                        [inputConfig]="{
+                                                            name: 'Input Dropdown Label',
+                                                            type: 'text',
+                                                            placeholderIcon:
+                                                                'ic_dynamic_label',
+                                                            dropdownLabel: true,
+                                                            dropdownWidthClass:
+                                                                'w-col-' +
+                                                                elementWidth,
+                                                            textTransform:
+                                                                'lowercase',
+                                                            minLength: 1,
+                                                            blackInput: true,
+                                                            hideClear: true,
+                                                            hideDropdownArrow: true,
+                                                            multiselectDropdown: true,
+                                                            maxLength: 12,
+                                                            showCount: false,
+                                                            customClass:
+                                                                'input-dropdown-table',
+                                                            commands: {
+                                                                active: false,
+                                                                type: 'confirm-cancel',
+                                                                firstCommand: {
+                                                                    popup: {
+                                                                        name: 'Confirm',
+                                                                        backgroundColor:
+                                                                            '#3074d3'
+                                                                    },
+                                                                    name: 'confirm',
+                                                                    svg: 'assets/svg/ic_spec-confirm.svg'
+                                                                },
+                                                                secondCommand: {
+                                                                    popup: {
+                                                                        name: 'Cancel',
+                                                                        backgroundColor:
+                                                                            '#2f2f2f'
+                                                                    },
+                                                                    name: 'cancel',
+                                                                    svg: 'assets/svg/ic_x.svg'
+                                                                }
+                                                            }
+                                                        }"
+                                                        [colors]="card.colorRes"
+                                                        [options]="
+                                                            card.colorLabels
+                                                        "
+                                                        [selectedLabel]="
+                                                            selectedContactLabel[
+                                                                i
+                                                            ]
+                                                        "
+                                                        [selectedLabelColor]="
+                                                            selectedContactColor
+                                                        "
+                                                        (pickExistLabel)="
+                                                            onPickExistLabel(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                        (pickColorLabel)="
+                                                            onSelectColorLabel(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                        (saveLabel)="
+                                                            onSaveLabel(
+                                                                $event,
+                                                                i
+                                                            )
+                                                        "
+                                                    >
+                                                    </app-ta-input-dropdown-label>
+                                                </div>
+                                            </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>

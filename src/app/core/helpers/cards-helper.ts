@@ -34,7 +34,7 @@ export class ValueByStringPath {
         viewData: CardDetails[],
         cardTitle?: string,
         rowsToDisplay?: CardRows[]
-    ) {
+    ): { cardsTitle: string[]; dataForRows: CardRows[][] } {
         this.dataForRows = [];
         this.titleArray = [];
 
@@ -49,7 +49,7 @@ export class ValueByStringPath {
 
             if (rowsToDisplay) {
                 rowsToDisplay.forEach((row) => {
-                    let key;
+                    let key: string;
 
                     if (row.key) {
                         key = this.getValueByStringPath(card, row.key);
