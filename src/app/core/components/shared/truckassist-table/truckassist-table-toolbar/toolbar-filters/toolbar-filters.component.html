@@ -373,7 +373,10 @@
     ></app-special-filter>
 
     <app-special-filter
-        *ngIf="options.toolbarActions.showBrokerFilter"
+        *ngIf="
+            options.toolbarActions.showBrokerFilter &&
+            this.activeTableData.bannedArray.filteredArray.length > 0
+        "
         [type]="'archiveFilter'"
         [icon]="'ic_banned_broker'"
         [filterTitle]="'Banned'"
@@ -383,7 +386,10 @@
     ></app-special-filter>
 
     <app-special-filter
-        *ngIf="options.toolbarActions.showBrokerFilter"
+        *ngIf="
+            options.toolbarActions.showBrokerFilter &&
+            this.activeTableData.dnuArray.filteredArray.length > 0
+        "
         [type]="'broker-filter'"
         [icon]="'ic_dnu_broker'"
         [filterTitle]="'Do not use'"
@@ -394,10 +400,11 @@
 
     <app-special-filter
         *ngIf="
-            options.toolbarActions.showBrokerFilter ||
-            options.toolbarActions.showRepairShop ||
-            options.toolbarActions.showBrokerFilterClosed ||
-            options.toolbarActions.showFuelPermanentlyClosed
+            (options.toolbarActions.showBrokerFilter ||
+                options.toolbarActions.showRepairShop ||
+                options.toolbarActions.showBrokerFilterClosed ||
+                options.toolbarActions.showFuelPermanentlyClosed) &&
+            this.activeTableData.closedArray.filteredArray.length > 0
         "
         [type]="'broker-filter'"
         [icon]="'ic_closed_broker'"

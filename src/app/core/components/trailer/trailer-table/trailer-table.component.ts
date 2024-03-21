@@ -68,6 +68,7 @@ import {
     TooltipColors,
     TrailerName,
 } from 'src/app/core/utils/enums/trailer-component.enum';
+import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-trailer-table',
@@ -613,7 +614,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? data.color.name
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tabelLength: data?.trailerLength?.name
-                ? data.trailerLength.name
+                ? getLengthNumber(data?.trailerLength?.name)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableDriver: ConstantStringTableComponentsEnum.NA,
             tableTruck: ConstantStringTableComponentsEnum.NA,
