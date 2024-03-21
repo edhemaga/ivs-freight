@@ -299,6 +299,7 @@ export enum ConstantStringTableComponentsEnum {
     OWNER_TABLE_COUNTE = 'ownerTableCount',
     OWNER = 'Owner',
     OWNER_2 = 'OWNER',
+    OWNER_3 = 'owner',
     OWNERS = 'owners',
     EDIT_OWNER = 'edit-owner',
     DELETE_OWNER = 'delete-owner',
