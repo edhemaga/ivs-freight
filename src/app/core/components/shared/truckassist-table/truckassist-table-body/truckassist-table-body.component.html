@@ -3426,6 +3426,152 @@
                                         </div>
                                     </div>
 
+                                    <!-- MILES PROGRESS COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'progressMiles'
+                                        "
+                                    >
+                                        <div
+                                            class="table-progress-cotnainer"
+                                            *ngIf="
+                                                row[column.field]
+                                                    ?.expirationMiles !==
+                                                    null &&
+                                                row[column.field].percentage !==
+                                                    null &&
+                                                row[column.field].percentage !==
+                                                    0
+                                            "
+                                        >
+                                            <!-- Progres Bar  -->
+                                            <div
+                                                class="table-progress-bar-container"
+                                                [ngClass]="{
+                                                    'bg-expired-container':
+                                                        !row[column.field]
+                                                            .percentage,
+                                                    'bg-sliver-container':
+                                                        row[column.field]
+                                                            .percentage >= 25 &&
+                                                        row[column.field]
+                                                            .percentage < 100,
+                                                    'bg-orange-container':
+                                                        row[column.field]
+                                                            .percentage >= 5 &&
+                                                        row[column.field]
+                                                            .percentage < 25,
+                                                    'bg-danger-container':
+                                                        row[column.field]
+                                                            .percentage > 0 &&
+                                                        row[column.field]
+                                                            .percentage < 5,
+                                                    'bg-inactive-container':
+                                                        row[column.field]
+                                                            .percentage === 100
+                                                }"
+                                            >
+                                                <div
+                                                    [ngClass]="{
+                                                        'bg-progress-sliver':
+                                                            row[column.field]
+                                                                .percentage >=
+                                                                25 &&
+                                                            row[column.field]
+                                                                .percentage <
+                                                                100,
+                                                        'bg-progress-orange':
+                                                            row[column.field]
+                                                                .percentage >=
+                                                                5 &&
+                                                            row[column.field]
+                                                                .percentage <
+                                                                25,
+                                                        'bg-progress-danger':
+                                                            row[column.field]
+                                                                .percentage >
+                                                                0 &&
+                                                            row[column.field]
+                                                                .percentage < 5
+                                                    }"
+                                                    [ngStyle]="{
+                                                        width:
+                                                            row[column.field]
+                                                                .percentage +
+                                                            '%'
+                                                    }"
+                                                    class="table-progress-bar"
+                                                    *ngIf="
+                                                        row[column.field]
+                                                            .percentage > 0 &&
+                                                        row[column.field]
+                                                            .percentage < 100
+                                                    "
+                                                ></div>
+                                            </div>
+
+                                            <!-- Miles Progress Text -->
+                                            <div
+                                                class="table-progress-text"
+                                                [ngStyle]="{
+                                                    width:
+                                                        column.width - 30 + 'px'
+                                                }"
+                                                *ngIf="
+                                                    row[column.field]
+                                                        .percentage > 0 &&
+                                                    row[column.field]
+                                                        .percentage < 100
+                                                "
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        .expirationMiles > 0
+                                                        ? (row[column.field]
+                                                              .expirationMilesText +
+                                                              ' mi to go'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('0 mi to go'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
+
+                                            <!-- Miles Progres Text Expired-->
+                                            <div
+                                                class="table-progress-text"
+                                                [ngStyle]="{
+                                                    width:
+                                                        column.width - 30 + 'px'
+                                                }"
+                                                *ngIf="
+                                                    !row[column.field]
+                                                        .percentage
+                                                "
+                                                [innerHtml]="
+                                                    row[column.field]
+                                                        .expirationMiles > 0
+                                                        ? (row[column.field]
+                                                              .expirationMilesText +
+                                                              ' mi over'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('0 mi over'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+
                                     <!-- APPLICANT PROGRESS COLUMN -->
                                     <div
                                         class="td-content"
