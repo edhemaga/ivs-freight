@@ -119,6 +119,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() bottomDivider: boolean = true;
     @Input() isConvertedToTemplate?: boolean = false;
     @Input() isStepper: boolean = false;
+    @Input() isCloseIconRemoved: boolean = false;
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
@@ -292,6 +293,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
+        console.log(action);
         switch (action) {
             case 'save': {
                 this.action.emit({ action: action, bool: false });

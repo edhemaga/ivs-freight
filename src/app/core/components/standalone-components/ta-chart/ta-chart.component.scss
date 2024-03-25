@@ -110,6 +110,18 @@
         z-index: 0;
     }
 
+    .chart_tooltip {
+        position: absolute;
+        top: 0;
+
+        width: 2px;
+        transition: left 0.1s ease-in-out;
+        border-left: 2px dashed $bw-9;
+
+        z-index: 10;
+        pointer-events: none;
+    }
+
     .chart_canvas {
         z-index: 1;
     }

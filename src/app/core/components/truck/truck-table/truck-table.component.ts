@@ -60,6 +60,7 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
+import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-truck-table',
@@ -445,7 +446,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showMoneyFilter: true,
                 showTruckFilter: true,
                 viewModeOptions: [
                     {
@@ -605,6 +605,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ConstantStringTableComponentsEnum.SVG,
                 ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
             ),
+            tabelLength: data?.truckLength?.name
+                ? getLengthNumber(data?.truckLength?.name)
+                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             textMake: data?.truckMake?.name
                 ? data.truckMake.name
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,

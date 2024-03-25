@@ -11,19 +11,19 @@ export class DisplayAccountConfiguration {
     static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
         {
             title: 'URL',
-            endpoint: 'url',
+            key: 'url',
         },
         {
             title: 'Username',
-            endpoint: 'username',
+            key: 'username',
         },
         {
             title: 'Password',
-            endpoint: 'password',
+            key: 'password',
         },
         {
             title: 'Label',
-            endpoint: 'colorLabels',
+            key: 'colorLabels',
         },
     ];
 }

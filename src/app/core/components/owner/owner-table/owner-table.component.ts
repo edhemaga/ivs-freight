@@ -829,12 +829,16 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
         ) {
-            this.ownerService
-                .deleteOwnerById(event.id, this.selectedTab)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    this.sendOwnerData();
-                });
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    svg: true,
+                }
+            );
         }
     }
 

@@ -49,6 +49,8 @@ export class DriverConstants {
         animationOnlyOnLoad: true,
         dataLabels: [],
         noChartImage: ChartImagesEnum.YELLOW_NO_DATA,
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
     static BAR_CHART_LEGEND = [

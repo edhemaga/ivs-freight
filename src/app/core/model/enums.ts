@@ -99,4 +99,6 @@ export enum ComponentsTableEnum {
     SORT = 'sort',
     SMALL = 'small',
     TABLE_CONTAINER = 'table-container',
+    INACTIVE = 'inactive',
+    OWNER_TABLE_COUNT = 'ownerTableCount',
 }

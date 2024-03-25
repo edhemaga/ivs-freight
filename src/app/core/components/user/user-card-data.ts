@@ -10,38 +10,38 @@ export class DisplayUserConfiguration {
     static displayRowsFront: CardRows[] = [
         {
             title: 'Department',
-            endpoint: 'department.name',
+            key: 'department.name',
         },
         {
             title: 'Phone',
-            endpoint: 'phone',
+            key: 'phone',
         },
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
         {
             title: 'Activity',
-            endpoint: 'no endpoint',
+            key: 'no key',
         },
     ];
 
     static displayRowsBack: CardRows[] = [
         {
             title: 'Status',
-            endpoint: 'status',
+            key: 'status',
         },
         {
             title: 'Pay Type',
-            endpoint: 'paymentType',
+            key: 'paymentType',
         },
         {
             title: 'Commission',
-            endpoint: 'commission',
+            key: 'commission',
         },
         {
             title: 'Salary',
-            endpoint: 'salary',
+            key: 'salary',
         },
     ];
 }

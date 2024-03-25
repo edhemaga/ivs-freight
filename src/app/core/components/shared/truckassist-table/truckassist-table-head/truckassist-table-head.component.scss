@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 table {
     width: 100%;
     thead {
@@ -47,10 +49,13 @@ table {
 
                 &:hover {
                     .th-title {
-                        color: #3c3c3c;
+                        color: $ta-light-grey-3;
                         transition: 0.25s;
                     }
-
+                    .th-title-small {
+                        color: $ta-light-grey-3;
+                        transition: 0.25s;
+                    }
                     .sort-indicator-container {
                         svg-icon {
                             svg {
@@ -78,7 +83,7 @@ table {
                         height 0.1s ease-in-out;
 
                     &:hover {
-                        background: #6c6c6c;
+                        background: $bw6-2;
                         transition: 0.25s;
                     }
                 }
@@ -113,7 +118,7 @@ table {
                         svg-icon {
                             svg {
                                 path {
-                                    fill: #919191;
+                                    fill: $muted;
                                     transition: 0.25s;
                                 }
                             }
@@ -123,20 +128,28 @@ table {
 
                 // Titles
                 .th-title {
-                    font-size: 14px;
+                    font-size: 11px;
                     font-weight: bold;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     transition: width 0.2s ease-in-out;
 
                     &::selection {
-                        color: #6c6c6c;
-                        background: #6c6c6c20;
+                        color: $bw6-2;
+                        background: $bw6-3;
                     }
                 }
-
+                .th-title-small {
+                    margin-left: 4px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    line-height: 14px;
+                    letter-spacing: 0em;
+                    text-align: left;
+                    color: $bw6-2;
+                }
                 // Special Title
                 .special-title {
                     display: flex;
@@ -145,13 +158,13 @@ table {
                     .title {
                         font-size: 14px;
                         font-weight: bold;
-                        color: #6c6c6c;
+                        color: $bw6-2;
                         transition: width 0.2s ease-in-out;
                         margin-right: 20px;
 
                         &::selection {
-                            color: #6c6c6c;
-                            background: #6c6c6c20;
+                            color: $bw6-2;
+                            background: $bw6-3;
                         }
                     }
                 }
@@ -169,14 +182,14 @@ table {
                         justify-content: center;
                         font-size: 14px;
                         font-weight: bold;
-                        color: #6c6c6c;
+                        color: $bw6-2;
                         white-space: nowrap;
                         text-overflow: ellipsis;
                         overflow: hidden;
 
                         &::selection {
-                            color: #6c6c6c;
-                            background: #6c6c6c20;
+                            color: $bw6-2;
+                            background: $bw6-3;
                         }
                     }
                 }
@@ -265,7 +278,7 @@ table {
                     z-index: 100;
                     &:hover {
                         width: 6px;
-                        background: #6c6c6c;
+                        background: $bw6-2;
                         transition: 0.25s;
                     }
                 }
@@ -317,7 +330,7 @@ table {
                         &:hover {
                             svg {
                                 path {
-                                    fill: #6c6c6c;
+                                    fill: $bw6-2;
                                 }
                             }
                         }
@@ -389,7 +402,7 @@ table {
         padding: 2px 6px;
         display: flex;
         align-items: center;
-        color: #3c3c3c;
+        color: $ta-light-grey-3;
         font-size: 14px;
         font-weight: bold;
         background: #f1f1f1;

@@ -257,13 +257,27 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: (res: Confirmation) => {
                     switch (res.type) {
                         case ConstantStringTableComponentsEnum.DELETE:
-                            this.multipleDeleteTransactions([res.id]);
-                            break;
+                            if (
+                                res.template ===
+                                ConstantStringTableComponentsEnum.FUEL_STOP_2
+                            ) {
+                                this.deleteFuelStopById(res.id);
+                            } else {
+                                /*  this.deletFuelTransactionById() */
+                            }
 
+                            break;
                         case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
-                            this.multipleDeleteTransactions(res.array);
-                            break;
+                            if (
+                                res.template ===
+                                ConstantStringTableComponentsEnum.FUEL_STOP_2
+                            ) {
+                                /*      this.deleteFuelStopList(res.id); */
+                            } else {
+                                this.deleteFuelTransactionList(res.array);
+                            }
 
+                            break;
                         default:
                             break;
                     }
@@ -271,13 +285,30 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private multipleDeleteTransactions(response: number[]): void {
+    private deleteFuelStopById(fuelStopId: number) {
         this.fuelService
-            .deleteFuelList(response)
+            .deleteFuelStopById(fuelStopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private deleteFuelStopList(fuelStopIds: number[]) {
+        this.fuelService
+            .deleteFuelStopList(fuelStopIds)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private deletFuelTransactionById(fuelTransactionId: number) {}
+
+    private deleteFuelTransactionList(ids: number[]): void {
+        console.log('ids', ids);
+        this.fuelService
+            .deleteFuelTransactionsList(ids)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((fuel) => {
-                    response.map((id) => {
+                    ids.map((id) => {
                         if (fuel.id === id)
                             fuel.actionAnimation =
                                 ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
@@ -753,7 +784,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.FUEL,
+                    template: ConstantStringTableComponentsEnum.FUEL_STOP_2,
                     type: ConstantStringTableComponentsEnum.DELETE,
                     svg: true,
                 }

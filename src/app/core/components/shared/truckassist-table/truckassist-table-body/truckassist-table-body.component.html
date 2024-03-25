@@ -115,6 +115,7 @@
                                                 : 'unset'
                                         }"
                                         class="td-content set-center"
+                                        ngbTooltip
                                     >
                                         <input
                                             (change)="onSelectItem(row, i)"
@@ -124,6 +125,21 @@
                                             type="checkbox"
                                         />
                                         <label
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="optionsPopupOpen = false"
+                                            [mainTooltip]="
+                                                !row.isSelected
+                                                    ? 'Select'
+                                                    : 'Clear'
+                                            "
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
                                             class="table-checkbox-label"
                                             for="checkbox{{ i }}"
                                         ></label>
@@ -298,6 +314,7 @@
                                                 : 'unset'
                                         }"
                                         class="td-content set-center"
+                                        ngbTooltip
                                     >
                                         <!-- IF USER IS OWNER -->
                                         <svg-icon
@@ -325,6 +342,25 @@
                                             type="checkbox"
                                         />
                                         <label
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="optionsPopupOpen = false"
+                                            mainTooltip="Tooltip"
+                                            [tooltipBackground]="
+                                                optionsPopupOpen
+                                                    ? '#CCCCCC'
+                                                    : '#424242'
+                                            "
+                                            [tooltipColor]="
+                                                optionsPopupOpen
+                                                    ? '#2F2F2F'
+                                                    : '#FFFFFF'
+                                            "
+                                            position="bottom"
                                             *ngIf="
                                                 row.userType.name !== 'Owner'
                                             "
@@ -347,36 +383,249 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <svg-icon
-                                            *ngIf="row[column.field].hasBanDnu"
-                                            class="customer-icon"
-                                            [src]="
-                                                row[column.field].isDnu
-                                                    ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
-                                                    : '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': '18',
-                                                'height.px': '18'
-                                            }"
-                                        ></svg-icon>
-
-                                        <div
-                                            class="customer-name"
-                                            [ngStyle]="{
-                                                width: row[column.field]
-                                                    .hasBanDnu
-                                                    ? column.width - 22 + 'px'
-                                                    : column.width + 'px'
-                                            }"
-                                            [ngClass]="{
-                                                'customer-name-ban':
-                                                    !row[column.field].isDnu &&
-                                                    row[column.field].hasBanDnu
-                                            }"
+                                        <ng-container
+                                            *ngIf="row[column.field]?.name"
                                         >
-                                            {{ row[column.field].name }}
-                                        </div>
+                                            <ng-container
+                                                *ngIf="
+                                                    column.ngTemplate ===
+                                                    'customer-name'
+                                                "
+                                            >
+                                                <div
+                                                    class="td-content"
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width + 'px',
+                                                        'min-width.px':
+                                                            column?.minWidth
+                                                                ? column.minWidth
+                                                                : 'unset'
+                                                    }"
+                                                >
+                                                    <svg-icon
+                                                        *ngIf="
+                                                            row[column.field]
+                                                                .hasBanDnu
+                                                        "
+                                                        class="customer-icon"
+                                                        [src]="
+                                                            row[column.field]
+                                                                .isDnu
+                                                                ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
+                                                                : !row[
+                                                                      column
+                                                                          .field
+                                                                  ].isClosed
+                                                                ? '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
+                                                                : '../../../../../../assets/svg/common/ic_closed_broker.svg'
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px': '18',
+                                                            'height.px': '18'
+                                                        }"
+                                                    ></svg-icon>
+                                                    <ng-container
+                                                        *ngIf="
+                                                            !column.link
+                                                                ?.doesNotHaveRout
+                                                        "
+                                                        ><div
+                                                            class="td-content"
+                                                            [ngStyle]="{
+                                                                width:
+                                                                    column.width +
+                                                                    'px',
+                                                                'min-width.px':
+                                                                    column?.minWidth
+                                                                        ? column.minWidth
+                                                                        : 'unset'
+                                                            }"
+                                                            ngbTooltip
+                                                        >
+                                                            <div
+                                                                [ngStyle]="{
+                                                                    width:
+                                                                        column.width +
+                                                                        'px'
+                                                                }"
+                                                                class="table-name-link"
+                                                                [ngClass]="{
+                                                                    'has-details-page':
+                                                                        !column
+                                                                            .link
+                                                                            ?.doesNotHaveRout
+                                                                }"
+                                                                (click)="
+                                                                    goToDetails(
+                                                                        column,
+                                                                        row
+                                                                    )
+                                                                "
+                                                                #op="ngbPopover"
+                                                                [ngbPopover]="
+                                                                    optionsPopover
+                                                                "
+                                                                [placement]="
+                                                                    'bottom-right'
+                                                                "
+                                                                [autoClose]="
+                                                                    'outside'
+                                                                "
+                                                                popoverClass="toolbar-options-popover"
+                                                                triggers="manual"
+                                                                (hidden)="
+                                                                    otionsPopupOppen = false
+                                                                "
+                                                                mainTooltip="View Detail"
+                                                                [tooltipBackground]="
+                                                                    '#424242'
+                                                                "
+                                                                [tooltipColor]="
+                                                                    '#ffff'
+                                                                "
+                                                                position="bottom"
+                                                            >
+                                                                {{
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ].name
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container
+                                                        *ngIf="
+                                                            column.link
+                                                                ?.doesNotHaveRout
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="customer-name"
+                                                            [ngStyle]="{
+                                                                width: row[
+                                                                    column.field
+                                                                ].hasBanDnu
+                                                                    ? column.width -
+                                                                      22 +
+                                                                      'px'
+                                                                    : column.width +
+                                                                      'px'
+                                                            }"
+                                                            [ngClass]="{
+                                                                'customer-name-ban':
+                                                                    !row[
+                                                                        column
+                                                                            .field
+                                                                    ].isDnu &&
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ].hasBanDnu
+                                                            }"
+                                                        >
+                                                            {{
+                                                                row[
+                                                                    column.field
+                                                                ].name
+                                                            }}
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="!row[column.field]?.name"
+                                        >
+                                            <div
+                                                class="td-content"
+                                                [ngStyle]="{
+                                                    width: column.width + 'px',
+                                                    'min-width.px':
+                                                        column?.minWidth
+                                                            ? column.minWidth
+                                                            : 'unset'
+                                                }"
+                                                ngbTooltip
+                                            >
+                                                <ng-container
+                                                    *ngIf="
+                                                        !column.link
+                                                            ?.doesNotHaveRout
+                                                    "
+                                                >
+                                                    <div
+                                                        [ngStyle]="{
+                                                            width:
+                                                                column.width +
+                                                                'px'
+                                                        }"
+                                                        class="table-name-link"
+                                                        [ngClass]="{
+                                                            'has-details-page':
+                                                                !column.link
+                                                                    ?.doesNotHaveRout
+                                                        }"
+                                                        (click)="
+                                                            goToDetails(
+                                                                column,
+                                                                row
+                                                            )
+                                                        "
+                                                        #op="ngbPopover"
+                                                        [ngbPopover]="
+                                                            optionsPopover
+                                                        "
+                                                        [placement]="
+                                                            'bottom-right'
+                                                        "
+                                                        [autoClose]="'outside'"
+                                                        popoverClass="toolbar-options-popover"
+                                                        triggers="manual"
+                                                        (hidden)="
+                                                            otionsPopupOppen = false
+                                                        "
+                                                        mainTooltip="View Detail"
+                                                        [tooltipBackground]="
+                                                            '#424242'
+                                                        "
+                                                        [tooltipColor]="'#ffff'"
+                                                        position="bottom"
+                                                    >
+                                                        {{ row[column.field] }}
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container
+                                                    *ngIf="
+                                                        column.link
+                                                            ?.doesNotHaveRout
+                                                    "
+                                                >
+                                                    <div
+                                                        [ngStyle]="{
+                                                            width:
+                                                                column.width +
+                                                                'px'
+                                                        }"
+                                                        class="table-name-link"
+                                                        [ngClass]="{
+                                                            'has-details-page':
+                                                                !column.link
+                                                                    ?.doesNotHaveRout
+                                                        }"
+                                                        (click)="
+                                                            goToDetails(
+                                                                column,
+                                                                row
+                                                            )
+                                                        "
+                                                    >
+                                                        {{ row[column.field] }}
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- LOAD TOTAL COLUMN -->
@@ -459,6 +708,7 @@
                                                 : 'unset'
                                         }"
                                         class="td-content"
+                                        ngbTooltip
                                     >
                                         <div
                                             class="avatar-container"
@@ -513,7 +763,7 @@
                                                 src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
                                             />
                                         </div>
-                                        <span
+                                        <div
                                             (click)="goToDetails(column, row)"
                                             [ngClass]="{
                                                 'has-details-page':
@@ -529,8 +779,20 @@
                                                                 .chipsForHighlight)
                                                     : ''
                                             "
-                                            >{{ row[column.field] }}</span
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="optionsPopupOpen = false"
+                                            mainTooltip="View Detail"
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
                                         >
+                                            {{ row[column.field] }}
+                                        </div>
                                     </div>
 
                                     <!-- USER AVATAR COLUMN -->
@@ -654,6 +916,7 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        ngbTooltip
                                     >
                                         <div
                                             class="invoice-text"
@@ -661,6 +924,17 @@
                                                 width: column.width - 21 + 'px'
                                             }"
                                             (click)="goToDetails(column, row)"
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="otionsPopupOppen = false"
+                                            mainTooltip="View Detail"
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
                                         >
                                             {{ row[column.field].invoice }}
                                         </div>
@@ -689,21 +963,63 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        ngbTooltip
                                     >
-                                        <div
-                                            [ngStyle]="{
-                                                width: column.width + 'px'
-                                            }"
-                                            class="table-name-link"
-                                            [ngClass]="{
-                                                'has-details-page':
-                                                    !column.link
-                                                        ?.doesNotHaveRout
-                                            }"
-                                            (click)="goToDetails(column, row)"
+                                        <ng-container
+                                            *ngIf="
+                                                !column.link?.doesNotHaveRout
+                                            "
                                         >
-                                            {{ row[column.field] }}
-                                        </div>
+                                            <div
+                                                [ngStyle]="{
+                                                    width: column.width + 'px'
+                                                }"
+                                                class="table-name-link"
+                                                [ngClass]="{
+                                                    'has-details-page':
+                                                        !column.link
+                                                            ?.doesNotHaveRout
+                                                }"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
+                                                #op="ngbPopover"
+                                                [ngbPopover]="optionsPopover"
+                                                [placement]="'bottom-right'"
+                                                [autoClose]="'outside'"
+                                                popoverClass="toolbar-options-popover"
+                                                triggers="manual"
+                                                (hidden)="
+                                                    otionsPopupOppen = false
+                                                "
+                                                mainTooltip="View Detail"
+                                                [tooltipBackground]="'#424242'"
+                                                [tooltipColor]="'#ffff'"
+                                                position="bottom"
+                                            >
+                                                {{ row[column.field] }}
+                                            </div>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="column.link?.doesNotHaveRout"
+                                        >
+                                            <div
+                                                [ngStyle]="{
+                                                    width: column.width + 'px'
+                                                }"
+                                                class="table-name-link"
+                                                [ngClass]="{
+                                                    'has-details-page':
+                                                        !column.link
+                                                            ?.doesNotHaveRout
+                                                }"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
+                                            >
+                                                {{ row[column.field] }}
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- OOS COLUMN -->
@@ -1194,6 +1510,7 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        ngbTooltip
                                     >
                                         <div
                                             (click)="
@@ -1210,6 +1527,21 @@
                                                 'password-showing':
                                                     !row[column.field].hiden
                                             }"
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="optionsPopupOpen = false"
+                                            [mainTooltip]="
+                                                !row.isSelected
+                                                    ? 'Select'
+                                                    : 'Clear'
+                                            "
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
                                         ></div>
 
                                         <svg-icon
@@ -1448,8 +1780,9 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        ngbTooltip
                                     >
-                                        <svg
+                                        <!-- <svg
                                             *ngIf="row[column.field]"
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="18"
@@ -1467,17 +1800,26 @@
                                                             : 'unset'
                                                 }"
                                             />
-                                        </svg>
+                                        </svg> -->
 
                                         <div
                                             *ngIf="row[column.field]"
-                                            [ngStyle]="{
-                                                width: column.width - 18 + 'px'
-                                            }"
                                             class="color-name"
-                                        >
-                                            {{ row.colorName }}
-                                        </div>
+                                            [style.background-color]="
+                                                row[column.field]
+                                            "
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="optionsPopupOpen = false"
+                                            [mainTooltip]="row.colorName"
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
+                                        ></div>
                                     </div>
 
                                     <!-- SVG COLUMN -->
@@ -1566,19 +1908,19 @@
                                                             .percentage,
                                                     'bg-sliver-container':
                                                         row[column.field]
-                                                            .percentage >= 25 &&
+                                                            .percentage >= 50 &&
                                                         row[column.field]
                                                             .percentage < 100,
                                                     'bg-orange-container':
                                                         row[column.field]
-                                                            .percentage >= 5 &&
+                                                            .percentage >= 20 &&
                                                         row[column.field]
-                                                            .percentage < 25,
+                                                            .percentage < 50,
                                                     'bg-danger-container':
                                                         row[column.field]
                                                             .percentage > 0 &&
                                                         row[column.field]
-                                                            .percentage < 5,
+                                                            .percentage < 20,
                                                     'bg-inactive-container':
                                                         row[column.field]
                                                             .percentage === 100
@@ -1589,29 +1931,23 @@
                                                         'bg-progress-sliver':
                                                             row[column.field]
                                                                 .percentage >=
-                                                                25 &&
+                                                                50 &&
                                                             row[column.field]
                                                                 .percentage <
                                                                 100,
                                                         'bg-progress-orange':
                                                             row[column.field]
                                                                 .percentage >=
-                                                                5 &&
+                                                                20 &&
                                                             row[column.field]
                                                                 .percentage <
-                                                                25,
+                                                                50,
                                                         'bg-progress-danger':
                                                             row[column.field]
                                                                 .percentage >
                                                                 0 &&
                                                             row[column.field]
-                                                                .percentage < 5
-                                                    }"
-                                                    [ngStyle]="{
-                                                        width:
-                                                            row[column.field]
-                                                                .percentage +
-                                                            '%'
+                                                                .percentage < 20
                                                     }"
                                                     class="table-progress-bar"
                                                     *ngIf="
@@ -1721,19 +2057,19 @@
                                                             100,
                                                         'bg-sliver-container':
                                                             progressStatus.percentage >=
-                                                                25 &&
+                                                                50 &&
                                                             progressStatus.percentage <
                                                                 100,
                                                         'bg-orange-container':
                                                             progressStatus.percentage >=
-                                                                5 &&
+                                                                20 &&
                                                             progressStatus.percentage <
-                                                                25,
+                                                                50,
                                                         'bg-danger-container':
                                                             progressStatus.percentage >
                                                                 0 &&
                                                             progressStatus.percentage <
-                                                                5,
+                                                                20,
                                                         'bg-inactive-container':
                                                             !progressStatus.percentage
                                                     }"
@@ -1742,24 +2078,19 @@
                                                         [ngClass]="{
                                                             'bg-progress-sliver':
                                                                 progressStatus.percentage >=
-                                                                    25 &&
+                                                                    50 &&
                                                                 progressStatus.percentage <
-                                                                    50,
+                                                                    100,
                                                             'bg-progress-orange':
                                                                 progressStatus.percentage >=
-                                                                    5 &&
+                                                                    20 &&
                                                                 progressStatus.percentage <
-                                                                    25,
+                                                                    50,
                                                             'bg-progress-danger':
                                                                 progressStatus.percentage >
                                                                     0 &&
                                                                 progressStatus.percentage <
-                                                                    5
-                                                        }"
-                                                        [ngStyle]="{
-                                                            width:
-                                                                progressStatus.percentage +
-                                                                '%'
+                                                                    20
                                                         }"
                                                         class="table-progress-bar"
                                                         *ngIf="
@@ -2378,21 +2709,63 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        ngbTooltip
                                     >
-                                        <div
-                                            [ngStyle]="{
-                                                width: column.width + 'px'
-                                            }"
-                                            class="table-name-link"
-                                            [ngClass]="{
-                                                'has-details-page':
-                                                    !column.link
-                                                        ?.doesNotHaveRout
-                                            }"
-                                            (click)="goToDetails(column, row)"
+                                        <ng-container
+                                            *ngIf="
+                                                !column.link?.doesNotHaveRout
+                                            "
                                         >
-                                            {{ row[column.field] }}
-                                        </div>
+                                            <div
+                                                [ngStyle]="{
+                                                    width: column.width + 'px'
+                                                }"
+                                                class="table-name-link"
+                                                [ngClass]="{
+                                                    'has-details-page':
+                                                        !column.link
+                                                            ?.doesNotHaveRout
+                                                }"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
+                                                #op="ngbPopover"
+                                                [ngbPopover]="optionsPopover"
+                                                [placement]="'bottom-right'"
+                                                [autoClose]="'outside'"
+                                                popoverClass="toolbar-options-popover"
+                                                triggers="manual"
+                                                (hidden)="
+                                                    otionsPopupOppen = false
+                                                "
+                                                mainTooltip="View Detail"
+                                                [tooltipBackground]="'#424242'"
+                                                [tooltipColor]="'#ffff'"
+                                                position="bottom"
+                                            >
+                                                {{ row[column.field] }}
+                                            </div>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="column.link?.doesNotHaveRout"
+                                        >
+                                            <div
+                                                [ngStyle]="{
+                                                    width: column.width + 'px'
+                                                }"
+                                                class="table-name-link"
+                                                [ngClass]="{
+                                                    'has-details-page':
+                                                        !column.link
+                                                            ?.doesNotHaveRout
+                                                }"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
+                                            >
+                                                {{ row[column.field] }}
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- OOS COLUMN -->
@@ -2959,7 +3332,28 @@
                                                 'password-showing':
                                                     !row[column.field].hiden
                                             }"
-                                        ></div>
+                                            ngbTooltip
+                                        >
+                                            <div
+                                                #op="ngbPopover"
+                                                [ngbPopover]="optionsPopover"
+                                                [placement]="'bottom-right'"
+                                                [autoClose]="'outside'"
+                                                popoverClass="toolbar-options-popover"
+                                                triggers="manual"
+                                                (hidden)="
+                                                    optionsPopupOpen = false
+                                                "
+                                                [mainTooltip]="
+                                                    !row[column.field].hiden
+                                                        ? 'Hide Password'
+                                                        : 'Show Password'
+                                                "
+                                                [tooltipBackground]="'#424242'"
+                                                [tooltipColor]="'#ffff'"
+                                                position="bottom"
+                                            ></div>
+                                        </div>
 
                                         <svg-icon
                                             class="password-spiner"
@@ -3184,35 +3578,28 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        ngbTooltip
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="18"
-                                            height="18"
-                                            viewBox="0 0 11.638 16.2"
-                                            *ngIf="row[column.field]"
-                                        >
-                                            <path
-                                                d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                                                transform="translate(-16 -6.014)"
-                                                [ngStyle]="{
-                                                    fill: row[column.field],
-                                                    filter:
-                                                        row.color === '#F9F9F9'
-                                                            ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
-                                                            : 'unset'
-                                                }"
-                                            />
-                                        </svg>
                                         <div
                                             *ngIf="row[column.field]"
-                                            [ngStyle]="{
-                                                width: column.width - 18 + 'px'
-                                            }"
                                             class="color-name"
-                                        >
-                                            {{ row.colorName }}
-                                        </div>
+                                            [style.background-color]="
+                                                row[column.field]
+                                            "
+                                            #op="ngbPopover"
+                                            [ngbPopover]="optionsPopover"
+                                            [placement]="'bottom-right'"
+                                            [autoClose]="'outside'"
+                                            popoverClass="toolbar-options-popover"
+                                            triggers="manual"
+                                            (hidden)="optionsPopupOpen = false"
+                                            [mainTooltip]="row.colorName"
+                                            [tooltipBackground]="
+                                                row[column.field]
+                                            "
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
+                                        ></div>
                                     </div>
 
                                     <!-- SVG COLUMN -->
@@ -3314,19 +3701,19 @@
                                                             .percentage,
                                                     'bg-sliver-container':
                                                         row[column.field]
-                                                            .percentage >= 25 &&
+                                                            .percentage >= 50 &&
                                                         row[column.field]
                                                             .percentage < 100,
                                                     'bg-orange-container':
                                                         row[column.field]
-                                                            .percentage >= 5 &&
+                                                            .percentage >= 20 &&
                                                         row[column.field]
-                                                            .percentage < 25,
+                                                            .percentage < 50,
                                                     'bg-danger-container':
                                                         row[column.field]
                                                             .percentage > 0 &&
                                                         row[column.field]
-                                                            .percentage < 5,
+                                                            .percentage < 20,
                                                     'bg-inactive-container':
                                                         row[column.field]
                                                             .percentage === 100
@@ -3337,29 +3724,23 @@
                                                         'bg-progress-sliver':
                                                             row[column.field]
                                                                 .percentage >=
-                                                                25 &&
+                                                                50 &&
                                                             row[column.field]
                                                                 .percentage <
                                                                 100,
                                                         'bg-progress-orange':
                                                             row[column.field]
                                                                 .percentage >=
-                                                                5 &&
+                                                                20 &&
                                                             row[column.field]
                                                                 .percentage <
-                                                                25,
+                                                                50,
                                                         'bg-progress-danger':
                                                             row[column.field]
                                                                 .percentage >
                                                                 0 &&
                                                             row[column.field]
-                                                                .percentage < 5
-                                                    }"
-                                                    [ngStyle]="{
-                                                        width:
-                                                            row[column.field]
-                                                                .percentage +
-                                                            '%'
+                                                                .percentage < 20
                                                     }"
                                                     class="table-progress-bar"
                                                     *ngIf="
@@ -3615,19 +3996,19 @@
                                                             100,
                                                         'bg-sliver-container':
                                                             progressStatus.percentage >=
-                                                                25 &&
+                                                                50 &&
                                                             progressStatus.percentage <
                                                                 100,
                                                         'bg-orange-container':
                                                             progressStatus.percentage >=
-                                                                5 &&
+                                                                20 &&
                                                             progressStatus.percentage <
-                                                                25,
+                                                                50,
                                                         'bg-danger-container':
                                                             progressStatus.percentage >
                                                                 0 &&
                                                             progressStatus.percentage <
-                                                                5,
+                                                                20,
                                                         'bg-inactive-container':
                                                             !progressStatus.percentage
                                                     }"
@@ -3636,19 +4017,19 @@
                                                         [ngClass]="{
                                                             'bg-progress-sliver':
                                                                 progressStatus.percentage >=
-                                                                    25 &&
+                                                                    50 &&
                                                                 progressStatus.percentage <
-                                                                    50,
+                                                                    100,
                                                             'bg-progress-orange':
                                                                 progressStatus.percentage >=
-                                                                    5 &&
+                                                                    20 &&
                                                                 progressStatus.percentage <
-                                                                    25,
+                                                                    50,
                                                             'bg-progress-danger':
                                                                 progressStatus.percentage >
                                                                     0 &&
                                                                 progressStatus.percentage <
-                                                                    5
+                                                                    20
                                                         }"
                                                         [ngStyle]="{
                                                             width:
@@ -4263,24 +4644,24 @@
                                                     'bg-sliver-container':
                                                         row[
                                                             'tableDropdownProgress'
-                                                        ].percentage >= 25 &&
+                                                        ].percentage >= 50 &&
                                                         row[
                                                             'tableDropdownProgress'
                                                         ].percentage < 100,
                                                     'bg-orange-container':
                                                         row[
                                                             'tableDropdownProgress'
-                                                        ].percentage >= 5 &&
+                                                        ].percentage >= 20 &&
                                                         row[
                                                             'tableDropdownProgress'
-                                                        ].percentage < 25,
+                                                        ].percentage < 50,
                                                     'bg-danger-container':
                                                         row[
                                                             'tableDropdownProgress'
                                                         ].percentage > 0 &&
                                                         row[
                                                             'tableDropdownProgress'
-                                                        ].percentage < 5,
+                                                        ].percentage < 20,
                                                     'bg-inactive-container':
                                                         row[
                                                             'tableDropdownProgress'
@@ -4293,30 +4674,25 @@
                                                             row[
                                                                 'tableDropdownProgress'
                                                             ].percentage >=
-                                                                25 &&
+                                                                50 &&
                                                             row[
                                                                 'tableDropdownProgress'
                                                             ].percentage < 100,
                                                         'bg-progress-orange':
                                                             row[
                                                                 'tableDropdownProgress'
-                                                            ].percentage >= 5 &&
+                                                            ].percentage >=
+                                                                20 &&
                                                             row[
                                                                 'tableDropdownProgress'
-                                                            ].percentage < 25,
+                                                            ].percentage < 50,
                                                         'bg-progress-danger':
                                                             row[
                                                                 'tableDropdownProgress'
                                                             ].percentage > 0 &&
                                                             row[
                                                                 'tableDropdownProgress'
-                                                            ].percentage < 5
-                                                    }"
-                                                    [ngStyle]="{
-                                                        width:
-                                                            row[
-                                                                'tableDropdownProgress'
-                                                            ].percentage + '%'
+                                                            ].percentage < 20
                                                     }"
                                                     class="table-progress-bar"
                                                     *ngIf="

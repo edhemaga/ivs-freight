@@ -1091,56 +1091,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     .subscribe(([repairTrailerPagination, tableConfig]) => {
                         if (tableConfig) {
                             const config = JSON.parse(tableConfig.config);
-
                             localStorage.setItem(
                                 `table-${tableConfig.tableType}-Configuration`,
                                 JSON.stringify(config)
                             );
                         }
-
                         this.repairTrailerStore.set(
                             repairTrailerPagination.pagination.data
                         );
-
-                        this.sendRepairData();
-                    });
-            }
-            // Repair Shop Api Call
-            else if (
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP &&
-                !this.repairShopTabClicked
-            ) {
-                forkJoin([
-                    this.repairService.getRepairShopList(
-                        1,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        1,
-                        25
-                    ),
-                    this.tableService.getTableConfig(12),
-                ])
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe(([repairPagination, tableConfig]) => {
-                        if (tableConfig) {
-                            const config = JSON.parse(tableConfig.config);
-
-                            localStorage.setItem(
-                                `table-${tableConfig.tableType}-Configuration`,
-                                JSON.stringify(config)
-                            );
-                        }
-
-                        this.shopStore.set(repairPagination.pagination.data);
-
                         this.sendRepairData();
                     });
             } else {
