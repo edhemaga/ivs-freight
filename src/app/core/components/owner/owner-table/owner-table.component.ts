@@ -50,6 +50,7 @@ import {
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // Pipes
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
@@ -60,7 +61,6 @@ import { DisplayOwnerConfiguration } from '../owner-card-data';
 
 //helpers
 import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 @Component({
     selector: 'app-owner-table',
