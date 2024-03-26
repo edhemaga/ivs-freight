@@ -16,6 +16,7 @@ import { EntityTypeReview } from './entityTypeReview';
 export interface ReviewResponse { 
     id?: number;
     companyUser?: CompanyUserShortResponse;
+    isItCurrentCompanyUser?: boolean;
     entityTypeReview?: EntityTypeReview;
     ratingFromTheReviewer?: number | null;
     comment?: string | null;

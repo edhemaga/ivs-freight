@@ -11,9 +11,11 @@
  */
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface PayrollFlatRateTotalSum { 
+    totalEmptyMiles?: number | null;
+    totalLoadedMiles?: number | null;
+    totalMiles?: number | null;
+    totalRevenue?: number | null;
+    totalSubtotal?: number | null;
 }
 

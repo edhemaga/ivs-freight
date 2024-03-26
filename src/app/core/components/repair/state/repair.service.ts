@@ -13,6 +13,7 @@ import {
     ClusterResponse,
     RepairShopMinimalResponse,
     RepairShopNewListResponse,
+    RepairDriverResponse,
     // RepairDriverResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
@@ -99,17 +100,17 @@ export class RepairTService implements OnDestroy {
         );
     }
 
-    // public getDriver(
-    //     truckId: number,
-    //     trailerId: number,
-    //     repairDate: string
-    // ): Observable<RepairDriverResponse[]> {
-    //     return this.repairService.apiRepairDriversGet(
-    //         truckId,
-    //         trailerId,
-    //         repairDate
-    //     );
-    // }
+    public getDriver(
+        truckId: number,
+        trailerId: number,
+        repairDate: string
+    ): Observable<RepairDriverResponse[]> {
+        return this.repairService.apiRepairDriversGet(
+            truckId,
+            trailerId,
+            repairDate
+        );
+    }
 
     public updateRepair(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
@@ -392,11 +393,11 @@ export class RepairTService implements OnDestroy {
             distance,
             costFrom,
             costTo,
-            // visitedByMe,
+            visitedByMe,
             driverId,
             pageIndex,
             pageSize,
-            // companyId,
+            companyId,
             sort,
             search,
             search1,

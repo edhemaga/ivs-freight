@@ -55,5 +55,6 @@ export interface TrailerShortResponse {
     fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;
+    deactivatedAt?: string | null;
 }
 

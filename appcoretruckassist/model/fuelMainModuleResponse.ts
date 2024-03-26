@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelCardShortResponse } from './fuelCardShortResponse';
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface FuelMainModuleResponse { 
+    fuelStop?: number;
+    fuelTransaction?: number;
+    fuelCards?: Array<FuelCardShortResponse> | null;
 }
 

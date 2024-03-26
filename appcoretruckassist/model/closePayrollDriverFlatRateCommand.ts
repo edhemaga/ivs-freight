@@ -9,11 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PayrollPaymentCommand } from './payrollPaymentCommand';
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface ClosePayrollDriverFlatRateCommand { 
+    id?: number;
+    selectedLoadIds?: Array<number> | null;
+    selectedBonusIds?: Array<number> | null;
+    selectedDeducionIds?: Array<number> | null;
+    selectedCreditIds?: Array<number> | null;
+    pay?: PayrollPaymentCommand;
 }
 

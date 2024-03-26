@@ -229,27 +229,27 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             trailerId = this.selectedUnit.id;
         }
 
-        // this.repairService
-        //     .getDriver(truckId, trailerId, formatedDate)
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe((driversList) => {
-        //         if (driversList.length > 0) {
-        //             this.drivers = driversList.map((item) => {
-        //                 return {
-        //                     ...item,
-        //                     name: item.firstName + ' ' + item.lastName,
-        //                 };
-        //             });
+        this.repairService
+            .getDriver(truckId, trailerId, formatedDate)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((driversList) => {
+                if (driversList.length > 0) {
+                    this.drivers = driversList.map((item) => {
+                        return {
+                            ...item,
+                            name: item.firstName + ' ' + item.lastName,
+                        };
+                    });
 
-        //             this.selectedDriver = this.drivers[this.drivers.length - 1];
+                    this.selectedDriver = this.drivers[this.drivers.length - 1];
 
-        //             this.isDriverSelected = false;
-        //         } else {
-        //             this.isDriverSelected = true;
-        //             this.selectedDriver = null;
-        //             this.repairOrderForm.get('driver').reset();
-        //         }
-        //     });
+                    this.isDriverSelected = false;
+                } else {
+                    this.isDriverSelected = true;
+                    this.selectedDriver = null;
+                    this.repairOrderForm.get('driver').reset();
+                }
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {

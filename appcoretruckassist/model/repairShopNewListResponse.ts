@@ -17,5 +17,6 @@ export interface RepairShopNewListResponse {
     repairShopCount?: number;
     truckCount?: number | null;
     trailerCount?: number | null;
+    closedRepairShopsCount?: number;
 }
 
