@@ -4286,9 +4286,30 @@
                                             "
                                             [openedAll]="false"
                                             [parking]="false"
-                                            (saveNoteValue)="saveValueNote.emit({value: $event, id: row.id})"
+                                            (saveNoteValue)="
+                                                saveValueNote.emit({
+                                                    value: $event,
+                                                    id: row.id
+                                                })
+                                            "
                                         >
                                         </app-ta-note>
+                                    </div>
+
+                                    <div
+                                        class="td-content set-center"
+                                        *ngIf="column.ngTemplate === 'fleet'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <app-ta-input-dropdown-table
+                                            [data]="row"
+                                            [type]="'owner'"
+                                        ></app-ta-input-dropdown-table>
                                     </div>
 
                                     <!-- ACTIONS COLUMN -->

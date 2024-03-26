@@ -645,9 +645,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getGridColumns(configType: string): void {
-        const tableColumnsConfig = JSON.parse(
+        let tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
+
+        tableColumnsConfig = null;
 
         return tableColumnsConfig
             ? tableColumnsConfig

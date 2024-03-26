@@ -77,6 +77,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 })
 export class TaInputDropdownTableComponent implements OnDestroy {
     @Input() set data(value: CardDetails) {
+        console.log(value, 'vaaaaaaaaaal')
         this._data = value;
         this.filteredData = { ...value };
 
