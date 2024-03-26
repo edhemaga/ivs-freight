@@ -260,19 +260,20 @@ export function getDropdownOwnerContent(data): DropdownItem[] {
             hasBorder: true,
             svgClass: ConstantStringTableComponentsEnum.REGULAR,
         },
-        {
-            title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-            name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
-            },
-        },
+        // {
+        //     title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
+        //     name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: ConstantStringTableComponentsEnum.REGULAR,
+        //     tableListDropdownContentStyle: {
+        //         'margin-bottom.px': 4,
+        //     },
+        // },
+        //leave this commented for now
         {
             title: 'Add Truck',
             name: 'add-truck',
@@ -297,49 +298,51 @@ export function getDropdownOwnerContent(data): DropdownItem[] {
             svgClass: ConstantStringTableComponentsEnum.REGULAR,
             hasBorder: true,
         },
-        {
-            title: ConstantStringTableComponentsEnum.SHARE_2,
-            name: ConstantStringTableComponentsEnum.SHARE,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
-            },
-        },
-        {
-            title: ConstantStringTableComponentsEnum.PRINT_2,
-            name: ConstantStringTableComponentsEnum.PRINT,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            hasBorder: true,
-        },
-        {
-            title:
-                data === ConstantStringTableComponentsEnum.ACTIVE
-                    ? ConstantStringTableComponentsEnum.DEACTIVATE_2
-                    : ConstantStringTableComponentsEnum.ACTIVATE_2,
-            name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass:
-                data === ConstantStringTableComponentsEnum.ACTIVE
-                    ? ConstantStringTableComponentsEnum.DEACTIVATE
-                    : ConstantStringTableComponentsEnum.ACTIVATE,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
-            },
-        },
+        // {
+        //     title: ConstantStringTableComponentsEnum.SHARE_2,
+        //     name: ConstantStringTableComponentsEnum.SHARE,
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: ConstantStringTableComponentsEnum.REGULAR,
+        //     tableListDropdownContentStyle: {
+        //         'margin-bottom.px': 4,
+        //     },
+        // },
+        // {
+        //     title: ConstantStringTableComponentsEnum.PRINT_2,
+        //     name: ConstantStringTableComponentsEnum.PRINT,
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass: ConstantStringTableComponentsEnum.REGULAR,
+        //     hasBorder: true,
+        // },
+        //leave this commented for now
+        // {
+        //     title:
+        //         data === ConstantStringTableComponentsEnum.ACTIVE
+        //             ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+        //             : ConstantStringTableComponentsEnum.ACTIVATE_2,
+        //     name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+        //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+        //     svgStyle: {
+        //         width: 18,
+        //         height: 18,
+        //     },
+        //     svgClass:
+        //         data === ConstantStringTableComponentsEnum.ACTIVE
+        //             ? ConstantStringTableComponentsEnum.DEACTIVATE
+        //             : ConstantStringTableComponentsEnum.ACTIVATE,
+        //     tableListDropdownContentStyle: {
+        //         'margin-bottom.px': 4,
+        //     },
+        // },
+        //leave this commented for now
         {
             title: ConstantStringTableComponentsEnum.DELETE_2,
             name: ConstantStringTableComponentsEnum.DELETE_ITEM,

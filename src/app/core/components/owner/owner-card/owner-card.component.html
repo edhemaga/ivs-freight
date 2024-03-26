@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -206,6 +206,7 @@
 
                         <app-table-card-dropdown-actions
                             [card]="card"
+                            (bodyActions)="onCardActions($event)"
                         ></app-table-card-dropdown-actions>
 
                         <!-- Note element -->
