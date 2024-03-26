@@ -46,7 +46,7 @@ export class TaUploadDropzoneComponent {
 
     @Input() dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'files', // files | image | media
-        dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+        dropZoneSvg: 'assets/svg/common/drag-image-dropzone-files.svg',
         dropZoneAvailableFiles:
             'application/pdf, image/png, image/jpeg, image/jpg',
         multiple: true,
