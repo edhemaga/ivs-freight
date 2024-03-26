@@ -4286,6 +4286,7 @@
                                             "
                                             [openedAll]="false"
                                             [parking]="false"
+                                            (saveNoteValue)="saveValueNote.emit({value: $event, id: row.id})"
                                         >
                                         </app-ta-note>
                                     </div>

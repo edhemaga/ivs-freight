@@ -9,13 +9,14 @@ import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.compon
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 
 // Models
-import { GetOwnerListResponse } from 'appcoretruckassist';
+import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
 import {
+    CardDetails,
     DropdownItem,
     GridColumn,
     ToolbarActions,
@@ -37,7 +38,10 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
-import { OwnerActiveState } from '../state/owner-active-state/owner-active.store';
+import {
+    OwnerActiveState,
+    OwnerActiveStore,
+} from '../state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
 import {
     OwnerInactiveState,
@@ -56,6 +60,7 @@ import { DisplayOwnerConfiguration } from '../owner-card-data';
 
 //helpers
 import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
+import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 @Component({
     selector: 'app-owner-table',
@@ -105,7 +110,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phonePipe: formatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore,
         private confirmationService: ConfirmationService,
-        private sharedService: SharedService
+        private sharedService: SharedService,
+        private ownerActiveStore: OwnerActiveStore
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -805,7 +811,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
         ) {
             let status = false;
-            let mappedEvent = [];
+            const mappedEvent = [];
             this.viewData.map((data) => {
                 event.tabData.data.map((element) => {
                     if (data.id === element) {
@@ -914,7 +920,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 size: ConstantStringTableComponentsEnum.SMALL,
                 closing: ConstantStringTableComponentsEnum.FASTEST,
             });
-        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRAILER) {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.ADD_TRAILER
+        ) {
             this.modalService.setProjectionModal({
                 action: ConstantStringTableComponentsEnum.OPEN,
                 payload: {
@@ -926,6 +934,33 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 closing: ConstantStringTableComponentsEnum.FASTEST,
             });
         }
+    }
+
+    public saveValueNote(event: { value: string; id: number }): void {
+        this.viewData.map((item: CardDetails) => {
+            if (item.id === event.id) {
+                item.note = event.value;
+            }
+        });
+
+        const storeOwners =
+            this.selectedTab === ComponentsTableEnum.ACTIVE
+                ? this.ownerActiveQuery.getAll()
+                : this.ownerInactiveQuery.getAll();
+
+        storeOwners.map((owner: OwnerResponse) => {
+            if (event.id === owner.id) {
+                this.selectedTab === ComponentsTableEnum.ACTIVE
+                    ? this.ownerActiveStore.update(owner.id, (entity) => ({
+                          ...entity,
+                          note: event.value,
+                      }))
+                    : this.ownerInactiveStore.update(owner.id, (entity) => ({
+                          ...entity,
+                          note: event.value,
+                      }));
+            }
+        });
     }
 
     ngOnDestroy(): void {
