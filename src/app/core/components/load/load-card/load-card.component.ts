@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    SimpleChanges,
+    OnChanges,
+} from '@angular/core';
 import { CardDetails } from '../../shared/model/card-table-data.model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -8,7 +15,7 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
 
 // models
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows, DataResult } from '../../shared/model/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -26,7 +33,7 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
     styleUrls: ['./load-card.component.scss'],
     providers: [FormatNumberMiPipe, formatCurrency, ValueByStringPath],
 })
-export class LoadCardComponent implements OnInit, OnDestroy {
+export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data
     @Input() viewData: CardDetails[];
 
@@ -36,8 +43,8 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     // Card body endpoints
     @Input() cardTitle: string;
     @Input() rows: number[];
-    @Input() displayRowsFront: CardRows;
-    @Input() displayRowsBack: CardRows;
+    @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
 
     private destroy$ = new Subject<void>();
@@ -45,9 +52,13 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     public isAllCardsFlipp: boolean = false;
     public isExpandCardChecked: boolean = true;
 
-    public cardData: CardDetails;
-
     public isCardFlippedCheckInCards: number[] = [];
+
+    public cardConfigurationForFront: CardRows[];
+
+    public cardsFront: DataResult[][][] = [];
+    public cardsBack: DataResult[][][] = [];
+    public titleArray: string[][] = [];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -61,6 +72,44 @@ export class LoadCardComponent implements OnInit, OnDestroy {
         this.flipAllCards();
 
         this.expandCard();
+    }
+
+    ngOnChanges(cardChanges: SimpleChanges) {
+        if (
+            cardChanges.displayRowsBack.currentValue ||
+            cardChanges.displayRowsFront.currentValue
+        )
+            this.getTransformedCardsData();
+    }
+
+    public getTransformedCardsData(): void {
+        this.cardsFront = [];
+        this.cardsBack = [];
+        this.titleArray = [];
+
+        const cardTitles = this.valueByStringPath.renderCards(
+            this.viewData,
+            this.cardTitle,
+            null
+        );
+
+        const frontOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsFront
+        );
+
+        const backOfCards = this.valueByStringPath.renderCards(
+            this.viewData,
+            null,
+            this.displayRowsBack
+        );
+
+        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
+
+        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
+
+        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
     public expandCard(): void {

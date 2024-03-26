@@ -24,7 +24,7 @@ export function getBrokerColumnDefinition() {
             resizable: false,
         },
         {
-            ngTemplate: 'nameLink',
+            ngTemplate: 'customer-name',
             title: 'Business Name',
             field: 'businessName',
             name: 'Business Name',
@@ -617,7 +617,7 @@ export function getShipperColumnDefinition() {
             resizable: false,
         },
         {
-            ngTemplate: 'nameLink',
+            ngTemplate: 'customer-name',
             title: 'Business Name',
             field: 'businessName',
             name: 'Business Name',

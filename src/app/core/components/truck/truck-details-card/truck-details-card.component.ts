@@ -10,10 +10,13 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+
+//Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckTService } from '../state/truck.service';
+
+//Animations
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 import {
     animate,
     style,
@@ -21,8 +24,34 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+
+//Store
+import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
+
+//Helpers
 import { ImageBase64Service } from '../../../utils/base64.image';
+
+//Models
 import { TruckResponse } from 'appcoretruckassist';
+import {
+    ChartApiCall,
+    LegendAttributes,
+} from '../../standalone-components/ta-chart/models/chart-models';
+import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
+import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
+
+//Enums
+import {
+    AnnotationPositionEnum,
+    AxisPositionEnum,
+    ChartLegendDataEnum,
+} from '../../standalone-components/ta-chart/enums/chart-enums';
+
+//Constants
+import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
+
+//Components
+import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -74,20 +103,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() truck: TruckResponse;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
-    public monthList: any[] = [
-        'JAN',
-        'FEB',
-        'MAR',
-        'APR',
-        'MAY',
-        'JUN',
-        'JUL',
-        'AUG',
-        'SEP',
-        'OCT',
-        'NOV',
-        'DEC',
-    ];
+    private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
 
     payrollChartConfig: any = {
@@ -125,26 +141,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartWidth: '417',
         chartHeight: '130',
         hasValue: false,
-        dataLabels: [
-            '',
-            'NOV',
-            '',
-            '2021',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-        ],
+        dataLabels: [],
         onHoverAnnotation: true,
         offset: true,
         allowAnimation: true,
         animationOnlyOnLoad: true,
         hoverTimeDisplay: true,
         noChartImage: 'assets/svg/common/yellow_no_data.svg',
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
     revenueChartConfig: any = {
@@ -182,26 +187,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartWidth: '417',
         chartHeight: '130',
         hasValue: false,
-        dataLabels: [
-            '',
-            'NOV',
-            '',
-            '2021',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-        ],
+        dataLabels: [],
         onHoverAnnotation: true,
         hoverTimeDisplay: true,
         offset: true,
         allowAnimation: true,
         animationOnlyOnLoad: true,
         noChartImage: 'assets/svg/common/green_no_data.svg',
+        hasSameDataIndex: true,
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
     stackedBarChartConfig: any = {
@@ -239,20 +234,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartWidth: '417',
         chartHeight: '130',
         hasValue: false,
-        dataLabels: [
-            '',
-            'NOV',
-            '',
-            '2021',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-        ],
+        dataLabels: [],
         onHoverAnnotation: true,
         hoverTimeDisplay: true,
         stacked: true,
@@ -260,66 +242,68 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         allowAnimation: true,
         animationOnlyOnLoad: true,
         noChartImage: 'assets/svg/common/stacked_no_data.svg',
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
-    public barChartLegend: any[] = [
+    public barChartLegend: LegendAttributes[] = [
         {
             title: 'Miles Per Gallon',
-            value: 5830,
+            value: 0,
             image: 'assets/svg/common/round_yellow.svg',
             sufix: 'mi',
             elementId: 1,
         },
         {
             title: 'Cost Per Gallon',
-            value: 19402,
+            value: 0,
             image: 'assets/svg/common/round_blue.svg',
-            prefix: '$',
+            prefix: ChartLegendDataEnum.DOLLAR,
             elementId: 0,
         },
     ];
 
-    public barChartLegend2: any[] = [
+    public barChartLegend2: LegendAttributes[] = [
         {
             title: 'Miles',
-            value: 150257,
+            value: 0,
             image: 'assets/svg/common/round_blue_light.svg',
             sufix: 'mi',
             elementId: 1,
         },
         {
             title: 'Revenue',
-            value: 190568,
+            value: 0,
             image: 'assets/svg/common/round_blue.svg',
-            prefix: '$',
+            prefix: ChartLegendDataEnum.DOLLAR,
             elementId: 0,
         },
     ];
 
-    public stackedBarChartLegend: any[] = [
+    public stackedBarChartLegend: LegendAttributes[] = [
         {
             title: 'Fuel Cost',
-            value: 68.56,
+            value: 0,
             image: 'assets/svg/common/round_yellow.svg',
-            prefix: '$',
+            prefix: ChartLegendDataEnum.DOLLAR,
             elementId: 0,
         },
         {
             title: 'Repair Cost',
-            value: 37.56,
+            value: 0,
             image: 'assets/svg/common/round_blue.svg',
-            prefix: '$',
+            prefix: ChartLegendDataEnum.DOLLAR,
             elementId: 1,
         },
         {
             title: 'Total Cost',
-            value: 105.63,
-            prefix: '$',
+            value: 0,
+            prefix: ChartLegendDataEnum.DOLLAR,
             elementId: 'total',
         },
     ];
 
-    public barAxes: object = {
+    public barAxes: BarChartAxes = {
         verticalLeftAxes: {
             visible: true,
             minValue: 0,
@@ -336,12 +320,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
         horizontalAxes: {
             visible: true,
-            position: 'bottom',
+            position: AxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
 
-    public barAxes2: object = {
+    public barAxes2: BarChartAxes = {
         verticalLeftAxes: {
             visible: true,
             minValue: 0,
@@ -358,12 +342,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
         horizontalAxes: {
             visible: true,
-            position: 'bottom',
+            position: AxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
 
-    public stackedBarAxes: object = {
+    public stackedBarAxes: BarChartAxes = {
         verticalLeftAxes: {
             visible: true,
             minValue: 0,
@@ -380,20 +364,20 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
         horizontalAxes: {
             visible: true,
-            position: 'bottom',
+            position: AxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
-    public truckIndex: any;
-    public revenueCall: any = {
+    public truckIndex: number;
+    public revenueCall: ChartApiCall = {
         id: -1,
         chartType: 1,
     };
-    public expensesCall: any = {
+    public expensesCall: ChartApiCall = {
         id: -1,
         chartType: 1,
     };
-    public fuelCall: any = {
+    public fuelCall: ChartApiCall = {
         id: -1,
         chartType: 1,
     };
@@ -401,7 +385,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
         private truckService: TruckTService,
-        public imageBase64Service: ImageBase64Service,
+        public imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -409,21 +393,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             this.noteControl.patchValue(changes.truck.currentValue.note);
             this.getTruckDropdown();
         }
-        this.getExpensesChartData(
-            changes.truck.currentValue.id,
-            this.expensesCall.chartType,
-            false
-        );
-        this.getFuelConsumtionChartData(
-            changes.truck.currentValue.id,
-            this.fuelCall.chartType,
-            false
-        );
-        this.getRevenueChartData(
-            changes.truck.currentValue.id,
-            this.revenueCall.chartType,
-            false
-        );
+
+        this.getTruckChartData(changes.truck.currentValue.id);
 
         this.changeColor();
         this.truckMinimalListQuery
@@ -446,13 +417,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         //this.truck.ownerHistories = array1;
         this.ownersData = array1;
 
-        setTimeout(()=>{
+        setTimeout(() => {
             let currentIndex = this.truckDropDowns.findIndex(
                 (truck) => truck.id === this.truck.id
             );
-            
+
             this.truckIndex = currentIndex;
-        }, 300)
+        }, 300);
     }
 
     public sortKeys = (a, b) => {
@@ -723,7 +694,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onSelectedTruck(event: any) {
-        if ( event && event.id !== this.truck.id) {
+        if (event && event.id !== this.truck.id) {
             this.truckDropDowns = this.truckMinimalListQuery
                 .getAll()
                 .map((item) => {
@@ -794,16 +765,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.destroy$.complete();
     }
 
-    chartDataSet(
-        chart: any,
-        config: any,
-        legend: any,
-        axes: any,
-        item: any,
+    public chartDataSet(
+        chart: TaChartComponent,
+        config: DoughnutChartConfig,
+        legend: LegendAttributes[],
+        axes: BarChartAxes,
+        item: any, //leave this any because of many responses
         hideAnimation?: boolean,
         reverse?: boolean,
         stacked?: boolean
-    ) {
+    ): void {
         config.dataLabels = [];
         config.chartValues = [
             item?.fuelCost
@@ -854,10 +825,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
         let hasValue = false;
 
-        legend.map((leg)=>{
-            if (leg.value > 0) {
-                hasValue = true;
-            }
+        legend.map((leg) => {
+            if (leg.value > 0) hasValue = true;
         });
 
         config.hasValue = hasValue;
@@ -882,7 +851,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             config.dataProperties[1].defaultConfig.barThickness = 18;
         }
         chart.toolTipData = [];
-        mapData.map((data, index) => {
+        mapData.map((data) => {
             chart.toolTipData.push(data);
             let dataVal1 = data?.fuelCost
                 ? data.fuelCost
@@ -900,24 +869,20 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 : 0;
             fuelCost.push(dataVal1);
             repairCost.push(dataVal2);
-            if (stacked && dataVal1 + dataVal2 > maxValue) {
+            if (stacked && dataVal1 + dataVal2 > maxValue)
                 maxValue =
                     dataVal1 + dataVal2 + ((dataVal1 + dataVal2) * 7) / 100;
-            } else if (!stacked && dataVal1 > maxValue) {
+            else if (!stacked && dataVal1 > maxValue)
                 maxValue = dataVal1 + (dataVal1 * 7) / 100;
-            }
-            if (dataVal2 > maxValue2) {
+            if (dataVal2 > maxValue2)
                 maxValue2 = dataVal2 + (dataVal2 * 7) / 100;
-            }
-            if (data.day) {
+            if (data.day)
                 labels.push([data.day, this.monthList[data.month - 1]]);
-            } else {
-                labels.push([this.monthList[data.month - 1]]);
-            }
+            else labels.push([this.monthList[data.month - 1]]);
         });
 
-        axes['verticalLeftAxes']['maxValue'] = maxValue;
-        axes['verticalRightAxes']['maxValue'] = maxValue2;
+        axes.verticalLeftAxes.maxValue = maxValue;
+        axes.verticalRightAxes.maxValue = maxValue2;
 
         config.dataLabels = labels;
         config.dataProperties[0].defaultConfig.data = reverse
@@ -932,10 +897,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 
-    getLastSixChars(mod){
-        var lastSixChars = mod;
+    public getLastSixChars(mod: string): string | string[] {
+        let lastSixChars: string | string[] = mod;
 
-        if ( mod.length > 6 ) {
+        if (mod.length > 6) {
             lastSixChars = mod.slice(-6);
 
             let stringLength = mod.length;
@@ -943,5 +908,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
         }
         return lastSixChars;
+    }
+
+    public getTruckChartData(id: number): void {
+        this.getExpensesChartData(id, this.expensesCall.chartType, false);
+        this.getFuelConsumtionChartData(id, this.fuelCall.chartType, false);
+        this.getRevenueChartData(id, this.revenueCall.chartType, false);
     }
 }

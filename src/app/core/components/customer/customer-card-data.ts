@@ -10,19 +10,19 @@ export class DisplayCustomerConfiguration {
     static displayRowsFrontBroker: CardRows[] = [
         {
             title: 'Phone',
-            endpoint: 'phone',
+            key: 'phone',
         },
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
         {
             title: 'Available Credit',
-            endpoint: 'availableCredit',
+            key: 'availableCredit',
         },
         {
             title: 'Unpaid Inv. Ageing',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
     ];
 
@@ -30,22 +30,22 @@ export class DisplayCustomerConfiguration {
     static displayRowsBackBroker: CardRows[] = [
         {
             title: 'Contact',
-            endpoint: 'brokerContacts.department.name',
+            key: 'brokerContacts.department.name',
         },
         {
             title: 'Rating & Review',
-            endpoint: 'tableRaiting.likeCount',
-            secondEndpoint: 'tableRaiting.dislikeCount',
+            key: 'tableRaiting.likeCount',
+            secondKey: 'tableRaiting.dislikeCount',
             hasLiked: 'hasLiked',
             hasDislike: 'hasDislike',
         },
         {
             title: 'Loads',
-            endpoint: 'referenceNumber',
+            key: 'referenceNumber',
         },
         {
             title: 'Revenue',
-            endpoint: 'revenue',
+            key: 'revenue',
         },
     ];
 
@@ -53,20 +53,20 @@ export class DisplayCustomerConfiguration {
     static displayRowsFrontShipper: CardRows[] = [
         {
             title: 'Phone',
-            endpoint: 'phone',
+            key: 'phone',
         },
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
         {
             title: 'Address',
-            endpoint: 'address.address',
+            key: 'address.address',
         },
         {
             title: 'Rating & Review',
-            endpoint: 'tableRaiting.likeCount',
-            secondEndpoint: 'tableRaiting.dislikeCount',
+            key: 'tableRaiting.likeCount',
+            secondKey: 'tableRaiting.dislikeCount',
             hasLiked: 'hasLiked',
             hasDislike: 'hasDislike',
         },
@@ -76,19 +76,19 @@ export class DisplayCustomerConfiguration {
     static displayRowsBackShipper: CardRows[] = [
         {
             title: 'Shipping Hours',
-            endpoint: 'tableAvailableHoursShipping',
+            key: 'tableAvailableHoursShipping',
         },
         {
             title: 'Receiving Hours',
-            endpoint: 'tableAvailableHoursReceiving',
+            key: 'tableAvailableHoursReceiving',
         },
         {
             title: 'Avg. Pickup Time',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
         {
             title: 'Avg. Delivery Time',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
     ];
 }

@@ -108,6 +108,8 @@ export class ShopRepairCardViewComponent
             'SEP',
         ],
         noChartImage: 'assets/svg/common/yellow_no_data.svg',
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
     public barChartLegend: any[] = [

@@ -10,19 +10,19 @@ export class DisplayOwnerConfiguration {
     static displayRowsFrontActive: CardRows[] = [
         {
             title: 'SSN',
-            endpoint: 'ssnEin',
+            key: 'ssnEin',
         },
         {
             title: 'Phone',
-            endpoint: 'phone',
+            key: 'phone',
         },
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
         {
             title: 'Fleet',
-            endpoint: '',
+            key: '',
         },
     ];
 
@@ -30,19 +30,19 @@ export class DisplayOwnerConfiguration {
     static displayRowsBackActive: CardRows[] = [
         {
             title: 'Type',
-            endpoint: 'textType',
+            key: 'textType',
         },
         {
             title: 'Bank Name',
-            endpoint: 'textBankName',
+            key: 'textBankName',
         },
         {
             title: 'Routing',
-            endpoint: 'routingNumber',
+            key: 'routingNumber',
         },
         {
             title: 'Bank Account',
-            endpoint: 'accountNumber',
+            key: 'accountNumber',
         },
     ];
 
@@ -50,27 +50,27 @@ export class DisplayOwnerConfiguration {
     static displayRowsFrontInactive: CardRows[] = [
         {
             title: 'Type',
-            endpoint: 'phone',
+            key: 'phone',
         },
         {
             title: 'SSN',
-            endpoint: 'email',
+            key: 'email',
         },
         {
             title: 'Phone',
-            endpoint: 'address.address',
+            key: 'address.address',
         },
         {
             title: 'Email',
-            endpoint: 'email',
+            key: 'email',
         },
         {
             title: 'Address',
-            endpoint: 'address',
+            key: 'address',
         },
         {
             title: 'Fleet',
-            endpoint: '',
+            key: '',
         },
     ];
 
@@ -78,19 +78,19 @@ export class DisplayOwnerConfiguration {
     static displayRowsBackInactive: CardRows[] = [
         {
             title: 'Type',
-            endpoint: 'textType',
+            key: 'textType',
         },
         {
             title: 'Bank Name',
-            endpoint: 'textBankName',
+            key: 'textBankName',
         },
         {
             title: 'Routing',
-            endpoint: 'routingNumber',
+            key: 'routingNumber',
         },
         {
             title: 'Bank Account',
-            endpoint: 'accountNumber',
+            key: 'accountNumber',
         },
     ];
 }

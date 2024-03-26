@@ -11,8 +11,9 @@
                   ? 'Delete'
                   : editData?.type?.substring(0, 1).toUpperCase() +
                     editData?.type?.substring(1)) +
-              ' ' +
-              'Confirmation'
+              (editData?.template === 'fuel stop'
+                  ? ' Fuel Stop'
+                  : ' Confirmation')
     "
     [editName]="
         editData.cdlStatus
@@ -30,30 +31,39 @@
         editData?.type === 'multiple delete' ? 'delete' : editData?.type
     "
     [confirmationData]="editData"
+    [isCloseIconRemoved]="true"
     (confirmationAction)="onModalAction($event)"
 >
-    <div origin class="confirmation-modal">
+    <div
+        origin
+        class="d-flex flex-column justify-content-center confirmation-modal"
+    >
         <!-- Renew CDL -->
-        <p
-            *ngIf="
-                editData.subType === 'cdl void' &&
-                editData?.type === 'info' &&
-                editData.template === 'cdl'
-            "
-            class="confirmation-header confirmation-text-1"
-        >
-            <span class="renew-cdl-person-name">{{
-                editData.data.data?.firstName?.concat(
-                    ' ',
-                    editData.data.data?.lastName
-                )
-            }}</span>
-            has active CDL. <br />
-            You need to void current CDL first.
-        </p>
+        <div class="confirmation-header">
+            <p
+                *ngIf="
+                    editData.subType === 'cdl void' &&
+                    editData?.type === 'info' &&
+                    editData.template === 'cdl'
+                "
+                class="m-0 ta-font-medium"
+            >
+                <span class="ta-font-bold">{{
+                    editData.data.data?.firstName?.concat(
+                        ' ',
+                        editData.data.data?.lastName
+                    )
+                }}</span>
+                has active CDL. <br />
+                You need to void current CDL first.
+            </p>
+        </div>
 
-        <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
-        <div *ngIf="editData.data" class="confirmation-body">
+        <!---------------------------------------------- Confirmation Body For Single ---------------------------------------------->
+        <div
+            *ngIf="editData.data"
+            class="d-flex align-items-center confirmation-body"
+        >
             <!-- Svg -->
             <svg-icon
                 class="confirmation-svg"
@@ -80,12 +90,36 @@
                 </app-profile-images>
             </div>
             <!---------------------------------------------- Different templates for body --------------------------------------------->
+
+            <!-- Fuel -->
+
+            <ng-container *ngIf="['fuel stop'].includes(editData?.template)">
+                <div
+                    class="d-flex flex-column justify-content-center confirmation-body-content"
+                >
+                    <p class="m-0 ta-font-bold text-1">
+                        {{ editData.data.businessName }}
+                        {{
+                            editData.data.store
+                                ? '- ' + editData.data.store
+                                : ''
+                        }}
+                    </p>
+
+                    <p class="m-0 ta-font-medium text-2">
+                        {{ editData.data.address.state }},
+                        {{ editData.data.address.stateShortName }}
+                    </p>
+                </div>
+            </ng-container>
+
             <!-- Driver, Owner -->
+
             <ng-container
                 *ngIf="['driver', 'user', 'owner'].includes(editData?.template)"
             >
                 <div class="confirmation-info">
-                    <p class="confirmation-text-1 large-text-1">
+                    <p class="m-0 confirmation-text-1 large-text-1">
                         {{ editData?.data?.name }}
                         <ng-container *ngIf="!editData?.data?.status">
                             <span class="inactive-icon-holder">
@@ -95,28 +129,39 @@
                             </span>
                         </ng-container>
                     </p>
-                    <p class="confirmation-text-2 large-text-2">
-                        {{ editData?.dateOfBirth | formatDateP }}
-                    </p>
-                    <!--
-                <p class="confirmation-text-2">
-                    SSN: {{ editData?.data?.ssn }}
-                </p>
-                --></div>
+                    <ng-container
+                        *ngIf="['driver', 'user'].includes(editData?.template)"
+                    >
+                        <p class="m-0 confirmation-text-2 large-text-2">
+                            {{ editData?.dateOfBirth | formatDateP }}
+                        </p>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="['owner'].includes(editData?.template)"
+                    >
+                        <p class="m-0 confirmation-text-2 large-text-2">
+                            {{ editData?.data?.address }}
+                        </p>
+                    </ng-container>
+                </div>
             </ng-container>
+
             <!-- Truck, Trailer -->
+
             <div
                 *ngIf="['truck', 'trailer'].includes(editData?.template)"
                 class="confirmation-info"
             >
-                <p class="confirmation-text-1">
+                <p class="m-0 confirmation-text-1">
                     Unit {{ editData?.data?.number }}
                 </p>
-                <p class="confirmation-text-2">
+                <p class="m-0 confirmation-text-2">
                     VIN: {{ editData?.data?.vin }}
                 </p>
             </div>
+
             <!-- Shipper, Repair Shop -->
+
             <div
                 *ngIf="
                     [
@@ -130,8 +175,10 @@
                 "
                 class="confirmation-info"
             >
-                <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
-                <p class="confirmation-text-2">
+                <p class="m-0 confirmation-text-1">
+                    {{ editData?.data?.name }}
+                </p>
+                <p class="m-0 confirmation-text-2">
                     Address: {{ editData?.data?.address?.address }}
                 </p>
             </div>
@@ -141,20 +188,20 @@
                 *ngIf="['broker'].includes(editData?.template)"
                 class="confirmation-info"
             >
-                <p class="confirmation-text-1">
+                <p class="m-0 confirmation-text-1">
                     {{ editData?.data?.businessName }}
                 </p>
-                <p class="confirmation-text-2">
+                <p class="m-0 confirmation-text-2">
                     Phone: {{ editData?.data?.phone }}
                 </p>
             </div>
 
             <ng-container *ngIf="editData?.subTypeStatus === 'business'">
                 <div class="confirmation-info">
-                    <p class="confirmation-text-1 large-text-1">
+                    <p class="m-0 confirmation-text-1 large-text-1">
                         {{ editData?.data?.businessName }}
                     </p>
-                    <p class="confirmation-text-2 large-text-2">
+                    <p class="m-0 confirmation-text-2 large-text-2">
                         {{
                             editData?.data.mainAddress
                                 ? editData?.data.mainAddress.address
@@ -165,17 +212,18 @@
             </ng-container>
 
             <!-- CDL -->
+
             <div
                 *ngIf="['cdl'].includes(editData?.template)"
                 class="confirmation-info"
             >
-                <p class="confirmation-text-1 confirmation-flex">
+                <p class="m-0 confirmation-text-1 d-flex align-items-center">
                     <span class="confirmation-state">{{
                         editData?.data?.state
                     }}</span>
                     {{ editData?.data?.cdlNumber }}
                 </p>
-                <p class="confirmation-text-2">
+                <p class="m-0 confirmation-text-2">
                     Expires: {{ editData?.data.expDate | formatDateP }}
                 </p>
                 <!-- CDL dropdown slecet if Cdl array is sent -->
@@ -207,13 +255,15 @@
                     and activate or renew old one.
                 </div>
             </div>
+
             <!-- Medical, Mvr, Test -->
+
             <div
                 *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
                 class="confirmation-info"
             >
                 <p
-                    class="confirmation-text-1"
+                    class="m-0 confirmation-text-1"
                     *ngIf="editData?.template === 'test'"
                 >
                     {{ editData?.data?.testTypeName }} Test ({{
@@ -221,18 +271,18 @@
                     }})
                 </p>
                 <p
-                    class="confirmation-text-1"
+                    class="m-0 confirmation-text-1"
                     *ngIf="editData?.template === 'medical'"
                 >
                     Issued: {{ editData?.data?.issueDate | formatDateP }}
                 </p>
                 <p
-                    class="confirmation-text-1"
+                    class="m-0 confirmation-text-1"
                     *ngIf="editData?.template === 'mvr'"
                 >
                     CDL: {{ editData?.data.cdlNumber }}
                 </p>
-                <p class="confirmation-text-2">
+                <p class="m-0 confirmation-text-2">
                     {{
                         editData?.template === 'test' ||
                         editData?.template === 'mvr'
@@ -250,23 +300,30 @@
                     }}</span>
                 </p>
             </div>
+
             <!-- Route -->
+
             <div
                 *ngIf="['route'].includes(editData?.template)"
                 class="confirmation-info"
             >
-                <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
-                <p class="confirmation-text-2">
+                <p class="m-0 confirmation-text-1">
+                    {{ editData?.data?.name }}
+                </p>
+                <p class="m-0 confirmation-text-2">
                     {{ editData?.data?.routeType }}
                 </p>
             </div>
         </div>
 
         <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
-        <div *ngIf="editData.array?.length" class="confirmation-array-body">
+        <div
+            *ngIf="editData.array?.length"
+            class="d-flex flex-column justify-content-center confirmation-array-body"
+        >
             <div
-                *ngFor="let item of editData.array; trackBy: identity"
-                class="confirmation-body"
+                *ngFor="let item of editData.array; trackBy: trackByIdentity"
+                class="d-flex align-items-center confirmation-body"
             >
                 <!-- Svg -->
                 <svg-icon
@@ -301,7 +358,7 @@
                     "
                 >
                     <div class="confirmation-info">
-                        <p class="confirmation-text-1 large-text-1">
+                        <p class="m-0 confirmation-text-1 large-text-1">
                             {{ item?.data?.name }}
 
                             <ng-container *ngIf="!editData?.data?.status">
@@ -312,25 +369,33 @@
                                 </span>
                             </ng-container>
                         </p>
-                        <p class="confirmation-text-2 large-text-2">
-                            {{ item?.data?.dateOfBirth | formatDateP }}
-                        </p>
-
-                        <!--
-                    <p class="confirmation-text-2">
-                        SSN: {{ item?.data?.ssn }}
-                    </p>
-                    --></div>
+                        <ng-container
+                            *ngIf="
+                                ['driver', 'user'].includes(editData?.template)
+                            "
+                        >
+                            <p class="m-0 confirmation-text-2 large-text-2">
+                                {{ item?.data?.dateOfBirth | formatDateP }}
+                            </p>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="['owner'].includes(editData?.template)"
+                        >
+                            <p class="m-0 confirmation-text-2 large-text-2">
+                                {{ item?.data?.address }}
+                            </p>
+                        </ng-container>
+                    </div>
                 </ng-container>
                 <!-- Truck, Trailer -->
                 <div
                     *ngIf="['truck', 'trailer'].includes(editData?.template)"
                     class="confirmation-info"
                 >
-                    <p class="confirmation-text-1">
+                    <p class="m-0 confirmation-text-1">
                         Unit {{ item?.data?.number }}
                     </p>
-                    <p class="confirmation-text-2">
+                    <p class="m-0 confirmation-text-2">
                         VIN: {{ item?.data?.vin }}
                     </p>
                 </div>
@@ -338,16 +403,16 @@
                     *ngIf="['fuel transaction'].includes(editData?.template)"
                 >
                     <div class="confirmation-info">
-                        <p class="confirmation-text-1">
+                        <p class="m-0 confirmation-text-1">
                             Unit {{ item?.data?.tableTruckNumber }} - ${{
                                 item?.data.total
                             }}
                         </p>
                         <div class="confirmation-text-holder d-flex">
-                            <p class="confirmation-text-2">
+                            <p class="m-0 confirmation-text-2">
                                 {{ item?.data?.date }}
                             </p>
-                            <p class="confirmation-text-2">
+                            <p class="m-0 confirmation-text-2">
                                 {{ item?.data?.time }}
                             </p>
                         </div>
@@ -362,8 +427,10 @@
                     "
                     class="confirmation-info"
                 >
-                    <p class="confirmation-text-1">{{ item?.data?.name }}</p>
-                    <p class="confirmation-text-2">
+                    <p class="m-0 confirmation-text-1">
+                        {{ item?.data?.name }}
+                    </p>
+                    <p class="m-0 confirmation-text-2">
                         Address: {{ item?.data?.address?.address }}
                     </p>
                 </div>
@@ -371,65 +438,92 @@
         </div>
 
         <!-- Rating Header -->
+
         <ng-container *ngIf="editData.rating && editData?.type === 'delete'">
-            <p class="confirmation-header confirmation-text-1">
-                Are you sure you want to delete rating for this
-                {{ editData?.template }}?
-            </p>
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to delete rating for this
+                    {{ editData?.template }}?
+                </p>
+            </div>
         </ng-container>
 
         <!-- Info Header -->
+
         <ng-container
             *ngIf="editData.subTypeStatus && editData?.type === 'info'"
         >
-            <p class="confirmation-header confirmation-text-1">
-                Are you sure you want to {{ editData?.subTypeStatus }} this
-                {{ editData?.template }}
-                {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
-                {{
-                    editData?.subType === 'archive'
-                        ? 'archive'
-                        : editData?.subType === 'dnu'
-                        ? 'do not use list'
-                        : editData?.subType === 'favorite'
-                        ? 'favorite list'
-                        : 'ban list'
-                }}?
-            </p>
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to {{ editData?.subTypeStatus }} this
+                    {{ editData?.template }}
+                    {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
+                    {{
+                        editData?.subType === 'archive'
+                            ? 'archive'
+                            : editData?.subType === 'dnu'
+                            ? 'do not use list'
+                            : editData?.subType === 'favorite'
+                            ? 'favorite list'
+                            : 'ban list'
+                    }}?
+                </p>
+            </div>
         </ng-container>
+
+        <!-- Business Header -->
 
         <ng-container
             *ngIf="editData.type && editData?.subTypeStatus === 'business'"
         >
-            <p class="confirmation-header confirmation-text-1">
-                Are you sure you want to {{ editData?.type }} selected
-                {{ editData?.subType }}?
-            </p>
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to {{ editData?.type }} selected
+                    {{ editData?.subType }}?
+                </p>
+            </div>
         </ng-container>
 
         <!-- Normal Header -->
+
         <div
             *ngIf="
                 !editData.rating &&
                 !editData.subTypeStatus &&
                 editData.subType !== 'cdl void'
             "
-            class="confirmation-header confirmation-text-1"
+            class="confirmation-header"
         >
-            Are you sure you want to
-            {{
-                editData?.type === 'info'
-                    ? editData?.subType
-                    : editData?.type === 'multiple delete'
-                    ? 'delete' + ' ' + editData.array.length
-                    : editData.type
-            }}
-            {{ editData?.type === 'multiple delete' ? null : 'this' }}
-            {{
-                editData?.type === 'multiple delete'
-                    ? editData?.template + 's'
-                    : editData?.template
-            }}?
+            <p class="m-0 ta-font-medium">
+                Are you sure you want to
+                {{
+                    editData?.type === 'info'
+                        ? editData?.subType
+                        : editData?.type === 'multiple delete'
+                        ? 'delete' + ' ' + editData.array.length
+                        : editData.type
+                }}
+                {{ editData?.type === 'multiple delete' ? null : 'selected' }}
+                {{
+                    editData?.type === 'multiple delete'
+                        ? editData?.template + 's'
+                        : editData?.template
+                }}?
+            </p>
+        </div>
+
+        <!-- Icon -->
+
+        <div class="confirmation-icon">
+            <svg-icon
+                [src]="
+                    'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
+                "
+                [svgStyle]="{
+                    'width.px': '90',
+                    'height.px': '90'
+                }"
+            ></svg-icon>
         </div>
     </div>
 </app-ta-modal>

@@ -128,11 +128,7 @@
 
                     <!-- Header close -->
 
-                    <ng-container
-                        *ngIf="
-                            this.editData?.type !== 'edit-company-first-login'
-                        "
-                    >
+                    <ng-container *ngIf="!isCloseIconRemoved">
                         <svg-icon
                             class="modal-close"
                             src="assets/svg/ic_x.svg"
@@ -582,19 +578,26 @@
                     }"
                 >
                     <!-- Cancel -->
+
                     <ng-container
                         *ngIf="confirmationData.subType !== 'cdl void'"
                     >
                         <button
                             (click)="onAction('close')"
-                            class="modal-cancel-btn"
+                            class="ta-font-bold modal-cancel-btn"
+                            [ngClass]="{
+                                'active-cancel-btn': ['fuel stop'].includes(
+                                    confirmationData?.template
+                                )
+                            }"
                             type="button"
                         >
-                            Cancel
+                            No
                         </button>
                     </ng-container>
 
                     <!-- Delete -->
+
                     <ng-container
                         *ngIf="
                             ['delete', 'multiple delete'].includes(
@@ -613,11 +616,12 @@
                             class="modal-delete-btn modal-red-btn modal-confirmation-btn"
                             type="button"
                         >
-                            Delete
+                            Yes
                         </button>
                     </ng-container>
 
                     <!-- Activate -->
+
                     <ng-container *ngIf="confirmationData?.type === 'activate'">
                         <button
                             (click)="onAction('activate')"

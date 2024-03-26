@@ -1,9 +1,64 @@
-import { BrokerResponse, ShipperResponse, TimeOnly } from 'appcoretruckassist';
+import {
+    AddressEntity,
+    BrokerContactResponse,
+    BrokerResponse,
+    EnumValue,
+    InvoiceAgeingResponse,
+    LoadResponse,
+    PoBoxEntity,
+    ReviewResponse,
+    ShipperResponse,
+    TimeOnly,
+} from 'appcoretruckassist';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DataForCardsAndTables } from './table-components/all-tables.modal';
 import { tableBodyColorLabel } from './tableBody';
 
-export interface MappedShipperBroker extends ShipperResponse {
+export interface MappedShipperBroker {
+    id?: number;
+    businessName?: string | LoadBroker;
+    dbaName?: string | null;
+    mcNumber?: string | null;
+    ein?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    mainAddress?: AddressEntity;
+    billingAddress?: AddressEntity;
+    mainPoBox?: PoBoxEntity;
+    billingPoBox?: PoBoxEntity;
+    creditLimit?: number | null;
+    availableCredit?: number | null;
+    percentage?: number | null;
+    payTerm?: EnumValue;
+    latitude?: number;
+    longitude?: number;
+    upCount?: number;
+    downCount?: number;
+    rating?: number;
+    loadCount?: number;
+    total?: number;
+    dnu?: boolean;
+    ban?: boolean;
+    note?: string | null;
+    creditType?: EnumValue;
+    brokerContacts?: Array<BrokerContactResponse> | null;
+    reviews?: Array<ReviewResponse> | null;
+    status?: number;
+    currentCompanyUserRating?: number | null;
+    totalDebt?: number | null;
+    invoiceAgeingGroup?: InvoiceAgeingResponse;
+    invoiceAgeingGroupOne?: InvoiceAgeingResponse;
+    invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
+    invoiceAgeingGroupThree?: InvoiceAgeingResponse;
+    invoiceAgeingGroupFour?: InvoiceAgeingResponse;
+    daysToPay?: number | null;
+    miles?: number | null;
+    pricePerMile?: number | null;
+    revenue?: number | null;
+    createdAt?: string;
+    updatedAt?: string;
+    loads?: Array<LoadResponse> | null;
+    fileCount?: number | null;
     isSelected?: boolean;
     tableAddress?: string;
     tableLoads?: string;
@@ -55,7 +110,6 @@ export interface MappedShipperBroker extends ShipperResponse {
 
     data?: ShipperResponse | BrokerResponse;
     actionAnimation?: string;
-    id?: number;
     tableMiles?: string;
     tablePPM?: string;
     tableRevenue?: string;
@@ -73,7 +127,12 @@ export interface DataUpdate {
     };
     id: string;
 }
-
+export interface LoadBroker {
+    hasBanDnu: boolean;
+    isDnu?: boolean;
+    isClosed?: boolean;
+    name: string;
+}
 // TOOLBAR ACTIONS
 export interface ToolbarActions {
     action: string;

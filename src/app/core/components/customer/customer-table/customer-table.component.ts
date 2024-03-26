@@ -153,7 +153,7 @@ export class CustomerTableComponent
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-
+    public filter: boolean = false;
     public brokerActive: BrokerResponse[];
     public shipperActive: ShipperResponse[];
 
@@ -274,6 +274,8 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
+                        this.filter = true;
+                        this.sendCustomerData();
                         this.viewData = this.customerTableData?.filter(
                             (customerData) =>
                                 res.filteredArray.some(
@@ -283,8 +285,11 @@ export class CustomerTableComponent
                         );
                     }
 
-                    if (!res.selectedFilter)
+                    if (!res.selectedFilter) {
+                        this.filter = false;
                         this.viewData = this.customerTableData;
+                        this.sendCustomerData();
+                    }
                 } else if (res?.filterType) {
                     if (
                         res.filterType ===
@@ -821,6 +826,16 @@ export class CustomerTableComponent
         return {
             ...data,
             isSelected: false,
+            businessName: this.filter
+                ? {
+                      hasBanDnu: data?.ban || data?.dnu || data?.status === 0,
+                      isDnu: data?.dnu,
+                      isClosed: data?.status === 0 ?? false,
+                      name: data?.businessName
+                          ? data.businessName
+                          : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                  }
+                : data?.businessName,
             tableAddressPhysical: data?.mainAddress?.address
                 ? data.mainAddress.address
                 : data?.mainPoBox?.poBox
@@ -889,6 +904,16 @@ export class CustomerTableComponent
     private mapShipperData(data: ShipperResponse): MappedShipperBroker {
         return {
             ...data,
+            businessName: this.filter
+                ? {
+                      hasBanDnu: data?.status === 0,
+                      isDnu: false,
+                      isClosed: data?.status === 0 ?? false,
+                      name: data?.businessName
+                          ? data.businessName
+                          : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                  }
+                : data?.businessName,
             isSelected: false,
             tableAddress: data?.address?.address
                 ? data.address.address
