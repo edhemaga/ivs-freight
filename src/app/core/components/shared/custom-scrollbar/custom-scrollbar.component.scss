@@ -17,6 +17,12 @@
         display: none !important;
     }
 
+    // unset overflow
+    .overflow-unset {
+        overflow-y: unset !important;
+        overflow-x: unset !important;
+    }
+
     .right-bar-scroll {
         height: 100%;
         position: fixed;
@@ -63,7 +69,7 @@
             }
         }
 
-        .horizontal-bar-sticky{
+        .horizontal-bar-sticky {
             position: fixed;
             bottom: calc(0% - -14px);
         }

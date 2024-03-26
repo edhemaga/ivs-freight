@@ -1,10 +1,10 @@
-// Modules
+// modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContactsRoutingModule } from './contacts-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// Components
+// components
 import { ContactsTableComponent } from './contacts-table/contacts-table.component';
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
@@ -18,12 +18,12 @@ import { TaInputDropdownLabelComponent } from '../shared/ta-input-dropdown-label
 @NgModule({
     declarations: [ContactsTableComponent, ContactsCardComponent],
     imports: [
-        // Modules
+        // modules
         CommonModule,
         ContactsRoutingModule,
         AngularSvgIconModule,
 
-        // Components
+        // components
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,

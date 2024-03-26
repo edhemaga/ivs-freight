@@ -2,10 +2,11 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     ChangeDetectorRef,
     Component,
-    EventEmitter,
     Input,
+    OnChanges,
     OnDestroy,
-    Output,
+    OnInit,
+    SimpleChanges,
 } from '@angular/core';
 import {
     NgbModule,
@@ -47,11 +48,18 @@ import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
 
 // helpers
 import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
+import { removeDuplicateObjects } from 'src/app/core/utils/methods.globals';
+import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
 import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+
+// models
+import { DepartmentResponse } from 'appcoretruckassist';
+import { ContactsData } from './utils/models/contacts-data.model';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',
@@ -71,11 +79,14 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
         TaCommentComponent,
         TaNewCommentComponent,
         TaTabSwitchComponent,
+        TaCustomCardComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
-export class TaInputDropdownTableComponent implements OnDestroy {
+export class TaInputDropdownTableComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() set data(value: CardDetails) {
         console.log(value, 'vaaaaaaaaaal')
         this._data = value;
@@ -116,6 +127,10 @@ export class TaInputDropdownTableComponent implements OnDestroy {
 
     public commentHighlight: string;
 
+    public contactsData: ContactsData;
+    public contactsDataBeforeSearch: ContactsData;
+    public isContactCardOpenArray: boolean[] = [];
+
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
@@ -127,6 +142,15 @@ export class TaInputDropdownTableComponent implements OnDestroy {
     ngOnInit() {
         if (this.checkForLoggedUser)
             this.checkIfLoggedUserCommented(this.filteredData);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.type === ConstantStringTableDropdownEnum.CONTACTS)
+            this.mapContactsData(changes.data.currentValue);
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 
     public checkIfLoggedUserCommented(data: CardDetails): void {
@@ -326,6 +350,54 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         }
     }
 
+    public filterContacts(event: KeyboardEvent): void {
+        if (event.target instanceof HTMLInputElement) {
+            const searchTerm = event.target.value.trim().toLowerCase();
+            const results: DepartmentResponse[] = [];
+
+            // handle search
+            this.contactsDataBeforeSearch.departments.forEach(
+                (department, index) => {
+                    const filteredUsers = department.companyUsers.filter(
+                        (user) =>
+                            user.fullName.toLowerCase().includes(searchTerm)
+                    );
+
+                    const filteredDepartment = {
+                        ...department,
+                        count: filteredUsers.length,
+                        companyUsers: filteredUsers,
+                    };
+
+                    results.push(filteredDepartment);
+
+                    if (filteredUsers.length)
+                        this.isContactCardOpenArray[index] = true;
+                }
+            );
+
+            // handle results
+            const contactsCount = results.reduce(
+                (sum, item) => sum + item.count,
+                0
+            );
+
+            this.contactsData = {
+                departments: results,
+                contactsCount,
+                departmentsCount: results.length,
+            };
+
+            if (!searchTerm) {
+                this.contactsData = this.contactsDataBeforeSearch;
+
+                this.isContactCardOpenArray = this.isContactCardOpenArray.map(
+                    () => false
+                );
+            }
+        }
+    }
+
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
         return higlihtComment.higlitsPartOfCommentSearchValue(
             commentTitle,
@@ -428,7 +500,7 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         this.tooltip = tooltip;
 
         this.dropDownActive = tooltip.isOpen() ? card.id : -1;
-        console.log(card);
+
         tooltip.open({ contacts: card });
     }
 
@@ -439,8 +511,38 @@ export class TaInputDropdownTableComponent implements OnDestroy {
         tooltip.open({ rating: card });
     }
 
-    public trackByIdentity(id: number): number {
-        return id;
+    private mapContactsData(contactsData: DepartmentResponse[]): void {
+        let filteredDepartments = removeDuplicateObjects(contactsData);
+
+        filteredDepartments = filteredDepartments.map((department) => {
+            this.isContactCardOpenArray = [
+                ...this.isContactCardOpenArray,
+                false,
+            ];
+
+            return {
+                ...department,
+                companyUsers: department.companyUsers.map((contact, index) => {
+                    return {
+                        ...contact,
+                        avatarColor:
+                            MAKE_COLORS_FOR_AVATAR.getAvatarColors(index),
+                    };
+                }),
+            };
+        });
+
+        const contactsCount = filteredDepartments.reduce(
+            (sum, item) => sum + item.count,
+            0
+        );
+
+        this.contactsData = {
+            departmentsCount: filteredDepartments.length,
+            contactsCount,
+            departments: filteredDepartments,
+        };
+        this.contactsDataBeforeSearch = { ...this.contactsData };
     }
 
     ngOnDestroy(): void {

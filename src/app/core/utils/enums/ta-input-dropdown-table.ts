@@ -19,4 +19,6 @@ export enum ConstantStringTableDropdownEnum {
     ALL = 'ALL',
     RATING_CAPS = 'RATING',
     REVIEW = 'REVIEW',
+
+    CONTACTS = 'contacts',
 }

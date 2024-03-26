@@ -1,4 +1,5 @@
 import { HttpParams } from '@angular/common/http';
+import { DepartmentResponse } from 'appcoretruckassist';
 
 export function tableSearch(res: any, backFilterQuery: any): any {
     // On Typing
@@ -594,7 +595,25 @@ export function downloadFileMethods(url: string, filename: string) {
     });
 }
 
-export function getFunctionParams(func, data, callableFnc?) {
+// remove duplicate objects from object
+export function removeDuplicateObjects(
+    obj: DepartmentResponse[]
+): DepartmentResponse[] {
+    const uniqueObj = {};
+
+    // Iterate over the object's values
+    Object.values(obj).forEach((value) => {
+        // Generate a unique key for each object value
+        const key = JSON.stringify(value);
+        // Store the object value in the uniqueObj using its string representation as the key
+        uniqueObj[key] = value;
+    });
+
+    // Return an object containing only the unique objects
+    return Object.values(uniqueObj);
+}
+
+export function getFunctionParams(func, data) {
     // String representation of the function code
     var str = func.toString();
 

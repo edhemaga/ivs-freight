@@ -90,7 +90,10 @@
 
 <!------------------------------------------------- CONTACTS DROPDOWN ----------------------------------------------------------------->
 <ng-container *ngIf="type === 'contacts'">
-    <div class="comment-button">
+    <div
+        class="d-flex align-items-center contacts-button"
+        [ngClass]="contactsDropdown.isOpen() ? 'contacts-dropdown-opened' : ''"
+    >
         <div
             [ngbPopover]="dropdownContacts"
             #contactsDropdown="ngbPopover"
@@ -98,32 +101,38 @@
             [placement]="['bottom-left', 'bottom-right']"
             popoverClass="table-dropdown-popover"
             triggers="manual"
-            class="table-dropdown-container"
+            class="table-dropdown-container contacts-button-container"
             (click)="toggleDropdownContacts(contactsDropdown, filteredData)"
         >
-            <div class="d-flex justify-content-between fleet-holder">
-                <div class="ta-font-semi-bold d-flex fleet align-items-center">
+            <div
+                class="d-flex align-items-center justify-content-between fleet-holder"
+            >
+                <div class="d-flex fleet align-items-center">
                     <svg-icon
-                        class="d-flex justify-content-center svg-holder"
+                        class="svg-holder"
                         [src]="
                             'assets/svg/truckassist-table/constacts/shared.svg'
                         "
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     ></svg-icon>
 
-                    <span class="d-flex justify-content-center">2</span>
+                    <span class="ta-font-semi-bold contact-number">{{
+                        contactsData?.departmentsCount
+                    }}</span>
                 </div>
 
-                <div class="ta-font-semi-bold d-flex fleet align-items-center">
+                <div class="d-flex fleet align-items-center">
                     <svg-icon
-                        class="d-flex justify-content-center svg-holder"
+                        class="svg-holder"
                         [src]="
                             'assets/svg/truckassist-table/constacts/people.svg'
                         "
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     ></svg-icon>
 
-                    <span class="d-flex justify-content-center">5</span>
+                    <span class="ta-font-semi-bold contact-number">{{
+                        contactsData?.contactsCount
+                    }}</span>
                 </div>
             </div>
         </div>
@@ -537,14 +546,12 @@
 
 <!------------------------------------------------- CONTACTS DROPDOWN ----------------------------------------------------------------->
 <ng-template #dropdownContacts let-contacts="contacts">
-    <div class="table-list-dropdown comments-width">
+    <div class="table-list-dropdown comments-width contacts-dropdown-container">
         <div class="table-inner">
             <!-- Head of dropdown -->
             <div class="description-titles d-flex justify-content-between">
                 <div class="d-flex align-items-center gap">
-                    <p
-                        class="dropdown-left m-0 ta-font-extra-bold d-flex align-items-center text-white"
-                    >
+                    <p class="dropdown-left m-0 ta-font-bold text-white">
                         SHARED
                     </p>
 
@@ -552,7 +559,7 @@
                         class="total-number-fleet count d-flex align-items-center"
                     >
                         <span class="counter ta-font-extra-bold text-white">
-                            7
+                            {{ contactsData?.contactsCount }}
                         </span>
                     </span>
                 </div>
@@ -568,10 +575,10 @@
             </div>
 
             <!-- Input Search -->
-            <div class="input-holder">
+            <div class="input-holder mb-2">
                 <input
                     placeholder="Search"
-                    (keyup)="filterArrayOwner($event)"
+                    (keyup)="filterContacts($event)"
                     class="input-search"
                     spellcheck="false"
                 />
@@ -581,36 +588,65 @@
                 ></svg-icon>
             </div>
 
-            <div class="d-flex align-items-center">
-                <div class="fleet-container d-flex flex-column">
-                    <div class="d-flex align-items-center">
-                        <span class="ta-font-bold muted body-item-title">{{
-                            contacts[0].name | uppercase
-                        }}</span>
-
-                        <span
-                            class="text-white count d-flex align-items-center"
-                        >
-                            <span class="counter ta-font-bold">
-                                {{ contacts[0].count }}
-                            </span>
-                        </span>
-                    </div>
-
-                    <div class="separator"></div>
-
-                    <ng-container
-                        *ngFor="
-                            let contact of contacts[0].companyUsers;
-                            let i = id;
-                            trackBy: trackByIdentity
-                        "
+            <div class="d-flex flex-column contact-items">
+                <ng-container
+                    *ngFor="
+                        let department of contactsData.departments;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <app-ta-custom-card
+                        [cardName]="department.name"
+                        [isDropdownCard]="true"
+                        [hasDivider]="false"
+                        [hasCounter]="department.count"
+                        [isCardOpen]="isContactCardOpenArray[i]"
                     >
-                        <span class="text-white shared-full-name">
-                            {{ contact.fullName }}
-                        </span>
-                    </ng-container>
-                </div>
+                        <ng-container
+                            *ngFor="
+                                let contact of department.companyUsers;
+                                let i = index;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <div class="d-flex align-items-center contact-item">
+                                <ng-container *ngIf="contact.avatar">
+                                    <img
+                                        class="contact-item-avatar-img"
+                                        [src]="contact.avatar"
+                                        alt="avatar"
+                                    />
+                                </ng-container>
+
+                                <ng-container *ngIf="!contact.avatar">
+                                    <div
+                                        class="d-flex justify-content-center align-items-center contact-item-avatar-div-img"
+                                        [ngStyle]="{
+                                            background:
+                                                contact.avatarColor.background
+                                        }"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-bold"
+                                            [ngStyle]="{
+                                                color: contact.avatarColor.color
+                                            }"
+                                        >
+                                            {{
+                                                contact.fullName
+                                                    .slice(0, 1)
+                                                    .toUpperCase()
+                                            }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+
+                                <p class="m-0">{{ contact.fullName }}</p>
+                            </div>
+                        </ng-container>
+                    </app-ta-custom-card>
+                </ng-container>
             </div>
         </div>
     </div>

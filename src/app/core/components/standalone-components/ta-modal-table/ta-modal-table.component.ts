@@ -27,7 +27,7 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 // services
-import { ContactTService } from '../../contacts/state/contact.service';
+import { ContactTService } from '../../contacts/state/services/contact.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 // constants
