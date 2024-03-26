@@ -85,6 +85,12 @@ export class TableCardDropdownActionsComponent {
                 data: this.cardData,
                 type: action.name,
             });
+
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.cardData,
+                type: action.name,
+            });
         }
         this.tooltip.close();
         return;
