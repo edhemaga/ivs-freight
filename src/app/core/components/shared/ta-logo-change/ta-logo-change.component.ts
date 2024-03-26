@@ -77,7 +77,7 @@ export class TaLogoChangeComponent
     @Input() dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'image',
         dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-        dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+        dropZoneSvg: 'assets/svg/common/drag-image-dropzone.svg',
         multiple: false,
         globalDropZone: false,
     };

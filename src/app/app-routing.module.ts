@@ -27,7 +27,7 @@ import { OwnerInactiveResolver } from './core/components/owner/state/owner-inact
 import { AccountResolver } from './core/components/account/state/account-state/account.resolver';
 import { RepairTruckResolver } from './core/components/repair/state/repair-truck-state/repair-truck.resolver';
 import { RepairTrailerResolver } from './core/components/repair/state/repair-trailer-state/repair-trailer.resolver';
-import { ContactResolver } from './core/components/contacts/state/contact-state/contact.resolver';
+import { ContactResolver } from './core/components/contacts/state/resolvers/contact.resolver';
 import { pmTrailerResolver } from './core/components/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './core/components/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
 import { TodoResolverService } from './core/components/to-do/state/todo-resolver.service';

@@ -11,6 +11,7 @@
             ? 'hidden'
             : 'auto'
     }"
+    [ngClass]="{ 'overflow-unset': isOverflowUnset }"
 >
     <ng-content></ng-content>
     <!-- Vertical Scroll Bar -->
@@ -59,7 +60,9 @@
                       scrollBarOptions.modalStyle.additionalWidth
                     : tableScrollWidth
             }"
-            [ngClass]="{'horizontal-bar-sticky': scrollBarOptions.dataLength >= 23}"
+            [ngClass]="{
+                'horizontal-bar-sticky': scrollBarOptions.dataLength >= 23
+            }"
             (mousedown)="setDraggingStart($event)"
             (mouseup)="isMouseDown = false"
         ></div>

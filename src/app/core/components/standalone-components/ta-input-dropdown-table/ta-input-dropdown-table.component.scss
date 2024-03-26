@@ -18,6 +18,7 @@
 }
 
 .fleet-holder {
+    width: 100%;
     gap: 4px;
     cursor: pointer;
 
@@ -56,10 +57,6 @@
                     fill: $ta-red-10;
                 }
             }
-        }
-
-        span {
-            width: 16px;
         }
     }
 }
@@ -271,7 +268,6 @@
                 &:hover {
                     background: $ta-black;
                     transform: scale(1.2);
-                    transition: transform 3ms;
                 }
             }
 
@@ -280,6 +276,7 @@
                 height: 18px;
                 width: 18px;
                 border-radius: 1px;
+                transition: transform 3ms, transform 3ms;
 
                 svg {
                     path {
@@ -290,7 +287,6 @@
                 &:hover {
                     background: $ta-black;
                     transform: scale(1.2);
-                    transition: transform 3ms;
                 }
             }
         }
@@ -345,10 +341,6 @@
     .fleet-container {
         gap: 2px;
         width: 100%;
-
-        .shared-full-name {
-            padding-left: 4px;
-        }
 
         .rating-full-name {
             font-size: 11px;
@@ -462,6 +454,76 @@
         .comments-holder {
             max-height: 394px;
             overflow-y: scroll;
+        }
+    }
+}
+
+// contacts
+.contacts-button {
+    &.contacts-dropdown-opened {
+        background: $ta-black-2;
+        border-radius: 2px;
+        transition: background 0.3s ease;
+
+        svg {
+            path {
+                fill: $bw5;
+            }
+        }
+
+        .contact-number {
+            color: $white;
+        }
+    }
+
+    .contacts-button-container {
+        width: 100% !important;
+        padding: 4px 6px 4px 4px;
+
+        .contact-number {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            margin-left: 4px;
+        }
+
+        .fleet:nth-child(1) {
+            margin-right: 12px;
+        }
+    }
+}
+
+.contacts-dropdown-container {
+    .contact-items {
+        max-height: 306px;
+        overflow: scroll;
+
+        .contact-item {
+            margin-bottom: 4px;
+            user-select: auto;
+
+            &-avatar-img {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                margin-right: 6px;
+                margin-left: -6px;
+            }
+
+            &-avatar-div-img {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                margin-right: 6px;
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                color: $white;
+            }
         }
     }
 }

@@ -4,33 +4,39 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // service
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactTService } from '../state/contact.service';
+import { ContactTService } from '../state/services/contact.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // store
-import { ContactState } from '../state/contact-state/contact.store';
-import { ContactQuery } from '../state/contact-state/contact.query';
+import { ContactState } from '../state/store/contact.store';
+import { ContactQuery } from '../state/store/contact.query';
+
+// pipes
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 
-// methods
+// helpers
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
-
-// utils
 import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
 
 // enums
-import { ContractComponentEnum } from '../state/enum/contract-string.enum';
+import { ConstantStringEnum } from '../state/enums/contact-string.enum';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+// data for cards
+import { DisplayContactsConfiguration } from '../state/utils/constants/contact-card-data.constants';
+import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 
 // models
 import {
@@ -39,11 +45,9 @@ import {
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import {
-    ContactBackFilter,
-    ContactEmail,
-    ContactPhone,
-} from '../state/interface/contract-inteface';
+import { ContactBackFilter } from '../state/models/contact-back-filter.model';
+import { ContactPhone } from '../state/models/contact-phone.model';
+import { ContactEmail } from '../state/models/contact-email.model';
 import {
     TableBodyActionsContract,
     TableHeadActionContract,
@@ -51,10 +55,6 @@ import {
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
 import { CardRows } from '../../shared/model/card-data.model';
-
-// data for cards
-import { DisplayContactsConfiguration } from '../contacts-card-data';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 
 @Component({
     selector: 'app-contacts-table',
@@ -90,16 +90,13 @@ export class ContactsTableComponent
 
     public cardTitle: string = DisplayContactsConfiguration.cardTitle;
 
-    // Page
     public page: string = DisplayContactsConfiguration.page;
-
-    // Number of rows in card
     public rows: number = DisplayContactsConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[] =
-        DisplayContactsConfiguration.displayRowsFrontConctacts;
+        DisplayContactsConfiguration.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =
-        DisplayContactsConfiguration.displayRowsBackConctacts;
+        DisplayContactsConfiguration.displayRowsBackContacts;
 
     constructor(
         private modalService: ModalService,
@@ -107,7 +104,8 @@ export class ContactsTableComponent
         private contactQuery: ContactQuery,
         private nameInitialsPipe: NameInitialsPipe,
         private contactService: ContactTService,
-        private imageBase64Service: ImageBase64Service
+        private imageBase64Service: ImageBase64Service,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -117,6 +115,8 @@ export class ContactsTableComponent
 
         this.contractResize();
 
+        this.confirmationSubscribe();
+
         this.contractCurrentToaggleColumn();
 
         this.contractCurrentSearchTableData();
@@ -124,6 +124,12 @@ export class ContactsTableComponent
         this.contractCurrentActionAnimation();
 
         this.contractCurrentDeleteSelectedRows();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
     }
 
     private contractResetColumns(): void {
@@ -205,17 +211,14 @@ export class ContactsTableComponent
                 if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
                     this.viewData.push(this.mapContactData(res.data));
 
-                    this.viewData = this.viewData.map(
-                        (contact: CompanyContactResponse) => {
-                            // TODO this gives error when uncomented
-                            // if (contact.id === res.id) {
-                            //     contact.actionAnimation =
-                            //         ConstantStringTableComponentsEnum.ADD;
-                            // }
-
-                            return contact;
+                    this.viewData = this.viewData.map((contact) => {
+                        if (contact.id === res.id) {
+                            contact.actionAnimation =
+                                ConstantStringTableComponentsEnum.ADD;
                         }
-                    );
+
+                        return contact;
+                    });
 
                     const interval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -234,18 +237,15 @@ export class ContactsTableComponent
                 ) {
                     const updatedContact = this.mapContactData(res.data, true);
 
-                    this.viewData = this.viewData.map(
-                        (contact: CompanyContactResponse) => {
-                            // TODO this gives error when uncomented
-                            // if (contact.id === res.id) {
-                            //     contact = updatedContact;
-                            //     contact.actionAnimation =
-                            //         ConstantStringTableComponentsEnum.UPDATE;
-                            // }
-
-                            return contact;
+                    this.viewData = this.viewData.map((contact) => {
+                        if (contact.id === res.id) {
+                            contact = updatedContact;
+                            contact.actionAnimation =
+                                ConstantStringTableComponentsEnum.UPDATE;
                         }
-                    );
+
+                        return contact;
+                    });
 
                     const interval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -263,13 +263,12 @@ export class ContactsTableComponent
                     let contactIndex: number;
 
                     this.viewData = this.viewData.map(
-                        (contact: CompanyContactResponse, index: number) => {
-                            // TODO this gives error when uncomented
-                            // if (contact.id === res.id) {
-                            //     contact.actionAnimation =
-                            //         ConstantStringTableComponentsEnum.DELETE;
-                            //     contactIndex = index;
-                            // }
+                        (contact, index: number) => {
+                            if (contact.id === res.id) {
+                                contact.actionAnimation =
+                                    ConstantStringTableComponentsEnum.DELETE;
+                                contactIndex = index;
+                            }
 
                             return contact;
                         }
@@ -295,46 +294,85 @@ export class ContactsTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length) {
-                    this.contactService
-                        .deleteAccountList(response)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe(() => {
-                            this.viewData = this.viewData.map(
-                                (contact: CompanyContactResponse) => {
-                                    response.map((res) => {
-                                        //     TODO this gives error when uncomented
-                                        //     if (contact.id === res.id) {
-                                        //         contact.actionAnimation =
-                                        //         ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
-                                        //     }
-                                    });
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                            },
+                        };
+                    });
 
-                                    return contact;
-                                }
-                            );
-
-                            this.updateDataCount();
-
-                            const interval = setInterval(() => {
-                                this.viewData = closeAnimationAction(
-                                    true,
-                                    this.viewData
-                                );
-
-                                clearInterval(interval);
-                            }, 1000);
-
-                            this.tableService.sendRowsSelected([]);
-                            this.tableService.sendResetSelectedColumns(true);
-                        });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: ConstantStringTableComponentsEnum.CONTACT,
+                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            svg: true,
+                        }
+                    );
                 }
             });
     }
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case ConstantStringTableComponentsEnum.DELETE:
+                            this.deleteContactById(res.id);
+
+                            break;
+                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
+                            this.deleteContactList(res.array);
+
+                            break;
+                        default:
+                            break;
+                    }
+                },
+            });
+    }
+
+    private deleteContactById(contactId: number): void {
+        this.contactService
+            .deleteCompanyContactById(contactId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private deleteContactList(contactIds: number[]): void {
+        this.contactService
+            .deleteAccountList(contactIds)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((contact) => {
+                    contactIds.map((id) => {
+                        if (contact.id === id) {
+                            contact.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                        }
+                    });
+
+                    return contact;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = closeAnimationAction(true, this.viewData);
+
+                    clearInterval(interval);
+                }, 1000);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
     }
 
     // Responsive Observer
@@ -381,7 +419,7 @@ export class ContactsTableComponent
     // Send Contact Data
     private sendContactData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_VIEW)
+            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -394,22 +432,22 @@ export class ContactsTableComponent
         this.initTableOptions();
 
         const contactCount = JSON.parse(
-            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
+            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_COUNT)
         );
 
         const contactData = this.getTabData();
         this.tableData = [
             {
-                title: ContractComponentEnum.CONTACTS,
+                title: ConstantStringEnum.CONTACTS,
                 field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
-                gridNameTitle: ContractComponentEnum.CONTACT_2,
-                stateName: ContractComponentEnum.CONTACTS_2,
-                tableConfiguration: ContractComponentEnum.CONTACT,
+                gridNameTitle: ConstantStringEnum.CONTACT_2,
+                stateName: ConstantStringEnum.CONTACTS_2,
+                tableConfiguration: ConstantStringEnum.CONTACT,
                 isActive: true,
-                gridColumns: this.getGridColumns(ContractComponentEnum.CONTACT),
+                gridColumns: this.getGridColumns(ConstantStringEnum.CONTACT),
             },
         ];
 
@@ -426,7 +464,7 @@ export class ContactsTableComponent
     // Update Contact Count
     updateDataCount() {
         const contactCount = JSON.parse(
-            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
+            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -663,7 +701,7 @@ export class ContactsTableComponent
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
-        } else if (event.type === ContractComponentEnum.EDIT_CONTACT) {
+        } else if (event.type === ConstantStringEnum.EDIT_CONTACT) {
             this.modalService.openModal(
                 ContactModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },
@@ -675,10 +713,16 @@ export class ContactsTableComponent
         } else if (
             event.type === ConstantStringTableComponentsEnum.DELTETE_CONTACT
         ) {
-            this.contactService
-                .deleteCompanyContactById(event.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.CONTACT,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    svg: true,
+                }
+            );
         } else if (
             event.type === ConstantStringTableComponentsEnum.UPDATE_LABEL
         ) {
@@ -693,9 +737,6 @@ export class ContactsTableComponent
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
 
         this.destroy$.next();

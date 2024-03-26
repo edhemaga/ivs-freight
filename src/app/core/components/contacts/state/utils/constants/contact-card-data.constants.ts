@@ -1,4 +1,4 @@
-import { CardRows } from '../shared/model/card-data.model';
+import { CardRows } from '../../../../shared/model/card-data.model';
 
 export class DisplayContactsConfiguration {
     static rows: number = 4;
@@ -8,7 +8,7 @@ export class DisplayContactsConfiguration {
     static cardTitle: string = 'name';
 
     // Data for applicants front
-    static displayRowsFrontConctacts: CardRows[] = [
+    static displayRowsFrontContacts: CardRows[] = [
         {
             title: 'Company',
             endpoint: 'companyName',
@@ -30,7 +30,7 @@ export class DisplayContactsConfiguration {
         },
     ];
 
-    static displayRowsBackConctacts: CardRows[] = [
+    static displayRowsBackContacts: CardRows[] = [
         {
             title: 'Second Phone',
             endpoint: 'contactPhonesFirst',

@@ -79,6 +79,7 @@ export class TaCustomCardComponent {
     @Input() hasPayrollStatus: boolean = false;
     @Input() customClass: string;
     @Input() hasFormatTextActionButtons: boolean = false;
+    @Input() isDropdownCard: boolean = false;
 
     @Input() controlName: UntypedFormControl;
 
