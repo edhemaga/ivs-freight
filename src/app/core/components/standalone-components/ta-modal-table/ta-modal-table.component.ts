@@ -80,7 +80,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isPhoneTable: boolean = false;
     @Input() isEmailTable: boolean = false;
     @Input() isDescriptionTable: boolean = false;
+    @Input() isWorkHoursTable: boolean = false;
+
     @Input() isNewRowCreated: boolean = false;
+
     @Input() modalTableData:
         | ContactPhoneResponse[]
         | RepairDescriptionResponse[]
@@ -112,6 +115,18 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public subtotals: Subtotal[] = [];
 
+    // DAYS
+    public openHoursDays = [
+        'MON - FRI',
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+    ];
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private contactService: ContactTService,
@@ -142,6 +157,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
             this.getModalTableDataValue();
         }
+
+        console.log(this.modalTableData);
     }
 
     public trackByIdentity = (_: number, item: string): string => item;
@@ -151,6 +168,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             phoneTableItems: this.formBuilder.array([]),
             emailTableItems: this.formBuilder.array([]),
             descriptionTableItems: this.formBuilder.array([]),
+            openHours: this.formBuilder.array([]),
         });
     }
 
@@ -196,6 +214,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isDescriptionTable)
             this.modalTableHeaders =
                 ModalTableConstants.DESCRIPTION_TABLE_HEADER_ITEMS;
+
+        if (this.isWorkHoursTable)
+            this.modalTableHeaders =
+                ModalTableConstants.WORK_HOURS_TABLE_HEADER_ITEMS;
     }
 
     private getModalTableDataValue(): void {
@@ -219,6 +241,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isDescriptionTable) {
             return this.modalTableForm.get(
                 ConstantStringEnum.DESCRIPTION_TABLE_ITEMS
+            ) as UntypedFormArray;
+        }
+
+        if (this.isWorkHoursTable) {
+            return this.modalTableForm.get(
+                ConstantStringEnum.OPEN_HOURS
             ) as UntypedFormArray;
         }
     }
@@ -260,6 +288,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 pm: [null],
                 qty: [null, [Validators.required]],
                 price: [null, [Validators.required]],
+            });
+        }
+
+        if (this.isWorkHoursTable) {
+            newFormArrayRow = this.formBuilder.group({
+                ind: [null],
             });
         }
 
@@ -399,7 +433,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     private checkForInputChanges(): void {
         this.getFormArray()
-            .valueChanges.pipe(
+            ?.valueChanges.pipe(
                 distinctUntilChanged(),
                 throttleTime(2),
                 takeUntil(this.destroy$)

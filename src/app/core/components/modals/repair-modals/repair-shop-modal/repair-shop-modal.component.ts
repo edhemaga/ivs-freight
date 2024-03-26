@@ -67,6 +67,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RepairTypes } from '../repair-order-modal/state/models/repair.model';
+import { RepairOrder } from '../repair-order-modal/state/constants/repair-order.constant';
+import { TaModalTableComponent } from '../../../standalone-components/ta-modal-table/ta-modal-table.component';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -95,6 +98,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         TaInputNoteComponent,
         TaCheckboxComponent,
         TaUploadFilesComponent,
+        TaModalTableComponent,
 
         // Pipe
         ActiveItemsPipe,
@@ -113,12 +117,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         {
             id: 2,
             name: 'Contact',
+            checked: false,
         },
-        {
-            id: 3,
-            name: 'Review',
-            disabled: true,
-        },
+        // {
+        //     id: 3,
+        //     name: 'Review',
+        //     disabled: true,
+        // },
     ];
     public animationObject = {
         value: this.selectedTab,
@@ -161,6 +166,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public longitude: number;
     public latitude: number;
     private destroy$ = new Subject<void>();
+
+    public repairTypes: RepairTypes[] = RepairOrder.REPAIR_TYPES;
+    public isSelectedRepairType: RepairTypes = null;
 
     public repairShopName: string = null;
 
@@ -469,6 +477,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 this.selectedContractDepartmentFormArray[indx] = event;
                 break;
             }
+            case 'shop-type': {
+                console.log(event);
+                break;
+            }
             default: {
                 break;
             }
@@ -583,6 +595,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private createForm() {
         this.repairShopForm = this.formBuilder.group({
             name: [null, [Validators.required, ...repairShopValidation]],
+            repairTypeService: [null, Validators.required],
             pinned: [null],
             phone: [null, [Validators.required, phoneFaxRegex]],
             phoneExt: [null, [...phoneExtension]],
@@ -1201,6 +1214,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 next: (res: RepairShopModalResponse) => {
                     this.labelsBank = res.banks;
                     this.labelsDepartments = res.departments;
+                    console.log(res);
                     this.services = res.serviceTypes.map((item) => {
                         return {
                             id: item.serviceType.id,
@@ -1248,13 +1262,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         this.openHours.removeAt(1);
                         this.addOpenHours('Sunday', false, 0, null, null);
                     }
-                    this.tabs = this.tabs.map((tab) => {
-                        if (tab.name === this.editData.openedTab) {
-                            return { ...tab, checked: true };
-                        } else {
-                            return { ...tab, checked: false };
-                        }
-                    });
+
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {

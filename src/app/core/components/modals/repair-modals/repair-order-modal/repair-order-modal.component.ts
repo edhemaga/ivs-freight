@@ -440,6 +440,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    public rapairShopRemovedClearServiceTypes() {
+        this.services = this.services.map((service) => {
+            return {
+                ...service,
+                active: false,
+            };
+        });
+    }
+
     public onSelectDropDown(event: any, action: string) {
         const { items, ...form } = this.repairOrderForm.value;
         switch (action) {
@@ -562,18 +571,28 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.repairService
                             .getRepairShopById(this.selectedRepairShop.id)
                             .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: (res: RepairShopResponse) => {
-                                    this.selectedRepairShop = {
-                                        id: res.id,
-                                        name: res.name,
-                                        phone: res.phone,
-                                        email: res.email,
-                                        address: res.address.address,
-                                        pinned: res.pinned,
-                                    };
-                                },
-                                error: () => {},
+                            .subscribe((res) => {
+                                this.selectedRepairShop = {
+                                    id: res.id,
+                                    name: res.name,
+                                    phone: res.phone,
+                                    email: res.email,
+                                    address: res.address.address,
+                                    pinned: res.pinned,
+                                };
+
+                                this.services = res.serviceTypes.map(
+                                    (service) => {
+                                        return {
+                                            id: service.serviceType.id,
+                                            serviceType:
+                                                service.serviceType.name,
+                                            svg: `assets/svg/common/repair-services/${service.logoName}`,
+                                            active: service.active,
+                                            notExistInRepairSHop: true,
+                                        };
+                                    }
+                                );
                             });
                     }
                 }
@@ -611,8 +630,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public activeRepairService(service) {
-        service.active = !service.active;
+        service.userSelected = !service.userSelected;
         this.services = [...this.services];
+
         this.repairOrderForm
             .get('servicesHelper')
             .patchValue(JSON.stringify(this.services));
@@ -674,7 +694,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     headerTabs: this.headerTabs,
                     selectedHeaderTab: this.selectedHeaderTab,
                     typeOfRepair: this.typeOfRepair,
-                    // subtotal: this.subtotal,
                     selectedPM: this.selectedPM,
                     selectedPMIndex: this.selectedPMIndex,
                     editRepairShop: true,
@@ -801,6 +820,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             serviceType: item.serviceType.name,
                             svg: `assets/svg/common/repair-services/${item.logoName}`,
                             active: false,
+                            notExistInRepairSHop: true,
                         };
                     });
 
@@ -921,7 +941,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 tags: tagsArray,
             };
         }
-        console.log(newData);
+
         this.repairService
             .addRepair(newData)
             .pipe(takeUntil(this.destroy$))
@@ -1025,7 +1045,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         let newData: any = null;
 
-        console.log(this.selectedHeaderTab);
         if (this.selectedHeaderTab === 2) {
             newData = {
                 id: id,

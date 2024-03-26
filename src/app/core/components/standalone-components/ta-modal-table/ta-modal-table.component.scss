@@ -41,6 +41,10 @@
         &.description-table-header {
             grid-template-columns: 26px 306px 26px 60px 90px 88px;
         }
+
+        &.working-hours {
+            grid-template-columns: 144px 152px 152px;
+        }
     }
 
     .description-header {
@@ -183,6 +187,10 @@
                     background: rgb(66, 66, 66, 0.2);
                 }
             }
+        }
+
+        .open-hours-table-container {
+            grid-template-columns: 144px 152px 152px;
         }
     }
 }

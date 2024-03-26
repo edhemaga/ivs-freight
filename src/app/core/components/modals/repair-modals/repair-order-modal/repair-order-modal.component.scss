@@ -51,3 +51,15 @@
         padding: 0 !important;
     }
 }
+
+.not-exist-in-shop {
+    background: $ta-light-grey-5;
+    color: $ta-light-grey-6;
+    pointer-events: none;
+
+    svg {
+        path {
+            fill: $ta-light-grey-6;
+        }
+    }
+}

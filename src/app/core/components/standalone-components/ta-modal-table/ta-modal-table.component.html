@@ -6,7 +6,8 @@
         [ngClass]="{
             'phone-table-header': isPhoneTable,
             'email-table-header': isEmailTable,
-            'description-table-header': isDescriptionTable
+            'description-table-header': isDescriptionTable,
+            'working-hours': isWorkHoursTable
         }"
     >
         <ng-container
@@ -28,7 +29,9 @@
                     {{ headerItem }}
                 </p>
 
-                <ng-container *ngIf="i === 1 && !isDescriptionTable">
+                <ng-container
+                    *ngIf="i === 1 && !isDescriptionTable && !isWorkHoursTable"
+                >
                     <span class="m-0 ta-font-bold">*</span>
                 </ng-container>
 
@@ -423,6 +426,38 @@
                         </ng-container>
                     </div>
                 </ng-container>
+            </div>
+        </ng-container>
+
+        <!-- Open Hours Table -->
+        <ng-container *ngIf="isWorkHoursTable">
+            <div
+                formArrayName="openHours"
+                class="d-flex flex-column open-hours-table-container"
+            >
+                <div class="common-fake-table-body">
+                    <ng-container
+                        *ngFor="
+                            let openHour of getFormArray().controls;
+                            let ind = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <ng-container
+                            *ngIf="
+                                ind === 0 ||
+                                ind === openHours.controls.length - 1 ||
+                                ind === openHours.controls.length - 2 ||
+                                isDaysVisible
+                            "
+                        >
+                            <div
+                                [formGroupName]="ind"
+                                class="common-fake-table-card"
+                            ></div>
+                        </ng-container>
+                    </ng-container>
+                </div>
             </div>
         </ng-container>
     </form>

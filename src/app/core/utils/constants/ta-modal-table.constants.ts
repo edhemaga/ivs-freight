@@ -15,6 +15,8 @@ export class ModalTableConstants {
         'SUBTOTAL',
     ];
 
+    static WORK_HOURS_TABLE_HEADER_ITEMS: string[] = ['DAY', 'FROM', 'TO'];
+
     static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
 
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];

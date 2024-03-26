@@ -192,112 +192,121 @@
 
         <div class="row repair-type">
             <div class="col-12 repair-shop-input">
-                <div *ngIf="selectedRepairShop" class="selected-item-container">
-                    <div class="selected-item-label">
-                        Repair Shop
-                        <span *ngIf="selectedHeaderTab === 1">*</span>
-                    </div>
-                    <p class="selected-item-name">
-                        {{ selectedRepairShop?.name }}
-                        <svg-icon
-                            [ngClass]="{ active: selectedRepairShop?.pinned }"
-                            class="selected-item-star"
-                            src="assets/svg/common/ic_star.svg"
-                        ></svg-icon>
-                    </p>
-                    <div class="selected-item-additional">
-                        <div
-                            *ngIf="selectedRepairShop?.phone"
-                            class="selected-item-info"
-                        >
-                            <svg-icon
-                                [class.hideSvgOnCopy]="hideIconIndex == 1"
-                                src="assets/svg/common/ic_phone.svg"
-                            ></svg-icon>
+                <ng-container *ngIf="selectedRepairShop">
+                    <div class="selected-item-container">
+                        <div class="selected-item-label">
+                            Repair Shop
 
-                            <app-ta-copy
-                                (mouseover)="hideIconIndex = 1"
-                                (mouseleave)="hideIconIndex = 0"
-                                [copyValue]="
-                                    selectedRepairShop?.phone | formatPhoneP
+                            <span *ngIf="selectedHeaderTab === 1">*</span>
+                        </div>
+
+                        <p class="selected-item-name">
+                            {{ selectedRepairShop?.name }}
+
+                            <svg-icon
+                                [ngClass]="{
+                                    active: selectedRepairShop?.pinned
+                                }"
+                                class="selected-item-star"
+                                src="assets/svg/common/ic_star.svg"
+                            ></svg-icon>
+                        </p>
+
+                        <div class="selected-item-additional">
+                            <div
+                                *ngIf="selectedRepairShop?.phone"
+                                class="selected-item-info"
+                            >
+                                <svg-icon
+                                    [class.hideSvgOnCopy]="hideIconIndex == 1"
+                                    src="assets/svg/common/ic_phone.svg"
+                                ></svg-icon>
+
+                                <app-ta-copy
+                                    (mouseover)="hideIconIndex = 1"
+                                    (mouseleave)="hideIconIndex = 0"
+                                    [copyValue]="
+                                        selectedRepairShop?.phone | formatPhoneP
+                                    "
+                                    [textColor]="'#424242'"
+                                    [textFontSize]="'11px'"
+                                    [leftSideIcon]="true"
+                                ></app-ta-copy>
+                            </div>
+
+                            <div
+                                *ngIf="selectedRepairShop?.email"
+                                class="selected-item-info"
+                            >
+                                <svg-icon
+                                    [class.hideSvgOnCopy]="hideIconIndex == 2"
+                                    src="assets/svg/common/ic_email.svg"
+                                ></svg-icon>
+
+                                <app-ta-copy
+                                    (mouseover)="hideIconIndex = 2"
+                                    (mouseleave)="hideIconIndex = 0"
+                                    [copyValue]="selectedRepairShop?.email"
+                                    [textColor]="'#424242'"
+                                    [textFontSize]="'11px'"
+                                    [leftSideIcon]="true"
+                                ></app-ta-copy>
+                            </div>
+
+                            <div
+                                *ngIf="selectedRepairShop?.address"
+                                class="selected-item-info"
+                            >
+                                <svg-icon
+                                    [class.hideSvgOnCopy]="hideIconIndex == 3"
+                                    [ngStyle]="{ 'padding-bottom': '4px' }"
+                                    src="assets/svg/common/ic_address.svg"
+                                ></svg-icon>
+
+                                <app-ta-copy
+                                    (mouseover)="hideIconIndex = 3"
+                                    (mouseleave)="hideIconIndex = 0"
+                                    [copyValue]="selectedRepairShop?.address"
+                                    [textColor]="'#424242'"
+                                    [textFontSize]="'11px'"
+                                    [leftSideIcon]="true"
+                                ></app-ta-copy>
+                            </div>
+                        </div>
+
+                        <div class="clear-selected-item">
+                            <div
+                                (click)="openRepairShop()"
+                                class="clear-x"
+                                mainTooltip="Edit"
+                                ngbTooltip
+                                position="top"
+                                tooltipBackground="#3074d3"
+                            >
+                                <svg-icon
+                                    src="assets/svg/ic_spec_input_pen.svg"
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                (click)="
+                                    selectedRepairShop = null;
+                                    repairOrderForm
+                                        .get('repairShopId')
+                                        .patchValue(null);
+                                    rapairShopRemovedClearServiceTypes()
                                 "
-                                [textColor]="'#424242'"
-                                [textFontSize]="'11px'"
-                                [leftSideIcon]="true"
-                            ></app-ta-copy>
-                        </div>
-
-                        <div
-                            *ngIf="selectedRepairShop?.email"
-                            class="selected-item-info"
-                        >
-                            <svg-icon
-                                [class.hideSvgOnCopy]="hideIconIndex == 2"
-                                src="assets/svg/common/ic_email.svg"
-                            ></svg-icon>
-
-                            <app-ta-copy
-                                (mouseover)="hideIconIndex = 2"
-                                (mouseleave)="hideIconIndex = 0"
-                                [copyValue]="selectedRepairShop?.email"
-                                [textColor]="'#424242'"
-                                [textFontSize]="'11px'"
-                                [leftSideIcon]="true"
-                            ></app-ta-copy>
-                        </div>
-
-                        <div
-                            *ngIf="selectedRepairShop?.address"
-                            class="selected-item-info"
-                        >
-                            <svg-icon
-                                [class.hideSvgOnCopy]="hideIconIndex == 3"
-                                [ngStyle]="{ 'padding-bottom': '4px' }"
-                                src="assets/svg/common/ic_address.svg"
-                            ></svg-icon>
-
-                            <app-ta-copy
-                                (mouseover)="hideIconIndex = 3"
-                                (mouseleave)="hideIconIndex = 0"
-                                [copyValue]="selectedRepairShop?.address"
-                                [textColor]="'#424242'"
-                                [textFontSize]="'11px'"
-                                [leftSideIcon]="true"
-                            ></app-ta-copy>
+                                class="clear-x"
+                                mainTooltip="Clear"
+                                ngbTooltip
+                                position="top"
+                                tooltipBackground="#6c6c6c"
+                            >
+                                <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="clear-selected-item">
-                        <div
-                            (click)="openRepairShop()"
-                            class="clear-x"
-                            mainTooltip="Edit"
-                            ngbTooltip
-                            position="top"
-                            tooltipBackground="#3074d3"
-                        >
-                            <svg-icon
-                                src="assets/svg/ic_spec_input_pen.svg"
-                            ></svg-icon>
-                        </div>
-
-                        <div
-                            (click)="
-                                selectedRepairShop = null;
-                                repairOrderForm
-                                    .get('repairShopId')
-                                    .patchValue(null)
-                            "
-                            class="clear-x"
-                            mainTooltip="Clear"
-                            ngbTooltip
-                            position="top"
-                            tooltipBackground="#6c6c6c"
-                        >
-                            <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
-                        </div>
-                    </div>
-                </div>
+                </ng-container>
 
                 <ng-container *ngIf="!selectedRepairShop">
                     <app-ta-input-dropdown
@@ -399,12 +408,16 @@
             <div class="repair-shop-services">
                 <div
                     *ngFor="let repair of services; trackBy: identity"
-                    [ngClass]="{ active: repair.active }"
-                    class="repair-shop-service"
+                    [ngClass]="{
+                        active: repair.userSelected,
+                        'not-exist-in-shop':
+                            repair.notExistInRepairSHop && !repair.active
+                    }"
+                    class="repair-shop-service d-flex align-items-center"
                     (click)="activeRepairService(repair)"
                 >
                     <svg-icon [src]="repair?.svg"></svg-icon>
-                    <p>{{ repair?.serviceType }}</p>
+                    <p class="ta-font-bold">{{ repair?.serviceType }}</p>
                 </div>
             </div>
         </app-ta-custom-card>

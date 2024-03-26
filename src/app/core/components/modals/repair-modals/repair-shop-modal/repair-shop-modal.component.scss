@@ -1,13 +1,15 @@
+@import '/src/theme/variables.scss';
+
 .repair-shop-star {
     position: relative;
     bottom: 1px;
     cursor: pointer;
 
     &:hover {
-        transition: all 0.3s ease-in-out;
+        transition: fill 0.3s ease-in-out;
         svg {
             path {
-                fill: #6c6c6c;
+                fill: $ta-black;
             }
         }
     }
@@ -15,7 +17,7 @@
     &.active {
         svg {
             path {
-                fill: #6d82c7;
+                fill: $ta-blue-13;
             }
         }
 
@@ -23,11 +25,15 @@
             transition: all 0.3s ease-in-out;
             svg {
                 path {
-                    fill: #536bc2;
+                    fill: $ta-blue-15;
                 }
             }
         }
     }
+}
+
+.service-types {
+    margin: 22px 0;
 }
 
 .custom-bank-row {
