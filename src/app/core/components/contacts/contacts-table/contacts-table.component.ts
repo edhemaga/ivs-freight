@@ -8,14 +8,14 @@ import { ConfirmationModalComponent } from '../../modals/confirmation-modal/conf
 
 // service
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactTService } from '../state/contact.service';
+import { ContactTService } from '../state/services/contact.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 // store
-import { ContactState } from '../state/contact-state/contact.store';
-import { ContactQuery } from '../state/contact-state/contact.query';
+import { ContactState } from '../state/store/contact.store';
+import { ContactQuery } from '../state/store/contact.query';
 
 // pipes
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
@@ -28,14 +28,14 @@ import {
 import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
 
 // enums
-import { ContractComponentEnum } from '../state/enum/contract-string.enum';
+import { ConstantStringEnum } from '../state/enums/contact-string.enum';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // data for cards
-import { DisplayContactsConfiguration } from '../contacts-card-data';
+import { DisplayContactsConfiguration } from '../state/utils/constants/contact-card-data.constants';
 import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
 
 // models
@@ -45,11 +45,9 @@ import {
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import {
-    ContactBackFilter,
-    ContactEmail,
-    ContactPhone,
-} from '../state/interface/contract-inteface';
+import { ContactBackFilter } from '../state/models/contact-back-filter.model';
+import { ContactPhone } from '../state/models/contact-phone.model';
+import { ContactEmail } from '../state/models/contact-email.model';
 import {
     TableBodyActionsContract,
     TableHeadActionContract,
@@ -92,16 +90,13 @@ export class ContactsTableComponent
 
     public cardTitle: string = DisplayContactsConfiguration.cardTitle;
 
-    // Page
     public page: string = DisplayContactsConfiguration.page;
-
-    // Number of rows in card
     public rows: number = DisplayContactsConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[] =
-        DisplayContactsConfiguration.displayRowsFrontConctacts;
+        DisplayContactsConfiguration.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =
-        DisplayContactsConfiguration.displayRowsBackConctacts;
+        DisplayContactsConfiguration.displayRowsBackContacts;
 
     constructor(
         private modalService: ModalService,
@@ -110,7 +105,7 @@ export class ContactsTableComponent
         private nameInitialsPipe: NameInitialsPipe,
         private contactService: ContactTService,
         private imageBase64Service: ImageBase64Service,
-        private confiramtionService: ConfirmationService
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -120,7 +115,7 @@ export class ContactsTableComponent
 
         this.contractResize();
 
-        this.confiramtionSubscribe();
+        this.confirmationSubscribe();
 
         this.contractCurrentToaggleColumn();
 
@@ -323,8 +318,8 @@ export class ContactsTableComponent
             });
     }
 
-    private confiramtionSubscribe(): void {
-        this.confiramtionService.confirmationData$
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
@@ -424,7 +419,7 @@ export class ContactsTableComponent
     // Send Contact Data
     private sendContactData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_VIEW)
+            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -437,22 +432,22 @@ export class ContactsTableComponent
         this.initTableOptions();
 
         const contactCount = JSON.parse(
-            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
+            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_COUNT)
         );
 
         const contactData = this.getTabData();
         this.tableData = [
             {
-                title: ContractComponentEnum.CONTACTS,
+                title: ConstantStringEnum.CONTACTS,
                 field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
-                gridNameTitle: ContractComponentEnum.CONTACT_2,
-                stateName: ContractComponentEnum.CONTACTS_2,
-                tableConfiguration: ContractComponentEnum.CONTACT,
+                gridNameTitle: ConstantStringEnum.CONTACT_2,
+                stateName: ConstantStringEnum.CONTACTS_2,
+                tableConfiguration: ConstantStringEnum.CONTACT,
                 isActive: true,
-                gridColumns: this.getGridColumns(ContractComponentEnum.CONTACT),
+                gridColumns: this.getGridColumns(ConstantStringEnum.CONTACT),
             },
         ];
 
@@ -469,7 +464,7 @@ export class ContactsTableComponent
     // Update Contact Count
     updateDataCount() {
         const contactCount = JSON.parse(
-            localStorage.getItem(ContractComponentEnum.CONTACT_TABLE_COUNT)
+            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -706,7 +701,7 @@ export class ContactsTableComponent
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
-        } else if (event.type === ContractComponentEnum.EDIT_CONTACT) {
+        } else if (event.type === ConstantStringEnum.EDIT_CONTACT) {
             this.modalService.openModal(
                 ContactModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },

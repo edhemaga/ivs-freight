@@ -15,6 +15,7 @@
         [class.active]="
             hasPayrollStatus && _isCardOpen && _isCardOpen != 'null'
         "
+        [class.dropdown-card]="isDropdownCard"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
@@ -40,7 +41,10 @@
 
             <span
                 class="header-text"
-                [ngStyle]="{ color: _isCardOpen ? '#424242' : '#6C6C6C' }"
+                [ngClass]="{ 'dropdown-card': isDropdownCard }"
+                [ngStyle]="{
+                    color: _isCardOpen ? '#424242' : '#6C6C6C'
+                }"
             >
                 {{ cardName }}
             </span>

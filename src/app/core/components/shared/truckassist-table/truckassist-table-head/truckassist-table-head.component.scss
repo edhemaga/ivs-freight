@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 table {
     width: 100%;
     thead {
@@ -39,6 +41,10 @@ table {
         .tr {
             display: flex;
             height: 30px;
+
+            &-height-2 {
+                height: 37px;
+            }
 
             th {
                 display: flex;
@@ -123,17 +129,43 @@ table {
 
                 // Titles
                 .th-title {
-                    font-size: 14px;
+                    font-size: 11px;
                     font-weight: bold;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     transition: width 0.2s ease-in-out;
 
+                    &::-moz-selection {
+                        color: $ta-blue-5;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
                     &::selection {
-                        color: #6c6c6c;
-                        background: #6c6c6c20;
+                        color: $ta-blue-5;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &-double {
+                        border-left: 1px solid #ccc;
+                        padding-left: 6px;
+
+                        &-subtitle {
+                            font-size: 9px;
+                            line-height: 12px;
+                            color: $ta-light-grey-2;
+
+                            &::-moz-selection {
+                                color: $ta-blue-5;
+                                background: rgb(170, 170, 170, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-blue-5;
+                                background: rgb(170, 170, 170, 0.2);
+                            }
+                        }
                     }
                 }
 

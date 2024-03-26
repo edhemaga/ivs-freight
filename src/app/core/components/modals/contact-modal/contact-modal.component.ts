@@ -46,7 +46,7 @@ import {
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactTService } from '../../contacts/state/contact.service';
+import { ContactTService } from '../../contacts/state/services/contact.service';
 import { FormService } from '../../../services/form/form.service';
 
 // enums
@@ -144,7 +144,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        console.log('editData', this.editData);
         this.createForm();
 
         this.getCompanyContactModal();

@@ -1,7 +1,10 @@
 <table *ngIf="viewData.length">
     <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }">
         <!-- Pined -->
-        <tr class="tr pined-columns-container">
+        <tr
+            class="tr pined-columns-container"
+            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
+        >
             <th
                 [resizeColumn]="column.resizable && !locked"
                 [index]="i"
@@ -28,7 +31,8 @@
                         column.ngTemplate !== 'checkbox' &&
                         column.ngTemplate !== 'user-checkbox',
                     'remuve-head-title':
-                        column.width < 68 && !locked && !rezaizeing
+                        column.width < 68 && !locked && !rezaizeing,
+                    'align-items-end': tableData[0].title === 'Contacts'
                 }"
             >
                 <!-- Selected Row Count -->
@@ -338,6 +342,7 @@
             cdkDropList
             (cdkDropListDropped)="onReorder($event)"
             class="tr not-pined-columns-container"
+            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
             [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
             id="scroll"
         >
@@ -371,7 +376,8 @@
                             resizeHitLimit === i && !resizeIsPined,
                         'remuve-head-title':
                             column.width < 68 && !locked && !rezaizeing,
-                        'space-left': i === 0
+                        'space-left': i === 0,
+                        'align-items-end': tableData[0].title === 'Contacts'
                     }"
                 >
                     <!-- Title -->
@@ -400,7 +406,36 @@
                             'set-center-th-title': column.setCenter
                         }"
                     >
-                        {{ column.tableHeadTitle }}
+                        <ng-container
+                            *ngIf="
+                                tableData[0].title === 'Contacts' &&
+                                (column.tableHeadTitle === 'PHONE' ||
+                                    column.tableHeadTitle === 'EMAIL')
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    {{ column.tableHeadTitle }}
+                                </p>
+
+                                <p class="m-0 ta-font-bold">PRIMARY</p>
+                            </div>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="
+                                tableData[0].title !== 'Contacts' ||
+                                (tableData[0].title === 'Contacts' &&
+                                    column.tableHeadTitle !== 'PHONE' &&
+                                    column.tableHeadTitle !== 'EMAIL')
+                            "
+                        >
+                            {{ column.tableHeadTitle }}
+                        </ng-container>
                     </div>
 
                     <!-- Special Title -->
@@ -691,11 +726,7 @@
                             'width.px': column.headIconStyle.width,
                             'height.px': column.headIconStyle.height
                         }"
-                        [src]="
-                            column.headIconStyle.imgPath
-                                ? column.headIconStyle.imgPath
-                                : ''
-                        "
+                        [src]="column.headIconStyle.imgPath ?? ''"
                     ></svg-icon>
                 </div>
             </th>

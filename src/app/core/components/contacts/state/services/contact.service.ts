@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 // store
-import { ContactQuery } from './contact-state/contact.query';
-import { ContactStore } from './contact-state/contact.store';
+import { ContactQuery } from '../store/contact.query';
+import { ContactStore } from '../store/contact.store';
 
 // models
 import {
@@ -166,26 +166,27 @@ export class ContactTService {
     public deleteAccountList(contactIds: number[]): Observable<any> {
         return this.contactService.apiCompanycontactListDelete(contactIds).pipe(
             tap(() => {
-                let storeContacts = this.contactQuery.getAll();
-                let countDeleted = 0;
+                for (let i = 0; i < contactIds.length; i++) {
+                    this.contactStore.remove(({ id }) => id === contactIds[i]);
 
-                storeContacts.map((contact: any) => {
-                    contactIds.map((d) => {
-                        if (d === contact.id) {
-                            this.contactStore.remove(
-                                ({ id }) => id === contact.id
-                            );
-                            countDeleted++;
-                        }
+                    const contactCount = JSON.parse(
+                        localStorage.getItem('contactTableCount')
+                    );
+
+                    contactCount.contact--;
+
+                    localStorage.setItem(
+                        'contactTableCount',
+                        JSON.stringify({
+                            contact: contactCount.contact,
+                        })
+                    );
+
+                    this.tableService.sendActionAnimation({
+                        animation: 'delete',
+                        id: contactIds[i],
                     });
-                });
-
-                localStorage.setItem(
-                    'contactTableCount',
-                    JSON.stringify({
-                        contact: storeContacts.length - countDeleted,
-                    })
-                );
+                }
             })
         );
     }

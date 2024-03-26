@@ -1577,37 +1577,7 @@ table.truckassist-table-body-style {
 
                         // SHARED  COLUMN
                         .shared-container {
-                            display: flex;
                             height: 18px;
-                            width: fit-content;
-
-                            .shared-icon {
-                                width: 18px;
-                                height: 18px;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                margin-right: 6px;
-                            }
-
-                            .lock-icon {
-                                background-image: url('../../../../../../assets/svg/truckassist-table/shared-lock.svg');
-                            }
-
-                            .shared-active-icon {
-                                background-image: url('../../../../../../assets/svg/truckassist-table/shared.svg');
-                            }
-
-                            .shared-text {
-                                font-size: 14px;
-                                font-weight: 400;
-                                color: #6c6c6c;
-                                height: fit-content;
-
-                                &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
-                                }
-                            }
                         }
 
                         // LABLE COLUMN
