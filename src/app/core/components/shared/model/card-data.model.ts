@@ -1,5 +1,11 @@
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
+export interface DataResult {
+    title?: string;
+    key?: string;
+    secondKey?: string;
+    thirdKey?: string;
+}
 export interface CardHeader {
     checkbox: boolean;
     cardTitleBeforeStyle: string;

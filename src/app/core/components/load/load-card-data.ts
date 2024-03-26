@@ -8,20 +8,20 @@ export class DisplayLoadConfiguration {
     static displayRowsFrontTemplate: CardRows[] = [
         {
             title: 'Comodity',
-            endpoint: 'generalCommodity.name',
+            key: 'generalCommodity.name',
         },
         {
             title: 'Broker',
-            endpoint: 'broker.businessName',
+            key: 'broker.businessName',
         },
         {
             title: 'Contact Name',
-            endpoint: 'brokerContact.contactName',
+            key: 'brokerContact.contactName',
         },
         {
             title: 'Contact Phone',
-            endpoint: 'brokerContact.phone',
-            secondEndpoint: 'brokerContact.extensionPhone',
+            key: 'brokerContact.phone',
+            secondKey: 'brokerContact.extensionPhone',
         },
         null,
         null,
@@ -30,23 +30,23 @@ export class DisplayLoadConfiguration {
     static displayRowsBackTemplate: CardRows[] = [
         {
             title: 'Pickup',
-            endpoint: 'loadPickup.count',
-            secondEndpoint: 'loadPickup.location',
-            thirdEndpoint: 'loadPickup.date',
+            key: 'loadPickup.count',
+            secondKey: 'loadPickup.location',
+            thirdKey: 'loadPickup.date',
         },
         {
             title: 'Delivery',
-            endpoint: 'loadDelivery.count',
-            secondEndpoint: 'loadDelivery.location',
-            thirdEndpoint: 'loadDelivery.date',
+            key: 'loadDelivery.count',
+            secondKey: 'loadDelivery.location',
+            thirdKey: 'loadDelivery.date',
         },
         {
             title: 'Total Miles',
-            endpoint: 'totalMiles',
+            key: 'totalMiles',
         },
         {
             title: 'Rate',
-            endpoint: 'textBase',
+            key: 'textBase',
         },
         null,
         null,
@@ -55,24 +55,24 @@ export class DisplayLoadConfiguration {
     static displayRowsFrontPending: CardRows[] = [
         {
             title: 'Status',
-            endpoint: 'loadStatus.status',
+            key: 'loadStatus.status',
         },
         {
             title: 'Pickup',
-            endpoint: 'loadPickup.count',
-            secondEndpoint: 'loadPickup.location',
-            thirdEndpoint: 'loadPickup.date',
+            key: 'loadPickup.count',
+            secondKey: 'loadPickup.location',
+            thirdKey: 'loadPickup.date',
         },
         {
             title: 'Delivery',
-            endpoint: 'loadDelivery.count',
-            secondEndpoint: 'loadDelivery.location',
-            thirdEndpoint: 'loadDelivery.date',
+            key: 'loadDelivery.count',
+            secondKey: 'loadDelivery.location',
+            thirdKey: 'loadDelivery.date',
         },
         {
             title: 'Rate',
-            endpoint: 'loadTotal.total',
-            secondEndpoint: 'loadTotal.subTotal',
+            key: 'loadTotal.total',
+            secondKey: 'loadTotal.subTotal',
         },
         null,
         null,
@@ -81,19 +81,19 @@ export class DisplayLoadConfiguration {
     static displayRowsBackPending: CardRows[] = [
         {
             title: 'Dispatcher',
-            endpoint: 'dispatcher.fullName',
+            key: 'dispatcher.fullName',
         },
         {
             title: 'Broker',
-            endpoint: 'broker.businessName',
+            key: 'broker.businessName',
         },
         {
             title: 'Ref. Number',
-            endpoint: 'referenceNumber',
+            key: 'referenceNumber',
         },
         {
             title: 'Total Miles',
-            endpoint: 'totalMiles',
+            key: 'totalMiles',
         },
         null,
         null,
@@ -102,19 +102,19 @@ export class DisplayLoadConfiguration {
     static displayRowsBackActive: CardRows[] = [
         {
             title: 'Driver',
-            endpoint: 'dispatcher.fullName',
+            key: 'dispatcher.fullName',
         },
         {
             title: 'Truck',
-            endpoint: 'broker.businessName',
+            key: 'broker.businessName',
         },
         {
             title: 'Trailer',
-            endpoint: 'referenceNumber',
+            key: 'referenceNumber',
         },
         {
             title: 'Total Miles',
-            endpoint: 'totalMiles',
+            key: 'totalMiles',
         },
         null,
         null,
@@ -123,20 +123,20 @@ export class DisplayLoadConfiguration {
     static displayRowsFrontClosed: CardRows[] = [
         {
             title: 'Status',
-            endpoint: 'loadStatus.status',
+            key: 'loadStatus.status',
         },
         {
             title: 'Rate',
-            endpoint: 'loadTotal.total',
-            secondEndpoint: 'loadTotal.subTotal',
+            key: 'loadTotal.total',
+            secondKey: 'loadTotal.subTotal',
         },
         {
             title: 'Paid',
-            endpoint: 'totalPaid',
+            key: 'totalPaid',
         },
         {
             title: 'Due',
-            endpoint: 'no-endpoint',
+            key: 'no-key',
         },
         null,
         null,
@@ -145,23 +145,23 @@ export class DisplayLoadConfiguration {
     static displayRowsBackClosed: CardRows[] = [
         {
             title: 'Broker',
-            endpoint: 'broker.businessName',
+            key: 'broker.businessName',
         },
         {
             title: 'Pickup',
-            endpoint: 'loadPickup.count',
-            secondEndpoint: 'loadPickup.location',
-            thirdEndpoint: 'loadPickup.date',
+            key: 'loadPickup.count',
+            secondKey: 'loadPickup.location',
+            thirdKey: 'loadPickup.date',
         },
         {
             title: 'Delivery',
-            endpoint: 'loadDelivery.count',
-            secondEndpoint: 'loadDelivery.location',
-            thirdEndpoint: 'loadDelivery.date',
+            key: 'loadDelivery.count',
+            secondKey: 'loadDelivery.location',
+            thirdKey: 'loadDelivery.date',
         },
         {
             title: 'Age',
-            endpoint: 'no-ednpoint',
+            key: 'no-ednpoint',
         },
         null,
         null,

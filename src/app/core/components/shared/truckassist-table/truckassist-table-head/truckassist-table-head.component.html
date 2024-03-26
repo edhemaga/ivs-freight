@@ -36,148 +36,208 @@
                 }"
             >
                 <!-- Selected Row Count -->
-                <div
+                <ng-container
                     *ngIf="
                         column.ngTemplate === 'checkbox' ||
                         column.ngTemplate === 'user-checkbox'
                     "
-                    class="selected-rows-count"
-                    #op="ngbPopover"
-                    (click)="onSelectedOptions(op)"
-                    [autoClose]="true"
-                    [ngbPopover]="optionsPopover"
-                    [placement]="'right-top'"
-                    popoverClass="{{
-                        mySelection.length
-                            ? 'has-selected-options-popover'
-                            : 'selected-options-popover'
-                    }}"
-                    triggers="manual"
-                    [ngClass]="{ 'has-selected': mySelection.length }"
                 >
-                    {{ mySelection.length ? mySelection.length : '' }}
-                </div>
-
+                    <div
+                        class="selected-rows-count"
+                        #op="ngbPopover"
+                        (click)="onSelectedOptions(op)"
+                        [autoClose]="true"
+                        [ngbPopover]="optionsPopover"
+                        [placement]="'right-top'"
+                        popoverClass="{{
+                            mySelection.length
+                                ? 'has-selected-options-popover'
+                                : 'selected-options-popover'
+                        }}"
+                        triggers="manual"
+                        [ngClass]="{ 'has-selected': mySelection.length }"
+                    >
+                        {{ mySelection.length ? mySelection.length : '' }}
+                    </div>
+                </ng-container>
                 <!-- Title -->
-                <div
+                <ng-container
                     *ngIf="
                         column.ngTemplate !== 'checkbox' &&
                         column.name !== '' &&
                         column.ngTemplate !== 'applicant-progress' &&
                         column.ngTemplate !== 'sw-tw-total' &&
                         column.ngTemplate !== 'citation' &&
-                        column.ngTemplate !== 'accident-citation'
+                        column.ngTemplate !== 'accident-citation' &&
+                        column.title !== 'ft'
                     "
-                    class="th-title"
-                    (click)="sortHeaderClick(column)"
-                    [ngStyle]="{
-                        'width.px':
-                            column.resizable && !locked
-                                ? column.width - 55
-                                : column.width - 20,
-                        'min-width.px': rezaizeing ? column.width : 'unset'
-                    }"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked,
-                        'set-center-th-title': column.setCenter
-                    }"
-                >
-                    {{ column.tableHeadTitle }}
-                </div>
-
-                <!-- Special Title -->
-                <div
-                    class="special-title"
-                    *ngIf="column.ngTemplate === 'applicant-progress'"
-                    (click)="sortHeaderClick(column)"
-                    [ngStyle]="{
-                        'min-width.px':
-                            column.resizable && !locked
-                                ? column.width - 100
-                                : column.width
-                    }"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
                 >
                     <div
-                        class="title"
-                        *ngFor="let title of column.headTitle"
+                        class="th-title"
+                        (click)="sortHeaderClick(column)"
                         [ngStyle]="{
-                            'width.px': title.width
+                            'width.px':
+                                column.resizable && !locked
+                                    ? column.width - 55
+                                    : column.width - 20,
+                            'min-width.px': rezaizeing ? column.width : 'unset'
+                        }"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': locked,
+                            'set-center-th-title': column.setCenter
                         }"
                     >
-                        {{ title.title }}
+                        {{ column.tableHeadTitle }}
                     </div>
-                </div>
-
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        column?.headIconStyle &&
+                        column.ngTemplate !== 'applicant-progress' &&
+                        column.title === 'ft'
+                    "
+                >
+                    <div class="icons">
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': column.headIconStyle.width,
+                                'height.px': column.headIconStyle.height
+                            }"
+                            [src]="
+                                column.headIconStyle.imgPath
+                                    ? column.headIconStyle.imgPath
+                                    : ''
+                            "
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate === 'text' && column.title === 'ft'
+                    "
+                >
+                    <div
+                        class="th-title-small"
+                        (click)="sortHeaderClick(column)"
+                        [ngStyle]="{
+                            'width.px':
+                                column.resizable && !locked
+                                    ? column.width - 55
+                                    : column.width - 20,
+                            'min-width.px': rezaizeing ? column.width : 'unset'
+                        }"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': locked,
+                            'set-center-th-title': column.setCenter
+                        }"
+                    >
+                        {{ column.title }}
+                    </div>
+                </ng-container>
+                <!-- Special Title -->
+                <ng-container
+                    *ngIf="column.ngTemplate === 'applicant-progress'"
+                >
+                    <div
+                        class="special-title"
+                        (click)="sortHeaderClick(column)"
+                        [ngStyle]="{
+                            'min-width.px':
+                                column.resizable && !locked
+                                    ? column.width - 100
+                                    : column.width
+                        }"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': locked
+                        }"
+                    >
+                        <ng-container *ngFor="let title of column.headTitle">
+                            <div
+                                class="title"
+                                [ngStyle]="{
+                                    'width.px': title.width
+                                }"
+                            >
+                                {{ title.title }}
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
                 <!-- Sw Tw Title -->
-                <div
-                    *ngIf="column.ngTemplate === 'sw-tw-total'"
-                    class="sw-tw-title-container"
-                    (click)="sortHeaderClick(column)"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
-                >
-                    <div class="sw-tw-title">SW</div>
-                    <div class="sw-tw-title">TW</div>
-                    <div class="sw-tw-title">TOTAL</div>
-                </div>
-
-                <!-- Citation Icons -->
-                <div
-                    *ngIf="column.ngTemplate === 'citation'"
-                    class="citation-container"
-                    (click)="sortHeaderClick(column)"
-                    [ngClass]="{
-                        'sort-active':
-                            column.sortDirection !== '' && column.sortDirection,
-                        'th-title-locked-cursor': locked
-                    }"
-                >
-                    <div class="citation-wrapper">
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/cop-head-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/oss-head-icon.svg'
-                                "
-                            ></svg-icon>
-                        </div>
-                        <div class="icon-container">
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="
-                                    '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
-                                "
-                            ></svg-icon>
+                <ng-container *ngIf="column.ngTemplate === 'sw-tw-total'">
+                    <div
+                        class="sw-tw-title-container"
+                        (click)="sortHeaderClick(column)"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': locked
+                        }"
+                    >
+                        <div class="sw-tw-title">SW</div>
+                        <div class="sw-tw-title">TW</div>
+                        <div class="sw-tw-title">TOTAL</div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="column.ngTemplate === 'citation'">
+                    <!-- Citation Icons -->
+                    <div
+                        class="citation-container"
+                        (click)="sortHeaderClick(column)"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': locked
+                        }"
+                    >
+                        <div class="citation-wrapper">
+                            <div class="icon-container">
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        '../../../../../../assets/svg/truckassist-table/cop-head-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                            <div class="icon-container">
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        '../../../../../../assets/svg/truckassist-table/oss-head-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                            <div class="icon-container">
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        '../../../../../../assets/svg/truckassist-table/money-head-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </ng-container>
 
                 <!-- Accident Citation Icons -->
                 <div
@@ -250,30 +310,35 @@
                 </div>
 
                 <!-- Icons -->
-                <div
+                <ng-container
                     *ngIf="
                         column?.headIconStyle &&
-                        column.ngTemplate !== 'applicant-progress'
+                        column.ngTemplate !== 'applicant-progress' &&
+                        column.title !== 'ft'
                     "
-                    [ngClass]="{ 'icon-hover': column.ngTemplate !== 'hire' }"
-                    class="icons"
                 >
-                    <svg-icon
-                        [svgStyle]="{
-                            'width.px': column.headIconStyle.width,
-                            'height.px': column.headIconStyle.height
+                    <div
+                        [ngClass]="{
+                            'icon-hover': column.ngTemplate !== 'hire'
                         }"
-                        [src]="
-                            column.headIconStyle.imgPath
-                                ? column.headIconStyle.imgPath
-                                : ''
-                        "
-                    ></svg-icon>
-                </div>
+                        class="icons"
+                    >
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': column.headIconStyle.width,
+                                'height.px': column.headIconStyle.height
+                            }"
+                            [src]="
+                                column.headIconStyle.imgPath
+                                    ? column.headIconStyle.imgPath
+                                    : ''
+                            "
+                        ></svg-icon>
+                    </div>
+                </ng-container>
 
                 <!-- Sort -->
-                <div
-                    class="sort-indicator-container"
+                <ng-container
                     *ngIf="
                         column.sortable &&
                         column.sortDirection !== '' &&
@@ -282,22 +347,21 @@
                         viewData.length > 1
                     "
                 >
-                    <svg-icon
-                        [svgStyle]="{
-                            'width.px': 12,
-                            'height.px': 12
-                        }"
-                        [src]="
-                            column.sortDirection === 'asc'
-                                ? 'assets/svg/truckassist-table/ascending-sort.svg'
-                                : 'assets/svg/truckassist-table/descending-sort.svg'
-                        "
-                    ></svg-icon>
-                </div>
-
-                <!-- Pin System -->
-                <div
-                    class="pin-remove-container"
+                    <div class="sort-indicator-container">
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': 12,
+                                'height.px': 12
+                            }"
+                            [src]="
+                                column.sortDirection === 'asc'
+                                    ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                                    : 'assets/svg/truckassist-table/descending-sort.svg'
+                            "
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+                <ng-container
                     *ngIf="
                         !locked &&
                         !rezaizeing &&
@@ -306,21 +370,24 @@
                         i !== 1
                     "
                 >
-                    <!-- Pin -->
-                    <svg-icon
-                        class="pin-icon"
-                        (click)="onPinColumn(column)"
-                        [svgStyle]="{
-                            'width.px': 9,
-                            'height.px': 12
-                        }"
-                        [src]="'assets/svg/truckassist-table/pin.svg'"
-                        [ngClass]="{
-                            pined: column.isPined,
-                            hide: !column.isPined && reordering
-                        }"
-                    ></svg-icon>
-                </div>
+                    <!-- Pin System -->
+                    <div class="pin-remove-container">
+                        <!-- Pin -->
+                        <svg-icon
+                            class="pin-icon"
+                            (click)="onPinColumn(column)"
+                            [svgStyle]="{
+                                'width.px': 9,
+                                'height.px': 12
+                            }"
+                            [src]="'assets/svg/truckassist-table/pin.svg'"
+                            [ngClass]="{
+                                pined: column.isPined,
+                                hide: !column.isPined && reordering
+                            }"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
             </th>
         </tr>
 
@@ -381,30 +448,16 @@
                     }"
                 >
                     <!-- Title -->
-                    <div
+                    <ng-container
                         *ngIf="
                             column.ngTemplate !== 'checkbox' &&
                             column.name !== '' &&
                             column.ngTemplate !== 'applicant-progress' &&
                             column.ngTemplate !== 'sw-tw-total' &&
                             column.ngTemplate !== 'citation' &&
-                            column.ngTemplate !== 'accident-citation'
+                            column.ngTemplate !== 'accident-citation' &&
+                            column.title !== 'ft'
                         "
-                        class="th-title"
-                        (click)="sortHeaderClick(column)"
-                        [ngStyle]="{
-                            'width.px':
-                                column.resizable && !locked
-                                    ? column.width - 55
-                                    : column.width - 20
-                        }"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked,
-                            'set-center-th-title': column.setCenter
-                        }"
                     >
                         <ng-container
                             *ngIf="
@@ -422,7 +475,7 @@
                                     {{ column.tableHeadTitle }}
                                 </p>
 
-                                <p class="m-0 ta-font-bold">PRIMARY</p>
+                                <p class="m-0 ta-font-bold th-title">PRIMARY</p>
                             </div>
                         </ng-container>
 
@@ -434,10 +487,83 @@
                                     column.tableHeadTitle !== 'EMAIL')
                             "
                         >
-                            {{ column.tableHeadTitle }}
+                            <div
+                                class="th-title"
+                                (click)="sortHeaderClick(column)"
+                                [ngStyle]="{
+                                    'width.px':
+                                        column.resizable && !locked
+                                            ? column.width - 55
+                                            : column.width - 20
+                                }"
+                                [ngClass]="{
+                                    'sort-active':
+                                        column.sortDirection !== '' &&
+                                        column.sortDirection,
+                                    'th-title-locked-cursor': locked,
+                                    'set-center-th-title': column.setCenter
+                                }"
+                            >
+                                {{ column.tableHeadTitle }}
+                            </div>
                         </ng-container>
-                    </div>
+                    </ng-container>
 
+                    <ng-container
+                        *ngIf="
+                            column?.headIconStyle &&
+                            column.ngTemplate !== 'applicant-progress' &&
+                            column.title === 'ft'
+                        "
+                    >
+                        <div class="icons">
+                            <svg-icon
+                                [svgStyle]="{
+                                    'width.px': column.headIconStyle.width,
+                                    'height.px': column.headIconStyle.height
+                                }"
+                                [src]="
+                                    column.headIconStyle.imgPath
+                                        ? column.headIconStyle.imgPath
+                                        : ''
+                                "
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            column.ngTemplate === 'text' &&
+                            column.title === 'ft'
+                        "
+                    >
+                        <div
+                            *ngIf="
+                                column.ngTemplate === 'text' &&
+                                column.title === 'ft'
+                            "
+                            class="th-title-small"
+                            (click)="sortHeaderClick(column)"
+                            [ngStyle]="{
+                                'width.px':
+                                    column.resizable && !locked
+                                        ? column.width - 55
+                                        : column.width - 20,
+                                'min-width.px': rezaizeing
+                                    ? column.width
+                                    : 'unset'
+                            }"
+                            [ngClass]="{
+                                'sort-active':
+                                    column.sortDirection !== '' &&
+                                    column.sortDirection,
+                                'th-title-locked-cursor': locked,
+                                'set-center-th-title': column.setCenter
+                            }"
+                        >
+                            {{ column.title }}
+                        </div>
+                    </ng-container>
                     <!-- Special Title -->
                     <div
                         class="special-title"
@@ -605,25 +731,23 @@
                     </div>
 
                     <!-- Icons -->
-                    <div
+                    <ng-container
                         *ngIf="
                             column?.headIconStyle &&
-                            column.ngTemplate !== 'applicant-progress'
+                            column.ngTemplate !== 'applicant-progress' &&
+                            column.title !== 'ft'
                         "
-                        class="icons"
                     >
-                        <svg-icon
-                            [svgStyle]="{
-                                'width.px': column.headIconStyle.width,
-                                'height.px': column.headIconStyle.height
-                            }"
-                            [src]="
-                                column.headIconStyle.imgPath
-                                    ? column.headIconStyle.imgPath
-                                    : ''
-                            "
-                        ></svg-icon>
-                    </div>
+                        <div class="icons">
+                            <svg-icon
+                                [svgStyle]="{
+                                    'width.px': column.headIconStyle.width,
+                                    'height.px': column.headIconStyle.height
+                                }"
+                                [src]="column.headIconStyle.imgPath ?? ''"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
 
                     <!-- Sort -->
                     <div

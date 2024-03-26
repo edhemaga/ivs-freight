@@ -56,14 +56,17 @@ export class BrokerConstants {
         animationOnlyOnLoad: true,
         dataLabels: [],
         noChartImage: ChartImagesEnum.MIXED_NO_DATA,
+        showHoverTooltip: true,
+        showZeroLine: true,
+        dottedZeroLine: true,
     };
 
     static MILEAGE_BAR_AXES = {
         verticalLeftAxes: {
             visible: true,
-            minValue: 1,
-            maxValue: 3,
-            stepSize: 0.5,
+            minValue: 0,
+            maxValue: 100,
+            stepSize: 1,
             showGridLines: true,
             decimal: true,
         },
@@ -98,7 +101,7 @@ export class BrokerConstants {
         },
     ];
 
-    static PAYMENT_CHART_CONFIG = {
+    static PAYMENT_CHART_CONFIG: DoughnutChartConfig = {
         dataProperties: [
             {
                 defaultConfig: {
@@ -132,6 +135,9 @@ export class BrokerConstants {
         animationOnlyOnLoad: true,
         dataLabels: [],
         noChartImage: ChartImagesEnum.NO_DATA_PAY,
+        showHoverTooltip: true,
+        showZeroLine: true,
+        dottedZeroLine: true,
     };
 
     static PAYMENT_CHART_LEGEND = [
@@ -167,7 +173,7 @@ export class BrokerConstants {
         },
     };
 
-    static INVOICE_CHART_CONFIG = {
+    static INVOICE_CHART_CONFIG: DoughnutChartConfig = {
         dataProperties: [
             {
                 defaultConfig: {
@@ -209,6 +215,8 @@ export class BrokerConstants {
         animationOnlyOnLoad: true,
         hoverTimeDisplay: true,
         noChartImage: ChartImagesEnum.YELLOW_NO_DATA,
+        showHoverTooltip: true,
+        showZeroLine: true,
     };
 
     static INVOICE_CHART_AXES = {

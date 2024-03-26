@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
     name: 'nFormatter',
     pure: true,
-    standalone: true
+    standalone: true,
 })
 export class NFormatterPipe implements PipeTransform {
     transform(value: unknown, ...args: unknown[]): string {
@@ -32,7 +32,7 @@ export class NFormatterPipe implements PipeTransform {
         if (si[i].symbol) {
             return total + si[i].symbol;
         } else {
-            if (!total.includes('.')) {
+            if (!total.includes('.') && !Number.isInteger(parseFloat(total))) {
                 total = total + '.00';
             }
             return total;

@@ -38,7 +38,7 @@ export interface Axis {
 export interface LegendAttributes {
     title: string;
     value: number;
-    image: string;
+    image?: string;
     elementId?: number | string | number[];
     prefix?: string;
     sufix?: string;
@@ -54,8 +54,8 @@ export interface OnHoverProperties {
 }
 
 export interface AnnotationConfig {
-    type: string;
-    axis: AnnotationPositionEnum;
+    type: AnnotationPositionEnum;
+    axis: string;
     color: string;
     dash: number | number[];
 }
@@ -64,6 +64,10 @@ export interface BasicChartConfig extends BarChartConfig {
     loadRatePerMileValue?: number;
     pricePerGallonValue?: number;
     extendFull?: boolean;
+    hasSameDataIndex?: boolean;
+    showHoverTooltip?: boolean;
+    showZeroLine?: boolean;
+    dottedZeroLine?: boolean;
 }
 
 export interface ChartDataProperties {

@@ -27,14 +27,12 @@
                                 class="checkbox-tooltip"
                                 type="button"
                                 ngbTooltip
+                                [mainTooltip]="
+                                    !card.isSelected ? 'Select' : 'Clear'
+                                "
                                 tooltipBackground="#424242"
                                 position="bottom"
-                                [ngClass]="{
-                                    'rotate-svg':
-                                        isCardFlippedCheckInCards.includes(i),
-                                    'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
-                                }"
+                                customClass="mt-1"
                             >
                                 <input
                                     class="table-checkbox"
@@ -55,12 +53,24 @@
                         <div class="name d-flex ta-font-bold">
                             <!-- If Driver User or Contact page-->
                             <span class="title">
-                                {{
-                                    valueByStringPathInstance.getValueByStringPath(
-                                        card,
-                                        cardTitle
-                                    )
-                                }}
+                                <span
+                                    class="title-tooltip"
+                                    type="button"
+                                    ngbTooltip
+                                    mainTooltip="View Detail"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                    customClass="mt-1"
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let title of titleArray;
+                                            trackBy: trackCard
+                                        "
+                                    >
+                                        {{ title[i] }}
+                                    </ng-container>
+                                </span>
                             </span>
                         </div>
                     </div>
@@ -79,49 +89,48 @@
 
                         <ng-container
                             *ngFor="
-                                let rowsFront of displayRowsFront;
+                                let rowsFront of cardsFront;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsFront.title }}
-                                    </div>
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsFront[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
 
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center"
-                                    >
                                         <div
-                                            class="progresbar-pm d-flex align-items-center"
+                                            class="bottom-item-body d-flex align-items-center"
                                         >
-                                            <span
-                                                class="checkbox-tooltip"
-                                                type="button"
-                                                ngbTooltip
-                                                mainTooltip="View PM"
-                                                tooltipBackground="#424242"
-                                                position="bottom"
+                                            <div
+                                                class="progresbar-pm d-flex align-items-center"
                                             >
-                                                <app-progres-bar
-                                                    [percents]="
-                                                        valueByStringPathInstance.getValueByStringPath(
-                                                            card,
-                                                            rowsFront.secondEndpoint
-                                                        )
-                                                    "
-                                                    [text]="
-                                                        valueByStringPathInstance.getValueByStringPath(
-                                                            card,
-                                                            rowsFront.endpoint
-                                                        )
-                                                    "
-                                                ></app-progres-bar>
-                                            </span>
+                                                <span
+                                                    class="checkbox-tooltip"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    mainTooltip="View PM"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                >
+                                                    <app-progres-bar
+                                                        [percents]="
+                                                            row.secondKey
+                                                        "
+                                                        [text]="row.key"
+                                                    ></app-progres-bar>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
 
@@ -137,28 +146,30 @@
                     >
                         <ng-container
                             *ngFor="
-                                let rowsBack of displayRowsBack;
+                                let rowsBack of cardsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <div class="one-row">
-                                <div class="item-body">
-                                    <div class="top-item-body">
-                                        {{ rowsBack.title }}
-                                    </div>
+                            <ng-container
+                                *ngFor="
+                                    let row of rowsBack[i];
+                                    trackBy: trackCard
+                                "
+                            >
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div class="top-item-body">
+                                            {{ row.title }}
+                                        </div>
 
-                                    <div
-                                        class="bottom-item-body d-flex align-items-center gap"
-                                    >
-                                        {{
-                                            valueByStringPathInstance.getValueByStringPath(
-                                                card,
-                                                rowsBack.endpoint
-                                            )
-                                        }}
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center gap"
+                                        >
+                                            {{ row.key }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>
@@ -208,6 +219,7 @@
                                     'svg-position':
                                         !isCardFlippedCheckInCards.includes(i)
                                 }"
+                                customClass="mt-2"
                             >
                                 <svg-icon
                                     [src]="'assets/svg/common/resize-arrow.svg'"

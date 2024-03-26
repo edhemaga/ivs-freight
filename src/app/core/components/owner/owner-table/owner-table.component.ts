@@ -5,6 +5,8 @@ import { Subject, takeUntil } from 'rxjs';
 // Components
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 
 // Models
 import { GetOwnerListResponse } from 'appcoretruckassist';
@@ -171,23 +173,33 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 switch (res.type) {
                     case ConstantStringTableComponentsEnum.DELETE:
-                        this.deleteOwnerById(res.id);
+                        this.deleteOwnerById(res.id ?? res.array[0].id);
                         break;
 
                     case ConstantStringTableComponentsEnum.ACTIVATE:
-                        this.changeOwnerStatus(res.data);
+                        if (res.id) this.changeOwnerStatus(res.id);
+                        else this.changeOwnerStatusList(res.array);
                         break;
 
                     case ConstantStringTableComponentsEnum.DEACTIVATE:
-                        this.changeOwnerStatus(res.data);
+                        if (res.id) this.changeOwnerStatus(res.id);
+                        else this.changeOwnerStatusList(res.array);
                         break;
-
+                    case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
+                        this.deleteOwnerList(res.array);
+                        break;
                     default:
                         break;
                 }
             });
     }
     private changeOwnerStatus(data): void {
+        this.ownerService
+            .updateOwner(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+    private changeOwnerStatusList(data): void {
         this.ownerService
             .updateOwner(data)
             .pipe(takeUntil(this.destroy$))
@@ -348,36 +360,58 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length) {
-                    this.ownerService
-                        .deleteOwnerList(response, this.selectedTab)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe(() => {
-                            this.viewData = this.viewData.map((owner) => {
-                                response.map((row) => {
-                                    if (owner.id === row.id) {
-                                        owner.actionAnimation =
-                                            ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
-                                    }
-                                });
-
-                                return owner;
-                            });
-
-                            this.updateDataCount();
-
-                            const inetval = setInterval(() => {
-                                this.viewData = closeAnimationAction(
-                                    true,
-                                    this.viewData
-                                );
-
-                                clearInterval(inetval);
-                            }, 900);
-
-                            this.tableService.sendRowsSelected([]);
-                            this.tableService.sendResetSelectedColumns(true);
-                        });
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                            },
+                        };
+                    });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: ConstantStringTableComponentsEnum.OWNER_3,
+                            type:
+                                mappedRes?.length > 1
+                                    ? ConstantStringTableComponentsEnum.MULTIPLE_DELETE
+                                    : ConstantStringTableComponentsEnum.DELETE,
+                            svg: true,
+                        }
+                    );
                 }
+            });
+    }
+
+    private deleteOwnerList(ids: number[]): void {
+        this.ownerService
+            .deleteOwnerList(ids, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((fuel) => {
+                    ids.map((id) => {
+                        if (fuel.id === id)
+                            fuel.actionAnimation =
+                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                    });
+
+                    return fuel;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.tableData[0].data = this.viewData;
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -500,8 +534,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 showLocationFilter: true,
-                showTruckTypeFilter: true,
-                showTrailerTypeFilter: true,
+                hideActivationButton: true,
                 viewModeOptions: [
                     {
                         name: ConstantStringTableComponentsEnum.LIST,
@@ -768,6 +801,37 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             event.action === ConstantStringTableComponentsEnum.VIEW_MODE
         ) {
             this.activeViewMode = event.mode;
+        } else if (
+            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
+        ) {
+            let status = false;
+            let mappedEvent = [];
+            this.viewData.map((data) => {
+                event.tabData.data.map((element) => {
+                    if (data.id === element) {
+                        status = data.status;
+                        mappedEvent.push({
+                            ...data,
+                            data: {
+                                ...data,
+                            },
+                        });
+                    }
+                });
+            });
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    data: null,
+                    array: mappedEvent,
+                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    type: status
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
         }
     }
 
@@ -809,7 +873,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.OWNER,
+                    template: ConstantStringTableComponentsEnum.OWNER_3,
                     type: event.data.isSelected
                         ? ConstantStringTableComponentsEnum.DEACTIVATE
                         : ConstantStringTableComponentsEnum.ACTIVATE,
@@ -829,12 +893,38 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (
             event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
         ) {
-            this.ownerService
-                .deleteOwnerById(event.id, this.selectedTab)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
-                    this.sendOwnerData();
-                });
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    svg: true,
+                }
+            );
+        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRUCK) {
+            this.modalService.setProjectionModal({
+                action: ConstantStringTableComponentsEnum.OPEN,
+                payload: {
+                    key: null,
+                    value: null,
+                },
+                component: TruckModalComponent,
+                size: ConstantStringTableComponentsEnum.SMALL,
+                closing: ConstantStringTableComponentsEnum.FASTEST,
+            });
+        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRAILER) {
+            this.modalService.setProjectionModal({
+                action: ConstantStringTableComponentsEnum.OPEN,
+                payload: {
+                    key: null,
+                    value: null,
+                },
+                component: TrailerModalComponent,
+                size: ConstantStringTableComponentsEnum.SMALL,
+                closing: ConstantStringTableComponentsEnum.FASTEST,
+            });
         }
     }
 

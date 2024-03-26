@@ -43,6 +43,14 @@ export function calculateDistanceBetweenTwoCitysByCoordinates(
 
     return distance;
 }
+export function getLengthNumber(data: string): string {
+    const number = data.match(/\d+/);
+    if (number) {
+        return number[0];
+    }
+
+    return '';
+}
 
 function degreesToRadians(deg) {
     return deg * (Math.PI / 180);

@@ -158,25 +158,25 @@ table.truckassist-table-body-style {
                             display: flex;
                             font-size: 14px;
                             font-weight: 400;
-                            color: #6c6c6c;
+                            color: $ta-black-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             width: 100%;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
 
                             .vin-bold {
                                 font-size: 14px;
-                                color: #6c6c6c;
+                                color: $ta-black;
                                 font-weight: 600;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -191,7 +191,7 @@ table.truckassist-table-body-style {
                             align-items: center;
 
                             .table-text {
-                                border-right: 1px solid #dadada;
+                                border-right: 1px solid $bw-9;
                                 padding-right: 6px;
                             }
 
@@ -203,8 +203,8 @@ table.truckassist-table-body-style {
                                 font-weight: 700;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -212,25 +212,29 @@ table.truckassist-table-body-style {
                         .table-checkbox-label {
                             width: 14px;
                             height: 14px;
-                            background-color: #dadada;
+                            background-color: $ta-light-grey-6;
                             margin-bottom: 0;
-                            border-radius: 1px;
+                            border-radius: 2px;
                             cursor: pointer;
 
                             &:hover {
-                                background-color: #b7b7b7;
+                                width: 18px;
+                                height: 18px;
+                                background-color: $muted;
                             }
                         }
 
                         .table-checkbox:checked + .table-checkbox-label {
-                            background-color: #91a4c7;
+                            background-color: $ta-blue-13;
                             background-image: url('../../../../../../assets/svg/truckassist-table/check-new.svg');
                             background-repeat: no-repeat;
                             background-position: center;
                             transition: background-color 0.25s;
 
                             &:hover {
-                                background-color: #5673aa;
+                                width: 18px;
+                                height: 18px;
+                                background-color: $ta-blue-15;
                             }
                         }
 
@@ -250,10 +254,10 @@ table.truckassist-table-body-style {
                                 justify-content: center;
                                 font-size: 16px;
                                 font-weight: 900;
-                                color: #dadada;
+                                color: $bw-9;
 
                                 &::selection {
-                                    color: #dadada;
+                                    color: $bw-9;
                                     background: #dadada20;
                                 }
                             }
@@ -292,7 +296,7 @@ table.truckassist-table-body-style {
 
                                 .title-compact-text {
                                     height: 10px;
-                                    color: #919191;
+                                    color: $muted;
                                     font-size: 10px;
                                     font-weight: bold;
                                     line-height: 7px;
@@ -304,7 +308,7 @@ table.truckassist-table-body-style {
                                     line-height: 14px;
                                     font-size: 14px;
                                     font-weight: 400;
-                                    color: #6c6c6c;
+                                    color: $bw6-2;
                                     max-width: 60px;
                                 }
                             }
@@ -345,13 +349,13 @@ table.truckassist-table-body-style {
                             display: flex;
                             justify-content: center;
                             align-items: center;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             font-size: 16px;
                             font-weight: 400;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -361,14 +365,14 @@ table.truckassist-table-body-style {
                             height: 28px;
                             font-size: 16px;
                             font-weight: bold;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             display: flex;
                             justify-content: center;
                             align-items: center;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -411,7 +415,7 @@ table.truckassist-table-body-style {
                             .dnu-container {
                                 margin-right: 4px;
                                 border-radius: 0 2px 2px 0;
-                                background: #e57373;
+                                background: $ta-red;
 
                                 &:hover {
                                     background: #ef5350;
@@ -422,7 +426,7 @@ table.truckassist-table-body-style {
                             .inv-ageing-text {
                                 font-size: 14px;
                                 font-weight: 400;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 height: 18px;
                                 line-height: 18px;
                                 overflow: hidden;
@@ -430,8 +434,8 @@ table.truckassist-table-body-style {
                                 text-overflow: ellipsis;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -450,13 +454,13 @@ table.truckassist-table-body-style {
                                 justify-content: center;
                                 align-items: center;
                                 background: #f3f3f3;
-                                color: #919191;
+                                color: $muted;
                                 margin-right: 2px;
                                 font-size: 11px;
                                 font-weight: bold;
 
                                 &::selection {
-                                    color: #919191;
+                                    color: $muted;
                                     background: #91919120;
                                 }
                             }
@@ -486,7 +490,7 @@ table.truckassist-table-body-style {
                             }
 
                             .work-hour-time {
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 height: 18px;
                                 line-height: 18px;
                                 font-size: 14px;
@@ -496,8 +500,8 @@ table.truckassist-table-body-style {
                                 text-overflow: ellipsis;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -505,7 +509,7 @@ table.truckassist-table-body-style {
                         // DESCRIPTION COLUMN
                         .description-container {
                             cursor: pointer;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             font-size: 14px;
                             font-weight: 400;
                             height: 18px;
@@ -516,20 +520,20 @@ table.truckassist-table-body-style {
                             text-overflow: ellipsis;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
                         // VL COLUMN
                         .active-vl-count,
                         .zero-vl-count {
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             font-size: 16px;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -601,14 +605,13 @@ table.truckassist-table-body-style {
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
-                            color: #6c6c6c;
+                            color: $ta-black;
                             font-size: 14px;
                             font-weight: bold;
                             align-items: center;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                background: $bw6-3;
                             }
                         }
 
@@ -666,8 +669,8 @@ table.truckassist-table-body-style {
                             min-width: 68px;
                             height: 18px;
                             border-radius: 1px;
-                            background: #6c6c6c20;
-                            color: #6c6c6c;
+                            background: $bw6-3;
+                            color: $bw6-2;
                             font-size: 11px;
                             font-weight: 700;
                             display: flex;
@@ -679,8 +682,8 @@ table.truckassist-table-body-style {
                             text-overflow: ellipsis;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c;
+                                color: $bw6-2;
+                                background: $bw6-2;
                             }
                         }
 
@@ -693,15 +696,15 @@ table.truckassist-table-body-style {
                         .table-name-link {
                             font-size: 14px;
                             font-weight: bold;
-                            color: #6c6c6c;
+                            color: $ta-black;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             align-items: center;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $ta-black;
+                                background: $bw6-3;
                             }
                         }
 
@@ -709,7 +712,7 @@ table.truckassist-table-body-style {
                             cursor: pointer;
 
                             &:hover {
-                                color: #5673aa !important;
+                                color: $ta-blue-15 !important;
                                 transition: 0.25s;
                             }
                         }
@@ -727,7 +730,7 @@ table.truckassist-table-body-style {
                             .customer-name {
                                 font-size: 16px;
                                 font-weight: 400;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 white-space: nowrap;
                             }
                         }
@@ -736,15 +739,15 @@ table.truckassist-table-body-style {
                         .table-text {
                             font-size: 14px;
                             font-weight: 400;
-                            color: #6c6c6c;
+                            color: $ta-black-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             width: 100%;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -778,11 +781,11 @@ table.truckassist-table-body-style {
                             align-items: center;
                             font-size: 11px;
                             font-weight: 800;
-                            color: #6c6c6c;
+                            color: $bw6-2;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -790,15 +793,15 @@ table.truckassist-table-body-style {
                         .semi-bold-table-text {
                             font-size: 14px;
                             font-weight: 600;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             width: 100%;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -842,12 +845,12 @@ table.truckassist-table-body-style {
                                 width: fit-content;
                                 display: flex;
                                 align-self: center;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 font-size: 14px;
                                 font-weight: 400;
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -884,7 +887,7 @@ table.truckassist-table-body-style {
                                 font-weight: 700;
                                 font-size: 11px;
                                 line-height: 14px;
-                                color: #919191;
+                                color: $muted;
                                 text-align: center;
 
                                 user-select: none;
@@ -895,29 +898,29 @@ table.truckassist-table-body-style {
                                 svg-icon {
                                     svg {
                                         path {
-                                            fill: #424242;
+                                            fill: $ta-black;
                                         }
                                     }
                                 }
 
                                 .file_count {
-                                    color: #424242;
+                                    color: $ta-black;
                                 }
                             }
 
                             &.action-active {
-                                background-color: #424242 !important;
+                                background-color: $ta-black !important;
 
                                 svg-icon {
                                     svg {
                                         path {
-                                            fill: #dadada !important;
+                                            fill: $bw-9 !important;
                                         }
                                     }
                                 }
 
                                 .file_count {
-                                    color: #dadada !important;
+                                    color: $bw-9 !important;
                                 }
 
                                 &:hover {
@@ -996,18 +999,11 @@ table.truckassist-table-body-style {
                         }
 
                         .color-name {
-                            width: fit-content;
-                            color: #6c6c6c;
-                            margin-left: 4px;
-                            font-size: 14px;
-                            font-weight: 400;
-                            overflow: hidden;
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1044,7 +1040,7 @@ table.truckassist-table-body-style {
                                 .ic_truck_box-truck {
                                     svg {
                                         path {
-                                            fill: #e57373;
+                                            fill: $ta-red;
                                         }
                                     }
                                 }
@@ -1200,11 +1196,11 @@ table.truckassist-table-body-style {
                         .table-total {
                             font-size: 14px;
                             font-weight: 600;
-                            color: #6c6c6c;
+                            color: $bw6-2;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1215,7 +1211,7 @@ table.truckassist-table-body-style {
                             &:hover {
                                 svg {
                                     .comment-notification {
-                                        fill: #919191;
+                                        fill: $muted;
                                     }
                                 }
                             }
@@ -1226,7 +1222,7 @@ table.truckassist-table-body-style {
                             cursor: pointer;
                             font-size: 14px;
                             font-weight: bold;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
@@ -1239,8 +1235,8 @@ table.truckassist-table-body-style {
                             }
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1261,7 +1257,7 @@ table.truckassist-table-body-style {
                         .dispatcher-name {
                             height: 18px;
                             line-height: 18px;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
@@ -1269,8 +1265,8 @@ table.truckassist-table-body-style {
                             font-weight: 400;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1288,11 +1284,11 @@ table.truckassist-table-body-style {
                                 line-height: 15px;
                                 font-size: 14px;
                                 font-weight: 400;
-                                color: #6c6c6c;
+                                color: $bw6-2;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -1321,14 +1317,14 @@ table.truckassist-table-body-style {
                             line-height: 18px;
                             font-size: 14px;
                             font-weight: 400;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1366,16 +1362,16 @@ table.truckassist-table-body-style {
                         // PICKUP AND DELIVERY COLUMN
                         .pickup-delivery-counter {
                             user-select: none;
-                            width: 22px;
-                            height: 22px;
+                            width: 18px;
+                            height: 18px;
                             line-height: 22px;
-                            border-radius: 2px;
+                            border-radius: 1px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             margin-right: 6px;
-                            color: white;
-                            font-size: 14px;
+                            color: $white;
+                            font-size: 11px;
                             font-weight: bold;
                         }
 
@@ -1386,18 +1382,18 @@ table.truckassist-table-body-style {
                         }
 
                         .pickup-count {
-                            background: #4db6a2;
+                            background: $ta-green;
                         }
 
                         .delivery-count {
-                            background: #e57373;
+                            background: $ta-red-10;
                         }
 
                         .pickup-delivery-location-container {
                             .location {
-                                font-size: 14px;
-                                font-weight: 400;
-                                color: #6c6c6c;
+                                font-size: 11px;
+                                font-weight: 600;
+                                color: $ta-black;
                                 height: 15px;
                                 line-height: 15px;
                                 overflow: hidden;
@@ -1405,8 +1401,8 @@ table.truckassist-table-body-style {
                                 text-overflow: ellipsis;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -1419,21 +1415,21 @@ table.truckassist-table-body-style {
 
                                 .date,
                                 .time {
-                                    font-size: 10px;
-                                    font-weight: bold;
-                                    color: #919191;
+                                    font-size: 11px;
+                                    font-weight: 500;
+                                    color: $muted;
                                     height: 11px;
                                     line-height: 11px;
 
                                     &::selection {
-                                        color: #919191;
+                                        color: $muted;
                                         background: #91919120;
                                     }
                                 }
 
                                 .time {
+                                    margin-left: 4px;
                                     visibility: hidden;
-                                    margin-left: auto;
                                 }
                             }
                         }
@@ -1465,12 +1461,12 @@ table.truckassist-table-body-style {
                             .status-time {
                                 font-size: 10px;
                                 font-weight: bold;
-                                color: #919191;
+                                color: $muted;
                                 height: 12px;
                                 line-height: 12px;
 
                                 &::selection {
-                                    color: #919191;
+                                    color: $muted;
                                     background: #91919120;
                                 }
                             }
@@ -1578,6 +1574,35 @@ table.truckassist-table-body-style {
                         // SHARED  COLUMN
                         .shared-container {
                             height: 18px;
+                            width: fit-content;
+
+                            .shared-icon {
+                                width: 18px;
+                                height: 18px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                margin-right: 6px;
+                            }
+
+                            .lock-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/shared-lock.svg');
+                            }
+
+                            .shared-active-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/shared.svg');
+                            }
+
+                            .shared-text {
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: $bw6-2;
+                                height: fit-content;
+
+                                &::selection {
+                                    color: $bw6-2;
+                                    background: $bw6-3;
+                                }
+                            }
                         }
 
                         // LABLE COLUMN
@@ -1677,10 +1702,10 @@ table.truckassist-table-body-style {
                                 font-size: 14px;
                                 font-weight: 400;
                                 height: fit-content;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -1691,7 +1716,7 @@ table.truckassist-table-body-style {
                             text-decoration: none;
                             font-size: 14px;
                             font-weight: 400;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
@@ -1704,8 +1729,8 @@ table.truckassist-table-body-style {
                             }
 
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1748,7 +1773,7 @@ table.truckassist-table-body-style {
                             overflow: hidden;
                             font-size: 14px;
                             font-weight: 400;
-                            color: #6c6c6c;
+                            color: $bw6-2;
                         }
 
                         // RAITING
@@ -1803,14 +1828,14 @@ table.truckassist-table-body-style {
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
-                                    color: #919191;
+                                    color: $muted;
                                     font-size: 11px;
                                     font-weight: bold;
                                     margin-right: 2px;
                                     padding: 0px 3px;
 
                                     &::selection {
-                                        color: #919191;
+                                        color: $muted;
                                         background: #91919120;
                                     }
                                 }
@@ -1834,11 +1859,11 @@ table.truckassist-table-body-style {
                         }
 
                         .table-lable-text {
-                            color: #6c6c6c;
+                            color: $bw6-2;
                             margin-top: 1px;
                             &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
+                                color: $bw6-2;
+                                background: $bw6-3;
                             }
                         }
 
@@ -1858,7 +1883,7 @@ table.truckassist-table-body-style {
 
                                 svg {
                                     circle {
-                                        fill: #919191;
+                                        fill: $muted;
                                     }
                                 }
                             }
@@ -1872,7 +1897,7 @@ table.truckassist-table-body-style {
                                 svg-icon {
                                     svg {
                                         circle {
-                                            fill: #424242;
+                                            fill: $ta-black;
 
                                             transition: fill 0.2s;
                                         }
@@ -1891,14 +1916,14 @@ table.truckassist-table-body-style {
                                 width: 1px;
                                 height: 14px;
                                 border-radius: 1px;
-                                background: #dadada;
+                                background: $bw-9;
                             }
 
                             .regular-count,
                             .bold-count {
                                 width: 30px;
                                 font-size: 14px;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 margin: 0 14px;
                                 display: flex;
                                 align-items: center;
@@ -1907,8 +1932,8 @@ table.truckassist-table-body-style {
                                 white-space: nowrap;
                                 text-overflow: ellipsis;
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -1959,7 +1984,7 @@ table.truckassist-table-body-style {
                             }
 
                             .money-item {
-                                background: #e57373;
+                                background: $ta-red;
                             }
                         }
 
@@ -2002,7 +2027,7 @@ table.truckassist-table-body-style {
                             }
 
                             .red-item {
-                                background: #e57373;
+                                background: $ta-red;
                             }
 
                             .blue-item {
@@ -2045,7 +2070,7 @@ table.truckassist-table-body-style {
                                 -webkit-user-select: none;
                                 -moz-user-select: none;
                                 user-select: none;
-                                height: 20px;
+                                height: 8px;
                                 width: 24px;
                                 display: flex;
                                 overflow: hidden;
@@ -2065,14 +2090,14 @@ table.truckassist-table-body-style {
                                 font-size: 14px;
                                 font-weight: 400;
                                 margin-left: 4px;
-                                color: #6c6c6c;
+                                color: $ta-black-2;
                                 overflow: hidden;
                                 white-space: nowrap;
                                 text-overflow: ellipsis;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
                         }
@@ -2107,7 +2132,7 @@ table.truckassist-table-body-style {
 
                             // Wrong
                             .review-icon {
-                                background: #e57373;
+                                background: $ta-red;
 
                                 svg-icon {
                                     svg {
@@ -2159,7 +2184,7 @@ table.truckassist-table-body-style {
                             .review-title {
                                 font-size: 14px;
                                 font-weight: 400;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 height: 18px;
                                 line-height: 18px;
                                 overflow: hidden;
@@ -2222,13 +2247,13 @@ table.truckassist-table-body-style {
                             .title {
                                 font-size: 14px;
                                 font-weight: bold;
-                                color: #919191;
+                                color: $muted;
                                 overflow: hidden;
                                 white-space: nowrap;
                                 text-overflow: ellipsis;
 
                                 &::selection {
-                                    color: #919191;
+                                    color: $muted;
                                     background: #91919120;
                                 }
                             }
@@ -2288,12 +2313,12 @@ table.truckassist-table-body-style {
                             .violation-code {
                                 font-size: 14px;
                                 font-weight: bold;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 width: 156px;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -2309,7 +2334,7 @@ table.truckassist-table-body-style {
                             .edit-description {
                                 flex-grow: 1;
                                 height: 26px;
-                                background: #6c6c6c;
+                                background: $bw6-2;
                                 border-radius: 2px;
 
                                 input {
@@ -2333,11 +2358,11 @@ table.truckassist-table-body-style {
                             .inspection-decription,
                             .sw-count {
                                 font-size: 14px;
-                                color: #6c6c6c;
+                                color: $bw6-2;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -2397,11 +2422,11 @@ table.truckassist-table-body-style {
                                 width: 178px;
                                 font-size: 14px;
                                 font-weight: bold;
-                                color: #6c6c6c;
+                                color: $bw6-2;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -2409,11 +2434,11 @@ table.truckassist-table-body-style {
                                 flex-grow: 1;
                                 font-size: 14px;
                                 font-weight: 400;
-                                color: #6c6c6c;
+                                color: $bw6-2;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -2429,7 +2454,7 @@ table.truckassist-table-body-style {
                                         -webkit-user-select: none;
                                         -moz-user-select: none;
                                         user-select: none;
-                                        height: 20px;
+                                        height: 8px;
                                         width: 24px;
                                         display: flex;
                                         overflow: hidden;
@@ -2449,14 +2474,14 @@ table.truckassist-table-body-style {
                                         font-size: 14px;
                                         font-weight: 400;
                                         margin-left: 4px;
-                                        color: #6c6c6c;
+                                        color: $ta-black-2;
                                         overflow: hidden;
                                         white-space: nowrap;
                                         text-overflow: ellipsis;
 
                                         &::selection {
-                                            color: #6c6c6c;
-                                            background: #6c6c6c20;
+                                            color: $bw6-2;
+                                            background: $bw6-3;
                                         }
                                     }
                                 }
@@ -2487,11 +2512,11 @@ table.truckassist-table-body-style {
                                 justify-content: flex-end;
                                 font-size: 14px;
                                 font-weight: 600;
-                                color: #6c6c6c;
+                                color: $bw6-2;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -2552,7 +2577,7 @@ table.truckassist-table-body-style {
                                 .title {
                                     font-size: 14px;
                                     font-weight: bold;
-                                    color: #6c6c6c;
+                                    color: $bw6-2;
                                 }
                             }
                         }
@@ -2583,11 +2608,11 @@ table.truckassist-table-body-style {
                             .media-count-title {
                                 font-size: 14px;
                                 font-weight: bold;
-                                color: #919191;
+                                color: $muted;
                                 margin: 0 6px 0 4px;
 
                                 &::selection {
-                                    color: #919191;
+                                    color: $muted;
                                     background: #91919120;
                                 }
                             }
@@ -2623,10 +2648,10 @@ table.truckassist-table-body-style {
                             .title-item {
                                 font-size: 14px;
                                 font-weight: bold;
-                                color: #919191;
+                                color: $muted;
 
                                 &::selection {
-                                    color: #919191;
+                                    color: $muted;
                                     background: #91919120;
                                 }
                             }
@@ -2664,14 +2689,14 @@ table.truckassist-table-body-style {
                             div {
                                 font-size: 14px;
                                 font-weight: 400;
-                                color: #6c6c6c;
+                                color: $bw6-2;
                                 overflow: hidden;
                                 white-space: nowrap;
                                 text-overflow: ellipsis;
 
                                 &::selection {
-                                    color: #6c6c6c;
-                                    background: #6c6c6c20;
+                                    color: $bw6-2;
+                                    background: $bw6-3;
                                 }
                             }
 
@@ -2719,12 +2744,12 @@ table.truckassist-table-body-style {
             .user-status-container,
             .table-avatar-name,
             .semi-bold-table-text {
-                color: #919191 !important;
+                color: $muted !important;
             }
 
             .table-avatar-name {
                 &:hover {
-                    color: #919191 !important;
+                    color: $muted !important;
                 }
             }
         }
@@ -2736,13 +2761,13 @@ table.truckassist-table-body-style {
                 .columns-container {
                     .td-content {
                         input {
-                            background-color: $ta-light-grey;
+                            background-color: $bw2;
                         }
                     }
-                    background-color: $ta-light-grey !important;
+                    background-color: $bw2 !important;
                     .lable-container {
                         input {
-                            background-color: $ta-light-grey;
+                            background-color: $bw2;
                         }
                     }
                     .table-text,
@@ -2774,7 +2799,7 @@ table.truckassist-table-body-style {
                         .raiting-counter-container {
                             &:hover {
                                 .raiting-counter {
-                                    color: #6c6c6c !important;
+                                    color: $bw6-2 !important;
                                 }
                             }
                             .raiting-counter {
@@ -2991,11 +3016,11 @@ table.truckassist-table-body-style {
         justify-self: flex-start;
         font-size: 12px;
         font-weight: 500;
-        color: #919191;
+        color: $muted;
         min-width: 80px;
 
         &::selection {
-            color: #919191;
+            color: $muted;
             background: #91919120;
         }
     }
@@ -3006,7 +3031,7 @@ table.truckassist-table-body-style {
         margin-left: auto;
         font-size: 12px;
         font-weight: bold;
-        color: #6c6c6c;
+        color: $bw6-2;
         justify-content: center;
         min-width: 84px;
 
@@ -3016,8 +3041,8 @@ table.truckassist-table-body-style {
         }
 
         &::selection {
-            color: #6c6c6c;
-            background: #6c6c6c20;
+            color: $bw6-2;
+            background: $bw6-3;
         }
     }
 }
@@ -3035,36 +3060,39 @@ table.truckassist-table-body-style {
 
 // Progress Container
 .bg-sliver-container {
-    background: #dadada;
+    background: $dark-2;
 }
 
 .bg-expired-container {
-    background: #e57373;
+    background: $ta-red;
 }
 
 .bg-inactive-container {
-    background: #e5e5e5;
+    background: $ta-light-grey;
 }
 
 .bg-orange-container {
-    background: #ffecd1;
+    background: $ta-yellow-7;
 }
 
 .bg-danger-container {
-    background: #ffe1e4;
+    background: $ta-red-16;
 }
 
 // Progress Bar
 .bg-progress-sliver {
-    background: #aaaaaa;
+    background: $muted;
+    width: 80%;
 }
 
 .bg-progress-orange {
-    background: #ffb74d;
+    background: $ta-yellow-1;
+    width: 50%;
 }
 
 .bg-progress-danger {
-    background: #e57373;
+    background: $ta-red-10;
+    width: 20%;
 }
 
 // ACTION ANIMATION
@@ -3162,7 +3190,7 @@ table.truckassist-table-body-style {
 
 @keyframes multiple-deactivate-row-add-color {
     0% {
-        background: #e5e5e5;
+        background: $ta-light-grey;
     }
     100% {
         background: #fff3e0;
@@ -3245,7 +3273,7 @@ table.truckassist-table-body-style {
 
 @keyframes multiple-activate-row-add-color {
     0% {
-        background: #e5e5e5;
+        background: $ta-light-grey;
     }
     100% {
         background: #e0eaf8;
@@ -3321,7 +3349,7 @@ table.truckassist-table-body-style {
 // 1
 @keyframes multiple-deleting-row-add-color {
     0% {
-        background: #e5e5e5;
+        background: $ta-light-grey;
     }
     100% {
         background: #ffebee;
