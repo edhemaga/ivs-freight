@@ -5,6 +5,7 @@ import { ConstantStringEnum } from '../../enums/constant-string.enum';
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
 import { DropdownItem } from '../../models/dropdown-item.model';
 import { DashboardTab } from '../../models/dashboard-tab.model';
+import { TopRatedListItem } from '../../models/dashboard-top-rated-models/top-rated-list-item.model';
 
 export class DashboardTopRatedConstants {
     static TOP_RATED_DROPDOWN_DATA: DropdownItem[] = [
@@ -147,7 +148,7 @@ export class DashboardTopRatedConstants {
         },
     ];
 
-    static TOP_RATED_LIST_ITEM = {
+    static TOP_RATED_LIST_ITEM: TopRatedListItem = {
         id: null,
         name: null,
         value: null,

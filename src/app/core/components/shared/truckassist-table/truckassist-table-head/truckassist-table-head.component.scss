@@ -42,6 +42,10 @@ table {
             display: flex;
             height: 30px;
 
+            &-height-2 {
+                height: 37px;
+            }
+
             th {
                 display: flex;
                 align-items: center;
@@ -136,9 +140,35 @@ table {
                     overflow: hidden;
                     transition: width 0.2s ease-in-out;
 
+                    &::-moz-selection {
+                        color: $ta-blue-5;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
                     &::selection {
-                        color: $bw6-2;
-                        background: $bw6-3;
+                        color: $ta-blue-5;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &-double {
+                        border-left: 1px solid #ccc;
+                        padding-left: 6px;
+
+                        &-subtitle {
+                            font-size: 9px;
+                            line-height: 12px;
+                            color: $ta-light-grey-2;
+
+                            &::-moz-selection {
+                                color: $ta-blue-5;
+                                background: rgb(170, 170, 170, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-blue-5;
+                                background: rgb(170, 170, 170, 0.2);
+                            }
+                        }
                     }
                 }
                 .th-title-small {

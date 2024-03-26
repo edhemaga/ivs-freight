@@ -1,7 +1,10 @@
 <table *ngIf="viewData.length">
     <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }">
         <!-- Pined -->
-        <tr class="tr pined-columns-container">
+        <tr
+            class="tr pined-columns-container"
+            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
+        >
             <th
                 [resizeColumn]="column.resizable && !locked"
                 [index]="i"
@@ -28,7 +31,8 @@
                         column.ngTemplate !== 'checkbox' &&
                         column.ngTemplate !== 'user-checkbox',
                     'remuve-head-title':
-                        column.width < 68 && !locked && !rezaizeing
+                        column.width < 68 && !locked && !rezaizeing,
+                    'align-items-end': tableData[0].title === 'Contacts'
                 }"
             >
                 <!-- Selected Row Count -->
@@ -405,6 +409,7 @@
             cdkDropList
             (cdkDropListDropped)="onReorder($event)"
             class="tr not-pined-columns-container"
+            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
             [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
             id="scroll"
         >
@@ -438,7 +443,8 @@
                             resizeHitLimit === i && !resizeIsPined,
                         'remuve-head-title':
                             column.width < 68 && !locked && !rezaizeing,
-                        'space-left': i === 0
+                        'space-left': i === 0,
+                        'align-items-end': tableData[0].title === 'Contacts'
                     }"
                 >
                     <!-- Title -->
@@ -453,26 +459,56 @@
                             column.title !== 'ft'
                         "
                     >
-                        <div
-                            class="th-title"
-                            (click)="sortHeaderClick(column)"
-                            [ngStyle]="{
-                                'width.px':
-                                    column.resizable && !locked
-                                        ? column.width - 55
-                                        : column.width - 20
-                            }"
-                            [ngClass]="{
-                                'sort-active':
-                                    column.sortDirection !== '' &&
-                                    column.sortDirection,
-                                'th-title-locked-cursor': locked,
-                                'set-center-th-title': column.setCenter
-                            }"
+                        <ng-container
+                            *ngIf="
+                                tableData[0].title === 'Contacts' &&
+                                (column.tableHeadTitle === 'PHONE' ||
+                                    column.tableHeadTitle === 'EMAIL')
+                            "
                         >
-                            {{ column.tableHeadTitle }}
-                        </div>
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    {{ column.tableHeadTitle }}
+                                </p>
+
+                                <p class="m-0 ta-font-bold th-title">PRIMARY</p>
+                            </div>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="
+                                tableData[0].title !== 'Contacts' ||
+                                (tableData[0].title === 'Contacts' &&
+                                    column.tableHeadTitle !== 'PHONE' &&
+                                    column.tableHeadTitle !== 'EMAIL')
+                            "
+                        >
+                            <div
+                                class="th-title"
+                                (click)="sortHeaderClick(column)"
+                                [ngStyle]="{
+                                    'width.px':
+                                        column.resizable && !locked
+                                            ? column.width - 55
+                                            : column.width - 20
+                                }"
+                                [ngClass]="{
+                                    'sort-active':
+                                        column.sortDirection !== '' &&
+                                        column.sortDirection,
+                                    'th-title-locked-cursor': locked,
+                                    'set-center-th-title': column.setCenter
+                                }"
+                            >
+                                {{ column.tableHeadTitle }}
+                            </div>
+                        </ng-container>
                     </ng-container>
+
                     <ng-container
                         *ngIf="
                             column?.headIconStyle &&
@@ -494,6 +530,7 @@
                             ></svg-icon>
                         </div>
                     </ng-container>
+
                     <ng-container
                         *ngIf="
                             column.ngTemplate === 'text' &&
@@ -707,11 +744,7 @@
                                     'width.px': column.headIconStyle.width,
                                     'height.px': column.headIconStyle.height
                                 }"
-                                [src]="
-                                    column.headIconStyle.imgPath
-                                        ? column.headIconStyle.imgPath
-                                        : ''
-                                "
+                                [src]="column.headIconStyle.imgPath ?? ''"
                             ></svg-icon>
                         </div>
                     </ng-container>
@@ -817,11 +850,7 @@
                             'width.px': column.headIconStyle.width,
                             'height.px': column.headIconStyle.height
                         }"
-                        [src]="
-                            column.headIconStyle.imgPath
-                                ? column.headIconStyle.imgPath
-                                : ''
-                        "
+                        [src]="column.headIconStyle.imgPath ?? ''"
                     ></svg-icon>
                 </div>
             </th>
