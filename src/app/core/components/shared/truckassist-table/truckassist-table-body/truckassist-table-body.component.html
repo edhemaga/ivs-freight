@@ -17,7 +17,7 @@
                       7
                     : viewData.length * 34 + (viewData.length - 1) * 2 + 22 + 7
             "
-            [isOverflowUnset]="tableData[0].title === 'Contacts'"
+            [isOverflowUnset]="tableData[0].title === 'Contacts' || tableData[0].gridNameTitle === 'Owner'"
             (scrollEvent)="onHorizontalScroll($event)"
         >
             <ng-container

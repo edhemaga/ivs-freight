@@ -88,7 +88,6 @@ export class TaInputDropdownTableComponent
     implements OnInit, OnChanges, OnDestroy
 {
     @Input() set data(value: CardDetails) {
-        console.log(value, 'vaaaaaaaaaal')
         this._data = value;
         this.filteredData = { ...value };
 

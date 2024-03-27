@@ -106,10 +106,7 @@
 
                                         <div
                                             class="bottom-item-body d-flex align-items-center"
-                                            [ngClass]="{
-                                                'line-height':
-                                                    row.title === 'Fleet'
-                                            }"
+                                            [ngStyle]="{ marginTop: row.title === 'Fleet' ? '3px' : 0 }"
                                         >
                                             <ng-container
                                                 *ngIf="row.title === 'Fleet'"
