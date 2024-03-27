@@ -38,7 +38,8 @@ import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.
     providers: [ValueByStringPath],
 })
 export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
-    @Output() saveValueNote = new EventEmitter();
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
 
     // All data
     @Input() set viewData(value: CardDetails[]) {
@@ -208,7 +209,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    public saveNoteValue(note: string, id: number) {
+    public saveNoteValue(note: string, id: number): void {
         this.saveValueNote.emit({
             value: note,
             id: id,

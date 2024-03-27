@@ -943,24 +943,13 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
 
-        const storeOwners =
-            this.selectedTab === ComponentsTableEnum.ACTIVE
-                ? this.ownerActiveQuery.getAll()
-                : this.ownerInactiveQuery.getAll();
+        const noteData = {
+            value: event.value,
+            id: event.id,
+            selectedTab: this.selectedTab,
+        };
 
-        storeOwners.map((owner: OwnerResponse) => {
-            if (event.id === owner.id) {
-                this.selectedTab === ComponentsTableEnum.ACTIVE
-                    ? this.ownerActiveStore.update(owner.id, (entity) => ({
-                          ...entity,
-                          note: event.value,
-                      }))
-                    : this.ownerInactiveStore.update(owner.id, (entity) => ({
-                          ...entity,
-                          note: event.value,
-                      }));
-            }
-        });
+        this.ownerService.updateNote(noteData);
     }
 
     ngOnDestroy(): void {
