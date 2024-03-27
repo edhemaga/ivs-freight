@@ -7,7 +7,6 @@ import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';
 import { CompanyTerminalService } from './state/company-terminal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ActivatedRoute } from '@angular/router';
 @Component({
     selector: 'app-settings-terminal',
@@ -43,7 +42,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'Company Terminal') {

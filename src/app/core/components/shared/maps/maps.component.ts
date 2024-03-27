@@ -7,7 +7,6 @@ import {
     EventEmitter,
     ChangeDetectorRef,
     ViewEncapsulation,
-    SimpleChanges,
 } from '@angular/core';
 import { FormsModule, UntypedFormGroup } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
@@ -19,7 +18,6 @@ import { FuelTService } from '../../fuel/state/fuel.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../model/map-route';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
-import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 import { CommonModule } from '@angular/common';
@@ -33,6 +31,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropDownService } from '../../../services/details-page/drop-down.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
 
 @Component({
     selector: 'app-maps',

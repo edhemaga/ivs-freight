@@ -15,10 +15,7 @@ import { TodoQuery } from '../state/todo.query';
 import { SharedService } from '../../../services/shared/shared.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { applyDrag } from '../../../utils/methods.globals';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
@@ -193,7 +190,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             this.dropAct(res);

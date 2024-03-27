@@ -6,7 +6,6 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyTOfficeService } from './state/company-office.service';
@@ -46,7 +45,7 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'Company Office') {
