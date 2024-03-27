@@ -141,12 +141,12 @@ table {
                     transition: width 0.2s ease-in-out;
 
                     &::-moz-selection {
-                        color: $ta-blue-5;
+                        color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
 
                     &::selection {
-                        color: $ta-blue-5;
+                        color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
 
@@ -160,12 +160,12 @@ table {
                             color: $ta-light-grey-2;
 
                             &::-moz-selection {
-                                color: $ta-blue-5;
+                                color: $ta-light-grey-2;
                                 background: rgb(170, 170, 170, 0.2);
                             }
 
                             &::selection {
-                                color: $ta-blue-5;
+                                color: $ta-light-grey-2;
                                 background: rgb(170, 170, 170, 0.2);
                             }
                         }

@@ -36,8 +36,6 @@ export class ContactResolver implements Resolve<ContactState> {
                     colorRes,
                     contractLabels,
                 ]) => {
-                    console.log(JSON.parse(tableConfig.config));
-
                     localStorage.setItem(
                         'contactTableCount',
                         JSON.stringify({
