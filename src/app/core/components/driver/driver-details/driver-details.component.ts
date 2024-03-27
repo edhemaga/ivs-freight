@@ -11,10 +11,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+
 import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -32,7 +29,6 @@ import moment from 'moment';
     styleUrls: ['./driver-details.component.scss'],
     providers: [DetailsPageService],
 })
-
 export class DriverDetailsComponent implements OnInit, OnDestroy {
     public driverDetailsConfig: any[] = [];
     public dataTest: any;
@@ -74,19 +70,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private DriversDetailsListStore: DriversDetailsListStore,
         private DriversItemStore: DriversItemStore
     ) {
+        let storeData$ = this.DriversItemStore._select((state) => state);
 
-        let storeData$ = this.DriversItemStore._select(state => state);
+        storeData$.subscribe((state) => {
+            let newDriverData = { ...state.entities[this.newDriverId] };
 
-        storeData$.subscribe(state => {
-            
-            let newDriverData = {...state.entities[this.newDriverId]};
-
-            if ( !this.isEmpty(newDriverData) ) {  
+            if (!this.isEmpty(newDriverData)) {
                 this.DetailsDataService.setNewData(newDriverData);
                 this.detailCongif(newDriverData);
                 this.initTableOptions(newDriverData);
             }
-          });
+        });
     }
 
     ngOnInit() {
@@ -121,7 +115,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'driver') {
@@ -130,12 +124,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'activate': {
-                            if ( res?.cdlStatus && res?.cdlStatus == 'Activate' ) {
+                            if (
+                                res?.cdlStatus &&
+                                res?.cdlStatus == 'Activate'
+                            ) {
                                 this.activateCdl(res.data.id);
                             } else {
                                 this.changeDriverStatus(res.id);
                             }
-                            
+
                             break;
                         }
                         case 'deactivate': {
@@ -144,14 +141,21 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         }
                         case 'info': {
                             if (res.cdlStatus === 'New') {
-                                let driverId = res.data.data.id ? res.data.data.id : res.data.driver.id;
+                                let driverId = res.data.data.id
+                                    ? res.data.data.id
+                                    : res.data.driver.id;
                                 this.deactivateCdl(res.data.id, driverId);
-                                if ( this.DetailsDataService.cdlId != res.data.id || res?.data?.newCdlID ) {
-                                    let newCdlId = res?.data?.newCdlID ? res?.data?.newCdlID : this.DetailsDataService.cdlId;
-                                    setTimeout(()=>{
+                                if (
+                                    this.DetailsDataService.cdlId !=
+                                        res.data.id ||
+                                    res?.data?.newCdlID
+                                ) {
+                                    let newCdlId = res?.data?.newCdlID
+                                        ? res?.data?.newCdlID
+                                        : this.DetailsDataService.cdlId;
+                                    setTimeout(() => {
                                         this.activateCdl(newCdlId);
                                     }, 1000);
-                                    
                                 }
                             } else {
                                 this.activateCdl(res.data.id);
@@ -183,27 +187,27 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             this.detailCongif(res);
                             this.newDriverId = id;
                             if (this.router.url.includes('details')) {
-                                this.router.navigate([`/list/driver/${res.id}/details`]);
+                                this.router.navigate([
+                                    `/list/driver/${res.id}/details`,
+                                ]);
                             }
-    
+
                             this.cdRef.detectChanges();
                         },
                         error: () => {},
                     });
-
                 } else {
                     //query = this.driverService.getDriverById(id);
                     this.newDriverId = id;
                     this.router.navigate([`/list/driver/${id}/details`]);
-                    this.cdRef.detectChanges();        
+                    this.cdRef.detectChanges();
                 }
-                
             });
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
-      }
+    }
 
     /**Function template and names for header and other options in header */
     public detailCongif(dataDriver: any) {
@@ -298,15 +302,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             }
         });
 
-        if(data.mvrs?.length>0){
-        data?.mvrs.map((el)=>{
-            if(moment(el.issueDate).isAfter(moment())){
-            this.arrayMedical.push(false)
-            }
-           if(moment(el.issueDate).isBefore(moment())){
-                    this.arrayMedical.push(true)
-             }
-            })
+        if (data.mvrs?.length > 0) {
+            data?.mvrs.map((el) => {
+                if (moment(el.issueDate).isAfter(moment())) {
+                    this.arrayMedical.push(false);
+                }
+                if (moment(el.issueDate).isBefore(moment())) {
+                    this.arrayMedical.push(true);
+                }
+            });
         }
         if (this.arrayCDL.includes(false)) {
             this.hasDangerCDL = false;
@@ -326,7 +330,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.isActiveCdl = false;
         this.cdlActiveId = 0;
         data?.cdls?.map((item) => {
-           if (item.status == 1) {
+            if (item.status == 1) {
                 this.cdlActiveId = item.id;
                 this.arrayActiveCdl.push(true);
                 this.isActiveCdl = true;
@@ -506,16 +510,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.cdlService
             .deactivateCdlById(id, driverId)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-            });
+            .subscribe({});
     }
 
     private activateCdl(id: number) {
         this.cdlService
             .activateCdlById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-            });
+            .subscribe({});
     }
     public onModalAction(action: string): void {
         if (action.includes('Drug')) {

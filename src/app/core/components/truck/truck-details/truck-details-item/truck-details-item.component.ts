@@ -17,7 +17,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import {
@@ -98,8 +97,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             //this.truck = changes.truck?.currentValue;
             //his.initTableOptions();
         }
-    }    
-
+    }
 
     ngOnInit(): void {
         // Confirmation Subscribe

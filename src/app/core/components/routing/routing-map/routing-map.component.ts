@@ -24,10 +24,7 @@ import {
 import { AddressEntity } from 'appcoretruckassist';
 import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { imageMapType } from 'src/assets/utils/methods-global';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -606,7 +603,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'route') {

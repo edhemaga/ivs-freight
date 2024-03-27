@@ -8,10 +8,7 @@ import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-mo
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 
 // Services
@@ -197,7 +194,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case ConstantStringTableComponentsEnum.DELETE: {
                             if (

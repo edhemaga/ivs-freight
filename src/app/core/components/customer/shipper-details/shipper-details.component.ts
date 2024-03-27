@@ -1,6 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
-import { ShipperResponse } from 'appcoretruckassist';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
@@ -10,7 +9,6 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperMinimalListStore } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
-import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ShipperDetailsListQuery } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
 import { ShipperDetailsListStore } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
@@ -48,18 +46,15 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         private slq: ShipperDetailsListQuery,
         private shipperStore: ShipperDetailsListStore,
         private DetailsDataService: DetailsDataService,
-        private ShipperItemStore: ShipperItemStore,
+        private ShipperItemStore: ShipperItemStore
     ) {
-
-        let storeData$ = this.ShipperItemStore._select(state => state);
-        storeData$.subscribe(state => {
-            
-            let newShipData = {...state.entities[this.newShipperId]};
-            if ( !this.isEmpty(newShipData) ) { 
+        let storeData$ = this.ShipperItemStore._select((state) => state);
+        storeData$.subscribe((state) => {
+            let newShipData = { ...state.entities[this.newShipperId] };
+            if (!this.isEmpty(newShipData)) {
                 this.shipperConf(newShipData);
-             }
-        })
-
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -67,7 +62,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'shipper') {
@@ -75,10 +70,10 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                             }
                             break;
                         }
-                        case 'deactivate': 
-                            case 'activate': {
+                        case 'deactivate':
+                        case 'activate': {
                             if (res.template === 'Shipper') {
-                                this.changeShipperStatus(res?.id)
+                                this.changeShipperStatus(res?.id);
                             }
                             break;
                         }
@@ -117,13 +112,11 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                         ]);
                         this.cdRef.detectChanges();
                     },
-                    error: () => {
-
-                    },
+                    error: () => {},
                 });
             });
-        
-        let shipperId = this.activated_route.snapshot.params.id;   
+
+        let shipperId = this.activated_route.snapshot.params.id;
         let shipperData = {
             ...this.ShipperItemStore?.getValue()?.entities[shipperId],
         };
@@ -132,7 +125,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
-      }
+    }
 
     public shipperConf(data: any) {
         this.shipperConfigData = data;
@@ -213,7 +206,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             },
         ];
         this.shipperId = data?.id ? data.id : null;
-
     }
     public deleteShipperById(id: number) {
         let last = this.shipperList.at(-1);
@@ -252,8 +244,12 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public onDropActions(event: any) {
         this.getShipperById(event.id);
         let eventType = '';
-        if ( event.type == 'Contact' || event.type == 'edit' || event.type == 'Review'){
-            eventType = 'edit'
+        if (
+            event.type == 'Contact' ||
+            event.type == 'edit' ||
+            event.type == 'Review'
+        ) {
+            eventType = 'edit';
         } else {
             eventType = event.type;
         }
@@ -263,9 +259,11 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             id: event.id,
             type: eventType,
             openedTab: event.type,
-        }
+        };
 
-        let shipperData = this.shipperObject ? this.shipperObject : this.shipperConfigData;
+        let shipperData = this.shipperObject
+            ? this.shipperObject
+            : this.shipperConfigData;
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
@@ -275,13 +273,13 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    public onModalAction(event: any){
+    public onModalAction(event: any) {
         let eventObject = {
             data: undefined,
             id: this.shipperId,
             type: 'edit',
             openedTab: event,
-        }
+        };
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
@@ -311,7 +309,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -321,14 +319,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     name: 'Contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
-                    iconName: 'add-contact'
+                    iconName: 'add-contact',
                 },
                 {
                     title: 'Write Review',
                     name: 'Review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
-                    iconName: 'write-review'
+                    iconName: 'write-review',
                 },
                 {
                     title: 'border',
@@ -338,14 +336,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -356,7 +354,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'close-business'
+                    iconName: 'close-business',
                 },
                 {
                     title: 'Delete',
@@ -364,7 +362,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
 
                 /*
@@ -384,9 +382,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public changeShipperStatus(id: number){
+    public changeShipperStatus(id: number) {
         this.shipperService.changeShipperStatus(id);
-    
     }
 
     ngOnDestroy(): void {

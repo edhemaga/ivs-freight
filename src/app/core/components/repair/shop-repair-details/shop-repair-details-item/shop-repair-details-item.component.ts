@@ -12,7 +12,6 @@ import { RepairShopResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
@@ -90,7 +89,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             // if (res.template === 'repair') {
@@ -143,8 +142,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     }
 
     public optionsEvent(eventData: any, action: string) {
-
-        if ( eventData.type == 'finish order' ) {
+        if (eventData.type == 'finish order') {
             this.finishOrder(eventData.id, eventData.data, undefined, 'bill');
         }
 
@@ -167,13 +165,17 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         }, 100);
     }
 
-    public finishOrder(repairId: number, data: any, event?: any, subType?: any) {
-        
-        if ( event ) {
+    public finishOrder(
+        repairId: number,
+        data: any,
+        event?: any,
+        subType?: any
+    ) {
+        if (event) {
             event.stopPropagation();
             event.preventDefault();
         }
-        
+
         this.modalService.openModal(
             RepairOrderModalComponent,
             { size: 'small' },

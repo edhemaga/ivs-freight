@@ -37,10 +37,6 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 //Components
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
@@ -51,6 +47,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 //Model
 import { optionsPopupContent } from '../../model/toolbar';
 import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal/load-cards-modal.component';
+import { ConfirmationModalResetComponent } from '../../../modals/confirmation-modal/confirmation-modal-reset/confirmation-modal-reset.component';
 
 @Titles()
 @Component({
@@ -59,16 +56,20 @@ import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-
     styleUrls: ['./truckassist-table-toolbar.component.scss'],
     standalone: true,
     imports: [
-        AppTooltipComponent,
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        ToolbarFiltersComponent,
-        AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,
+        AngularSvgIconModule,
+
+        // components
+        AppTooltipComponent,
+        ToolbarFiltersComponent,
         TaInputDropdownComponent,
         LoadCardsModalComponent,
+        ConfirmationModalResetComponent,
     ],
 })
 export class TruckassistTableToolbarComponent
@@ -226,8 +227,8 @@ export class TruckassistTableToolbarComponent
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
-                    if (res.type === ConstantStringTableComponentsEnum.DELETE) {
+                next: (res) => {
+                    if (res.type === ConstantStringTableComponentsEnum.RESET) {
                         this.onResetTable();
                     }
                 },
@@ -579,11 +580,11 @@ export class TruckassistTableToolbarComponent
                 toaggleUnlockTable: true,
             });
 
-            if (this.tableLocked) {
-                const tableConfig = localStorage.getItem(
-                    `table-${this.tableConfigurationType}-Configuration`
-                );
+            const tableConfig = localStorage.getItem(
+                `table-${this.tableConfigurationType}-Configuration`
+            );
 
+            if (this.tableLocked && tableConfig) {
                 this.tableService
                     .sendTableConfig({
                         tableType: this.tableConfigurationType,
@@ -610,11 +611,11 @@ export class TruckassistTableToolbarComponent
             this.onShowOptions(this.optionsPopup);
 
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationModalResetComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     template: '',
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    type: ConstantStringTableComponentsEnum.RESET,
                 }
             );
         }
@@ -650,12 +651,12 @@ export class TruckassistTableToolbarComponent
             `table-${this.tableConfigurationType}-Configuration`
         );
 
-        // this.tableService
-        //     .sendTableConfig({
-        //         tableType: this.tableConfigurationType,
-        //         config: null,
-        //     })
-        //     .subscribe(() => {});
+        this.tableService
+            .sendTableConfig({
+                tableType: this.tableConfigurationType,
+                config: null,
+            })
+            .subscribe(() => {});
 
         this.tableService.sendResetColumns(true);
     }

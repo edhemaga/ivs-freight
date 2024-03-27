@@ -55,6 +55,7 @@ import {
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
 import { CardRows } from '../../shared/model/card-data.model';
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-contacts-table',
@@ -509,26 +510,27 @@ export class ContactsTableComponent
         return {
             ...data,
             isSelected: false,
-            email: data?.contactEmails[0]?.email
-                ? data?.contactEmails[0]?.email
-                : '',
-            phone: data?.contactPhones[0]?.phone
-                ? data?.contactPhones[0]?.phone
-                : '',
-            textAddress: data?.address?.address ?? '',
+            email: data?.contactEmails[0]?.email ?? null,
+            emailSecond: data?.contactEmails[1]?.email ?? null,
+            phone: data?.contactPhones[0]?.phone ?? null,
+            phoneSecond: data?.contactPhones[1]?.phone ?? null,
+            phoneThird: data?.contactPhones[2]?.phone ?? null,
+            company: data?.companyName,
+            textAddress: data?.address?.address ?? null,
             textShortName: this.nameInitialsPipe.transform(data.name),
             avatarColor: this.getAvatarColors(),
             avatarImg: data?.avatar
                 ? this.imageBase64Service.sanitizer(data.avatar)
-                : '',
+                : null,
             isShared: data.shared,
-            textShared: !data?.shared ? 'Only You' : 'Nije povezano',
             lable: data?.companyContactLabel
                 ? {
-                      name: data?.companyContactLabel?.name ?? '',
-                      color: data?.companyContactLabel?.code ?? '',
+                      name: data?.companyContactLabel?.name ?? null,
+                      color: data?.companyContactLabel?.code ?? null,
                   }
                 : null,
+            added: convertDateFromBackend(data?.createdAt),
+            edited: convertDateFromBackend(data?.updatedAt),
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownContactContent(),

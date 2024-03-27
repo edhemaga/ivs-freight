@@ -72,26 +72,57 @@
                         column.title !== 'ft'
                     "
                 >
-                    <div
-                        class="th-title"
-                        (click)="sortHeaderClick(column)"
-                        [ngStyle]="{
-                            'width.px':
-                                column.resizable && !locked
-                                    ? column.width - 55
-                                    : column.width - 20,
-                            'min-width.px': rezaizeing ? column.width : 'unset'
-                        }"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': locked,
-                            'set-center-th-title': column.setCenter
-                        }"
+                    <ng-container
+                        *ngIf="
+                            tableData[0].title === 'Contacts' &&
+                            (column.tableHeadTitle === 'PHONE' ||
+                                column.tableHeadTitle === 'EMAIL')
+                        "
                     >
-                        {{ column.tableHeadTitle }}
-                    </div>
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                        >
+                            <p
+                                class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                            >
+                                {{ column.tableHeadTitle }}
+                            </p>
+
+                            <p class="m-0 ta-font-bold th-title">PRIMARY</p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableData[0].title !== 'Contacts' ||
+                            (tableData[0].title === 'Contacts' &&
+                                column.tableHeadTitle !== 'PHONE' &&
+                                column.tableHeadTitle !== 'EMAIL')
+                        "
+                    >
+                        <div
+                            class="th-title"
+                            (click)="sortHeaderClick(column)"
+                            [ngStyle]="{
+                                'width.px':
+                                    column.resizable && !locked
+                                        ? column.width - 55
+                                        : column.width - 20,
+                                'min-width.px': rezaizeing
+                                    ? column.width
+                                    : 'unset'
+                            }"
+                            [ngClass]="{
+                                'sort-active':
+                                    column.sortDirection !== '' &&
+                                    column.sortDirection,
+                                'th-title-locked-cursor': locked,
+                                'set-center-th-title': column.setCenter
+                            }"
+                        >
+                            {{ column.tableHeadTitle }}
+                        </div>
+                    </ng-container>
                 </ng-container>
                 <ng-container
                     *ngIf="

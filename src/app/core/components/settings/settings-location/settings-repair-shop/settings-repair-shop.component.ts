@@ -9,7 +9,6 @@ import { CompanyRepairShopService } from './state/company-repairshop.service';
 import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { RepairTService } from '../../../repair/state/repair.service';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ActivatedRoute } from '@angular/router';
 @Component({
@@ -50,7 +49,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'Company Repair Shop') {
