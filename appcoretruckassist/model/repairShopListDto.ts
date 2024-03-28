@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
+import { EnumValue } from './enumValue';
 import { RepairShopContactListResponse } from './repairShopContactListResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { ReviewResponse } from './reviewResponse';
@@ -23,31 +24,7 @@ export interface RepairShopListDto {
     phoneExt?: string | null;
     email?: string | null;
     address?: string | null;
-    stateShortName?: string | null;
-    pinned?: boolean;
-    order?: number;
-    cost?: number;
-    note?: string | null;
-    companyOwned?: boolean;
-    currentCompanyUserRating?: number | null;
-    latitude?: number | null;
-    longitude?: number | null;
-    distance?: number | null;
-    lastVisited?: string | null;
-    timesVisitedByCompany?: number;
-    isClosed?: boolean;
-    createdAt?: string;
-    updatedAt?: string;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
-    fileCount?: number | null;
-    bankName?: string | null;
-    routing?: string | null;
-    account?: string | null;
-    contactCount?: number | null;
-    upCount?: number;
-    downCount?: number;
-    commentCount?: number;
-    bill?: number;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     openHoursSameAllDays?: boolean | null;
     openAlways?: boolean | null;
@@ -55,7 +32,33 @@ export interface RepairShopListDto {
     endTimeAllDays?: string | null;
     openHoursToday?: string | null;
     openHoursStatus?: string | null;
+    bill?: number;
+    order?: number;
+    bankName?: string | null;
+    routing?: string | null;
+    account?: string | null;
+    upCount?: number;
+    downCount?: number;
+    commentCount?: number;
     reviews?: Array<ReviewResponse> | null;
     contacts?: Array<RepairShopContactListResponse> | null;
+    cost?: number;
+    lastVisited?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
+    stateShortName?: string | null;
+    pinned?: boolean;
+    note?: string | null;
+    companyOwned?: boolean;
+    currentCompanyUserRating?: number | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    distance?: number | null;
+    timesVisitedByCompany?: number;
+    isClosed?: boolean;
+    fileCount?: number | null;
+    contactCount?: number | null;
+    shopServiceType?: EnumValue;
+    dateDeactivated?: string | null;
 }
 

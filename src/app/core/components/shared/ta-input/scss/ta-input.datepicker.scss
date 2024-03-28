@@ -1,4 +1,6 @@
 @import './ta-input.colors.scss';
+@import 'src/theme/variables.scss';
+
 .date_time_holder {
     display: flex;
     align-items: center;
@@ -8,7 +10,7 @@
     height: 100%;
     padding: 0px 6px;
     opacity: 0;
-    padding-left: 35px;
+    padding-left: 27px;
     z-index: 20;
     cursor: text;
 
@@ -52,7 +54,7 @@
     }
 
     span.main {
-        padding: 0 6px;
+        padding: 0 2px;
         outline: none;
         font-size: 14px;
 
@@ -60,6 +62,10 @@
 
         &::selection {
             z-index: 10;
+        }
+
+        &:first-child {
+            padding-left: 4px;
         }
     }
 

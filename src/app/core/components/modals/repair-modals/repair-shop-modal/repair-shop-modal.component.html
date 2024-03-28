@@ -180,7 +180,7 @@
                     >
                         <div class="col-12 service-types">
                             <app-ta-input-dropdown
-                                formControlName="repairTypeService"
+                                formControlName="shopServiceType"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
@@ -204,9 +204,6 @@
                                 }"
                                 [activeItem]="isSelectedRepairType"
                                 [options]="repairTypes"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'shop-type')
-                                "
                             ></app-ta-input-dropdown>
                         </div>
 
@@ -248,26 +245,14 @@
                             [is24Hours]="
                                 !!repairShopForm.get('openAlways').value
                             "
-                            [isCardOpen]="true"
+                            [isCardOpen]="hideOpenHours"
                             [disabledCard]="true"
                         >
-                            <app-ta-modal-table
-                                [isWorkHoursTable]="true"
-                                [modalTableData]="openHours.controls"
-                                (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
-                                "
-                                (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
-                                "
-                            >
-                            </app-ta-modal-table>
-
-                            <!-- <div
-                                class="common-fake-table-modal common-fake-table-modal-repair-shop-open-hours"
+                            <div
+                                class="common-open-hours-table-modal"
                                 formArrayName="openHours"
                             >
-                                <div class="common-fake-table-body">
+                                <div class="common-table-body">
                                     <div
                                         *ngFor="
                                             let openHour of openHours.controls;
@@ -286,10 +271,10 @@
                                                 isDaysVisible
                                             "
                                             [formGroupName]="ind"
-                                            class="common-fake-table-card"
-                                        > -->
-                            <!-- Switch for all days -->
-                            <!-- <div
+                                            class="common-table-card"
+                                        >
+                                            <!-- Switch for all days -->
+                                            <div
                                                 *ngIf="ind === 0"
                                                 class="time-picker-all-days"
                                             >
@@ -309,10 +294,10 @@
                                                             .value
                                                     }}
                                                 </span>
-                                            </div> -->
+                                            </div>
 
-                            <!-- Other Days Check -->
-                            <!-- <app-ta-checkbox
+                                            <!-- Other Days Check -->
+                                            <app-ta-checkbox
                                                 (formArrayAction)="
                                                     openHourDayAction(
                                                         $event,
@@ -330,10 +315,10 @@
                                                         .value
                                                 "
                                                 formControlName="isDay"
-                                            ></app-ta-checkbox> -->
+                                            ></app-ta-checkbox>
 
-                            <!-- Time Picker -->
-                            <!-- <app-ta-input
+                                            <!-- Time Picker -->
+                                            <app-ta-input
                                                 *ngIf="
                                                     openHour.get('isDay').value
                                                 "
@@ -364,7 +349,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                         </app-ta-custom-card>
                     </div>
 
@@ -428,6 +413,7 @@
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
+
                     <div class="ta-card-body-overflow-none">
                         <app-ta-custom-card
                             [cardName]="'Document'"
@@ -465,36 +451,39 @@
                 <!-- Contact Tab -->
                 <div *ngIf="selectedTab === 2" class="m-tab">
                     <app-ta-custom-card
-                        (onActionEvent)="addContacts($event)"
+                        (onActionEvent)="addContacts()"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
                         [cardName]="'Contact'"
                         [disableAnimation]="disableCardAnimation"
-                        [disabledCard]="!contacts.length"
+                        [disabledCard]="!contactAddedCounter"
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [hasArrow]="false"
-                        [hasBodyData]="contacts.length > 0"
-                        [hasCounter]="contacts.length ? contacts.length : 0"
-                        [hasScrollBody]="contacts.length > 10"
-                        [isCardOpen]="contacts.length > 0"
+                        [hasCounter]="contactAddedCounter"
+                        [hasScrollBody]="contactAddedCounter > 10"
+                        [isCardOpen]="contactAddedCounter > 0"
                         [isCommentData]="true"
                     >
                         <div
                             (scroll)="onScrollingContacts($event)"
-                            *ngIf="contacts.length"
                             class="common-fake-table-modal common-fake-table-modal-original-repair-shop"
-                            formArrayName="contacts"
                         >
-                            <div class="common-fake-table-label">
-                                <p>FULL NAME <span>*</span></p>
-                                <p>DEPARTMENT <span>*</span></p>
-                                <p>PHONE <span>*</span></p>
-                                <p>EXT</p>
-                                <p>EMAIL</p>
-                            </div>
-                            <div class="common-fake-table-body">
+                            <app-ta-modal-table
+                                [isContactTable]="true"
+                                [isNewRowCreated]="isNewContactAdded"
+                                [departmants]="labelsDepartments"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
+                                "
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            >
+                            </app-ta-modal-table>
+
+                            <!--  <div class="common-fake-table-body">
                                 <div
                                     *ngFor="
                                         let contact of contacts.controls;
@@ -601,10 +590,18 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </app-ta-custom-card>
+
+                    <ng-container *ngIf="contactAddedCounter === 0">
+                        <svg-icon
+                            class="d-flex"
+                            [src]="'assets/svg/no-results.svg'"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
+
                 <!-- Review Tab -->
                 <div *ngIf="selectedTab === 3" class="m-tab">
                     <app-ta-custom-card

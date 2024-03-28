@@ -1,4 +1,5 @@
 @import './ta-input.colors.scss';
+@import 'src/theme/variables.scss';
 
 //-------------------- Input Dropdown arrow -----------------
 .input-dropdown-arrow {
@@ -109,7 +110,7 @@
     &.valid-focus-out {
         svg {
             path {
-                fill: $valid-arrow;
+                fill: $ta-blue-13;
             }
         }
 
