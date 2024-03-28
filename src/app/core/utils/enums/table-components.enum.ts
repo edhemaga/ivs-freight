@@ -31,6 +31,7 @@ export enum ConstantStringTableComponentsEnum {
     DELETE_MULTIPLE = 'delete-multiple',
     RESET_PASSWORD = 'reset-password',
     RESEND_INVITATION = 'resend-invitation',
+    RESET = 'reset',
 
     // List or card
     LIST = 'List',
@@ -324,6 +325,7 @@ export enum ConstantStringTableComponentsEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    CONTACT = 'contact',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',

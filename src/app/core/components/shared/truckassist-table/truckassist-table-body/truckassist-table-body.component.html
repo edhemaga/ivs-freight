@@ -17,6 +17,10 @@
                       7
                     : viewData.length * 34 + (viewData.length - 1) * 2 + 22 + 7
             "
+            [isOverflowUnset]="
+                tableData[0].title === 'Contacts' ||
+                tableData[0].gridNameTitle === 'Owner'
+            "
             (scrollEvent)="onHorizontalScroll($event)"
         >
             <ng-container
@@ -1200,18 +1204,26 @@
                                             width: column.width + 'px'
                                         }"
                                     >
-                                        <div class="shared-container">
-                                            <div
-                                                class="shared-icon"
-                                                [ngClass]="{
-                                                    'lock-icon': !isShared,
-                                                    'shared-active-icon':
-                                                        isShared
-                                                }"
-                                            ></div>
-                                            <div class="shared-text">
-                                                {{ row[column.field] }}
-                                            </div>
+                                        <div
+                                            class="d-flex align-items-center shared-container"
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                *ngIf="
+                                                    row.departmentContacts
+                                                        .length
+                                                "
+                                                [type]="'contacts'"
+                                                [data]="row.departmentContacts"
+                                            ></app-ta-input-dropdown-table>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !row.departmentContacts
+                                                        .length
+                                                "
+                                            >
+                                                <p class="m-0">Only You</p>
+                                            </ng-container>
                                         </div>
                                     </div>
 
@@ -1736,6 +1748,24 @@
                                                 : 'unset'
                                         }"
                                     >
+                                        <svg-icon
+                                            *ngIf="
+                                                tableData[0].title ===
+                                                'Contacts'
+                                            "
+                                            class="phone-email-icon"
+                                            [src]="
+                                                ''
+                                                    | setPhoneEmailIcon
+                                                        : column
+                                                        : row
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+
                                         <span
                                             class="table-text"
                                             [innerHtml]="
@@ -1782,26 +1812,6 @@
                                         }"
                                         ngbTooltip
                                     >
-                                        <!-- <svg
-                                            *ngIf="row[column.field]"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="18"
-                                            height="18"
-                                            viewBox="0 0 11.638 16.2"
-                                        >
-                                            <path
-                                                d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                                                transform="translate(-16 -6.014)"
-                                                [ngStyle]="{
-                                                    fill: row[column.field],
-                                                    filter:
-                                                        row.color === '#F9F9F9'
-                                                            ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
-                                                            : 'unset'
-                                                }"
-                                            />
-                                        </svg> -->
-
                                         <div
                                             *ngIf="row[column.field]"
                                             class="color-name"
@@ -2946,18 +2956,26 @@
                                             width: column.width + 'px'
                                         }"
                                     >
-                                        <div class="shared-container">
-                                            <div
-                                                class="shared-icon"
-                                                [ngClass]="{
-                                                    'lock-icon': !isShared,
-                                                    'shared-active-icon':
-                                                        isShared
-                                                }"
-                                            ></div>
-                                            <div class="shared-text">
-                                                {{ row[column.field] }}
-                                            </div>
+                                        <div
+                                            class="d-flex align-items-center shared-container"
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                *ngIf="
+                                                    row.departmentContacts
+                                                        .length
+                                                "
+                                                [type]="'contacts'"
+                                                [data]="row.departmentContacts"
+                                            ></app-ta-input-dropdown-table>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !row.departmentContacts
+                                                        .length
+                                                "
+                                            >
+                                                <p class="m-0">Only You</p>
+                                            </ng-container>
                                         </div>
                                     </div>
 
@@ -3495,7 +3513,7 @@
 
                                     <!-- TEXT COLUMN -->
                                     <div
-                                        class="td-content"
+                                        class="d-flex align-items-center td-content"
                                         *ngIf="
                                             column.ngTemplate === 'text' &&
                                             column.title !== 'Endorsement' &&
@@ -3508,6 +3526,24 @@
                                                 : 'unset'
                                         }"
                                     >
+                                        <svg-icon
+                                            *ngIf="
+                                                tableData[0].title ===
+                                                'Contacts'
+                                            "
+                                            class="phone-email-icon"
+                                            [src]="
+                                                ''
+                                                    | setPhoneEmailIcon
+                                                        : column
+                                                        : row
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+
                                         <span
                                             class="table-text"
                                             [innerHtml]="
@@ -4286,9 +4322,34 @@
                                             "
                                             [openedAll]="false"
                                             [parking]="false"
+                                            (saveNoteValue)="
+                                                saveValueNote.emit({
+                                                    value: $event,
+                                                    id: row.id
+                                                })
+                                            "
                                         >
                                         </app-ta-note>
                                     </div>
+
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'fleet'"
+                                    >
+                                        <div
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                [data]="row"
+                                                [type]="'owner'"
+                                            ></app-ta-input-dropdown-table>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- ACTIONS COLUMN -->
                                     <div

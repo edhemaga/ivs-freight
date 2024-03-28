@@ -106,7 +106,7 @@
                         <!-- Phone Extension -->
 
                         <div>
-                            <ng-container *ngIf="!isContactPhoneExtExist[ind]">
+                            <ng-container *ngIf="!isContactPhoneExtExist[i]">
                                 <div
                                     class="d-flex align-items-center phone-extension-container"
                                     ngbTooltip
@@ -114,8 +114,8 @@
                                     position="top"
                                     tooltipBackground="#6c6c6c"
                                     (click)="
-                                        isContactPhoneExtExist[ind] =
-                                            !isContactPhoneExtExist[ind]
+                                        isContactPhoneExtExist[i] =
+                                            !isContactPhoneExtExist[i]
                                     "
                                 >
                                     <svg-icon
@@ -129,7 +129,7 @@
                             </ng-container>
 
                             <app-ta-input
-                                *ngIf="isContactPhoneExtExist[ind]"
+                                *ngIf="isContactPhoneExtExist[i]"
                                 formControlName="phoneExt"
                                 [inputConfig]="{
                                     name: 'phone-extension',

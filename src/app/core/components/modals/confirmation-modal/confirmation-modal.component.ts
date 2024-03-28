@@ -28,26 +28,9 @@ import { convertDateFromBackend } from '../../../utils/methods.calculations';
 // pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
-export interface Confirmation {
-    template: string; // examples: driver, broker, shipper, cdl.....
-    type:
-        | 'delete'
-        | 'multiple delete'
-        | 'hire'
-        | 'activate'
-        | 'deactivate'
-        | 'info'; // if type is info => subtype must be: archive | ban list | dnu | void;
-    id?: number; // id for item
-    data?: any;
-    array?: any[]; // multiple array of objects
-    subType?: 'archive' | 'ban list' | 'dnu' | 'cdl void' | 'mark'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
-    subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
-    cdlStatus?: 'New' | 'Renew' | 'Activate';
-    image?: boolean; // has image or not
-    svg?: boolean; // has svg or not
-    rating?: boolean; // has rating or not
-    modalHeader?: boolean;
-}
+// models
+import { Confirmation } from './state/models/confirmation.model';
+
 @Component({
     selector: 'app-confirmation-modal',
     templateUrl: './confirmation-modal.component.html',

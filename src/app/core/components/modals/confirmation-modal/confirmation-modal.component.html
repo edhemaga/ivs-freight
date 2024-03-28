@@ -13,6 +13,8 @@
                     editData?.type?.substring(1)) +
               (editData?.template === 'fuel stop'
                   ? ' Fuel Stop'
+                  : editData?.template === ' contact'
+                  ? 'Contact'
                   : ' Confirmation')
     "
     [editName]="
@@ -110,6 +112,49 @@
                         {{ editData.data.address.state }},
                         {{ editData.data.address.stateShortName }}
                     </p>
+                </div>
+            </ng-container>
+
+            <!-- Contact -->
+
+            <ng-container *ngIf="['contact'].includes(editData?.template)">
+                <div
+                    class="d-flex flex-column justify-content-center confirmation-body-content"
+                >
+                    <div class="d-flex align-items-center">
+                        <ng-container *ngIf="editData.data.avatarImg">
+                            <img
+                                class="avatar-img"
+                                [src]="editData.data.avatarImg"
+                                alt="avatar"
+                            />
+                        </ng-container>
+
+                        <ng-container *ngIf="!editData.data.avatarImg">
+                            <div
+                                class="d-flex justify-content-center align-items-center avatar-div-img"
+                                [ngStyle]="{
+                                    background:
+                                        editData.data.avatarColor.background,
+                                    color: editData.data.avatarColor.color
+                                }"
+                            >
+                                {{
+                                    editData.data.name.slice(0, 1).toUpperCase()
+                                }}
+                            </div>
+                        </ng-container>
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="m-0 ta-font-bold text-1">
+                                {{ editData.data.name }}
+                            </p>
+
+                            <p class="m-0 ta-font-medium text-2">
+                                {{ editData.data.phone }}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </ng-container>
 
@@ -322,8 +367,12 @@
             class="d-flex flex-column justify-content-center confirmation-array-body"
         >
             <div
-                *ngFor="let item of editData.array; trackBy: trackByIdentity"
-                class="d-flex align-items-center confirmation-body"
+                *ngFor="
+                    let item of editData.array;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+                class="d-flex align-items-center confirmation-body confirmation-body-content"
             >
                 <!-- Svg -->
                 <svg-icon
@@ -351,7 +400,51 @@
                     </app-profile-images>
                 </div>
                 <!---------------------------------------------- Different templates for body --------------------------------------------->
+
+                <!-- Contact -->
+
+                <ng-container *ngIf="['contact'].includes(editData?.template)">
+                    <div
+                        class="d-flex align-items-center"
+                        [ngClass]="{
+                            'mb-2': i !== editData.array.length - 1
+                        }"
+                    >
+                        <ng-container *ngIf="item.data.avatarImg">
+                            <img
+                                class="avatar-img"
+                                [src]="item.data.avatarImg"
+                                alt="avatar"
+                            />
+                        </ng-container>
+
+                        <ng-container *ngIf="!item.data.avatarImg">
+                            <div
+                                class="d-flex justify-content-center align-items-center avatar-div-img"
+                                [ngStyle]="{
+                                    background:
+                                        item.data.avatarColor.background,
+                                    color: item.data.avatarColor.color
+                                }"
+                            >
+                                {{ item.data.name.slice(0, 1).toUpperCase() }}
+                            </div>
+                        </ng-container>
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="m-0 ta-font-bold text-1">
+                                {{ item.data.name }}
+                            </p>
+
+                            <p class="m-0 ta-font-medium text-2">
+                                {{ item.data.phone }}
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+
                 <!-- Driver, Owner -->
+
                 <ng-container
                     *ngIf="
                         ['driver', 'user', 'owner'].includes(editData?.template)
@@ -500,7 +593,7 @@
                     editData?.type === 'info'
                         ? editData?.subType
                         : editData?.type === 'multiple delete'
-                        ? 'delete' + ' ' + editData.array.length
+                        ? 'delete' + ' ' + 'selected'
                         : editData.type
                 }}
                 {{ editData?.type === 'multiple delete' ? null : 'selected' }}

@@ -1573,35 +1573,23 @@ table.truckassist-table-body-style {
 
                         // SHARED  COLUMN
                         .shared-container {
-                            display: flex;
                             height: 18px;
                             width: fit-content;
 
-                            .shared-icon {
-                                width: 18px;
-                                height: 18px;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                margin-right: 6px;
-                            }
-
-                            .lock-icon {
-                                background-image: url('../../../../../../assets/svg/truckassist-table/shared-lock.svg');
-                            }
-
-                            .shared-active-icon {
-                                background-image: url('../../../../../../assets/svg/truckassist-table/shared.svg');
-                            }
-
-                            .shared-text {
+                            p {
+                                color: $bw5 !important;
                                 font-size: 14px;
-                                font-weight: 400;
-                                color: $bw6-2;
-                                height: fit-content;
+                                line-height: 18px;
+                                margin-right: 4px !important;
+
+                                &::-moz-selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
 
                                 &::selection {
-                                    color: $bw6-2;
-                                    background: $bw6-3;
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
                                 }
                             }
                         }
@@ -2191,6 +2179,27 @@ table.truckassist-table-body-style {
                                 overflow: hidden;
                                 white-space: nowrap;
                                 text-overflow: ellipsis;
+                            }
+                        }
+
+                        // PHONE EMAIL ICON
+                        .phone-email-icon {
+                            margin-right: 4px;
+                            line-height: 0;
+
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                    transition: fill 0.3s ease;
+                                }
+                            }
+
+                            &:hover {
+                                svg {
+                                    path {
+                                        fill: $bw6-2;
+                                    }
+                                }
                             }
                         }
                     }
@@ -2864,26 +2873,6 @@ table.truckassist-table-body-style {
 
                     .contact-avatar {
                         background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
-                    }
-                }
-
-                // SHARED COLUMN
-                .shared-container {
-                    .lock-icon {
-                        background-image: url('../../../../../../assets/svg/truckassist-table/shared-lock-select.svg') !important;
-                    }
-
-                    .shared-active-icon {
-                        background-image: url('../../../../../../assets/svg/truckassist-table/shared-select.svg') !important;
-                    }
-
-                    .shared-text {
-                        color: #3c3c3c !important;
-
-                        &::selection {
-                            color: #3c3c3c !important;
-                            background: #3c3c3c20 !important;
-                        }
                     }
                 }
 

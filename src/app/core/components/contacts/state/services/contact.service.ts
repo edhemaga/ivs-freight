@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 // store
-import { ContactQuery } from './contact-state/contact.query';
-import { ContactStore } from './contact-state/contact.store';
+import { ContactQuery } from '../store/contact.query';
+import { ContactStore } from '../store/contact.store';
 
 // models
 import {
@@ -39,7 +39,7 @@ export class ContactTService {
         private companyLabelService: CompanyContactLabelService
     ) {}
 
-    // Add Contact
+    // add contact
     public addCompanyContact(
         data: CreateCompanyContactCommand
     ): Observable<CreateResponse> {
@@ -97,7 +97,7 @@ export class ContactTService {
         );
     }
 
-    // Update Contact
+    // update contact
     public updateCompanyContact(
         data: UpdateCompanyContactCommand,
         colors?: Array<AccountColorResponse>,
@@ -127,14 +127,14 @@ export class ContactTService {
         );
     }
 
-    // Get Contact By Id
+    // get contact by id
     public getCompanyContactById(
         id: number
     ): Observable<CompanyContactResponse> {
         return this.contactService.apiCompanycontactIdGet(id);
     }
 
-    // Get Contacts List
+    // get contacts list
     public getContacts(
         labelId?: number,
         pageIndex?: number,
@@ -157,46 +157,41 @@ export class ContactTService {
         );
     }
 
-    // Company Contact Modal
+    // company contact modal
     public getCompanyContactModal(): Observable<CompanyContactModalResponse> {
         return this.contactService.apiCompanycontactModalGet();
     }
 
-    // Delete Contact List
-    public deleteAccountList(contactsToDelete: any[]): Observable<any> {
-        let deleteOnBack = contactsToDelete.map((owner: any) => {
-            return owner.id;
-        });
+    // delete contact list
+    public deleteAccountList(contactIds: number[]): Observable<any> {
+        return this.contactService.apiCompanycontactListDelete(contactIds).pipe(
+            tap(() => {
+                for (let i = 0; i < contactIds.length; i++) {
+                    this.contactStore.remove(({ id }) => id === contactIds[i]);
 
-        return this.contactService
-            .apiCompanycontactListDelete(deleteOnBack)
-            .pipe(
-                tap(() => {
-                    let storeContacts = this.contactQuery.getAll();
-                    let countDeleted = 0;
+                    const contactCount = JSON.parse(
+                        localStorage.getItem('contactTableCount')
+                    );
 
-                    storeContacts.map((contact: any) => {
-                        deleteOnBack.map((d) => {
-                            if (d === contact.id) {
-                                this.contactStore.remove(
-                                    ({ id }) => id === contact.id
-                                );
-                                countDeleted++;
-                            }
-                        });
-                    });
+                    contactCount.contact--;
 
                     localStorage.setItem(
                         'contactTableCount',
                         JSON.stringify({
-                            contact: storeContacts.length - countDeleted,
+                            contact: contactCount.contact,
                         })
                     );
-                })
-            );
+
+                    this.tableService.sendActionAnimation({
+                        animation: 'delete',
+                        id: contactIds[i],
+                    });
+                }
+            })
+        );
     }
 
-    // Delete Contact By Id
+    // delete contact by id
     public deleteCompanyContactById(contactId: number): Observable<any> {
         return this.contactService.apiCompanycontactIdDelete(contactId).pipe(
             tap(() => {

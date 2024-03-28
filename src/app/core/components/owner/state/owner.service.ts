@@ -35,7 +35,7 @@ export class OwnerTService {
 
         //Store
         private ownerActiveQuery: OwnerActiveQuery,
-        private ownerInactiveQuery: OwnerInactiveQuery,
+        private ownerInactiveQuery: OwnerInactiveQuery
     ) {}
 
     // Add Owner
@@ -48,7 +48,9 @@ export class OwnerTService {
                         this.ownerInactiveStore.add(owner);
 
                         const ownerCount = JSON.parse(
-                            localStorage.getItem(ComponentsTableEnum.OWNER_TABLE_COUNT)
+                            localStorage.getItem(
+                                ComponentsTableEnum.OWNER_TABLE_COUNT
+                            )
                         );
 
                         ownerCount.inactive++;
@@ -246,5 +248,30 @@ export class OwnerTService {
                 });
             })
         );
+    }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        const storeOwners =
+            data.selectedTab === ComponentsTableEnum.ACTIVE
+                ? this.ownerActiveQuery.getAll()
+                : this.ownerInactiveQuery.getAll();
+
+        storeOwners.map((owner: OwnerResponse) => {
+            if (data.id === owner.id) {
+                data.selectedTab === ComponentsTableEnum.ACTIVE
+                    ? this.ownerActiveStore.update(owner.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }))
+                    : this.ownerInactiveStore.update(owner.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }));
+            }
+        });
     }
 }

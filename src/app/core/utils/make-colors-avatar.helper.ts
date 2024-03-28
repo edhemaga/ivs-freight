@@ -3,14 +3,16 @@ import { TableDropdownComponentConstants } from './constants/table-components.co
 
 // Get Avatar Color
 export class MAKE_COLORS_FOR_AVATAR {
-    static getAvatarColors(mapingIndex): AvatarColors {
+    static getAvatarColors(mapingIndex: number): AvatarColors {
         const textColors: string[] =
             TableDropdownComponentConstants.TEXT_COLORS;
 
         const backgroundColors: string[] =
             TableDropdownComponentConstants.BACKGROUND_COLORS;
 
-        mapingIndex = mapingIndex <= 11 ? mapingIndex : 0;
+        const randomNumber = Math.floor(Math.random() * 11);
+
+        mapingIndex = mapingIndex <= 11 ? mapingIndex : randomNumber;
 
         return {
             background: backgroundColors[mapingIndex],

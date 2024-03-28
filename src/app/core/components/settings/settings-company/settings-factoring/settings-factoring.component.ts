@@ -11,10 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CompanyStore } from '../../state/company-state/company-settings.store';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
@@ -52,7 +49,7 @@ export class SettingsFactoringComponent
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'factoring') {
