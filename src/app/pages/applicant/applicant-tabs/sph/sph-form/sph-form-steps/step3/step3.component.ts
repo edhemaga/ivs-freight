@@ -6,36 +6,46 @@ import {
     AfterViewInit,
     OnDestroy,
 } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
-
 import {
     filterUnceckedRadiosId,
     isAnyRadioInArrayUnChecked,
-} from 'src/app/core/components/applicant/state/utils/utils';
+} from 'src/app/pages/applicant/state/utils/utils';
 
+// validations
 import {
     phoneFaxRegex,
     addressValidation,
     addressUnitValidation,
-} from '../../../../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+import { ApplicantActionsService } from 'src/app/pages/applicant/state/services/applicant-actions.service';
 
-import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
-import { ApplicantStore } from 'src/app/core/components/applicant/state/store/applicant.store';
+// store
+import { ApplicantQuery } from 'src/app/pages/applicant/state/store/applicant.query';
+import { ApplicantStore } from 'src/app/pages/applicant/state/store/applicant.store';
 
-import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
+// enums
 import { InputSwitchActions } from '../../../../../state/enum/input-switch-actions.enum';
-import { AddressEntity } from './../../../../../../../../../../appcoretruckassist/model/addressEntity';
+
+// models
+import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
+import { AddressEntity } from 'appcoretruckassist';
 import { CreatePreviousEmployerDrugAndAlcoholCommand } from 'appcoretruckassist/model/models';
 
 @Component({

@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../../../shared/shared.module';
+// modules
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { PspAuthorizationRoutingModule } from './psp-authorization-routing.module';
 import { ApplicantModule } from './../../applicant.module';
 
+// components
 import { PspAuthorizationComponent } from './psp-authorization.component';
 
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
 
 @NgModule({
     declarations: [PspAuthorizationComponent],

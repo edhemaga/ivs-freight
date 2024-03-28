@@ -8,20 +8,25 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
-
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import {
     ApplicantResponse,
     CreateMedicalCertificateReviewCommand,

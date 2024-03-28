@@ -25,6 +25,7 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isAnyPropertyInObjectFalse,
@@ -35,29 +36,35 @@ import {
     isEveryValueInArrayTrue,
 } from '../../state/utils/utils';
 
+// validations
 import {
     name2_24Validation,
     phoneFaxRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import {
     convertDateFromBackend,
     convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
+// enums
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import {
     ApplicantResponse,
     CreateEducationCommand,
     CreateEducationReviewCommand,
     EducationFeedbackResponse,
 } from 'appcoretruckassist/model/models';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { ContactModel } from '../../state/model/education.model';
 

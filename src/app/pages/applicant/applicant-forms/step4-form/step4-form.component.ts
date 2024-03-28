@@ -26,30 +26,40 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// moment
 import moment from 'moment';
 
+// validations
 import {
     addressValidation,
     descriptionValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { AnswerChoices } from '../../state/model/applicant-question.model';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { AccidentModel } from '../../state/model/accident.model';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { FormService } from './../../../../services/form/form.service';
+import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
-import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+// enums
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+
+// models
+import { AnswerChoices } from '../../state/model/applicant-question.model';
+import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
+import { AccidentModel } from '../../state/model/accident.model';
+
+// components
 
 @Component({
     selector: 'app-step4-form',

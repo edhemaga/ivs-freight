@@ -11,7 +11,11 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import {
     Subscription,
@@ -21,20 +25,27 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// moment
 import moment from 'moment';
 
-import { FormService } from './../../../../services/form/form.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { FormService } from 'src/app/core/services/form/form.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
 } from '../../state/utils/utils';
 
+// enums
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import { LicenseModel } from '../../state/model/cdl-information';
 import {
     ApplicantModalResponse,

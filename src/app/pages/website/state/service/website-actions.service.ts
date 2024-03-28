@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
+// models
 import { UserInfoModel } from '../model/user-info.model';
 
 @Injectable({

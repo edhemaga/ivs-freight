@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AccountTService } from '../account.service';
+
+//store
 import { AccountState, AccountStore } from './account.store';
-import { CompanyAccountResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
