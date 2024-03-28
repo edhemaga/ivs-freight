@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { AccidentModalComponent } from '../../../modals/accident-modal/accident-modal.component';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { getAccidentColumns } from '../../../../../../assets/utils/settings/safety-columns';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { AccidentModalComponent } from 'src/app/core/components/modals/accident-modal/accident-modal.component';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 import { AfterViewInit } from '@angular/core';
 import { AccidentActiveState } from '../state/accident-state/accident-active/accident-active.store';
 import { AccidentInactiveState } from '../state/accident-state/accident-inactive/accident-inactive.store';
@@ -315,10 +315,10 @@ export class AccidentTableComponent
         const tableView = JSON.parse(
             localStorage.getItem(`Accident-table-view`)
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -447,7 +447,7 @@ export class AccidentTableComponent
             this.sendAccidentData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
-            
+
             this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { card_component_animation } from '../../../../shared/animations/card-component.animations';
-import { RoadsideInspectionResponse } from '../../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-violation-details-single',

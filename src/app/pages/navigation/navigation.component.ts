@@ -13,7 +13,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
-import { DetailsDataService } from '../../services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationHeaderComponent } from './navigation-header/navigation-header.component';

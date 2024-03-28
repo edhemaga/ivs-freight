@@ -1,4 +1,4 @@
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -6,22 +6,28 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { userNavigationData } from '../model/navigation-data';
-import { NavigationUserPanel } from '../model/navigation.model';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { NavigationService } from '../services/navigation.service';
-import { WebsiteAuthService } from '../../website/state/service/website-auth.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
-import { TaUserService } from '../../../services/user/user.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     DropDownAnimation,
     navigation_route_animation,
 } from '../navigation.animation';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Model
+import { userNavigationData } from '../model/navigation-data';
+import { NavigationUserPanel } from '../model/navigation.model';
+
+//Services
+import { NavigationService } from '../services/navigation.service';
+import { WebsiteAuthService } from '../../website/state/service/website-auth.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TaUserService } from 'src/app/core/services/user/user.service';
+
+//Components
+import { ProfileUpdateModalComponent } from 'src/app/core/components/modals/profile-update-modal/profile-update-modal.component';
 
 @Component({
     selector: 'app-navigation-user-profile',
