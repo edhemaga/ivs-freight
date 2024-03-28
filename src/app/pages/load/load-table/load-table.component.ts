@@ -2,40 +2,40 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
-import { LoadModalComponent } from '../../modals/load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';
 
 // Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
-import { CardsModalConfigService } from '../../modals/cards-modal/utils/services/cards-modal-config.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
 
 // Models
 import {
     getLoadActiveAndPendingColumnDefinition,
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
-} from '../../../../../assets/utils/settings/load-columns';
+} from 'src/assets/utils/settings/load-columns';
 import { LoadListResponse } from 'appcoretruckassist';
 import {
     DeleteComment,
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/card-table-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
 import {
     CardRows,
     Search,
     TableOptionsInterface,
-} from '../../shared/model/card-data.model';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/card-data.model';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import {
     FilterOptionsLoad,
     LoadModel,
-} from '../../shared/model/table-components/load-modal';
+} from 'src/app/core/components/shared/model/table-components/load-modal';
 
 // Queries
 import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
@@ -50,7 +50,7 @@ import { LoadPandingState } from '../state/load-pending-state/load-panding.store
 import { LoadTemplateState } from '../state/load-template-state/load-template.store';
 
 // Pipes
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
@@ -63,10 +63,10 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // Store
-import { LoadQuery } from '../../modals/cards-modal/state/store/load-modal.query';
+import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
 
 // Utils
 import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';

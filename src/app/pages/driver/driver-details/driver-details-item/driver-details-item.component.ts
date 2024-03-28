@@ -17,15 +17,14 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { CdlTService } from '../../state/cdl.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
-import { DriverCdlModalComponent } from '../../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import {
     animate,
     style,
@@ -35,8 +34,8 @@ import {
     keyframes,
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
-import { convertDateFromBackend } from '../../../../utils/methods.calculations';
-import { GetMvrModalResponse } from '../../../../../../../appcoretruckassist';
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { GetMvrModalResponse } from 'appcoretruckassist';
 
 @Titles()
 @Component({

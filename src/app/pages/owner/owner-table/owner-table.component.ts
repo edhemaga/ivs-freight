@@ -3,37 +3,37 @@ import { Subject, takeUntil } from 'rxjs';
 // Modules
 
 // Components
-import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
 
 // Models
 import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
-} from '../../../utils/methods.globals';
-import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
+} from 'src/app/core/utils/methods.globals';
+import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import {
     CardDetails,
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/card-table-data.model';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/card-table-data.model';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import {
     MapOwnerData,
     OwnerBackFilterFilter,
     OwnerBodyResponse,
 } from '../owner.modal';
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { OwnerTService } from '../state/owner.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
@@ -53,7 +53,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // Pipes
-import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
+import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';

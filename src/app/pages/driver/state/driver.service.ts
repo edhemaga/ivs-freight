@@ -1,6 +1,8 @@
-import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
+
+//Models
+import { DriverService } from 'appcoretruckassist';
 import {
     CheckOwnerSsnEinResponse,
     DriverListResponse,
@@ -14,17 +16,25 @@ import {
     TestService,
     DriverPayrollResponse,
 } from 'appcoretruckassist';
+
+//Store
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 import { DriversMinimalListStore } from './driver-details-minimal-list-state/driver-minimal-list.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
+
+//Services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { DriverModal } from '../../shared/model/table-components/driver-modal';
+
+//Components
+import { DriverModal } from 'src/app/core/components/shared/model/table-components/driver-modal';
+
+//Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Injectable({

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { DriverResponse } from '../../../../../../../appcoretruckassist';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';

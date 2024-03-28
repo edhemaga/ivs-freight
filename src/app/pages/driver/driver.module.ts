@@ -1,5 +1,5 @@
 //modules
-import { SharedModule } from './../shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
@@ -9,33 +9,33 @@ import { DriverRoutingModule } from './driver-routing.module';
 import { DriverTableComponent } from './driver-table/driver-table.component';
 import { DriverCardComponent } from './driver-card/driver-card.component';
 
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 
-import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 
-import { TaDetailsHeaderCardComponent } from '../shared/ta-details-header-card/ta-details-header-card.component';
+import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
 
-import { ProfileImagesComponent } from '../shared/profile-images/profile-images.component';
+import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
 
-import { TaCopyComponent } from '../shared/ta-copy/ta-copy.component';
-import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../shared/ta-input-note/ta-input-note.component';
-import { TaReCardComponent } from '../shared/ta-common-card/ta-re-card.component';
-import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
+import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { TaReCardComponent } from 'src/app/core/components/shared/ta-common-card/ta-re-card.component';
+import { TaCounterComponent } from 'src/app/core/components/shared/ta-counter/ta-counter.component';
 
-import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
-import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 
-import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 
-import { ProgresBarComponent } from '../standalone-components/progres-bar/progres-bar.component';
+import { ProgresBarComponent } from 'src/app/core/components/standalone-components/progres-bar/progres-bar.component';
 
 //pipes
-import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 

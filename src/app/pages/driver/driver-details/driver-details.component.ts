@@ -1,8 +1,8 @@
-import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { ModalService } from './../../shared/ta-modal/modal.service';
+import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverCdlModalComponent } from 'src/app/core/components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
@@ -10,7 +10,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
@@ -18,7 +18,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { CdlTService } from '../state/cdl.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsListQuery } from '../state/driver-details-list-state/driver-details-list.query';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 import moment from 'moment';

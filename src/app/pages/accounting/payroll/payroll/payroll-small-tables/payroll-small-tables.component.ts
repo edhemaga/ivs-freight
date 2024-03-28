@@ -1,8 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PayrollCreditBonusComponent } from '../../../../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { PayrollBonusModalComponent } from '../../../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
-import { PayrollDeductionModalComponent } from '../../../../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
+
+//Components
+import { PayrollCreditBonusComponent } from 'src/app/core/components/modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollBonusModalComponent } from 'src/app/core/components/modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollDeductionModalComponent } from 'src/app/core/components/modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+
+//Services
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+//Config
 import {
     small_table_config,
     small_table_config_resize,
