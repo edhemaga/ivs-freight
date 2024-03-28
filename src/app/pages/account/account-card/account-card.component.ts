@@ -8,10 +8,13 @@ import {
 import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
-import { CardDetails } from '../../shared/model/card-table-data.model';
-import { CardRows, DataResult } from '../../shared/model/card-data.model';
+import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { tableBodyColorLabel } from '../../shared/model/tableBody';
+import { tableBodyColorLabel } from 'src/app/core/components/shared/model/tableBody';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';

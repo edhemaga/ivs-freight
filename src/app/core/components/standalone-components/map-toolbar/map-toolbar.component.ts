@@ -17,23 +17,31 @@ import {
     FormsModule,
 } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { TruckTService } from '../../truck/state/truck.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// models
 import { TruckListResponse } from 'appcoretruckassist';
+
+// services
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckTService } from 'src/app/pages/truck/state/truck.service';
+
+// animations
 import { card_component_animation } from '../../shared/animations/card-component.animations';
+
+// components
 import { MapSettingsModalComponent } from '../../modals/map-settings-modal/map-settings-modal.component';
 import { MapRouteModalComponent } from '../../modals/map-route-modal/map-route-modal.component';
-import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FilterComponent } from '../filter/filter.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
-import { NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-map-toolbar',

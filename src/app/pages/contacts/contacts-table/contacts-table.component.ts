@@ -3,30 +3,31 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
-import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ContactModalComponent } from 'src/app/core/components/modals/contact-modal/contact-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // service
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ContactTService } from '../state/services/contact.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // store
 import { ContactState } from '../state/store/contact.store';
 import { ContactQuery } from '../state/store/contact.query';
 
 // pipes
-import { NameInitialsPipe } from '../../../pipes/nameinitials';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 
 // helpers
 import {
     tableSearch,
     closeAnimationAction,
-} from '../../../utils/methods.globals';
-import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
+} from 'src/app/core/utils/methods.globals';
+import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
 // enums
 import { ConstantStringEnum } from '../state/enums/contact-string.enum';
@@ -37,7 +38,7 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 
 // data for cards
 import { DisplayContactsConfiguration } from '../state/utils/constants/contact-card-data.constants';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // models
 import {
@@ -54,9 +55,8 @@ import {
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
-import { DropdownItem } from '../../shared/model/card-table-data.model';
-import { CardRows } from '../../shared/model/card-data.model';
-import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
 
 @Component({
     selector: 'app-contacts-table',

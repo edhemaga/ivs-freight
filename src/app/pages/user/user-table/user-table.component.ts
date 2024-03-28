@@ -1,16 +1,24 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
+// models
+import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import {
+    CompanyUserResponse,
+    GetCompanyUserListResponse,
+} from 'appcoretruckassist';
+
 //Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { UserTService } from '../state/user.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 //Components
-import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { UserModalComponent } from 'src/app/core/components/modals/user-modal/user-modal.component';
 
 //Utils
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
@@ -39,14 +47,9 @@ import {
 } from '../utils/constants/user.constants';
 
 //Enum
-import {
-    CompanyUserResponse,
-    GetCompanyUserListResponse,
-} from 'appcoretruckassist';
+
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { DisplayUserConfiguration } from '../user-card-data';
-import { CardRows } from '../../shared/model/card-data.model';
-import { DropdownItem } from '../../shared/model/card-table-data.model';
 
 @Component({
     selector: 'app-user-table',

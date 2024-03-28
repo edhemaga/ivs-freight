@@ -13,14 +13,13 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
 
 // components
 import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
 
 // animations
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import {
     animate,
     style,
@@ -29,12 +28,13 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 // decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // helpers
-import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 // moment
 import moment from 'moment';

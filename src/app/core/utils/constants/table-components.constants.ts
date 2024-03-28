@@ -13,13 +13,14 @@ import {
 } from '../../components/shared/model/table-components/driver-modal';
 import { DropdownItem } from '../../components/shared/model/card-table-data.model';
 import { FilterOptionsLoad } from '../../components/shared/model/table-components/load-modal';
-import { backFilterQueryInterface } from '../../components/trailer/trailer.modal';
-import { FilterOptions } from '../../components/truck/truck.modal';
-import { OwnerBackFilterQuery } from '../../components/owner/owner.modal';
+
 import { SortTypes } from '../../model/fuel';
 
 // enums
 import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
+import { OwnerBackFilterQuery } from 'src/app/pages/owner/owner.modal';
+import { backFilterQueryInterface } from 'src/app/pages/trailer/trailer.modal';
+import { FilterOptions } from 'src/app/pages/truck/truck.modal';
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {

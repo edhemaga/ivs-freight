@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // store
 import { ContactQuery } from '../store/contact.query';

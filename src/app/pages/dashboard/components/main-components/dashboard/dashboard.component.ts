@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // services
-import { SharedService } from '../../../../../services/shared/shared.service';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { DashboardService } from '../../../state/services/dashboard.service';
 
 @Titles()

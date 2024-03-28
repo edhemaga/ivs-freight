@@ -3,28 +3,20 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Components
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
 
 // Services
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerTService } from '../state/trailer.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from '../../shared/model/card-table-data.model';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from '../../shared/model/table-components/all-tables.modal';
+import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
 import {
     BodyResponseTrailer,
     MappedTrailer,
@@ -34,7 +26,9 @@ import {
 import {
     CardRows,
     TableOptionsInterface,
-} from '../../shared/model/card-data.model';
+} from 'src/app/core/components/shared/model/card-data.model';
+import { ToolbarActions } from 'src/app/core/model/table.model';
+import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 
 // Store
 import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';
@@ -44,14 +38,15 @@ import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-in
 import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-inactive.store';
 
 // Pipes
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
 import { DatePipe } from '@angular/common';
 
 // Animations
 import {
     closeAnimationAction,
     tableSearch,
-} from '../../../utils/methods.globals';
+} from 'src/app/core/utils/methods.globals';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
@@ -66,6 +61,10 @@ import {
     TrailerName,
 } from 'src/app/core/utils/enums/trailer-component.enum';
 import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
+import {
+    TableColumnConfig,
+    DataForCardsAndTables,
+} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 @Component({
     selector: 'app-trailer-table',

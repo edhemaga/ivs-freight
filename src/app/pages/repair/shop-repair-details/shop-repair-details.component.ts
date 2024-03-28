@@ -1,3 +1,4 @@
+import { distinctUntilChanged } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
     ChangeDetectorRef,
@@ -8,14 +9,17 @@ import {
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { Subject, take, takeUntil } from 'rxjs';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+
+// services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { RepairTService } from '../state/repair.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+
+// store
+import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { RepairDStore } from '../state/details-state/repair-d.store';
 
 @Component({

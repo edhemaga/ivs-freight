@@ -1,21 +1,25 @@
-import { SharedModule } from './../shared/shared.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { ToDoRoutingModule } from './to-do-routing.module';
-import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.component';
-
 import { GridsterModule } from 'angular-gridster2';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
-import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
-import { FilterComponent } from '../standalone-components/filter/filter.component';
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
-import { formatDatePipe } from '../../pipes/formatDate.pipe';
-import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
-import { DetailsDropdownComponent } from '../shared/details-page-dropdown/details-dropdown';
-import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
-import { TaUserReviewComponent } from '../shared/ta-user-review/ta-user-review.component';
+
+// moduels
+import { ToDoRoutingModule } from './to-do-routing.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
+
+// pipes
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+
+// components
+import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
+import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaUserReviewComponent } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
+import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { CarrierSearchComponent } from 'src/app/core/components/standalone-components/carrier-search/carrier-search.component';
+import { FilterComponent } from 'src/app/core/components/standalone-components/filter/filter.component';
+import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
@@ -38,7 +42,7 @@ import { TaUserReviewComponent } from '../shared/ta-user-review/ta-user-review.c
         TaUserReviewComponent,
 
         //Pipes
-        formatDatePipe
+        formatDatePipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

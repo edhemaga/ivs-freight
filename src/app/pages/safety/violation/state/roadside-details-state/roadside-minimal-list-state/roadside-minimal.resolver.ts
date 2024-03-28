@@ -1,4 +1,4 @@
-import { RoadsideInspectionMinimalListResponse } from './../../../../../../../../../appcoretruckassist/model/roadsideInspectionMinimalListResponse';
+import { RoadsideInspectionMinimalListResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';

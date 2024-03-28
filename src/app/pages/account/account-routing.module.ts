@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// components
 import { AccountTableComponent } from './account-table/account-table.component';
 
 const routes: Routes = [

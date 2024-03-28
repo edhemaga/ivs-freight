@@ -24,6 +24,7 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isAnyValueInArrayTrue,
@@ -33,11 +34,13 @@ import {
     isAnyValueInArrayFalse,
 } from '../../state/utils/utils';
 
+// helpers
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
+// validations
 import {
     phoneFaxRegex,
     ssnNumberRegex,
@@ -48,26 +51,31 @@ import {
     firstNameValidation,
     bankValidation,
     lastNameValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// services
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { BankResponse } from 'appcoretruckassist/model/bankResponse';
+
+// models
 import {
+    BankResponse,
     AddressEntity,
     CreateResponse,
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 
 @Component({
     selector: 'app-step1',

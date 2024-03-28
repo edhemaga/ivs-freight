@@ -1,27 +1,39 @@
-import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { TodoTService } from '../state/todo.service';
-import {
-    SignInResponse,
-    TodoStatus,
-    UpdateTodoStatusCommand,
-} from 'appcoretruckassist';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
+
 import { DropResult } from 'ngx-smooth-dnd';
 import { TodoQuery } from '../state/todo.query';
 
-import { SharedService } from '../../../services/shared/shared.service';
-import { CommentsService } from '../../../services/comments/comments.service';
-import { applyDrag } from '../../../utils/methods.globals';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { card_component_animation } from '../../shared/animations/card-component.animations';
+// models
+import {
+    SignInResponse,
+    TodoListResponse,
+    TodoStatus,
+    UpdateTodoStatusCommand,
+} from 'appcoretruckassist';
+
+// services
+import { TodoTService } from '../state/todo.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
+
+// moment
 import moment from 'moment';
+
+// components
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaskModalComponent } from 'src/app/core/components/modals/task-modal/task-modal.component';
+
+// animations
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+
+// helpers
+import { applyDrag } from 'src/app/core/utils/methods.globals';
 
 @Component({
     selector: 'app-to-do-list-card',

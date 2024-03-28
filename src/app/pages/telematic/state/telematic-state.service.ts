@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { TelematicStateStore } from './telematic-state.store';
 import { TelematicState } from './telematic-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject, of } from 'rxjs';
-import { GpsServiceService } from '../../../../global/services/gps-service.service';
 import {
     TelematicsService,
+    AssignGpsDevicesToCompanyCommand,
     AssignGpsDevicesToTruckCommand,
     AssignGpsDevicesToTrailerCommand,
-    AssignGpsDevicesToCompanyCommand,
-} from '../../../../../../appcoretruckassist';
+} from 'appcoretruckassist';
+import { GpsServiceService } from 'src/app/global/services/gps-service.service';
 
 @Injectable({ providedIn: 'root' })
 export class TelematicStateService implements OnDestroy {

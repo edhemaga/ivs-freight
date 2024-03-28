@@ -1,5 +1,15 @@
-import { CompanyAccountService } from './../../../../../../appcoretruckassist/api/companyAccount.service';
 import { Injectable } from '@angular/core';
+
+import { Observable, tap } from 'rxjs';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// store
+import { AccountStore } from './account-state/account.store';
+import { AccountQuery } from './account-state/account.query';
+
+// models
 import {
     AccountColorResponse,
     CompanyAccountLabelResponse,
@@ -12,11 +22,8 @@ import {
     GetCompanyAccountLabelListResponse,
     UpdateCompanyAccountCommand,
     UpdateCompanyAccountLabelCommand,
+    CompanyAccountService,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
-import { AccountStore } from './account-state/account.store';
-import { AccountQuery } from './account-state/account.query';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',

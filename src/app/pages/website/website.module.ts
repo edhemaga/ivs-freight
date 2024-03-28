@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+// modules
 import { WebsiteRoutingModule } from './website-routing.module';
-
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
+// components
 import { WebsiteMainComponent } from './components/website-main/website-main.component';
 import { WebsiteNavbarComponent } from './components/website-navbar/website-navbar.component';
 import { SidebarConfirmBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-confirm-btn/sidebar-confirm-btn.component';
@@ -32,17 +33,17 @@ import { SelectCompanyComponent } from './components/website-sidebar/sidebar-con
 
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
 
-import { TaInputComponent } from '../shared/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
-import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaSpinnerComponent } from 'src/app/core/components/shared/ta-spinner/ta-spinner.component';
 
 @NgModule({
     declarations: [
         WebsiteMainComponent,
         WebsiteNavbarComponent,
 
-        /* SIDEBAR */
+        // sidebar
 
         WebsiteSidebarComponent,
         SidebarConfirmBtnComponent,
@@ -64,21 +65,17 @@ import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
         VerifyUserHelperComponent,
         SelectCompanyComponent,
 
-        /* SIDEBAR */
-
         WebsiteUnderConstructionComponent,
     ],
     imports: [
-        /* MODULES */
-
+        // modules
         CommonModule,
         WebsiteRoutingModule,
         SharedModule,
         SlickCarouselModule,
         RouterModule,
 
-        /* COMPONENTS */
-
+        // components
         TaInputComponent,
         InputAddressDropdownComponent,
         TaCheckboxComponent,

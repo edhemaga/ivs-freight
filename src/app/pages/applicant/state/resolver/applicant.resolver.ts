@@ -4,8 +4,10 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+// services
 import { ApplicantActionsService } from '../services/applicant-actions.service';
 
+// store
 import { ApplicantState, ApplicantStore } from '../store/applicant.store';
 
 @Injectable({
