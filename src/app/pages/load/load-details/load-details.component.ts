@@ -9,10 +9,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { LoadResponse } from '../../../../../../appcoretruckassist/model/loadResponse';
+import { LoadResponse } from 'appcoretruckassist';
 import { LoadDetailsListQuery } from '../state/load-details-state/load-details-list-state/load-d-list.query';
 import { LoadTService } from '../state/load.service';
-import { MapRouteModel } from '../../shared/model/map-route';
+import { MapRouteModel } from 'src/app/core/components/shared/model/map-route';
 interface IStopRoutes {
     longitude: number;
     latitude: number;

@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoadTService } from '../../load.service';
 import { LoadMinimalListStore } from './load-details-minimal.store';
-import { LoadMinimalListResponse } from '../../../../../../../../appcoretruckassist/model/loadMinimalListResponse';
+import { LoadMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

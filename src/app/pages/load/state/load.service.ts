@@ -6,10 +6,11 @@ import { Observable, Subject } from 'rxjs';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Model
+
 import {
     Comment,
     DeleteComment,
-} from '../../shared/model/card-table-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
 
 // models
 import {
@@ -27,7 +28,7 @@ import {
     RoutingService,
     RoutingResponse,
 } from 'appcoretruckassist';
-import { Load } from '../../modals/load-modal/state/models/load-modal-model/load.model';
+import { Load } from 'src/app/core/components/modals/load-modal/state/models/load-modal-model/load.model';
 
 @Injectable({
     providedIn: 'root',

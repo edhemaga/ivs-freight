@@ -11,8 +11,8 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { CardDetails } from '../../shared/model/card-table-data.model';
-import { CardRows, DataResult } from '../../shared/model/card-data.model';
+import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
 import { OwnerBodyResponse } from '../owner.modal';
 
 // helpers
@@ -20,16 +20,16 @@ import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // component
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
-import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
+import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-owner-card',

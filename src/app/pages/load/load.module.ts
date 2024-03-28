@@ -10,19 +10,19 @@ import { LoadTableComponent } from './load-table/load-table.component';
 import { LoadCardComponent } from './load-card/load-card.component';
 import { LoadDetailsModule } from './load-details/load-details.module';
 
-import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 
-import { TaInputDropdownTableComponent } from '../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
-import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+import { TaInputDropdownTableComponent } from 'src/app/core/components/standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 
-import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 
 //pipes
-import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
     declarations: [LoadTableComponent, LoadCardComponent],

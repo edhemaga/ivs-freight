@@ -1,16 +1,22 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, tap } from 'rxjs';
+
+//Models
 import {
-    DriverResponse,
     MedicalResponse,
     MedicalService,
 } from 'appcoretruckassist';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+
+
+//Services
 import { DriverTService } from './driver.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+//Store
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';

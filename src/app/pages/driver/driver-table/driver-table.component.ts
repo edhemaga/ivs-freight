@@ -3,20 +3,20 @@ import { forkJoin, map, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // Components
-import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
-import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
+import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
+import { DriverCdlModalComponent } from 'src/app/core/components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ApplicantModalComponent } from 'src/app/core/components/modals/applicant-modal/applicant-modal.component';
 
 // Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DriverTService } from '../state/driver.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ApplicantTService } from '../state/applicant.service';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 
@@ -35,8 +35,8 @@ import { ApplicantTableStore } from '../state/applicant-state/applicant-table.st
 
 // Pipes
 import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from '../../../pipes/nameinitials';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 // Modals
 import {
@@ -46,29 +46,29 @@ import {
     OnTableBodyActionsModal,
     OnTableHeadActionsModal,
     MappedApplicantData,
-} from '../../shared/model/table-components/driver-modal';
-import { DataForCardsAndTables } from '../../shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/table-components/driver-modal';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import {
     ApplicantShortResponse,
     DriverListResponse,
     DriverResponse,
 } from 'appcoretruckassist';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
+import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
+import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 
 // Globals
 import {
     tableSearch,
     closeAnimationAction,
-} from '../../../utils/methods.globals';
-import { CardRows } from '../../shared/model/card-data.model';
+} from 'src/app/core/utils/methods.globals';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 import { DisplayDriverConfiguration } from '../driver-card-data';
 import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../../shared/model/card-table-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

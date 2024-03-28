@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+
+//Models
 import {
     ApplicantAdminResponse,
     ApplicantListResponse,
@@ -7,9 +10,12 @@ import {
     DriverListResponse,
     ResendInviteCommand,
     UpdateApplicantCommand,
-} from '../../../../../../appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+} from 'appcoretruckassist';
+
+//Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+//Store
 import { ApplicantTableStore } from './applicant-state/applicant-table.store';
 
 @Injectable({

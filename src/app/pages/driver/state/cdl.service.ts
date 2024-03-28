@@ -1,18 +1,24 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, tap } from 'rxjs';
+
+//Models
 import {
     CdlResponse,
     CdlService,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { Observable, Subject, tap } from 'rxjs';
+import { RenewCdlCommand } from 'appcoretruckassist';
+
+//Services
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DriverTService } from './driver.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+//Store
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { DriverTService } from './driver.service';
-import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 
 @Injectable({

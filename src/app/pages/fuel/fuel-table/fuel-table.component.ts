@@ -10,20 +10,20 @@ import { AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 //Components
-import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 //Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 //Utils
 import {
     getFuelStopColumnDefinition,
     getFuelTransactionColumnDefinition,
-} from '../../../../../assets/utils/settings/accounting-fuel-columns';
+} from 'src/assets/utils/settings/accounting-fuel-columns';
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Pipes
@@ -38,10 +38,10 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 
 //Models
-import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
-import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
-import { TableColumnConfig } from '../../shared/model/table-components/all-tables.modal';
-import { DropdownItem } from '../../shared/model/card-table-data.model';
+import { FuelStopListResponse } from 'appcoretruckassist';
+import { FuelTransactionListResponse } from 'appcoretruckassist';
+import { TableColumnConfig } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
 
 //States
 import { FuelQuery } from '../state/fule-state/fuel-state.query';

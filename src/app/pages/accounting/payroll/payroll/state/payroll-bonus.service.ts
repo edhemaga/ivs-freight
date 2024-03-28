@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { PayrollStore } from './payroll.store';
-import { PayrollService } from 'appcoretruckassist';
-import { PayrollBonusModalResponse } from '../../../../../../../../appcoretruckassist/model/payrollBonusModalResponse';
 import { Observable } from 'rxjs';
-import { CreatePayrollBonusCommand } from '../../../../../../../../appcoretruckassist/model/createPayrollBonusCommand';
-import { CreateResponse } from '../../../../../../../../appcoretruckassist/model/createResponse';
-import { UpdatePayrollBonusCommand } from '../../../../../../../../appcoretruckassist/model/updatePayrollBonusCommand';
-import { PayrollBonusResponse } from '../../../../../../../../appcoretruckassist/model/payrollBonusResponse';
+
+//Store
+import { PayrollStore } from './payroll.store';
+
+//Models
+import { PayrollService } from 'appcoretruckassist';
+import { PayrollBonusModalResponse } from 'appcoretruckassist';
+import { CreatePayrollBonusCommand } from 'appcoretruckassist';
+import { CreateResponse } from 'appcoretruckassist';
+import { UpdatePayrollBonusCommand } from 'appcoretruckassist';
+import { PayrollBonusResponse } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollBonusService {
