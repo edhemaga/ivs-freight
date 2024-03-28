@@ -13,6 +13,7 @@ import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalRespon
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
+import { EnumValue } from './enumValue';
 import { PayrollMapLocation } from './payrollMapLocation';
 
 
@@ -23,7 +24,8 @@ export interface PayrollDriverCommissionByIdResponse {
     driverAvatar?: string | null;
     payrollNumber?: string | null;
     period?: string;
-    status?: number;
+    daysUntilPayment?: number;
+    status?: EnumValue;
     total?: number | null;
     commission?: number;
     salary?: number | null;

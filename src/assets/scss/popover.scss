@@ -200,6 +200,15 @@
             }
         }
     }
+
+    &.owner {
+        .popover-body {
+            .table-list-dropdown {
+                left: -4px !important;
+                right: auto !important;
+            }
+        }
+    }
 }
 
 // Table Status Popup

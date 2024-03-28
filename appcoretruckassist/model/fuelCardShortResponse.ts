@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface FuelCardShortResponse { 
     id?: number;
     cardNumber?: string | null;
-    cardBrand?: string | null;
+    fuelCardBrand?: EnumValue;
     status?: number | null;
 }
 

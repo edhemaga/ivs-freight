@@ -15,7 +15,7 @@
         <app-ta-tab-switch
             (switchClicked)="tabChange($event)"
             [tabs]="tabs"
-            [type]="'type1-modal-popup'"
+            [type]="'type2-modal-popup'"
         >
         </app-ta-tab-switch>
 
@@ -54,12 +54,24 @@
                             ></app-ta-input>
                         </div>
                         <div class="col-1">
-                            <svg-icon
-                                (click)="favouriteRepairShop()"
-                                [class.active]="isRepairShopFavourite"
-                                class="repair-shop-star"
-                                src="assets/svg/common/ic_star.svg"
-                            ></svg-icon>
+                            <div
+                                [mainTooltip]="
+                                    isRepairShopFavourite
+                                        ? 'Remove'
+                                        : 'Mark as Favourite'
+                                "
+                                ngbTooltip
+                                position="bottom"
+                                tooltipBackground="#424242"
+                                customClass="mt-2"
+                            >
+                                <svg-icon
+                                    (click)="favouriteRepairShop()"
+                                    [class.active]="isRepairShopFavourite"
+                                    class="repair-shop-star"
+                                    src="assets/svg/common/ic_star.svg"
+                                ></svg-icon>
+                            </div>
                         </div>
                     </div>
 
@@ -164,7 +176,37 @@
                         [disableAnimation]="disableCardAnimation"
                         [hasCounter]="services | activeItems"
                         [isCardOpen]="true"
+                        [disabledCard]="true"
                     >
+                        <div class="col-12 service-types">
+                            <app-ta-input-dropdown
+                                formControlName="shopServiceType"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Shop Type',
+                                    isDropdown: true,
+                                    isRequired: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: isSelectedRepairType?.url,
+                                        template: 'truck',
+                                        class: isSelectedRepairType?.name
+                                            ?.trim()
+                                            .replace(' ', '')
+                                            .toLowerCase()
+                                    },
+                                    dropdownWidthClass:
+                                        'w-col-456 truck-trailer-dropdown',
+                                    customClass: 'truck-trailer-dropdown'
+                                }"
+                                [activeItem]="isSelectedRepairType"
+                                [options]="repairTypes"
+                            ></app-ta-input-dropdown>
+                        </div>
+
                         <div class="repair-shop-services">
                             <div
                                 *ngFor="
@@ -173,13 +215,22 @@
                                 "
                                 (click)="activeRepairService(repair)"
                                 [ngClass]="{ active: repair.active }"
-                                class="repair-shop-service"
+                                class="repair-shop-service d-flex align-items-center"
                             >
-                                <svg-icon
+                                <ng-container
                                     *ngIf="repair.svg.includes('.svg')"
-                                    src="{{ repair.svg }}"
-                                ></svg-icon>
-                                <p>{{ repair.serviceType }}</p>
+                                >
+                                    <svg-icon
+                                        src="{{ repair.svg }}"
+                                        [style.width.px]="14"
+                                        [style.height.px]="14"
+                                        class="d-flex"
+                                    ></svg-icon>
+                                </ng-container>
+
+                                <p class="ta-font-bold">
+                                    {{ repair.serviceType | uppercase }}
+                                </p>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -194,18 +245,14 @@
                             [is24Hours]="
                                 !!repairShopForm.get('openAlways').value
                             "
-                            [isCardOpen]="true"
+                            [isCardOpen]="isOpenHoursHidden"
+                            [disabledCard]="true"
                         >
                             <div
-                                class="common-fake-table-modal common-fake-table-modal-repair-shop-open-hours"
+                                class="common-open-hours-table-modal"
                                 formArrayName="openHours"
                             >
-                                <div class="common-fake-table-label">
-                                    <p>DAY</p>
-                                    <p>FROM</p>
-                                    <p>TO</p>
-                                </div>
-                                <div class="common-fake-table-body">
+                                <div class="common-table-body">
                                     <div
                                         *ngFor="
                                             let openHour of openHours.controls;
@@ -224,7 +271,7 @@
                                                 isDaysVisible
                                             "
                                             [formGroupName]="ind"
-                                            class="common-fake-table-card"
+                                            class="common-table-card"
                                         >
                                             <!-- Switch for all days -->
                                             <div
@@ -366,6 +413,7 @@
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
+
                     <div class="ta-card-body-overflow-none">
                         <app-ta-custom-card
                             [cardName]="'Document'"
@@ -403,36 +451,38 @@
                 <!-- Contact Tab -->
                 <div *ngIf="selectedTab === 2" class="m-tab">
                     <app-ta-custom-card
-                        (onActionEvent)="addContacts($event)"
+                        (onActionEvent)="addContact()"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
                         [cardName]="'Contact'"
                         [disableAnimation]="disableCardAnimation"
-                        [disabledCard]="!contacts.length"
+                        [disabledCard]="!contactAddedCounter"
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [hasArrow]="false"
-                        [hasBodyData]="contacts.length > 0"
-                        [hasCounter]="contacts.length ? contacts.length : 0"
-                        [hasScrollBody]="contacts.length > 10"
-                        [isCardOpen]="contacts.length > 0"
+                        [hasCounter]="contactAddedCounter"
+                        [hasScrollBody]="contactAddedCounter > 10"
+                        [isCardOpen]="contactAddedCounter"
                         [isCommentData]="true"
                     >
                         <div
                             (scroll)="onScrollingContacts($event)"
-                            *ngIf="contacts.length"
                             class="common-fake-table-modal common-fake-table-modal-original-repair-shop"
-                            formArrayName="contacts"
                         >
-                            <div class="common-fake-table-label">
-                                <p>FULL NAME <span>*</span></p>
-                                <p>DEPARTMENT <span>*</span></p>
-                                <p>PHONE <span>*</span></p>
-                                <p>EXT</p>
-                                <p>EMAIL</p>
-                            </div>
-                            <div class="common-fake-table-body">
+                            <app-ta-modal-table
+                                [isContactTable]="true"
+                                [isNewRowCreated]="isNewContactAdded"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
+                                "
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            >
+                            </app-ta-modal-table>
+
+                            <!--  <div class="common-fake-table-body">
                                 <div
                                     *ngFor="
                                         let contact of contacts.controls;
@@ -539,10 +589,18 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </app-ta-custom-card>
+
+                    <ng-container *ngIf="!contactAddedCounter">
+                        <svg-icon
+                            class="d-flex"
+                            [src]="'assets/svg/no-results.svg'"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
+
                 <!-- Review Tab -->
                 <div *ngIf="selectedTab === 3" class="m-tab">
                     <app-ta-custom-card

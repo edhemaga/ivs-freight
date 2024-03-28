@@ -9,13 +9,14 @@ import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.compon
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 
 // Models
-import { GetOwnerListResponse } from 'appcoretruckassist';
+import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
 import {
+    CardDetails,
     DropdownItem,
     GridColumn,
     ToolbarActions,
@@ -37,7 +38,10 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
-import { OwnerActiveState } from '../state/owner-active-state/owner-active.store';
+import {
+    OwnerActiveState,
+    OwnerActiveStore,
+} from '../state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
 import {
     OwnerInactiveState,
@@ -46,6 +50,7 @@ import {
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // Pipes
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
@@ -105,7 +110,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phonePipe: formatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore,
         private confirmationService: ConfirmationService,
-        private sharedService: SharedService
+        private sharedService: SharedService,
+        private ownerActiveStore: OwnerActiveStore
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -639,7 +645,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getGridColumns(configType: string): void {
-        const tableColumnsConfig = JSON.parse(
+        let tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
@@ -805,7 +811,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
         ) {
             let status = false;
-            let mappedEvent = [];
+            const mappedEvent = [];
             this.viewData.map((data) => {
                 event.tabData.data.map((element) => {
                     if (data.id === element) {
@@ -928,6 +934,22 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 closing: ConstantStringTableComponentsEnum.FASTEST,
             });
         }
+    }
+
+    public saveValueNote(event: { value: string; id: number }): void {
+        this.viewData.map((item: CardDetails) => {
+            if (item.id === event.id) {
+                item.note = event.value;
+            }
+        });
+
+        const noteData = {
+            value: event.value,
+            id: event.id,
+            selectedTab: this.selectedTab,
+        };
+
+        this.ownerService.updateNote(noteData);
     }
 
     ngOnDestroy(): void {

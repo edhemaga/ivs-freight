@@ -17,7 +17,10 @@
                       7
                     : viewData.length * 34 + (viewData.length - 1) * 2 + 22 + 7
             "
-            [isOverflowUnset]="tableData[0].title === 'Contacts'"
+            [isOverflowUnset]="
+                tableData[0].title === 'Contacts' ||
+                tableData[0].gridNameTitle === 'Owner'
+            "
             (scrollEvent)="onHorizontalScroll($event)"
         >
             <ng-container
@@ -4319,9 +4322,34 @@
                                             "
                                             [openedAll]="false"
                                             [parking]="false"
+                                            (saveNoteValue)="
+                                                saveValueNote.emit({
+                                                    value: $event,
+                                                    id: row.id
+                                                })
+                                            "
                                         >
                                         </app-ta-note>
                                     </div>
+
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'fleet'"
+                                    >
+                                        <div
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                [data]="row"
+                                                [type]="'owner'"
+                                            ></app-ta-input-dropdown-table>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- ACTIONS COLUMN -->
                                     <div
