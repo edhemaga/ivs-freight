@@ -66,9 +66,6 @@ import {
 // constants
 import { RepairOrder } from './state/constants/repair-order.constant';
 
-// enums
-import { RepairValues } from './state/enums/repair.enum';
-
 // components
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';

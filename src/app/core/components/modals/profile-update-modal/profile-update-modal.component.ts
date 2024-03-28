@@ -42,7 +42,7 @@ import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkb
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 
 // enums
-import { ConstantString } from '../../website/state/enum/const-string.enum';
+import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
 
 // models
 import {

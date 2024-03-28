@@ -13,7 +13,7 @@ import {
 } from 'appcoretruckassist';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
-import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
+import { SettingsLocationService } from 'src/app/settings/state/location-state/settings-location.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
