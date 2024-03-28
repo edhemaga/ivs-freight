@@ -11,7 +11,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { RepairDQuery } from '../state/details-state/repair-d.query';

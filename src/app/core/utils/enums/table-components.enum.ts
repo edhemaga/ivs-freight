@@ -32,6 +32,7 @@ export enum ConstantStringTableComponentsEnum {
     RESET_PASSWORD = 'reset-password',
     RESEND_INVITATION = 'resend-invitation',
     RESET = 'reset',
+    RESET_MODAL = 'reset modal',
 
     // List or card
     LIST = 'List',
@@ -422,4 +423,8 @@ export enum ConstantStringTableComponentsEnum {
 
     // Links
     LOAD_DETAILS = '/list/load/',
+
+    // reset modal
+    RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',
+    RESET_MODAL_CONTACTS_TABLE_TYPE = 'contacts',
 }

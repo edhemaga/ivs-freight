@@ -12,7 +12,7 @@ import { RepairShopResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';

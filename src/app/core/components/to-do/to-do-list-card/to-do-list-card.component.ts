@@ -16,7 +16,7 @@ import { SharedService } from '../../../services/shared/shared.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { applyDrag } from '../../../utils/methods.globals';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';

@@ -20,7 +20,7 @@ import { RepairTService } from '../state/repair.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { MapsService } from '../../../services/shared/maps.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Modals
 import { RepairListResponse, RepairResponse } from 'appcoretruckassist';

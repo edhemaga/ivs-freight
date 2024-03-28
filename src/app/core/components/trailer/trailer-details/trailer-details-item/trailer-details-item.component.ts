@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 
 // components
 import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';

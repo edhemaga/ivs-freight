@@ -32,7 +32,7 @@ import { CardRows } from '../../shared/model/card-data.model';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../state/owner.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
@@ -914,7 +914,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 size: ConstantStringTableComponentsEnum.SMALL,
                 closing: ConstantStringTableComponentsEnum.FASTEST,
             });
-        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRAILER) {
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.ADD_TRAILER
+        ) {
             this.modalService.setProjectionModal({
                 action: ConstantStringTableComponentsEnum.OPEN,
                 payload: {

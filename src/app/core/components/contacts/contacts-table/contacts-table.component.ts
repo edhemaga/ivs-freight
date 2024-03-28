@@ -11,7 +11,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ContactTService } from '../state/services/contact.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 
 // store
 import { ContactState } from '../state/store/contact.store';
@@ -26,6 +26,7 @@ import {
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 // enums
 import { ConstantStringEnum } from '../state/enums/contact-string.enum';
@@ -55,7 +56,6 @@ import {
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
 import { CardRows } from '../../shared/model/card-data.model';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-contacts-table',

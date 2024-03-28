@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 // models
-import { Confirmation } from './state/models/confirmation.model';
+import { Confirmation } from '../../models/confirmation.model';
 
 @Injectable({
     providedIn: 'root',
@@ -15,7 +15,7 @@ export class ConfirmationService {
         return this.confirmationDataSubject.asObservable();
     }
 
-    public sendConfirmationData(data: Confirmation): void {
+    public sendConfirmationData(data /* : Confirmation */): void {
         this.confirmationDataSubject.next(data);
     }
 }
