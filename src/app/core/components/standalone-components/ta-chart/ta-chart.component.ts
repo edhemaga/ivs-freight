@@ -48,10 +48,10 @@ import {
 import { AnnotationPositionEnum, AxisPositionEnum } from './enums/chart-enums';
 
 //Properties from dashboard
-import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
-import { TopRatedListItem } from '../../dashboard/state/models/dashboard-top-rated-models/top-rated-list-item.model';
-import { ChartInitProperties } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
-import { ByStateListItem } from '../../dashboard/state/models/dashboard-by-state-models/by-state-list-item.model';
+import { BarChartAxes } from 'src/app/pages/dashboard/state/models/dashboard-chart-models/bar-chart.model';
+import { TopRatedListItem } from 'src/app/pages/dashboard/state/models/dashboard-top-rated-models/top-rated-list-item.model';
+import { ChartInitProperties } from 'src/app/pages/dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
+import { ByStateListItem } from 'src/app/pages/dashboard/state/models/dashboard-by-state-models/by-state-list-item.model';
 import { ChartConstants } from './utils/constants/chart.constants';
 
 @Component({
