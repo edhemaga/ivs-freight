@@ -3,12 +3,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { CatalogRoutingModule } from './catalog-routing.module';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Components
-import { CatalogComponent } from './catalog/catalog.component';
+import { SvgDefinitionsComponent } from 'src/app/pages/catalog/svg-definitions/svg-definitions.component';
 
 @NgModule({
-    declarations: [CatalogComponent],
-    imports: [CommonModule, SharedModule, CatalogRoutingModule],
+    declarations: [SvgDefinitionsComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        CatalogRoutingModule,
+        FormsModule,
+        AngularSvgIconModule,
+    ],
 })
 export class CatalogModule {}
