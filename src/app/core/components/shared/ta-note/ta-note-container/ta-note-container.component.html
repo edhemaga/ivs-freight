@@ -17,7 +17,7 @@
             ngbTooltip
             [mainTooltip]="'Bold'"
             position="bottom"
-            class="editor_buttons bold_text"
+            class="editor_buttons main_commands bold_text"
         >
             <svg-icon
                 src="assets/svg/truckassist-table/note/bold-icon.svg"
@@ -30,7 +30,7 @@
             ngbTooltip
             [mainTooltip]="'Italic'"
             position="bottom"
-            class="editor_buttons italic_text"
+            class="editor_buttons main_commands italic_text"
         >
             <svg-icon
                 src="assets/svg/truckassist-table/note/italic-icon.svg"
@@ -43,7 +43,7 @@
             ngbTooltip
             [mainTooltip]="'Underline'"
             position="bottom"
-            class="editor_buttons underline_text"
+            class="editor_buttons main_commands underline_text"
         >
             <svg-icon
                 src="assets/svg/truckassist-table/note/underline-icon.svg"
@@ -57,6 +57,7 @@
         [class.parking_tooltip]="parking && showCollorPattern"
         class="editor_buttons text_color"
         [class.popover_text_color]="popoverNote"
+        [class.active]="showCollorPattern"
     >
         <div
             class="colors_patter"
@@ -79,7 +80,7 @@
                 ngbTooltip
                 [mainTooltip]="
                     indx == 0 && !showCollorPattern
-                        ? 'Select Color'
+                        ? 'Color Picker'
                         : indx != 0 && !showCollorPattern
                         ? ''
                         : paternCol.name
