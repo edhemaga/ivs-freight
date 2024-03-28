@@ -85,7 +85,7 @@ import { ConstantStringEnum } from '../../state/enums/load-modal.enum';
 import {
     SignInResponse,
     LoadModalResponse,
-    CreateLoadTemplateCommand,
+    // CreateLoadTemplateCommand,
     RoutingResponse,
     LoadStopCommand,
     LoadType,
@@ -3536,8 +3536,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             advancePay,
             note,
         } = this.loadForm.value;
-
-        const newData: CreateLoadTemplateCommand = {
+        // : CreateLoadTemplateCommand newData old response
+        const newData = {
             name: templateName,
             type: this.tabs.find((tab) => tab.id === this.selectedTab)
                 .name as LoadType,

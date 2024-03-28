@@ -11,9 +11,10 @@
  */
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface PayrollPaymentsMinimalResponse { 
+    id?: number;
+    description?: string | null;
+    subtotal?: number;
+    date?: string;
 }
 

@@ -5,7 +5,9 @@
         class="align-items-center table-header"
         [ngClass]="{
             'phone-table-header': isPhoneTable,
-            'email-table-header': isEmailTable
+            'email-table-header': isEmailTable,
+            'description-table-header': isDescriptionTable,
+            'working-hours': isWorkHoursTable
         }"
     >
         <ng-container
@@ -18,14 +20,24 @@
             <div
                 class="d-flex align-items-center table-header-box"
                 [ngClass]="{
-                    'justify-content-center': i === 0
+                    'justify-content-center': i === 0,
+                    'description-header': isDescriptionTable && i !== 0,
+                    'justify-content-end subtotal': i === 5
                 }"
             >
                 <p class="m-0 ta-font-bold">
                     {{ headerItem }}
                 </p>
 
-                <ng-container *ngIf="i === 1">
+                <ng-container
+                    *ngIf="i === 1 && !isDescriptionTable && !isWorkHoursTable"
+                >
+                    <span class="m-0 ta-font-bold">*</span>
+                </ng-container>
+
+                <ng-container
+                    *ngIf="i !== 0 && i !== 2 && i !== 5 && isDescriptionTable"
+                >
                     <span class="m-0 ta-font-bold">*</span>
                 </ng-container>
             </div>
@@ -262,6 +274,190 @@
                         ></app-ta-input-dropdown>
                     </div>
                 </ng-container>
+            </div>
+        </ng-container>
+
+        <!-- Description Table -->
+        <ng-container *ngIf="isDescriptionTable">
+            <div class="d-flex flex-column description-table-container">
+                <ng-container
+                    formArrayName="descriptionTableItems"
+                    *ngFor="
+                        let descriptionItemRow of getFormArray().controls;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="align-items-center table-item description-item"
+                        [formGroupName]="i"
+                    >
+                        <div
+                            class="d-flex justify-content-center align-items-center table-item-number"
+                        >
+                            <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                            <svg-icon
+                                class="delete-icon"
+                                src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                (click)="deleteFormArrayRow(i)"
+                            ></svg-icon>
+                        </div>
+
+                        <app-ta-input
+                            formControlName="description"
+                            [inputConfig]="{
+                                name: 'description',
+                                type: 'text',
+                                label: 'Description',
+                                placeholderInsteadOfLabel: true,
+                                minLength: 5,
+                                maxLength: 64,
+                                textTransform: 'lowercase',
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
+                                blackInput:
+                                    getFormArray().at(i).get('description')
+                                        .value && !isInputHoverRows[i][0]
+                            }"
+                            (mouseenter)="handleInputHover(true, i, 0)"
+                            (mouseleave)="handleInputHover(false, i, 0)"
+                        ></app-ta-input>
+
+                        <app-ta-input-dropdown
+                            formControlName="pm"
+                            [inputConfig]="{
+                                name: 'pm',
+                                type: 'text',
+                                label: '',
+                                placeholderInsteadOfLabel: true,
+                                textTransform: 'capitalize',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-197',
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
+                                blackInput:
+                                    getFormArray().at(i).get('pm').value &&
+                                    !isInputHoverRows[i][1]
+                            }"
+                            [activeItem]="null"
+                            [options]="contactEmailTypeOptions"
+                            (selectedItem)="
+                                onSelectDropdown(
+                                    $event,
+                                    'contact-email-type',
+                                    i
+                                )
+                            "
+                            (mouseenter)="handleInputHover(true, i, 1)"
+                            (mouseleave)="handleInputHover(false, i, 1)"
+                        ></app-ta-input-dropdown>
+
+                        <app-ta-input
+                            formControlName="qty"
+                            [inputConfig]="{
+                                name: 'qty',
+                                type: 'text',
+                                label: 'Qty',
+                                placeholderInsteadOfLabel: true,
+                                minLength: 5,
+                                maxLength: 64,
+                                textTransform: 'lowercase',
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
+                                blackInput:
+                                    getFormArray().at(i).get('qty').value &&
+                                    !isInputHoverRows[i][0]
+                            }"
+                            (mouseenter)="handleInputHover(true, i, 0)"
+                            (mouseleave)="handleInputHover(false, i, 0)"
+                        ></app-ta-input>
+
+                        <app-ta-input
+                            formControlName="price"
+                            [inputConfig]="{
+                                name: 'price',
+                                type: 'text',
+                                label: 'Price',
+                                placeholderInsteadOfLabel: true,
+                                priceSeparator: true,
+                                priceSeparatorLimitation: 6,
+                                minLength: 5,
+                                maxLength: 64,
+                                textTransform: 'lowercase',
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
+                                blackInput:
+                                    getFormArray().at(i).get('price').value &&
+                                    !isInputHoverRows[i][0]
+                            }"
+                            (mouseenter)="handleInputHover(true, i, 0)"
+                            (mouseleave)="handleInputHover(false, i, 0)"
+                        ></app-ta-input>
+
+                        <ng-container
+                            *ngFor="
+                                let subtotal of subtotals;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <ng-container *ngIf="subtotal.index === i">
+                                <div
+                                    class="subtotal ta-font-semi-bold d-flex justify-content-end"
+                                >
+                                    <ng-container *ngIf="subtotal.subtotal">
+                                        {{ subtotal.subtotal | currency }}
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            subtotal.index === i &&
+                                            !subtotal.subtotal
+                                        "
+                                    >
+                                        {{ 0 | currency }}
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+
+        <!-- Open Hours Table -->
+        <ng-container *ngIf="isWorkHoursTable">
+            <div
+                formArrayName="openHours"
+                class="d-flex flex-column open-hours-table-container"
+            >
+                <div class="common-fake-table-body">
+                    <ng-container
+                        *ngFor="
+                            let openHour of getFormArray().controls;
+                            let ind = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <ng-container
+                            *ngIf="
+                                ind === 0 ||
+                                ind === openHours.controls.length - 1 ||
+                                ind === openHours.controls.length - 2 ||
+                                isDaysVisible
+                            "
+                        >
+                            <div
+                                [formGroupName]="ind"
+                                class="common-fake-table-card"
+                            ></div>
+                        </ng-container>
+                    </ng-container>
+                </div>
             </div>
         </ng-container>
     </form>

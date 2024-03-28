@@ -11,9 +11,11 @@
  */
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
-}
+export type ShopServiceType = 'Fixed' | 'Mobile' | 'Combined';
+
+export const ShopServiceType = {
+    Fixed: 'Fixed' as ShopServiceType,
+    Mobile: 'Mobile' as ShopServiceType,
+    Combined: 'Combined' as ShopServiceType
+};
 

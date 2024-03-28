@@ -30,6 +30,7 @@ export interface CompanyContactResponse {
     contactPhones?: Array<ContactPhoneResponse> | null;
     contactEmails?: Array<ContactEmailResponse> | null;
     companyName?: string | null;
+    companyUserId?: number;
     createdAt?: string;
     updatedAt?: string;
 }

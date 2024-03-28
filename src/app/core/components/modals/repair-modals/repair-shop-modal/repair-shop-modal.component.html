@@ -15,7 +15,7 @@
         <app-ta-tab-switch
             (switchClicked)="tabChange($event)"
             [tabs]="tabs"
-            [type]="'type1-modal-popup'"
+            [type]="'type2-modal-popup'"
         >
         </app-ta-tab-switch>
 
@@ -54,12 +54,24 @@
                             ></app-ta-input>
                         </div>
                         <div class="col-1">
-                            <svg-icon
-                                (click)="favouriteRepairShop()"
-                                [class.active]="isRepairShopFavourite"
-                                class="repair-shop-star"
-                                src="assets/svg/common/ic_star.svg"
-                            ></svg-icon>
+                            <div
+                                [mainTooltip]="
+                                    isRepairShopFavourite
+                                        ? 'Remove'
+                                        : 'Mark as Favourite'
+                                "
+                                ngbTooltip
+                                position="bottom"
+                                tooltipBackground="#424242"
+                                customClass="mt-2"
+                            >
+                                <svg-icon
+                                    (click)="favouriteRepairShop()"
+                                    [class.active]="isRepairShopFavourite"
+                                    class="repair-shop-star"
+                                    src="assets/svg/common/ic_star.svg"
+                                ></svg-icon>
+                            </div>
                         </div>
                     </div>
 
@@ -164,7 +176,40 @@
                         [disableAnimation]="disableCardAnimation"
                         [hasCounter]="services | activeItems"
                         [isCardOpen]="true"
+                        [disabledCard]="true"
                     >
+                        <div class="col-12 service-types">
+                            <app-ta-input-dropdown
+                                formControlName="repairTypeService"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Shop Type',
+                                    isDropdown: true,
+                                    isRequired: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: isSelectedRepairType?.url,
+                                        template: 'truck',
+                                        class: isSelectedRepairType?.name
+                                            ?.trim()
+                                            .replace(' ', '')
+                                            .toLowerCase()
+                                    },
+                                    dropdownWidthClass:
+                                        'w-col-456 truck-trailer-dropdown',
+                                    customClass: 'truck-trailer-dropdown'
+                                }"
+                                [activeItem]="isSelectedRepairType"
+                                [options]="repairTypes"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'shop-type')
+                                "
+                            ></app-ta-input-dropdown>
+                        </div>
+
                         <div class="repair-shop-services">
                             <div
                                 *ngFor="
@@ -173,13 +218,22 @@
                                 "
                                 (click)="activeRepairService(repair)"
                                 [ngClass]="{ active: repair.active }"
-                                class="repair-shop-service"
+                                class="repair-shop-service d-flex align-items-center"
                             >
-                                <svg-icon
+                                <ng-container
                                     *ngIf="repair.svg.includes('.svg')"
-                                    src="{{ repair.svg }}"
-                                ></svg-icon>
-                                <p>{{ repair.serviceType }}</p>
+                                >
+                                    <svg-icon
+                                        src="{{ repair.svg }}"
+                                        [style.width.px]="14"
+                                        [style.height.px]="14"
+                                        class="d-flex"
+                                    ></svg-icon>
+                                </ng-container>
+
+                                <p class="ta-font-bold">
+                                    {{ repair.serviceType | uppercase }}
+                                </p>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -195,16 +249,24 @@
                                 !!repairShopForm.get('openAlways').value
                             "
                             [isCardOpen]="true"
+                            [disabledCard]="true"
                         >
-                            <div
+                            <app-ta-modal-table
+                                [isWorkHoursTable]="true"
+                                [modalTableData]="openHours.controls"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
+                                "
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            >
+                            </app-ta-modal-table>
+
+                            <!-- <div
                                 class="common-fake-table-modal common-fake-table-modal-repair-shop-open-hours"
                                 formArrayName="openHours"
                             >
-                                <div class="common-fake-table-label">
-                                    <p>DAY</p>
-                                    <p>FROM</p>
-                                    <p>TO</p>
-                                </div>
                                 <div class="common-fake-table-body">
                                     <div
                                         *ngFor="
@@ -225,9 +287,9 @@
                                             "
                                             [formGroupName]="ind"
                                             class="common-fake-table-card"
-                                        >
-                                            <!-- Switch for all days -->
-                                            <div
+                                        > -->
+                            <!-- Switch for all days -->
+                            <!-- <div
                                                 *ngIf="ind === 0"
                                                 class="time-picker-all-days"
                                             >
@@ -247,10 +309,10 @@
                                                             .value
                                                     }}
                                                 </span>
-                                            </div>
+                                            </div> -->
 
-                                            <!-- Other Days Check -->
-                                            <app-ta-checkbox
+                            <!-- Other Days Check -->
+                            <!-- <app-ta-checkbox
                                                 (formArrayAction)="
                                                     openHourDayAction(
                                                         $event,
@@ -268,10 +330,10 @@
                                                         .value
                                                 "
                                                 formControlName="isDay"
-                                            ></app-ta-checkbox>
+                                            ></app-ta-checkbox> -->
 
-                                            <!-- Time Picker -->
-                                            <app-ta-input
+                            <!-- Time Picker -->
+                            <!-- <app-ta-input
                                                 *ngIf="
                                                     openHour.get('isDay').value
                                                 "
@@ -302,7 +364,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </app-ta-custom-card>
                     </div>
 

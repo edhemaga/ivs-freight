@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DriverShortResponsePagination } from './driverShortResponsePagination';
+import { DriverDtoPagination } from './driverDtoPagination';
 
 
 export interface DriverListResponse { 
-    pagination?: DriverShortResponsePagination;
+    pagination?: DriverDtoPagination;
     activeCount?: number;
     inactiveCount?: number;
     applicantCount?: number;

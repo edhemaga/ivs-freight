@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadMobileResponse } from './loadMobileResponse';
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface LoadMobileListResponse { 
+    activeLoad?: LoadMobileResponse;
+    pendingLoadsCount?: number;
+    closedLoadsCount?: number;
+    pendingLoads?: Array<LoadMobileResponse> | null;
+    closedLoads?: Array<LoadMobileResponse> | null;
 }
 

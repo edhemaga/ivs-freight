@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DriverDto } from './driverDto';
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface DriverDtoPagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<DriverDto> | null;
 }
 

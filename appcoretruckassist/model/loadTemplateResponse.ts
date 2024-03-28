@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { BrokerResponse } from './brokerResponse';
 import { CompanyShortResponse } from './companyShortResponse';
@@ -53,5 +54,7 @@ export interface LoadTemplateResponse {
     totalMiles?: number;
     totalHours?: number | null;
     totalMinutes?: number | null;
+    files?: Array<FileResponse> | null;
+    fileCount?: number | null;
 }
 

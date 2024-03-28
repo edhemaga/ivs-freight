@@ -104,6 +104,21 @@
                         text-overflow: ellipsis;
                         cursor: pointer;
 
+                        span {
+                            .title-tooltip {
+                                color: $ta-black;
+
+                                &::-moz-selection {
+                                    color: $ta-black !important;
+                                    background: rgb(66, 66, 66, 0.2) !important;
+                                }
+                                &::selection {
+                                    color: $ta-black !important;
+                                    background: rgb(66, 66, 66, 0.2) !important;
+                                }
+                            }
+                        }
+
                         &:hover {
                             color: $ta-blue-15;
                         }
@@ -309,6 +324,16 @@
                                 white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
+                                color: $ta-black-2;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
                             }
                         }
 
