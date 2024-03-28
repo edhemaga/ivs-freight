@@ -6,7 +6,7 @@ import {
     SimpleChanges,
     OnChanges,
 } from '@angular/core';
-import { CardDetails } from '../../shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -15,14 +15,14 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
 
 // models
-import { CardRows, DataResult } from '../../shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
 // store
-import { LoadQuery } from '../../modals/cards-modal/state/store/load-modal.query';
+import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';

@@ -5,9 +5,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FuelDetailsRoutes } from './fuel-details.routing';
-import { SharedModule } from '../../shared/shared.module';
-import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
