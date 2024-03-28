@@ -1,9 +1,6 @@
-import { ChartColor, ChartConfiguration, ChartType } from 'chart.js';
+import { ChartColor, ChartType } from 'chart.js';
 import { AnnotationPositionEnum, AxisPositionEnum } from '../enums/chart-enums';
-import { BarChartConfig } from '../../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
-import { TopRatedListItem } from '../../../dashboard/state/models/dashboard-top-rated-models/top-rated-list-item.model';
-import { ChartInitProperties } from '../../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
-import { ChartDefaultConfig } from '../../../dashboard/state/models/dashboard-chart-models/line-chart.model';
+import { BarChartConfig } from 'src/app/pages/dashboard/state/models/dashboard-chart-models/bar-chart.model';
 
 export interface AxisGridLines {
     display: boolean;
