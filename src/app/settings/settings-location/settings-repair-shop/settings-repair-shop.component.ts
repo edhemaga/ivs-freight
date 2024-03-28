@@ -3,12 +3,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyRepairShopService } from './state/company-repairshop.service';
-import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { RepairTService } from '../../../repair/state/repair.service';
+import { RepairTService } from 'src/app/pages/repair/state/repair.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ActivatedRoute } from '@angular/router';
 @Component({

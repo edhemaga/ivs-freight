@@ -13,14 +13,14 @@ import {
 } from 'appcoretruckassist';
 
 //Component
-import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
+import { SettingsBasicModalComponent } from 'src/app/core/components/modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from 'src/app/core/components/modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from 'src/app/core/components/modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 
 //Service
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from '../../../../services/formData/form-data.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Store
 import { CompanyStore } from './company-settings.store';

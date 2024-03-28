@@ -8,7 +8,7 @@ import {
     CompanyRepairShopState,
     CompanyRepairShopStore,
 } from './company-repairshop.store';
-import { RepairShopListResponse } from '../../../../../../../../appcoretruckassist/model/repairShopListResponse';
+import { RepairShopListResponse } from 'appcoretruckassist';
 import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({

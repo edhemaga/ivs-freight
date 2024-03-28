@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { TerminalResponse } from '../../../../../../../../appcoretruckassist/model/terminalResponse';
+import { TerminalResponse } from 'appcoretruckassist';
 
 export interface TerminalState extends EntityState<TerminalResponse, number> {}
 

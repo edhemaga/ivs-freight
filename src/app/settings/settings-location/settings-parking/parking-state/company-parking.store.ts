@@ -1,4 +1,4 @@
-import { ParkingResponse } from './../../../../../../../../appcoretruckassist/model/parkingResponse';
+import { ParkingResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 

@@ -1,4 +1,4 @@
-import { CompanyOfficeListResponse } from './../../../../../../../../appcoretruckassist/model/companyOfficeListResponse';
+import { CompanyOfficeListResponse } from 'appcoretruckassist';
 import { CompanyTOfficeService } from './company-office.service';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';

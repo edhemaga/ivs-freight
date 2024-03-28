@@ -7,18 +7,18 @@ import { SettingsParkingComponent } from './settings-parking/settings-parking.co
 import { SettingsOfficeComponent } from './settings-office/settings-office.component';
 import { SettingsTerminalComponent } from './settings-terminal/settings-terminal.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaCounterComponent } from 'src/app/core/components/shared/ta-counter/ta-counter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
-import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaReCardComponent } from 'src/app/core/components/shared/ta-common-card/ta-re-card.component';
+import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 @NgModule({
     imports: [

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CompanyTerminalService } from './company-terminal.service';
 import { TerminalState, TerminalStore } from './company-terminal.store';
-import { TerminalListResponse } from '../../../../../../../../appcoretruckassist/model/terminalListResponse';
+import { TerminalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

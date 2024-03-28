@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RepairShopService } from '../../../../../../../../appcoretruckassist/api/repairShop.service';
+import { RepairShopService } from 'appcoretruckassist';
 import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({

@@ -1,4 +1,4 @@
-import { ParkingListResponse } from './../../../../../../../../appcoretruckassist/model/parkingListResponse';
+import { ParkingListResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
