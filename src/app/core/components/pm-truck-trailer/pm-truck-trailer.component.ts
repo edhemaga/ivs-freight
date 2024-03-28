@@ -13,6 +13,7 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
 
 // Models
 import {
+    DropdownItem,
     GridColumn,
     ToolbarActions,
 } from '../shared/model/card-table-data.model';
@@ -40,10 +41,14 @@ import {
 import { PmTruckQuery } from './state/pm-truck-state/pm-truck.query';
 import { PmTrailerQuery } from './state/pm-trailer-state/pm-trailer.query';
 
+// Pipes
+import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
+
 @Component({
     selector: 'app-pm-truck-trailer',
     templateUrl: './pm-truck-trailer.component.html',
     styleUrls: ['./pm-truck-trailer.component.scss'],
+    providers: [TaThousandSeparatorPipe],
 })
 export class PmTruckTrailerComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -84,7 +89,10 @@ export class PmTruckTrailerComponent
 
         // Store
         private pmTruckQuery: PmTruckQuery,
-        private pmTrailerQuery: PmTrailerQuery
+        private pmTrailerQuery: PmTrailerQuery,
+
+        // Pipes
+        private thousandSeparator: TaThousandSeparatorPipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -93,7 +101,7 @@ export class PmTruckTrailerComponent
 
         this.resetColumns();
 
-        //this.getPMTrailerList();
+        this.toogleColumns();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -221,24 +229,16 @@ export class PmTruckTrailerComponent
         this.setPmData(td);
     }
 
-    private getGridColumns(configType: string): void {
+    private getGridColumns(configType: string): any {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
         if (configType === ConstantStringTableComponentsEnum.PM_TRUCK) {
-            console.log('getGridColumns truck 1', tableColumnsConfig);
-            console.log('getGridColumns truck 2', getTruckPMColumnDefinition());
-
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getTruckPMColumnDefinition();
         } else {
-            console.log('getGridColumns trailer 1', tableColumnsConfig);
-            console.log(
-                'getGridColumns trailer 2',
-                getTrailerPMColumnDefinition()
-            );
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getTrailerPMColumnDefinition();
@@ -247,7 +247,6 @@ export class PmTruckTrailerComponent
 
     private setPmData(td: DataForCardsAndTables): void {
         this.columns = td.gridColumns;
-        console.log('columns', this.columns);
 
         if (td.data.length) {
             this.viewData = td.data;
@@ -256,8 +255,6 @@ export class PmTruckTrailerComponent
                 data.isSelected = false;
                 return data;
             });
-
-            console.log('viewData', this.viewData);
 
             // Set data for cards based on tab active
             this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
@@ -278,6 +275,7 @@ export class PmTruckTrailerComponent
         const newDumyData = {
             expirationDays: 8350,
             expirationDaysText: '8350',
+            totalValueText: '6 month period',
             percentage: 20,
         };
 
@@ -392,84 +390,6 @@ export class PmTruckTrailerComponent
         }
     }
 
-    public getPMTrailerList(): void {
-        this.pmService
-            .getPMTruckUnitList()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                console.log('getPMTruckUnitList response', response);
-
-                const truckUnits = response.pagination.data;
-                const truckUnitsData = truckUnits.map((truckUnit) => {
-                    const newDumyData = {
-                        expirationDays: 8350,
-                        expirationDaysText: '8350',
-                        percentage: 20,
-                    };
-
-                    const truck: any = {
-                        truckTypeClass:
-                            truckUnit.truck.truckType.logoName.replace(
-                                ConstantStringTableComponentsEnum.SVG,
-                                ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
-                            ),
-                        truckTypeIcon: truckUnit.truck.truckType.logoName,
-                        tableTruckName: truckUnit.truck.truckType.name,
-                        truckType: truckUnit.truck.truckType,
-                        tableTruckColor: this.setTruckTooltipColor(
-                            truckUnit.truck.truckType.name
-                        ),
-                        textUnit: truckUnit.truck.truckNumber,
-                        textOdometer: truckUnit.odometer
-                            ? truckUnit.odometer.toString()
-                            : '86,125',
-                        oilFilter: newDumyData,
-                        airFilter: newDumyData,
-                        transFluid: newDumyData,
-                        belts: newDumyData,
-                        textInv: truckUnit.invoice,
-                        textLastShop: truckUnit.lastShop,
-                        lastService: truckUnit.lastService ?? '04/03/24',
-                        ruMake: 'Carrier',
-                        repairShop: 'ARMEN’S TIRE AND SERVICE',
-                    };
-
-                    return truck;
-                });
-
-                this.viewData = truckUnitsData;
-                console.log('viewData', this.viewData);
-            });
-
-        this.pmService
-            .getPMTruckList()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                console.log('getPMTruckList response', response);
-            });
-
-        this.pmService
-            .getRepairList()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                console.log('getRepairList response', response);
-            });
-
-        this.pmService
-            .getRepairPmTrailerFilter()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                console.log('getRepairPmTrailerFilter response', response);
-            });
-
-        this.pmService
-            .getRepairPmTruckFilter()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                console.log('getRepairPmTruckFilter response', response);
-            });
-    }
-
     private setTruckTooltipColor(truckName: string): string {
         if (truckName === TruckName.SEMI_TRUCK) {
             return TooltipColors.LIGHT_GREEN;
@@ -524,111 +444,6 @@ export class PmTruckTrailerComponent
         if (dataType === ConstantStringTableComponentsEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
             const truckUnitsData = truckUnits.map((truckUnit) => {
-                const newDumyData = {
-                    expirationMiles: 8350,
-                    expirationMilesText: '8350',
-                    percentage: 20,
-                };
-
-                let oilFilter,
-                    airFilter,
-                    transFluid,
-                    belts,
-                    engineTune,
-                    alignment = {
-                        expirationMiles: null,
-                        expirationMilesText: null,
-                        percentage: null,
-                    };
-
-                truckUnit.pMs.map((pm) => {
-                    if (pm.title === 'Engine Oil & Filter') {
-                        oilFilter = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText: (
-                                pm.mileage - pm.passedMileage
-                            ).toString(),
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    } else if (pm.title === 'Air Filter') {
-                        airFilter = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText: (
-                                pm.mileage - pm.passedMileage
-                            ).toString(),
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    } else if (pm.title === 'Belts') {
-                        belts = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText: (
-                                pm.mileage - pm.passedMileage
-                            ).toString(),
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    } else if (pm.title === 'Transmission Fluid') {
-                        transFluid = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText: (
-                                pm.mileage - pm.passedMileage
-                            ).toString(),
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    } else if (pm.title === 'Engine Tune-Up') {
-                        engineTune = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText: (
-                                pm.mileage - pm.passedMileage
-                            ).toString(),
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    } else if (pm.title === 'Alignment') {
-                        alignment = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText: (
-                                pm.mileage - pm.passedMileage
-                            ).toString(),
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    }
-                });
-
                 const truck: any = {
                     truckTypeClass: truckUnit.truck.truckType.logoName.replace(
                         ConstantStringTableComponentsEnum.SVG,
@@ -644,104 +459,64 @@ export class PmTruckTrailerComponent
                     textOdometer: truckUnit.odometer
                         ? truckUnit.odometer.toString()
                         : '86,125',
-                    oilFilter: oilFilter,
-                    airFilter: airFilter,
-                    transFluid: transFluid,
-                    belts: belts,
-                    engTuneUp: engineTune,
-                    alignment: alignment,
                     textInv: truckUnit.invoice,
                     textLastShop: truckUnit.lastShop,
                     lastService: truckUnit.lastService ?? '04/03/24',
                     ruMake: 'Carrier',
                     repairShop: 'ARMEN’S TIRE AND SERVICE',
+                    additionalData: { note: '' },
+                    tableDropdownContent: {
+                        hasContent: true,
+                        content: this.getPMDropdownContent(),
+                    },
                 };
 
-                console.log('truck data', truck);
+                const defaultPMData = {
+                    expirationMiles: null,
+                    expirationMilesText: null,
+                    totalValueText: null,
+                    percentage: null,
+                };
+
+                const truckPMColumns = this.getGridColumns(
+                    ConstantStringTableComponentsEnum.PM_TRUCK
+                );
+
+                truckUnit.pMs.map((pm) => {
+                    const pmColumn = truckPMColumns.find(
+                        (column) => column.name === pm.title
+                    );
+
+                    if (pm.passedMileage) {
+                        truck[pmColumn.field] = {
+                            expirationMiles: pm.mileage - pm.passedMileage,
+                            expirationMilesText:
+                                this.thousandSeparator.transform(
+                                    pm.mileage - pm.passedMileage
+                                ),
+                            totalValueText:
+                                this.thousandSeparator.transform(pm.mileage) +
+                                ' mi',
+                            percentage:
+                                Math.floor(
+                                    this.calculatePercentage(
+                                        pm.mileage,
+                                        pm.passedMileage
+                                    )
+                                ) ?? null,
+                        };
+                    } else {
+                        truck[pmColumn.field] = defaultPMData;
+                    }
+                });
 
                 return truck;
             });
 
-            console.log('truckUnits query', truckUnits);
             return truckUnitsData;
         } else {
             const trailerUnits = this.pmTrailerQuery.getAll();
             const trailerUnitsData = trailerUnits.map((trailerUnit) => {
-                let generalServiceData,
-                    reeferUnitServiceData,
-                    alignmentServiceData,
-                    ptoPumpServiceData = {
-                        expirationDays: null,
-                        expirationDaysText: null,
-                        percentage: null,
-                    };
-
-                trailerUnit.pMs.map((pm) => {
-                    if (pm.title === 'General') {
-                        generalServiceData = {
-                            expirationDays: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ),
-                            expirationDaysText: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ).toString(),
-                            percentage: Math.floor(
-                                this.calculatePercentage(
-                                    pm.months,
-                                    pm.passedMonths
-                                )
-                            ),
-                        };
-                    } else if (pm.title === 'Reefer Unit') {
-                        reeferUnitServiceData = {
-                            expirationDays: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ),
-                            expirationDaysText: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ).toString(),
-                            percentage: Math.floor(
-                                this.calculatePercentage(
-                                    pm.months,
-                                    pm.passedMonths
-                                )
-                            ),
-                        };
-                    } else if (pm.title === 'Alignment') {
-                        alignmentServiceData = {
-                            expirationDays: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ),
-                            expirationDaysText: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ).toString(),
-                            percentage: Math.floor(
-                                this.calculatePercentage(
-                                    pm.months,
-                                    pm.passedMonths
-                                )
-                            ),
-                        };
-                    } else if (pm.title === 'PTO Pump') {
-                        ptoPumpServiceData = {
-                            expirationDays: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ),
-                            expirationDaysText: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ).toString(),
-                            percentage: Math.floor(
-                                this.calculatePercentage(
-                                    pm.months,
-                                    pm.passedMonths
-                                )
-                            ),
-                        };
-                    }
-                });
-
-                console.log('trailerUnit', trailerUnit);
-
                 const trailer: any = {
                     tableTrailerTypeIcon:
                         trailerUnit.trailer.trailerType.logoName,
@@ -760,33 +535,87 @@ export class PmTruckTrailerComponent
                         : '86,125',
                     lastService: trailerUnit.lastService ?? '01/29/21',
                     repairShop: 'ARMEN’S TIRE AND SERVICE',
-                    //color: '#7040A1',
-                    alignment: alignmentServiceData,
-                    general: generalServiceData,
-                    ptoPump: ptoPumpServiceData,
                     ruMake: 'Carrier',
-                    reeferUnit: reeferUnitServiceData,
+                    additionalData: { note: '' },
+                    tableDropdownContent: {
+                        hasContent: true,
+                        content: this.getPMDropdownContent(),
+                    },
                 };
+
+                const defaultPMData = {
+                    expirationDays: null,
+                    expirationDaysText: null,
+                    totalValueText: null,
+                    percentage: null,
+                };
+
+                const trailerColumns = this.getGridColumns(
+                    ConstantStringTableComponentsEnum.PM_TRAILER
+                );
+
+                trailerUnit.pMs.map((pm) => {
+                    const pmColumn = trailerColumns.find(
+                        (column) => column.name === pm.title
+                    );
+
+                    if (pm.passedMonths) {
+                        trailer[pmColumn.field] = {
+                            expirationDays: Math.abs(
+                                pm.months * 30 - pm.passedMonths * 30
+                            ),
+                            expirationDaysText: Math.abs(
+                                pm.months * 30 - pm.passedMonths * 30
+                            ).toString(),
+                            totalValueText: pm.months + ' month period',
+                            percentage: Math.floor(
+                                this.calculatePercentage(
+                                    pm.months,
+                                    pm.passedMonths
+                                )
+                            ),
+                        };
+                    } else {
+                        trailer[pmColumn.field] = defaultPMData;
+                    }
+                });
 
                 return trailer;
             });
-
-            console.log('trailerUnits query', trailerUnits);
-            console.log('trailerUnitsData query', trailerUnitsData);
+            
             return trailerUnitsData;
         }
     }
 
     private calculatePercentage(partialValue, totalValue): number {
-        console.log('calculatePercentage partialValue', partialValue);
-        console.log('calculatePercentage totalValue', totalValue);
         if (!partialValue || !totalValue) {
-            console.log('calculatePercentage return null');
             return null;
         }
 
         const percentageValue = (100 * partialValue) / totalValue;
         return percentageValue <= 100 ? percentageValue : 0;
+    }
+
+    // Toogle Columns
+    private toogleColumns(): void {
+        this.tableService.currentToaggleColumn
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response?.column) {
+                    this.columns = this.columns.map((col) => {
+                        if (col.field === response.column.field) {
+                            col.hidden = response.column.hidden;
+                        }
+
+                        return col;
+                    });
+                }
+            });
+    }
+
+    // Get PM Dropdown Content
+    private getPMDropdownContent(): DropdownItem[] {
+        return TableDropdownComponentConstants.DROPDOWN_PM_CONTENT;
     }
 
     ngOnDestroy(): void {

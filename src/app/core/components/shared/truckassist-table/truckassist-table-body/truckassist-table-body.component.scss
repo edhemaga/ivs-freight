@@ -2101,6 +2101,15 @@ table.truckassist-table-body-style {
                                     background: $bw6-3;
                                 }
                             }
+
+                            &.progress-dropdown-active {
+                                background: #2F2F2F;
+                                border-radius: 2px;
+
+                                .table-progress-text {
+                                    color: white !important;
+                                }
+                            }
                         }
 
                         // APPLICANT PROGRESS COLUMN

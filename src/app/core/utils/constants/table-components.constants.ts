@@ -873,6 +873,60 @@ export class TableDropdownComponentConstants {
         },
     ];
 
+    static DROPDOWN_PM_CONTENT: DropdownItem[] = [
+        {
+            title: 'Configure',
+            name: 'configure',
+            svgUrl: 'assets/svg/common/ic_settings.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+        {
+            title: 'Add Repair Bill',
+            name: 'add-repair-bill',
+            svgUrl: 'assets/svg/truckassist-table/dropdown/content/add.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'activate',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+            hasBorder: true,
+        },
+        {
+            title: 'Share',
+            name: 'share',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+            tableListDropdownContentStyle: {
+                'margin-bottom.px': 4,
+            },
+        },
+
+        {
+            title: 'Print',
+            name: 'print',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: 'regular',
+        },
+    ];
+
     static TEXT_COLORS: string[] = [
         '#6D82C7',
         '#4DB6A2',
