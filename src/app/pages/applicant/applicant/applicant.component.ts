@@ -4,21 +4,27 @@ import { transition, trigger } from '@angular/animations';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     isAnyPropertyInObjectFalse,
     isAnyValueInArrayTrue,
 } from '../state/utils/utils';
 
+// store
 import { ApplicantQuery } from '../state/store/applicant.query';
 
+// animations
 import {
     slideLeft,
     slideRight,
 } from '../state/animations/applicant-route.animation';
 
-import { INavigation } from '../state/model/navigation.model';
+// enums
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
+
+// models
+import { INavigation } from '../state/model/navigation.model';
 
 @Component({
     selector: 'app-applicant',

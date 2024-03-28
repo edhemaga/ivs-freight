@@ -19,8 +19,8 @@ import {
     navigation_magic_line,
     navigation_route_animation,
 } from '../navigation.animation';
-import { ImageBase64Service } from '../../../utils/base64.image';
-import { TaUserService } from '../../../services/user/user.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { TaUserService } from 'src/app/core/services/user/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';

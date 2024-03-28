@@ -5,25 +5,24 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { RepairRoutingModule } from './repair-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
-import { SharedModule } from '../shared/shared.module';
 import { AgmDirectionModule } from 'agm-direction';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // Components
 import { RepairTableComponent } from './repair-table/repair-table.component';
 import { RepairCardComponent } from './repair-card/repair-card.component';
-import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { MapsComponent } from '../shared/maps/maps.component';
-import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
-import { MapListComponent } from '../shared/map-list/map-list.component';
-
-import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
-import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
+import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
+import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 
 // Pipes
-import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
     declarations: [RepairTableComponent, RepairCardComponent],

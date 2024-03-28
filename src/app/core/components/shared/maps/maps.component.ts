@@ -12,14 +12,10 @@ import { FormsModule, UntypedFormGroup } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { RepairTService } from '../../repair/state/repair.service';
-import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
-import { FuelTService } from '../../fuel/state/fuel.service';
+
 import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../model/map-route';
-import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
+
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
@@ -32,6 +28,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropDownService } from '../../../services/details-page/drop-down.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
+import { ShipperTService } from 'src/app/pages/customer/state/shipper-state/shipper.service';
+import { FuelTService } from 'src/app/pages/fuel/state/fuel.service';
+import { RepairTService } from 'src/app/pages/repair/state/repair.service';
+import { RoutingStateService } from 'src/app/pages/routing/state/routing-state/routing-state.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { CompanyTOfficeService } from 'src/app/settings/settings-location/settings-office/state/company-office.service';
 
 @Component({
     selector: 'app-maps',

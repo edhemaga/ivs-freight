@@ -1,6 +1,3 @@
-import { RepairShopMinimalListResponse } from './../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
-import { RepairModalResponse } from './../../../../../../appcoretruckassist/model/repairModalResponse';
-
 import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
@@ -14,20 +11,22 @@ import {
     RepairShopMinimalResponse,
     RepairShopNewListResponse,
     RepairDriverResponse,
+    RepairAutocompleteDescriptionResponse,
+    RepairModalResponse,
+    RepairShopMinimalListResponse,
+    RepairShopResponse,
     // RepairDriverResponse,
 } from 'appcoretruckassist';
-import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
 import { RepairTrailerStore } from './repair-trailer-state/repair-trailer.store';
 import { ShopStore } from './shop-state/shop.store';
 import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { RepairDQuery } from './details-state/repair-d.query';
 import { RepairDStore } from './details-state/repair-d.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { RepairAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/repairAutocompleteDescriptionResponse';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',

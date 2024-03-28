@@ -6,7 +6,7 @@ import {
     CreateResponse,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
-import { AccidentModalResponse } from '../../../../../../../appcoretruckassist/model/accidentModalResponse';
+import { AccidentModalResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

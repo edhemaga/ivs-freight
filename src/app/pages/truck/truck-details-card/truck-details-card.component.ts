@@ -15,9 +15,10 @@ import { Subject, takeUntil } from 'rxjs';
 //Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckTService } from '../state/truck.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 //Animations
-import { card_component_animation } from '../../shared/animations/card-component.animations';
+
 import {
     animate,
     style,
@@ -25,19 +26,14 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Store
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 
-//Helpers
-import { ImageBase64Service } from '../../../utils/base64.image';
-
 //Models
 import { TruckResponse } from 'appcoretruckassist';
-import {
-    ChartApiCall,
-    LegendAttributes,
-} from '../../standalone-components/ta-chart/models/chart-models';
+
 import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
 import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
 
@@ -45,13 +41,17 @@ import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-model
 import {
     AxisPositionEnum,
     ChartLegendDataEnum,
-} from '../../standalone-components/ta-chart/enums/chart-enums';
+} from 'src/app/core/components/standalone-components/ta-chart/enums/chart-enums';
 
 //Constants
-import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
 
 //Components
-import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
+import {
+    ChartApiCall,
+    LegendAttributes,
+} from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 @Component({
     selector: 'app-truck-details-card',

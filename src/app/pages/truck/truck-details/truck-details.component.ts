@@ -1,21 +1,27 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
+
+//Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckTService } from '../state/truck.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+
+//Store
 import { TrucksDetailsListQuery } from '../state/truck-details-list-state/truck-details-list.query';
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
-import { TruckTService } from '../state/truck.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { TruckItemStore } from '../../truck/state/truck-details-state/truck.details.store';
+
+//Components
+import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
     selector: 'app-truck-details',

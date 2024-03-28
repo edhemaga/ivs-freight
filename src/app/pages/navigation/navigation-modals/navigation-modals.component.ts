@@ -1,5 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
+    moveElementsTopDownModal,
+    smoothHeight,
+} from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Models
+import { NavigationModal } from '../model/navigation.model';
+import {
     accountingNavigationData,
     fuelNavigationData,
     generalNavigationData,
@@ -8,39 +18,34 @@ import {
     toolsNavigationData,
     requestNavigationData,
 } from '../model/navigation-data';
-import { NavigationModal } from '../model/navigation.model';
+//Services
 import { NavigationService } from '../services/navigation.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
-import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
-import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
-import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
-import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
-import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
-import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
-import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
-import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
-import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { AccidentModalComponent } from '../../modals/accident-modal/accident-modal.component';
-import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { LoadModalComponent } from '../../modals/load-modal/components/load-modal/load-modal.component';
-import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
-import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { PayrollDeductionModalComponent } from '../../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
-import { PayrollBonusModalComponent } from '../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
-import { PayrollCreditBonusComponent } from '../../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import {
-    moveElementsTopDownModal,
-    smoothHeight,
-} from '../navigation.animation';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+//Components
+import { AccountModalComponent } from 'src/app/core/components/modals/account-modal/account-modal.component';
+import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
+import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
+import { ContactModalComponent } from 'src/app/core/components/modals/contact-modal/contact-modal.component';
+import { BrokerModalComponent } from 'src/app/core/components/modals/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-modal/shipper-modal.component';
+import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
+import { UserModalComponent } from 'src/app/core/components/modals/user-modal/user-modal.component';
+import { TaskModalComponent } from 'src/app/core/components/modals/task-modal/task-modal.component';
+import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { AccidentModalComponent } from 'src/app/core/components/modals/accident-modal/accident-modal.component';
+import { RepairShopModalComponent } from 'src/app/core/components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { RepairOrderModalComponent } from 'src/app/core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';
+import { ApplicantModalComponent } from 'src/app/core/components/modals/applicant-modal/applicant-modal.component';
+import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { PayrollDeductionModalComponent } from 'src/app/core/components/modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollBonusModalComponent } from 'src/app/core/components/modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollCreditBonusComponent } from 'src/app/core/components/modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 
 @Component({
     selector: 'app-navigation-modals',

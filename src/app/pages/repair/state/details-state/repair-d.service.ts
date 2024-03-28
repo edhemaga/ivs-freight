@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
-import { RepairShopService } from '../../../../../../../appcoretruckassist/api/repairShop.service';
 import { RepairDStore } from './repair-d.store';
-import { RepairListResponse } from '../../../../../../../appcoretruckassist/model/repairListResponse';
-import { RepairShopMinimalResponse } from '../../../../../../../appcoretruckassist/model/repairShopMinimalResponse';
 
-import { RepairService } from '../../../../../../../appcoretruckassist/api/repair.service';
-import { RepairedVehicleListResponse } from '../../../../../../../appcoretruckassist/model/repairedVehicleListResponse';
-import { RepairShopMinimalListResponse } from '../../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
-import { RepairShopResponse } from '../../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairDQuery } from './repair-d.query';
+import {
+    RepairShopService,
+    RepairService,
+    RepairListResponse,
+    RepairShopMinimalListResponse,
+    RepairedVehicleListResponse,
+    RepairShopResponse,
+    RepairShopMinimalResponse,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

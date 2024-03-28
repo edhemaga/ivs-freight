@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+// moment
 import moment from 'moment';
 
 @Component({

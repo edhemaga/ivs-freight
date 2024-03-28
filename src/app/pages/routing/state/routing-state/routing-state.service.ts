@@ -11,10 +11,10 @@ import {
     CreateResponse,
     RouteResponse,
     UpdateRouteCommand,
+    MapResponse,
 } from 'appcoretruckassist';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { MapResponse } from '../../../../../../../appcoretruckassist/model/mapResponse';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class RoutingStateService implements OnDestroy {

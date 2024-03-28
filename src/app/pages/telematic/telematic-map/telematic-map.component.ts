@@ -8,22 +8,27 @@ import {
     ChangeDetectorRef,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import * as AppConst from '../../../../const';
-import { SignalRService } from './../../../services/dispatchboard/app-signalr.service';
-import { MapsService } from '../../../services/shared/maps.service';
-import { TelematicStateService } from '../state/telematic-state.service';
-import { GpsServiceService } from '../../../../global/services/gps-service.service';
+import { DomSanitizer } from '@angular/platform-browser';
+
+import * as AppConst from '../../../const';
 import {
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
+
+// services
 import { TruckTService } from '../../truck/state/truck.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { TelematicStateService } from '../state/telematic-state.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { GpsServiceService } from 'src/app/global/services/gps-service.service';
+import { CompanyTOfficeService } from 'src/app/settings/settings-location/settings-office/state/company-office.service';
+
+// store
 import { TelematicStateQuery } from '../state/telematic-state.query';
 import { TelematicStateStore } from '../state/telematic-state.store';
 
@@ -32,7 +37,7 @@ import { TelematicStateStore } from '../state/telematic-state.store';
     templateUrl: './telematic-map.component.html',
     styleUrls: [
         './telematic-map.component.scss',
-        '../../../../../assets/scss/maps.scss',
+        '../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
 })

@@ -8,29 +8,38 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
-
 import {
     filterUnceckedRadiosId,
     isAnyRadioInArrayUnChecked,
-} from 'src/app/core/components/applicant/state/utils/utils';
+} from 'src/app/pages/applicant/state/utils/utils';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
+import { ApplicantActionsService } from 'src/app/pages/applicant/state/services/applicant-actions.service';
 
-import { ApplicantStore } from 'src/app/core/components/applicant/state/store/applicant.store';
-import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
+// store
+import { ApplicantStore } from 'src/app/pages/applicant/state/store/applicant.store';
+import { ApplicantQuery } from 'src/app/pages/applicant/state/store/applicant.query';
 
-import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
-import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
+// enums
+import { InputSwitchActions } from 'src/app/pages/applicant/state/enum/input-switch-actions.enum';
+
+// models
+import { ApplicantQuestion } from 'src/app/pages/applicant/state/model/applicant-question.model';
 import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
 import {
     ApplicantModalResponse,

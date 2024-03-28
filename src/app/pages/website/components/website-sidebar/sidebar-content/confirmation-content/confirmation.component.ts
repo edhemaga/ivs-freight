@@ -3,11 +3,11 @@ import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
+import { WebsiteActionsService } from 'src/app/pages/website/state/service/website-actions.service';
 import { WebsiteAuthService } from '../../../../state/service/website-auth.service';
 
 // enums
-import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
 
 @Component({
     selector: 'app-confirmation',

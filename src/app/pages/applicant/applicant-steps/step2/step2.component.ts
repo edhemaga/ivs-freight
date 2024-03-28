@@ -12,23 +12,28 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../state/utils/utils';
-
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
+// services
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import {
     EnumValue,
     TrailerLengthResponse,
@@ -39,6 +44,7 @@ import {
     ApplicantResponse,
     ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
+import { WorkExpereienceModel } from '../../state/model/work-experience.model';
 
 @Component({
     selector: 'app-step2',
@@ -57,7 +63,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public workExperienceArray /* : WorkExpereienceModel[]  */ = [
+    public workExperienceArray: WorkExpereienceModel[] = [
         {
             id: 1,
             isEditingWorkExperience: false,

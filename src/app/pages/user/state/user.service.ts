@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
+
+import { Observable, tap } from 'rxjs';
+
+// models
 import {
     AccountService,
+    CompanyUserModalResponse,
+    CompanyUserResponse,
     CompanyUserService,
+    CreateCompanyUserCommand,
+    CreateResponse,
     ForgotPasswordCommand,
     GetCompanyUserListResponse,
     ResendSignUpCompanyOrUserCommand,
+    UpdateCompanyUserCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
-import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
-import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
-import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { UpdateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/updateCompanyUserCommand';
-import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// store
 import { UserStore } from './user-state/user.store';
 import { UserQuery } from './user-state/user.query';
 
@@ -94,9 +101,7 @@ export class UserTService {
             tap(() => {
                 const subUser = this.getUserByid(data.id).subscribe({
                     next: (user: any) => {
-                        this.userStore.remove(
-                            ({ id }) => id === data.id
-                        );
+                        this.userStore.remove(({ id }) => id === data.id);
 
                         user = {
                             ...user,
@@ -186,8 +191,12 @@ export class UserTService {
         );
     }
 
-    public userResendIvitation(email: ResendSignUpCompanyOrUserCommand): Observable<any> {
-        return this.accountUserService.apiAccountResendsignupcompanyoruserPut(email);
+    public userResendIvitation(
+        email: ResendSignUpCompanyOrUserCommand
+    ): Observable<any> {
+        return this.accountUserService.apiAccountResendsignupcompanyoruserPut(
+            email
+        );
     }
 
     public userResetPassword(email: ForgotPasswordCommand): Observable<any> {

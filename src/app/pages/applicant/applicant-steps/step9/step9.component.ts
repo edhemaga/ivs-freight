@@ -1,16 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import {
     ApplicantResponse,
     DriverRightsFeedbackResponse,

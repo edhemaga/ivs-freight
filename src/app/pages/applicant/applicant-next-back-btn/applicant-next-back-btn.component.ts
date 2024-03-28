@@ -3,11 +3,11 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    OnInit,
     Output,
     SimpleChanges,
 } from '@angular/core';
 
+// enums
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 @Component({
@@ -15,7 +15,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
     templateUrl: './applicant-next-back-btn.component.html',
     styleUrls: ['./applicant-next-back-btn.component.scss'],
 })
-export class ApplicantNextBackBtnComponent implements OnInit, OnChanges {
+export class ApplicantNextBackBtnComponent implements OnChanges {
     @Input() mode?: string;
     @Input() disabledStep?: boolean;
     @Input() nextStep?: boolean;
@@ -31,8 +31,6 @@ export class ApplicantNextBackBtnComponent implements OnInit, OnChanges {
     public selectedMode: string = SelectedMode.APPLICANT;
 
     constructor() {}
-
-    ngOnInit(): void {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {

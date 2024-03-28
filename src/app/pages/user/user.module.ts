@@ -9,13 +9,13 @@ import { UserRoutes } from './user.routing';
 
 // components
 import { UserTableComponent } from './user-table/user-table.component';
-import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { UserCardComponent } from './user-card/user-card.component';
-import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
-import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 
 @NgModule({
     imports: [
