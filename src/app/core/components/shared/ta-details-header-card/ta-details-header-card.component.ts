@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -9,7 +10,11 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { DriversMinimalListQuery } from '../../driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -35,11 +40,10 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         TaInputDropdownComponent,
         DetailsDropdownComponent,
         NgbPopoverModule,
-        NgbModule
+        NgbModule,
     ],
 })
 export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
-    
     @Input() public customPinnedSvg: string = '';
     @Input() public cardDetailsName: string = '';
     @Input() public cardDetailsDate: any;
@@ -58,6 +62,9 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     @Input() public optionsId: number;
     @Input() public sortOptions: string;
     @Input() public currentName: string;
+    @Input() public deactivate?: string;
+    @Input() public owner?: string;
+    @Input() public ownerName?: string;
     @Output() public dropActions = new EventEmitter<any>();
     @Output() selectValue = new EventEmitter<string>();
     @Output() selectValueStore = new EventEmitter<string>();
@@ -73,15 +80,21 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     public hideLeftArrow: boolean;
     public hideRightArrow: boolean;
     public driverId: number = this.driverItemStore.getValue().ids[0];
+    showDropdownTooltip: boolean = true;
     constructor(
         private driverItemStore: DriversItemStore,
-        private driverMinimalQuery: DriversMinimalListQuery
+        private driverMinimalQuery: DriversMinimalListQuery,
+        private cdRef: ChangeDetectorRef
     ) {}
     ngOnChanges(changes: SimpleChanges) {}
     ngOnInit(): void {
         // this.hideArrowOnStart(this.driverId);
     }
+    showTooltip(e: boolean) {
+        this.showDropdownTooltip = e;
 
+        this.cdRef.detectChanges();
+    }
     public hideArrowOnStart(id: number) {
         let last = this.options.at(-1);
         let first = this.options.at(0);
@@ -123,7 +136,6 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
             this.selectedDropdownSecond = true;
         }
     }
-
     public onSelectItem(value: any) {
         if (this.optionsSecondInput.length > 1) {
             this.selectedDropdownSecond = !this.selectedDropdownSecond;

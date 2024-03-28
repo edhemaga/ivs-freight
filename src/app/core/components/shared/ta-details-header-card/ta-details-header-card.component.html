@@ -1,4 +1,5 @@
-<div class="details-header-wrapper"
+<div
+    class="details-header-wrapper"
     [class.details-header-wrapper-reapirShop]="repairHeader"
 >
     <div class="details-header-wrapper-switcher">
@@ -8,11 +9,11 @@
                 class="current-active-item"
                 [ngClass]="{ 'single-data': options.length == 1 }"
                 (click)="onPickItem()"
-                ngbTooltip
+                [ngbTooltip]="showDropdownTooltip"
                 [mainTooltip]="options.length > 1 ? searchInputName : ''"
                 position="top"
-                [tooltipBackground]="options.length > 1 ? '#6C6C6C' : '#eeeeee'"
-            >   
+                [tooltipBackground]="options.length > 1 ? '#424242' : '#eeeeee'"
+            >
                 <!-- header name with pipe-->
                 <!--
                 <p class="current-active-name">
@@ -20,18 +21,52 @@
                 </p>
                 -->
                 <!-- header name new -->
-                <p class="current-active-name"> {{currentName}}</p>
+                <ng-container *ngIf="deactivate">
+                    <div
+                        ngbTooltip
+                        class="current-active-dropdown-image"
+                        [mainTooltip]="'Deactivated'"
+                        position="bottom"
+                        tooltipBackground="#424242"
+                    >
+                        <svg-icon
+                            (mouseenter)="showTooltip(false)"
+                            (mouseleave)="showTooltip(true)"
+                            src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+                <p class="current-active-name">{{ currentName }}</p>
+                <ng-container *ngIf="owner">
+                    <div
+                        ngbTooltip
+                        class="current-active-dropdown-owner"
+                        [mainTooltip]="'Owned by ' + ownerName"
+                        position="bottom"
+                        tooltipBackground="#424242"
+                    >
+                        <svg-icon
+                            (mouseenter)="showTooltip(false)"
+                            (mouseleave)="showTooltip(true)"
+                            src="assets/svg/common/blue_rounded_circle_white_inside.svg"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
                 <span
                     ngbTooltip
                     [mainTooltip]="searchName"
                     position="bottom"
-                    [tooltipBackground]="searchName ? '#6C6C6C' : ''"
+                    [tooltipBackground]="searchName ? '#424242' : ''"
                     class="owner-tooltip"
                 >
                     <svg-icon
                         *ngIf="haveDropSVG"
                         class="current-active-owner"
-                        src="{{ customPinnedSvg  ? customPinnedSvg : (options | detailActiveItem).svg}}"
+                        src="{{
+                            customPinnedSvg
+                                ? customPinnedSvg
+                                : (options | detailActiveItem).svg
+                        }}"
                     ></svg-icon>
                 </span>
             </div>
@@ -63,7 +98,7 @@
                 [mainTooltip]="tooltipPrevious"
                 position="top"
                 [tooltipBackground]="
-                    !tooltipPrevious ? 'rgba(0,0,0,0)' : '#6C6C6C'
+                    !tooltipPrevious ? 'rgba(0,0,0,0)' : '#424242'
                 "
                 class="previousArrow"
                 (click)="onAction('previous')"
@@ -77,7 +112,7 @@
             <span
                 ngbTooltip
                 [mainTooltip]="tooltipNext"
-                [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+                [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#424242'"
                 position="top"
                 class="nextArrow"
                 (click)="onAction('next')"
@@ -110,8 +145,8 @@
                 ngbTooltip
                 [mainTooltip]="'Search Store'"
                 position="top"
-                tooltipBackground="#6C6C6C"
             >
+                tooltipBackground="#6C6C6C" >
                 <p class="current-active-name">
                     {{ (optionsSecondInput | detailActiveItem).name }}
                 </p>
@@ -204,6 +239,25 @@
             >
                 <div
                     *ngIf="statusInactive == 0"
+                    class="details-header-wrapper-data-item bottom"
+                >
+                    <svg-icon
+                        class="date-terminated"
+                        src="assets/svg/common/ic_terminated.svg"
+                    ></svg-icon>
+                    <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
+                </div>
+            </span>
+            <span
+                style="margin-left: 130px"
+                *ngIf="deactivate"
+                tooltipBackground="#6C6C6C"
+                ngbTooltip
+                mainTooltip="Deactivated"
+                position="bottom"
+            >
+                <div
+                    *ngIf="deactivate"
                     class="details-header-wrapper-data-item bottom"
                 >
                     <svg-icon

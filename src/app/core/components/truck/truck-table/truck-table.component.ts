@@ -28,7 +28,7 @@ import {
 } from '../../../utils/methods.globals';
 
 // Modals
-import { TruckListResponse, TruckResponse } from 'appcoretruckassist';
+import { TruckListResponse } from 'appcoretruckassist';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 import { BodyResponseTruck, FilterOptions } from '../truck.modal';
@@ -155,11 +155,23 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             break;
                         }
                         case ConstantStringTableComponentsEnum.ACTIVATE: {
-                            this.changeTruckStatus(res.id);
+                            if (res.array?.length) {
+                                res.array.map((e) => {
+                                    this.changeTruckStatus(e.id);
+                                });
+                            } else {
+                                this.changeTruckStatus(res.id);
+                            }
                             break;
                         }
                         case ConstantStringTableComponentsEnum.DEACTIVATE: {
-                            this.changeTruckStatus(res.id);
+                            if (res.array?.length) {
+                                res.array.map((e) => {
+                                    this.changeTruckStatus(e.id);
+                                });
+                            } else {
+                                this.changeTruckStatus(res.id);
+                            }
                             break;
                         }
                         case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
@@ -821,42 +833,18 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: ConstantStringTableComponentsEnum.ADD_REGISTRATION_2,
+                        title: ConstantStringTableComponentsEnum.REGISTRATION,
                         name: ConstantStringTableComponentsEnum.ADD_REGISTRATION,
                     },
                     {
-                        title: ConstantStringTableComponentsEnum.ADD_INSPECTION_2,
+                        title: ConstantStringTableComponentsEnum.INSPECTION,
                         name: ConstantStringTableComponentsEnum.ADD_INSPECTION,
                     },
                     {
-                        title: ConstantStringTableComponentsEnum.ADD_REPAIR_2,
+                        title: ConstantStringTableComponentsEnum.TITLE,
                         name: ConstantStringTableComponentsEnum.ADD_REPAIR,
                     },
                 ],
-                hasBorder: true,
-            },
-            {
-                title: ConstantStringTableComponentsEnum.SHARE_2,
-                name: ConstantStringTableComponentsEnum.SHARE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: ConstantStringTableComponentsEnum.PRINT_2,
-                name: ConstantStringTableComponentsEnum.PRINT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
                 hasBorder: true,
             },
             {
@@ -1111,6 +1099,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
                 break;
             }
+
             case ConstantStringTableComponentsEnum.ADD_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
@@ -1227,9 +1216,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // TODO Function commented in service for some reason it needs to be checked
-    private multipleDeleteTrucks(response: TruckResponse[]): void {
+    private multipleDeleteTrucks(response: number[]): void {
         this.truckService
-            .deleteTruckList(response)
+            .deleteTruckList(response, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((truck) => {

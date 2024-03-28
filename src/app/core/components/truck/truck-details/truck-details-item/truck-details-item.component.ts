@@ -163,20 +163,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     show: true,
                 },
                 {
-                    title: 'Renew',
-                    name: 'renew',
-                    svg: 'assets/svg/common/ic_retry_white.svg',
-                    iconName: 'renew',
-                    show: true,
-                },
-                {
-                    title: 'Transfer',
-                    name: 'transfer',
-                    svg: 'assets/svg/common/dropdown-transfer-icon.svg',
-                    iconName: 'transfer',
-                    show: true,
-                },
-                {
                     title: 'border',
                 },
                 {
@@ -195,13 +181,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 },
                 {
                     title: 'border',
-                },
-                {
-                    title: 'Void',
-                    name: 'activate-item',
-                    svg: 'assets/svg/common/ic_cancel_violation.svg',
-                    iconName: 'deactivate-item',
-                    redIcon: true,
                 },
                 {
                     title: 'Delete',

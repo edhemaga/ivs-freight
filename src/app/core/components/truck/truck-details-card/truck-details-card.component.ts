@@ -7,6 +7,7 @@ import {
     ViewChild,
     Input,
     SimpleChanges,
+    HostListener,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -42,7 +43,6 @@ import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-model
 
 //Enums
 import {
-    AnnotationPositionEnum,
     AxisPositionEnum,
     ChartLegendDataEnum,
 } from '../../standalone-components/ta-chart/enums/chart-enums';
@@ -105,7 +105,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
     private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     public ownerCardOpened: boolean = true;
-
+    public featureNumber: number = 0;
     payrollChartConfig: any = {
         dataProperties: [
             {
@@ -373,6 +373,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         id: -1,
         chartType: 1,
     };
+    public performanceCall: ChartApiCall = {
+        id: -1,
+        chartType: 1,
+    };
     public expensesCall: ChartApiCall = {
         id: -1,
         chartType: 1,
@@ -381,6 +385,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         id: -1,
         chartType: 1,
     };
+    public performance: any[] = [];
+    isWideScreen: boolean = false;
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
@@ -393,6 +400,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             this.noteControl.patchValue(changes.truck.currentValue.note);
             this.getTruckDropdown();
         }
+        this.setFeatureNumber(this.truck);
+        this.checkWidth(window.innerWidth);
 
         this.getTruckChartData(changes.truck.currentValue.id);
 
@@ -402,8 +411,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.truck_list = item));
     }
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        this.checkWidth(event.target.innerWidth);
+    }
+
+    checkWidth(width: number) {
+        this.isWideScreen = width > 1508; // Adjust the width threshold as needed
+    }
     ngOnInit(): void {
-        this.getTruckById(this.truck.id);
         this.noteControl.patchValue(this.truck.note);
         this.getTruckDropdown();
         this.buttonSwitcher();
@@ -416,7 +432,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         });
         //this.truck.ownerHistories = array1;
         this.ownersData = array1;
-
         setTimeout(() => {
             let currentIndex = this.truckDropDowns.findIndex(
                 (truck) => truck.id === this.truck.id
@@ -521,15 +536,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         ];
     }
 
-    public getTruckById(id: number) {
-        this.truckService
-            .getTruckById(id, true)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                this.truck = item;
-            });
-    }
-
     public getExpensesChartData(
         id: number,
         chartType: number,
@@ -560,7 +566,27 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 );
             });
     }
-
+    public getPerformanceChart(
+        id: number,
+        chartType: number,
+        hideAnimation?: boolean
+    ) {
+        if (
+            id != this.performanceCall.id ||
+            chartType != this.performanceCall.chartType
+        ) {
+            this.performanceCall.id = id;
+            this.performanceCall.chartType = chartType;
+        } else {
+            return false;
+        }
+        this.truckService
+            .getPerformace(id, chartType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item: any) => {
+                this.performance = item;
+            });
+    }
     public getFuelConsumtionChartData(
         id: number,
         chartType: number,
@@ -652,9 +678,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             export: true,
         };
     }
-    public changeTabPerfomance(ev: any) {
+    public changeTabExpenses(ev: any) {
         const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
         this.getExpensesChartData(this.truck.id, chartType);
+    }
+    public changeTabPerfomance(ev: any) {
+        const chartType = this.payrollChart?.detailsTimePeriod(ev.name);
+        this.getPerformanceChart(this.truck.id, chartType);
     }
     public changeTabFuel(ev: any) {
         const chartType = this.payrollChart?.detailsTimePeriod(ev.name);
@@ -685,6 +715,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     svg: item.truckType.logoName,
                     folder: 'common/trucks',
                     active: item.id === this.truck.id,
+                    owner: item.owner,
                 };
             });
 
@@ -897,6 +928,31 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 
+    public setFeatureNumber(truck: TruckResponse): void {
+        this.featureNumber = 0;
+        if (truck.doubleBunk) {
+            this.featureNumber++;
+        }
+        if (truck.refrigerator) {
+            this.featureNumber++;
+        }
+        if (truck.blower) {
+            this.featureNumber++;
+        }
+        if (truck.pto) {
+            this.featureNumber++;
+        }
+        if (truck.dashCam) {
+            this.featureNumber++;
+        }
+        if (truck.headacheRack) {
+            this.featureNumber++;
+        }
+        if (truck.dcInverter) {
+            this.featureNumber++;
+        }
+    }
+
     public getLastSixChars(mod: string): string | string[] {
         let lastSixChars: string | string[] = mod;
 
@@ -912,6 +968,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public getTruckChartData(id: number): void {
         this.getExpensesChartData(id, this.expensesCall.chartType, false);
+        this.getPerformanceChart(id, this.performanceCall.chartType, false);
+
         this.getFuelConsumtionChartData(id, this.fuelCall.chartType, false);
         this.getRevenueChartData(id, this.revenueCall.chartType, false);
     }

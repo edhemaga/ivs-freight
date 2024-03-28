@@ -4,7 +4,7 @@ app-truck-details-card {
         --dynamic-colour: #aaa;
     }
     $color-truck: var(--dynamic-colour);
-    
+
     .truck-color-code {
         svg {
             path {
@@ -12,28 +12,51 @@ app-truck-details-card {
             }
         }
 
-        &.whiteTruck{
+        &.whiteTruck {
             svg {
                 path {
-                    stroke: #AAAAAA;
-                    stroke-width:1.5;
+                    stroke: #aaaaaa;
+                    stroke-width: 1.5;
                 }
             }
         }
     }
-
-    .inactiveTruckLogo{
-        svg-icon{
-            svg {
-                    path {
-                        fill: #AAAAAA !important;
-                        stroke: transparent !important;
-                   } 
-                
+    .feature {
+        display: flex;
+        flex-direction: column;
+        .feature-row {
+            display: flex;
+            justify-content: space-between;
+            height: 26px;
+            .feature-item {
+                svg {
+                    width: 14px;
+                    height: 14px;
                 }
+                display: flex;
+                font-size: 11px;
+                .hide-feature {
+                    svg {
+                        path {
+                            fill: #cccccc;
+                        }
+                    }
+                    text-decoration: line-through;
+                    color: #cccccc;
+                }
+            }
         }
-    } 
-
+    }
+    .inactiveTruckLogo {
+        svg-icon {
+            svg {
+                path {
+                    fill: #aaaaaa !important;
+                    stroke: transparent !important;
+                }
+            }
+        }
+    }
 
     .custom-card-single {
         background-color: #ffffff;
@@ -62,6 +85,47 @@ app-truck-details-card {
     .cards-item-wrapper-1 {
         overflow: hidden;
     }
+    .item-wrapper-line {
+        margin: 0;
+        height: 2px;
+        margin-top: 6px;
+        margin-bottom: 8px;
+        margin-right: -6px;
+        margin-left: -6px !important;
+        border-radius: 1px;
+        background-color: $white;
+    }
+    .item-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        .item-wrapper-first-row {
+            display: flex;
+            .employment {
+                overflow: visible;
+                font-family: Montserrat;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 18px;
+                text-align: left;
+                margin-right: 5px;
+                color: #424242;
+            }
+
+            .duration {
+                margin-left: 5px;
+                font-family: Montserrat;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 18px;
+                text-align: left;
+                color: #919191;
+            }
+            .duration::before {
+                content: '\2022'; /* Unicode character for bullet point */
+            }
+        }
+    }
     .details-cards {
         background-color: #ffffff;
         width: 440px;
@@ -69,7 +133,7 @@ app-truck-details-card {
     }
     .note-cards {
         padding: 0px 6px 0px 4px;
-        .note-header{
+        .note-header {
             padding: 0px 0px !important;
         }
         .note-body {
@@ -86,7 +150,8 @@ app-truck-details-card {
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                span, div {
+                span,
+                div {
                     &::-moz-selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
@@ -212,8 +277,10 @@ app-truck-details-card {
                 width: fit-content !important;
             }
         }
-
-        .driverAvatarImg{
+        .assignTo-value {
+            font-size: 14px !important;
+        }
+        .driverAvatarImg {
             height: 20px;
             width: 18px;
             margin-right: 6px;
@@ -231,13 +298,11 @@ app-truck-details-card {
             //background-position: center;
         }
 
-        &.inactive-assignTo-item{
-            
-
-            .assignTo-value{
+        &.inactive-assignTo-item {
+            .assignTo-value {
                 padding-left: 6px;
-                color: #B7B7B7;
-                cursor: auto ;
+                color: #b7b7b7;
+                cursor: auto;
             }
         }
     }
@@ -320,13 +385,42 @@ app-truck-details-card {
         }
     }
 
-    .whiteColorCode{
+    .whiteColorCode {
         svg {
             path {
-                stroke: #AAAAAA;
-                stroke-width:1.5;
+                stroke: #aaaaaa;
+                stroke-width: 1.5;
             }
         }
+    }
+}
+.chart-template-performance {
+    display: flex;
+    justify-content: space-evenly;
+    font-family: Montserrat;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+
+    .first,
+    .second {
+        flex-grow: 1;
+    }
+
+    .first {
+        flex-basis: 50%;
+        /* Additional styles for the first div */
+    }
+    .main {
+        font-family: Montserrat;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 21.94px;
+        text-align: left;
+    }
+    .second {
+        flex-basis: 50%;
+        /* Additional styles for the second div */
     }
 }
 
