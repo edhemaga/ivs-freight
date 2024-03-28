@@ -299,6 +299,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 ext: [null, phoneExtension],
                 email: [null, [Validators.required]],
             });
+
+            this.isContactPhoneExtExist = [
+                ...this.isContactPhoneExtExist,
+                false,
+            ];
+
+            this.inputService.customInputValidator(
+                newFormArrayRow.get(ConstantStringEnum.EMAIL),
+                ConstantStringEnum.EMAIL,
+                this.destroy$
+            );
         }
 
         this.isInputHoverRows = [...this.isInputHoverRows, newIsInputHoverRow];
