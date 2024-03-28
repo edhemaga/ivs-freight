@@ -115,18 +115,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public subtotals: Subtotal[] = [];
 
-    // DAYS
-    public openHoursDays = [
-        'MON - FRI',
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-    ];
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private contactService: ContactTService,
@@ -157,8 +145,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
             this.getModalTableDataValue();
         }
-
-        console.log(this.modalTableData);
     }
 
     public trackByIdentity = (_: number, item: string): string => item;

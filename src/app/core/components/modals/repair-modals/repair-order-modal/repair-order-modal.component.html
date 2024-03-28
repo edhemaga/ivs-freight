@@ -197,7 +197,9 @@
                         <div class="selected-item-label">
                             Repair Shop
 
-                            <span *ngIf="selectedHeaderTab === 1">*</span>
+                            <ng-container *ngIf="selectedHeaderTab === 1"
+                                >*</ng-container
+                            >
                         </div>
 
                         <p class="selected-item-name">
@@ -213,65 +215,71 @@
                         </p>
 
                         <div class="selected-item-additional">
-                            <div
-                                *ngIf="selectedRepairShop?.phone"
-                                class="selected-item-info"
-                            >
-                                <svg-icon
-                                    [class.hideSvgOnCopy]="hideIconIndex == 1"
-                                    src="assets/svg/common/ic_phone.svg"
-                                ></svg-icon>
+                            <ng-container *ngIf="selectedRepairShop?.phone">
+                                <div class="selected-item-info">
+                                    <svg-icon
+                                        [class.hideSvgOnCopy]="
+                                            hideIconIndex == 1
+                                        "
+                                        src="assets/svg/common/ic_phone.svg"
+                                    ></svg-icon>
 
-                                <app-ta-copy
-                                    (mouseover)="hideIconIndex = 1"
-                                    (mouseleave)="hideIconIndex = 0"
-                                    [copyValue]="
-                                        selectedRepairShop?.phone | formatPhoneP
-                                    "
-                                    [textColor]="'#424242'"
-                                    [textFontSize]="'11px'"
-                                    [leftSideIcon]="true"
-                                ></app-ta-copy>
-                            </div>
+                                    <app-ta-copy
+                                        (mouseover)="hideIconIndex = 1"
+                                        (mouseleave)="hideIconIndex = 0"
+                                        [copyValue]="
+                                            selectedRepairShop?.phone
+                                                | formatPhoneP
+                                        "
+                                        [textColor]="'#424242'"
+                                        [textFontSize]="'11px'"
+                                        [leftSideIcon]="true"
+                                    ></app-ta-copy>
+                                </div>
+                            </ng-container>
 
-                            <div
-                                *ngIf="selectedRepairShop?.email"
-                                class="selected-item-info"
-                            >
-                                <svg-icon
-                                    [class.hideSvgOnCopy]="hideIconIndex == 2"
-                                    src="assets/svg/common/ic_email.svg"
-                                ></svg-icon>
+                            <ng-container *ngIf="selectedRepairShop?.email">
+                                <div class="selected-item-info">
+                                    <svg-icon
+                                        [class.hideSvgOnCopy]="
+                                            hideIconIndex == 2
+                                        "
+                                        src="assets/svg/common/ic_email.svg"
+                                    ></svg-icon>
 
-                                <app-ta-copy
-                                    (mouseover)="hideIconIndex = 2"
-                                    (mouseleave)="hideIconIndex = 0"
-                                    [copyValue]="selectedRepairShop?.email"
-                                    [textColor]="'#424242'"
-                                    [textFontSize]="'11px'"
-                                    [leftSideIcon]="true"
-                                ></app-ta-copy>
-                            </div>
+                                    <app-ta-copy
+                                        (mouseover)="hideIconIndex = 2"
+                                        (mouseleave)="hideIconIndex = 0"
+                                        [copyValue]="selectedRepairShop?.email"
+                                        [textColor]="'#424242'"
+                                        [textFontSize]="'11px'"
+                                        [leftSideIcon]="true"
+                                    ></app-ta-copy>
+                                </div>
+                            </ng-container>
 
-                            <div
-                                *ngIf="selectedRepairShop?.address"
-                                class="selected-item-info"
-                            >
-                                <svg-icon
-                                    [class.hideSvgOnCopy]="hideIconIndex == 3"
-                                    [ngStyle]="{ 'padding-bottom': '4px' }"
-                                    src="assets/svg/common/ic_address.svg"
-                                ></svg-icon>
+                            <ng-container *ngIf="selectedRepairShop?.address">
+                                <div class="selected-item-info">
+                                    <svg-icon
+                                        [class.hideSvgOnCopy]="
+                                            hideIconIndex == 3
+                                        "
+                                        [ngStyle]="{ 'padding-bottom': '4px' }"
+                                        src="assets/svg/common/ic_address.svg"
+                                    ></svg-icon>
 
-                                <app-ta-copy
-                                    (mouseover)="hideIconIndex = 3"
-                                    (mouseleave)="hideIconIndex = 0"
-                                    [copyValue]="selectedRepairShop?.address"
-                                    [textColor]="'#424242'"
-                                    [textFontSize]="'11px'"
-                                    [leftSideIcon]="true"
-                                ></app-ta-copy>
-                            </div>
+                                    <app-ta-copy
+                                        (mouseover)="hideIconIndex = 3"
+                                        (mouseleave)="hideIconIndex = 0"
+                                        [copyValue]="
+                                            selectedRepairShop?.address
+                                        "
+                                        [textColor]="'#424242'"
+                                        [textFontSize]="'11px'"
+                                        [leftSideIcon]="true"
+                                    ></app-ta-copy>
+                                </div>
+                            </ng-container>
                         </div>
 
                         <div class="clear-selected-item">
@@ -335,8 +343,8 @@
             <!-- (onActionEvent)="addItems($event)" -->
             <app-ta-custom-card
                 [hasScrollBody]="descriptions?.length > 10"
-                [isCardOpen]="descriptions?.length > 0"
-                [disabledCard]="descriptions?.length === 0"
+                [isCardOpen]="descriptions?.length"
+                [disabledCard]="!descriptions?.length"
                 [hasCounter]="descriptions?.length"
                 [cardName]="'Item'"
                 [disableAnimation]="disableCardAnimation"

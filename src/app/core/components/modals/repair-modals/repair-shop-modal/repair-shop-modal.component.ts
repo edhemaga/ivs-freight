@@ -477,10 +477,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 this.selectedContractDepartmentFormArray[indx] = event;
                 break;
             }
-            case 'shop-type': {
-                console.log(event);
-                break;
-            }
             default: {
                 break;
             }
@@ -1214,7 +1210,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 next: (res: RepairShopModalResponse) => {
                     this.labelsBank = res.banks;
                     this.labelsDepartments = res.departments;
-                    console.log(res);
                     this.services = res.serviceTypes.map((item) => {
                         return {
                             id: item.serviceType.id,

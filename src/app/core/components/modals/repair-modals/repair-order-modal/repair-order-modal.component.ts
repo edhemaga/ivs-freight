@@ -233,7 +233,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .getDriver(truckId, trailerId, formatedDate)
             .pipe(takeUntil(this.destroy$))
             .subscribe((driversList) => {
-                if (driversList.length > 0) {
+                if (driversList.length) {
                     this.drivers = driversList.map((item) => {
                         return {
                             ...item,
