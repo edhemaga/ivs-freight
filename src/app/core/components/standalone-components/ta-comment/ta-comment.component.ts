@@ -30,7 +30,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { LoadTService } from '../../load/state/load.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { TaInputDropdownTableService } from '../ta-input-dropdown-table/utils/services/ta-input-dropdown-table.service';
 
 // utils

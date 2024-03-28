@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { UserTService } from '../state/user.service';
 
 //Components

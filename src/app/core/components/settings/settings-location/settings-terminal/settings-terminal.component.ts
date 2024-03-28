@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';
 import { CompanyTerminalService } from './state/company-terminal.service';
 import { Subject, takeUntil } from 'rxjs';

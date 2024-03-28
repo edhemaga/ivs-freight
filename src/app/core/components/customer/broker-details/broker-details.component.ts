@@ -9,7 +9,7 @@ import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';

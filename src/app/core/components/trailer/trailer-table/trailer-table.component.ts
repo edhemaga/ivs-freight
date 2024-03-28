@@ -9,7 +9,7 @@ import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
-import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../state/trailer.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';

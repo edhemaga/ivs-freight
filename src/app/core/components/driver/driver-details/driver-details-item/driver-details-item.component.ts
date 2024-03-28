@@ -18,7 +18,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CdlTService } from '../../state/cdl.service';

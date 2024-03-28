@@ -22,7 +22,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 
 //Components
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';

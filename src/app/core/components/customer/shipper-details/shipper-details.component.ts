@@ -9,7 +9,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperMinimalListStore } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { ShipperDetailsListQuery } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
 import { ShipperDetailsListStore } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 import { ShipperItemStore } from '../state/shipper-state/shipper-details-state/shipper-details.store';

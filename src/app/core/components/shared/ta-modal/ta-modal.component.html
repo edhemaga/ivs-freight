@@ -588,7 +588,8 @@
                             [ngClass]="{
                                 'active-cancel-btn': [
                                     'fuel stop',
-                                    'contact'
+                                    'contact',
+                                    'reset modal'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -601,7 +602,7 @@
 
                     <ng-container
                         *ngIf="
-                            ['delete', 'multiple delete'].includes(
+                            ['delete', 'multiple delete', 'reset'].includes(
                                 confirmationData?.type
                             )
                         "
@@ -614,7 +615,7 @@
                                         : 'multiple delete'
                                 )
                             "
-                            class="modal-delete-btn modal-red-btn modal-confirmation-btn"
+                            class="modal-delete-btn modal-gray-btn modal-confirmation-btn"
                             type="button"
                         >
                             Yes

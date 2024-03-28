@@ -11,43 +11,46 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import {
     UntypedFormControl,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// bootstrap
 import {
     NgbModule,
     NgbPopover,
     NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
-//Type
-import { TableType } from 'appcoretruckassist';
-
-//Services
+// services
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../../ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 
-//Decorators
+// decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
 
-//Components
+// components
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
-
-//Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-
-//Model
-import { optionsPopupContent } from '../../model/toolbar';
 import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal/load-cards-modal.component';
 import { ConfirmationModalResetComponent } from '../../../modals/confirmation-modal/confirmation-modal-reset/confirmation-modal-reset.component';
+
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
+// models
+import { TableType } from 'appcoretruckassist';
+import { optionsPopupContent } from '../../model/toolbar';
 
 @Titles()
 @Component({
@@ -614,8 +617,12 @@ export class TruckassistTableToolbarComponent
                 ConfirmationModalResetComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 {
-                    template: '',
+                    template: ConstantStringTableComponentsEnum.RESET_MODAL,
                     type: ConstantStringTableComponentsEnum.RESET,
+                    modalTitle:
+                        ConstantStringTableComponentsEnum.RESET_MODAL_CONTACTS_TITLE,
+                    tableType:
+                        ConstantStringTableComponentsEnum.RESET_MODAL_CONTACTS_TABLE_TYPE,
                 }
             );
         }

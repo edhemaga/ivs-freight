@@ -18,7 +18,7 @@ import { FuelTService } from '../../fuel/state/fuel.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../model/map-route';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
