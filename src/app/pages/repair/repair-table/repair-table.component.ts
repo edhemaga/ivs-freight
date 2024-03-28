@@ -8,46 +8,43 @@ import {
 } from '@angular/core';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-
-// Components
-import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { DatePipe } from '@angular/common';
 
 // Services
 import { RepairTService } from '../state/repair.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
-import { MapsService } from '../../../services/shared/maps.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 // Modals
-import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
 import {
-    getRepairsShopColumnDefinition,
-    getRepairTruckAndTrailerColumnDefinition,
-} from '../../../../../assets/utils/settings/repair-columns';
-import {
-    BodyResponseRepair,
+    RepairBackFilterModal,
+    ShopbBckFilterQueryInterface,
     MapList,
     MapedTruckAndTrailer,
-    RepairBackFilterModal,
     ShopBackFilterModal,
-    ShopbBckFilterQueryInterface,
-} from '../../../model/repair.model';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from '../../shared/model/table-components/all-tables.modal';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from '../../shared/model/card-data.model';
+    BodyResponseRepair,
+} from 'src/app/core/model/repair.model';
+import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
 import {
     DropdownItem,
     ToolbarActions,
-} from '../../shared/model/card-table-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
+import {
+    TableOptionsInterface,
+    CardRows,
+} from 'src/app/core/components/shared/model/card-data.model';
+import {
+    TableColumnConfig,
+    DataForCardsAndTables,
+} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import {
+    getRepairTruckAndTrailerColumnDefinition,
+    getRepairsShopColumnDefinition,
+} from 'src/assets/utils/settings/repair-columns';
 
 // Store
 import { ShopQuery } from '../state/shop-state/shop.query';
@@ -57,14 +54,14 @@ import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store
 import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
 
 import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
+
 import {
     RepairTrailerState,
     RepairTrailerStore,
 } from '../state/repair-trailer-state/repair-trailer.store';
 
 // Pipes
-import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -73,21 +70,28 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Animations
-import {
-    tableSearch,
-    closeAnimationAction,
-} from '../../../utils/methods.globals';
+
 import { DisplayRepairConfiguration } from '../state/constants/repair-card.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 
+// Methods
+import {
+    tableSearch,
+    closeAnimationAction,
+} from 'src/app/core/utils/methods.globals';
+
+// Components
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { RepairOrderModalComponent } from 'src/app/core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from 'src/app/core/components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 @Component({
     selector: 'app-repair-table',
     templateUrl: './repair-table.component.html',
     styleUrls: [
         './repair-table.component.scss',
-        '../../../../../assets/scss/maps.scss',
+        '../../../../assets/scss/maps.scss',
     ],
     providers: [TaThousandSeparatorPipe],
 })

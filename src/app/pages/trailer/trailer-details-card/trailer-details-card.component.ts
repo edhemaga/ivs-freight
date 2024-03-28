@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 // services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // animations
 import {
@@ -22,7 +22,7 @@ import {
     trigger,
     state,
 } from '@angular/animations';
-import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 // store
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';

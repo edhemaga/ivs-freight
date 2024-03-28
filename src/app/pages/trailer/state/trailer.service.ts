@@ -11,8 +11,8 @@ import {
     RegistrationService,
     TitleService,
     InspectionService,
+    TrailerAutocompleteModelResponse,
 } from 'appcoretruckassist';
-import { TrailerAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/trailerAutocompleteModelResponse';
 
 // store
 import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
@@ -26,7 +26,7 @@ import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-m
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from '../../../services/formData/form-data.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {

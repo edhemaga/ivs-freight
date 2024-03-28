@@ -38,7 +38,6 @@ import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
 
 // services
-import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
@@ -85,6 +84,7 @@ import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-not
 import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
 import { RepairData, Subtotal } from './state/models/repair.model';
 import { TaModalTableComponent } from '../../../standalone-components/ta-modal-table/ta-modal-table.component';
+import { RepairTService } from 'src/app/pages/repair/state/repair.service';
 
 @Component({
     selector: 'app-repair-order-modal',

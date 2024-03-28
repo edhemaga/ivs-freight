@@ -19,11 +19,14 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 //Models
-import { CardRows, DataResult } from '../../shared/model/card-data.model';
 import {
     CardDetails,
     SendDataCard,
-} from '../../shared/model/card-table-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

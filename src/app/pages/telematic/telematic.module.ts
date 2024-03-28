@@ -4,19 +4,22 @@ import { CommonModule } from '@angular/common';
 import { TelematicRoutingModule } from './telematic-routing.module';
 import { TelematicMapComponent } from './telematic-map/telematic-map.component';
 import { AgmCoreModule } from '@agm/core';
-import { MapToolbarComponent } from '../standalone-components/map-toolbar/map-toolbar.component';
-import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaInputComponent } from '../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
-import { MapMarkerDropdownComponent } from '../shared/map-marker-dropdown/map-marker-dropdown.component';
-import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressbar.component';
+
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
+import { GpsProgressbarComponent } from 'src/app/core/components/shared/gps-progressbar/gps-progressbar.component';
+import { MapMarkerDropdownComponent } from 'src/app/core/components/shared/map-marker-dropdown/map-marker-dropdown.component';
+import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { MapToolbarComponent } from 'src/app/core/components/standalone-components/map-toolbar/map-toolbar.component';
 
 @NgModule({
     declarations: [TelematicMapComponent],
@@ -39,7 +42,7 @@ import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressb
         TaInputDropdownComponent,
         TaCheckboxComponent,
         MapMarkerDropdownComponent,
-        GpsProgressbarComponent
+        GpsProgressbarComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
