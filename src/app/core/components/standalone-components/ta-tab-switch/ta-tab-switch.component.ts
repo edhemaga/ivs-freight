@@ -20,9 +20,9 @@ import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popove
 import { TaCustomPeriodRangeComponent } from '../ta-custom-period-range/ta-custom-period-range.component';
 
 // models
-import { CustomPeriodRange } from '../../dashboard/state/models/custom-period-range.model';
-import { DropdownListItem } from '../../dashboard/state/models/dropdown-list-item.model';
 import { Tabs } from '../../shared/model/modal-tabs';
+import { CustomPeriodRange } from 'src/app/pages/dashboard/state/models/custom-period-range.model';
+import { DropdownListItem } from 'src/app/pages/dashboard/state/models/dropdown-list-item.model';
 
 @Component({
     selector: 'app-ta-tab-switch',
