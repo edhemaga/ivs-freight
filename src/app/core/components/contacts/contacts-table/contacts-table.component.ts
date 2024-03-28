@@ -56,6 +56,7 @@ import {
 } from 'src/app/core/model/contact';
 import { DropdownItem } from '../../shared/model/card-table-data.model';
 import { CardRows } from '../../shared/model/card-data.model';
+import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
 @Component({
     selector: 'app-contacts-table',
@@ -518,7 +519,9 @@ export class ContactsTableComponent
             company: data?.companyName,
             textAddress: data?.address?.address ?? null,
             textShortName: this.nameInitialsPipe.transform(data.name),
-            avatarColor: this.getAvatarColors(),
+            avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                this.mapingIndex
+            ),
             avatarImg: data?.avatar
                 ? this.imageBase64Service.sanitizer(data.avatar)
                 : null,
@@ -539,21 +542,6 @@ export class ContactsTableComponent
     }
     public getDropdownContactContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_CONTACTS_CONTENT;
-    }
-    // Get Avatar Color
-    public getAvatarColors(): { background: string; color: string } {
-        const textColors: string[] =
-            TableDropdownComponentConstants.TEXT_COLORS;
-
-        const backgroundColors: string[] =
-            TableDropdownComponentConstants.BACKGROUND_COLORS;
-
-        this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
-
-        return {
-            background: backgroundColors[this.mapingIndex],
-            color: textColors[this.mapingIndex],
-        };
     }
 
     // Contact Back Filter

@@ -10,11 +10,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // components
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
 
+// services
+import { ConfirmationResetService } from '../state/state/services/confirmation-reset.service';
+
+// enums
+import { ConstantStringEnum } from '../state/enums/confirmation-modal.enum';
+
 // models
 import { ConfirmationReset } from '../state/models/confirmation-reset.model';
-
-// services
-import { ConfirmationService } from '../state/state/services/confirmation.service';
 
 @Component({
     selector: 'app-confirmation-modal-reset',
@@ -34,12 +37,13 @@ export class ConfirmationModalResetComponent {
     @Input() editData: ConfirmationReset;
 
     constructor(
-        private confirmationService: ConfirmationService,
+        private confirmationResetService: ConfirmationResetService,
         private ngbActiveModal: NgbActiveModal
     ) {}
 
     public onModalAction(data: ConfirmationReset) {
-        this.confirmationService.sendConfirmationData(data);
+        if (data.type === ConstantStringEnum.RESET)
+            this.confirmationResetService.setConfirmationResetData(true);
 
         this.ngbActiveModal.close();
     }
