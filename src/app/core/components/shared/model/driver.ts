@@ -2,7 +2,6 @@ import { Address } from './address';
 import { IApplicant } from './applicant';
 import { MetaData } from './shared/enums';
 import { OwnerData } from './shared/owner';
-import { HistoryData } from '../history-data/history-data.component';
 
 export interface DriverTabData {
     applicantDrivers: IApplicant[];
@@ -45,7 +44,7 @@ export interface DriverData {
     testData?: TestData[];
     medicalData?: MedicalData[];
     mvrData?: MvrData[];
-    workData?: HistoryData[];
+    workData?: any[];
     error?: any;
     phone?: string;
     animationType?: string;
@@ -65,7 +64,7 @@ export interface DriverDoc {
     testData?: TestData[];
     medicalData?: MedicalData[];
     mvrData?: MvrData[];
-    workData?: HistoryData[];
+    workData?: any[];
 }
 
 export interface LicenseData {
