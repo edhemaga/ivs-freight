@@ -22,13 +22,12 @@ import {
     RepairShopResponse,
 } from 'appcoretruckassist';
 import { distinctUntilChanged, Subject, takeUntil, switchMap } from 'rxjs';
-import { RepairTService } from '../../../repair/state/repair.service';
+import { RepairTService } from 'src/app/pages/repair/state/repair.service';
 import {
     accountBankValidation,
     addressUnitValidation,
     addressValidation,
     bankValidation,
-    departmentValidation,
     phoneExtension,
     phoneFaxRegex,
     repairShopValidation,

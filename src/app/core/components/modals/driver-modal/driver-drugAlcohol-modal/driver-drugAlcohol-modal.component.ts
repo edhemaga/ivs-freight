@@ -11,8 +11,8 @@ import {
 } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 
-import { DriverTService } from '../../../driver/state/driver.service';
-import { TestTService } from '../../../driver/state/test.service';
+import { DriverTService } from 'src/app/pages/driver/state/driver.service';
+import { TestTService } from 'src/app/pages/driver/state/test.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';

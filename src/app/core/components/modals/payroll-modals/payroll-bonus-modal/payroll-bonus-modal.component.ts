@@ -13,7 +13,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { PayrollBonusService } from '../../../accounting/payroll/payroll/state/payroll-bonus.service';
+import { PayrollBonusService } from 'src/app/pages/accounting/payroll/payroll/state/payroll-bonus.service';
 import { PayrollBonusModalResponse } from '../../../../../../../appcoretruckassist/model/payrollBonusModalResponse';
 import { FormService } from '../../../../services/form/form.service';
 import { PayrollBonusResponse } from '../../../../../../../appcoretruckassist/model/payrollBonusResponse';

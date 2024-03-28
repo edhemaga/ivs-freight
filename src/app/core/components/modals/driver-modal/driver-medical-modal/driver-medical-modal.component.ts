@@ -6,8 +6,8 @@ import {
 } from '@angular/forms';
 import { DriverListResponse, MedicalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { DriverTService } from '../../../driver/state/driver.service';
-import { MedicalTService } from '../../../driver/state/medical.service';
+import { DriverTService } from 'src/app/pages/driver/state/driver.service';
+import { MedicalTService } from 'src/app/pages/driver/state/medical.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';

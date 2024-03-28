@@ -7,11 +7,12 @@ import { SettingsCompanyService } from '../state/company-state/settings-company.
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // model
-import { File } from '../../shared/model/card-table-data.model';
+import { File } from 'src/app/core/components/shared/model/card-table-data.model';
 import { FileEvent } from 'src/app/core/model/file-event.model';
 import { DocumentAction } from './state/enum/settings-document.enum';
-import { tableBodyOptions as TableBodyOptions } from '../../shared/model/tableBody';
-import { UploadFile } from '../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
+
+import { UploadFile } from 'src/app/core/components/shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
 import {
     CreateWithUploadsResponse,
     FileResponse,

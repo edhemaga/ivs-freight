@@ -10,9 +10,9 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckTService } from '../../truck/state/truck.service';
+import { TruckTService } from 'src/app/pages/truck/state/truck.service';
 import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';
-import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
+import { RoutingStateService } from 'src/app/pages/routing/state/routing-state/routing-state.service';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
@@ -111,7 +111,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
-                
+
                 if (routeName) {
                     this.isFormDirty = true;
                 }

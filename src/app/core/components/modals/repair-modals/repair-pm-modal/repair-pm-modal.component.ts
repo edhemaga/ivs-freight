@@ -1,6 +1,12 @@
-import { PmTService } from '../../../pm-truck-trailer/state/pm.service';
+import { PmTService } from 'src/app/pages/pm-truck-trailer/state/pm.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 import {
     PMTrailerListResponse,
@@ -36,17 +42,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule, 
-            TaCustomCardComponent,
-            TaCheckboxComponent,
-            TaInputComponent,
-            NgbModule
-    ]
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        ReactiveFormsModule,
+        TaCustomCardComponent,
+        TaCheckboxComponent,
+        TaInputComponent,
+        NgbModule,
+    ],
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

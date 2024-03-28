@@ -11,18 +11,18 @@ import {
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
-import { TruckTService } from '../../truck/state/truck.service';
-import { TrailerTService } from '../../trailer/state/trailer.service';
-import { TruckItemStore } from '../../truck/state/truck-details-state/truck.details.store';
-import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { TrucksDetailsListStore } from '../../truck/state/truck-details-list-state/truck-details-list.store';
-import { TrailerDetailsListStore } from '../../trailer/state/trailer-details-list-state/trailer-details-list.store';
+import { TruckTService } from 'src/app/pages/truck/state/truck.service';
+import { TrailerTService } from 'src/app/pages/trailer/state/trailer.service';
+import { TruckItemStore } from 'src/app/pages/truck/state/truck-details-state/truck.details.store';
+import { TrailerItemStore } from 'src/app/pages/trailer/state/trailer-details-state/trailer-details.store';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TrucksDetailsListStore } from 'src/app/pages/truck/state/truck-details-list-state/truck-details-list.store';
+import { TrailerDetailsListStore } from 'src/app/pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { TruckActiveStore } from '../../truck/state/truck-active-state/truck-active.store';
-import { TruckInactiveStore } from '../../truck/state/truck-inactive-state/truck-inactive.store';
-import { TrailerActiveStore } from '../../trailer/state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveStore } from '../../trailer/state/trailer-inactive-state/trailer-inactive.store';
+import { TruckActiveStore } from 'src/app/pages/truck/state/truck-active-state/truck-active.store';
+import { TruckInactiveStore } from 'src/app/pages/truck/state/truck-inactive-state/truck-inactive.store';
+import { TrailerActiveStore } from 'src/app/pages/trailer/state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveStore } from 'src/app/pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 
 @Injectable({
     providedIn: 'root',

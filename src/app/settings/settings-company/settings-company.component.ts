@@ -13,15 +13,15 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // store
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { CompanyStore } from '../state/company-state/company-settings.store';
 
 // components
-import { SettingsBasicModalComponent } from '../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsBasicModalComponent } from 'src/app/core/components/modals/company-modals/settings-basic-modal/settings-basic-modal.component';
 
 // models
 import { CompanyResponse, SignInResponse } from 'appcoretruckassist';
@@ -62,7 +62,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
             .subscribe((res: any) => {
                 if (res?.animation) {
                     this.dataCompany = res.data.divisions;
-                    
+
                     this.getCompanyDivision();
 
                     const activeCompanyId = this.optionsCmp.find(

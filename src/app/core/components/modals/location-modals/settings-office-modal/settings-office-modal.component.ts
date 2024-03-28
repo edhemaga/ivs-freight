@@ -7,7 +7,7 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
+import { SettingsLocationService } from 'src/app/settings/state/location-state/settings-location.service';
 
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';

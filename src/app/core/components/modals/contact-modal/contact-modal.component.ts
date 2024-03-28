@@ -46,7 +46,7 @@ import {
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactTService } from '../../contacts/state/services/contact.service';
+import { ContactTService } from 'src/app/pages/contacts/state/services/contact.service';
 import { FormService } from '../../../services/form/form.service';
 
 // enums

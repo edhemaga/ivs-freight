@@ -9,9 +9,9 @@ import { SettingsCompanyService } from '../../state/company-state/settings-compa
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CompanyStore } from '../../state/company-state/company-settings.store';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 

@@ -14,7 +14,7 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ApplicantTService } from '../../driver/state/applicant.service';
+import { ApplicantTService } from 'src/app/pages/driver/state/applicant.service';
 import { FormService } from '../../../services/form/form.service';
 import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
 import { CommonModule } from '@angular/common';

@@ -10,7 +10,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ITaInput } from '../../../shared/ta-input/ta-input.config';
-import { PayrollDeductionService } from '../../../accounting/payroll/payroll/state/payroll-deduction.service';
+import { PayrollDeductionService } from 'src/app/pages/accounting/payroll/payroll/state/payroll-deduction.service';
 import { FormService } from '../../../../services/form/form.service';
 import { PayrollDeductionModalResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionModalResponse';
 import { PayrollDeductionResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionResponse';
