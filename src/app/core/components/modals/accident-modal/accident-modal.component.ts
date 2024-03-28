@@ -1,8 +1,3 @@
-import {
-    phoneFaxRegex,
-    addressValidation,
-    vinNumberValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,
@@ -11,17 +6,32 @@ import {
     UntypedFormGroup,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity } from 'appcoretruckassist';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
-import { AccidentTService } from '../../safety/accident/state/accident.service';
-import { AccidentResponse } from '../../../../../../appcoretruckassist/model/accidentResponse';
-import { convertDateFromBackend } from '../../../utils/methods.calculations';
-import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
+
+// bootstrap
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// validations
+import {
+    phoneFaxRegex,
+    addressValidation,
+    vinNumberValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
+
+// animations
+import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+
+// helpers
+import { convertDateFromBackend } from '../../../utils/methods.calculations';
+
+// services
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { FormService } from '../../../services/form/form.service';
+import { AccidentTService } from 'src/app/pages/safety/accident/state/accident.service';
+
+// components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
@@ -31,7 +41,13 @@ import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-car
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+//  models
+import {
+    AddressEntity,
+    AccidentResponse,
+    AccidentModalResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-accident-modal',

@@ -44,7 +44,7 @@ import {
     LikeDislikeModel,
     TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
-import { BrokerTService } from '../../customer/state/broker-state/broker.service';
+import { BrokerTService } from 'src/app/pages/customer/state/broker-state/broker.service';
 import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import {

@@ -19,8 +19,8 @@ import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../services/form/form.service';
-import { FuelTService } from '../../../fuel/state/fuel.service';
-import { TruckTService } from '../../../truck/state/truck.service';
+import { FuelTService } from 'src/app/pages/fuel/state/fuel.service';
+import { TruckTService } from 'src/app/pages/truck/state/truck.service';
 
 //Components
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';

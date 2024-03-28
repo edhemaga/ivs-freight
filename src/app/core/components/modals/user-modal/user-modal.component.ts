@@ -39,7 +39,7 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from '../../../services/form/form.service';
-import { UserTService } from '../../user/state/user.service';
+import { UserTService } from 'src/app/pages/user/state/user.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { TaUserService } from '../../../services/user/user.service';
 

@@ -43,7 +43,7 @@ import {
     LikeDislikeModel,
     TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
-import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
+import { ShipperTService } from 'src/app/pages/customer/state/shipper-state/shipper.service';
 import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';

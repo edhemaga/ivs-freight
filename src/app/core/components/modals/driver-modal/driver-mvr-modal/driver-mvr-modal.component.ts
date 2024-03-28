@@ -5,8 +5,8 @@ import {
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
-import { DriverTService } from '../../../driver/state/driver.service';
-import { MvrTService } from '../../../driver/state/mvr.service';
+import { DriverTService } from 'src/app/pages/driver/state/driver.service';
+import { MvrTService } from 'src/app/pages/driver/state/mvr.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -256,7 +256,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
-        
+
         const newData: any = {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id

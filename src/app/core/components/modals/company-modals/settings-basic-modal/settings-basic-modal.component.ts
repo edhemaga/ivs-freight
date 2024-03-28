@@ -15,7 +15,7 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
-import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
+import { SettingsCompanyService } from 'src/app/settings/state/company-state/settings-company.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
