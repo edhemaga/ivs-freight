@@ -17,7 +17,7 @@ export class pmTruckResolver implements Resolve<PmTruckState> {
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.pmService.getPMTruckList(),
+            this.pmService.getPMTruckUnitList(),
             this.tableService.getTableConfig(13),
         ]).pipe(
             tap(([pmTruckPagination, tableConfig]) => {

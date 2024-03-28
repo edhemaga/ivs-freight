@@ -289,14 +289,10 @@
         line-height: 1.5;
         height: auto;
         min-width: 159px;
-        background-color: #ffffff;
+        background-color: $ta-black-3;
 
         &.expanded {
             box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
-        }
-
-        &.dark {
-            background-color: #2f2f2f;
         }
 
         .editor {
@@ -304,7 +300,7 @@
             max-height: 64px;
             width: 250px;
             border-radius: 3px;
-            background-color: rgba(255, 255, 255, 1);
+            background-color: $ta-black-3;
             white-space: break-spaces;
             overflow: auto;
             outline: none;
@@ -314,10 +310,6 @@
             line-height: 12px;
             padding: 3px 6px;
             font-weight: 500;
-
-            &.dark {
-                background-color: #2f2f2f;
-            }
 
             &::-moz-selection {
                 color: $bw6-2;
@@ -399,14 +391,9 @@
 
             &.not_expanded {
                 height: 32px;
-                background-color: rgba(255, 255, 255, 0.9);
                 border-radius: 3px;
                 box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
                 overflow: hidden;
-
-                &:hover {
-                    background-color: #f7f7f7;
-                }
 
                 &.openedAll {
                     &:after {
@@ -435,11 +422,7 @@
                 height: 2px;
 
                 border-radius: 1px;
-                background-color: #f3f3f3;
-
-                &.dark {
-                    background-color: #424242;
-                }
+                background-color: $ta-black;
             }
         }
 
