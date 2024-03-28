@@ -1,7 +1,4 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
-
-// model
 import {
     CompanyOfficeModalResponse,
     CompanyOfficeResponse,
@@ -10,34 +7,29 @@ import {
     CreateParkingCommand,
     CreateResponse,
     CreateTerminalCommand,
-    ParkingListResponse,
     ParkingResponse,
     ParkingService,
-    TerminalListResponse,
+    ParkingListResponse,
     TerminalResponse,
     TerminalService,
     UpdateCompanyOfficeCommand,
     UpdateParkingCommand,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
-
-// services
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { CompanyParkingService } from '../../settings-location/settings-parking/parking-state/company-parking.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { CompanyTOfficeService } from '../../settings-location/settings-office/state/company-office.service';
-import { CompanyTerminalService } from '../../settings-location/settings-terminal/state/company-terminal.service';
-
-// store
-import { ParkingStore } from '../../settings-location/settings-parking/parking-state/company-parking.store';
-import { OfficeStore } from '../../settings-location/settings-office/state/company-office.store';
-import { TerminalStore } from '../../settings-location/settings-terminal/state/company-terminal.store';
-
-// component
 import { SettingsOfficeModalComponent } from 'src/app/core/components/modals/location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from 'src/app/core/components/modals/location-modals/settings-parking-modal/settings-parking-modal.component';
 import { SettingsRepairshopModalComponent } from 'src/app/core/components/modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from 'src/app/core/components/modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { CompanyParkingService } from '../../settings-location/settings-parking/parking-state/company-parking.service';
+import { ParkingStore } from '../../settings-location/settings-parking/parking-state/company-parking.store';
+import { OfficeStore } from '../../settings-location/settings-office/state/company-office.store';
+import { CompanyTOfficeService } from '../../settings-location/settings-office/state/company-office.service';
+import { TerminalStore } from '../../settings-location/settings-terminal/state/company-terminal.store';
+import { CompanyTerminalService } from '../../settings-location/settings-terminal/state/company-terminal.service';
+import { TerminalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

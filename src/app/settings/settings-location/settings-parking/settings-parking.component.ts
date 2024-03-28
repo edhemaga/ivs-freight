@@ -1,11 +1,11 @@
-import { formatCurrency } from './../../../../pipes/formatCurrency.pipe';
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyParkingService } from './parking-state/company-parking.service';
 import { ActivatedRoute } from '@angular/router';

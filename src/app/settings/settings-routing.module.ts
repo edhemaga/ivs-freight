@@ -6,8 +6,8 @@ import { ParkingResolver } from './settings-location/settings-parking/parking-st
 import { cOfficeResolver } from './settings-location/settings-office/state/company-office.resolver';
 import { TerminalResolver } from './settings-location/settings-terminal/state/company-terminal.resolver';
 import { companyRepairShopResolver } from './settings-location/settings-repair-shop/state/company-repairshop.resolver';
-import { UserResolver } from '../user/state/user-state/user.resolver';
-import { UnderConstructionComponent } from '../under-construction/under-construction.component';
+import { UserResolver } from '../pages/user/state/user-state/user.resolver';
+import { UnderConstructionComponent } from '../core/components/under-construction/under-construction.component';
 import { integrationResolver } from './settings-integration/state/company-integrations.resolver';
 
 const routes: Routes = [
@@ -48,7 +48,7 @@ const routes: Routes = [
             {
                 path: 'user',
                 loadChildren: () =>
-                    import('../../../core/components/user/user.module').then(
+                    import('../pages/user/user.module').then(
                         (m) => m.UserModule
                     ),
                 data: { title: 'User' },

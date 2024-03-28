@@ -14,10 +14,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
-import { NavigationComponent } from './core/components/navigation/navigation.component';
-import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
+import { NavigationComponent } from './pages/navigation/navigation.component';
+import { ChangeLogoPipe } from './pages/navigation/pipe/change-logo.pipe';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
+import { UserLoggedService } from './pages/website/state/service/user-logged.service';
 
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
@@ -34,7 +34,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { StoreModule } from '@ngrx/store';
-import { ArticleReducer } from './core/components/dashboard/store/dashboard.reducer';
+import { ArticleReducer } from './pages/dashboard/store/dashboard.reducer';
 
 function playerFactory() {
     return player;
