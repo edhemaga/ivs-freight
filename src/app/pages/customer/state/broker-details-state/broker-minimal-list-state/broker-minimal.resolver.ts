@@ -1,11 +1,16 @@
-import { BrokerMinimalListStore } from './broker-minimal.store';
-import { BrokerMinimalListResponse } from './../../../../../../../../appcoretruckassist/model/brokerMinimalListResponse';
 import { Injectable } from '@angular/core';
-
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// Services
 import { BrokerTService } from '../../broker-state/broker.service';
+
+// Store
+import { BrokerMinimalListStore } from './broker-minimal.store';
+
+// Models
+import { BrokerMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

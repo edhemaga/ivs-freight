@@ -9,10 +9,16 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
+
+// Moment
+import moment from 'moment';
+
+// Store
+import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
+
+// Services
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 
 @Component({
@@ -149,9 +155,12 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
     public shipperIndex: any;
 
     constructor(
+        // Services
         private detailsPageDriverSer: DetailsPageService,
-        private shipperMinimalListQuery: ShipperMinimalListQuery,
-        private shipperService: ShipperTService
+        private shipperService: ShipperTService,
+
+        // Store
+        private shipperMinimalListQuery: ShipperMinimalListQuery
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {

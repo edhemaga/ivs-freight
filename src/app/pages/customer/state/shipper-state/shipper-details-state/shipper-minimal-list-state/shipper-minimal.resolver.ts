@@ -1,11 +1,16 @@
-import { ShipperMinimalListResponse } from './../../../../../../../../../appcoretruckassist/model/shipperMinimalListResponse';
 import { Injectable } from '@angular/core';
-
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// Services
 import { ShipperTService } from '../../shipper.service';
+
+// Store
 import { ShipperMinimalListStore } from './shipper-minimal.store';
+
+// Models
+import { ShipperMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

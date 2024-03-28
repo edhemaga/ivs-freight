@@ -1,22 +1,32 @@
-import { BrokerResponse } from 'appcoretruckassist';
-
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
+
+// Services
 import { BrokerTService } from '../broker-state/broker.service';
+
+// Store
 import { BrokerDetailsStore } from './broker-details.store';
-import { BrokerDetailsListQuery } from './broker-details-list-state/broker-details-list.query';
 import { BrokerDetailsListStore } from './broker-details-list-state/broker-details-list.store';
+import { BrokerDetailsListQuery } from './broker-details-list-state/broker-details-list.query';
+
+// Models
+import { BrokerResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
     constructor(
-        private brokerService: BrokerTService,
-        private brokerDetailsStore: BrokerDetailsStore,
+        // Router
         private router: Router,
+        
+        // Services
+        private brokerService: BrokerTService,
+
+        // Store
+        private brokerDetailsStore: BrokerDetailsStore,
         private bls: BrokerDetailsListStore,
         private blq: BrokerDetailsListQuery
     ) {}

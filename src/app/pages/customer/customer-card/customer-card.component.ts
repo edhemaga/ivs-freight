@@ -11,11 +11,8 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import {
-    CardDetails,
-    SendDataCard,
-} from '../../shared/model/card-table-data.model';
-import { CardRows, DataResult } from '../../shared/model/card-data.model';
+import { CardDetails, SendDataCard } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
 
 // pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
@@ -60,9 +57,14 @@ export class CustomerCardComponent implements OnInit, OnChanges {
     public titleArray: string[][] = [];
 
     constructor(
+        // Services
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
+
+        // Router
         private router: Router,
+
+        // Helpers
         private valueByStringPath: ValueByStringPath
     ) {}
 

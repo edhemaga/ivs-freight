@@ -2,8 +2,12 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { BrokerTService } from './broker.service';
+
+// Store
 import { BrokerState, BrokerStore } from './broker.store';
 
 @Injectable({
@@ -11,9 +15,12 @@ import { BrokerState, BrokerStore } from './broker.store';
 })
 export class BrokerResolver implements Resolve<BrokerState> {
     constructor(
+        // Services
         private brokerService: BrokerTService,
+        private tableService: TruckassistTableService,
+
+        // Store
         private brokerStore: BrokerStore,
-        private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
         return forkJoin([

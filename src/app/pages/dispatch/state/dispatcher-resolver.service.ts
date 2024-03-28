@@ -1,9 +1,14 @@
-import { DispatcherStoreService } from './dispatcher.service';
-import { DispatcherQuery } from './dispatcher.query';
+
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+// Store
+import { DispatcherQuery } from './dispatcher.query';
+
+// Services
+import { DispatcherStoreService } from './dispatcher.service';
 
 //import { ProductService } from '../product/product.service';
 

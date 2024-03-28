@@ -1,22 +1,32 @@
-import { ShipperItemStore } from './shipper-details.store';
-import { ShipperResponse } from './../../../../../../../../appcoretruckassist/model/shipperResponse';
-
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
+
+// Services
 import { ShipperTService } from '../shipper.service';
-import { ShipperDetailsListQuery } from './shipper-details-list-state/shipper-details-list.query';
+
+// Store
+import { ShipperItemStore } from './shipper-details.store';
 import { ShipperDetailsListStore } from './shipper-details-list-state/shipper-details-list.store';
+import { ShipperDetailsListQuery } from './shipper-details-list-state/shipper-details-list.query';
+
+// Models
+import { ShipperResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ShipperSingleResolver implements Resolve<any[]> {
     constructor(
-        private shipperService: ShipperTService,
-        private shipperDetailsStore: ShipperItemStore,
+        // Router
         private router: Router,
+        
+        // Services
+        private shipperService: ShipperTService,
+
+        // Store
+        private shipperDetailsStore: ShipperItemStore,
         private sls: ShipperDetailsListStore,
         private slq: ShipperDetailsListQuery
     ) {}

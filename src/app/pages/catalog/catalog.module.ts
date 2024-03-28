@@ -1,7 +1,10 @@
+// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { CatalogRoutingModule } from './catalog-routing.module';
+
+// Components
 import { CatalogComponent } from './catalog/catalog.component';
 
 @NgModule({
