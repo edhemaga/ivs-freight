@@ -61,5 +61,6 @@ export interface RepairShopResponse {
     reviews?: Array<ReviewResponse> | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
+    shopServiceType?: EnumValue;
 }
 

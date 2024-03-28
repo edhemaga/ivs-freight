@@ -21,7 +21,7 @@ import {
     LoadResponse,
     LoadMinimalListResponse,
     LoadModalResponse,
-    CreateLoadTemplateCommand,
+    // CreateLoadTemplateCommand,
     LoadStopItemAutocompleteDescriptionResponse,
     CreateWithUploadsResponse,
     RoutingService,
@@ -171,9 +171,8 @@ export class LoadTService {
     }
 
     // modal operations - template
-    public createLoadTemplate(
-        data: CreateLoadTemplateCommand
-    ): Observable<CreateResponse> {
+    // CreateLoadTemplateCommand this was data response here but it changed
+    public createLoadTemplate(data): Observable<CreateResponse> {
         return this.loadService.apiLoadTemplatePost(data);
     }
 

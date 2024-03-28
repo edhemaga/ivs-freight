@@ -49,6 +49,7 @@ export interface TrailerResponse {
     fhwaExp?: number;
     createdAt?: string;
     updatedAt?: string;
+    deactivatedAt?: string | null;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
     files?: Array<FileResponse> | null;

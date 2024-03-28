@@ -11,9 +11,8 @@
  */
 
 
-export interface ApiFuelFuelstopPostRequest { 
-    Id?: number;
-    Favourite?: boolean;
-    Note?: string;
+export interface TruckPerformanceResponse { 
+    miles?: number | null;
+    fuelCost?: number | null;
 }
 

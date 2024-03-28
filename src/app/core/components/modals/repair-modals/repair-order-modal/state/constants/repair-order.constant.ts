@@ -1,6 +1,24 @@
-import { RepairData } from '../models/repair.model';
+import { RepairData, RepairTypes } from '../models/repair.model';
 
 export class RepairOrder {
+    static REPAIR_TYPES: RepairTypes[] = [
+        {
+            id: 1,
+            name: 'Fixed',
+            url: 'assets/svg/common/repair-services/ic_shop.svg',
+        },
+        {
+            id: 2,
+            name: 'Mobile',
+            url: 'assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg',
+        },
+        {
+            id: 3,
+            name: 'Fixed & Mobile',
+            url: '',
+        },
+    ];
+
     static HEADER_TABS: RepairData[] = [
         {
             id: 1,
@@ -27,29 +45,37 @@ export class RepairOrder {
         },
     ];
 
-    static PAID: { name: string }[] = [
+    static PAID: { id: number; name: string }[] = [
         {
+            id: 0,
             name: 'Wire Transfer',
         },
         {
+            id: 1,
             name: 'Cash',
         },
         {
+            id: 2,
             name: 'Check',
         },
         {
+            id: 3,
             name: 'Money Code',
         },
         {
+            id: 4,
             name: 'Q. pay (Zelle)',
         },
         {
+            id: 5,
             name: 'Q. pay (Venmo)',
         },
         {
+            id: 6,
             name: 'Q. pay (Cashapp',
         },
         {
+            id: 7,
             name: 'Q. pay (PayPal)',
         },
     ];

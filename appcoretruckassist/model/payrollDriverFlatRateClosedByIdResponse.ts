@@ -9,35 +9,38 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PayrollPaymentsMinimalResponse } from './payrollPaymentsMinimalResponse';
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
-import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
+import { PayrollFlatRateTotalSum } from './payrollFlatRateTotalSum';
+import { PayrollBonusMinimalResponse } from './payrollBonusMinimalResponse';
 import { EnumValue } from './enumValue';
 import { PayrollMapLocation } from './payrollMapLocation';
 
 
-export interface PayrollDriverCommissionByIdResponse { 
+export interface PayrollDriverFlatRateClosedByIdResponse { 
     id?: number;
     driverId?: number;
     driverName?: string | null;
     driverAvatar?: string | null;
     payrollNumber?: string | null;
     period?: string;
-    daysUntilPayment?: number;
     status?: EnumValue;
     total?: number | null;
-    commission?: number;
     salary?: number | null;
-    includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
-    excludedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
+    rate?: string | null;
+    flatPay?: number | null;
+    deductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number;
-    includedCredits?: Array<PayrollCreditMinimalResponse> | null;
-    excludedCredits?: Array<PayrollCreditMinimalResponse> | null;
+    credits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number;
-    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
-    excludedLoads?: Array<PayrollLoadMinimalResponse> | null;
+    bonuses?: Array<PayrollBonusMinimalResponse> | null;
+    totalBonuses?: number;
+    loads?: Array<PayrollLoadMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
-    sums?: PayrollCommissionTotalSum;
+    sums?: PayrollFlatRateTotalSum;
+    totalPayments?: number;
+    payments?: Array<PayrollPaymentsMinimalResponse> | null;
 }
 

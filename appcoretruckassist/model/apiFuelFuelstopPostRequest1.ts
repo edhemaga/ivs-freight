@@ -31,6 +31,5 @@ export interface ApiFuelFuelstopPostRequest1 {
     Note?: string;
     Longitude?: number;
     Latitude?: number;
-    Files?: Array<Blob>;
 }
 

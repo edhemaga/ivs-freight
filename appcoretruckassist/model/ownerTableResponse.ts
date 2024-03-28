@@ -31,5 +31,7 @@ export interface OwnerTableResponse {
     fileCount?: number | null;
     trucks?: Array<TruckMinimalResponse> | null;
     trailers?: Array<TrailerMinimalResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
