@@ -1,16 +1,18 @@
-import { TodoService } from './../../../../../../appcoretruckassist/api/todo.service';
-import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
-import { FormDataService } from '../../../services/formData/form-data.service';
 import { tap } from 'rxjs/operators';
+
+// services
 import {
+    TodoListResponse,
     TodoModalResponse,
     TodoResponse,
+    TodoService,
     TodoStatus,
     UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',

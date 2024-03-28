@@ -7,6 +7,9 @@ export interface TableOptions {
 }
 
 export interface ToolbarActions {
+    action: import('c:/Users/Korisnik/Documents/carrierassist/carriera-fe/src/app/core/utils/enums/table-components.enum').ConstantStringTableComponentsEnum;
+    tabData: any;
+    mode: string;
     hideViewMode: boolean;
 }
 

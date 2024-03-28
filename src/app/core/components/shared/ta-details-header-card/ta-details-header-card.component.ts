@@ -15,14 +15,20 @@ import {
     UntypedFormControl,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { DriversMinimalListQuery } from '../../driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+// pipes
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+
+// store
+import { DriversMinimalListQuery } from 'src/app/pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from 'src/app/pages/driver/state/driver-details-state/driver-details.store';
+
+// compoents
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-details-header-card',

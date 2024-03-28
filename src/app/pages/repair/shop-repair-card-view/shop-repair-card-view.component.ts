@@ -11,12 +11,12 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { map, Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { RepairShopMinimalListResponse } from '../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
+
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RepairDQuery } from '../state/details-state/repair-d.query';
 import { RepairTService } from '../state/repair.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-shop-repair-card-view',

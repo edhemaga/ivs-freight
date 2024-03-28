@@ -33,9 +33,9 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 // services
-import { ContactTService } from '../../contacts/state/services/contact.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { RepairTService } from '../../repair/state/repair.service';
+import { ContactTService } from 'src/app/pages/contacts/state/services/contact.service';
+import { RepairTService } from 'src/app/pages/repair/state/repair.service';
 
 // constants
 import { ModalTableConstants } from 'src/app/core/utils/constants/ta-modal-table.constants';
