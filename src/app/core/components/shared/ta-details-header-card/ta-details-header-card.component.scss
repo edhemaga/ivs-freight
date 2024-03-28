@@ -95,6 +95,7 @@ $border-radius: 3px;
             align-items: center;
             align-content: center;
             height: 18px;
+
             .vin-text {
                 margin-left: 6px !important;
                 font-size: $font-size14;
@@ -220,7 +221,32 @@ $border-radius: 3px;
             background: rgb(183, 183, 183, 0.2);
         }
     }
+    .current-active-dropdown-image {
+        width: 22px;
+        line-height: 20px;
+        z-index: 100;
+        svg {
+            display: flex;
 
+            path {
+                fill: #919191 !important;
+            }
+        }
+
+        cursor: pointer;
+    }
+    .current-active-dropdown-owner {
+        width: 22px;
+        line-height: 20px;
+        height: 22px;
+        z-index: 100;
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+        cursor: pointer;
+    }
     .current-active-owner {
         width: 22px;
         height: 22px;
@@ -228,9 +254,9 @@ $border-radius: 3px;
         z-index: 50;
         svg {
             display: flex;
-            
+
             path {
-                fill: #6D82C7;
+                fill: #6d82c7;
             }
         }
         cursor: pointer;
@@ -247,7 +273,7 @@ $border-radius: 3px;
         .current-active-owner {
             svg {
                 path {
-                    fill: #536BC2;
+                    fill: #536bc2;
                 }
             }
         }
@@ -289,65 +315,57 @@ $border-radius: 3px;
     }
 }
 
-.disabedPreviousArrow{
+.disabedPreviousArrow {
     .arrows {
         .previousArrow {
-                opacity: 0.5;
-                cursor: default !important ;
+            opacity: 0.5;
+            cursor: default !important ;
 
-                svg-icon{
-                    cursor: default !important;
-                }
+            svg-icon {
+                cursor: default !important;
+            }
 
-            &:hover{
-                background-color: transparent !important;
-            }  
-        }
-
-        
-    }
-}
-
-.disableNextArrow{
-    .arrows {
-        .nextArrow {
-                opacity: 0.5;
-                cursor: default !important ;
-
-                svg-icon{
-                    cursor: default !important;
-                }  
-            
-            &:hover{
+            &:hover {
                 background-color: transparent !important;
             }
         }
+    }
+}
 
-        
-        
+.disableNextArrow {
+    .arrows {
+        .nextArrow {
+            opacity: 0.5;
+            cursor: default !important ;
+
+            svg-icon {
+                cursor: default !important;
+            }
+
+            &:hover {
+                background-color: transparent !important;
+            }
+        }
     }
 }
 
 .ta-input-dropdown {
     .dropdown-options {
-        .dropdown-option{
-           
-            .details-template-logo{
-                svg{
-                    path{
-                        fill: #6D82C7;
+        .dropdown-option {
+            .details-template-logo {
+                svg {
+                    path {
+                        fill: #6d82c7;
                     }
                 }
             }
 
-            .details-template-text{
+            .details-template-text {
                 width: 100%;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
             }
-            
         }
     }
 }
-

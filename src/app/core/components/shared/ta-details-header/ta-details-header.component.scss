@@ -8,7 +8,6 @@ p {
     display: flex;
     align-items: center;
     padding: 0px 12px;
-    
 }
 .has-counter-header {
     .header-name {
@@ -16,43 +15,40 @@ p {
     }
 }
 
-.counter-holder-all{
+.counter-holder-all {
     display: flex;
     //padding: 4px 0px 4px 4px;
     margin-right: 4px;
 
-    &.brokerLoadDrop{
+    &.brokerLoadDrop {
         cursor: pointer;
     }
 }
 
-.dropOpenedHeader{
-
-    .counter-holder-all{
+.dropOpenedHeader {
+    .counter-holder-all {
         background-color: #919191;
         border-radius: 2px;
         position: relative;
     }
-    
 
-    .header-name{
-        color:  #ffffff !important;
+    .header-name {
+        color: #ffffff !important;
     }
 
     .arrow-down-header {
         transform: rotate(180deg) !important;
         svg {
-            
-                path {
-                    fill: #DADADA !important;
-                }
+            path {
+                fill: #dadada !important;
+            }
 
-                &:hover {
-                    path {
-                        fill: #DADADA !important;
-                    }
+            &:hover {
+                path {
+                    fill: #dadada !important;
                 }
             }
+        }
     }
 }
 
@@ -62,7 +58,7 @@ p {
     align-items: center;
     max-width: 440px;
     width: 100%;
-    
+
     .icon-text-wrapper {
         display: flex;
         align-items: center;
@@ -70,7 +66,7 @@ p {
         max-width: none;
         p {
             color: #424242;
-            
+
             font-size: 26px;
             font-weight: 900;
             margin-left: 8px !important;
@@ -180,11 +176,11 @@ svg {
     cursor: pointer;
     svg {
         path {
-            fill: #3074D3;
+            fill: #3074d3;
         }
     }
     &:hover {
-        background-color: #3074D3;
+        background-color: #3074d3;
         border-radius: 2px;
         svg {
             path {
@@ -253,14 +249,13 @@ svg {
 }
 .header-arrow {
     svg {
-        
-        rect{
+        rect {
             fill: #6c6c6c;
         }
 
         &:hover {
             rect {
-                fill: #2F2F2F;
+                fill: #2f2f2f;
             }
         }
     }
@@ -273,7 +268,7 @@ svg {
     width: 86px;
     height: 24px;
     color: #ffffff;
-    background-color: #3074D3;
+    background-color: #3074d3;
     border-radius: 2px;
     font-size: 14px;
     font-weight: 800;
@@ -293,8 +288,7 @@ svg {
         background-color: #536bc2;
     }
 
-
-    &.icon-request-holder{
+    &.icon-request-holder {
         display: none;
     }
 }
@@ -323,7 +317,7 @@ svg {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #e57373;
+        background-color: #919191;
         color: #ffffff;
         border-radius: 2px;
         font-size: 11px;
@@ -383,21 +377,20 @@ svg {
     left: 400px;
 }
 
-.load-dropdown-body{
+.load-dropdown-body {
     padding: 2px;
     background-color: #fff;
     border-radius: 5px;
     filter: drop-shadow(0 0 4px rgb(0, 0, 0, 0.15));
 
-    .load-template-holder{
-
+    .load-template-holder {
         position: relative;
         display: flex;
         width: 100%;
         padding: 2px;
         margin-bottom: 2px;
 
-        .number-value-holder{
+        .number-value-holder {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -411,12 +404,11 @@ svg {
             line-height: 17px;
             color: #919191;
 
-            background-color: #F3F3F3;
+            background-color: #f3f3f3;
             border-radius: 2px;
         }
 
-        .number-text-holder{
-            
+        .number-text-holder {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -427,10 +419,9 @@ svg {
             font-weight: 700;
             line-height: 17px;
             color: #919191;
-
         }
 
-        .selected-load-type{
+        .selected-load-type {
             position: absolute;
             right: 0px;
             display: flex;
@@ -440,68 +431,65 @@ svg {
             width: 14px;
             margin-right: 7px;
 
-            svg-icon{
+            svg-icon {
                 width: 12.74px;
                 height: 9.85px;
 
-                svg{
-                    path{
-                        fill: #97A8DC;
+                svg {
+                    path {
+                        fill: #97a8dc;
                     }
                 }
             }
         }
 
-        &:hover{
-            background-color: #F3F3F3;
+        &:hover {
+            background-color: #f3f3f3;
             cursor: pointer;
 
-            .number-value-holder{
-                background-color: #FFFFFF;
-                color: #6C6C6C;
+            .number-value-holder {
+                background-color: #ffffff;
+                color: #6c6c6c;
             }
 
-            .number-text-holder{
-                color: #6C6C6C
+            .number-text-holder {
+                color: #6c6c6c;
             }
         }
     }
 
-    .disabled-template{
-        
-        .number-value-holder{
-            background-color: #F3F3F3;
+    .disabled-template {
+        .number-value-holder {
+            background-color: #f3f3f3;
         }
 
-        .number-text-holder{
+        .number-text-holder {
             color: #919191;
         }
 
-        &:hover{
+        &:hover {
             background-color: transparent;
             cursor: auto;
 
-            .number-value-holder{
-                background-color: #F3F3F3;
+            .number-value-holder {
+                background-color: #f3f3f3;
                 color: #919191;
             }
 
-            .number-text-holder{
+            .number-text-holder {
                 color: #919191;
             }
         }
     }
 
-    .active-template{
-
-        .number-value-holder{
-            background-color: #E0EAF8;
-            color: #536BC2;
+    .active-template {
+        .number-value-holder {
+            background-color: #e0eaf8;
+            color: #536bc2;
         }
 
-        .number-text-holder{
-            color: #536BC2;
+        .number-text-holder {
+            color: #536bc2;
         }
-
     }
 }

@@ -78,7 +78,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation) {
+                if (res?.animation) {
                     this.truckConf(res.data);
                     this.initTableOptions(res.data);
                     this.cdRef.detectChanges();
@@ -157,11 +157,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         // do other stuff...
         window.print();
     }
-    public getTruckById(id: number) {
-        this.truckTService
-            .getTruckById(id, true)
-            .subscribe((item) => (this.truckObject = item));
-    }
+
     public deleteTruckById(id: number) {
         let status = this.truckObject.status == 0 ? 'inactive' : 'active';
 
@@ -221,7 +217,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.currentIndex = this.truckList.findIndex(
             (truck) => truck.id === data.id
         );
-        this.getTruckById(data.id);
+        this.truckObject = this.truckList.find((truck) => truck.id === data.id);
+
         this.dataTest = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -266,20 +263,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    iconName: 'share',
-                    show: true,
-                },
-                {
-                    title: 'Print',
-                    name: 'print-truck',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    iconName: 'print',
-                    show: true,
                 },
                 {
                     title: 'border',
@@ -401,9 +384,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 4,
-                name: 'Lease / Purchase',
-                template: 'lease-purchase',
-                length: 1,
             },
         ];
         this.truckId = data?.id ? data.id : null;

@@ -28,9 +28,11 @@
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
                     [expDateClose]="formatDate(reg.expDate)"
-                    [isCardOpen]="i == 0  && reg.expDate > currentDate ? true : false"
+                    [isCardOpen]="
+                        i == 0 && reg.expDate > currentDate ? true : false
+                    "
                     [notExpired]="currentDate > reg.expDate ? false : true"
-                    [openCloseStatus]="i == 0 ? false : true" 
+                    [openCloseStatus]="i == 0 ? false : true"
                     [optionsId]="reg.id"
                     (dropActions)="
                         optionsEvent($event, trucks.data, 'registration')
@@ -42,25 +44,33 @@
                                 <div class="card-item">
                                     <div class="card-item-name">State</div>
                                     <div class="card-item-value">
-                                        {{ reg.state.stateShortName }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                reg.state.stateShortName
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(reg.issueDate) }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                formatDate(reg.issueDate)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="card-row-progress second-progress"
-                            >
+                            <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [expireDate]="formatDate(reg.expDate)"
-                                        [startDate]="
-                                            formatDate(reg.issueDate)
-                                        "
+                                        [startDate]="formatDate(reg.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -156,7 +166,9 @@
                         trackBy: identity
                     "
                     [options]="dataFHWA"
-                    [isCardOpen]="i == 0  && fhwa.expDate > currentDate ? true : false"
+                    [isCardOpen]="
+                        i == 0 && fhwa.expDate > currentDate ? true : false
+                    "
                     [cardDocumentCounter]="
                         fhwa?.files?.length ? fhwa.files.length : 0
                     "
@@ -170,24 +182,18 @@
                     [expDateClose]="formatDate(fhwa.expDate)"
                     [optionsId]="fhwa.id"
                     [notExpired]="currentDate > fhwa.expDate ? false : true"
-                    [openCloseStatus]="i == 0 ? false : true" 
+                    [openCloseStatus]="i == 0 ? false : true"
                     (dropActions)="
                         optionsEvent($event, trucks.data, 'inspection')
                     "
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
-                            <div
-                                class="card-row-progress second-progress"
-                            >
+                            <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
-                                        [expireDate]="
-                                            formatDate(fhwa.expDate)
-                                        "
-                                        [startDate]="
-                                            formatDate(fhwa.issueDate)
-                                        "
+                                        [expireDate]="formatDate(fhwa.expDate)"
+                                        [startDate]="formatDate(fhwa.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -305,13 +311,25 @@
                                 <div class="card-item">
                                     <div class="card-item-name">Purchased</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(title.purchaseDate) }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                formatDate(title.purchaseDate)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(title.issueDate) }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                formatDate(title.issueDate)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                             </div>
@@ -394,311 +412,333 @@
                 </app-ta-re-card>
             </div>
             <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
-            <div class="card-width" *ngSwitchCase="'lease-purchase'">
-                <app-ta-re-card
-                    [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-                    (resizePage)="toggleResizePage(5, 'lease')"
-                    [cardNameCommon]="'KSKA FREIGHT, INC'"
-                    [isCardOpen]="true"
-                    [expDateClose]="'04/04/27' | formatDateP"
-                >
-                    <div class="purchase-container">
-                        <div class="purchase-template">
-                            <div class="purchase-template-item">
-                                <div class="purchase-template-item-name">
-                                    Purchased
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    09/01/20
-                                </div>
-                            </div>
-                            <div class="purchase-template-item second-name">
-                                <div class="purchase-template-item-name">
-                                    Price
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    $81,600.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="purchase-template">
-                            <div class="purchase-template-item">
-                                <div class="purchase-template-item-name">
-                                    No. of Payment
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    12
-                                </div>
-                            </div>
-                            <div class="purchase-template-item second-name">
-                                <div class="purchase-template-item-name">
-                                    Down Payment
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    $30.000.00
-                                </div>
-                            </div>
-                        </div>
-                        <div class="purchase-template">
-                            <div class="purchase-template-item">
-                                <div class="purchase-template-item-name">
-                                    Pay Period
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    Monthly
-                                </div>
-                            </div>
-                            <div class="purchase-template-item second-name">
-                                <div class="purchase-template-item-name">
-                                    Rate
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    10%
-                                </div>
-                            </div>
-                        </div>
-                        <div class="purchase-template">
-                            <div class="purchase-template-item">
-                                <div class="purchase-template-item-name">
-                                    <span class="longText">Payment Amount</span>
-                                    <span class="shortText">Pay Amount</span>
-                                </div>
-                                <div
-                                    class="purchase-template-item-value amount"
-                                >
-                                    $4,597.16
-                                </div>
-                            </div>
-                            <div class="purchase-template-item second-name">
-                                <div class="purchase-template-item-name">
-                                    Next Payment
-                                </div>
-                                <div
-                                    class="purchase-template-item-value payment"
-                                >
-                                    01/01/21
-                                </div>
-                            </div>
-                        </div>
-                        <div class="purchase-template">
-                            <div class="purchase-template-item">
-                                <div class="purchase-template-item-name">
-                                    Total Value
-                                </div>
-                                <div
-                                    class="purchase-template-item-value amount"
-                                >
-                                    $54,279.16
-                                </div>
-                            </div>
-                            <div class="purchase-template-item second-name">
-                                <div class="purchase-template-item-name">
-                                    Total Interest
-                                </div>
-                                <div
-                                    class="purchase-template-item-value payment"
-                                >
-                                    $2,679.16
-                                </div>
-                            </div>
-                        </div>
-
-                        <!----------Progress Card---------->
-                        <div
-                            class="details-progress-container purchase-progress"
-                            [ngClass]="{ 'no-toggler': !toggler[5 + 'lease'] }"
-                        >
-                            <app-ta-currency-progress-bar
-                                [template]="'payments'"
-                                [totalAmount]="12"
-                                [paidSoFarAmount]="4"
-                                [progressBarName]="'Payments'"
-                            >
-                            </app-ta-currency-progress-bar>
-                        </div>
-
-                        <!----------Amortization table Card---------->
-                        <div
-                            [@showHideCardBody]="
-                                toggler[5 + 'lease'] ? 'true' : 'false'
-                            "
-                        >
-                            <div
-                                class="details-document-container amortization-details"
-                            >
-                                <div class="divider"></div>
-                                <div class="icon-counter-wrapper">
-                                    <p
-                                        class="details-document-name amortization-details-name"
-                                    >
-                                        Amortization Table
-                                    </p>
-                                    <svg-icon
-                                        (click)="onFileAction('download')"
-                                        src="assets/svg/common/ic_download.svg"
-                                    >
-                                    </svg-icon>
-                                </div>
-
-                                <div class="table-amor-data">
-                                    <div class="table-amor-data-items-header">
-                                        <p class="p-data p-header">#</p>
-                                        <p class="p-date p-header">DATE</p>
-                                        <p class="p-balance p-header">
-                                            BALANCE
-                                        </p>
+            <ng-container
+                *ngIf="truck.length > 0 && truck.template === 'lease-purchase'"
+            >
+                <div class="card-width" *ngSwitchCase="'lease-purchase'">
+                    <app-ta-re-card
+                        [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
+                        (resizePage)="toggleResizePage(5, 'lease')"
+                        [cardNameCommon]="'KSKA FREIGHT, INC'"
+                        [isCardOpen]="true"
+                        [expDateClose]="'04/04/27' | formatDateP"
+                    >
+                        <div class="purchase-container">
+                            <div class="purchase-template">
+                                <div class="purchase-template-item">
+                                    <div class="purchase-template-item-name">
+                                        Purchased
                                     </div>
-                                    <div class="divider"></div>
-                                    <div class="table-amor-data-items-body">
-                                        <p class="p-data-text">1</p>
-                                        <p class="p-date-text">09/01/20</p>
-                                        <p class="p-balance-text">$54,279.16</p>
+                                    <div class="purchase-template-item-value">
+                                        09/01/20
                                     </div>
-                                    <div class="divider"></div>
-                                    <div class="table-amor-data-items-body">
-                                        <p class="p-data-text">2</p>
-                                        <p class="p-date-text">10/01/20</p>
-                                        <p class="p-balance-text">$49,358.35</p>
+                                </div>
+                                <div class="purchase-template-item second-name">
+                                    <div class="purchase-template-item-name">
+                                        Price
                                     </div>
-                                    <div class="divider"></div>
-                                    <div class="table-amor-data-items-body">
-                                        <p class="p-data-text">3</p>
-                                        <p class="p-date-text">11/01/20</p>
-                                        <p class="p-balance-text">$44,452.20</p>
+                                    <div class="purchase-template-item-value">
+                                        $81,600.00
                                     </div>
-                                    <div class="divider"></div>
+                                </div>
+                            </div>
+                            <div class="purchase-template">
+                                <div class="purchase-template-item">
+                                    <div class="purchase-template-item-name">
+                                        No. of Payment
+                                    </div>
+                                    <div class="purchase-template-item-value">
+                                        12
+                                    </div>
+                                </div>
+                                <div class="purchase-template-item second-name">
+                                    <div class="purchase-template-item-name">
+                                        Down Payment
+                                    </div>
+                                    <div class="purchase-template-item-value">
+                                        $30.000.00
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="purchase-template">
+                                <div class="purchase-template-item">
+                                    <div class="purchase-template-item-name">
+                                        Pay Period
+                                    </div>
+                                    <div class="purchase-template-item-value">
+                                        Monthly
+                                    </div>
+                                </div>
+                                <div class="purchase-template-item second-name">
+                                    <div class="purchase-template-item-name">
+                                        Rate
+                                    </div>
+                                    <div class="purchase-template-item-value">
+                                        10%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="purchase-template">
+                                <div class="purchase-template-item">
+                                    <div class="purchase-template-item-name">
+                                        <span class="longText"
+                                            >Payment Amount</span
+                                        >
+                                        <span class="shortText"
+                                            >Pay Amount</span
+                                        >
+                                    </div>
                                     <div
-                                        class="table-amor-data-items-body bottom"
+                                        class="purchase-template-item-value amount"
                                     >
-                                        <p class="p-data-text">4</p>
-                                        <p class="p-date-text">12/01/20</p>
-                                        <p class="p-balance-text">$38,658.52</p>
+                                        $4,597.16
+                                    </div>
+                                </div>
+                                <div class="purchase-template-item second-name">
+                                    <div class="purchase-template-item-name">
+                                        Next Payment
+                                    </div>
+                                    <div
+                                        class="purchase-template-item-value payment"
+                                    >
+                                        01/01/21
                                     </div>
                                 </div>
                             </div>
-                            <div class="divider"></div>
-                            <!----------Bank Card---------->
-                            <div class="bank-card">
-                                <app-ta-custom-card
-                                    [cardName]="'Bank Account'"
-                                    [hasArrow]="false"
-                                    [hasHeaderSvg]="
-                                        'assets/svg/common/ic_bankAccount_dummy.svg'
-                                    "
-                                    [isCardOpen]="true"
-                                    [hasDivider]="false"
-                                    [customClass]="'detailsPadding'"
+                            <div class="purchase-template">
+                                <div class="purchase-template-item">
+                                    <div class="purchase-template-item-name">
+                                        Total Value
+                                    </div>
+                                    <div
+                                        class="purchase-template-item-value amount"
+                                    >
+                                        $54,279.16
+                                    </div>
+                                </div>
+                                <div class="purchase-template-item second-name">
+                                    <div class="purchase-template-item-name">
+                                        Total Interest
+                                    </div>
+                                    <div
+                                        class="purchase-template-item-value payment"
+                                    >
+                                        $2,679.16
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!----------Progress Card---------->
+                            <div
+                                class="details-progress-container purchase-progress"
+                                [ngClass]="{
+                                    'no-toggler': !toggler[5 + 'lease']
+                                }"
+                            >
+                                <app-ta-currency-progress-bar
+                                    [template]="'payments'"
+                                    [totalAmount]="12"
+                                    [paidSoFarAmount]="4"
+                                    [progressBarName]="'Payments'"
                                 >
-                                    <div class="purchase-template">
-                                        <div class="purchase-template-item">
-                                            <div
-                                                class="purchase-template-item-name"
-                                            >
-                                                Routing
-                                            </div>
-                                            <div
-                                                class="purchase-template-item-value"
-                                            >
-                                                052001633
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="purchase-template-item second-name"
-                                        >
-                                            <div
-                                                class="purchase-template-item-name"
-                                            >
-                                                Account
-                                            </div>
-                                            <div
-                                                class="purchase-template-item-value acc-number"
-                                            >
-                                                <p>
-                                                    {{
-                                                        accountText
-                                                            ? accountText
-                                                            : hiddenPassword(
-                                                                  cardNumberFake,
-                                                                  4
-                                                              )
-                                                    }}
-                                                </p>
-                                                <svg-icon
-                                                    (click)="
-                                                        showHideValue(
-                                                            cardNumberFake
-                                                        )
-                                                    "
-                                                    class="hidden-svg-eye"
-                                                    src="{{
-                                                        isAccountVisible
-                                                            ? 'assets/svg/common/ic_eye-visible.svg'
-                                                            : 'assets/svg/common/ic_eye-hidden.svg'
-                                                    }}"
-                                                >
-                                                </svg-icon>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </app-ta-custom-card>
+                                </app-ta-currency-progress-bar>
                             </div>
 
-                            <!----------Pdf Card---------->
-                            <div class="details-document-container">
-                                <div class="divider"></div>
-                                <div class="icon-counter-wrapper">
-                                    <div class="counter-text-wrapper">
-                                        <p class="details-document-name">
-                                            Document
+                            <!----------Amortization table Card---------->
+                            <div
+                                [@showHideCardBody]="
+                                    toggler[5 + 'lease'] ? 'true' : 'false'
+                                "
+                            >
+                                <div
+                                    class="details-document-container amortization-details"
+                                >
+                                    <div class="divider"></div>
+                                    <div class="icon-counter-wrapper">
+                                        <p
+                                            class="details-document-name amortization-details-name"
+                                        >
+                                            Amortization Table
                                         </p>
-                                        <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
-                                            [count]="3"
+                                        <svg-icon
+                                            (click)="onFileAction('download')"
+                                            src="assets/svg/common/ic_download.svg"
                                         >
-                                        </app-ta-counter>
+                                        </svg-icon>
                                     </div>
-                                    <svg-icon
-                                        (click)="onFileAction('download')"
-                                        src="assets/svg/common/ic_download.svg"
-                                    >
-                                    </svg-icon>
-                                </div>
-                            </div>
-                            <div class="files-item">
-                                <div class="details-page-row-7">
-                                    <app-ta-upload-files
-                                        [files]="[
-                                            {
-                                                name: 'truckassist - 0',
-                                                url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                                extension: 'pdf'
-                                            },
-                                            {
-                                                name: 'truckassist - 1',
-                                                url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                                extension: 'pdf'
-                                            }
-                                        ]"
-                                        [customClassName]="'driver-details-pdf'"
-                                        [hasCarouselBottomTabs]="true"
-                                    ></app-ta-upload-files>
-                                </div>
-                            </div>
 
-                            <div class="note-cards-lease">
-                                <app-ta-input-note
-                                    [formControl]="note"
-                                    [isReadOnly]="true"
-                                    [isVisibleArrow]="false"
-                                    [noteType]="'details-card'"
-                                ></app-ta-input-note>
+                                    <div class="table-amor-data">
+                                        <div
+                                            class="table-amor-data-items-header"
+                                        >
+                                            <p class="p-data p-header">#</p>
+                                            <p class="p-date p-header">DATE</p>
+                                            <p class="p-balance p-header">
+                                                BALANCE
+                                            </p>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="table-amor-data-items-body">
+                                            <p class="p-data-text">1</p>
+                                            <p class="p-date-text">09/01/20</p>
+                                            <p class="p-balance-text">
+                                                $54,279.16
+                                            </p>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="table-amor-data-items-body">
+                                            <p class="p-data-text">2</p>
+                                            <p class="p-date-text">10/01/20</p>
+                                            <p class="p-balance-text">
+                                                $49,358.35
+                                            </p>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="table-amor-data-items-body">
+                                            <p class="p-data-text">3</p>
+                                            <p class="p-date-text">11/01/20</p>
+                                            <p class="p-balance-text">
+                                                $44,452.20
+                                            </p>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div
+                                            class="table-amor-data-items-body bottom"
+                                        >
+                                            <p class="p-data-text">4</p>
+                                            <p class="p-date-text">12/01/20</p>
+                                            <p class="p-balance-text">
+                                                $38,658.52
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider"></div>
+                                <!----------Bank Card---------->
+                                <div class="bank-card">
+                                    <app-ta-custom-card
+                                        [cardName]="'Bank Account'"
+                                        [hasArrow]="false"
+                                        [hasHeaderSvg]="
+                                            'assets/svg/common/ic_bankAccount_dummy.svg'
+                                        "
+                                        [isCardOpen]="true"
+                                        [hasDivider]="false"
+                                        [customClass]="'detailsPadding'"
+                                    >
+                                        <div class="purchase-template">
+                                            <div class="purchase-template-item">
+                                                <div
+                                                    class="purchase-template-item-name"
+                                                >
+                                                    Routing
+                                                </div>
+                                                <div
+                                                    class="purchase-template-item-value"
+                                                >
+                                                    052001633
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="purchase-template-item second-name"
+                                            >
+                                                <div
+                                                    class="purchase-template-item-name"
+                                                >
+                                                    Account
+                                                </div>
+                                                <div
+                                                    class="purchase-template-item-value acc-number"
+                                                >
+                                                    <p>
+                                                        {{
+                                                            accountText
+                                                                ? accountText
+                                                                : hiddenPassword(
+                                                                      cardNumberFake,
+                                                                      4
+                                                                  )
+                                                        }}
+                                                    </p>
+                                                    <svg-icon
+                                                        (click)="
+                                                            showHideValue(
+                                                                cardNumberFake
+                                                            )
+                                                        "
+                                                        class="hidden-svg-eye"
+                                                        src="{{
+                                                            isAccountVisible
+                                                                ? 'assets/svg/common/ic_eye-visible.svg'
+                                                                : 'assets/svg/common/ic_eye-hidden.svg'
+                                                        }}"
+                                                    >
+                                                    </svg-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </app-ta-custom-card>
+                                </div>
+
+                                <!----------Pdf Card---------->
+                                <div class="details-document-container">
+                                    <div class="divider"></div>
+                                    <div class="icon-counter-wrapper">
+                                        <div class="counter-text-wrapper">
+                                            <p class="details-document-name">
+                                                Document
+                                            </p>
+                                            <app-ta-counter
+                                                [countBackgroud]="'#F3F3F3'"
+                                                [countHeight]="'24px'"
+                                                [countWidth]="'24px'"
+                                                [count]="3"
+                                            >
+                                            </app-ta-counter>
+                                        </div>
+                                        <svg-icon
+                                            (click)="onFileAction('download')"
+                                            src="assets/svg/common/ic_download.svg"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </div>
+                                <div class="files-item">
+                                    <div class="details-page-row-7">
+                                        <app-ta-upload-files
+                                            [files]="[
+                                                {
+                                                    name: 'truckassist - 0',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                },
+                                                {
+                                                    name: 'truckassist - 1',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                }
+                                            ]"
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                </div>
+
+                                <div class="note-cards-lease">
+                                    <app-ta-input-note
+                                        [formControl]="note"
+                                        [isReadOnly]="true"
+                                        [isVisibleArrow]="false"
+                                        [noteType]="'details-card'"
+                                    ></app-ta-input-note>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </app-ta-re-card>
-            </div>
+                    </app-ta-re-card>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

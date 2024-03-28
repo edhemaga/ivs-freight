@@ -231,9 +231,13 @@ export enum ConstantStringTableComponentsEnum {
     ADD_TRUCK = 'add-truck',
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
+    REGISTRATION = 'Registration',
 
     ADD_INSPECTION = 'add-inspection',
     ADD_INSPECTION_2 = 'Add Inspection',
+    INSPECTION = 'Inspection',
+
+    TITLE = 'Title',
 
     TRUCK = 'truck',
     TRUCK_2 = 'Truck',

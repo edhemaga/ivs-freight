@@ -9,7 +9,6 @@ import {
     RegistrationService,
     TitleService,
     InspectionService,
-    OwnerDetailsResponse,
 } from 'appcoretruckassist';
 import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
 import { TruckActiveStore } from './truck-active-state/truck-active.store';
@@ -22,6 +21,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
 import { FormDataService } from '../../../services/formData/form-data.service';
 import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
+import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
     public truckId: number;
@@ -43,7 +43,8 @@ export class TruckTService implements OnDestroy {
         private RegistrationService: RegistrationService,
         private TitleService: TitleService,
         private InspectionService: InspectionService,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private router: Router
     ) {}
 
     //Get Truck Minimal List
@@ -87,6 +88,7 @@ export class TruckTService implements OnDestroy {
                         next: (truck: any) => {
                             this.truckActiveStore.add(truck);
                             this.truckMinimalStore.add(truck);
+                            this.tdlStore.add(truck);
                             const truckCount = JSON.parse(
                                 localStorage.getItem('truckTableCount')
                             );
@@ -106,6 +108,7 @@ export class TruckTService implements OnDestroy {
                                 data: truck,
                                 id: truck.id,
                             });
+                            this.router.navigate(['/list/truck']);
 
                             subTruck.unsubscribe();
                         },
@@ -241,25 +244,42 @@ export class TruckTService implements OnDestroy {
     }
 
     public deleteTruckList(
-        trucksToDelete: TruckResponse[]
+        trucksToDelete: number[],
+        tableSelectedTab?: string
     ): Observable<TruckListResponse> {
-        // let deleteOnBack = trucksToDelete.map((truck: any) => {
-        //   return truck.id;
-        // });
+        return this.truckService.apiTruckListDelete(trucksToDelete).pipe(
+            tap(() => {
+                const truckCount = JSON.parse(
+                    localStorage.getItem('truckTableCount')
+                );
 
-        // return this.truckService.apiTruckListDelete({ ids: deleteOnBack }).pipe(
-        //   tap(() => {
-        //     let storeTrucks = this.truckQuery.getAll();
+                trucksToDelete.map((truckId) => {
+                    this.tdlStore.remove(({ id }) => id === truckId);
 
-        //     storeTrucks.map((truck: any) => {
-        //       deleteOnBack.map((d) => {
-        //         if (d === truck.id) {
-        //           this.truckStore.remove(({ id }) => id === truck.id);
-        //         }
-        //       });
-        //     });
-        //   })
-        // );
+                    if (tableSelectedTab === 'active') {
+                        this.truckActiveStore.remove(
+                            ({ id }) => id === truckId
+                        );
+
+                        truckCount.active--;
+                    } else if (tableSelectedTab === 'inactive') {
+                        this.truckInactiveStore.remove(
+                            ({ id }) => id === truckId
+                        );
+
+                        truckCount.inactive--;
+                    }
+                });
+
+                localStorage.setItem(
+                    'truckTableCount',
+                    JSON.stringify({
+                        active: truckCount.active,
+                        inactive: truckCount.inactive,
+                    })
+                );
+            })
+        );
         return of(null);
     }
 
@@ -404,6 +424,9 @@ export class TruckTService implements OnDestroy {
         return this.truckService.apiTruckFuelconsumptionGet(id, chartType);
     }
 
+    public getPerformace(id: number, chartType: number) {
+        return this.truckService.apiTruckPerformanceGet(id, chartType);
+    }
     public getExpenses(id: number, chartType: number) {
         return this.truckService.apiTruckExpensesGet(id, chartType);
     }
