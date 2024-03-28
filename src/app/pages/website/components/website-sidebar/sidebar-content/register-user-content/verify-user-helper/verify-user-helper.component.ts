@@ -3,11 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
-import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
-import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
+// services
+import { WebsiteActionsService } from 'src/app/pages/website/state/service/website-actions.service';
+import { WebsiteAuthService } from 'src/app/pages/website/state/service/website-auth.service';
 
-import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
-import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
+// enums
+import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
+
+// models
+import { UserInfoModel } from 'src/app/pages/website/state/model/user-info.model';
 
 @Component({
     selector: 'app-verify-user-helper',

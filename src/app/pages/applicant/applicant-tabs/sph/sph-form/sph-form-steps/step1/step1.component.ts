@@ -3,10 +3,13 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
-import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
+// store
+import { ApplicantQuery } from 'src/app/pages/applicant/state/store/applicant.query';
 
+// models
 import { SphPreviousEmployerProspectResponse } from 'appcoretruckassist';
 
 @Component({

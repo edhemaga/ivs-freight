@@ -21,10 +21,17 @@ import {
     throttleTime,
 } from 'rxjs';
 
-import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-
+// moment
 import moment from 'moment';
 
+// validations
+import { addressValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+
+// helpers
+import {
+    convertDateFromBackend,
+    convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 import {
     anyInputInLineIncorrect,
     filterUnceckedRadiosId,
@@ -32,17 +39,19 @@ import {
     isFormValueNotEqual,
 } from '../../state/utils/utils';
 
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
+// enums
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import {
     AddressEntity,
     ApplicantResponse,
@@ -50,8 +59,6 @@ import {
     CreateSevenDaysHosReviewCommand,
     SevenDaysHosFeedbackResponse,
 } from 'appcoretruckassist/model/models';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 
 @Component({

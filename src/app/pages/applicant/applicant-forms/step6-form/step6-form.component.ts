@@ -25,21 +25,27 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
 } from '../../state/utils/utils';
 
+// validations
 import {
     phoneFaxRegex,
     name2_24Validation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { FormService } from './../../../../services/form/form.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// sevices
+import { FormService } from 'src/app/core/services/form/form.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 
-import { ContactModel } from '../../state/model/education.model';
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
+import { ContactModel } from '../../state/model/education.model';
 
 @Component({
     selector: 'app-step6-form',

@@ -9,31 +9,40 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../state/utils/utils';
-
 import {
     convertDateFromBackend,
     convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+
+// models
 import { LicenseModel } from '../../state/model/cdl-information';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import {

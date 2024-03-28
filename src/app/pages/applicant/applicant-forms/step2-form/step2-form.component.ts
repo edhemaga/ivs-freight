@@ -30,36 +30,44 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// moment
 import moment from 'moment';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
 } from '../../state/utils/utils';
 
+// validations
 import {
     addressValidation,
     phoneFaxRegex,
     addressUnitValidation,
     businessNameValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { FormService } from './../../../../services/form/form.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+
+// models
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { WorkExpereienceModel } from '../../state/model/work-experience.model';
-import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 import {
     ApplicantModalResponse,
     EnumValue,
     TrailerLengthResponse,
     TrailerTypeResponse,
     TruckTypeResponse,
+    AddressEntity,
 } from 'appcoretruckassist/model/models';
 
 @Component({

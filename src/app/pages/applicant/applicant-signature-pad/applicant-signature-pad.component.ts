@@ -12,13 +12,16 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
+// signature pad
 import {
     NgSignaturePadOptions,
     SignaturePadComponent,
 } from '@almothafar/angular-signature-pad';
 
+// services
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
+// enums
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 @Component({

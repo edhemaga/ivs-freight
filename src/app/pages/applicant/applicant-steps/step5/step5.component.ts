@@ -16,26 +16,31 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../state/utils/utils';
-
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+
+// models
 import { ViolationModel } from '../../state/model/violations.model';
 import {
     ApplicantModalResponse,

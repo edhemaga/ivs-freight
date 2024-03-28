@@ -12,7 +12,11 @@ import {
     ViewChild,
     OnChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import {
     Subscription,
@@ -22,18 +26,23 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// helpers
 import { isFormValueEqual } from '../../../../../../state/utils/utils';
 
+// validations
 import {
     addressValidation,
     descriptionValidation,
-} from '../../../../../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
-import { FormService } from './../../../../../../../../services/form/form.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
-import { TaInputRadiobuttonsComponent } from '../../../../../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+// components
+import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
+// models
 import { SphFormAccidentModel } from '../../../../../../state/model/accident.model';
 import { AnswerChoices } from '../../../../../../state/model/applicant-question.model';
 import { InputSwitchActions } from '../../../../../../state/enum/input-switch-actions.enum';

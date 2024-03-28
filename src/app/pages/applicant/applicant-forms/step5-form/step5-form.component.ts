@@ -12,8 +12,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 
-import moment from 'moment';
-
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -28,22 +26,32 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// moment
+import moment from 'moment';
+
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
 } from '../../state/utils/utils';
 
+// validations
 import {
     addressValidation,
     descriptionValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { FormService } from './../../../../services/form/form.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// sevices
+import { FormService } from 'src/app/core/services/form/form.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import { ViolationModel } from '../../state/model/violations.model';
 import {
     ApplicantModalResponse,

@@ -8,15 +8,21 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 
+// store
 import { ApplicantQuery } from '../state/store/applicant.query';
 
-import { SelectedMode } from '../state/enum/selected-mode.enum';
-import { INavigation } from '../state/model/navigation.model';
-import { ApplicantResponse } from 'appcoretruckassist';
+// helpers
 import {
     isAnyPropertyInObjectFalse,
     isAnyValueInArrayTrue,
 } from '../state/utils/utils';
+
+// enums
+import { SelectedMode } from '../state/enum/selected-mode.enum';
+
+// models
+import { INavigation } from '../state/model/navigation.model';
+import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-applicant-header',
