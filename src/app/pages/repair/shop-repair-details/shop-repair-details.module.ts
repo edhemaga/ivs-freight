@@ -1,27 +1,34 @@
+// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
+
+// Routing
 import { ShopRepairDetailsRoutes } from './shop-repair-details.routing';
+
+// Components
 import { ShopRepairDetailsComponent } from './shop-repair-details.component';
 import { ShopRepairDetailsItemComponent } from './shop-repair-details-item/shop-repair-details-item.component';
 import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repair-card-view.component';
-import { SharedModule } from '../../shared/shared.module';
-import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
-import { TaDetailsHeaderCardComponent } from '../../shared/ta-details-header-card/ta-details-header-card.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
+import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
+import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaReCardComponent } from 'src/app/core/components/shared/ta-common-card/ta-re-card.component';
+import { TaCounterComponent } from 'src/app/core/components/shared/ta-counter/ta-counter.component';
+import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
+import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+
+// Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
-import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
-import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
-import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
-import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
-import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { DetailsDropdownComponent } from '../../shared/details-page-dropdown/details-dropdown';
 
 @NgModule({
     declarations: [
@@ -31,15 +38,19 @@ import { DetailsDropdownComponent } from '../../shared/details-page-dropdown/det
     ],
     exports: [ShopRepairCardViewComponent, SharedModule],
     imports: [
-        CommonModule,
+        // Routes
         ShopRepairDetailsRoutes,
+
+        // Modules
+        CommonModule,
         SharedModule,
+
+        // Components
         TaChartComponent,
         TaDetailsHeaderCardComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
-        formatDatePipe,
-        TruckassistTableBodyComponent, 
+        TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         ProfileImagesComponent,
         TaCopyComponent,
@@ -49,8 +60,11 @@ import { DetailsDropdownComponent } from '../../shared/details-page-dropdown/det
         TaCounterComponent,
         TaCommonHeaderComponent,
         TaTabSwitchComponent,
+        DetailsDropdownComponent,
+
+        // Pipes
+        formatDatePipe,
         formatCurrency,
-        DetailsDropdownComponent
     ],
 })
 export class ShopRepairDetailsModule {}
