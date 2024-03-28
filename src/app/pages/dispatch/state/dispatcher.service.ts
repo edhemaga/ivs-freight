@@ -1,5 +1,11 @@
-import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from '@angular/core';
+import { flatMap, delay, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+// Store
+import { DispatcherStore } from './dispatcher.store';
+
+// Models
 import {
     CreateDispatchCommand,
     DispatchBoardListResponse,
@@ -10,15 +16,16 @@ import {
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { flatMap, delay, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class DispatcherStoreService {
     public parkingOpened: boolean = false;
 
     constructor(
+        // Store
         private dispatcherStore: DispatcherStore,
+
+        // Services
         private dispatchService: DispatchService,
         private driverService: DriverService
     ) {}

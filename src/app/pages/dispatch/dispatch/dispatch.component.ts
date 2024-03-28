@@ -1,9 +1,15 @@
 import { Component, OnInit, AfterViewInit, Input, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
+
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { Titles } from 'src/app/core/utils/application.decorators';
-import { DispatcherQuery } from '../state/dispatcher.query';
 import { DispatcherStoreService } from '../state/dispatcher.service';
+
+// Decorators
+import { Titles } from 'src/app/core/utils/application.decorators';
+
+// Store
+import { DispatcherQuery } from '../state/dispatcher.query';
 
 @Titles()
 @Component({
@@ -29,9 +35,13 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     selectedDispatcher = localStorage.getItem('dispatchUserSelect') ? JSON.parse(localStorage.getItem('dispatchUserSelect')) : -1;
 
     constructor(
-        private dispatcherQuery: DispatcherQuery,
-        public dispatcherStoreService: DispatcherStoreService,
         private cd: ChangeDetectorRef,
+
+        // Store
+        private dispatcherQuery: DispatcherQuery,
+
+        // Services
+        public dispatcherStoreService: DispatcherStoreService,
         private tableService: TruckassistTableService,
     ) {}
 

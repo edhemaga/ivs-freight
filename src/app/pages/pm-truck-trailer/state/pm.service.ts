@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+// Models
 import {
     PMTrailerListResponse,
     PMTrailerUnitListResponse,
@@ -10,7 +13,6 @@ import {
     UpdatePMTruckDefaultListCommand,
     UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',

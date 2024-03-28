@@ -6,15 +6,21 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+
+// Components
 import { FullCalendarComponent } from '@fullcalendar/angular';
+
+// Plugins
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
+// Moment
 import moment from 'moment';
 
-import { SharedService } from '../../../services/shared/shared.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { Subject, takeUntil } from 'rxjs';
+// Services
+import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-calendar',

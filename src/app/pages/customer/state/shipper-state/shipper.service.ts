@@ -1,6 +1,7 @@
-import { ShipperMinimalListStore } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
-import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+
+// Models
 import {
     ClusterResponse,
     CreateRatingCommand,
@@ -12,13 +13,18 @@ import {
     ShipperResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+
+// Store
 import { ShipperStore } from './shipper.store';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
+import { ShipperMinimalListStore } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { ShipperItemStore } from '../shipper-state/shipper-details-state/shipper-details.store';
+import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
+
+// Services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { ShipperService } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -31,15 +37,18 @@ export class ShipperTService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
+        // Services
         private shipperService: ShipperService,
         private tableService: TruckassistTableService,
         private ratingReviewService: RatingReviewService,
+        private formDataService: FormDataService,
+
+        // Store
         private shipperStore: ShipperStore,
         private shipperMinimalStore: ShipperMinimalListStore,
-        private shipperMinimalQuery: ShipperMinimalListQuery,
         private sListStore: ShipperDetailsListStore,
-        private formDataService: FormDataService,
-        private ShipperItemStore: ShipperItemStore
+        private ShipperItemStore: ShipperItemStore,
+        private shipperMinimalQuery: ShipperMinimalListQuery
     ) {}
 
     // Create Shipper

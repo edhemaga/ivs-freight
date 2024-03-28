@@ -11,17 +11,17 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 // Components
-import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
-import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { BrokerModalComponent } from 'src/app/core/components/modals/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-modal/shipper-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 // Queries
@@ -43,7 +43,7 @@ import {
 import {
     CardRows,
     TableOptionsInterface,
-} from '../../shared/model/card-data.model';
+} from 'src/app/core/components/shared/model/card-data.model';
 import {
     BodyResponse,
     UpdateRating,
@@ -54,33 +54,33 @@ import {
     DropdownItem,
     MappedShipperBroker,
     ToolbarActions,
-} from '../../shared/model/card-table-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
-} from '../../../../../assets/utils/settings/customer-columns';
+} from 'src/assets/utils/settings/customer-columns';
 import { DisplayCustomerConfiguration } from '../customer-card-data';
 import {
     FilterOptionBroker,
     FilterOptionshipper,
-} from '../../shared/model/table-components/customer.modals';
+} from 'src/app/core/components/shared/model/table-components/customer.modals';
 import {
     DataForCardsAndTables,
     TableColumnConfig,
-} from '../../shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // Services
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Globals
 import {
     tableSearch,
     closeAnimationAction,
-} from '../../../utils/methods.globals';
+} from 'src/app/core/utils/methods.globals';
 
 // Pipes
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -155,20 +155,29 @@ export class CustomerTableComponent
     public shipperActive: ShipperResponse[];
 
     constructor(
+        // Ref
         private ref: ChangeDetectorRef,
+
+        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private tableDropdownService: TableCardDropdownActionsService,
-        private brokerQuery: BrokerQuery,
         private brokerService: BrokerTService,
         private shipperService: ShipperTService,
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
+        private confiramtionService: ConfirmationService,
+
+        // Store
+        private brokerQuery: BrokerQuery,
         private shipperQuery: ShipperQuery,
+
+        // Pipes
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
-        private confiramtionService: ConfirmationService,
+
+        // Router
         private router: Router
     ) {}
 

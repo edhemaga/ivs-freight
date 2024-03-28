@@ -16,32 +16,29 @@ import { BrokerQuery } from '../state/broker-state/broker.query';
 import { BrokerMinimalListQuery } from './../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 
 //Services
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { BrokerTService } from '../state/broker-state/broker.service';
 
 //Models
 import { BrokerResponse } from 'appcoretruckassist';
 import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
-import {
-    ChartApiCall,
-    LegendAttributes,
-} from '../../standalone-components/ta-chart/models/chart-models';
+import { ChartApiCall, LegendAttributes } from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
 import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
 import { BrokerDropdown } from './state/models/broker-model';
-import { TabOptions } from '../../standalone-components/ta-tab-switch/state/models/tab-models';
+import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
 
 //Constants
-import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
 import { BrokerConstants } from './state/constants/broker.constants';
 
 //Components
-import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 //Pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from '../../settings/settings-company/utils/enums/settings.enum';
+import { SETTINGS_ARROW_ACTIONS } from 'src/app/settings/settings-company/utils/enums/settings.enum';
 import { BrokerTabEnum } from './state/enums/broker-enum';
 
 @Component({
@@ -113,8 +110,11 @@ export class BrokerCardViewComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
+        // Store
         private brokerQuery: BrokerQuery,
         private brokerMinimalQuery: BrokerMinimalListQuery,
+
+        // Services
         private detailsPageDriverSer: DetailsPageService,
         private brokerService: BrokerTService
     ) {}
