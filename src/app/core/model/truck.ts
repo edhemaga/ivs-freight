@@ -1,6 +1,5 @@
 // import { Color } from './shared/color';
 import { Enums } from './enums';
-import { HistoryData } from '../components/shared/history-data/history-data.component';
 import { ServerResponse, ServerResponseList } from './response';
 import { RepairShop } from './shared/repair-shop';
 
@@ -157,7 +156,7 @@ export interface TruckDoc {
     inspectionData?: TruckInspection[];
     titleData?: TruckTitle[];
     truckLeaseData?: TruckLease[];
-    activityHistory?: HistoryData[];
+    activityHistory?: any[];
 }
 
 export interface TruckAdditional {

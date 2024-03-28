@@ -87,8 +87,9 @@ export class AppIdleService implements OnDestroy {
         this.sessionForIdle = interval(intervalDuration).pipe(
             map((tick: number) => {
                 return tick;
-            }),
-            takeUntil(() => AppIdleService.runTimer)
+            })
+            // TODO CHECK WHAT THIS LINE DOES
+            // takeUntil(() => AppIdleService.runTimer)
         );
 
         this.check();

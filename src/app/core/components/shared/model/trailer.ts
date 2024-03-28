@@ -1,5 +1,4 @@
 // import { Color } from './shared/color';
-import { HistoryData } from '../history-data/history-data.component';
 
 // export interface TrailerColumn {
 //   name: string;
@@ -200,7 +199,7 @@ export interface TrailerDoc {
     inspectionData?: TrailerInspection[];
     titleData?: TrailerTitle[];
     trailerLeaseData?: TrailerLease[];
-    activityHistory?: HistoryData[];
+    activityHistory?: any[];
 }
 
 export interface TrailerAdditional {
