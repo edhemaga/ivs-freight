@@ -24,19 +24,114 @@
     <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
 
     <ng-container *ngIf="percents > 0">
-        <span class="progress-text">
-            in
-            {{ text }}
-            days
+        <span class="progress-text" [class.table-progress-text]="isTable">
+            <ng-container *ngIf="type === 'days'">
+                in
+                {{ text }}
+                days
+            </ng-container>
+
+            <ng-container *ngIf="type === 'miles'">
+                {{ text }}
+                mi to go
+            </ng-container>
         </span>
     </ng-container>
     <ng-container *ngIf="percents === 0 && percents !== null">
-        <span class="ta-font-semi-bold progress-text">
-            {{ text }}
-            days ago
+        <span
+            class="progress-text ta-font-semi-bold"
+            [class.table-progress-text]="isTable"
+        >
+            <ng-container *ngIf="type === 'days'">
+                {{ text }}
+                days ago
+            </ng-container>
+
+            <ng-container *ngIf="type === 'miles'">
+                {{ text }}
+                mi over
+            </ng-container>
         </span>
     </ng-container>
     <ng-container *ngIf="text === '/'">
         <span> / </span>
     </ng-container>
 </div>
+
+<!-- PROGRESS POPOVER -->
+<ng-template #progressPopover>
+    <div class="progress-dropdown">
+        <div class="progress-header">
+            <div class="progress-title">
+                {{
+                    data[column.field].expirationMiles > 0
+                        ? data[column.field].expirationMilesText
+                        : 0
+                }}
+                <span *ngIf="percents > 0 && percents < 100"> mi to go</span>
+                <span *ngIf="!percents"> mi over</span>
+            </div>
+            <div class="progress-total">
+                {{ data[column.field].totalMiles }} mi
+            </div>
+        </div>
+        <div
+            class="table-progress-bar-container"
+            [ngClass]="{
+                'bg-expired-container': !percents,
+                'bg-sliver-container': percents >= 25 && percents < 100,
+                'bg-orange-container': percents >= 5 && percents < 25,
+                'bg-danger-container': percents > 0 && percents < 5,
+                'bg-inactive-container': percents === 100
+            }"
+        >
+            <div
+                [ngClass]="{
+                    'bg-progress-sliver': percents >= 25 && percents < 100,
+                    'bg-progress-orange': percents >= 5 && percents < 25,
+                    'bg-progress-danger': percents > 0 && percents < 5
+                }"
+                [ngStyle]="{
+                    width: percents + '%'
+                }"
+                class="table-progress-bar"
+            ></div>
+        </div>
+        <div class="progress-dropdown-body">
+            <div class="progress-dual-info-container">
+                <div class="progress-info-container">
+                    <div class="progress-info-title">Last Serviced</div>
+                    <div class="progress-info-text">
+                        {{ data.lastService ?? 'No data' }}
+                    </div>
+                </div>
+                <div class="progress-info-container">
+                    <div class="progress-info-title">Odometer</div>
+                    <div class="progress-info-text">
+                        {{ data.textOdometer ?? 'No data' }}
+                    </div>
+                </div>
+            </div>
+            <div class="progress-info-container">
+                <div class="progress-info-title">Repair Shop</div>
+                <div class="progress-info-text">
+                    {{ data.repairShop ?? 'No data' }}
+                </div>
+            </div>
+            <div class="progress-dual-info-container">
+                <div class="progress-info-container">
+                    <div class="progress-info-title">Invoice</div>
+                    <div class="progress-info-text">
+                        {{ data.textInv ?? 'No data' }}
+                    </div>
+                </div>
+                <div class="progress-info-container">
+                    <div class="progress-info-title">Cost</div>
+                    <div class="progress-info-text">
+                        {{ data.cost ?? 'No data' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
