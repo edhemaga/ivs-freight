@@ -5,7 +5,6 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyParkingService } from './parking-state/company-parking.service';
@@ -34,7 +33,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
             value: 0,
         },
     ];
-public currentDate: any;
+    public currentDate: any;
 
     constructor(
         private settingsLocationService: SettingsLocationService,
@@ -62,7 +61,7 @@ public currentDate: any;
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'Company Parking') {
@@ -81,43 +80,47 @@ public currentDate: any;
         this.currentDate = moment(new Date()).format('MM/DD/YY');
     }
 
-    public getRentDate(mod){
-        
+    public getRentDate(mod) {
         let day;
         let currentDate = new Date();
 
-        if (mod == 1){
+        if (mod == 1) {
             day = 1;
-        } else if ( mod == 2 ) {
+        } else if (mod == 2) {
             day = 5;
-        } else if ( mod == 3 ) {
+        } else if (mod == 3) {
             day = 10;
-        } else if ( mod == 4 ) {
+        } else if (mod == 4) {
             day = 15;
-        } else if ( mod == 5 ) {
+        } else if (mod == 5) {
             day = 20;
-        } else if ( mod == 6 ) {
+        } else if (mod == 6) {
             day = 25;
         } else {
-            day = new Date(currentDate.getFullYear(), currentDate.getMonth()).getUTCDate();
+            day = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth()
+            ).getUTCDate();
         }
 
         let currentDay = currentDate.getUTCDate();
         let expDate;
 
-        if ( day > currentDay ) {
+        if (day > currentDay) {
             expDate = new Date();
             expDate.setUTCDate(day);
         } else {
-            expDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+            expDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                currentDate.getDate()
+            );
             expDate.setUTCDate(day);
         }
-        
-        
+
         expDate = moment(expDate).format('MM/DD/YY');
         return expDate;
     }
-
 
     public onAction(modal: { modalName: string; type: any }) {
         this.settingsLocationService.onModalAction(modal);

@@ -1,9 +1,11 @@
 import {
     Component,
+    EventEmitter,
     Input,
     OnChanges,
     OnDestroy,
     OnInit,
+    Output,
     SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -36,6 +38,9 @@ import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.
     providers: [ValueByStringPath],
 })
 export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
+
     // All data
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
@@ -202,6 +207,13 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
                 closing: ConstantStringTableComponentsEnum.FASTEST,
             });
         }
+    }
+
+    public saveNoteValue(note: string, id: number): void {
+        this.saveValueNote.emit({
+            value: note,
+            id: id,
+        });
     }
 
     ngOnDestroy() {

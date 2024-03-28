@@ -9,7 +9,6 @@ import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
@@ -64,7 +63,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'broker') {

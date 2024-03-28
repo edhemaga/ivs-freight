@@ -5,7 +5,7 @@ import {
     SimpleChanges,
     ViewChild,
     ViewEncapsulation,
-    OnDestroy
+    OnDestroy,
 } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -26,10 +26,7 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 
 //Components
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-settings-insurancepolicy',
@@ -70,7 +67,7 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'insurance') {

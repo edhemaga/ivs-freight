@@ -6,10 +6,7 @@ import { Router } from '@angular/router';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
@@ -176,7 +173,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case ConstantStringTableComponentsEnum.DELETE: {
                             this.deleteTrailerById(res.id);

@@ -61,6 +61,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // pipes
 import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
 import { TableTextCountPipe } from 'src/app/core/pipes/table-text-count.pipe';
+import { ContactPhoneEmailIconPipe } from 'src/app/core/pipes/contact-phone-email-icon.pipe';
 
 // enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -82,22 +83,27 @@ import {
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // modules
+        NgbModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        CustomScrollbarComponent,
         AngularSvgIconModule,
-        TaNoteComponent,
-        TaUploadFilesComponent,
         NgbPopoverModule,
-        TableHighlightSearchTextPipe,
+
+        // components
+        CustomScrollbarComponent,
         TaInputDropdownLabelComponent,
         TaInputDropdownComponent,
-        NgbPopoverModule,
         TaInputDropdownTableComponent,
-        NgbModule,
+        TaNoteComponent,
+        TaUploadFilesComponent,
         AppTooltipComponent,
+
+        // pipes
+        TableHighlightSearchTextPipe,
         TableTextCountPipe,
+        ContactPhoneEmailIconPipe,
     ],
     providers: [
         {
@@ -117,6 +123,8 @@ export class TruckassistTableBodyComponent
     @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
     public dropdownSelectionArray = new FormArray([]);
 
     @Input() viewData: any[];

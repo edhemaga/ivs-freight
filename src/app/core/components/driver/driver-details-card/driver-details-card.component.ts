@@ -41,7 +41,6 @@ import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-mo
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 
 //Store
@@ -219,7 +218,7 @@ export class DriverDetailsCardComponent
             this.confirmationService.confirmationData$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
-                    next: (res: Confirmation) => {
+                    next: (res) => {
                         switch (res.type) {
                             case DriverEnum.DELETE_2:
                                 if (res.template === DriverEnum.CDL_2)

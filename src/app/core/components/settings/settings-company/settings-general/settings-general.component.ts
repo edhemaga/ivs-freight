@@ -30,10 +30,7 @@ import {
 } from '../utils/enums/settings.enum';
 
 //Components
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
 
 //Models
 import { CompanyProperties } from '../utils/models/settings.model';
@@ -143,7 +140,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === SETINGS_ENUMS.COMPANY)

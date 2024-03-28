@@ -13,10 +13,7 @@ import { Router } from '@angular/router';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { RepairTService } from '../state/repair.service';
@@ -195,7 +192,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: Confirmation) => {
+            .subscribe((res) => {
                 if (res.template === ConstantStringTableComponentsEnum.INFO)
                     this.changeRepairShopStatus(res.data);
             });

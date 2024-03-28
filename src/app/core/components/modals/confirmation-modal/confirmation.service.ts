@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 // models
-import { Confirmation } from './confirmation-modal.component';
+import { Confirmation } from './state/models/confirmation.model';
 
 @Injectable({
     providedIn: 'root',
