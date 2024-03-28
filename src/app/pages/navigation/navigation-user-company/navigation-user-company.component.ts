@@ -6,12 +6,16 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-import { SelectCompanyResponse } from 'appcoretruckassist';
-import { NavigationService } from '../services/navigation.service';
-import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FormsModule } from '@angular/forms';
+
+//Models
+import { SelectCompanyResponse } from 'appcoretruckassist';
+import { SignInResponse } from 'appcoretruckassist';
+
+//Services
+import { NavigationService } from '../services/navigation.service';
 import { WebsiteAuthService } from '../../website/state/service/website-auth.service';
 
 @Component({

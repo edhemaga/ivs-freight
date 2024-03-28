@@ -1,22 +1,30 @@
-import { ShipperCardViewComponent } from './../shipper-card-view/shipper-card-view.component';
-import { ShipperDetailsComponent } from './shipper-details.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShipperDetailsSingleComponent } from './shipper-details-single/shipper-details-single.component';
+
+// Routing
 import { ShipperDetailsRoutes } from './shipper-details.routing';
-import { SharedModule } from '../../shared/shared.module';
-import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaDetailsHeaderCardComponent } from '../../shared/ta-details-header-card/ta-details-header-card.component';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { formatTimePipe } from '../../../pipes/formatTime.pipe';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+
+// Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// Components
+import { ShipperDetailsSingleComponent } from './shipper-details-single/shipper-details-single.component';
+import { ShipperCardViewComponent } from './../shipper-card-view/shipper-card-view.component';
+import { ShipperDetailsComponent } from './shipper-details.component';
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
+import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+
+// Pipes
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { formatTimePipe } from 'src/app/core/pipes/formatTime.pipe';
 
 @NgModule({
     declarations: [
@@ -26,21 +34,28 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ],
     exports: [ShipperCardViewComponent, SharedModule],
     imports: [
-        CommonModule,
+        // Routes
         ShipperDetailsRoutes,
+
+        // Modules
+        CommonModule,
         SharedModule,
-        TaChartComponent,
         NgbModule,
+        AngularSvgIconModule,
+
+        // Components
+        TaChartComponent,
         AppTooltipComponent,
         TaDetailsHeaderCardComponent,
-        formatDatePipe,
         TaCopyComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
-        formatTimePipe,
-        AngularSvgIconModule,
         TaCommonHeaderComponent,
-        TaTabSwitchComponent
+        TaTabSwitchComponent,
+
+        // Pipes
+        formatDatePipe,
+        formatTimePipe,
     ],
     providers: [formatDatePipe],
 })

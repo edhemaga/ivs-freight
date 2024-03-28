@@ -1,5 +1,3 @@
-import { animate, style, transition, trigger } from '@angular/animations';
-import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -8,23 +6,33 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
+import { catchError, of } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { Options } from 'ng5-slider';
+
+// Models
 import {
     CreateDispatchCommand,
     DispatchStatus,
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { Options } from 'ng5-slider';
-import { catchError, of } from 'rxjs';
-import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
+
+// Pipes
+import { ColorFinderPipe } from '../pipes/color-finder.pipe';
+
+// Services
 import { DispatcherStoreService } from '../state/dispatcher.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
-import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+// Modals
+import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
+import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -167,9 +175,13 @@ export class DispatchTableComponent implements OnInit {
     isDrag: boolean = false;
 
     constructor(
-        private dss: DispatcherStoreService,
         private chd: ChangeDetectorRef,
+
+        // Pipes
         private colorPipe: ColorFinderPipe,
+
+        // Services
+        private dss: DispatcherStoreService,
         private modalService: ModalService
     ) {}
 

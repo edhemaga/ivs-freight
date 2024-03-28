@@ -7,7 +7,11 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -18,25 +22,32 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueNotEqual,
 } from '../../state/utils/utils';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+//
 import {
     addressUnitValidation,
     addressValidation,
     phoneFaxRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+
+// models
 import {
     AddressEntity,
     ApplicantResponse,

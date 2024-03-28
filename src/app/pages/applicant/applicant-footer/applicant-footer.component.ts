@@ -9,24 +9,35 @@ import {
     SimpleChanges,
     OnChanges,
 } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// helpers
 import {
     convertDateFromBackend,
     convertDateFromBackendToTime,
-} from './../../../utils/methods.calculations';
+} from './../../../core/utils/methods.calculations';
 
+// moment
 import moment from 'moment';
 
+// services
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
+// store
 import { ApplicantQuery } from '../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
+
+// models
 import { IdNameList } from '../state/model/lists.model';
 import {
     ApplicantCompanyInfoResponse,

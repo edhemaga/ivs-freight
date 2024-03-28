@@ -13,41 +13,41 @@ import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 //Pipes
-import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 
 //Animations
-import { card_component_animation } from './../../shared/animations/card-component.animations';
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Helpers
-import { dropActionNameDriver } from '../../../utils/function-drop.details-page';
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import moment from 'moment';
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 //Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
 import { DriverTService } from '../state/driver.service';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 //Components
-import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
+import { DriverCdlModalComponent } from 'src/app/core/components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 //Store
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from '../../settings/settings-company/utils/enums/settings.enum';
+import { SETTINGS_ARROW_ACTIONS } from 'src/app/settings/settings-company/utils/enums/settings.enum';
 import { BrokerTabEnum } from '../../customer/broker-card-view/state/enums/broker-enum';
 import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
 
@@ -56,7 +56,7 @@ import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-char
 import {
     ChartApiCall,
     LegendAttributes,
-} from '../../standalone-components/ta-chart/models/chart-models';
+} from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
 import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
@@ -68,11 +68,11 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from '../../standalone-components/ta-tab-switch/state/models/tab-models';
+import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
 import { DriverDateInfo, DriverDropdowns } from './state/models/driver-models';
 
 //Constants
-import { ChartConstants } from '../../standalone-components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
 import { DriverConstants } from './state/constants/driver.constants';
 
 @Component({

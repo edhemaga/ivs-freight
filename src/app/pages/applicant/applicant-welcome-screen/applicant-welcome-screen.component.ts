@@ -1,13 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import moment from 'moment';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
-
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
 
+// moment
+import moment from 'moment';
+
+// helpers
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+
+// servies
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
+// models
 import {
     AcceptApplicationCommand,
     ApplicantCompanyInfoResponse,

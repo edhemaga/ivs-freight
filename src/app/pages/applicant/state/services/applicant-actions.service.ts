@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { ApplicantService } from '../../../../../../../appcoretruckassist';
+// services
+import { ApplicantService } from 'appcoretruckassist';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
+// models
 import {
     VerifyApplicantCommand,
     CreateDisclosureReviewCommand,

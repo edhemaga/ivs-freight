@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
+// models
 import { SignInResponse } from 'appcoretruckassist';
 
 export interface AuthState extends EntityState<SignInResponse, number> {}

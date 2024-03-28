@@ -5,44 +5,44 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
-} from '../../../../assets/utils/settings/pm-columns';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enum';
+} from 'src/assets/utils/settings/pm-columns';
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Components
-import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
+import { RepairPmModalComponent } from 'src/app/core/components/modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
 // Models
 import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from '../shared/model/card-table-data.model';
-import { Truck, Trailer } from '../shared/model/pm';
-import { DataForCardsAndTables } from '../shared/model/table-components/all-tables.modal';
-import { CardRows } from '../shared/model/card-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
+import { Truck, Trailer } from 'src/app/core/components/shared/model/pm';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
-import { ModalService } from '../shared/ta-modal/modal.service';
-import { TruckassistTableService } from '../../services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { PmTService } from './state/pm.service';
 
 // Constants
-import { TableDropdownComponentConstants } from '../../utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Data
 import { DisplayPMConfiguration } from './pm-card-data';
-import { TruckName } from '../../utils/enums/truck-component.enum';
+import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import {
     TooltipColors,
     TrailerName,
-} from '../../utils/enums/trailer-component.enum';
+} from 'src/app/core/utils/enums/trailer-component.enum';
 
 // Store
 import { PmTruckQuery } from './state/pm-truck-state/pm-truck.query';
 import { PmTrailerQuery } from './state/pm-trailer-state/pm-trailer.query';
 
 // Pipes
-import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
     selector: 'app-pm-truck-trailer',
@@ -582,7 +582,7 @@ export class PmTruckTrailerComponent
 
                 return trailer;
             });
-            
+
             return trailerUnitsData;
         }
     }

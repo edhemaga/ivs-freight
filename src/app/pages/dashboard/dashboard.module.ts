@@ -29,13 +29,12 @@ import { DashboardDataPlaceholderComponent } from './components/components/dashb
 import { DashboardLoadingPlaceholderComponent } from './components/components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
 import { DashboardDropdownComponent } from './components/components/dashboard-dropdown/dashboard-dropdown.component';
 
-import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomPeriodRangeComponent } from '../standalone-components/ta-custom-period-range/ta-custom-period-range.component';
-import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.component';
-import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
-import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
-
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomPeriodRangeComponent } from 'src/app/core/components/standalone-components/ta-custom-period-range/ta-custom-period-range.component';
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { CarrierSearchTwoComponent } from 'src/app/core/components/standalone-components/carrier-search-two/carrier-search-two.component';
+import { TaSpinnerComponent } from 'src/app/core/components/shared/ta-spinner/ta-spinner.component';
 @NgModule({
     declarations: [
         DashboardComponent,

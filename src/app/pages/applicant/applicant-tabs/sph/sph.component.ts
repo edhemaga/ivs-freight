@@ -4,31 +4,37 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateFromBackend } from './../../../../utils/methods.calculations';
+// helpers
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
+// components
 import { SphModalComponent } from './sph-modal/sph-modal.component';
 
+// services
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
+// store
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
+// enums
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+
+// models
 import {
     ApplicantResponse,
     CreateSphReviewCommand,
     SphFeedbackResponse,
     UpdateSphCommand,
 } from 'appcoretruckassist';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-sph',

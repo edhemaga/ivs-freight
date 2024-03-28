@@ -17,11 +17,13 @@ import {
     throttleTime,
 } from 'rxjs';
 
+// helpers
 import {
     anyInputInLineIncorrect,
     isFormValueNotEqual,
 } from '../../state/utils/utils';
 
+// validations
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -34,17 +36,23 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
 
+// store
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
+// enums
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+
+// models
 import {
     AddressEntity,
     BankResponse,
@@ -59,7 +67,6 @@ import {
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { IdNameList } from '../../state/model/lists.model';
 
 @Component({

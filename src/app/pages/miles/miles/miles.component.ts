@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getMilesColumnsDefinition } from '../../../../../assets/utils/settings/miles-columns';
 import { MilesTableQuery } from '../state/miles.query';
+import { getMilesColumnsDefinition } from 'src/assets/utils/settings/miles-columns';
 
 @Component({
     selector: 'app-miles',

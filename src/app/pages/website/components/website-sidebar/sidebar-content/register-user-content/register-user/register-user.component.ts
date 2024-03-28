@@ -9,10 +9,12 @@ import {
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
+// services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
-import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
+import { WebsiteActionsService } from 'src/app/pages/website/state/service/website-actions.service';
+import { WebsiteAuthService } from 'src/app/pages/website/state/service/website-auth.service';
 
+// validations
 import {
     addressUnitValidation,
     addressValidation,
@@ -22,7 +24,10 @@ import {
     phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+// enums
+import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
+
+// models
 import { AddressEntity, SignupUserCommand } from 'appcoretruckassist';
 
 @Component({

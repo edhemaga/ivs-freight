@@ -6,18 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+// modules
 import { ApplicantRoutingModule } from './applicant-routing.module';
-
-import { SharedModule } from '../shared/shared.module';
-
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
-/* PIPES */
+// pipes
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 
-import { SumArraysPipe } from '../../pipes/sum-arrays.pipe';
-
-/* COMPONENTS */
-
+// components
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
 import { ApplicantFooterComponent } from './applicant-footer/applicant-footer.component';
@@ -47,16 +44,14 @@ import { Step4FormComponent } from './applicant-forms/step4-form/step4-form.comp
 import { Step3FormComponent } from './applicant-forms/step3-form/step3-form.component';
 import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.component';
 
-/* IMPORT COMPONENTS */
-
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
-import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
-import { TaInputRadiobuttonsComponent } from '../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaInputComponent } from '../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputArrowsComponent } from '../shared/ta-input-arrows/ta-input-arrows.component';
-import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputArrowsComponent } from 'src/app/core/components/shared/ta-input-arrows/ta-input-arrows.component';
+import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
 
 @NgModule({
     declarations: [

@@ -1,36 +1,35 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 
-//componets
-import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
+import { Subject, takeUntil } from 'rxjs';
 
-//services
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+// components
+import { AccountModalComponent } from 'src/app/core/components/modals/account-modal/account-modal.component';
+
+// ervices
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AccountTService } from '../state/account.service';
 
-//store
+// store
 import { AccountState } from '../state/account-state/account.store';
 import { AccountQuery } from '../state/account-state/account.query';
 
-//utils
-import { getToolsAccountsColumnDefinition } from '../../../../../assets/utils/settings/toolsAccounts-columns';
+// utils
+import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
 import {
     tableSearch,
     closeAnimationAction,
-} from '../../../utils/methods.globals';
+} from 'src/app/core/utils/methods.globals';
 
-//enum
+// enums
 import { AccountComponentEnum } from '../state/enums/account-constant-strings.enum';
 import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
-//model
+// models
 import {
     CompanyAccountLabelResponse,
     CompanyAccountResponse,
-    CreateCompanyContactCommand,
-    UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import {
     TableBodyActionsAccount,
@@ -38,7 +37,7 @@ import {
     TableToolBarActionActionsAccount,
 } from 'src/app/core/model/account';
 import { DisplayAccountConfiguration } from '../account-data';
-import { CardRows } from '../../shared/model/card-data.model';
+import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 @Component({
     selector: 'app-account-table',

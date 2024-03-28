@@ -5,15 +5,18 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// validations
 import {
     phoneFaxRegex,
     addressValidation,
     addressUnitValidation,
     descriptionValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
+// store
 import { ApplicantQuery } from '../../../state/store/applicant.query';
 
+// models
 import {
     AnswerChoices,
     ApplicantQuestion,

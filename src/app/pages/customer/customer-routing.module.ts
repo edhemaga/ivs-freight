@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// Components
 import { BrokerCardComponent } from './broker-card/broker-card.component';
 import { CustomerTableComponent } from './customer-table/customer-table.component';
+
+// Resolvers
 import { ShipperSingleResolver } from './state/shipper-state/shipper-details-state/shipper-single.resolver';
 import { BrokerDetailsResolver } from './state/broker-details-state/broker-details.resolver';
 import { BrokerMinimalListResolver } from './state/broker-details-state/broker-minimal-list-state/broker-minimal.resolver';

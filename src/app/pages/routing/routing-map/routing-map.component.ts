@@ -14,26 +14,26 @@ import {
     moveItemInArray,
     CdkDragMove,
 } from '@angular/cdk/drag-drop';
-import * as AppConst from '../../../../const';
-import { MapsService } from '../../../services/shared/maps.service';
+import * as AppConst from '../../../const';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
     UntypedFormArray,
 } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
-import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { imageMapType } from 'src/assets/utils/methods-global';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from './../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RoutingStateService } from '../state/routing-state/routing-state.service';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { RoutingStateQuery } from '../state/routing-state/routing-state.query';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { addressValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 declare var google: any;
 declare const geoXML3: any;

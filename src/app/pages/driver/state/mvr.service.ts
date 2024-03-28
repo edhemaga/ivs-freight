@@ -1,16 +1,22 @@
-import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.service';
+import { MvrService } from 'appcoretruckassist';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, tap, Subject } from 'rxjs';
+
+//Models
 import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
+
+//Services
 import { DriverTService } from './driver.service';
-import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+//Store
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
+import { DriversActiveStore } from './driver-active-state/driver-active.store';
+import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 
 @Injectable({
     providedIn: 'root',

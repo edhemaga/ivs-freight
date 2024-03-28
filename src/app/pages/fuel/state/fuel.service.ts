@@ -2,19 +2,19 @@ import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 //Models
-import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
+import { FuelStopResponse } from 'appcoretruckassist';
 import {
     FuelService,
     FuelStopListResponse,
     FuelTransactionListResponse,
 } from 'appcoretruckassist';
-import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
-import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
-import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
-import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
-import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
-import { ClusterResponse } from '../../../../../../appcoretruckassist/model/clusterResponse';
+import { GetFuelStopModalResponse } from 'appcoretruckassist';
+import { CreateResponse } from 'appcoretruckassist';
+import { GetFuelModalResponse } from 'appcoretruckassist';
+import { FuelDispatchHistoryResponse } from 'appcoretruckassist';
+import { FuelStopFranchiseResponse } from 'appcoretruckassist';
+import { FuelTransactionResponse } from 'appcoretruckassist';
+import { ClusterResponse } from 'appcoretruckassist';
 
 //Service
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';

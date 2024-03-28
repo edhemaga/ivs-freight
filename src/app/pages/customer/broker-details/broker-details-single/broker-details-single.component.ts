@@ -1,4 +1,3 @@
-import { BrokerResponse } from 'appcoretruckassist';
 import {
     Component,
     Input,
@@ -6,11 +5,20 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
-import { Titles } from 'src/app/core/utils/application.decorators';
-import { ReviewsRatingService } from '../../../../services/reviews-rating/reviewsRating.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+
+// Modals
+import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
+
+// Decorators
+import { Titles } from 'src/app/core/utils/application.decorators';
+
+// Services
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+
+// Models
 import {
+    BrokerResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 

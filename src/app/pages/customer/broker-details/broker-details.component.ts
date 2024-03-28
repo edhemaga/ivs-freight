@@ -1,19 +1,27 @@
-import { BrokerResponse } from 'appcoretruckassist';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrokerTService } from '../state/broker-state/broker.service';
 import { Subject, takeUntil, take } from 'rxjs';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+
+// Services
+import { BrokerTService } from '../state/broker-state/broker.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+
+// Store
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
-import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
 import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
+import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
+
+// Pipes
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+
+// Models
+import { BrokerResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-broker-details',
@@ -33,21 +41,30 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public brokerConfData: any;
     public businessOpen: boolean;
     constructor(
+        // Router
         private activated_route: ActivatedRoute,
         private router: Router,
+
+        // Services
         private notificationService: NotificationService,
-        private brokerMimialQuery: BrokerMinimalListQuery,
         private brokerService: BrokerTService,
         private detailsPageService: DetailsPageService,
-        private sumArr: SumArraysPipe,
-        private cdRef: ChangeDetectorRef,
         private dropDownService: DropDownService,
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
-        private brokerMinimalStore: BrokerMinimalListStore,
-        private bdlq: BrokerDetailsListQuery,
         private DetailsDataService: DetailsDataService,
-        private BrokerItemStore: BrokerDetailsStore
+
+        // Store
+        private brokerMinimalStore: BrokerMinimalListStore,
+        private BrokerItemStore: BrokerDetailsStore,
+        private brokerMimialQuery: BrokerMinimalListQuery,
+        private bdlq: BrokerDetailsListQuery,
+
+        // Pipes
+        private sumArr: SumArraysPipe,
+
+        // Ref
+        private cdRef: ChangeDetectorRef
     ) {
         let storeData$ = this.BrokerItemStore._select((state) => state);
         storeData$.subscribe((state) => {

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { PMTrailerUnitListResponse } from 'appcoretruckassist';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { PmTService } from '../pm.service';
+
+// Store
 import { PmTrailerState, PmTrailerStore } from './pm-trailer.store';
 
 @Injectable({

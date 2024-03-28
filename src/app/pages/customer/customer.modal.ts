@@ -2,12 +2,15 @@ import {
     ApplicantResponse,
     BrokerResponse,
     DriverResponse,
-    OwnerResponse,
     ShipperResponse,
     TimeOnly,
 } from 'appcoretruckassist';
-import { ConstantStringTableComponentsEnum } from '../../utils/enums/table-components.enum';
-import { DropdownItem } from '../shared/model/card-table-data.model';
+
+// Enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
+// Model
+import { DropdownItem } from '../dashboard/state/models/dropdown-item.model';
 
 export interface ViewDataResponse {
     data: BrokerResponse | ShipperResponse;

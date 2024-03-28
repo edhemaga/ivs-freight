@@ -1,5 +1,18 @@
-import { BrokerMinimalListQuery } from './../broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+
+// Services
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// Store
+import { BrokerStore } from './broker.store';
+import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
+import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
+import { BrokerDetailsStore } from '../broker-details-state/broker-details.store';
+import { BrokerMinimalListQuery } from './../broker-details-state/broker-minimal-list-state/broker-minimal.query';
+
+// Models
 import {
     BrokerMinimalListResponse,
     BrokerModalResponse,
@@ -10,16 +23,9 @@ import {
     GetBrokerListResponse,
     RatingReviewService,
     UpdateReviewCommand,
+    BrokerAvailableCreditCommand,
+    BrokerAvailableCreditResponse,
 } from 'appcoretruckassist';
-import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
-import { BrokerStore } from './broker.store';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
-import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { BrokerDetailsStore } from '../broker-details-state/broker-details.store';
-import { BrokerAvailableCreditCommand } from '../../../../../../../appcoretruckassist/model/brokerAvailableCreditCommand';
-import { BrokerAvailableCreditResponse } from '../../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -31,15 +37,18 @@ export class BrokerTService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
+        // Services
         private brokerService: BrokerService,
-        private brokerStore: BrokerStore,
         private ratingReviewService: RatingReviewService,
         private tableService: TruckassistTableService,
-        private brokerMinimalStore: BrokerMinimalListStore,
-        private brokerMinimalQuery: BrokerMinimalListQuery,
-        private bls: BrokerDetailsListStore,
         private formDataService: FormDataService,
-        private brokerItemStore: BrokerDetailsStore
+
+        // Store
+        private brokerStore: BrokerStore,
+        private brokerMinimalStore: BrokerMinimalListStore,
+        private bls: BrokerDetailsListStore,
+        private brokerItemStore: BrokerDetailsStore,
+        private brokerMinimalQuery: BrokerMinimalListQuery
     ) {}
 
     // Add Broker

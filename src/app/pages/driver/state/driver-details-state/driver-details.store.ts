@@ -1,4 +1,3 @@
-import { DriverResponse } from '../../../../../../../appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
