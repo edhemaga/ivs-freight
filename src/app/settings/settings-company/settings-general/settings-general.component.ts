@@ -17,8 +17,8 @@ import { UntypedFormControl } from '@angular/forms';
 // services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // pipes
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
@@ -30,7 +30,7 @@ import {
 } from '../utils/enums/settings.enum';
 
 //Components
-import { ConfirmationModalComponent } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 //Models
 import { CompanyProperties } from '../utils/models/settings.model';
