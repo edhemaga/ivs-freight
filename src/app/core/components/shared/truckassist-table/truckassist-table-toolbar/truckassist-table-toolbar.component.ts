@@ -33,7 +33,7 @@ import {
 // services
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../../ta-modal/modal.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationResetService } from '../../../modals/confirmation-modal/state/state/services/confirmation-reset.service';
 
 // decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
@@ -153,7 +153,7 @@ export class TruckassistTableToolbarComponent
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
-        private confirmationService: ConfirmationService,
+        private confirmationResetService: ConfirmationResetService,
         private changeDetectorRef: ChangeDetectorRef
     ) {}
 
@@ -227,14 +227,10 @@ export class TruckassistTableToolbarComponent
     }
 
     private confirmationData(): void {
-        this.confirmationService.confirmationData$
+        this.confirmationResetService.getConfirmationResetData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    if (res.type === ConstantStringTableComponentsEnum.RESET) {
-                        this.onResetTable();
-                    }
-                },
+            .subscribe((isTableReset) => {
+                if (isTableReset) this.onResetTable();
             });
     }
 

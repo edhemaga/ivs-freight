@@ -15,7 +15,7 @@ export class ConfirmationService {
         return this.confirmationDataSubject.asObservable();
     }
 
-    public sendConfirmationData(data /* : Confirmation */): void {
+    public sendConfirmationData(data: Confirmation): void {
         this.confirmationDataSubject.next(data);
     }
 }
