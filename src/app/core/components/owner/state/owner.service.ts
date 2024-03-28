@@ -35,7 +35,7 @@ export class OwnerTService {
 
         //Store
         private ownerActiveQuery: OwnerActiveQuery,
-        private ownerInactiveQuery: OwnerInactiveQuery,
+        private ownerInactiveQuery: OwnerInactiveQuery
     ) {}
 
     // Add Owner
@@ -48,7 +48,9 @@ export class OwnerTService {
                         this.ownerInactiveStore.add(owner);
 
                         const ownerCount = JSON.parse(
-                            localStorage.getItem(ComponentsTableEnum.OWNER_TABLE_COUNT)
+                            localStorage.getItem(
+                                ComponentsTableEnum.OWNER_TABLE_COUNT
+                            )
                         );
 
                         ownerCount.inactive++;
@@ -165,14 +167,10 @@ export class OwnerTService {
 
     // Delete Owner List
     public deleteOwnerList(
-        ownersToDelete: any[],
+        ids: number[],
         selectedTab: string
     ): Observable<any> {
-        let deleteOnBack = ownersToDelete.map((owner: any) => {
-            return owner.id;
-        });
-
-        return this.ownerService.apiOwnerListDelete(deleteOnBack).pipe(
+        return this.ownerService.apiOwnerListDelete(ids).pipe(
             tap(() => {
                 let storeOwners =
                     selectedTab === ComponentsTableEnum.ACTIVE
@@ -180,7 +178,7 @@ export class OwnerTService {
                         : this.ownerInactiveQuery.getAll();
 
                 storeOwners.map((owner: any) => {
-                    deleteOnBack.map((d) => {
+                    ids.map((d) => {
                         if (d === owner.id) {
                             selectedTab === ComponentsTableEnum.ACTIVE
                                 ? this.ownerActiveStore.remove(
@@ -202,11 +200,11 @@ export class OwnerTService {
                     JSON.stringify({
                         active:
                             selectedTab === ComponentsTableEnum.ACTIVE
-                                ? storeOwners.length - ownersToDelete.length
+                                ? storeOwners.length - ids.length
                                 : ownerCount.active,
                         inactive:
                             selectedTab === ComponentsTableEnum.INACTIVE
-                                ? storeOwners.length - ownersToDelete.length
+                                ? storeOwners.length - ids.length
                                 : ownerCount.inactive,
                     })
                 );
@@ -250,5 +248,30 @@ export class OwnerTService {
                 });
             })
         );
+    }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        const storeOwners =
+            data.selectedTab === ComponentsTableEnum.ACTIVE
+                ? this.ownerActiveQuery.getAll()
+                : this.ownerInactiveQuery.getAll();
+
+        storeOwners.map((owner: OwnerResponse) => {
+            if (data.id === owner.id) {
+                data.selectedTab === ComponentsTableEnum.ACTIVE
+                    ? this.ownerActiveStore.update(owner.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }))
+                    : this.ownerInactiveStore.update(owner.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }));
+            }
+        });
     }
 }

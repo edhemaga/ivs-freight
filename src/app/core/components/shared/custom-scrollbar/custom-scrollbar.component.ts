@@ -34,6 +34,7 @@ export class CustomScrollbarComponent
     @Output() scrollEvent: EventEmitter<any> = new EventEmitter();
     @Input() scrollBarOptions: any;
     @Input() horizontalScrollHeight: number;
+    @Input() isOverflowUnset?: boolean = false;
 
     scrollTop: number = 5;
     showScrollbar: boolean = false;

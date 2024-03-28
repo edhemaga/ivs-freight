@@ -31,6 +31,7 @@ export enum ConstantStringTableComponentsEnum {
     DELETE_MULTIPLE = 'delete-multiple',
     RESET_PASSWORD = 'reset-password',
     RESEND_INVITATION = 'resend-invitation',
+    RESET = 'reset',
 
     // List or card
     LIST = 'List',
@@ -46,6 +47,7 @@ export enum ConstantStringTableComponentsEnum {
 
     TABLE = 'table-',
     CONFIGURATION = '-Configuration',
+    FASTEST = 'fastest',
 
     // Dropdowns
     SORT = 'sort',
@@ -225,6 +227,7 @@ export enum ConstantStringTableComponentsEnum {
 
     // Truck
     EDIT_TRUCK = 'edit-truck',
+    ADD_TRUCK = 'add-truck',
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
 
@@ -254,6 +257,7 @@ export enum ConstantStringTableComponentsEnum {
     EDIT_TRAILER = 'edit-trailer',
     TRAILER_TABLE_COUNT = 'trailerTableCount',
     TRAILER_TAB_VIEW = 'Trailer-table-view',
+    ADD_TRAILER = 'add-trailer',
 
     // Repair
     SHOP = 'Shop',
@@ -321,6 +325,7 @@ export enum ConstantStringTableComponentsEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    CONTACT = 'contact',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',
@@ -408,6 +413,12 @@ export enum ConstantStringTableComponentsEnum {
     AM_PM = 'am-pm',
     PRIMARY_PHONE = 'primary-phone',
     PRIMARY_EMAIL = 'primary-email',
+    PHONE = 'phone',
+    PHONE_2 = 'Phone',
+    TYPE_2 = 'Type',
+    TEXT_TYPE = 'textType',
+    SSN_2 = 'SSN',
+    SSN_EIN = 'ssnEin',
 
     // Links
     LOAD_DETAILS = '/list/load/',

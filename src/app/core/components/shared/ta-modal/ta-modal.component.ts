@@ -293,7 +293,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
-        console.log(action);
         switch (action) {
             case 'save': {
                 this.action.emit({ action: action, bool: false });

@@ -58,6 +58,21 @@
                     color: $bw5;
                 }
             }
+
+            .avatar-img {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                margin-right: 6px;
+                margin-left: -6px;
+            }
+
+            .avatar-div-img {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                margin-right: 6px;
+            }
         }
 
         .confirmation-svg {

@@ -23,6 +23,7 @@
             [options]="tableOptions"
             [selectedTab]="selectedTab"
             (bodyActions)="onTableBodyActions($event)"
+            (saveValueNote)="saveValueNote($event)"
             [tableData]="tableData"
         ></app-truckassist-table-body>
     </ng-container>
@@ -34,6 +35,7 @@
             [displayRowsFront]="sendDataToCardsFront"
             [displayRowsBack]="sendDataToCardsBack"
             [page]="page"
+            (saveValueNote)="saveValueNote($event)"
         >
         </app-owner-card>
     </ng-container>

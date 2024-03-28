@@ -1,4 +1,4 @@
-export enum ContractComponentEnum {
+export enum ConstantStringEnum {
     EDIT_CONTACT = 'edit-contact',
     DELETE_CONTACT = 'delete-contact',
     CONTACT_TABLE_VIEW = 'Contact-table-view',

@@ -9,6 +9,8 @@ export enum ConstantStringEnum {
     EDIT = 'edit',
     NEW = 'new',
 
+    SMALL = 'small',
+
     SHARED = 'shared',
     SHARED_LABEL_ID = 'sharedLabelId',
     CONTACT_PHONES = 'contactPhones',

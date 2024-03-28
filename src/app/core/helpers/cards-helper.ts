@@ -52,6 +52,15 @@ export class ValueByStringPath {
                     let key: string;
 
                     if (row.key) {
+                        if (row.title === ConstantStringTableComponentsEnum.PHONE_2) {
+                            row.key = ConstantStringTableComponentsEnum.PHONE;
+                        }
+                        if (row.title === ConstantStringTableComponentsEnum.TYPE_2) {
+                            row.key = ConstantStringTableComponentsEnum.TEXT_TYPE;
+                        }
+                        if (row.title === ConstantStringTableComponentsEnum.SSN_2) {
+                            row.key = ConstantStringTableComponentsEnum.SSN_EIN;
+                        }
                         key = this.getValueByStringPath(card, row.key);
                     }
 

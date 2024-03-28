@@ -24,6 +24,7 @@ export interface PayrollDriverCommissionResponse {
     period?: string;
     closedDate?: string | null;
     paidDate?: string | null;
+    daysUntilPayment?: number;
     status?: EnumValue;
     mileageAmount?: number;
     salaryAmount?: number;

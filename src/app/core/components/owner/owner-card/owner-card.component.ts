@@ -1,9 +1,11 @@
 import {
     Component,
+    EventEmitter,
     Input,
     OnChanges,
     OnDestroy,
     OnInit,
+    Output,
     SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -11,12 +13,23 @@ import { Subject, takeUntil } from 'rxjs';
 // models
 import { CardDetails } from '../../shared/model/card-table-data.model';
 import { CardRows, DataResult } from '../../shared/model/card-data.model';
+import { OwnerBodyResponse } from '../owner.modal';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+
+// enum
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
+// component
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-owner-card',
@@ -25,8 +38,14 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     providers: [ValueByStringPath],
 })
 export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
+
     // All data
-    @Input() viewData: CardDetails[];
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+        this.getTransformedCardsData();
+    }
 
     // Page
     @Input() selectedTab: string;
@@ -39,7 +58,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() cardTitleLink: string;
 
     public cardData: CardDetails;
-
+    public _viewData: CardDetails[];
     public isCardFlippedCheckInCards: number[] = [];
 
     private destroy$ = new Subject<void>();
@@ -51,7 +70,8 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath
+        private valueByStringPath: ValueByStringPath,
+        private modalService: ModalService
     ) {}
 
     ngOnInit() {
@@ -60,8 +80,8 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnChanges(cardChanges: SimpleChanges) {
         if (
-            cardChanges.displayRowsBack.currentValue ||
-            cardChanges.displayRowsFront.currentValue
+            cardChanges?.displayRowsBack?.currentValue ||
+            cardChanges?.displayRowsFront?.currentValue
         )
             this.getTransformedCardsData();
     }
@@ -72,19 +92,19 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
         this.titleArray = [];
 
         const cardTitles = this.valueByStringPath.renderCards(
-            this.viewData,
+            this._viewData,
             this.cardTitle,
             null
         );
 
         const frontOfCards = this.valueByStringPath.renderCards(
-            this.viewData,
+            this._viewData,
             null,
             this.displayRowsFront
         );
 
         const backOfCards = this.valueByStringPath.renderCards(
-            this.viewData,
+            this._viewData,
             null,
             this.displayRowsBack
         );
@@ -106,7 +126,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.valueByStringPath.onCheckboxSelect(
             index,
@@ -123,6 +143,77 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    public onCardActions(event: OwnerBodyResponse): void {
+        if (event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    type: event.data.isSelected
+                        ? ConstantStringTableComponentsEnum.DEACTIVATE
+                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    svg: true,
+                }
+            );
+        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+            this.modalService.openModal(
+                OwnerModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    type: ConstantStringTableComponentsEnum.EDIT,
+                    selectedTab: this.selectedTab,
+                }
+            );
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
+        ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: ConstantStringTableComponentsEnum.SMALL },
+                {
+                    ...event,
+                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    type: ConstantStringTableComponentsEnum.DELETE,
+                    svg: true,
+                }
+            );
+        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRUCK) {
+            this.modalService.setProjectionModal({
+                action: ConstantStringTableComponentsEnum.OPEN,
+                payload: {
+                    key: null,
+                    value: null,
+                },
+                component: TruckModalComponent,
+                size: ConstantStringTableComponentsEnum.SMALL,
+                closing: ConstantStringTableComponentsEnum.FASTEST,
+            });
+        } else if (
+            event.type === ConstantStringTableComponentsEnum.ADD_TRAILER
+        ) {
+            this.modalService.setProjectionModal({
+                action: ConstantStringTableComponentsEnum.OPEN,
+                payload: {
+                    key: null,
+                    value: null,
+                },
+                component: TrailerModalComponent,
+                size: ConstantStringTableComponentsEnum.SMALL,
+                closing: ConstantStringTableComponentsEnum.FASTEST,
+            });
+        }
+    }
+
+    public saveNoteValue(note: string, id: number): void {
+        this.saveValueNote.emit({
+            value: note,
+            id: id,
+        });
     }
 
     ngOnDestroy() {

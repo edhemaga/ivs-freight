@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -106,10 +106,7 @@
 
                                         <div
                                             class="bottom-item-body d-flex align-items-center"
-                                            [ngClass]="{
-                                                'line-height':
-                                                    row.title === 'Fleet'
-                                            }"
+                                            [ngStyle]="{ marginTop: row.title === 'Fleet' ? '3px' : 0 }"
                                         >
                                             <ng-container
                                                 *ngIf="row.title === 'Fleet'"
@@ -206,6 +203,7 @@
 
                         <app-table-card-dropdown-actions
                             [card]="card"
+                            (bodyActions)="onCardActions($event)"
                         ></app-table-card-dropdown-actions>
 
                         <!-- Note element -->
@@ -219,6 +217,8 @@
                                 [entityId]="card.id"
                                 [openedAll]="false"
                                 [parking]="false"
+                                [entityType]="'Owner'"
+                                (saveNoteValue)="saveNoteValue($event, card.id)"
                             >
                             </app-ta-note>
                         </div>

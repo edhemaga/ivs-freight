@@ -77,6 +77,8 @@ export class RepairCardComponent
     public cardsBack: DataResult[][][] = [];
     public titleArray: string[][] = [];
 
+    public itemsForRepair: string[] = [];
+
     constructor(
         private tableService: TruckassistTableService,
         private ngZone: NgZone,
@@ -100,9 +102,18 @@ export class RepairCardComponent
 
         if (
             cardChanges?.displayRowsBack?.currentValue ||
-            cardChanges?.displayRowsFront?.currentValue
-        )
+            cardChanges?.displayRowsFront?.currentValue ||
+            cardChanges?.viewData?.currentValue
+        ) {
             this.getTransformedCardsData();
+            this.objectsWithDropDown();
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.windowResizeUpdateDescriptionDropdown();
+
+        this.windownResizeUpdateCountNumberInCards();
     }
 
     public getTransformedCardsData(): void {
@@ -135,10 +146,15 @@ export class RepairCardComponent
         this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
-    ngAfterViewInit(): void {
-        this.windowResizeUpdateDescriptionDropdown();
+    public objectsWithDropDown(): void {
+        this.itemsForRepair = [];
 
-        this.windownResizeUpdateCountNumberInCards();
+        this.viewData.forEach((row) => {
+            this.itemsForRepair = [
+                ...this.itemsForRepair,
+                CardArrayHelper.objectsWithDropDown(row, 'items'),
+            ];
+        });
     }
 
     public flipAllCards(): void {
@@ -221,10 +237,6 @@ export class RepairCardComponent
 
             resizeObserver.observe(parentElement);
         }
-    }
-
-    public objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
-        return CardArrayHelper.objectsWithDropDown(obj, ObjKey);
     }
 
     // Finish repair

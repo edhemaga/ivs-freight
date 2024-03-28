@@ -9,6 +9,7 @@
         isEachEmailRowValid
     "
     [saveAndAddNew]="editData?.type !== 'edit'"
+    [disableDelete]="true"
     (action)="onModalAction($event)"
 >
     <form
@@ -29,6 +30,7 @@
                         isRequired: true,
                         minLength: 2,
                         maxLength: 32,
+                        textTransform: 'capitalize',
                         autoFocus: editData?.type !== 'edit'
                     }"
                 ></app-ta-input>
@@ -217,6 +219,7 @@
                             maxLength: 36,
                             type: 'text',
                             label: 'Department',
+                            isRequired: true,
                             isDropdown: true,
                             textTransform: 'capitalize',
                             multiselectDropdown: true,

@@ -3,7 +3,7 @@ import { RepairModalResponse } from './../../../../../../appcoretruckassist/mode
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable, Subject, of, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import {
     CreateResponse,
     RepairResponse,
@@ -13,6 +13,8 @@ import {
     ClusterResponse,
     RepairShopMinimalResponse,
     RepairShopNewListResponse,
+    RepairDriverResponse,
+    // RepairDriverResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
@@ -95,6 +97,18 @@ export class RepairTService implements OnDestroy {
                         },
                     });
             })
+        );
+    }
+
+    public getDriver(
+        truckId: number,
+        trailerId: number,
+        repairDate: string
+    ): Observable<RepairDriverResponse[]> {
+        return this.repairService.apiRepairDriversGet(
+            truckId,
+            trailerId,
+            repairDate
         );
     }
 
@@ -369,7 +383,7 @@ export class RepairTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<RepairShopNewListResponse> {
-        return of(null); /* this.shopServices.apiRepairshopListGet(
+        return this.shopServices.apiRepairshopListGet(
             active,
             pinned,
             companyOwned,
@@ -388,7 +402,7 @@ export class RepairTService implements OnDestroy {
             search,
             search1,
             search2
-        ); */
+        );
     }
 
     // Get Repair Minimal List

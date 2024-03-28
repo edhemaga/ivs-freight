@@ -1,4 +1,6 @@
 @import './ta-input.colors.scss';
+@import 'src/theme/variables.scss';
+
 //-------------------- Input Icon ---------------------
 .input-icon {
     position: absolute;
@@ -43,7 +45,7 @@
         border-radius: 3px;
         background: $default-placeholderIcon-pipe;
         position: absolute;
-        left: 24px;
+        left: 21px;
         top: 55%;
         transform: translateY(-50%);
     }
@@ -83,7 +85,7 @@
     &.valid-focus-out {
         svg {
             path {
-                fill: $valid-placeholderIcon;
+                fill: $ta-blue-13;
             }
         }
 

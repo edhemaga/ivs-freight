@@ -13,10 +13,7 @@ import { Router } from '@angular/router';
 // Components
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
-import {
-    Confirmation,
-    ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -208,7 +205,7 @@ export class CustomerTableComponent
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: Confirmation) => {
+            .subscribe((res) => {
                 if (res.type === ConstantStringTableComponentsEnum.INFO) {
                     if (
                         res.subType ===

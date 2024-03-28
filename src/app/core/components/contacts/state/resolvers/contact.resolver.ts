@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ContactTService } from '../contact.service';
-import { ContactState, ContactStore } from './contact.store';
+import { ContactTService } from '../services/contact.service';
+
+// store
+import { ContactState, ContactStore } from '../store/contact.store';
+
+// models
 import { ContactsTableData } from 'src/app/core/model/contact';
 
 @Injectable({
@@ -50,14 +56,17 @@ export class ContactResolver implements Resolve<ContactState> {
                         return { ...item, dropLabel: true };
                     });
 
-                    const contractTableData = contactPagination.pagination.data;
-                    contractTableData.map(
+                    const contactTableData =
+                        contactPagination.pagination.data.reverse();
+
+                    contactTableData.map(
                         (e: ContactsTableData) => (
                             (e.colorRes = colorRes),
                             (e.colorLabels = contactLabels)
                         )
                     );
-                    this.contactStore.set(contractTableData);
+
+                    this.contactStore.set(contactTableData);
                 }
             )
         );
