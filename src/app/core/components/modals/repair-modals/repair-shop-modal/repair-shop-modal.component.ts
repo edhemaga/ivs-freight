@@ -1,5 +1,6 @@
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 import {
+    ChangeDetectorRef,
     Component,
     Input,
     OnDestroy,
@@ -154,7 +155,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     // Contact Tab
     public isContactCardsScrolling: boolean = false;
-    public labelsDepartments: any[] = [];
     public selectedContractDepartmentFormArray: any[] = [];
     // Review
     public reviews: any[] = [];
@@ -172,6 +172,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public repairShopName: string = null;
 
+    public isOpenHoursHidden: boolean = true;
+
+    public isNewContactAdded: boolean = false;
+    public contactAddedCounter: number = 0;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -180,7 +185,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private reviewRatingService: ReviewsRatingService,
-        private taLikeDislikeService: TaLikeDislikeService
+        private taLikeDislikeService: TaLikeDislikeService,
+        private cdr: ChangeDetectorRef
     ) {}
 
     ngOnInit() {
@@ -284,9 +290,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return this.repairShopForm.get('openHours') as UntypedFormArray;
     }
 
-    public get contacts(): UntypedFormArray {
-        return this.repairShopForm.get('contacts') as UntypedFormArray;
-    }
+    // public get contacts(): UntypedFormArray {
+    //     return this.repairShopForm.get('contacts') as UntypedFormArray;
+    // }
 
     public trackOpenHours() {
         this.openHours.valueChanges
@@ -332,6 +338,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public active24Hours(event: any) {
+        this.isOpenHoursHidden = !event.check;
         this.repairShopForm.get('openAlways').patchValue(event.check);
         this.openHours.controls.forEach((item) => {
             if (item.get('isDay').value) {
@@ -380,66 +387,57 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .patchValue(JSON.stringify(this.services));
     }
 
-    public addContacts(event: { check: boolean; action: string }) {
-        const form = this.createContacts();
-
-        if (event.check) {
-            this.contacts.push(form);
-        }
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
+    public addContact(): void {
+        this.isNewContactAdded = true;
 
         setTimeout(() => {
-            this.trackContactEmail();
-        }, 50);
+            this.isNewContactAdded = false;
+        }, 400);
     }
 
-    public removeContacts(id: number) {
-        this.contacts.removeAt(id);
-        this.selectedContractDepartmentFormArray.splice(id, 1);
+    // public removeContacts(id: number) {
+    //     this.contacts.removeAt(id);
+    //     this.selectedContractDepartmentFormArray.splice(id, 1);
 
-        if (this.contacts.length === 0) {
-            this.repairShopForm.markAsUntouched();
-        }
-    }
+    //     if (this.contacts.length === 0) {
+    //         this.repairShopForm.markAsUntouched();
+    //     }
+    // }
 
-    public trackContactEmail() {
-        const helper = new Array(this.contacts.length).fill(false);
+    // public trackContactEmail() {
+    //     const helper = new Array(this.contacts.length).fill(false);
 
-        this.contacts.valueChanges
-            .pipe(debounceTime(300), takeUntil(this.destroy$))
-            .subscribe((items) => {
-                items.forEach((item, index) => {
-                    if (item.email && helper[index] === false) {
-                        helper[index] = true;
+    //     this.contacts.valueChanges
+    //         .pipe(debounceTime(300), takeUntil(this.destroy$))
+    //         .subscribe((items) => {
+    //             items.forEach((item, index) => {
+    //                 if (item.email && helper[index] === false) {
+    //                     helper[index] = true;
 
-                        this.inputService.changeValidators(
-                            this.contacts.at(index).get('phone'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
+    //                     this.inputService.changeValidators(
+    //                         this.contacts.at(index).get('phone'),
+    //                         false,
+    //                         [],
+    //                         false
+    //                     );
+    //                 }
 
-                    if (!item.email && helper[index] === true) {
-                        this.contacts.at(index).get('email').patchValue(null);
-                        this.inputService.changeValidators(
-                            this.contacts.at(index).get('phone'),
-                            true,
-                            [phoneFaxRegex]
-                        );
-                        helper[index] = false;
-                    }
-                });
-            });
-    }
+    //                 if (!item.email && helper[index] === true) {
+    //                     this.contacts.at(index).get('email').patchValue(null);
+    //                     this.inputService.changeValidators(
+    //                         this.contacts.at(index).get('phone'),
+    //                         true,
+    //                         [phoneFaxRegex]
+    //                     );
+    //                     helper[index] = false;
+    //                 }
+    //             });
+    //         });
+    // }
 
-    public onScrollingContacts(event: any) {
-        this.isContactCardsScrolling = event.target.scrollLeft > 1;
-    }
+    // public onScrollingContacts(event: any) {
+    //     this.isContactCardsScrolling = event.target.scrollLeft > 1;
+    // }
 
     public onHandleAddress(event: {
         address: AddressEntity;
@@ -591,7 +589,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private createForm() {
         this.repairShopForm = this.formBuilder.group({
             name: [null, [Validators.required, ...repairShopValidation]],
-            repairTypeService: [null, Validators.required],
             pinned: [null],
             phone: [null, [Validators.required, phoneFaxRegex]],
             phoneExt: [null, [...phoneExtension]],
@@ -607,9 +604,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             routing: [null, routingBankValidation],
             account: [null, accountBankValidation],
             note: [null],
-            contacts: this.formBuilder.array([]),
+            contacts: [null],
             files: [null],
             servicesHelper: [null],
+            shopServiceType: [null, Validators.required],
         });
 
         this.inputService.customInputValidator(
@@ -635,34 +633,50 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private createContacts(data?: {
-        id: number;
-        fullName: string;
-        departmentId: string;
-        phone: string;
-        phoneExt: string;
-        email: string;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            id: [data?.id ? data.id : null],
-            fullName: [
-                data?.fullName ? data.fullName : null,
-                Validators.required,
-            ],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            phoneExt: [
-                data?.phoneExt ? data.phoneExt : null,
-                [...phoneExtension],
-            ],
-            email: [data?.email ? data.email : null],
-        });
+    // private createContacts(data?: {
+    //     id: number;
+    //     fullName: string;
+    //     departmentId: string;
+    //     phone: string;
+    //     phoneExt: string;
+    //     email: string;
+    // }): UntypedFormGroup {
+    //     return this.formBuilder.group({
+    //         id: [data?.id ? data.id : null],
+    //         fullName: [
+    //             data?.fullName ? data.fullName : null,
+    //             Validators.required,
+    //         ],
+    //         departmentId: [
+    //             data?.departmentId ? data.departmentId : null,
+    //             [Validators.required, ...departmentValidation],
+    //         ],
+    //         phone: [
+    //             data?.phone ? data.phone : null,
+    //             [Validators.required, phoneFaxRegex],
+    //         ],
+    //         phoneExt: [
+    //             data?.phoneExt ? data.phoneExt : null,
+    //             [...phoneExtension],
+    //         ],
+    //         email: [data?.email ? data.email : null],
+    //     });
+    // }
+
+    public handleModalTableValueEmit(modalTableDataValue): void {
+        this.contactAddedCounter = modalTableDataValue.length;
+
+        this.repairShopForm.get('contacts').patchValue(modalTableDataValue);
+
+        this.cdr.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(validStatus: boolean): void {
+        if (validStatus) {
+            this.repairShopForm.setErrors({ invalid: false });
+        } else {
+            this.repairShopForm.setErrors({ invalid: true });
+        }
     }
 
     private onBankSelected(): void {
@@ -731,24 +745,24 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         .patchValue(JSON.stringify(this.services));
 
                     // Contacts
-                    if (res.contacts) {
-                        for (const contact of res.contacts) {
-                            this.contacts.push(
-                                this.createContacts({
-                                    id: contact.id,
-                                    fullName: contact.fullName,
-                                    departmentId: contact.department.name,
-                                    phone: contact.phone,
-                                    phoneExt: contact.phoneExt,
-                                    email: contact.email,
-                                })
-                            );
+                    // if (res.contacts) {
+                    //     for (const contact of res.contacts) {
+                    //         this.contacts.push(
+                    //             this.createContacts({
+                    //                 id: contact.id,
+                    //                 fullName: contact.fullName,
+                    //                 departmentId: contact.department.name,
+                    //                 phone: contact.phone,
+                    //                 phoneExt: contact.phoneExt,
+                    //                 email: contact.email,
+                    //             })
+                    //         );
 
-                            this.selectedContractDepartmentFormArray.push(
-                                contact.department
-                            );
-                        }
-                    }
+                    //         this.selectedContractDepartmentFormArray.push(
+                    //             contact.department
+                    //         );
+                    //     }
+                    // }
 
                     // Reviews
                     if (res.reviews?.length) {
@@ -958,101 +972,103 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             latitude: this.latitude,
         };
 
-        for (let index = 0; index < contacts.length; index++) {
-            contacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
-        }
+        // for (let index = 0; index < contacts.length; index++) {
+        //     contacts[index].departmentId =
+        //         this.selectedContractDepartmentFormArray[index].id;
+        // }
 
         newData = {
             ...newData,
             contacts: contacts,
         };
 
-        this.shopService
-            .addRepairShop(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    if (this.editData?.canOpenModal) {
-                        switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type,
-                                    closing: 'slowlest',
-                                });
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
+        if (newData.shopServiceType === 'Fixed & Mobile')
+            newData.shopServiceType = 'Combined';
+        // this.shopService
+        //     .addRepairShop(newData)
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe({
+        //         next: () => {
+        //             if (this.editData?.canOpenModal) {
+        //                 switch (this.editData?.key) {
+        //                     case 'repair-modal': {
+        //                         this.modalService.setProjectionModal({
+        //                             action: 'close',
+        //                             payload: {
+        //                                 key: this.editData?.key,
+        //                                 value: null,
+        //                             },
+        //                             component: RepairOrderModalComponent,
+        //                             size: 'large',
+        //                             type: this.editData?.type,
+        //                             closing: 'slowlest',
+        //                         });
+        //                         break;
+        //                     }
+        //                     default: {
+        //                         break;
+        //                     }
+        //                 }
+        //             }
 
-                    if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.repairShopForm);
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
+        //             if (this.addNewAfterSave) {
+        //                 this.formService.resetForm(this.repairShopForm);
+        //                 this.modalService.setModalSpinner({
+        //                     action: 'save and add new',
+        //                     status: false,
+        //                     close: false,
+        //                 });
 
-                        this.services = this.services.map((item) => {
-                            return {
-                                ...item,
-                                active: false,
-                            };
-                        });
-                        if (!this.editData || this.editData?.canOpenModal) {
-                            for (
-                                let i = 0;
-                                i < this.openHoursDays.length;
-                                i++
-                            ) {
-                                this.addOpenHours(
-                                    this.openHoursDays[i],
-                                    i !== this.openHoursDays.length - 1 &&
-                                        i !== this.openHoursDays.length - 2,
-                                    i - 1,
-                                    i !== this.openHoursDays.length - 1 ||
-                                        i !== this.openHoursDays.length - 2
-                                        ? convertTimeFromBackend('8:00:00 AM')
-                                        : null,
-                                    i !== this.openHoursDays.length - 1 ||
-                                        i !== this.openHoursDays.length - 2
-                                        ? convertTimeFromBackend('5:00:00 PM')
-                                        : null
-                                );
-                            }
-                        }
-                        this.isRepairShopFavourite = false;
-                        this.favouriteRepairShop = null;
-                        this.isPhoneExtExist = false;
-                        this.documents = [];
+        //                 this.services = this.services.map((item) => {
+        //                     return {
+        //                         ...item,
+        //                         active: false,
+        //                     };
+        //                 });
+        //                 if (!this.editData || this.editData?.canOpenModal) {
+        //                     for (
+        //                         let i = 0;
+        //                         i < this.openHoursDays.length;
+        //                         i++
+        //                     ) {
+        //                         this.addOpenHours(
+        //                             this.openHoursDays[i],
+        //                             i !== this.openHoursDays.length - 1 &&
+        //                                 i !== this.openHoursDays.length - 2,
+        //                             i - 1,
+        //                             i !== this.openHoursDays.length - 1 ||
+        //                                 i !== this.openHoursDays.length - 2
+        //                                 ? convertTimeFromBackend('8:00:00 AM')
+        //                                 : null,
+        //                             i !== this.openHoursDays.length - 1 ||
+        //                                 i !== this.openHoursDays.length - 2
+        //                                 ? convertTimeFromBackend('5:00:00 PM')
+        //                                 : null
+        //                         );
+        //                     }
+        //                 }
+        //                 this.isRepairShopFavourite = false;
+        //                 this.favouriteRepairShop = null;
+        //                 this.isPhoneExtExist = false;
+        //                 this.documents = [];
 
-                        this.addNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
+        //                 this.addNewAfterSave = false;
+        //             } else {
+        //                 this.modalService.setModalSpinner({
+        //                     action: null,
+        //                     status: true,
+        //                     close: true,
+        //                 });
+        //             }
+        //         },
+        //         error: () => {
+        //             this.modalService.setModalSpinner({
+        //                 action: null,
+        //                 status: false,
+        //                 close: false,
+        //             });
+        //         },
+        //     });
     }
 
     private updateRepairShop(id: number) {
@@ -1127,15 +1143,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             latitude: this.latitude,
         };
 
-        for (let index = 0; index < contacts.length; index++) {
-            contacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
-        }
+        // for (let index = 0; index < contacts.length; index++) {
+        //     contacts[index].departmentId =
+        //         this.selectedContractDepartmentFormArray[index].id;
+        // }
 
-        newData = {
-            ...newData,
-            contacts: contacts,
-        };
+        // newData = {
+        //     ...newData,
+        //     contacts: contacts,
+        // };
 
         this.shopService
             .updateRepairShop(newData)
@@ -1209,7 +1225,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RepairShopModalResponse) => {
                     this.labelsBank = res.banks;
-                    this.labelsDepartments = res.departments;
+
                     this.services = res.serviceTypes.map((item) => {
                         return {
                             id: item.serviceType.id,

@@ -84,3 +84,26 @@
         user-select: none;
     }
 }
+
+.common-open-hours-table-modal {
+    overflow-x: scroll;
+    scrollbar-width: none !important;
+    margin-bottom: 0px;
+
+    .common-table-body {
+        .common-table-card {
+            grid-template-columns: 1fr repeat(2, 140px);
+            padding: 0 10px;
+            border-radius: 2px;
+            display: grid;
+            grid-template-rows: 34px;
+            align-items: center;
+            -moz-column-gap: 12px;
+            column-gap: 12px;
+            row-gap: 2px;
+            margin-bottom: 2px;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+    }
+}

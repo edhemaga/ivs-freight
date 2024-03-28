@@ -54,7 +54,7 @@
 
 .not-exist-in-shop {
     background: $ta-light-grey-5;
-    color: $ta-light-grey-6;
+    color: $ta-light-grey-6 !important;
     pointer-events: none;
 
     svg {

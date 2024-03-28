@@ -35,6 +35,7 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
 // services
 import { ContactTService } from '../../contacts/state/services/contact.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { RepairTService } from '../../repair/state/repair.service';
 
 // constants
 import { ModalTableConstants } from 'src/app/core/utils/constants/ta-modal-table.constants';
@@ -53,6 +54,7 @@ import {
     ContactEmailResponse,
     ContactPhoneResponse,
     CreateContactPhoneCommand,
+    DepartmentResponse,
     EnumValue,
 } from 'appcoretruckassist';
 import {
@@ -80,7 +82,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isPhoneTable: boolean = false;
     @Input() isEmailTable: boolean = false;
     @Input() isDescriptionTable: boolean = false;
-    @Input() isWorkHoursTable: boolean = false;
+    @Input() isContactTable: boolean = false;
 
     @Input() isNewRowCreated: boolean = false;
 
@@ -113,12 +115,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedContactEmailType: EnumValue[] = [];
     public contactEmailTypeOptions: EnumValue[] = [];
 
+    //  description table
     public subtotals: Subtotal[] = [];
+
+    // repair table
+    public repairDepartmentOptions: DepartmentResponse[];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private contactService: ContactTService,
-        private inputService: TaInputService
+        private inputService: TaInputService,
+        private shopService: RepairTService
     ) {}
 
     ngOnInit(): void {
@@ -154,7 +161,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             phoneTableItems: this.formBuilder.array([]),
             emailTableItems: this.formBuilder.array([]),
             descriptionTableItems: this.formBuilder.array([]),
-            openHours: this.formBuilder.array([]),
+            contactTableItems: this.formBuilder.array([]),
         });
     }
 
@@ -178,7 +185,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getDropdownLists(): void {
-        if (this.isPhoneTable || this.isEmailTable)
+        if (this.isPhoneTable || this.isEmailTable) {
             this.contactService
                 .getCompanyContactModal()
                 .pipe(takeUntil(this.destroy$))
@@ -186,6 +193,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.contactPhoneTypeOptions = res.contactPhoneType;
                     this.contactEmailTypeOptions = res.contactEmailType;
                 });
+        } else if (this.isContactTable) {
+            this.shopService
+                .getRepairShopModalDropdowns()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    this.repairDepartmentOptions = res.departments;
+                });
+        }
     }
 
     private getConstantData(): void {
@@ -201,9 +216,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.modalTableHeaders =
                 ModalTableConstants.DESCRIPTION_TABLE_HEADER_ITEMS;
 
-        if (this.isWorkHoursTable)
+        if (this.isContactTable)
             this.modalTableHeaders =
-                ModalTableConstants.WORK_HOURS_TABLE_HEADER_ITEMS;
+                ModalTableConstants.CONTACT_TABLE_HEADER_ITEMS;
     }
 
     private getModalTableDataValue(): void {
@@ -230,16 +245,15 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             ) as UntypedFormArray;
         }
 
-        if (this.isWorkHoursTable) {
+        if (this.isContactTable) {
             return this.modalTableForm.get(
-                ConstantStringEnum.OPEN_HOURS
+                ConstantStringEnum.CONTACT_TABLE_ITEMS
             ) as UntypedFormArray;
         }
     }
 
     private createFormArrayRow(): void {
         const newIsInputHoverRow = this.createIsHoverRow();
-
         let newFormArrayRow: UntypedFormGroup;
 
         if (this.isPhoneTable) {
@@ -277,9 +291,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             });
         }
 
-        if (this.isWorkHoursTable) {
+        if (this.isContactTable) {
             newFormArrayRow = this.formBuilder.group({
-                ind: [null],
+                fullName: [null, [Validators.required]],
+                departmant: [null, [Validators.required]],
+                phone: [null, [Validators.required, phoneFaxRegex]],
+                ext: [null, phoneExtension],
+                email: [null, [Validators.required]],
             });
         }
 
