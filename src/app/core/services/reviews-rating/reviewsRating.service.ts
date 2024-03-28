@@ -10,13 +10,17 @@ import {
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
-import { BrokerStore } from '../../components/customer/state/broker-state/broker.store';
-import { ShipperStore } from '../../components/customer/state/shipper-state/shipper.store';
-import { ShopStore } from '../../components/repair/state/shop-state/shop.store';
 import { Router } from '@angular/router';
-import { BrokerTService } from '../../components/customer/state/broker-state/broker.service';
-import { ShipperTService } from '../../components/customer/state/shipper-state/shipper.service';
-import { RepairTService } from '../../components/repair/state/repair.service';
+
+// store
+import { BrokerStore } from 'src/app/pages/customer/state/broker-state/broker.store';
+import { ShipperStore } from 'src/app/pages/customer/state/shipper-state/shipper.store';
+import { ShopStore } from 'src/app/pages/repair/state/shop-state/shop.store';
+
+// services
+import { BrokerTService } from 'src/app/pages/customer/state/broker-state/broker.service';
+import { ShipperTService } from 'src/app/pages/customer/state/shipper-state/shipper.service';
+import { RepairTService } from 'src/app/pages/repair/state/repair.service';
 
 @Injectable({
     providedIn: 'root',

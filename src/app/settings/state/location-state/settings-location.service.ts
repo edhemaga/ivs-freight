@@ -1,5 +1,7 @@
-import { ParkingListResponse } from './../../../../../../../appcoretruckassist/model/parkingListResponse';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
+
+// model
 import {
     CompanyOfficeModalResponse,
     CompanyOfficeResponse,
@@ -8,28 +10,34 @@ import {
     CreateParkingCommand,
     CreateResponse,
     CreateTerminalCommand,
+    ParkingListResponse,
     ParkingResponse,
     ParkingService,
+    TerminalListResponse,
     TerminalResponse,
     TerminalService,
     UpdateCompanyOfficeCommand,
     UpdateParkingCommand,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { SettingsOfficeModalComponent } from '../../../modals/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../../modals/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../../modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../../modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { CompanyParkingService } from '../../settings-location/settings-parking/parking-state/company-parking.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { CompanyTOfficeService } from '../../settings-location/settings-office/state/company-office.service';
+import { CompanyTerminalService } from '../../settings-location/settings-terminal/state/company-terminal.service';
+
+// store
 import { ParkingStore } from '../../settings-location/settings-parking/parking-state/company-parking.store';
 import { OfficeStore } from '../../settings-location/settings-office/state/company-office.store';
-import { CompanyTOfficeService } from '../../settings-location/settings-office/state/company-office.service';
 import { TerminalStore } from '../../settings-location/settings-terminal/state/company-terminal.store';
-import { CompanyTerminalService } from '../../settings-location/settings-terminal/state/company-terminal.service';
-import { TerminalListResponse } from '../../../../../../../appcoretruckassist/model/terminalListResponse';
+
+// component
+import { SettingsOfficeModalComponent } from 'src/app/core/components/modals/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from 'src/app/core/components/modals/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from 'src/app/core/components/modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from 'src/app/core/components/modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @Injectable({
     providedIn: 'root',

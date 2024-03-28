@@ -1,4 +1,10 @@
 import { Injectable } from '@angular/core';
+
+// services
+import { SettingsLocationService } from 'src/app/settings/state/location-state/settings-location.service';
+import { ModalService } from '../../components/shared/ta-modal/modal.service';
+
+// components
 import { DriverCdlModalComponent } from '../../components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
@@ -18,8 +24,6 @@ import { SettingsOfficeModalComponent } from '../../components/modals/location-m
 import { SettingsParkingModalComponent } from '../../components/modals/location-modals/settings-parking-modal/settings-parking-modal.component';
 import { SettingsRepairshopModalComponent } from '../../components/modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '../../components/modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
-import { SettingsLocationService } from '../../components/settings/state/location-state/settings-location.service';
-import { ModalService } from '../../components/shared/ta-modal/modal.service';
 
 @Injectable({
     providedIn: 'root',
@@ -425,7 +429,7 @@ export class DropDownService {
                 name: dataObject?.businessName,
             },
         };
-        
+
         if (event.type === 'edit' && name === 'shipper') {
             this.modalService.openModal(
                 ShipperModalComponent,
@@ -510,29 +514,41 @@ export class DropDownService {
                     image: false,
                 }
             );
-        } else if ( ( event.type == 'close-business' || event.type == 'open-business' ) && name == 'shipper') {
+        } else if (
+            (event.type == 'close-business' || event.type == 'open-business') &&
+            name == 'shipper'
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: 'small' },
                 {
                     ...mappedEvent,
                     template: 'Shipper',
-                    type: event.type == 'open-business' ? 'activate' : 'deactivate',
+                    type:
+                        event.type == 'open-business'
+                            ? 'activate'
+                            : 'deactivate',
                     image: false,
                 }
             );
-        } else if ( ( event.type == 'close-business' || event.type == 'open-business' ) && name == 'broker') {
+        } else if (
+            (event.type == 'close-business' || event.type == 'open-business') &&
+            name == 'broker'
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: 'small' },
                 {
                     ...mappedEvent,
                     template: 'Broker',
-                    type: event.type == 'open-business' ? 'activate' : 'deactivate',
+                    type:
+                        event.type == 'open-business'
+                            ? 'activate'
+                            : 'deactivate',
                     image: false,
                 }
             );
-        } 
+        }
     }
     public dropActionHeaderTruck(
         event: any,

@@ -1,7 +1,6 @@
 import { ServerResponse, ServerResponseList } from './shared/response';
 import { Enums } from './shared/enums';
 import { RepairShop } from './shared/repairShop';
-import { HistoryData } from '../history-data/history-data.component';
 
 export interface TruckColumn {
     name: string;
@@ -156,7 +155,7 @@ export interface TruckDoc {
     inspectionData?: TruckInspection[];
     titleData?: TruckTitle[];
     truckLeaseData?: TruckLease[];
-    activityHistory?: HistoryData[];
+    activityHistory?: any[];
 }
 
 export interface TruckAdditional {
