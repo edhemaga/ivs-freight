@@ -155,7 +155,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     // Contact Tab
     public isContactCardsScrolling: boolean = false;
-    public labelsDepartments: any[] = [];
     public selectedContractDepartmentFormArray: any[] = [];
     // Review
     public reviews: any[] = [];
@@ -173,7 +172,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public repairShopName: string = null;
 
-    public hideOpenHours: boolean = true;
+    public isOpenHoursHidden: boolean = true;
 
     public isNewContactAdded: boolean = false;
     public contactAddedCounter: number = 0;
@@ -339,7 +338,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public active24Hours(event: any) {
-        this.hideOpenHours = !event.check;
+        this.isOpenHoursHidden = !event.check;
         this.repairShopForm.get('openAlways').patchValue(event.check);
         this.openHours.controls.forEach((item) => {
             if (item.get('isDay').value) {
@@ -388,7 +387,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .patchValue(JSON.stringify(this.services));
     }
 
-    public addContacts() {
+    public addContact(): void {
         this.isNewContactAdded = true;
 
         setTimeout(() => {
@@ -1226,7 +1225,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RepairShopModalResponse) => {
                     this.labelsBank = res.banks;
-                    this.labelsDepartments = res.departments;
+
                     this.services = res.serviceTypes.map((item) => {
                         return {
                             id: item.serviceType.id,

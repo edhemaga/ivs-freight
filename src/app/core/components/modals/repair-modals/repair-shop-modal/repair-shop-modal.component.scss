@@ -90,21 +90,6 @@
     scrollbar-width: none !important;
     margin-bottom: 0px;
 
-    .common-fake-table-label {
-        p {
-            &:nth-child(1) {
-                margin-left: 23px;
-            }
-
-            &:nth-child(2) {
-                margin-left: 105px;
-            }
-
-            &:nth-child(3) {
-                margin-left: 118px;
-            }
-        }
-    }
     .common-table-body {
         .common-table-card {
             grid-template-columns: 1fr repeat(2, 140px);

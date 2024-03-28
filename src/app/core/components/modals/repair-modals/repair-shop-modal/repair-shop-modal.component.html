@@ -245,7 +245,7 @@
                             [is24Hours]="
                                 !!repairShopForm.get('openAlways').value
                             "
-                            [isCardOpen]="hideOpenHours"
+                            [isCardOpen]="isOpenHoursHidden"
                             [disabledCard]="true"
                         >
                             <div
@@ -451,7 +451,7 @@
                 <!-- Contact Tab -->
                 <div *ngIf="selectedTab === 2" class="m-tab">
                     <app-ta-custom-card
-                        (onActionEvent)="addContacts()"
+                        (onActionEvent)="addContact()"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
@@ -463,7 +463,7 @@
                         [hasArrow]="false"
                         [hasCounter]="contactAddedCounter"
                         [hasScrollBody]="contactAddedCounter > 10"
-                        [isCardOpen]="contactAddedCounter > 0"
+                        [isCardOpen]="contactAddedCounter"
                         [isCommentData]="true"
                     >
                         <div
@@ -473,7 +473,6 @@
                             <app-ta-modal-table
                                 [isContactTable]="true"
                                 [isNewRowCreated]="isNewContactAdded"
-                                [departmants]="labelsDepartments"
                                 (modalTableValueEmitter)="
                                     handleModalTableValueEmit($event)
                                 "
@@ -594,7 +593,7 @@
                         </div>
                     </app-ta-custom-card>
 
-                    <ng-container *ngIf="contactAddedCounter === 0">
+                    <ng-container *ngIf="!contactAddedCounter">
                         <svg-icon
                             class="d-flex"
                             [src]="'assets/svg/no-results.svg'"

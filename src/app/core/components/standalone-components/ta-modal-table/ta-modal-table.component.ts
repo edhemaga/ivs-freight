@@ -35,6 +35,7 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
 // services
 import { ContactTService } from '../../contacts/state/services/contact.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { RepairTService } from '../../repair/state/repair.service';
 
 // constants
 import { ModalTableConstants } from 'src/app/core/utils/constants/ta-modal-table.constants';
@@ -90,8 +91,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | RepairDescriptionResponse[]
         | ContactEmailResponse[] = [];
 
-    @Input() departmants: DepartmentResponse;
-
     @Output() modalTableValueEmitter = new EventEmitter<
         CreateContactPhoneCommand[]
     >();
@@ -116,12 +115,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedContactEmailType: EnumValue[] = [];
     public contactEmailTypeOptions: EnumValue[] = [];
 
+    //  description table
     public subtotals: Subtotal[] = [];
+
+    // repair table
+    public repairDepartmentOptions: DepartmentResponse[];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private contactService: ContactTService,
-        private inputService: TaInputService
+        private inputService: TaInputService,
+        private shopService: RepairTService
     ) {}
 
     ngOnInit(): void {
@@ -181,7 +185,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getDropdownLists(): void {
-        if (this.isPhoneTable || this.isEmailTable)
+        if (this.isPhoneTable || this.isEmailTable) {
             this.contactService
                 .getCompanyContactModal()
                 .pipe(takeUntil(this.destroy$))
@@ -189,6 +193,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.contactPhoneTypeOptions = res.contactPhoneType;
                     this.contactEmailTypeOptions = res.contactEmailType;
                 });
+        } else if (this.isContactTable) {
+            this.shopService
+                .getRepairShopModalDropdowns()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    this.repairDepartmentOptions = res.departments;
+                });
+        }
     }
 
     private getConstantData(): void {
