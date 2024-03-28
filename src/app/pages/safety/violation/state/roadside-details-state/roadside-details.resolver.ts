@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { RoadsideService } from '../roadside.service';
 import { RoadItemState, RoadItemStore } from './roadside-details.store';
-import { RoadsideInspectionResponse } from '../../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
 import { RoadsideDetailsListStore } from './roadside-details-list-state/roadside-details-list.store';
 import { RoadsideDetailsListQuery } from './roadside-details-list-state/roadside-details-list.query';
 

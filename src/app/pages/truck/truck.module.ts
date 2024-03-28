@@ -9,17 +9,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TruckTableComponent } from './truck-table/truck-table.component';
 import { TruckCardComponent } from './truck-card/truck-card.component';
 
-import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-
-import { TableCardDropdownActionsComponent } from '../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
-import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
-import { ProgresBarComponent } from '../standalone-components/progres-bar/progres-bar.component';
-import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
+import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { ProgresBarComponent } from 'src/app/core/components/standalone-components/progres-bar/progres-bar.component';
 
 //pipes
-import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
+
 @NgModule({
     declarations: [TruckTableComponent, TruckCardComponent],
     imports: [

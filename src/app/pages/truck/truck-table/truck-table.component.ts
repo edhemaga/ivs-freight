@@ -3,17 +3,18 @@ import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // Components
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
+import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // Services
-import { ModalService } from '../../shared/ta-modal/modal.service';
+
 import { TruckTService } from '../state/truck.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Queries
 import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
@@ -22,33 +23,29 @@ import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive
 // Stores
 import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from '../../../utils/methods.globals';
 
 // Modals
 import { TruckListResponse } from 'appcoretruckassist';
-import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
+import {
+    CardRows,
+    TableOptionsInterface,
+} from 'src/app/core/components/shared/model/card-data.model';
+import {
+    DataForCardsAndTables,
+    TableColumnConfig,
+} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 import { BodyResponseTruck, FilterOptions } from '../truck.modal';
 import {
     DropdownItem,
     ToolbarActions,
-} from '../../shared/model/card-table-data.model';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from '../../shared/model/table-components/all-tables.modal';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from '../../shared/model/card-data.model';
+} from 'src/app/core/components/shared/model/card-table-data.model';
 import { DisplayTruckConfiguration } from '../truck-card-data';
 
 // Pipes
 import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
@@ -57,6 +54,15 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
+
+//Utils
+import {
+    closeAnimationAction,
+    tableSearch,
+} from 'src/app/core/utils/methods.globals';
+import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
+
+//Helpers
 import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
 
 @Component({

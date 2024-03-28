@@ -1,4 +1,3 @@
-import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { Observable, of, Subject, tap, takeUntil, switchMap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import {
@@ -9,6 +8,8 @@ import {
     RegistrationService,
     TitleService,
     InspectionService,
+    TruckMinimalListResponse,
+    TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
 import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
 import { TruckActiveStore } from './truck-active-state/truck-active.store';
@@ -19,9 +20,8 @@ import { TrucksMinimalListStore } from './truck-details-minima-list-state/truck-
 import { TruckItemStore } from './truck-details-state/truck.details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
-import { FormDataService } from '../../../services/formData/form-data.service';
-import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
 import { Router } from '@angular/router';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
     public truckId: number;

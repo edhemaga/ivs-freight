@@ -4,8 +4,8 @@ import {
     ViolationService,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
-import { RoadsideInspectionResponse } from '../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
-import { FormDataService } from '../../../../services/formData/form-data.service';
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',

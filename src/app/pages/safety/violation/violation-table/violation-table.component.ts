@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { ViolationModalComponent } from '../../../modals/violation-modal/violation-modal.component';
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ViolationModalComponent } from 'src/app/core/components/modals/violation-modal/violation-modal.component';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RoadsideInactiveState } from '../state/roadside-state/roadside-inactive/roadside-inactive.store';
 import { RoadsideActiveState } from '../state/roadside-state/roadside-active/roadside-active.store';
@@ -265,10 +265,10 @@ export class ViolationTableComponent
         const tableView = JSON.parse(
             localStorage.getItem(`Roadside Inspection-table-view`)
         );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -424,7 +424,7 @@ export class ViolationTableComponent
             this.setViolationData(event.tabData);
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
-            
+
             this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
