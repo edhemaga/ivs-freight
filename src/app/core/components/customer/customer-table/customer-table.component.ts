@@ -70,7 +70,7 @@ import {
 } from '../../shared/model/table-components/all-tables.modal';
 
 // Services
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Globals

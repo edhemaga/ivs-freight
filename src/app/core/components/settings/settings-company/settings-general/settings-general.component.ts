@@ -17,7 +17,7 @@ import { UntypedFormControl } from '@angular/forms';
 // services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 // pipes

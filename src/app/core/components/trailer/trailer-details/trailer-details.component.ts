@@ -13,7 +13,7 @@ import { TrailerTService } from '../state/trailer.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 // store

@@ -6,7 +6,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyTOfficeService } from './state/company-office.service';
 @Component({

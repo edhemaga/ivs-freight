@@ -17,7 +17,7 @@ import { ProfileImagesComponent } from '../../shared/profile-images/profile-imag
 
 // services
 import { ImageBase64Service } from '../../../utils/base64.image';
-import { ConfirmationService } from './confirmation.service';
+import { ConfirmationService } from './state/state/services/confirmation.service';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';

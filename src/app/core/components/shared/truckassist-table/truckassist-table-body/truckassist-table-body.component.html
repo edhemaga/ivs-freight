@@ -2441,6 +2441,27 @@
                                         </div>
                                     </div>
 
+                                    <!-- FLEET COLUMN -->
+
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'fleet'"
+                                    >
+                                        <div
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                [data]="row"
+                                                [type]="'owner'"
+                                            ></app-ta-input-dropdown-table>
+                                        </div>
+                                    </ng-container>
+
                                     <!-- TEXT COLOR COLUMN -->
                                     <div
                                         class="td-content"
@@ -4331,25 +4352,6 @@
                                         >
                                         </app-ta-note>
                                     </div>
-
-                                    <ng-container
-                                        *ngIf="column.ngTemplate === 'fleet'"
-                                    >
-                                        <div
-                                            class="td-content set-center"
-                                            [ngStyle]="{
-                                                width: column.width + 'px',
-                                                'min-width.px': column?.minWidth
-                                                    ? column.minWidth
-                                                    : 'unset'
-                                            }"
-                                        >
-                                            <app-ta-input-dropdown-table
-                                                [data]="row"
-                                                [type]="'owner'"
-                                            ></app-ta-input-dropdown-table>
-                                        </div>
-                                    </ng-container>
 
                                     <!-- ACTIONS COLUMN -->
                                     <div

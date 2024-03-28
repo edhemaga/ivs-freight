@@ -26,7 +26,7 @@ import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 //Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';

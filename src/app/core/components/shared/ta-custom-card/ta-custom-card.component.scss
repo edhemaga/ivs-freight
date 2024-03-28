@@ -218,10 +218,10 @@
 
             // 24/7 status
             ._24-7-status {
-                width: 57px;
-                height: 22px;
+                width: 49px;
+                height: 26px;
                 border-radius: 2px;
-                background-color: #aaaaaa;
+                background-color: $bw2;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -231,10 +231,10 @@
                 p {
                     margin: 0;
                     padding: 0;
-                    color: #ffffff;
-                    font-size: 11px;
+                    color: $bw6-2;
+                    font-size: 14px;
                     font-weight: 700;
-                    line-height: 14px;
+                    line-height: 18px;
                     -webkit-user-select: none;
                     -moz-user-select: none;
                     -ms-user-select: none;
@@ -242,14 +242,24 @@
                 }
 
                 &:hover {
-                    background-color: #919191;
+                    background: $ta-black;
+                    transition: background 0.3s ease-in-out;
+
+                    p {
+                        transition: color 0.3s ease-in-out;
+                        color: $white;
+                    }
                 }
 
                 &.active {
-                    background-color: #3074d3;
+                    background-color: $ta-blue-13;
+
+                    p {
+                        color: $white;
+                    }
 
                     &:hover {
-                        background-color: #536bc2;
+                        background-color: $ta-blue-15;
                     }
                 }
             }
@@ -391,6 +401,7 @@
         }
 
         &.disabled {
+            cursor: default;
             .header-arrow {
                 display: none !important;
             }

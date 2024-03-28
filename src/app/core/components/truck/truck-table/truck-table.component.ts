@@ -12,7 +12,7 @@ import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/
 // Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from '../state/truck.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 // Queries

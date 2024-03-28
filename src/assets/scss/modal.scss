@@ -111,7 +111,7 @@ ngb-modal-window[aria-hidden='true'] {
                     font-size: 18px;
                     font-weight: 800;
                     color: #424242;
-                    line-height: 22px;
+                    line-height: 16px;
                     padding-top: 1px;
                     position: relative;
                     left: 2px;
@@ -635,13 +635,17 @@ ngb-modal-window[aria-hidden='true'] {
                 }
 
                 .modal-gray-btn {
-                    background-color: $bw5;
-                    color: #ffffff;
+                    background: $bw6-2;
+                    color: $white;
+
+                    &:hover {
+                        background: $ta-black;
+                    }
                 }
 
                 .modal-red-btn {
                     background-color: $ta-red-11;
-                    color: #ffffff;
+                    color: $white;
                 }
 
                 .modal-convert-to-template-btn {

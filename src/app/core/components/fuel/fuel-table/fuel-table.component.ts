@@ -17,7 +17,7 @@ import { ConfirmationModalComponent } from '../../modals/confirmation-modal/conf
 //Services
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 
 //Utils
 import {

@@ -9,15 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollStatus } from './payrollStatus';
+import { EnumValue } from './enumValue';
 
 
 export interface PayrollDriverMileageListResponse { 
     id?: number;
-    name?: string | null;
+    driverName?: string | null;
+    driverAvatar?: string | null;
     payroll?: string | null;
     period?: string;
-    status?: PayrollStatus;
+    status?: EnumValue;
+    daysUntilPayment?: number;
     emptyRate?: number | null;
     loadedRate?: number | null;
     perStopRate?: number | null;

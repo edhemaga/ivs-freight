@@ -15,7 +15,5 @@ export interface ApiFuelFuelstopPostRequest {
     Id?: number;
     Favourite?: boolean;
     Note?: string;
-    Files?: Array<Blob>;
-    FilesForDeleteIds?: Array<number>;
 }
 

@@ -19,10 +19,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateLoadTemplateCommand } from '../model/createLoadTemplateCommand';
-// @ts-ignore
-import { CreateResponse } from '../model/createResponse';
-// @ts-ignore
 import { CreateTagCommand } from '../model/createTagCommand';
 // @ts-ignore
 import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
@@ -40,6 +36,8 @@ import { LoadBillingAdditionalCommand } from '../model/loadBillingAdditionalComm
 import { LoadListResponse } from '../model/loadListResponse';
 // @ts-ignore
 import { LoadMinimalListResponse } from '../model/loadMinimalListResponse';
+// @ts-ignore
+import { LoadMobileListResponse } from '../model/loadMobileListResponse';
 // @ts-ignore
 import { LoadModalResponse } from '../model/loadModalResponse';
 // @ts-ignore
@@ -62,8 +60,6 @@ import { LoadType } from '../model/loadType';
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { UpdateLoadStatusCommand } from '../model/updateLoadStatusCommand';
-// @ts-ignore
-import { UpdateLoadTemplateCommand } from '../model/updateLoadTemplateCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -742,6 +738,68 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiLoadMobileListGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadMobileListResponse>;
+    public apiLoadMobileListGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadMobileListResponse>>;
+    public apiLoadMobileListGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadMobileListResponse>>;
+    public apiLoadMobileListGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/load/mobile/list`;
+        return this.httpClient.request<LoadMobileListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1758,14 +1816,45 @@ export class LoadService {
     }
 
     /**
-     * @param createLoadTemplateCommand 
+     * @param name 
+     * @param type 
+     * @param dispatcherId 
+     * @param companyId 
+     * @param dateCreated 
+     * @param dispatchId 
+     * @param brokerId 
+     * @param brokerContactId 
+     * @param referenceNumber 
+     * @param generalCommodity 
+     * @param weight 
+     * @param loadRequirementsId 
+     * @param loadRequirementsTruckTypeId 
+     * @param loadRequirementsTrailerTypeId 
+     * @param loadRequirementsDoorType 
+     * @param loadRequirementsSuspension 
+     * @param loadRequirementsTrailerLengthId 
+     * @param loadRequirementsYear 
+     * @param loadRequirementsLiftgate 
+     * @param loadRequirementsDriverMessage 
+     * @param note 
+     * @param baseRate 
+     * @param adjustedRate 
+     * @param driverRate 
+     * @param advancePay 
+     * @param totalMiles 
+     * @param totalHours 
+     * @param totalMinutes 
+     * @param additionalBillingRates 
+     * @param stops 
+     * @param files 
+     * @param tags 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadTemplatePost(name?: string, type?: LoadType, dispatcherId?: number, companyId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiLoadTemplatePost(name?: string, type?: LoadType, dispatcherId?: number, companyId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiLoadTemplatePost(name?: string, type?: LoadType, dispatcherId?: number, companyId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadTemplatePost(name?: string, type?: LoadType, dispatcherId?: number, companyId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1795,16 +1884,128 @@ export class LoadService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (name !== undefined) {
+            localVarFormParams = localVarFormParams.append('Name', <any>name) as any || localVarFormParams;
+        }
+        if (type !== undefined) {
+            localVarFormParams = localVarFormParams.append('Type', <any>type) as any || localVarFormParams;
+        }
+        if (dispatcherId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatcherId', <any>dispatcherId) as any || localVarFormParams;
+        }
+        if (companyId !== undefined) {
+            localVarFormParams = localVarFormParams.append('CompanyId', <any>companyId) as any || localVarFormParams;
+        }
+        if (dateCreated !== undefined) {
+            localVarFormParams = localVarFormParams.append('DateCreated', <any>dateCreated) as any || localVarFormParams;
+        }
+        if (dispatchId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatchId', <any>dispatchId) as any || localVarFormParams;
+        }
+        if (brokerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerId', <any>brokerId) as any || localVarFormParams;
+        }
+        if (brokerContactId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerContactId', <any>brokerContactId) as any || localVarFormParams;
+        }
+        if (referenceNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReferenceNumber', <any>referenceNumber) as any || localVarFormParams;
+        }
+        if (generalCommodity !== undefined) {
+            localVarFormParams = localVarFormParams.append('GeneralCommodity', <any>generalCommodity) as any || localVarFormParams;
+        }
+        if (weight !== undefined) {
+            localVarFormParams = localVarFormParams.append('Weight', <any>weight) as any || localVarFormParams;
+        }
+        if (loadRequirementsId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Id', <any>loadRequirementsId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTruckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TruckTypeId', <any>loadRequirementsTruckTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerTypeId', <any>loadRequirementsTrailerTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsDoorType !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.DoorType', <any>loadRequirementsDoorType) as any || localVarFormParams;
+        }
+        if (loadRequirementsSuspension !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Suspension', <any>loadRequirementsSuspension) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerLengthId', <any>loadRequirementsTrailerLengthId) as any || localVarFormParams;
+        }
+        if (loadRequirementsYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Year', <any>loadRequirementsYear) as any || localVarFormParams;
+        }
+        if (loadRequirementsLiftgate !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Liftgate', <any>loadRequirementsLiftgate) as any || localVarFormParams;
+        }
+        if (loadRequirementsDriverMessage !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.DriverMessage', <any>loadRequirementsDriverMessage) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (baseRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('BaseRate', <any>baseRate) as any || localVarFormParams;
+        }
+        if (adjustedRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('AdjustedRate', <any>adjustedRate) as any || localVarFormParams;
+        }
+        if (driverRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverRate', <any>driverRate) as any || localVarFormParams;
+        }
+        if (advancePay !== undefined) {
+            localVarFormParams = localVarFormParams.append('AdvancePay', <any>advancePay) as any || localVarFormParams;
+        }
+        if (totalMiles !== undefined) {
+            localVarFormParams = localVarFormParams.append('TotalMiles', <any>totalMiles) as any || localVarFormParams;
+        }
+        if (totalHours !== undefined) {
+            localVarFormParams = localVarFormParams.append('TotalHours', <any>totalHours) as any || localVarFormParams;
+        }
+        if (totalMinutes !== undefined) {
+            localVarFormParams = localVarFormParams.append('TotalMinutes', <any>totalMinutes) as any || localVarFormParams;
+        }
+        if (additionalBillingRates) {
+            additionalBillingRates.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('AdditionalBillingRates', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (stops) {
+            stops.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Stops', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (tags) {
+            tags.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Tags', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1819,10 +2020,10 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/template`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createLoadTemplateCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1833,14 +2034,46 @@ export class LoadService {
     }
 
     /**
-     * @param updateLoadTemplateCommand 
+     * @param id 
+     * @param name 
+     * @param dispatcherId 
+     * @param dateCreated 
+     * @param dispatchId 
+     * @param brokerId 
+     * @param brokerContactId 
+     * @param referenceNumber 
+     * @param generalCommodity 
+     * @param weight 
+     * @param loadRequirementsId 
+     * @param loadRequirementsTruckTypeId 
+     * @param loadRequirementsTrailerTypeId 
+     * @param loadRequirementsDoorType 
+     * @param loadRequirementsSuspension 
+     * @param loadRequirementsTrailerLengthId 
+     * @param loadRequirementsYear 
+     * @param loadRequirementsLiftgate 
+     * @param loadRequirementsDriverMessage 
+     * @param note 
+     * @param adjustedRate 
+     * @param revisedRate 
+     * @param tonuRate 
+     * @param driverRate 
+     * @param totalMiles 
+     * @param totalHours 
+     * @param totalMinutes 
+     * @param additionalBillingRates 
+     * @param pays 
+     * @param stops 
+     * @param files 
+     * @param tags 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadTemplatePut(id?: number, name?: string, dispatcherId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiLoadTemplatePut(id?: number, name?: string, dispatcherId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiLoadTemplatePut(id?: number, name?: string, dispatcherId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadTemplatePut(id?: number, name?: string, dispatcherId?: number, dateCreated?: string, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1870,16 +2103,135 @@ export class LoadService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (name !== undefined) {
+            localVarFormParams = localVarFormParams.append('Name', <any>name) as any || localVarFormParams;
+        }
+        if (dispatcherId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatcherId', <any>dispatcherId) as any || localVarFormParams;
+        }
+        if (dateCreated !== undefined) {
+            localVarFormParams = localVarFormParams.append('DateCreated', <any>dateCreated) as any || localVarFormParams;
+        }
+        if (dispatchId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatchId', <any>dispatchId) as any || localVarFormParams;
+        }
+        if (brokerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerId', <any>brokerId) as any || localVarFormParams;
+        }
+        if (brokerContactId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerContactId', <any>brokerContactId) as any || localVarFormParams;
+        }
+        if (referenceNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReferenceNumber', <any>referenceNumber) as any || localVarFormParams;
+        }
+        if (generalCommodity !== undefined) {
+            localVarFormParams = localVarFormParams.append('GeneralCommodity', <any>generalCommodity) as any || localVarFormParams;
+        }
+        if (weight !== undefined) {
+            localVarFormParams = localVarFormParams.append('Weight', <any>weight) as any || localVarFormParams;
+        }
+        if (loadRequirementsId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Id', <any>loadRequirementsId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTruckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TruckTypeId', <any>loadRequirementsTruckTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerTypeId', <any>loadRequirementsTrailerTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsDoorType !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.DoorType', <any>loadRequirementsDoorType) as any || localVarFormParams;
+        }
+        if (loadRequirementsSuspension !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Suspension', <any>loadRequirementsSuspension) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerLengthId', <any>loadRequirementsTrailerLengthId) as any || localVarFormParams;
+        }
+        if (loadRequirementsYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Year', <any>loadRequirementsYear) as any || localVarFormParams;
+        }
+        if (loadRequirementsLiftgate !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Liftgate', <any>loadRequirementsLiftgate) as any || localVarFormParams;
+        }
+        if (loadRequirementsDriverMessage !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.DriverMessage', <any>loadRequirementsDriverMessage) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (adjustedRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('AdjustedRate', <any>adjustedRate) as any || localVarFormParams;
+        }
+        if (revisedRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('RevisedRate', <any>revisedRate) as any || localVarFormParams;
+        }
+        if (tonuRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('TonuRate', <any>tonuRate) as any || localVarFormParams;
+        }
+        if (driverRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverRate', <any>driverRate) as any || localVarFormParams;
+        }
+        if (totalMiles !== undefined) {
+            localVarFormParams = localVarFormParams.append('TotalMiles', <any>totalMiles) as any || localVarFormParams;
+        }
+        if (totalHours !== undefined) {
+            localVarFormParams = localVarFormParams.append('TotalHours', <any>totalHours) as any || localVarFormParams;
+        }
+        if (totalMinutes !== undefined) {
+            localVarFormParams = localVarFormParams.append('TotalMinutes', <any>totalMinutes) as any || localVarFormParams;
+        }
+        if (additionalBillingRates) {
+            additionalBillingRates.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('AdditionalBillingRates', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (pays) {
+            pays.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Pays', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (stops) {
+            stops.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Stops', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (tags) {
+            tags.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Tags', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1894,10 +2246,10 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/template`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateLoadTemplateCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

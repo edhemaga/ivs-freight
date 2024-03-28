@@ -11,6 +11,7 @@
  */
 import { RepairType } from './repairType';
 import { RepairUnitType } from './repairUnitType';
+import { ShopServiceType } from './shopServiceType';
 import { RepairItemCommand } from './repairItemCommand';
 import { RepairServiceTypeCommand } from './repairServiceTypeCommand';
 import { CreateTagCommand } from './createTagCommand';
@@ -21,6 +22,7 @@ export interface ApiRepairPostRequest1 {
     UnitType?: RepairUnitType;
     TruckId?: number;
     TrailerId?: number;
+    DriverId?: number;
     Odometer?: number;
     Date?: string;
     Invoice?: string;
@@ -31,5 +33,6 @@ export interface ApiRepairPostRequest1 {
     Items?: Array<RepairItemCommand>;
     Files?: Array<Blob>;
     Tags?: Array<CreateTagCommand>;
+    ShopServiceType?: ShopServiceType;
 }
 

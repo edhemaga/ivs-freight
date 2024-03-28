@@ -3,7 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyRepairShopService } from './state/company-repairshop.service';
 import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';

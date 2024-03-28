@@ -9,7 +9,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { LoadTService } from '../state/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from '../../standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from '../../modals/cards-modal/utils/services/cards-modal-config.service';
 

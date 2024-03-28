@@ -33,7 +33,7 @@ import { CardRows } from '../../shared/model/card-data.model';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../state/owner.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store

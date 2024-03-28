@@ -1397,23 +1397,27 @@ export const FILE_TABLES = {
 
 export const noteColors = [
     {
-        color: 'rgb(108, 108, 108)',
+        color: 'rgb(218, 218, 218)',
         name: 'Gray',
     },
     {
-        color: 'rgb(38, 166, 144)',
-        name: 'Dark Green',
+        color: 'rgb(102, 146, 241)',
+        name: 'Blue',
     },
     {
-        color: 'rgb(239, 83, 80)',
+        color: 'rgb(86, 180, 172)',
+        name: 'Green',
+    },
+    {
+        color: 'rgb(230, 103, 103)',
         name: 'Red',
     },
     {
-        color: 'rgb(255, 167, 38)',
+        color: 'rgb(250, 177, 92)',
         name: 'Yellow',
     },
     {
-        color: 'rgb(83, 107, 194)',
-        name: 'Blue',
+        color: 'rgb(179, 112, 240)',
+        name: 'Purple',
     },
 ];

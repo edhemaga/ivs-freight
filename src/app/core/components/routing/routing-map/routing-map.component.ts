@@ -25,7 +25,7 @@ import { AddressEntity } from 'appcoretruckassist';
 import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { imageMapType } from 'src/assets/utils/methods-global';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RoutingStateService } from '../state/routing-state/routing-state.service';
