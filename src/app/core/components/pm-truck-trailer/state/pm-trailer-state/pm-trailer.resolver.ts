@@ -18,7 +18,7 @@ export class pmTrailerResolver implements Resolve<PmTrailerState> {
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.pmService.getPMTrailerList(undefined, undefined, 1),
+            this.pmService.getPMTrailerUnitList(undefined, undefined, 1),
             this.tableService.getTableConfig(14),
         ]).pipe(
             tap(([pmTrailerPagination, tableConfig]) => {

@@ -50,6 +50,7 @@ import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 import { TaInputDropdownTableComponent } from '../../../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
+import { ProgresBarComponent } from '../../../standalone-components/progres-bar/progres-bar.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -103,6 +104,7 @@ import {
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
+        ProgresBarComponent,
         ContactPhoneEmailIconPipe,
     ],
     providers: [
@@ -170,6 +172,10 @@ export class TruckassistTableBodyComponent
     horizontalScrollPosition: number = 0;
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
+    progressTooltip: any;
+    progressDropdownActive: number = -1;
+    progressDropdownColumnActive: string = '';
+    progressDropdownData: any;
 
     constructor(
         private router: Router,
@@ -768,6 +774,21 @@ export class TruckassistTableBodyComponent
 
             this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
+    }
+
+    // Toggle Progress Dropdown
+    toggleProgressDropdown(tooltip: any, row: any, column: any) {
+        this.progressTooltip = tooltip;
+
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            tooltip.open();
+        }
+
+        this.progressDropdownActive = tooltip.isOpen() ? row.textUnit : -1;
+        this.progressDropdownColumnActive = tooltip.isOpen() ? column.field : "";
+        this.progressDropdownData = {row: row, column: row[column.field]};
     }
 
     // Dropdown Actions

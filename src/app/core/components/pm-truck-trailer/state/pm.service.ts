@@ -145,4 +145,16 @@ export class PmTService {
     public deletePMTrailerById(id: number): Observable<object> {
         return this.repairService.apiRepairPmTrailerIdDelete(id);
     }
+
+    public getRepairList() {
+        return this.repairService.apiRepairListGet();
+    }
+
+    public getRepairPmTrailerFilter() {
+        return this.repairService.apiRepairPmTrailerFilterListGet();
+    }
+
+    public getRepairPmTruckFilter() {
+        return this.repairService.apiRepairPmTruckFilterListGet();
+    }
 }

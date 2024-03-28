@@ -33,6 +33,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
+import { StoreModule } from '@ngrx/store';
+import { ArticleReducer } from './core/components/dashboard/store/dashboard.reducer';
 
 function playerFactory() {
     return player;
@@ -67,6 +69,9 @@ function playerFactory() {
         CustomScrollbarComponent,
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
+        }),
+        StoreModule.forRoot({
+            course: ArticleReducer,
         }),
     ],
     providers: [
