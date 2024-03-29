@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PmTruckTrailerComponent } from './pm-truck-trailer.component';
+import { PmTableComponent } from './pages/pm-table/pm-table.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: PmTruckTrailerComponent,
+        component: PmTableComponent,
         data: { title: 'PM' },
     },
 ];

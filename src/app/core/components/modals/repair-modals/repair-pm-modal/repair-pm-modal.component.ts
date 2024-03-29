@@ -1,4 +1,4 @@
-import { PmTService } from 'src/app/pages/pm-truck-trailer/state/pm.service';
+import { PmTService } from 'src/app/pages/pm-truck-trailer/services/pm.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,

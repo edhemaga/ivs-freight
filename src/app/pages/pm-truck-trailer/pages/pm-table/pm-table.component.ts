@@ -24,13 +24,13 @@ import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { PmTService } from './state/pm.service';
+import { PmTService } from '../../services/pm.service';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Data
-import { DisplayPMConfiguration } from './pm-card-data';
+import { DisplayPMConfiguration } from '../../utils/constants/pm-card-data.constants';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import {
     TooltipColors,
@@ -38,21 +38,19 @@ import {
 } from 'src/app/core/utils/enums/trailer-component.enum';
 
 // Store
-import { PmTruckQuery } from './state/pm-truck-state/pm-truck.query';
-import { PmTrailerQuery } from './state/pm-trailer-state/pm-trailer.query';
+import { PmTruckQuery } from '../../state/pm-truck-state/pm-truck.query';
+import { PmTrailerQuery } from '../../state/pm-trailer-state/pm-trailer.query';
 
 // Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
-    selector: 'app-pm-truck-trailer',
-    templateUrl: './pm-truck-trailer.component.html',
-    styleUrls: ['./pm-truck-trailer.component.scss'],
+    selector: 'app-pm-table',
+    templateUrl: './pm-table.component.html',
+    styleUrls: ['./pm-table.component.scss'],
     providers: [TaThousandSeparatorPipe],
 })
-export class PmTruckTrailerComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public tableOptions: any = {};
     public tableData: any[] = [];

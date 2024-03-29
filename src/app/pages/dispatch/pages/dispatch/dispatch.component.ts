@@ -3,13 +3,13 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DispatcherStoreService } from '../state/dispatcher.service';
+import { DispatcherStoreService } from '../../services/dispatcher.service';
 
 // Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // Store
-import { DispatcherQuery } from '../state/dispatcher.query';
+import { DispatcherQuery } from '../../state/dispatcher.query';
 
 @Titles()
 @Component({

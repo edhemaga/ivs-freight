@@ -20,13 +20,13 @@ import {
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
+import { DispatchBoardLocalResponse } from '../../models/dispatcher.model';
 
 // Pipes
-import { ColorFinderPipe } from '../pipes/color-finder.pipe';
+import { ColorFinderPipe } from '../../pipes/color-finder.pipe';
 
 // Services
-import { DispatcherStoreService } from '../state/dispatcher.service';
+import { DispatcherStoreService } from '../../services/dispatcher.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // Modals

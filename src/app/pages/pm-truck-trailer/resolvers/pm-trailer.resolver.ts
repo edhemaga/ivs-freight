@@ -5,30 +5,30 @@ import { tap } from 'rxjs/operators';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { PmTService } from '../pm.service';
+import { PmTService } from '../services/pm.service';
 
 // Store
-import { PmTruckState, PmTruckStore } from './pm-truck.store';
+import { PmTrailerState, PmTrailerStore } from '../state/pm-trailer-state/pm-trailer.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class pmTruckResolver implements Resolve<PmTruckState> {
+export class pmTrailerResolver implements Resolve<PmTrailerState> {
     constructor(
         private pmService: PmTService,
-        private pmTruckStore: PmTruckStore,
+        private pmTrailerStore: PmTrailerStore,
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.pmService.getPMTruckUnitList(),
-            this.tableService.getTableConfig(13),
+            this.pmService.getPMTrailerUnitList(undefined, undefined, 1),
+            this.tableService.getTableConfig(14),
         ]).pipe(
-            tap(([pmTruckPagination, tableConfig]) => {
+            tap(([pmTrailerPagination, tableConfig]) => {
                 localStorage.setItem(
-                    'pmTruckTableCount',
+                    'pmTrailerTableCount',
                     JSON.stringify({
-                        pmTruck: pmTruckPagination.pmTruckCount,
+                        pmTrailer: pmTrailerPagination.pmTrailerCount,
                     })
                 );
 
@@ -41,7 +41,7 @@ export class pmTruckResolver implements Resolve<PmTruckState> {
                     );
                 }
 
-                this.pmTruckStore.set(pmTruckPagination.pagination.data);
+                this.pmTrailerStore.set(pmTrailerPagination.pagination.data);
             })
         );
     }

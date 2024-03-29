@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DispatchComponent } from './dispatch/dispatch.component';
+import { DispatchComponent } from './pages/dispatch/dispatch.component';
 
 const routes: Routes = [{
   path: "",

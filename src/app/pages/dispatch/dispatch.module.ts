@@ -8,8 +8,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // Components
-import { DispatchComponent } from './dispatch/dispatch.component';
-import { DispatchTableComponent } from './dispatch-table/dispatch-table.component';
+import { DispatchComponent } from './pages/dispatch/dispatch.component';
+import { DispatchTableComponent } from './components/dispatch-table/dispatch-table.component';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';

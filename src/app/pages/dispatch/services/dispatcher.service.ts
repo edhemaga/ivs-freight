@@ -3,7 +3,7 @@ import { flatMap, delay, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Store
-import { DispatcherStore } from './dispatcher.store';
+import { DispatcherStore } from '../state/dispatcher.store';
 
 // Models
 import {

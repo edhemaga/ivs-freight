@@ -1,34 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { PmTService } from '../pm.service';
+import { PmTService } from '../services/pm.service';
 
 // Store
-import { PmTrailerState, PmTrailerStore } from './pm-trailer.store';
+import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class pmTrailerResolver implements Resolve<PmTrailerState> {
+export class pmTruckResolver implements Resolve<PmTruckState> {
     constructor(
         private pmService: PmTService,
-        private pmTrailerStore: PmTrailerStore,
+        private pmTruckStore: PmTruckStore,
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.pmService.getPMTrailerUnitList(undefined, undefined, 1),
-            this.tableService.getTableConfig(14),
+            this.pmService.getPMTruckUnitList(),
+            this.tableService.getTableConfig(13),
         ]).pipe(
-            tap(([pmTrailerPagination, tableConfig]) => {
+            tap(([pmTruckPagination, tableConfig]) => {
                 localStorage.setItem(
-                    'pmTrailerTableCount',
+                    'pmTruckTableCount',
                     JSON.stringify({
-                        pmTrailer: pmTrailerPagination.pmTrailerCount,
+                        pmTruck: pmTruckPagination.pmTruckCount,
                     })
                 );
 
@@ -41,7 +41,7 @@ export class pmTrailerResolver implements Resolve<PmTrailerState> {
                     );
                 }
 
-                this.pmTrailerStore.set(pmTrailerPagination.pagination.data);
+                this.pmTruckStore.set(pmTruckPagination.pagination.data);
             })
         );
     }

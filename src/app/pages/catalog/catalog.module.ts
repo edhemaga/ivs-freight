@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Components
-import { SvgDefinitionsComponent } from 'src/app/pages/catalog/svg-definitions/svg-definitions.component';
+import { SvgDefinitionsComponent } from 'src/app/pages/catalog/pages/svg-definitions/svg-definitions.component';
 
 @NgModule({
     declarations: [SvgDefinitionsComponent],

@@ -27,8 +27,8 @@ import { AccountResolver } from './pages/account/state/account-state/account.res
 import { RepairTruckResolver } from './pages/repair/state/repair-truck-state/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/state/repair-trailer-state/repair-trailer.resolver';
 import { ContactResolver } from './pages/contacts/state/resolvers/contact.resolver';
-import { pmTrailerResolver } from './pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
-import { pmTruckResolver } from './pages/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
+import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
+import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
 import { TodoResolverService } from './pages/to-do/state/todo-resolver.service';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
@@ -44,7 +44,7 @@ import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver'
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './pages/applicant/state/resolver/applicant-sph-form.resolver';
 import { MilesResolverService } from './pages/miles/state/miles-resolver.service';
-import { DispatcherResolverService } from './pages/dispatch/state/dispatcher-resolver.service';
+import { DispatcherResolverService } from './pages/dispatch/services/dispatcher-resolver.service';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './pages/routing/state/routing-state/routing-state.resolver';

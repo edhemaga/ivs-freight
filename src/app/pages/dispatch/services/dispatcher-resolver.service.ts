@@ -5,7 +5,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Store
-import { DispatcherQuery } from './dispatcher.query';
+import { DispatcherQuery } from '../state/dispatcher.query';
 
 // Services
 import { DispatcherStoreService } from './dispatcher.service';
