@@ -36,7 +36,10 @@ import {
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
-import { BodyResponseTruck, FilterOptions } from '../../models/truck.model';
+import {
+    BodyResponseTruck,
+    FilterOptions,
+} from '../../models/truck-filter.model';
 import {
     DropdownItem,
     ToolbarActions,

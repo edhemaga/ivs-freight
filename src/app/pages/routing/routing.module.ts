@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
 import { RoutingRoutingModule } from './routing-routing.module';
-import { RoutingMapComponent } from './routing-map/routing-map.component';
+import { RoutingMapComponent } from './pages/routing-map/routing-map.component';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
@@ -10,7 +10,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 //Pipes
-import { FilterRoutesPipe } from './filter-routes.pipe';
+import { FilterRoutesPipe } from './pipes/filter-routes.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 //Components
