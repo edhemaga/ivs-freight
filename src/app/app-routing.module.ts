@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
-import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { ApplicantWelcomeScreenComponent } from './pages/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './pages/applicant/applicant-end-screen/applicant-end-screen.component';
@@ -534,7 +533,11 @@ const routes: Routes = [
     },
     {
         path: 'catalog',
-        component: SvgDefinitionsComponent,
+        loadChildren: () =>
+            import('./pages/catalog/catalog.module').then(
+                (m) => m.CatalogModule
+            ),
+        canActivate: [AuthGuard],
     },
     {
         path: 'notifications',

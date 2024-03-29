@@ -43,7 +43,7 @@ declare const geoXML3: any;
     templateUrl: './routing-map.component.html',
     styleUrls: [
         './routing-map.component.scss',
-        '../../../../../assets/scss/maps.scss',
+        '../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
     providers: [TaThousandSeparatorPipe],

@@ -19,7 +19,7 @@ import { DatePipe } from '@angular/common';
     templateUrl: './accident-table.component.html',
     styleUrls: [
         './accident-table.component.scss',
-        '../../../../../../assets/scss/maps.scss',
+        '../../../../../assets/scss/maps.scss',
     ],
     providers: [DatePipe],
 })
