@@ -8,14 +8,14 @@ import { ConfirmationModalComponent } from 'src/app/core/components/modals/confi
 
 // service
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { ContactTService } from '../state/services/contact.service';
+import { ContactsService } from '../../services/contacts.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // store
-import { ContactState } from '../state/store/contact.store';
-import { ContactQuery } from '../state/store/contact.query';
+import { ContactState } from '../../state/store/contact.store';
+import { ContactQuery } from '../../state/store/contact.query';
 
 // pipes
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
@@ -30,14 +30,14 @@ import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations'
 import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
 // enums
-import { ConstantStringEnum } from '../state/enums/contact-string.enum';
+import { ConstantStringEnum } from '../../enums/contacts-string.enum';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // data for cards
-import { DisplayContactsConfiguration } from '../state/utils/constants/contact-card-data.constants';
+import { DisplayContactsConfiguration } from '../../state/utils/constants/contact-card-data.constants';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // models
@@ -47,9 +47,9 @@ import {
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { ContactBackFilter } from '../state/models/contact-back-filter.model';
-import { ContactPhone } from '../state/models/contact-phone.model';
-import { ContactEmail } from '../state/models/contact-email.model';
+import { ContactsBackFilter } from '../../models/contacts-back-filter.model';
+import { ContactPhone } from '../../models/contacts-phone.model';
+import { ContactEmail } from '../../models/contacts-email.model';
 import {
     TableBodyActionsContract,
     TableHeadActionContract,
@@ -105,7 +105,7 @@ export class ContactsTableComponent
         private tableService: TruckassistTableService,
         private contactQuery: ContactQuery,
         private nameInitialsPipe: NameInitialsPipe,
-        private contactService: ContactTService,
+        private contactService: ContactsService,
         private imageBase64Service: ImageBase64Service,
         private confirmationService: ConfirmationService
     ) {}
@@ -546,7 +546,7 @@ export class ContactsTableComponent
 
     // Contact Back Filter
     public contactBackFilter(
-        filter: ContactBackFilter,
+        filter: ContactsBackFilter,
         isShowMore?: boolean
     ): void {
         this.contactService

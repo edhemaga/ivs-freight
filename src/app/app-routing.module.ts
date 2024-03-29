@@ -23,10 +23,10 @@ import { TrailerActiveResolver } from './pages/trailer/state/trailer-active-stat
 import { TrailerInactiveResolver } from './pages/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './pages/owner/state/owner-inactive-state/owner-inactive.resolver';
-import { AccountResolver } from './pages/account/state/account-state/account.resolver';
+import { AccountResolver } from './pages/account/resolvers/account.resolver';
 import { RepairTruckResolver } from './pages/repair/state/repair-truck-state/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/state/repair-trailer-state/repair-trailer.resolver';
-import { ContactResolver } from './pages/contacts/state/resolvers/contact.resolver';
+import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
 import { pmTrailerResolver } from './pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './pages/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
 import { TodoResolverService } from './pages/to-do/state/todo-resolver.service';
@@ -242,7 +242,7 @@ const routes: Routes = [
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
-            contact: ContactResolver,
+            contact: ContactsResolver,
         },
     },
     {

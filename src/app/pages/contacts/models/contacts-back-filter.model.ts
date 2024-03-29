@@ -1,4 +1,4 @@
-export interface ContactBackFilter {
+export interface ContactsBackFilter {
     labelId: number | undefined;
     pageIndex: number;
     pageSize: number;

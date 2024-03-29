@@ -6,8 +6,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // store
-import { ContactQuery } from '../store/contact.query';
-import { ContactStore } from '../store/contact.store';
+import { ContactStore } from '../state/store/contact.store';
 
 // models
 import {
@@ -30,10 +29,9 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class ContactTService {
+export class ContactsService {
     constructor(
         private contactStore: ContactStore,
-        private contactQuery: ContactQuery,
         private contactService: CompanyContactService,
         private tableService: TruckassistTableService,
         private companyLabelService: CompanyContactLabelService

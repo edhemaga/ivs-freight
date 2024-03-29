@@ -21,7 +21,7 @@ import {
     UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { AccountTService } from 'src/app/pages/account/state/account.service';
+import { AccountTService } from 'src/app/pages/account/services/account.service';
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import {
     labelValidation,

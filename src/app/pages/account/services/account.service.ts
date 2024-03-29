@@ -6,8 +6,8 @@ import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // store
-import { AccountStore } from './account-state/account.store';
-import { AccountQuery } from './account-state/account.query';
+import { AccountStore } from '../state/account.store';
+import { AccountQuery } from '../state/account.query';
 
 // models
 import {

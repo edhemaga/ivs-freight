@@ -9,11 +9,11 @@ import { AccountModalComponent } from 'src/app/core/components/modals/account-mo
 // ervices
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { AccountTService } from '../state/account.service';
+import { AccountTService } from '../../services/account.service';
 
 // store
-import { AccountState } from '../state/account-state/account.store';
-import { AccountQuery } from '../state/account-state/account.query';
+import { AccountState } from '../../state/account.store';
+import { AccountQuery } from '../../state/account.query';
 
 // utils
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
@@ -23,7 +23,7 @@ import {
 } from 'src/app/core/utils/methods.globals';
 
 // enums
-import { AccountComponentEnum } from '../state/enums/account-constant-strings.enum';
+import { ConstantStringEnum } from '../../enums/account-string.enum';
 import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // models
@@ -36,7 +36,7 @@ import {
     TableHeadActionAccount,
     TableToolBarActionActionsAccount,
 } from 'src/app/core/model/account';
-import { DisplayAccountConfiguration } from '../account-data';
+import { DisplayAccountConfiguration } from '../../utils/constants/account-card-data.constants';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 @Component({
@@ -338,7 +338,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sendAccountData() {
         const tableView = JSON.parse(
-            localStorage.getItem(AccountComponentEnum.ACCOUNT_TABLE_VIEW)
+            localStorage.getItem(ConstantStringEnum.ACCOUNT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -349,23 +349,23 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const accontCount = JSON.parse(
-            localStorage.getItem(AccountComponentEnum.ACCOUNT_TABLE_COUNT)
+            localStorage.getItem(ConstantStringEnum.ACCOUNT_TABLE_COUNT)
         );
 
         const accountData = this.getTabData();
 
         this.tableData = [
             {
-                title: AccountComponentEnum.ACCOUNTS,
+                title: ConstantStringEnum.ACCOUNTS,
                 field: ComponentsTableEnum.ACTIVE,
                 extended: false,
                 length: accontCount.account,
                 data: accountData,
-                gridNameTitle: AccountComponentEnum.ACCOUNT_2,
-                stateName: AccountComponentEnum.ACCOUNTS_2,
-                tableConfiguration: AccountComponentEnum.ACCOUNT,
+                gridNameTitle: ConstantStringEnum.ACCOUNT_2,
+                stateName: ConstantStringEnum.ACCOUNTS_2,
+                tableConfiguration: ConstantStringEnum.ACCOUNT,
                 isActive: true,
-                gridColumns: this.getGridColumns(AccountComponentEnum.ACCOUNT),
+                gridColumns: this.getGridColumns(ConstantStringEnum.ACCOUNT),
             },
         ];
 
@@ -376,7 +376,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateDataCount() {
         const accountCount = JSON.parse(
-            localStorage.getItem(AccountComponentEnum.ACCOUNT_TABLE_COUNT)
+            localStorage.getItem(ConstantStringEnum.ACCOUNT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -639,7 +639,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.accountBackFilter(this.backFilterQuery, true);
                 break;
             }
-            case AccountComponentEnum.EDIT_ACCONUT: {
+            case ConstantStringEnum.EDIT_ACCONUT: {
                 this.modalService.openModal(
                     AccountModalComponent,
                     { size: ComponentsTableEnum.SMALL },
@@ -664,7 +664,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.clipboard.copy(event.data.password);
                 break;
             }
-            case AccountComponentEnum.DELETE_ACCOUNT: {
+            case ConstantStringEnum.DELETE_ACCOUNT: {
                 this.accountService
                     .deleteCompanyAccountById(event.id)
                     .pipe(takeUntil(this.destroy$))
@@ -721,9 +721,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
+
         this.resizeObserver.disconnect();
         this.destroy$.next();
         this.destroy$.complete();

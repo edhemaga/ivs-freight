@@ -5,10 +5,10 @@ import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { AccountTService } from '../account.service';
+import { AccountTService } from '../services/account.service';
 
-//store
-import { AccountState, AccountStore } from './account.store';
+// store
+import { AccountState, AccountStore } from '../state/account.store';
 
 @Injectable({
     providedIn: 'root',

@@ -12,11 +12,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TextToggleDirective } from 'src/app/core/directives/show-hide-pass.directive';
 
 // components
-import { AccountTableComponent } from './account-table/account-table.component';
+import { AccountTableComponent } from './pages/account-table/account-table.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { AccountCardComponent } from './account-card/account-card.component';
+import { AccountCardComponent } from './pages/account-card/account-card.component';
 import { TaInputDropdownLabelComponent } from 'src/app/core/components/shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';

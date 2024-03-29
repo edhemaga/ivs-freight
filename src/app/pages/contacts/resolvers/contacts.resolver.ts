@@ -5,10 +5,10 @@ import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ContactTService } from '../services/contact.service';
+import { ContactsService } from '../services/contacts.service';
 
 // store
-import { ContactState, ContactStore } from '../store/contact.store';
+import { ContactState, ContactStore } from '../state/store/contact.store';
 
 // models
 import { ContactsTableData } from 'src/app/core/model/contact';
@@ -16,9 +16,9 @@ import { ContactsTableData } from 'src/app/core/model/contact';
 @Injectable({
     providedIn: 'root',
 })
-export class ContactResolver implements Resolve<ContactState> {
+export class ContactsResolver implements Resolve<ContactState> {
     constructor(
-        private contactService: ContactTService,
+        private contactService: ContactsService,
         private contactStore: ContactStore,
         private tableService: TruckassistTableService
     ) {}
