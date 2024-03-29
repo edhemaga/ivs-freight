@@ -118,7 +118,9 @@ const routes: Routes = [
     {
         path: 'company',
         loadChildren: () =>
-            import('./settings/settings.module').then((m) => m.SettingsModule),
+            import('./pages/settings/settings.module').then(
+                (m) => m.SettingsModule
+            ),
         canActivate: [AuthGuard],
     },
     {
