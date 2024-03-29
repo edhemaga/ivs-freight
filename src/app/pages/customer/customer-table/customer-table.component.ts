@@ -105,7 +105,7 @@ import {
     templateUrl: './customer-table.component.html',
     styleUrls: [
         './customer-table.component.scss',
-        '../../../../../assets/scss/maps.scss',
+        '../../../../assets/scss/maps.scss',
     ],
     providers: [TaThousandSeparatorPipe],
 })

@@ -58,7 +58,7 @@ import { FuelTService } from '../state/fuel.service';
     templateUrl: './fuel-table.component.html',
     styleUrls: [
         './fuel-table.component.scss',
-        '../../../../../assets/scss/maps.scss',
+        '../../../../assets/scss/maps.scss',
     ],
     providers: [TaThousandSeparatorPipe],
 })
