@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 // services
-import { SettingsLocationService } from 'src/app/settings/state/location-state/settings-location.service';
+import { SettingsLocationService } from 'src/app/pages/settings/services/settings-location.service';
 import { ModalService } from '../../components/shared/ta-modal/modal.service';
 
 // components
