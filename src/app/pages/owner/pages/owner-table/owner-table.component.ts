@@ -25,28 +25,28 @@ import { DataForCardsAndTables } from 'src/app/core/components/shared/model/tabl
 import {
     MapOwnerData,
     OwnerBackFilterFilter,
-    OwnerBodyResponse,
-} from '../owner.modal';
+} from '../../models/owner-table.model';
+import { OwnerBodyResponse } from '../../models/owner.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { OwnerTService } from '../state/owner.service';
+import { OwnerTService } from '../../state/owner.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
-import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
+import { OwnerActiveQuery } from '../../state/owner-active-state/owner-active.query';
 import {
     OwnerActiveState,
     OwnerActiveStore,
-} from '../state/owner-active-state/owner-active.store';
-import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
+} from '../../state/owner-active-state/owner-active.store';
+import { OwnerInactiveQuery } from '../../state/owner-inactive-state/owner-inactive.query';
 import {
     OwnerInactiveState,
     OwnerInactiveStore,
-} from '../state/owner-inactive-state/owner-inactive.store';
+} from '../../state/owner-inactive-state/owner-inactive.store';
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -57,7 +57,7 @@ import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import { DisplayOwnerConfiguration } from '../owner-card-data';
+import { DisplayOwnerConfiguration } from '../../utils/constants/owner-card.constant';
 
 //helpers
 import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
