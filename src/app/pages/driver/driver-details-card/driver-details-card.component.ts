@@ -47,7 +47,7 @@ import { TaChartComponent } from 'src/app/core/components/standalone-components/
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from 'src/app/settings/settings-company/utils/enums/settings.enum';
+import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
 import { BrokerTabEnum } from '../../customer/broker-card-view/state/enums/broker-enum';
 import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
 
