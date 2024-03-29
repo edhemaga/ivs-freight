@@ -35,7 +35,7 @@ export class DashboardMapComponent implements OnInit, OnDestroy {
         ];
     }
 
-    changeMapSwitchTabs(ev) {}
+    changeMapSwitchTabs(_) {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

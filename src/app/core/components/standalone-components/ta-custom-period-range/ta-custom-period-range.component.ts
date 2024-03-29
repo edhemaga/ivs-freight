@@ -26,11 +26,11 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 // enums
-import { ConstantStringEnum } from 'src/app/pages/dashboard/state/enums/constant-string.enum';
+import { ConstantStringEnum } from 'src/app/pages/dashboard/enums/constant-string.enum';
 
 // models
-import { CustomPeriodRange } from 'src/app/pages/dashboard/state/models/custom-period-range.model';
-import { DropdownListItem } from 'src/app/pages/dashboard/state/models/dropdown-list-item.model';
+import { CustomPeriodRange } from 'src/app/pages/dashboard/models/custom-period-range.model';
+import { DropdownListItem } from 'src/app/pages/dashboard/models/dropdown-list-item.model';
 
 @Component({
     selector: 'app-ta-custom-period-range',

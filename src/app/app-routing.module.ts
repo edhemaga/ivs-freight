@@ -49,7 +49,7 @@ import { UnderConstructionComponent } from './core/components/under-construction
 import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './pages/routing/state/routing-state/routing-state.resolver';
 import { TelematicResolver } from './pages/telematic/state/telematic-state.resolver';
-import { DashboardResolver } from './pages/dashboard/state/resolvers/dashboard.resolver';
+import { DashboardResolver } from './pages/dashboard/resolvers/dashboard.resolver';
 import { CompanySettingsGuard } from './core/guards/company-settings.guard';
 
 const routes: Routes = [

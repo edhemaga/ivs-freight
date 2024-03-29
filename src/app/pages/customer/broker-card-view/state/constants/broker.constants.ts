@@ -1,5 +1,5 @@
 //Models
-import { DoughnutChartConfig } from 'src/app/pages/dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
+import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 
 //Enums
 import {

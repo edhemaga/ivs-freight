@@ -10,36 +10,36 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardByStateService } from '../../../state/services/dashboard-by-state.service';
-import { DashboardService } from '../../../state/services/dashboard.service';
+import { DashboardByStateService } from '../../services/dashboard-by-state.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 // enums
-import { ConstantStringEnum } from '../../../state/enums/constant-string.enum';
-import { ConstantChartStringEnum } from '../../../state/enums/constant-chart-string.enum';
+import { ConstantStringEnum } from '../../enums/constant-string.enum';
+import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
 
 // helpers
-import { DashboardUtils } from '../../../state/utils/dashboard-utils';
-import { DashboardArrayHelper } from '../../../state/utils/helpers/dashboard-array-helper';
+import { DashboardUtils } from '../../utils/dashboard-utils';
+import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
 
 // constants
-import { DashboardByStateConstants } from '../../../state/utils/constants/dashboard-by-state.constants';
-import { DashboardSubperiodConstants } from '../../../state/utils/constants/dashboard-subperiod.constants';
-import { DashboardTopRatedConstants } from '../../../state/utils/constants/dashboard-top-rated.constants';
-import { DashboardColors } from '../../../state/utils/constants/dashboard-colors.constants';
+import { DashboardByStateConstants } from '../../utils/constants/dashboard-by-state.constants';
+import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from '../../utils/constants/dashboard-top-rated.constants';
+import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
 
 // models
-import { ByStateListItem } from '../../../state/models/dashboard-by-state-models/by-state-list-item.model';
-import { DropdownItem } from '../../../state/models/dropdown-item.model';
-import { DashboardTab } from '../../../state/models/dashboard-tab.model';
-import { DropdownListItem } from '../../../state/models/dropdown-list-item.model';
-import { ByStateColorsPallete } from '../../../state/models/dashboard-color-models/colors-pallete.model';
-import { CustomPeriodRange } from '../../../state/models/custom-period-range.model';
+import { ByStateListItem } from '../../models/dashboard-by-state-models/by-state-list-item.model';
+import { DropdownItem } from '../../models/dropdown-item.model';
+import { DashboardTab } from '../../models/dashboard-tab.model';
+import { DropdownListItem } from '../../models/dropdown-list-item.model';
+import { ByStateColorsPallete } from '../../models/dashboard-color-models/colors-pallete.model';
+import { CustomPeriodRange } from '../../models/custom-period-range.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
-} from '../../../state/models/dashboard-chart-models/bar-chart.model';
+} from '../../models/dashboard-chart-models/bar-chart.model';
 import {
     ByStateReportType,
     IntervalLabelResponse,
@@ -50,8 +50,8 @@ import {
 import {
     ByStateApiArguments,
     ByStateWithLoadStopApiArguments,
-} from '../../../state/models/dashboard-by-state-models/by-state-api-arguments.model';
-import { MapListItem } from '../../../state/models/dashboard-state-models/map-list-item.model';
+} from '../../models/dashboard-by-state-models/by-state-api-arguments.model';
+import { MapListItem } from '../../models/dashboard-state-models/map-list-item.model';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
