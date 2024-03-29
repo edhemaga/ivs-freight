@@ -1,10 +1,10 @@
-import { TrucksMinimalListStore } from './truck-details-minimal.store';
+import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
 import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TruckTService } from '../truck.service';
+import { TruckTService } from '../services/truck.service';
 import { TruckMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({

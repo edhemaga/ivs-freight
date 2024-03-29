@@ -17,8 +17,8 @@ import { ShipperResolver } from './pages/customer/state/shipper-state/shipper.re
 import { ShopResolver } from './pages/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
-import { TruckActiveResolver } from './pages/truck/state/truck-active-state/truck-active.resolver';
-import { TruckInactiveResolver } from './pages/truck/state/truck-inactive-state/truck-inactive.resolver';
+import { TruckActiveResolver } from './pages/truck/resolvers/truck-active.resolver';
+import { TruckInactiveResolver } from './pages/truck/resolvers/truck-inactive.resolver';
 import { TrailerActiveResolver } from './pages/trailer/state/trailer-active-state/trailer-active.resolver';
 import { TrailerInactiveResolver } from './pages/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';

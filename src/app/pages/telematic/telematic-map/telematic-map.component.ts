@@ -18,7 +18,7 @@ import {
 } from '@angular/forms';
 
 // services
-import { TruckTService } from '../../truck/state/truck.service';
+import { TruckTService } from '../../truck/services/truck.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateService } from '../state/telematic-state.service';

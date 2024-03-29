@@ -6,8 +6,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
-import { TruckTableComponent } from './truck-table/truck-table.component';
-import { TruckCardComponent } from './truck-card/truck-card.component';
+import { TruckTableComponent } from './pages/truck-table/truck-table.component';
+import { TruckCardComponent } from './components/truck-card/truck-card.component';
 
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';

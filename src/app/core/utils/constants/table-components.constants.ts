@@ -20,7 +20,7 @@ import { SortTypes } from '../../model/fuel';
 import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
 import { OwnerBackFilterQuery } from 'src/app/pages/owner/owner.modal';
 import { backFilterQueryInterface } from 'src/app/pages/trailer/trailer.modal';
-import { FilterOptions } from 'src/app/pages/truck/truck.modal';
+import { FilterOptions } from 'src/app/pages/truck/models/truck.model';
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {

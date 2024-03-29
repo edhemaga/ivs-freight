@@ -7,10 +7,13 @@ import {
 } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { TruckTService } from '../truck.service';
-import { TruckItemState, TruckItemStore } from './truck.details.store';
-import { TrucksDetailsListQuery } from '../truck-details-list-state/truck-details-list.query';
-import { TrucksDetailsListStore } from '../truck-details-list-state/truck-details-list.store';
+import { TruckTService } from '../services/truck.service';
+import {
+    TruckItemState,
+    TruckItemStore,
+} from '../state/truck-details-state/truck.details.store';
+import { TrucksDetailsListQuery } from '../state/truck-details-list-state/truck-details-list.query';
+import { TrucksDetailsListStore } from '../state/truck-details-list-state/truck-details-list.store';
 
 @Injectable({
     providedIn: 'root',

@@ -11,7 +11,7 @@ import {
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
-import { TruckTService } from 'src/app/pages/truck/state/truck.service';
+import { TruckTService } from 'src/app/pages/truck/services/truck.service';
 import { TrailerTService } from 'src/app/pages/trailer/state/trailer.service';
 import { TruckItemStore } from 'src/app/pages/truck/state/truck-details-state/truck.details.store';
 import { TrailerItemStore } from 'src/app/pages/trailer/state/trailer-details-state/trailer-details.store';

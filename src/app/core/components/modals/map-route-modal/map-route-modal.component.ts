@@ -10,7 +10,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckTService } from 'src/app/pages/truck/state/truck.service';
+import { TruckTService } from 'src/app/pages/truck/services/truck.service';
 import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';
 import { RoutingStateService } from 'src/app/pages/routing/state/routing-state/routing-state.service';
 import { CommonModule } from '@angular/common';

@@ -11,18 +11,18 @@ import { TtTitleModalComponent } from 'src/app/core/components/modals/common-tru
 
 // Services
 
-import { TruckTService } from '../state/truck.service';
+import { TruckTService } from '../../services/truck.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Queries
-import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
-import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
+import { TruckActiveQuery } from '../../state/truck-active-state/truck-active.query';
+import { TruckInactiveQuery } from '../../state/truck-inactive-state/truck-inactive.query';
 
 // Stores
-import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
-import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
+import { TruckActiveState } from '../../state/truck-active-state/truck-active.store';
+import { TruckInactiveState } from '../../state/truck-inactive-state/truck-inactive.store';
 
 // Modals
 import { TruckListResponse } from 'appcoretruckassist';
@@ -35,13 +35,13 @@ import {
     TableColumnConfig,
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
-import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
-import { BodyResponseTruck, FilterOptions } from '../truck.modal';
+import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
+import { BodyResponseTruck, FilterOptions } from '../../models/truck.model';
 import {
     DropdownItem,
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
-import { DisplayTruckConfiguration } from '../truck-card-data';
+import { DisplayTruckConfiguration } from '../../utils/constants/truck-card-data';
 
 // Pipes
 import { DatePipe } from '@angular/common';

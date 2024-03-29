@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { TruckDetailsComponent } from './truck-details.component';
+import { TruckDetailsComponent } from '../pages/truck-details/truck-details.component';
 
 const routes: Routes = [{ path: '', component: TruckDetailsComponent }];
 

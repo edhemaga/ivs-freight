@@ -11,15 +11,15 @@ import {
     TruckMinimalListResponse,
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
-import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
-import { TruckActiveStore } from './truck-active-state/truck-active.store';
-import { TruckInactiveQuery } from './truck-inactive-state/truck-inactive.query';
-import { TruckActiveQuery } from './truck-active-state/truck-active.query';
-import { TrucksMinimalListQuery } from './truck-details-minima-list-state/truck-details-minimal.query';
-import { TrucksMinimalListStore } from './truck-details-minima-list-state/truck-details-minimal.store';
-import { TruckItemStore } from './truck-details-state/truck.details.store';
+import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
+import { TruckActiveStore } from '../state/truck-active-state/truck-active.store';
+import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
+import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
+import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
+import { TruckItemStore } from '../state/truck-details-state/truck.details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
+import { TrucksDetailsListStore } from '../state/truck-details-list-state/truck-details-list.store';
 import { Router } from '@angular/router';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 @Injectable({ providedIn: 'root' })

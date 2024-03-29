@@ -4,8 +4,11 @@ import { TruckListResponse } from 'appcoretruckassist';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TruckTService } from '../truck.service';
-import { TruckActiveState, TruckActiveStore } from './truck-active.store';
+import { TruckTService } from '../services/truck.service';
+import {
+    TruckActiveState,
+    TruckActiveStore,
+} from '../state/truck-active-state/truck-active.store';
 
 @Injectable({
     providedIn: 'root',

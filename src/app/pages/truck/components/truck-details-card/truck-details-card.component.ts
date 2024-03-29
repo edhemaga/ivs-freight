@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 //Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckTService } from '../state/truck.service';
+import { TruckTService } from '../../services/truck.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 //Animations
@@ -29,13 +29,13 @@ import {
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Store
-import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListQuery } from '../../state/truck-details-minima-list-state/truck-details-minimal.query';
 
 //Models
 import { TruckResponse } from 'appcoretruckassist';
 
-import { DoughnutChartConfig } from '../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { BarChartAxes } from '../../dashboard/models/dashboard-chart-models/bar-chart.model';
+import { DoughnutChartConfig } from '../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { BarChartAxes } from '../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 
 //Enums
 import {

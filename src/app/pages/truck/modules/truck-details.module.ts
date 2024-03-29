@@ -1,9 +1,9 @@
-import { TruckDetailsItemComponent } from './truck-details-item/truck-details-item.component';
-import { TruckDetailsComponent } from './truck-details.component';
+import { TruckDetailsItemComponent } from '../components/truck-details-item/truck-details-item.component';
+import { TruckDetailsComponent } from '../pages/truck-details/truck-details.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TruckDetailsRoutes } from './truck-details.routing';
-import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
+import { TruckDetailsRoutes } from '../routing/truck-details.routing';
+import { TruckDetailsCardComponent } from '../components/truck-details-card/truck-details-card.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
