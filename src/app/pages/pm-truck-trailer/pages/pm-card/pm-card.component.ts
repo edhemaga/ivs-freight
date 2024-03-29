@@ -2,6 +2,7 @@ import {
     Component,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     SimpleChanges,
 } from '@angular/core';
@@ -26,7 +27,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     styleUrls: ['./pm-card.component.scss'],
     providers: [ValueByStringPath],
 })
-export class PmCardComponent implements OnInit, OnChanges {
+export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     // All data
     @Input() viewData: CardDetails[];
 
