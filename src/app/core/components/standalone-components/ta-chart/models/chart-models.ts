@@ -1,6 +1,6 @@
 import { ChartColor, ChartType } from 'chart.js';
 import { AnnotationPositionEnum, AxisPositionEnum } from '../enums/chart-enums';
-import { BarChartConfig } from 'src/app/pages/dashboard/state/models/dashboard-chart-models/bar-chart.model';
+import { BarChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 
 export interface AxisGridLines {
     display: boolean;

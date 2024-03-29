@@ -1,8 +1,8 @@
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
 
 // models
-import { MapStates } from '../../../../state/models/dashboard-state-models/map-states.model';
-import { MapListItem } from '../../../../state/models/dashboard-state-models/map-list-item.model';
+import { MapStates } from '../../../models/dashboard-state-models/map-states.model';
+import { MapListItem } from '../../../models/dashboard-state-models/map-list-item.model';
 
 @Component({
     selector: 'app-dashboard-state-usa',

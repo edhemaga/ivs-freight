@@ -34,8 +34,8 @@ import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state
 //Models
 import { TruckResponse } from 'appcoretruckassist';
 
-import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
-import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
+import { DoughnutChartConfig } from '../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { BarChartAxes } from '../../dashboard/models/dashboard-chart-models/bar-chart.model';
 
 //Enums
 import {

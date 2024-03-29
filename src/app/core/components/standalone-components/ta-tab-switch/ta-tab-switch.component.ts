@@ -21,8 +21,8 @@ import { TaCustomPeriodRangeComponent } from '../ta-custom-period-range/ta-custo
 
 // models
 import { Tabs } from '../../shared/model/modal-tabs';
-import { CustomPeriodRange } from 'src/app/pages/dashboard/state/models/custom-period-range.model';
-import { DropdownListItem } from 'src/app/pages/dashboard/state/models/dropdown-list-item.model';
+import { CustomPeriodRange } from 'src/app/pages/dashboard/models/custom-period-range.model';
+import { DropdownListItem } from 'src/app/pages/dashboard/models/dropdown-list-item.model';
 
 @Component({
     selector: 'app-ta-tab-switch',

@@ -11,45 +11,45 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardTopRatedService } from '../../../state/services/dashboard-top-rated.service';
-import { DashboardService } from '../../../state/services/dashboard.service';
+import { DashboardTopRatedService } from '../../services/dashboard-top-rated.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 // constants
-import { DashboardTopRatedConstants } from '../../../state/utils/constants/dashboard-top-rated.constants';
-import { DashboardColors } from '../../../state/utils/constants/dashboard-colors.constants';
-import { DashboardSubperiodConstants } from '../../../state/utils/constants/dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from '../../utils/constants/dashboard-top-rated.constants';
+import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
+import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
 
 // helpers
-import { DashboardArrayHelper } from '../../../state/utils/helpers/dashboard-array-helper';
-import { DashboardUtils } from '../../../state/utils/dashboard-utils';
+import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
+import { DashboardUtils } from '../../utils/dashboard-utils';
 
 // enum
-import { ConstantStringEnum } from '../../../state/enums/constant-string.enum';
-import { ConstantChartStringEnum } from '../../../state/enums/constant-chart-string.enum';
+import { ConstantStringEnum } from '../../enums/constant-string.enum';
+import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
 
 // models
-import { DropdownItem } from '../../../state/models/dropdown-item.model';
-import { DashboardTab } from '../../../state/models/dashboard-tab.model';
-import { DropdownListItem } from '../../../state/models/dropdown-list-item.model';
-import { TopRatedListItem } from '../../../state/models/dashboard-top-rated-models/top-rated-list-item.model';
-import { CustomPeriodRange } from '../../../state/models/custom-period-range.model';
+import { DropdownItem } from '../../models/dropdown-item.model';
+import { DashboardTab } from '../../models/dashboard-tab.model';
+import { DropdownListItem } from '../../models/dropdown-list-item.model';
+import { TopRatedListItem } from '../../models/dashboard-top-rated-models/top-rated-list-item.model';
+import { CustomPeriodRange } from '../../models/custom-period-range.model';
 import {
     TopRatedMainColorsPallete,
     TopRatedSecondaryColorsPallete,
-} from '../../../state/models/dashboard-color-models/colors-pallete.model';
+} from '../../models/dashboard-color-models/colors-pallete.model';
 import {
     ChartInitProperties,
     DoughnutChart,
     DoughnutChartConfig,
     DoughnutChartPercentage,
     DoughnutChartSigns,
-} from '../../../state/models/dashboard-chart-models/doughnut-chart.model';
+} from '../../models/dashboard-chart-models/doughnut-chart.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
-} from '../../../state/models/dashboard-chart-models/bar-chart.model';
+} from '../../models/dashboard-chart-models/bar-chart.model';
 import {
     DashboardTopReportType,
     IntervalLabelResponse,
@@ -59,7 +59,7 @@ import {
 import {
     TopRatedApiArguments,
     TopRatedWithoutTabApiArguments,
-} from '../../../state/models/dashboard-top-rated-models/top-rated-api-arguments.model';
+} from '../../models/dashboard-top-rated-models/top-rated-api-arguments.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',

@@ -52,12 +52,12 @@ import { BrokerTabEnum } from '../../customer/broker-card-view/state/enums/broke
 import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
 
 //Models
-import { DoughnutChartConfig } from '../../dashboard/state/models/dashboard-chart-models/doughnut-chart.model';
+import { DoughnutChartConfig } from '../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import {
     ChartApiCall,
     LegendAttributes,
 } from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
-import { BarChartAxes } from '../../dashboard/state/models/dashboard-chart-models/bar-chart.model';
+import { BarChartAxes } from '../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
     DriverMinimalResponse,

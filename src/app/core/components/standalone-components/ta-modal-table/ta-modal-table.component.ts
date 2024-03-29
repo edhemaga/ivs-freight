@@ -17,13 +17,7 @@ import {
     Validators,
 } from '@angular/forms';
 
-import {
-    Subject,
-    debounceTime,
-    distinctUntilChanged,
-    takeUntil,
-    throttleTime,
-} from 'rxjs';
+import { Subject, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';

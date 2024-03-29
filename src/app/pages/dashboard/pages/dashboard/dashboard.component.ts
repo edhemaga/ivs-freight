@@ -14,7 +14,7 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 
 // services
 import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { DashboardService } from '../../../state/services/dashboard.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Titles()
 @Component({

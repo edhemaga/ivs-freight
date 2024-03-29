@@ -34,7 +34,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { StoreModule } from '@ngrx/store';
-import { ArticleReducer } from './pages/dashboard/store/dashboard.reducer';
+import { ArticleReducer } from './pages/dashboard/state/dashboard.reducer';
 
 function playerFactory() {
     return player;
