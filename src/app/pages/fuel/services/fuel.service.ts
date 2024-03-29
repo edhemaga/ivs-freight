@@ -20,7 +20,7 @@ import { ClusterResponse } from 'appcoretruckassist';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Store
-import { FuelStore } from './fule-state/fuel-state.store';
+import { FuelStore } from '../state/fule-state/fuel-state.store';
 
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

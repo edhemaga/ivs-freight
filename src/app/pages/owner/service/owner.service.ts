@@ -9,10 +9,10 @@ import {
 import { Observable, tap } from 'rxjs';
 
 //Store
-import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
-import { OwnerActiveStore } from './owner-active-state/owner-active.store';
-import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';
-import { OwnerInactiveStore } from './owner-inactive-state/owner-inactive.store';
+import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
+import { OwnerActiveStore } from '../state/owner-active-state/owner-active.store';
+import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
+import { OwnerInactiveStore } from '../state/owner-inactive-state/owner-inactive.store';
 
 //Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

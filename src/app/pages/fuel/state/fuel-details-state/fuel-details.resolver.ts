@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { FuelStopResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { FuelTService } from '../fuel.service';
+import { FuelTService } from '../../services/fuel.service';
 import { FuelItemStore } from './fuel-details.store';
 
 @Injectable({

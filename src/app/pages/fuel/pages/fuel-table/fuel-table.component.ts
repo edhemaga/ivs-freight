@@ -44,14 +44,14 @@ import { TableColumnConfig } from 'src/app/core/components/shared/model/table-co
 import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
 
 //States
-import { FuelQuery } from '../state/fule-state/fuel-state.query';
+import { FuelQuery } from '../../state/fule-state/fuel-state.query';
 
 //Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { SortTypes } from 'src/app/core/model/fuel';
 
 //Services
-import { FuelTService } from '../state/fuel.service';
+import { FuelTService } from '../../services/fuel.service';
 
 @Component({
     selector: 'app-fuel-table',

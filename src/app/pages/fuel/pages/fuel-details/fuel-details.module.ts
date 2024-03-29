@@ -1,5 +1,5 @@
 import { FuelDetailsComponent } from './fuel-details.component';
-import { FuelDetailsItemComponent } from './fuel-details-item/fuel-details-item.component';
+import { FuelDetailsItemComponent } from '../../components/fuel-details-item/fuel-details-item.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';

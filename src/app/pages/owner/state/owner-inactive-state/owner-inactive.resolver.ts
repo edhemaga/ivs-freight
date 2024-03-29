@@ -6,7 +6,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { OwnerInactiveState, OwnerInactiveStore } from './owner-inactive.store';
 
 //Services
-import { OwnerTService } from '../owner.service';
+import { OwnerTService } from '../../service/owner.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 //Enums
