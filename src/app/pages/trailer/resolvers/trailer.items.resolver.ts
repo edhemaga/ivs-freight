@@ -6,11 +6,14 @@ import {
     RouterStateSnapshot,
 } from '@angular/router';
 import { Observable, tap, forkJoin } from 'rxjs';
-import { TrailerTService } from '../trailer.service';
+import { TrailerTService } from '../services/trailer.service';
 
-import { TrailerItemState, TrailerItemStore } from './trailer-details.store';
-import { TrailersDetailsListQuery } from '../trailer-details-list-state/trailer-details-list.query';
-import { TrailerDetailsListStore } from '../trailer-details-list-state/trailer-details-list.store';
+import {
+    TrailerItemState,
+    TrailerItemStore,
+} from '../state/trailer-details-state/trailer-details.store';
+import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
+import { TrailerDetailsListStore } from '../state/trailer-details-list-state/trailer-details-list.store';
 
 @Injectable({
     providedIn: 'root',

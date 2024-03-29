@@ -15,14 +15,14 @@ import {
 } from 'appcoretruckassist';
 
 // store
-import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
-import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
-import { TrailersMinimalListStore } from './trailer-minimal-list-state/trailer-minimal.store';
-import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
-import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
-import { TrailerActiveQuery } from './trailer-active-state/trailer-active.query';
-import { TrailerInactiveQuery } from './trailer-inactive-state/trailer-inactive.query';
-import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerActiveStore } from '../state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-inactive.store';
+import { TrailersMinimalListStore } from '../state/trailer-minimal-list-state/trailer-minimal.store';
+import { TrailerItemStore } from '../state/trailer-details-state/trailer-details.store';
+import { TrailerDetailsListStore } from '../state/trailer-details-list-state/trailer-details-list.store';
+import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';
+import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
+import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

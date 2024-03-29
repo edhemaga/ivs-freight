@@ -12,7 +12,7 @@ import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-mo
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerTService } from '../state/trailer.service';
+import { TrailerTService } from '../../services/trailer.service';
 
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
@@ -22,7 +22,7 @@ import {
     MappedTrailer,
     TraillerData,
     backFilterQueryInterface,
-} from '../trailer.modal';
+} from '../../models/trailer.modal';
 import {
     CardRows,
     TableOptionsInterface,
@@ -31,11 +31,11 @@ import { ToolbarActions } from 'src/app/core/model/table.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 
 // Store
-import { TrailerActiveQuery } from '../state/trailer-active-state/trailer-active.query';
-import { TrailerActiveState } from '../state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
-import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
-import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-inactive.store';
+import { TrailerActiveQuery } from '../../state/trailer-active-state/trailer-active.query';
+import { TrailerActiveState } from '../../state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveQuery } from '../../state/trailer-inactive-state/trailer-inactive.query';
+import { TrailerInactiveState } from '../../state/trailer-inactive-state/trailer-inactive.store';
+import { TrailerInactiveStore } from '../../state/trailer-inactive-state/trailer-inactive.store';
 
 // Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
@@ -52,7 +52,7 @@ import {
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Configuration
-import { DisplayTrailerConfiguration } from '../trailer-card-data';
+import { DisplayTrailerConfiguration } from '../../utils/constants/trailer-card-data';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

@@ -8,7 +8,7 @@ import { TtRegistrationModalComponent } from 'src/app/core/components/modals/com
 import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // services
-import { TrailerTService } from '../state/trailer.service';
+import { TrailerTService } from '../../services/trailer.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -17,10 +17,10 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
 // store
-import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
-import { TrailersMinimalListStore } from './../state/trailer-minimal-list-state/trailer-minimal.store';
-import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
+import { TrailerItemStore } from '../../state/trailer-details-state/trailer-details.store';
+import { TrailersMinimalListStore } from '../../state/trailer-minimal-list-state/trailer-minimal.store';
+import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state/trailer-details-list.query';
 
 // models
 import { TableOptions } from 'src/app/core/model/table.model';

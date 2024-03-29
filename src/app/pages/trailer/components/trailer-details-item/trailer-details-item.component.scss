@@ -1,4 +1,4 @@
-@import '../trailer-details.component.scss';
+@import '../../pages/trailer-details/trailer-details.component.scss';
 @keyframes change {
     from {
         color: #6c6c6c;
@@ -150,7 +150,7 @@ app-trailer-details-item {
             height: 18px;
             cursor: pointer;
             path {
-                fill: #AAAAAA;
+                fill: #aaaaaa;
             }
         }
     }
@@ -170,7 +170,8 @@ app-trailer-details-item {
                 background: rgb(108, 108, 108, 0.2);
             }
 
-            span, div {
+            span,
+            div {
                 &::-moz-selection {
                     color: $bw6-2;
                     background: rgb(108, 108, 108, 0.2);

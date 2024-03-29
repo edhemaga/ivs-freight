@@ -19,7 +19,7 @@ import {
 
 // services
 import { TruckTService } from '../../truck/services/truck.service';
-import { TrailerTService } from '../../trailer/state/trailer.service';
+import { TrailerTService } from '../../trailer/services/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateService } from '../state/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';

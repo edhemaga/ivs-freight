@@ -19,8 +19,8 @@ import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-sta
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
 import { TruckActiveResolver } from './pages/truck/resolvers/truck-active.resolver';
 import { TruckInactiveResolver } from './pages/truck/resolvers/truck-inactive.resolver';
-import { TrailerActiveResolver } from './pages/trailer/state/trailer-active-state/trailer-active.resolver';
-import { TrailerInactiveResolver } from './pages/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
+import { TrailerActiveResolver } from './pages/trailer/resolvers/trailer-active.resolver';
+import { TrailerInactiveResolver } from './pages/trailer/resolvers/trailer-inactive.resolver';
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './pages/owner/state/owner-inactive-state/owner-inactive.resolver';
 import { AccountResolver } from './pages/account/state/account-state/account.resolver';
@@ -159,7 +159,7 @@ const routes: Routes = [
     {
         path: 'list/trailer',
         loadChildren: () =>
-            import('./pages/trailer/trailer.module').then(
+            import('./pages/trailer/modules/trailer.module').then(
                 (m) => m.TrailerModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],

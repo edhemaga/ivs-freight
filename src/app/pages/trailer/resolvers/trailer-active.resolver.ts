@@ -3,8 +3,11 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerTService } from '../trailer.service';
-import { TrailerActiveState, TrailerActiveStore } from './trailer-active.store';
+import { TrailerTService } from '../services/trailer.service';
+import {
+    TrailerActiveState,
+    TrailerActiveStore,
+} from '../state/trailer-active-state/trailer-active.store';
 
 @Injectable({
     providedIn: 'root',

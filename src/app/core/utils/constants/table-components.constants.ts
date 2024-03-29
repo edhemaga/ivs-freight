@@ -19,7 +19,7 @@ import { SortTypes } from '../../model/fuel';
 // enums
 import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
 import { OwnerBackFilterQuery } from 'src/app/pages/owner/owner.modal';
-import { backFilterQueryInterface } from 'src/app/pages/trailer/trailer.modal';
+import { backFilterQueryInterface } from 'src/app/pages/trailer/models/trailer.modal';
 import { FilterOptions } from 'src/app/pages/truck/models/truck-filter.model';
 
 export class TableDropdownComponentConstants {

@@ -25,7 +25,7 @@ import {
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 // store
-import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state/trailer-minimal.query';
 
 // models
 import { TableOptions } from 'src/app/core/model/table.model';
