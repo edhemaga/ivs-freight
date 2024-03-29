@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // Components
-import { BrokerCardComponent } from './broker-card/broker-card.component';
-import { CustomerTableComponent } from './customer-table/customer-table.component';
+import { BrokerCardComponent } from './pages/broker-card/broker-card.component';
+import { CustomerTableComponent } from './pages/customer-table/customer-table.component';
 
 // Resolvers
-import { ShipperSingleResolver } from './state/shipper-state/shipper-details-state/shipper-single.resolver';
-import { BrokerDetailsResolver } from './state/broker-details-state/broker-details.resolver';
-import { BrokerMinimalListResolver } from './state/broker-details-state/broker-minimal-list-state/broker-minimal.resolver';
-import { ShipperMinimalListResolver } from './state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.resolver';
+import { ShipperSingleResolver } from './resolvers/shipper-single.resolver';
+import { BrokerDetailsResolver } from './resolvers/broker-details.resolver';
+import { BrokerMinimalListResolver } from './resolvers/broker-minimal.resolver';
+import { ShipperMinimalListResolver } from './resolvers/shipper-minimal.resolver';
 
 const routes: Routes = [
     {
@@ -20,7 +20,7 @@ const routes: Routes = [
     {
         path: ':id/shipper-details',
         loadChildren: () =>
-            import('./shipper-details/shipper-details.module').then(
+            import('./pages/shipper-details/shipper-details.module').then(
                 (m) => m.ShipperDetailsModule
             ),
         resolve: {
@@ -32,7 +32,7 @@ const routes: Routes = [
     {
         path: ':id/broker-details',
         loadChildren: () =>
-            import('./broker-details/broker-details.module').then(
+            import('./pages/broker-details/broker-details.module').then(
                 (m) => m.BrokerDetailsModule
             ),
         resolve: {

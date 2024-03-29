@@ -1,5 +1,5 @@
 //modules
-import { ShipperDetailsModule } from './shipper-details/shipper-details.module';
+import { ShipperDetailsModule } from './pages/shipper-details/shipper-details.module';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -8,12 +8,12 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
-import { BrokerDetailsModule } from './broker-details/broker-details.module';
+import { BrokerDetailsModule } from './pages/broker-details/broker-details.module';
 
 //components
-import { BrokerCardComponent } from './broker-card/broker-card.component';
+import { BrokerCardComponent } from './pages/broker-card/broker-card.component';
 
-import { CustomerTableComponent } from './customer-table/customer-table.component';
+import { CustomerTableComponent } from './pages/customer-table/customer-table.component';
 
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
@@ -27,7 +27,7 @@ import { MapsComponent } from 'src/app/core/components/shared/maps/maps.componen
 import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
 import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
 
-import { CustomerCardComponent } from './customer-card/customer-card.component';
+import { CustomerCardComponent } from './components/customer-card/customer-card.component';
 
 import { TaInputDropdownTableComponent } from 'src/app/core/components/standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';

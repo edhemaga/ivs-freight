@@ -12,8 +12,8 @@ import { VerifyUserHelperComponent } from './pages/website/components/website-si
 import { RegisterCompanyHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
 import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
 
-import { BrokerResolver } from './pages/customer/state/broker-state/broker.resolver';
-import { ShipperResolver } from './pages/customer/state/shipper-state/shipper.resolver';
+import { BrokerResolver } from './pages/customer/resolvers/broker.resolver';
+import { ShipperResolver } from './pages/customer/resolvers/shipper.resolver';
 import { ShopResolver } from './pages/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
