@@ -9,7 +9,7 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 import { LoadResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
+import { LoadMinimalListQuery } from '../../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({

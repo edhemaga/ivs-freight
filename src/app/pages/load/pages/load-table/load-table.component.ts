@@ -7,7 +7,7 @@ import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/co
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { LoadTService } from '../state/load.service';
+import { LoadTService } from '../../services/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
@@ -38,16 +38,16 @@ import {
 } from 'src/app/core/components/shared/model/table-components/load-modal';
 
 // Queries
-import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
-import { LoadClosedQuery } from '../state/load-closed-state/load-closed.query';
-import { LoadPandinQuery } from '../state/load-pending-state/load-pending.query';
-import { LoadTemplateQuery } from '../state/load-template-state/load-template.query';
+import { LoadActiveQuery } from '../../state/load-active-state/load-active.query';
+import { LoadClosedQuery } from '../../state/load-closed-state/load-closed.query';
+import { LoadPandinQuery } from '../../state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '../../state/load-template-state/load-template.query';
 
 // Store
-import { LoadActiveState } from '../state/load-active-state/load-active.store';
-import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
-import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
-import { LoadTemplateState } from '../state/load-template-state/load-template.store';
+import { LoadActiveState } from '../../state/load-active-state/load-active.store';
+import { LoadClosedState } from '../../state/load-closed-state/load-closed.store';
+import { LoadPandingState } from '../../state/load-pending-state/load-panding.store';
+import { LoadTemplateState } from '../../state/load-template-state/load-template.store';
 
 // Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';

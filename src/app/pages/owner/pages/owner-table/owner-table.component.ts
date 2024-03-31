@@ -57,7 +57,7 @@ import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import { DisplayOwnerConfiguration } from '../../utils/constants/owner-card.constant';
+import { DisplayOwnerConfiguration } from '../../utils/constants/owner-card.constants';
 
 //helpers
 import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
