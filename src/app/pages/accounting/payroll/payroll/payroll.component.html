@@ -1,0 +1,40 @@
+<div class="table-container d-flex">
+    <div class="payroll-main" [class.open]="!tableExpanded">
+        <app-truckassist-table-toolbar
+            (toolBarAction)="onToolBarAction($event)"
+            [options]="tableOptions"
+            [tableData]="tableData"
+            [selectedTab]="selectedTab"
+            [columns]="columns"
+        ></app-truckassist-table-toolbar>
+
+        <div class="payroll-tables-holder">
+            <ng-container *ngFor="let d of payrollData | async">
+                <div class="card-holder">
+                    <app-ta-custom-card
+                        [cardName]="tableExpanded ? d.title : d.short_title"
+                        [hasLeftCounter]="d.count"
+                        [isCardOpen]="false"
+                        [hasDivider]="false"
+                        [hasPayrollStatus]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '0px'
+                        }"
+                    >
+                        <app-payroll-table
+                            [title]="d.title"
+                            [tableSettings]="d.tableSettings"
+                            [expandedTable]="tableExpanded"
+                            [tableData]="d.data"
+                            (expandTable)="expandTable($event)"
+                        ></app-payroll-table>
+                    </app-ta-custom-card>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="report-hold" *ngIf="!tableExpanded">
+        <app-payroll-report [reportTableData]="reportTableData"></app-payroll-report>
+    </div>
+</div>
