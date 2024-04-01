@@ -8,7 +8,7 @@ import { SettingsLocationService } from '../../services/settings-location.servic
 import { CompanyRepairShopService } from '../../services/company-repairshop.service';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { RepairTService } from 'src/app/pages/repair/state/repair.service';
+import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ActivatedRoute } from '@angular/router';
 @Component({

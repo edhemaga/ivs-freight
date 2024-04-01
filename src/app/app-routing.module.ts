@@ -11,21 +11,20 @@ import { RegisterUserHaveAccountHelperComponent } from './pages/website/componen
 import { VerifyUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
 import { RegisterCompanyHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
 import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
-
 import { BrokerResolver } from './pages/customer/resolvers/broker.resolver';
 import { ShipperResolver } from './pages/customer/resolvers/shipper.resolver';
-import { ShopResolver } from './pages/repair/state/shop-state/shop.resolver';
+import { ShopResolver } from './pages/repair/resolvers/shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
-import { TruckActiveResolver } from './pages/truck/state/truck-active-state/truck-active.resolver';
-import { TruckInactiveResolver } from './pages/truck/state/truck-inactive-state/truck-inactive.resolver';
-import { TrailerActiveResolver } from './pages/trailer/state/trailer-active-state/trailer-active.resolver';
-import { TrailerInactiveResolver } from './pages/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
+import { TruckActiveResolver } from './pages/truck/resolvers/truck-active.resolver';
+import { TruckInactiveResolver } from './pages/truck/resolvers/truck-inactive.resolver';
+import { TrailerActiveResolver } from './pages/trailer/resolvers/trailer-active.resolver';
+import { TrailerInactiveResolver } from './pages/trailer/resolvers/trailer-inactive.resolver';
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './pages/owner/state/owner-inactive-state/owner-inactive.resolver';
 import { AccountResolver } from './pages/account/resolvers/account.resolver';
-import { RepairTruckResolver } from './pages/repair/state/repair-truck-state/repair-truck.resolver';
-import { RepairTrailerResolver } from './pages/repair/state/repair-trailer-state/repair-trailer.resolver';
+import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
+import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
 import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
@@ -34,20 +33,20 @@ import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './pages/load/state/load-template-state/load-template.resolver';
-import { RoadsideActiveResolver } from './pages/safety/violation/state/roadside-state/roadside-active/roadside-active.resolver';
-import { RoadsideInactiveResolver } from './pages/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.resolver';
-import { AccidentActiveResolver } from './pages/safety/accident/state/accident-state/accident-active/accident-active.resolver';
-import { AccidentInactiveResolver } from './pages/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
-import { AccidentNonReportedResolver } from './pages/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
+import { RoadsideActiveResolver } from './pages/safety/resolvers/roadside-active.resolver';
+import { RoadsideInactiveResolver } from './pages/safety/resolvers/roadside-inactive.resolver';
+import { AccidentActiveResolver } from './pages/safety/resolvers/accident-active.resolver';
+import { AccidentInactiveResolver } from './pages/safety/resolvers/accident-inactive.resolver';
+import { AccidentNonReportedResolver } from './pages/safety/resolvers/accident-non-reported.resolver';
 import { ApplicantResolver } from './pages/applicant/resolvers/applicant.resolver';
 import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver';
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './pages/applicant/resolvers/applicant-sph-form.resolver';
-import { MilesResolverService } from './pages/miles/state/miles-resolver.service';
+import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.service';
 import { DispatcherResolverService } from './pages/dispatch/services/dispatcher-resolver.service';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { ApplicantGuard } from './core/guards/applicant.guard';
-import { RoutingResolver } from './pages/routing/state/routing-state/routing-state.resolver';
+import { RoutingResolver } from './pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from './pages/telematic/resolvers/telematic-state.resolver';
 import { DashboardResolver } from './pages/dashboard/resolvers/dashboard.resolver';
 import { CompanySettingsGuard } from './core/guards/company-settings.guard';
@@ -159,7 +158,7 @@ const routes: Routes = [
     {
         path: 'list/trailer',
         loadChildren: () =>
-            import('./pages/trailer/trailer.module').then(
+            import('./pages/trailer/modules/trailer.module').then(
                 (m) => m.TrailerModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
@@ -180,7 +179,9 @@ const routes: Routes = [
     {
         path: 'list/repair',
         loadChildren: () =>
-            import('./pages/repair/repair.module').then((m) => m.RepairModule),
+            import('./pages/repair/modules/repair.module').then(
+                (m) => m.RepairModule
+            ),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             repairTruck: RepairTruckResolver,
@@ -342,7 +343,7 @@ const routes: Routes = [
     {
         path: 'safety/violation',
         loadChildren: () =>
-            import('./pages/safety/violation/violation.module').then(
+            import('./pages/safety/modules/violation.module').then(
                 (m) => m.ViolationModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
@@ -354,7 +355,7 @@ const routes: Routes = [
     {
         path: 'safety/accident',
         loadChildren: () =>
-            import('./pages/safety/accident/accident.module').then(
+            import('./pages/safety/modules/accident.module').then(
                 (m) => m.AccidentModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],

@@ -1,0 +1,89 @@
+@import '../../pages/trailer-details/trailer-details.component.scss';
+app-trailer-details-card {
+    .custom-card-single {
+        background-color: #ffffff;
+        border-radius: 3px;
+        padding-left: 4px;
+        padding-top: 1px;
+        padding-right: 5px;
+        padding-bottom: 1px;
+        max-width: 440px;
+        margin-top: 8px;
+    }
+    .wrapper-additional-cards {
+        max-height: calc(77vh - 74px);
+        // min-height: calc(26vh - 10px);
+        min-height: fit-content;
+        display: grid;
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        .card-footer-cmp {
+            padding-bottom: 0 !important;
+        }
+    }
+    .cards-item-wrapper-1 {
+        overflow: hidden;
+    }
+    .details-cards {
+        background-color: #ffffff;
+        width: 440px;
+        padding: 9px 6px;
+    }
+    .status-container {
+        padding-bottom: 12px;
+    }
+    .date-from-to {
+        span {
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    }
+    .assignTo-item {
+        height: 34px;
+        .assignTo-vehicle {
+            padding-left: 6px;
+            svg {
+                width: fit-content !important;
+            }
+        }
+
+        .driverAvatarImg {
+            height: 20px;
+            width: 24px;
+            margin-right: 6px;
+            margin-left: 6px;
+            position: relative;
+            bottom: 0px;
+
+            background-size: cover;
+            background-position: center;
+        }
+    }
+    .details-header-model {
+        svg {
+            width: 165px;
+            height: 30px;
+        }
+    }
+    .note-cards {
+        padding: 0px 6px 0px 4px;
+    }
+}
+.wrapper-owner-items {
+    display: grid;
+    row-gap: 12px;
+    padding-top: 12px;
+}
+.no-truck {
+    color: #2f2f2f !important;
+}

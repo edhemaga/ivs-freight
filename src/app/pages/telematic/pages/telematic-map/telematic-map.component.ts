@@ -18,8 +18,8 @@ import {
 } from '@angular/forms';
 
 // services
-import { TruckTService } from '../../../truck/state/truck.service';
-import { TrailerTService } from '../../../trailer/state/trailer.service';
+import { TruckTService } from '../../../truck/services/truck.service';
+import { TrailerTService } from '../../../trailer/services/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
