@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 
 // components
 import { ApplicantComponent } from './pages/applicant/applicant.component';
-import { Step1Component } from './pages/applicant-steps/step1/step1.component';
-import { Step2Component } from './pages/applicant-steps/step2/step2.component';
-import { Step3Component } from './pages/applicant-steps/step3/step3.component';
-import { Step4Component } from './pages/applicant-steps/step4/step4.component';
-import { Step5Component } from './pages/applicant-steps/step5/step5.component';
-import { Step6Component } from './pages/applicant-steps/step6/step6.component';
-import { Step7Component } from './pages/applicant-steps/step7/step7.component';
-import { Step8Component } from './pages/applicant-steps/step8/step8.component';
-import { Step9Component } from './pages/applicant-steps/step9/step9.component';
-import { Step10Component } from './pages/applicant-steps/step10/step10.component';
-import { Step11Component } from './pages/applicant-steps/step11/step11.component';
+import { Step1Component } from './pages/applicant-application/components/step1/step1.component';
+import { Step2Component } from './pages/applicant-application/components/step2/step2.component';
+import { Step3Component } from './pages/applicant-application/components/step3/step3.component';
+import { Step4Component } from './pages/applicant-application/components/step4/step4.component';
+import { Step5Component } from './pages/applicant-application/components/step5/step5.component';
+import { Step6Component } from './pages/applicant-application/components/step6/step6.component';
+import { Step7Component } from './pages/applicant-application/components/step7/step7.component';
+import { Step8Component } from './pages/applicant-application/components/step8/step8.component';
+import { Step9Component } from './pages/applicant-application/components/step9/step9.component';
+import { Step10Component } from './pages/applicant-application/components/step10/step10.component';
+import { Step11Component } from './pages/applicant-application/components/step11/step11.component';
 
 const routes: Routes = [
     {

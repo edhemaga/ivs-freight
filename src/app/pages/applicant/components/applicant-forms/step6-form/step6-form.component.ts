@@ -29,7 +29,7 @@ import {
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/applicant-utils';
+} from '../../../utils/helpers/applicant.helper';
 
 // validations
 import {
