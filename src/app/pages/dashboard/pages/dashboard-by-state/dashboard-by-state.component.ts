@@ -10,7 +10,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardByStateService } from '../../services/dashboard-by-state.service';
+import { DashboardByStateService } from './services/dashboard-by-state.service';
 import { DashboardService } from '../../services/dashboard.service';
 
 // enums

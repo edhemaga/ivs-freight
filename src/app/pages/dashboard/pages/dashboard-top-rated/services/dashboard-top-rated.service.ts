@@ -17,7 +17,7 @@ import {
 import {
     TopRatedApiArguments,
     TopRatedWithoutTabApiArguments,
-} from '../models/dashboard-top-rated-models/top-rated-api-arguments.model';
+} from '../../../models/dashboard-top-rated-models/top-rated-api-arguments.model';
 
 @Injectable({
     providedIn: 'root',

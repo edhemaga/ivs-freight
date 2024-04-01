@@ -15,7 +15,7 @@ import {
 import {
     ByStateApiArguments,
     ByStateWithLoadStopApiArguments,
-} from '../models/dashboard-by-state-models/by-state-api-arguments.model';
+} from '../../../models/dashboard-by-state-models/by-state-api-arguments.model';
 
 @Injectable({
     providedIn: 'root',
