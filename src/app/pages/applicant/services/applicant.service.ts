@@ -28,10 +28,6 @@ import {
     CreateSevenDaysHosReviewCommand,
     CreateDrugAndAlcoholReviewCommand,
     InvitePreviousEmployerCommand,
-    VerifyPreviousEmployerCommand,
-    CreatePreviousEmployerAccidentHistoryCommand,
-    CreatePreviousEmployerDrugAndAlcoholCommand,
-    SphPreviousEmployerProspectResponse,
     InviteEmployerResponse,
     UpdateAuthorizationCommand,
     UpdateDisclosureReleaseCommand,
@@ -379,30 +375,6 @@ export class ApplicantService {
         data: InvitePreviousEmployerCommand
     ): Observable<InviteEmployerResponse> {
         return this.applicantService.apiApplicantPreviousemployerPost(data);
-    }
-
-    public verifyPreviousEmployerSphForm(
-        data: VerifyPreviousEmployerCommand
-    ): Observable<SphPreviousEmployerProspectResponse> {
-        return this.applicantService.apiApplicantPreviousemployerVerifyPost(
-            data
-        );
-    }
-
-    public createAccidentHistorySphForm(
-        data: CreatePreviousEmployerAccidentHistoryCommand
-    ): Observable<CreateResponse> {
-        return this.applicantService.apiApplicantPreviousemployerAccidenthistoryPost(
-            data
-        );
-    }
-
-    public createDrugAndAlcoholSphForm(
-        data: CreatePreviousEmployerDrugAndAlcoholCommand
-    ): Observable<CreateResponse> {
-        return this.applicantService.apiApplicantPreviousemployerDrugandalcoholPost(
-            data
-        );
     }
 
     /* BACKEND PUT ACTION FUNCTIONS - REVIEW MODE */

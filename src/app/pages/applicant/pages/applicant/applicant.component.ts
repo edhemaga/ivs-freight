@@ -8,7 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     isAnyPropertyInObjectFalse,
     isAnyValueInArrayTrue,
-} from '../../utils/applicant-utils';
+} from '../../utils/helpers/applicant.helper';
 
 // store
 import { ApplicantQuery } from '../../state/applicant.query';

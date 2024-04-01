@@ -11,7 +11,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardTopRatedService } from '../../services/dashboard-top-rated.service';
+import { DashboardTopRatedService } from './services/dashboard-top-rated.service';
 import { DashboardService } from '../../services/dashboard.service';
 
 // constants

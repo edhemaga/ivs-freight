@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 // animations
-import { fadeInAnimation } from '../../../../utils/animation';
+import { fadeInAnimation } from '../../../../animations/website-animation';
 
 @Component({
     selector: 'app-sidebar-resend-btn',

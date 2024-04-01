@@ -39,7 +39,7 @@ import { ApplicantQuery } from '../../../state/applicant.query';
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/applicant-utils';
+} from '../../../utils/helpers/applicant.helper';
 
 // enums
 import { InputSwitchActions } from '../../../enums/input-switch-actions.enum';

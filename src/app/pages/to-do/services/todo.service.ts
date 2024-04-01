@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
-import { TodoStore } from '../state/todo.store';
+import { TodoStore } from '../state/to-do.store';
 import { tap } from 'rxjs/operators';
 
 // services

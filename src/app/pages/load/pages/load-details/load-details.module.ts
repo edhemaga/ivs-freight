@@ -5,7 +5,7 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { LoadDetailsRoutes } from './load-details.routing';
 import { LoadDetailsComponent } from './load-details.component';
 import { LoadDetailsItemComponent } from '../../components/load-details-item/load-details-item.component';
-import { LoadCardViewComponent } from '../../components/load-card-view/load-card-view.component';
+import { LoadDetailsCardComponent } from '../../components/load-details-card/load-details-card.component';
 import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
 import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
@@ -25,9 +25,9 @@ import { MapsComponent } from 'src/app/core/components/shared/maps/maps.componen
     declarations: [
         LoadDetailsComponent,
         LoadDetailsItemComponent,
-        LoadCardViewComponent,
+        LoadDetailsCardComponent,
     ],
-    exports: [LoadCardViewComponent, SharedModule],
+    exports: [LoadDetailsCardComponent, SharedModule],
 
     imports: [
         CommonModule,
