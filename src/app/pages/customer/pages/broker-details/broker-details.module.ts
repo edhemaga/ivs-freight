@@ -9,8 +9,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // Components
-import { BrokerDetailsSingleComponent } from '../../components/broker-details-single/broker-details-single.component';
-import { BrokerCardViewComponent } from '../../components/broker-card-view/broker-card-view.component';
+import { BrokerDetailsItemComponent } from './components/broker-details-item/broker-details-item.component';
+import { BrokerDetailsCardComponent } from './components/broker-details-card/broker-details-card.component';
 import { BrokerDetailsComponent } from './broker-details.component';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
@@ -30,10 +30,10 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 @NgModule({
     declarations: [
         BrokerDetailsComponent,
-        BrokerCardViewComponent,
-        BrokerDetailsSingleComponent,
+        BrokerDetailsCardComponent,
+        BrokerDetailsItemComponent,
     ],
-    exports: [BrokerCardViewComponent, SharedModule],
+    exports: [BrokerDetailsCardComponent, SharedModule],
     imports: [
         // Routes
         BrokerDetailsRoutes,
