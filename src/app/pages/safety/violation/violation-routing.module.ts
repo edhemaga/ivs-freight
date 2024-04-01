@@ -13,9 +13,9 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import(
-                './pages/violation-details-pag/violation-details.module'
-            ).then((m) => m.ViolationDetailsModule),
+            import('./pages/violation-details/violation-details.module').then(
+                (m) => m.ViolationDetailsModule
+            ),
         resolve: {
             roadItem: RoadItemResolver,
             roadMinimal: RoadsideMinimalResolver,
