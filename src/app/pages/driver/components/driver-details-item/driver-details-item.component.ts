@@ -21,10 +21,10 @@ import { ConfirmationModalComponent } from 'src/app/core/components/modals/confi
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { CdlTService } from '../../state/cdl.service';
-import { MedicalTService } from '../../state/medical.service';
-import { MvrTService } from '../../state/mvr.service';
-import { TestTService } from '../../state/test.service';
+import { CdlTService } from '../../services/cdl.service';
+import { MedicalTService } from '../../services/medical.service';
+import { MvrTService } from '../../services/mvr.service';
+import { TestTService } from '../../services/test.service';
 import {
     animate,
     style,

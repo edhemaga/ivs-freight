@@ -16,7 +16,7 @@ import {
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 //Store
-import { ApplicantTableStore } from './applicant-state/applicant-table.store';
+import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
 
 @Injectable({
     providedIn: 'root',

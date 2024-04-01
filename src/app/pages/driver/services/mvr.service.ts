@@ -1,12 +1,9 @@
+import { MvrService } from 'appcoretruckassist';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, tap, Subject } from 'rxjs';
 
 //Models
-import {
-    GetTestModalResponse,
-    TestResponse,
-    TestService,
-} from 'appcoretruckassist';
+import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 
 //Services
 import { DriverTService } from './driver.service';
@@ -14,20 +11,21 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Store
-import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { DriversActiveQuery } from './driver-active-state/driver-active.query';
-import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
-import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
+import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
+import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TestTService implements OnDestroy {
+export class MvrTService implements OnDestroy {
     private destroy$ = new Subject<void>();
+
     constructor(
-        private drugService: TestService,
+        private mvrService: MvrService,
         private driverService: DriverTService,
         private driverActiveStore: DriversActiveStore,
         private driverActiveQuery: DriversActiveQuery,
@@ -39,10 +37,10 @@ export class TestTService implements OnDestroy {
         private formDataService: FormDataService
     ) {}
 
-    // Add Test
-    public addTest(data: any): Observable<any> {
+    // Add Mvr
+    public addMvr(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
-        return this.drugService.apiTestPost().pipe(
+        return this.mvrService.apiMvrPost().pipe(
             tap(() => {
                 if (data?.driverId) {
                     let driverById = this.driverService
@@ -109,41 +107,8 @@ export class TestTService implements OnDestroy {
         );
     }
 
-    public updateTest(data: any): Observable<object> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.drugService.apiTestPut().pipe(
-            tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0];
-                const dr = this.driverItemStore.getValue();
-                const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
-
-                let testApi = this.drugService.apiTestIdGet(res.id).subscribe({
-                    next: (resp: any) => {
-                        newData.tests.map((reg: any, index: any) => {
-                            if (reg.id == resp.id) {
-                                newData.tests[index] = resp;
-                            }
-                        });
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
-
-                        testApi.unsubscribe();
-                    },
-                });
-            })
-        );
-    }
-
-    public deleteTestById(id: number): Observable<any> {
-        return this.drugService.apiTestIdDelete(id).pipe(
+    public deleteMvrById(id: number): Observable<any> {
+        return this.mvrService.apiMvrIdDelete(id).pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
@@ -151,13 +116,13 @@ export class TestTService implements OnDestroy {
                 let newData = driverData[driverId];
 
                 let indexNum;
-                newData.tests.map((reg: any, index: any) => {
+                newData.mvrs.map((reg: any, index: any) => {
                     if (reg.id == id) {
                         indexNum = index;
                     }
                 });
 
-                newData.tests.splice(indexNum, 1);
+                newData.mvrs.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
                     animation: 'update',
@@ -171,12 +136,45 @@ export class TestTService implements OnDestroy {
         );
     }
 
-    public getTestById(id: number): Observable<TestResponse> {
-        return this.drugService.apiTestIdGet(id);
+    public getMvrById(id: number): Observable<MvrResponse> {
+        return this.mvrService.apiMvrIdGet(id);
     }
 
-    public getTestDropdowns(): Observable<GetTestModalResponse> {
-        return this.drugService.apiTestModalGet();
+    public updateMvr(data: any): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.mvrService.apiMvrPut().pipe(
+            tap((res: any) => {
+                let driverId = this.driverItemStore.getValue().ids[0];
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let mvrApi = this.mvrService.apiMvrIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+                        newData.mvrs.map((reg: any, index: any) => {
+                            if (reg.id == resp.id) {
+                                newData.mvrs[index] = resp;
+                            }
+                        });
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        mvrApi.unsubscribe();
+                    },
+                });
+            })
+        );
+    }
+
+    public getMvrModal(driverId: number): Observable<GetMvrModalResponse> {
+        return this.mvrService.apiMvrModalDriverIdGet(driverId);
     }
     ngOnDestroy(): void {
         this.destroy$.next();

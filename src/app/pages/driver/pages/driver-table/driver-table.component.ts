@@ -13,25 +13,25 @@ import { ApplicantModalComponent } from 'src/app/core/components/modals/applican
 
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { DriverTService } from '../state/driver.service';
+import { DriverTService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ApplicantTService } from '../state/applicant.service';
+import { ApplicantTService } from '../../services/applicant.service';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 
 // Queries
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
-import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
+import { DriversActiveQuery } from '../../state/driver-active-state/driver-active.query';
+import { ApplicantTableQuery } from '../../state/applicant-state/applicant-table.query';
 
 // Store
-import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
+import { DriversActiveState } from '../../state/driver-active-state/driver-active.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
-} from '../state/driver-inactive-state/driver-inactive.store';
-import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
+} from '../../state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '../../state/driver-inactive-state/driver-inactive.query';
+import { ApplicantTableStore } from '../../state/applicant-state/applicant-table.store';
 
 // Pipes
 import { DatePipe } from '@angular/common';
@@ -63,7 +63,7 @@ import {
     closeAnimationAction,
 } from 'src/app/core/utils/methods.globals';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
-import { DisplayDriverConfiguration } from '../driver-card-data';
+import { DisplayDriverConfiguration } from '../../utils/constants/driver-card-data.constants';
 import {
     DropdownItem,
     GridColumn,

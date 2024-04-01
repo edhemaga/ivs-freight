@@ -18,14 +18,14 @@ import {
 } from 'appcoretruckassist';
 
 //Store
-import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { DriversActiveQuery } from './driver-active-state/driver-active.query';
-import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
-import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
-import { DriversMinimalListStore } from './driver-details-minimal-list-state/driver-minimal-list.store';
-import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
+import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
+import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
+import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
+import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
+import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
 
 //Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

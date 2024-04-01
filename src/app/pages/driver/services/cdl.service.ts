@@ -16,10 +16,10 @@ import { DriverTService } from './driver.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Store
-import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
+import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
+import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
 
 @Injectable({
     providedIn: 'root',

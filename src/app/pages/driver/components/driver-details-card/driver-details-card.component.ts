@@ -27,11 +27,11 @@ import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 //Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { CdlTService } from '../state/cdl.service';
-import { MedicalTService } from '../state/medical.service';
-import { MvrTService } from '../state/mvr.service';
-import { TestTService } from '../state/test.service';
-import { DriverTService } from '../state/driver.service';
+import { CdlTService } from '../../services/cdl.service';
+import { MedicalTService } from '../../services/medical.service';
+import { MvrTService } from '../../services/mvr.service';
+import { TestTService } from '../../services/test.service';
+import { DriverTService } from '../../services/driver.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -44,20 +44,21 @@ import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-m
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 //Store
-import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversMinimalListQuery } from '../../state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
 import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
-import { BrokerTabEnum } from '../../customer/broker-card-view/state/enums/broker-enum';
-import { DriverEnum, DriverImagesEnum } from './state/enums/driver-enums';
+import { BrokerTabEnum } from '../../../customer/broker-card-view/state/enums/broker-enum';
+import { DriverEnum } from '../../enums/driver-details-card.enum';
+import { DriverImagesEnum } from '../../enums/driver-images.enum';
 
 //Models
-import { DoughnutChartConfig } from '../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { DoughnutChartConfig } from '../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import {
     ChartApiCall,
     LegendAttributes,
 } from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
-import { BarChartAxes } from '../../dashboard/models/dashboard-chart-models/bar-chart.model';
+import { BarChartAxes } from '../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
     DriverMinimalResponse,
@@ -69,11 +70,11 @@ import {
     TestResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
-import { DriverDateInfo, DriverDropdowns } from './state/models/driver-models';
+import { DriverDateInfo, DriverDropdowns } from '../../models/driver-details-card.model';
 
 //Constants
 import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
-import { DriverConstants } from './state/constants/driver.constants';
+import { DriverConstants } from '../../utils/constants/driver-details-card.constants';
 
 @Component({
     selector: 'app-driver-details-card',
