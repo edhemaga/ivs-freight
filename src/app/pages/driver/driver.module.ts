@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DriverRoutingModule } from './driver-routing.module';
 //components
-import { DriverTableComponent } from './driver-table/driver-table.component';
-import { DriverCardComponent } from './driver-card/driver-card.component';
+import { DriverTableComponent } from './pages/driver-table/driver-table.component';
+import { DriverCardComponent } from './pages/driver-card/driver-card.component';
 
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 

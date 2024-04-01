@@ -19,7 +19,7 @@ import { CardRows } from '../../../shared/model/card-data.model';
 import { ModalModelData } from '../models/modal-input.model';
 
 // Configuration for modals
-import { DisplayLoadConfiguration } from 'src/app/pages/load/load-card-data';
+import { DisplayLoadConfiguration } from 'src/app/pages/load/utils/constants/load-card.constants';
 
 // Services
 import { ModalService } from '../../../shared/ta-modal/modal.service';

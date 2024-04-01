@@ -41,7 +41,7 @@ import { TaChartComponent } from 'src/app/core/components/standalone-components/
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from 'src/app/settings/settings-company/utils/enums/settings.enum';
+import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
 import { BrokerTabEnum } from './state/enums/broker-enum';
 
 @Component({
