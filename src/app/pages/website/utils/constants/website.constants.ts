@@ -1,4 +1,4 @@
-import { NavigationModel } from '../models/navigation.model';
+import { NavigationModel } from '../../models/navigation.model';
 
 export const NAVBAR_MENU_ITEMS: NavigationModel[] = [
     {
