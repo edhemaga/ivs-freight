@@ -8,9 +8,9 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { RoadsideService } from '../../services/roadside.service';
 
 @Component({
-    selector: 'app-violation-details-page',
-    templateUrl: './violation-details-page.component.html',
-    styleUrls: ['./violation-details-page.component.scss'],
+    selector: 'app-violation-details',
+    templateUrl: './violation-details.component.html',
+    styleUrls: ['./violation-details.component.scss'],
     providers: [DetailsPageService],
 })
 export class ViolationDetailsPageComponent implements OnInit {

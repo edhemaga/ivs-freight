@@ -14,7 +14,7 @@ const routes: Routes = [
         path: ':id/details',
         loadChildren: () =>
             import(
-                './pages/violation-details-page/violation-details.module'
+                './pages/violation-details-pag/violation-details.module'
             ).then((m) => m.ViolationDetailsModule),
         resolve: {
             roadItem: RoadItemResolver,
