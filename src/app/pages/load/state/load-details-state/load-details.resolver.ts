@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { LoadResponse } from 'appcoretruckassist';
-import { LoadTService } from '../load.service';
+import { LoadTService } from '../../services/load.service';
 import { LoadDetailsListQuery } from './load-details-list-state/load-d-list.query';
 import { LoadDetailsListStore } from './load-details-list-state/load-d-list.store';
 import { LoadItemStore } from './load-details.store';

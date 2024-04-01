@@ -31,7 +31,7 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { TaInputDropdownTableService } from '../ta-input-dropdown-table/utils/services/ta-input-dropdown-table.service';
-import { LoadTService } from 'src/app/pages/load/state/load.service';
+import { LoadTService } from 'src/app/pages/load/services/load.service';
 
 // utils
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';

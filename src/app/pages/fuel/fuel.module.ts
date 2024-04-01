@@ -1,7 +1,7 @@
 // Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FuelTableComponent } from './fuel-table/fuel-table.component';
+import { FuelTableComponent } from './pages/fuel-table/fuel-table.component';
 import { FuelRoutingModule } from './fuel-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';

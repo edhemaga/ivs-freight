@@ -26,7 +26,7 @@ import { ConstantStringTableDropdownEnum } from '../../../../utils/enums/ta-inpu
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputDropdownTableService } from '../utils/services/ta-input-dropdown-table.service';
-import { LoadTService } from 'src/app/pages/load/state/load.service';
+import { LoadTService } from 'src/app/pages/load/services/load.service';
 
 @Component({
     selector: 'app-ta-new-comment',

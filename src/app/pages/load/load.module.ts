@@ -6,9 +6,9 @@ import { LoadRoutingModule } from './load-routing.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
-import { LoadTableComponent } from './load-table/load-table.component';
-import { LoadCardComponent } from './load-card/load-card.component';
-import { LoadDetailsModule } from './load-details/load-details.module';
+import { LoadTableComponent } from './pages/load-table/load-table.component';
+import { LoadCardComponent } from './pages/load-card/load-card.component';
+import { LoadDetailsModule } from './pages/load-details/load-details.module';
 
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';

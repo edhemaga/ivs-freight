@@ -9,8 +9,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaskNumberPipe } from 'src/app/core/pipes/maskNumber.pipe';
 
 // Components
-import { OwnerTableComponent } from './owner-table/owner-table.component';
-import { OwnerCardComponent } from './owner-card/owner-card.component';
+import { OwnerTableComponent } from './pages/owner-table/owner-table.component';
+import { OwnerCardComponent } from './pages/owner-card/owner-card.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';

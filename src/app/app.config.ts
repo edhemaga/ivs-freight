@@ -5,7 +5,7 @@ import {
 
 import { environment } from '../environments/environment';
 
-import { UserLoggedService } from './pages/website/state/service/user-logged.service';
+import { UserLoggedService } from './pages/website/services/user-logged.service';
 
 export const configFactory = (
     userLoggedService?: UserLoggedService

@@ -55,7 +55,7 @@ import { LoadModalStopItemsComponent } from '../load-modal-stop-items/load-modal
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../../services/form/form.service';
-import { LoadTService } from 'src/app/pages/load/state/load.service';
+import { LoadTService } from 'src/app/pages/load/services/load.service';
 
 // animations
 import { fadeInAnimation } from '../../state/utils/animations/fade-in.animation';

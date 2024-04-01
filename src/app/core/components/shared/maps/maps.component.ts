@@ -29,7 +29,7 @@ import { DropDownService } from '../../../services/details-page/drop-down.servic
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
 import { ShipperTService } from 'src/app/pages/customer/services/shipper.service';
-import { FuelTService } from 'src/app/pages/fuel/state/fuel.service';
+import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
 import { RepairTService } from 'src/app/pages/repair/state/repair.service';
 import { RoutingStateService } from 'src/app/pages/routing/state/routing-state/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';

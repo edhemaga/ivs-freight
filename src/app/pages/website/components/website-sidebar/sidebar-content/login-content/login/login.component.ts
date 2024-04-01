@@ -9,13 +9,13 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
+import { WebsiteAuthService } from '../../../../../services/website-auth.service';
 
 // validations
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // enums
-import { ConstantString } from '../../../../../state/enum/const-string.enum';
+import { ConstantString } from '../../../../../enums/const-string.enum';
 
 @Component({
     selector: 'app-login',

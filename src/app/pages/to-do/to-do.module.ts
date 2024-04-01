@@ -19,7 +19,7 @@ import { TruckassistProgressExpirationComponent } from 'src/app/core/components/
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { CarrierSearchComponent } from 'src/app/core/components/standalone-components/carrier-search/carrier-search.component';
 import { FilterComponent } from 'src/app/core/components/standalone-components/filter/filter.component';
-import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.component';
+import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],

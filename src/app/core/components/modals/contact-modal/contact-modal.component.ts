@@ -46,7 +46,7 @@ import {
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactTService } from 'src/app/pages/contacts/state/services/contact.service';
+import { ContactsService } from 'src/app/pages/contacts/services/contacts.service';
 import { FormService } from '../../../services/form/form.service';
 
 // enums
@@ -139,7 +139,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         private changeDetector: ChangeDetectorRef,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private contactService: ContactTService,
+        private contactService: ContactsService,
         private formService: FormService
     ) {}
 

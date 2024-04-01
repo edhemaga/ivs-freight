@@ -3,14 +3,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { WebsiteActionsService } from 'src/app/pages/website/state/service/website-actions.service';
+import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
+import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
 
 // models
-import { UserInfoModel } from './../../../../../state/model/user-info.model';
+import { UserInfoModel } from '../../../../../models/user-info.model';
 
 @Component({
     selector: 'app-password-updated',

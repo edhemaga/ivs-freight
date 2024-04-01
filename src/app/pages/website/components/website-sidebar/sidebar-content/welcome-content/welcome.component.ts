@@ -3,13 +3,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { WebsiteActionsService } from 'src/app/pages/website/state/service/website-actions.service';
+import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
+import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
 
 // models
-import { UserInfoModel } from 'src/app/pages/website/state/model/user-info.model';
+import { UserInfoModel } from 'src/app/pages/website/models/user-info.model';
 
 @Component({
     selector: 'app-welcome',
