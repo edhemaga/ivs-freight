@@ -13,7 +13,7 @@ import {
     ColumnWidthData,
 } from '../../components/shared/model/card-table-data.model';
 
-import { AllTableModal } from 'src/app/pages/customer/modals/customer.modal';
+import { AllTableModal } from 'src/app/pages/customer/models/customer.model';
 
 @Injectable({
     providedIn: 'root',

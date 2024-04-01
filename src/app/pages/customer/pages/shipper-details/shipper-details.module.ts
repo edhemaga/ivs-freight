@@ -10,8 +10,8 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Components
-import { ShipperDetailsSingleComponent } from '../../components/shipper-details-single/shipper-details-single.component';
-import { ShipperCardViewComponent } from '../../components/shipper-card-view/shipper-card-view.component';
+import { ShipperDetailsItemComponent } from './components/shipper-details-item/shipper-details-item.component';
+import { ShipperDetailsCardComponent } from './components/shipper-details-card/shipper-details-card.component';
 import { ShipperDetailsComponent } from './shipper-details.component';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
@@ -29,10 +29,10 @@ import { formatTimePipe } from 'src/app/core/pipes/formatTime.pipe';
 @NgModule({
     declarations: [
         ShipperDetailsComponent,
-        ShipperDetailsSingleComponent,
-        ShipperCardViewComponent,
+        ShipperDetailsItemComponent,
+        ShipperDetailsCardComponent,
     ],
-    exports: [ShipperCardViewComponent, SharedModule],
+    exports: [ShipperDetailsCardComponent, SharedModule],
     imports: [
         // Routes
         ShipperDetailsRoutes,

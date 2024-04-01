@@ -30,7 +30,7 @@ import { PmTService } from '../../services/pm.service';
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Data
-import { DisplayPMConfiguration } from '../../utils/constants/pm-card-data.constants';
+import { DisplayPMConfiguration } from './utils/constants/pm-card-data.constants';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import {
     TooltipColors,

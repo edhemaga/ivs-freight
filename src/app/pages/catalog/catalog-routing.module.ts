@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SvgDefinitionsComponent } from './pages/svg-definitions/svg-definitions.component';
+import { CatalogSvgDefinitionsComponent } from './pages/catalog-svg-definitions/catalog-svg-definitions.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: SvgDefinitionsComponent,
+        component: CatalogSvgDefinitionsComponent,
         data: { title: 'Catalog' },
     },
 ];

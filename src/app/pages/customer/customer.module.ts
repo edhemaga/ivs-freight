@@ -27,7 +27,7 @@ import { MapsComponent } from 'src/app/core/components/shared/maps/maps.componen
 import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
 import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
 
-import { CustomerCardComponent } from './components/customer-card/customer-card.component';
+import { CustomerCardComponent } from './pages/customer-table/components/customer-card/customer-card.component';
 
 import { TaInputDropdownTableComponent } from 'src/app/core/components/standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
