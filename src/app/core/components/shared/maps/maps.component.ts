@@ -33,7 +33,7 @@ import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
 import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 import { RoutingStateService } from 'src/app/pages/routing/services/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { CompanyTOfficeService } from 'src/app/pages/settings/services/company-office.service';
+import { CompanyTOfficeService } from 'src/app/pages/settings/pages/custom-agreement/service/company-office.service';
 
 @Component({
     selector: 'app-maps',

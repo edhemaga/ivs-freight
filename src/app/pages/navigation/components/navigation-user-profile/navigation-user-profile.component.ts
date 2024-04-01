@@ -14,11 +14,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     DropDownAnimation,
     navigation_route_animation,
-} from '../navigation.animation';
+} from '../../animations/navigation.animation';
 
 //Model
-import { userNavigationData } from '../../model/navigation-data';
-import { NavigationUserPanel } from '../../model/navigation.model';
+import { userNavigationData } from '../../utils/constants/navigation-data.constants';
+import { NavigationUserPanel } from '../../models/navigation.model';
 
 //Services
 import { NavigationService } from '../../services/navigation.service';

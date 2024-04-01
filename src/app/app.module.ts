@@ -14,8 +14,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
-import { NavigationComponent } from './pages/navigation/navigation.component';
-import { ChangeLogoPipe } from './pages/navigation/pipe/change-logo.pipe';
+import { NavigationComponent } from './pages/navigation/pages/navigation/navigation.component';
+import { ChangeLogoPipe } from './pages/navigation/pipes/change-logo.pipe';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { UserLoggedService } from './pages/website/services/user-logged.service';
 

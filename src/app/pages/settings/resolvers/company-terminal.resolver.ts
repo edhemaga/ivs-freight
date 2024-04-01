@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { CompanyTerminalService } from '../services/company-terminal.service';
+import { CompanyTerminalService } from '../pages/settings-location/components/settings-terminal/services/company-terminal.service';
 import {
     TerminalState,
     TerminalStore,

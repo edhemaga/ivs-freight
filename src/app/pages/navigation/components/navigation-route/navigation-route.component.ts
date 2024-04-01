@@ -1,6 +1,6 @@
-import { NavigationSubRoutes } from '../../model/navigation.model';
+import { NavigationSubRoutes } from '../../models/navigation.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Navigation } from '../../model/navigation.model';
+import { Navigation } from '../../models/navigation.model';
 import {
     Component,
     Input,
@@ -13,7 +13,7 @@ import {
 import {
     navigation_magic_line,
     navigation_route_animation,
-} from '../navigation.animation';
+} from '../../animations/navigation.animation';
 import { StaticInjectorService } from 'src/app/core/utils/application.decorators';
 import { NavigationService } from '../../services/navigation.service';
 import { CommonModule } from '@angular/common';

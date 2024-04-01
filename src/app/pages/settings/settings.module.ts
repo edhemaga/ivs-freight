@@ -4,8 +4,8 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { SharedModule } from '../../core/components/shared/shared.module';
 
 import { SettingsToolbarComponent } from './pages/settings-toolbar/settings-toolbar.component';
-import { SettingsToollbarCardComponent } from './components/settings-toollbar-card/settings-toollbar-card.component';
-import { SettingsComponent } from './settings.component';
+import { SettingsToollbarCardComponent } from './pages/settings-toolbar/components/settings-toollbar-card/settings-toollbar-card.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 import { TrainingMaterialComponent } from './pages/training-material/training-material.component';
 import { CustomAgreementComponent } from './pages/custom-agreement/custom-agreement.component';
 import { AppTooltipComponent } from '../../core/components/shared/app-tooltip/app-tooltip.component';

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { CompanyParkingService } from '../services/company-parking.service';
+import { CompanyParkingService } from '../pages/settings-location/components/settings-parking/service/company-parking.service';
 import {
     ParkingState,
     ParkingStore,

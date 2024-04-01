@@ -9,7 +9,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DynamicNavHeightPipe } from '../../pipe/dynamic-nav-card.pipe';
+import { DynamicNavHeightPipe } from '../../pipes/dynamic-nav-card.pipe';
 @Component({
     selector: 'app-navigation-subroute-card',
     templateUrl: './navigation-subroute-card.component.html',

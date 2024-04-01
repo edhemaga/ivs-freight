@@ -1,5 +1,5 @@
 import { CompanyOfficeListResponse } from 'appcoretruckassist';
-import { CompanyTOfficeService } from '../services/company-office.service';
+import { CompanyTOfficeService } from '../pages/custom-agreement/service/company-office.service';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';

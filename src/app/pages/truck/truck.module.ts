@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
 import { TruckTableComponent } from './pages/truck-table/truck-table.component';
-import { TruckCardComponent } from './components/truck-card/truck-card.component';
+import { TruckCardComponent } from './pages/truck-card/truck-card.component';
 
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';

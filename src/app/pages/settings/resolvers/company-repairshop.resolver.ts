@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CompanyStore } from '../state/company-state/company-settings.store';
-import { CompanyRepairShopService } from '../services/company-repairshop.service';
+import { CompanyRepairShopService } from '../pages/settings-location/components/settings-repair-shop/services/company-repairshop.service';
 import {
     CompanyRepairShopState,
     CompanyRepairShopStore,

@@ -1,4 +1,4 @@
-import { SettingsComponent } from './settings.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { companySettingsResolver } from './resolvers/company-settings.resolver';
@@ -19,9 +19,9 @@ const routes: Routes = [
             {
                 path: 'settings',
                 loadChildren: () =>
-                    import('./modules/settings-company.module').then(
-                        (m) => m.SettingsCompanyModule
-                    ),
+                    import(
+                        './pages/settings-company/settings-company.module'
+                    ).then((m) => m.SettingsCompanyModule),
                 resolve: {
                     company: companySettingsResolver,
                     parking: ParkingResolver,
@@ -34,9 +34,9 @@ const routes: Routes = [
             {
                 path: 'location',
                 loadChildren: () =>
-                    import('./modules/settings-location.module').then(
-                        (m) => m.SettingsLocationModule
-                    ),
+                    import(
+                        './pages/settings-location/settings-location.module'
+                    ).then((m) => m.SettingsLocationModule),
                 resolve: {
                     parking: ParkingResolver,
                     office: cOfficeResolver,
@@ -57,9 +57,9 @@ const routes: Routes = [
             {
                 path: 'document',
                 loadChildren: () =>
-                    import('./modules/settings-document.module').then(
-                        (m) => m.SettingsDocumentModule
-                    ),
+                    import(
+                        './pages/settings-document/settings-document.module'
+                    ).then((m) => m.SettingsDocumentModule),
                 data: { title: 'Document' },
             },
             {
@@ -92,9 +92,9 @@ const routes: Routes = [
             {
                 path: 'integration',
                 loadChildren: () =>
-                    import('./modules/settings-integration.module').then(
-                        (m) => m.SettingsIntegrationModule
-                    ),
+                    import(
+                        './pages/settings-integration/settings-integration.module'
+                    ).then((m) => m.SettingsIntegrationModule),
                 data: { title: 'Integration' },
                 resolve: { integrationResolver },
             },
