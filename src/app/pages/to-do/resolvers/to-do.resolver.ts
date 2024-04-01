@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TodoTService } from '../services/todo.service';
+import { TodoTService } from '../services/to-do.service';
 
 @Injectable({
     providedIn: 'root',

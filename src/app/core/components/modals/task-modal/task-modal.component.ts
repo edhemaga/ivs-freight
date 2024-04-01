@@ -12,7 +12,7 @@ import {
     UpdateCommentCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TodoTService } from 'src/app/pages/to-do/services/todo.service';
+import { TodoTService } from 'src/app/pages/to-do/services/to-do.service';
 import {
     ReviewCommentModal,
     TaUserReviewComponent,
