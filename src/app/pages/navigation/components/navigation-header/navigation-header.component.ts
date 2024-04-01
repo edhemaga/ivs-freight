@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { navigation_route_animation } from '../navigation.animation';
+import { navigation_route_animation } from '../../animations/navigation.animation';
 import { NavigationService } from '../../services/navigation.service';
 import { TooltipSlideComponent } from 'src/app/core/components/standalone-components/tooltip-slide/tooltip-slide.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';

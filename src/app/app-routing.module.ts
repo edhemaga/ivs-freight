@@ -33,16 +33,16 @@ import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './pages/load/state/load-template-state/load-template.resolver';
-import { RoadsideActiveResolver } from './pages/safety/resolvers/roadside-active.resolver';
-import { RoadsideInactiveResolver } from './pages/safety/resolvers/roadside-inactive.resolver';
-import { AccidentActiveResolver } from './pages/safety/resolvers/accident-active.resolver';
-import { AccidentInactiveResolver } from './pages/safety/resolvers/accident-inactive.resolver';
-import { AccidentNonReportedResolver } from './pages/safety/resolvers/accident-non-reported.resolver';
+import { RoadsideActiveResolver } from './pages/safety/violation/resolvers/roadside-active.resolver';
+import { RoadsideInactiveResolver } from './pages/safety/violation/resolvers/roadside-inactive.resolver';
+import { AccidentActiveResolver } from './pages/safety/accident/resolvers/accident-active.resolver';
+import { AccidentInactiveResolver } from './pages/safety/accident/resolvers/accident-inactive.resolver';
+import { AccidentNonReportedResolver } from './pages/safety/accident/resolvers/accident-non-reported.resolver';
 import { ApplicantResolver } from './pages/applicant/resolvers/applicant.resolver';
 import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver';
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './pages/applicant/resolvers/applicant-sph-form.resolver';
-import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.service';
+import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.resolver';
 import { DispatcherResolverService } from './pages/dispatch/services/dispatcher-resolver.service';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { ApplicantGuard } from './core/guards/applicant.guard';
@@ -158,7 +158,7 @@ const routes: Routes = [
     {
         path: 'list/trailer',
         loadChildren: () =>
-            import('./pages/trailer/modules/trailer.module').then(
+            import('./pages/trailer/trailer.module').then(
                 (m) => m.TrailerModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
@@ -179,9 +179,7 @@ const routes: Routes = [
     {
         path: 'list/repair',
         loadChildren: () =>
-            import('./pages/repair/modules/repair.module').then(
-                (m) => m.RepairModule
-            ),
+            import('./pages/repair/repair.module').then((m) => m.RepairModule),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             repairTruck: RepairTruckResolver,
@@ -343,7 +341,7 @@ const routes: Routes = [
     {
         path: 'safety/violation',
         loadChildren: () =>
-            import('./pages/safety/modules/violation.module').then(
+            import('./pages/safety/violation/violation.module').then(
                 (m) => m.ViolationModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
@@ -355,7 +353,7 @@ const routes: Routes = [
     {
         path: 'safety/accident',
         loadChildren: () =>
-            import('./pages/safety/modules/accident.module').then(
+            import('./pages/safety/accident/accident.module').then(
                 (m) => m.AccidentModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],

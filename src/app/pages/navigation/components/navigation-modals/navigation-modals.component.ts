@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
     moveElementsTopDownModal,
     smoothHeight,
-} from '../navigation.animation';
+} from '../../animations/navigation.animation';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Models
-import { NavigationModal } from '../../model/navigation.model';
+import { NavigationModal } from '../../models/navigation.model';
 import {
     accountingNavigationData,
     fuelNavigationData,
@@ -17,7 +17,7 @@ import {
     safetyNavigationData,
     toolsNavigationData,
     requestNavigationData,
-} from '../../model/navigation-data';
+} from '../../utils/constants/navigation-data.constants';
 //Services
 import { NavigationService } from '../../services/navigation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';

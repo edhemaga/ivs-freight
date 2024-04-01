@@ -9,7 +9,7 @@ import { UserRoutes } from './user.routing';
 
 // components
 import { UserTableComponent } from './pages/user-table/user-table.component';
-import { UserCardComponent } from './components/user-card/user-card.component';
+import { UserCardComponent } from './pages/user-card/user-card.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';

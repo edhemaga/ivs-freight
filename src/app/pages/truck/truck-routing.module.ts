@@ -2,7 +2,7 @@ import { TruckMinimalResolver } from './resolvers/truck-details-minimal.resolver
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TruckItemResolver } from './resolvers/truck.items.resolver';
-import { TruckCardComponent } from './components/truck-card/truck-card.component';
+import { TruckCardComponent } from './pages/truck-card/truck-card.component';
 import { TruckTableComponent } from './pages/truck-table/truck-table.component';
 
 const routes: Routes = [
@@ -14,7 +14,7 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./modules/truck-details.module').then(
+            import('./pages/truck-details/truck-details.module').then(
                 (m) => m.TruckDetailsModule
             ),
         resolve: {

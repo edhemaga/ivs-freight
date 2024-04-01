@@ -11,12 +11,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { settings } from '../../model/navigation-data';
-import { FooterData, Settings } from '../../model/navigation.model';
+import { settings } from '../../utils/constants/navigation-data.constants';
+import { FooterData, Settings } from '../../models/navigation.model';
 import {
     DropDownAnimation,
     navigation_route_animation,
-} from '../navigation.animation';
+} from '../../animations/navigation.animation';
 import { NavigationService } from '../../services/navigation.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TooltipSlideComponent } from 'src/app/core/components/standalone-components/tooltip-slide/tooltip-slide.component';

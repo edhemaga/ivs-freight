@@ -26,7 +26,7 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
 import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 import { GpsServiceService } from 'src/app/global/services/gps-service.service';
-import { CompanyTOfficeService } from 'src/app/pages/settings/services/company-office.service';
+import { CompanyTOfficeService } from 'src/app/pages/settings/pages/custom-agreement/service/company-office.service';
 
 // store
 import { TelematicStateQuery } from '../../state/telematic-state.query';

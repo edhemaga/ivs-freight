@@ -22,7 +22,7 @@ import {
     MappedTrailer,
     TraillerData,
     backFilterQueryInterface,
-} from '../../models/trailer.modal';
+} from '../../models/trailer.model';
 import {
     CardRows,
     TableOptionsInterface,
@@ -52,7 +52,7 @@ import {
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Configuration
-import { DisplayTrailerConfiguration } from '../../utils/constants/trailer-card-data';
+import { DisplayTrailerConfiguration } from '../../utils/constants/trailer-card-data.constants';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

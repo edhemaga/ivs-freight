@@ -21,7 +21,7 @@ import {
 import moment from 'moment';
 
 // services
-import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
+import { SettingsCompanyService } from 'src/app/pages/settings/pages/settings-company/services/settings-company.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';

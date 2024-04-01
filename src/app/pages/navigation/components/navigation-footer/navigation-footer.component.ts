@@ -10,21 +10,21 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FooterData } from '../../model/navigation.model';
-import { footerData } from '../../model/navigation-data';
+import { FooterData } from '../../models/navigation.model';
+import { footerData } from '../../utils/constants/navigation-data.constants';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../../services/navigation.service';
 import {
     navigation_magic_line,
     navigation_route_animation,
-} from '../navigation.animation';
+} from '../../animations/navigation.animation';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaUserService } from 'src/app/core/services/user/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
-import { UserDataPipe } from '../../pipe/user-data.pipe';
+import { UserDataPipe } from '../../pipes/user-data.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({

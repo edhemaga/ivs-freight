@@ -2,7 +2,7 @@ import {
     Navigation,
     NavigationSubRoute,
     NavigationSubRoutes,
-} from '../../model/navigation.model';
+} from '../../models/navigation.model';
 import {
     Component,
     Input,
@@ -20,7 +20,7 @@ import {
     DropDownAnimation,
     navigation_route_animation,
     test,
-} from '../navigation.animation';
+} from '../../animations/navigation.animation';
 
 @Component({
     selector: 'app-navigation-subroute',

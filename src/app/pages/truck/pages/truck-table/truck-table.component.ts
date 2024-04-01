@@ -44,7 +44,7 @@ import {
     DropdownItem,
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
-import { DisplayTruckConfiguration } from '../../utils/constants/truck-card-data';
+import { DisplayTruckConfiguration } from '../../utils/constants/truck-card-data.constants';
 
 // Pipes
 import { DatePipe } from '@angular/common';
