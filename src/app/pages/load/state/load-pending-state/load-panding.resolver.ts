@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { LoadListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { LoadTService } from '../load.service';
+import { LoadTService } from '../../services/load.service';
 import { LoadPandingState, LoadPandinStore } from './load-panding.store';
 
 @Injectable({

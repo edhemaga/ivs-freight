@@ -1,4 +1,4 @@
-@import '../shop-repair-details.component.scss';
+@import '../../pages/shop-repair-details/shop-repair-details.component.scss';
 
 app-shop-repair-details-item {
     .have-pm-description {
@@ -130,7 +130,7 @@ app-shop-repair-details-item {
             margin-top: 12px;
         }
 
-        &.more-padding-working-hours-cont{
+        &.more-padding-working-hours-cont {
             padding: 0px 4px;
         }
     }
@@ -152,7 +152,8 @@ app-shop-repair-details-item {
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                span, div {
+                span,
+                div {
                     &::-moz-selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
@@ -273,13 +274,13 @@ app-shop-repair-details-item {
 
     .service-container {
         padding: 0 4px;
-        display: grid; 
+        display: grid;
         justify-content: space-between;
         grid-template-columns: 80px 80px 80px 80px;
         //grid-template-columns: 1fr 1fr 1fr 1fr;
         column-gap: 0px;
         row-gap: 13px;
-        
+
         .service-item {
             display: flex;
             flex-direction: row;
@@ -391,14 +392,13 @@ app-shop-repair-details-item {
                 border-radius: 2px;
                 grid-template-columns: 82px 86px 86px 0 415px !important;
                 &:hover {
-                    background-color: #FFECD1 !important;
+                    background-color: #ffecd1 !important;
                     margin-bottom: 0px !important;
                 }
 
-                &.repair-item-column{
+                &.repair-item-column {
                     grid-template-columns: 86px 35px 120px 100px 330px !important;
                 }
-
             }
         }
         .unit {
@@ -414,13 +414,13 @@ app-shop-repair-details-item {
     }
     .cross-out {
         text-decoration: line-through;
-        color: #CCCCCC !important;
+        color: #cccccc !important;
         &::-moz-selection {
-            color: #CCCCCC !important;
+            color: #cccccc !important;
             background: rgb(183, 183, 183, 0.2) !important;
         }
         &::selection {
-            color: #CCCCCC !important;
+            color: #cccccc !important;
             background: rgb(183, 183, 183, 0.2) !important;
         }
     }
@@ -576,7 +576,7 @@ app-shop-repair-details-item {
                 background: rgb(108, 108, 108, 0.2);
             }
 
-            .inner-qty-value{
+            .inner-qty-value {
                 min-width: 30px;
                 text-align: center;
             }

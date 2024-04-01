@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoadTableComponent } from './load-table/load-table.component';
+import { LoadTableComponent } from './pages/load-table/load-table.component';
 import { LoatItemResolver } from './state/load-details-state/load-details.resolver';
-import { LoadCardComponent } from './load-card/load-card.component';
+import { LoadCardComponent } from './pages/load-card/load-card.component';
 import { LoadMinimalListResolver } from './state/load-details-state/load-minimal-list-state/laod-details-minamal.resolver';
 
 const routes: Routes = [
@@ -14,7 +14,7 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./load-details/load-details.module').then(
+            import('./pages/load-details/load-details.module').then(
                 (m) => m.LoadDetailsModule
             ),
         resolve: {

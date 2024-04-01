@@ -18,7 +18,7 @@ import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
-import { FuelTService } from 'src/app/pages/fuel/state/fuel.service';
+import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
 import {
     FuelStopResponse,
     GetFuelStopModalResponse,
