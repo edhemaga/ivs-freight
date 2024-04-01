@@ -4,6 +4,7 @@ import {
     ViewChild,
     ViewEncapsulation,
     OnDestroy,
+    AfterViewInit
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,9 +16,6 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
-// Moment
-import moment from 'moment';
-
 // Services
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -28,7 +26,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     styleUrls: ['./calendar.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('fullcalendar', { static: false })
     fullcalendar: FullCalendarComponent;
     public inputDate: UntypedFormControl = new UntypedFormControl(true);

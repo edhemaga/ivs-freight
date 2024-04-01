@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ID } from '@datorama/akita';
 import { HttpClient } from '@angular/common/http';
-import { TelematicStateStore } from './telematic-state.store';
-import { TelematicState } from './telematic-state.model';
+import { TelematicStateStore } from '../state/telematic-state.store';
+import { TelematicState } from '../models/telematic-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject, of } from 'rxjs';
 import {
     TelematicsService,

@@ -10,7 +10,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import * as AppConst from '../../../const';
+import * as AppConst from '../../../../const';
 import {
     UntypedFormArray,
     UntypedFormBuilder,
@@ -18,10 +18,10 @@ import {
 } from '@angular/forms';
 
 // services
-import { TruckTService } from '../../truck/state/truck.service';
-import { TrailerTService } from '../../trailer/state/trailer.service';
+import { TruckTService } from '../../../truck/state/truck.service';
+import { TrailerTService } from '../../../trailer/state/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
-import { TelematicStateService } from '../state/telematic-state.service';
+import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
@@ -29,15 +29,15 @@ import { GpsServiceService } from 'src/app/global/services/gps-service.service';
 import { CompanyTOfficeService } from 'src/app/pages/settings/services/company-office.service';
 
 // store
-import { TelematicStateQuery } from '../state/telematic-state.query';
-import { TelematicStateStore } from '../state/telematic-state.store';
+import { TelematicStateQuery } from '../../state/telematic-state.query';
+import { TelematicStateStore } from '../../state/telematic-state.store';
 
 @Component({
     selector: 'app-telematic-map',
     templateUrl: './telematic-map.component.html',
     styleUrls: [
         './telematic-map.component.scss',
-        '../../../../assets/scss/maps.scss',
+        '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
 })

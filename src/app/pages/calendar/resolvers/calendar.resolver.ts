@@ -3,17 +3,17 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 // Services
-import { CalendarStoreService } from './calendar.service';
+import { CalendarStoreService } from '../services/calendar.service';
 
 // Store
-import { CalendarQuery } from './calendar.query';
+import { CalendarQuery } from '../state/calendar.query';
 
 //import { ProductService } from '../product/product.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class CalendarResolverService implements Resolve<any> {
+export class CalendarResolver implements Resolve<any> {
     constructor(
         private calendarStoreService: CalendarStoreService,
         private calendarQuery: CalendarQuery

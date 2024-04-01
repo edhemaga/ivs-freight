@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TelematicRoutingModule } from './telematic-routing.module';
-import { TelematicMapComponent } from './telematic-map/telematic-map.component';
+import { TelematicMapComponent } from './pages/telematic-map/telematic-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';

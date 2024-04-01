@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { TelematicStateStore, TelematicStateState } from './telematic-state.store';
-import { TelematicState } from './telematic-state.model';
+import { TelematicState } from '../models/telematic-state.model';
 
 @Injectable({
   providedIn: 'root'

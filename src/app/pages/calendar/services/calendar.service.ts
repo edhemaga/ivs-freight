@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
-import { CalendarStore } from './calendar.store';
+import { CalendarStore } from '../state/calendar.store';
 
 @Injectable({ providedIn: 'root' })
 export class CalendarStoreService {

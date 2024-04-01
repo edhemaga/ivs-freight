@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { TelematicStateService } from './telematic-state.service';
+import { TelematicStateService } from '../services/telematic-state.service';
 import {
     TelematicStateState,
     TelematicStateStore,
-} from './telematic-state.store';
+} from '../state/telematic-state.store';
 
 @Injectable({
     providedIn: 'root',

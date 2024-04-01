@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TelematicMapComponent } from './telematic-map/telematic-map.component';
+import { TelematicMapComponent } from './pages/telematic-map/telematic-map.component';
 
 const routes: Routes = [
   {
