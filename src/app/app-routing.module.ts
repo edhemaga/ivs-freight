@@ -11,9 +11,8 @@ import { RegisterUserHaveAccountHelperComponent } from './pages/website/componen
 import { VerifyUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
 import { RegisterCompanyHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
 import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
-
-import { BrokerResolver } from './pages/customer/state/broker-state/broker.resolver';
-import { ShipperResolver } from './pages/customer/state/shipper-state/shipper.resolver';
+import { BrokerResolver } from './pages/customer/resolvers/broker.resolver';
+import { ShipperResolver } from './pages/customer/resolvers/shipper.resolver';
 import { ShopResolver } from './pages/repair/resolvers/shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
@@ -27,8 +26,8 @@ import { AccountResolver } from './pages/account/resolvers/account.resolver';
 import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
-import { pmTrailerResolver } from './pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
-import { pmTruckResolver } from './pages/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
+import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
+import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
 import { TodoResolverService } from './pages/to-do/state/todo-resolver.service';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
@@ -44,11 +43,11 @@ import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver'
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './pages/applicant/resolvers/applicant-sph-form.resolver';
 import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.service';
-import { DispatcherResolverService } from './pages/dispatch/state/dispatcher-resolver.service';
+import { DispatcherResolverService } from './pages/dispatch/services/dispatcher-resolver.service';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './pages/routing/resolvers/routing-state.resolver';
-import { TelematicResolver } from './pages/telematic/state/telematic-state.resolver';
+import { TelematicResolver } from './pages/telematic/resolvers/telematic-state.resolver';
 import { DashboardResolver } from './pages/dashboard/resolvers/dashboard.resolver';
 import { CompanySettingsGuard } from './core/guards/company-settings.guard';
 

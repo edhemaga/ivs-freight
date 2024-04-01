@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
+import { SvgDefinitionsComponent } from './pages/svg-definitions/svg-definitions.component';
 
 const routes: Routes = [
     {

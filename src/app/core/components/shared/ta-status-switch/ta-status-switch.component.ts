@@ -11,7 +11,6 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
-import { DispatcherStoreService } from 'src/app/pages/dispatch/state/dispatcher.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -73,7 +72,6 @@ export class TaStatusSwitchComponent implements OnInit {
     constructor(
         private statusPipe: StatusPipePipe,
         private cdr: ChangeDetectorRef,
-        private dss: DispatcherStoreService,
         private dispatchService: DispatchService
     ) {}
 
