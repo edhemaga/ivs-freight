@@ -81,7 +81,7 @@ import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-not
 import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
 import { RepairData, Subtotal } from './state/models/repair.model';
 import { TaModalTableComponent } from '../../../standalone-components/ta-modal-table/ta-modal-table.component';
-import { RepairTService } from 'src/app/pages/repair/state/repair.service';
+import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 
 @Component({
     selector: 'app-repair-order-modal',

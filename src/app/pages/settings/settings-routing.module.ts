@@ -6,7 +6,7 @@ import { ParkingResolver } from './resolvers/company-parking.resolver';
 import { cOfficeResolver } from './resolvers/company-office.resolver';
 import { TerminalResolver } from './resolvers/company-terminal.resolver';
 import { companyRepairShopResolver } from './resolvers/company-repairshop.resolver';
-import { UserResolver } from '../user/state/user-state/user.resolver';
+import { UserResolver } from '../user/resolvers/user.resolver';
 import { UnderConstructionComponent } from '../../core/components/under-construction/under-construction.component';
 import { integrationResolver } from './resolvers/company-integrations.resolver';
 

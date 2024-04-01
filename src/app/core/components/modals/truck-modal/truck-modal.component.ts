@@ -35,7 +35,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckTService } from 'src/app/pages/truck/state/truck.service';
+import { TruckTService } from 'src/app/pages/truck/services/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
