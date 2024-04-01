@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // utils
-import { NAVBAR_MENU_ITEMS } from '../../utils/static';
+import { NAVBAR_MENU_ITEMS } from '../../utils/constants/website.constants';
 
 // services
 import { WebsiteActionsService } from '../../services/website-actions.service';
