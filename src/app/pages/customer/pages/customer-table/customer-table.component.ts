@@ -48,7 +48,7 @@ import {
     BodyResponse,
     UpdateRating,
     ViewDataResponse,
-} from '../../modals/customer.modal';
+} from '../../models/customer.model';
 import {
     CardDetails,
     DropdownItem,
@@ -59,7 +59,7 @@ import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
 } from 'src/assets/utils/settings/customer-columns';
-import { DisplayCustomerConfiguration } from '../../constants/customer-card-data.constants';
+import { DisplayCustomerConfiguration } from './utils/constants/customer-card-data.constants';
 import {
     FilterOptionBroker,
     FilterOptionshipper,

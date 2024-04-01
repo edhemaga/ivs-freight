@@ -43,7 +43,7 @@ import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver'
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './pages/applicant/pages/applicant-sph/resolvers/applicant-sph-form.resolver';
 import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.resolver';
-import { DispatcherResolverService } from './pages/dispatch/services/dispatcher-resolver.service';
+import { DispatcherResolver } from './pages/dispatch/resolvers/dispatcher.resolver';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingResolver } from './pages/routing/resolvers/routing-state.resolver';
@@ -112,7 +112,7 @@ const routes: Routes = [
                 (m) => m.DispatchModule
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
-        resolve: { dispatcher: DispatcherResolverService },
+        resolve: { dispatcher: DispatcherResolver },
     },
     {
         path: 'company',
