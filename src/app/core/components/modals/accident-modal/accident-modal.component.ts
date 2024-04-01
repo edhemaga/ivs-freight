@@ -29,7 +29,7 @@ import { convertDateFromBackend } from '../../../utils/methods.calculations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from '../../../services/form/form.service';
-import { AccidentTService } from 'src/app/pages/safety/accident/state/accident.service';
+import { AccidentTService } from 'src/app/pages/safety/services/accident.service';
 
 // components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';

@@ -1,4 +1,4 @@
-import { ICalendar } from './calendar.model';
+import { ICalendar } from '../models/calendar.model';
 
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';

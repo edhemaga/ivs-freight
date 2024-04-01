@@ -74,7 +74,7 @@
                         [cardName]="'Billing'"
                         [hasDivider]="false"
                         [isCardOpen]="true"
-                        [customClass]="'detailsPadding'" 
+                        [customClass]="'detailsPadding'"
                     >
                         <div class="billing-container">
                             <div class="biling-header">
@@ -97,9 +97,12 @@
                                     }}
                                 </div>
                             </div>
-                            <div class="divider" ></div>
+                            <div class="divider"></div>
 
-                            <div class="billing-item" *ngIf="loadItem?.data?.adjustedRate">
+                            <div
+                                class="billing-item"
+                                *ngIf="loadItem?.data?.adjustedRate"
+                            >
                                 <div class="icon-name">
                                     <svg-icon
                                         class="icon-additional"
@@ -114,7 +117,10 @@
                                     }}
                                 </div>
                             </div>
-                            <div class="divider" *ngIf="loadItem?.data?.adjustedRate"></div>
+                            <div
+                                class="divider"
+                                *ngIf="loadItem?.data?.adjustedRate"
+                            ></div>
 
                             <div
                                 class="additonal-wrapper-biling"
@@ -124,7 +130,10 @@
                                     trackBy: identity
                                 "
                             >
-                                <div class="billing-item" *ngIf="addBilling?.rate">
+                                <div
+                                    class="billing-item"
+                                    *ngIf="addBilling?.rate"
+                                >
                                     <div class="icon-name">
                                         <svg-icon
                                             class="icon-additional"
@@ -141,7 +150,10 @@
                                         {{ addBilling.rate | formatCurrency }}
                                     </div>
                                 </div>
-                                <div class="divider" *ngIf="addBilling?.rate"></div>
+                                <div
+                                    class="divider"
+                                    *ngIf="addBilling?.rate"
+                                ></div>
                             </div>
                             <div class="total-bill-wrapper first-wrapper">
                                 <div class="total-bill">
@@ -171,7 +183,7 @@
                         [cardName]="'Payment'"
                         [hasDivider]="false"
                         [isCardOpen]="true"
-                        [customClass]="'detailsPadding'" 
+                        [customClass]="'detailsPadding'"
                     >
                         <div class="billing-container">
                             <div class="biling-header">
@@ -284,11 +296,19 @@
                                 >Current Location</span
                             >
                             <span class="current-location-value">{{
-                                loadItem?.data?.currentLocation?.city ? loadItem?.data?.currentLocation?.city : '' +
-                                    ', ' +
-                                loadItem?.data?.currentLocation?.stateShortName ? loadItem?.data?.currentLocation?.stateShortName : '' +
-                                    ' ' +
-                                loadItem?.data?.currentLocation?.zipCode ? loadItem?.data?.currentLocation?.zipCode : ''
+                                loadItem?.data?.currentLocation?.city
+                                    ? loadItem?.data?.currentLocation?.city
+                                    : '' +
+                                      ', ' +
+                                      loadItem?.data?.currentLocation
+                                          ?.stateShortName
+                                    ? loadItem?.data?.currentLocation
+                                          ?.stateShortName
+                                    : '' +
+                                      ' ' +
+                                      loadItem?.data?.currentLocation?.zipCode
+                                    ? loadItem?.data?.currentLocation?.zipCode
+                                    : ''
                             }}</span>
                         </div>
                         <div class="location-item-wrapper">
@@ -296,19 +316,30 @@
                                 >Next Stop - Pickup</span
                             >
                             <span class="current-location-value">{{
-                                loadItem?.data?.nextStop?.shipper?.address?.city ? loadItem?.data?.nextStop?.shipper?.address?.city : ''  +
-                                    ', ' +
-                                loadItem?.data?.nextStop?.shipper?.address?.stateShortName ? loadItem?.data?.nextStop?.shipper?.address?.stateShortName : '' +
-                                    ' ' +
-                                loadItem?.data?.nextStop?.shipper?.address?.zipCode ? loadItem?.data?.nextStop?.shipper?.address?.zipCode : ''
+                                loadItem?.data?.nextStop?.shipper?.address?.city
+                                    ? loadItem?.data?.nextStop?.shipper?.address
+                                          ?.city
+                                    : '' +
+                                      ', ' +
+                                      loadItem?.data?.nextStop?.shipper?.address
+                                          ?.stateShortName
+                                    ? loadItem?.data?.nextStop?.shipper?.address
+                                          ?.stateShortName
+                                    : '' +
+                                      ' ' +
+                                      loadItem?.data?.nextStop?.shipper?.address
+                                          ?.zipCode
+                                    ? loadItem?.data?.nextStop?.shipper?.address
+                                          ?.zipCode
+                                    : ''
                             }}</span>
                         </div>
                     </div>
                     <div class="load-progress-container">
                         <app-gps-progressbar></app-gps-progressbar>
                     </div>
-                    
-                <!--    
+
+                    <!--    
                     <div class="load-progress-container">
                         <div class="start-after-icons">
                             <svg-icon
@@ -389,27 +420,62 @@
                         <div class="load-pickup-item">
                             <span class="load-header-pickup">First pickup</span>
                             <span class="load-value-pickup">
-                                <span *ngIf="formatLoadPickupDay(loadItem?.data?.firstPickupTime?.days) != '0 days' ">
-                                    {{formatLoadPickupDay(loadItem?.data?.firstPickupTime?.days)}}
+                                <span
+                                    *ngIf="
+                                        formatLoadPickupDay(
+                                            loadItem?.data?.firstPickupTime
+                                                ?.days
+                                        ) != '0 days'
+                                    "
+                                >
+                                    {{
+                                        formatLoadPickupDay(
+                                            loadItem?.data?.firstPickupTime
+                                                ?.days
+                                        )
+                                    }}
                                 </span>
-                                <span *ngIf="formatLoadPickupTime(loadItem?.data?.firstPickupTime?.hours) != '0 hours' ">
-                                    {{formatLoadPickupTime(loadItem?.data?.firstPickupTime?.hours)}}
+                                <span
+                                    *ngIf="
+                                        formatLoadPickupTime(
+                                            loadItem?.data?.firstPickupTime
+                                                ?.hours
+                                        ) != '0 hours'
+                                    "
+                                >
+                                    {{
+                                        formatLoadPickupTime(
+                                            loadItem?.data?.firstPickupTime
+                                                ?.hours
+                                        )
+                                    }}
                                 </span>
                             </span>
                         </div>
                         <div class="load-pickup-item">
-                            <span class="load-value-pickup"
+                            <span
+                                class="load-value-pickup"
                                 *ngIf="loadItem?.data?.totalMiles > 0"
                                 >{{ loadItem?.data?.totalMiles }} mi</span
                             >
                             <span class="load-value-pickup-semi">
                                 <span *ngIf="loadItem?.data?.totalTimeDays > 0">
-                                    {{ loadItem?.data?.totalTimeDays }} 
-                                    {{loadItem?.data?.totalTimeDays == 1 ? 'day' : 'days'}}
+                                    {{ loadItem?.data?.totalTimeDays }}
+                                    {{
+                                        loadItem?.data?.totalTimeDays == 1
+                                            ? 'day'
+                                            : 'days'
+                                    }}
                                 </span>
-                                <span *ngIf="loadItem?.data?.totalTimeHours > 0">
-                                    {{ loadItem?.data?.totalTimeHours }} 
-                                    {{ loadItem?.data?.totalTimeHours == 1 ? 'hour' : 'hours' }}
+                                <span
+                                    *ngIf="loadItem?.data?.totalTimeHours > 0"
+                                >
+                                    {{ loadItem?.data?.totalTimeHours }}
+                                    {{
+                                        loadItem?.data?.totalTimeHours == 1
+                                            ? 'hour'
+                                            : 'hours'
+                                    }}
                                 </span>
                             </span>
                         </div>
@@ -522,11 +588,13 @@
                         item?.wait.days
                     "
                     [cardName]="
-                        item?.shipper?.address?.street ? item?.shipper?.address?.street : '' +
-                        ', ' +
-                        item?.shipper?.address?.stateShortName ? item?.shipper?.address?.stateShortName : '' +
-                        ' ' +
-                        item?.shipper?.address?.zipCode ? item?.shipper?.address?.zipCode : ''
+                        item?.shipper?.address?.street
+                            ? item?.shipper?.address?.street
+                            : '' + ', ' + item?.shipper?.address?.stateShortName
+                            ? item?.shipper?.address?.stateShortName
+                            : '' + ' ' + item?.shipper?.address?.zipCode
+                            ? item?.shipper?.address?.zipCode
+                            : ''
                     "
                     [hasCounter]="item?.stopOrder"
                     [hasDivider]="j > 0 ? true : false"
@@ -554,7 +622,7 @@
                                 <div class="value-status">
                                     {{
                                         item?.arrive
-                                            | formatDateP: 'month-format'
+                                            | formatDateP : 'month-format'
                                     }}
                                 </div>
                             </div>
@@ -571,7 +639,7 @@
                                 <div class="value-status">
                                     {{
                                         item?.depart
-                                            | formatDateP: 'month-format'
+                                            | formatDateP : 'month-format'
                                     }}
                                 </div>
                             </div>
@@ -586,7 +654,7 @@
                                 <div class="value-status">
                                     {{
                                         item?.depart
-                                            | formatDateP: 'month-format'
+                                            | formatDateP : 'month-format'
                                     }}
                                 </div>
                             </div>
@@ -617,7 +685,8 @@
                                 src="assets/svg/common/ic_clock.svg"
                             ></svg-icon>
                             <div class="regular-text">
-                                {{item.dateFrom | formatDateP}}, {{ item?.timeFrom }} - {{ item?.timeTo }}
+                                {{ item.dateFrom | formatDateP }},
+                                {{ item?.timeFrom }} - {{ item?.timeTo }}
                             </div>
                             <div
                                 *ngIf="item.timeType.name === 'Appointment'"

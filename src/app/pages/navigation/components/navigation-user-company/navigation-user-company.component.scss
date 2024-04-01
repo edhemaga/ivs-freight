@@ -1,0 +1,125 @@
+@import '../../navigation.design.scss';
+
+.user-company {
+    height: 171px;
+    width: 238px;
+    border-radius: 2px;
+    font-weight: $nav-font-medium;
+    font-size: $nav-font-size;
+    color: $nav-text-color;
+    background-color: rgba(170, 170, 170, 0.1);
+    position: relative;
+    height: fit-content;
+    z-index: 99;
+    padding: 4px;
+
+    p {
+        margin: 0;
+        color: $nav-white;
+    }
+
+    .user-company-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        justify-content: space-between;
+        .user-company-header-svg {
+            &:hover {
+                cursor: pointer;
+                &:nth-child(2) {
+                    svg {
+                        path {
+                            fill: $nav-white;
+                        }
+                    }
+                }
+            }
+            &:nth-child(2) {
+                left: -10px;
+                position: relative;
+                svg {
+                    cursor: pointer;
+
+                    path {
+                        fill: $nav-svg-darker;
+                    }
+                }
+            }
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            .user-company-header-svg {
+                transition: all 0.3s ease-in-out;
+                height: 32px;
+                width: 32px;
+                display: flex;
+                align-items: flex-start;
+                svg {
+                    position: relative;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    path {
+                        fill: $nav-svg-darker;
+                    }
+                }
+            }
+
+            .user-company-header-text {
+                font-weight: $nav-font-bold;
+                color: $nav-white;
+                margin-left: 3px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        }
+    }
+
+    .user-company-content {
+        padding: 5px 14px 5px 0px;
+        width: 100%;
+        cursor: pointer;
+        .user-company-text {
+            font-size: $nav-font-size;
+            font-weight: $nav-font-regular;
+            line-height: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            padding-left: 24px;
+        }
+        span {
+            margin-left: 12px;
+        }
+        .user-company-text-active {
+            color: $nav-white !important;
+            font-weight: $nav-font-bold;
+            svg {
+                height: 20px;
+                width: 20px;
+                position: absolute;
+                left: 11px;
+                path {
+                    fill: $nav-active-lighter;
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $nav-hover-color;
+            color: $nav-white;
+            border-radius: 3px;
+
+            .user-company-text-active {
+                color: $nav-white !important;
+            }
+        }
+    }
+}

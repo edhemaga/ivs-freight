@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { RoutingStateStore, RoutingStateState } from './routing-state.store';
-import { RoutingState } from './routing-state.model';
+import { RoutingState } from '../../models/routing-state.model';
 
 @Injectable({
     providedIn: 'root',

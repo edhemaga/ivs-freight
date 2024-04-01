@@ -1,9 +1,9 @@
-import { TruckMinimalResolver } from './state/truck-details-minima-list-state/truck-details-minimal.resolver';
+import { TruckMinimalResolver } from './resolvers/truck-details-minimal.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TruckItemResolver } from './state/truck-details-state/truck.items.resolver';
-import { TruckCardComponent } from './truck-card/truck-card.component';
-import { TruckTableComponent } from './truck-table/truck-table.component';
+import { TruckItemResolver } from './resolvers/truck.items.resolver';
+import { TruckCardComponent } from './components/truck-card/truck-card.component';
+import { TruckTableComponent } from './pages/truck-table/truck-table.component';
 
 const routes: Routes = [
     {
@@ -14,7 +14,7 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./truck-details/truck-details.module').then(
+            import('./modules/truck-details.module').then(
                 (m) => m.TruckDetailsModule
             ),
         resolve: {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ApplicantQuery } from 'src/app/pages/applicant/state/store/applicant.query';
+import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantGuard implements CanActivate {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { RoutingState } from './routing-state.model';
+import { RoutingState } from '../../models/routing-state.model';
 
 export interface RoutingStateState extends EntityState<RoutingState> {}
 

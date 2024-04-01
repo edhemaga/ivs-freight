@@ -21,12 +21,12 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
-import { RoadsideService } from 'src/app/pages/safety/violation/state/roadside.service';
+import { RoadsideService } from 'src/app/pages/safety/services/roadside.service';
 import {
     convertDateFromBackend,
     convertTimeFromBackend,
 } from '../../../utils/methods.calculations';
-import { AccidentTService } from 'src/app/pages/safety/accident/state/accident.service';
+import { AccidentTService } from 'src/app/pages/safety/services/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';

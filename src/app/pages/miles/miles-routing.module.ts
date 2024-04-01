@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MilesComponent } from './miles/miles.component';
+import { MilesComponent } from './pages/miles/miles.component';
 
 const routes: Routes = [
-  {
-    path: "",
-    component: MilesComponent
-  }
+    {
+        path: '',
+        component: MilesComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class MilesRoutingModule { }
+export class MilesRoutingModule {}

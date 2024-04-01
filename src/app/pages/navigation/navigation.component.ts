@@ -12,18 +12,18 @@ import { navigationData } from './model/navigation-data';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
-import { navigation_magic_line } from './navigation.animation';
+import { navigation_magic_line } from './components/navigation.animation';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NavigationHeaderComponent } from './navigation-header/navigation-header.component';
-import { NavigationModalsComponent } from './navigation-modals/navigation-modals.component';
-import { NavigationFooterComponent } from './navigation-footer/navigation-footer.component';
-import { NavigationUserProfileComponent } from './navigation-user-profile/navigation-user-profile.component';
-import { NavigationUserCompanyComponent } from './navigation-user-company/navigation-user-company.component';
-import { NavigationSubrouteCardComponent } from './navigation-subroute-card/navigation-subroute-card.component';
-import { NavigationRouteComponent } from './navigation-route/navigation-route.component';
-import { NavigationSubrouteComponent } from './navigation-subroute/navigation-subroute.component';
+import { NavigationHeaderComponent } from './components/navigation-header/navigation-header.component';
+import { NavigationModalsComponent } from './components/navigation-modals/navigation-modals.component';
+import { NavigationFooterComponent } from './components/navigation-footer/navigation-footer.component';
+import { NavigationUserProfileComponent } from './components/navigation-user-profile/navigation-user-profile.component';
+import { NavigationUserCompanyComponent } from './components/navigation-user-company/navigation-user-company.component';
+import { NavigationSubrouteCardComponent } from './components/navigation-subroute-card/navigation-subroute-card.component';
+import { NavigationRouteComponent } from './components/navigation-route/navigation-route.component';
+import { NavigationSubrouteComponent } from './components/navigation-subroute/navigation-subroute.component';
 
 @Component({
     selector: 'app-navigation',
