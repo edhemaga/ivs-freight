@@ -35,7 +35,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
-import { DriverTService } from 'src/app/pages/driver/state/driver.service';
+import { DriverTService } from 'src/app/pages/driver/services/driver.service';
 import { HttpResponseBase } from '@angular/common/http';
 
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';

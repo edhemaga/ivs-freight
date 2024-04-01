@@ -5,8 +5,8 @@ import {
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
-import { CdlTService } from 'src/app/pages/driver/state/cdl.service';
-import { DriverTService } from 'src/app/pages/driver/state/driver.service';
+import { CdlTService } from 'src/app/pages/driver/services/cdl.service';
+import { DriverTService } from 'src/app/pages/driver/services/driver.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';

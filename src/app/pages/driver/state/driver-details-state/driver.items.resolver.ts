@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { DriverTService } from '../driver.service';
+import { DriverTService } from '../../services/driver.service';
 import { DriversItemStore } from './driver-details.store';
 import { DriversDetailsListStore } from '../driver-details-list-state/driver-details-list.store';
 import { DriversDetailsListQuery } from '../driver-details-list-state/driver-details-list.query';

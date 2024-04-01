@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriverTService } from '../driver.service';
+import { DriverTService } from '../../services/driver.service';
 import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 
 @Injectable({

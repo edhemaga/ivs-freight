@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { DriverMinimalListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { DriverTService } from '../driver.service';
+import { DriverTService } from '../../services/driver.service';
 import {
     DriverMinimalListState,
     DriversMinimalListStore,
