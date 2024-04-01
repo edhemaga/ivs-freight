@@ -10,7 +10,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardPerformanceService } from '../../services/dashboard-performance.service';
+import { DashboardPerformanceService } from './services/dashboard-performance.service';
 import { DashboardService } from '../../services/dashboard.service';
 
 // constants

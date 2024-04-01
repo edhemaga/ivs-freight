@@ -39,7 +39,7 @@ import {
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/applicant-utils';
+} from '../../../utils/helpers/applicant.helper';
 
 // services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
