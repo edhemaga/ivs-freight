@@ -9,11 +9,11 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteActionsService } from 'src/app/pages/website/state/service/website-actions.service';
-import { WebsiteAuthService } from 'src/app/pages/website/state/service/website-auth.service';
+import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
+import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/state/enum/const-string.enum';
+import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
 
 // models
 import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';

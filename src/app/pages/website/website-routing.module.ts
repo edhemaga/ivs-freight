@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/core/guards/authentication.guard';
 
 // components
-import { WebsiteMainComponent } from './components/website-main/website-main.component';
+import { WebsiteMainComponent } from './pages/website-main/website-main.component';
 import { SelectCompanyComponent } from './components/website-sidebar/sidebar-content/login-content/select-company/select-company.component';
 
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';

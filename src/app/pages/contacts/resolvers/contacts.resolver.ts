@@ -8,7 +8,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { ContactsService } from '../services/contacts.service';
 
 // store
-import { ContactState, ContactStore } from '../state/store/contact.store';
+import { ContactState, ContactStore } from '../state/contact.store';
 
 // models
 import { ContactsTableData } from 'src/app/core/model/contact';

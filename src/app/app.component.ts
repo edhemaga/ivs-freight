@@ -9,7 +9,7 @@ import { StaticInjectorService } from './core/utils/application.decorators';
 import {
     slideLeft,
     slideRight,
-} from 'src/app/pages/applicant/state/animations/applicant-route.animation';
+} from 'src/app/pages/applicant/animations/applicant-route.animation';
 
 @Component({
     selector: 'app-root',

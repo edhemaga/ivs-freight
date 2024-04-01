@@ -14,8 +14,8 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // store
-import { ContactState } from '../../state/store/contact.store';
-import { ContactQuery } from '../../state/store/contact.query';
+import { ContactState } from '../../state/contact.store';
+import { ContactQuery } from '../../state/contact.query';
 
 // pipes
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
@@ -37,7 +37,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // data for cards
-import { DisplayContactsConfiguration } from '../../state/utils/constants/contact-card-data.constants';
+import { DisplayContactsConfiguration } from '../../utils/constants/contact-card-data.constants';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // models

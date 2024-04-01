@@ -18,7 +18,7 @@ import moment from 'moment';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 
 // services
-import { WebsiteAuthService } from 'src/app/pages/website/state/service/website-auth.service';
+import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 
 // models
 import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
