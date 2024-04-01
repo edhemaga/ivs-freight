@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViolationDetailsPageComponent } from './violation-details-page.component';
+import { ViolationDetailsPageComponent } from './violation-details.component';
 
 describe('ViolationDetailsPageComponent', () => {
     let component: ViolationDetailsPageComponent;

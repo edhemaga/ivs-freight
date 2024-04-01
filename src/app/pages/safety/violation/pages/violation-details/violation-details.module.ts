@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViolationDetailsRoutes } from './violation-details.routing';
-import { ViolationDetailsPageComponent } from './violation-details-page.component';
+import { ViolationDetailsPageComponent } from './violation-details.component';
 import { ViolationDetailsSingleComponent } from './components/violation-details-single/violation-details-single.component';
 import { ViolationCardViewComponent } from './components/violation-card-view/violation-card-view.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';

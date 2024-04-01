@@ -49,7 +49,7 @@ import {
 //Enum
 
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { DisplayUserConfiguration } from '../../utils/constants/user-card-data. constants';
+import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 @Component({
     selector: 'app-user-table',
