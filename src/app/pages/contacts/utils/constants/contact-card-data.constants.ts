@@ -7,7 +7,6 @@ export class DisplayContactsConfiguration {
 
     static cardTitle: string = 'name';
 
-    // Data for applicants front
     static displayRowsFrontContacts: CardRows[] = [
         {
             title: 'Company',

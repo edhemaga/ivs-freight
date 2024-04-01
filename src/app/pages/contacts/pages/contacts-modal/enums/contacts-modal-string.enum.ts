@@ -1,4 +1,4 @@
-export enum ConstantStringEnum {
+export enum ContactsModalStringEnum {
     PHONE = 'phone',
     EMAIL = 'email',
 

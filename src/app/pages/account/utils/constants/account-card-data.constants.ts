@@ -7,7 +7,6 @@ export class DisplayAccountConfiguration {
 
     static CARD_TITLE: string = 'name';
 
-    // Data for active front
     static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
         {
             title: 'URL',

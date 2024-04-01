@@ -1,6 +1,6 @@
 import { CroppieOptions } from 'croppie';
 
-export class ContactModalConstants {
+export class ContactsModalConstants {
     static CROPIE_OPTIONS: CroppieOptions = {
         enableExif: true,
         viewport: {
@@ -13,5 +13,4 @@ export class ContactModalConstants {
             height: 194,
         },
     };
-
 }

@@ -4,12 +4,12 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
-import { AccountModalComponent } from 'src/app/core/components/modals/account-modal/account-modal.component';
+import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
 
-// ervices
+// services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { AccountTService } from '../../services/account.service';
+import { AccountService } from '../../services/account.service';
 
 // store
 import { AccountState } from '../../state/account.store';
@@ -23,7 +23,7 @@ import {
 } from 'src/app/core/utils/methods.globals';
 
 // enums
-import { ConstantStringEnum } from '../../enums/account-string.enum';
+import { AccountStringEnum } from '../../enums/account-string.enum';
 import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // models
@@ -80,7 +80,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private accountQuery: AccountQuery,
-        private accountService: AccountTService,
+        private accountService: AccountService,
         private clipboard: Clipboard
     ) {}
 
@@ -338,7 +338,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sendAccountData() {
         const tableView = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.ACCOUNT_TABLE_VIEW)
+            localStorage.getItem(AccountStringEnum.ACCOUNT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -349,23 +349,23 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const accontCount = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.ACCOUNT_TABLE_COUNT)
+            localStorage.getItem(AccountStringEnum.ACCOUNT_TABLE_COUNT)
         );
 
         const accountData = this.getTabData();
 
         this.tableData = [
             {
-                title: ConstantStringEnum.ACCOUNTS,
+                title: AccountStringEnum.ACCOUNTS,
                 field: ComponentsTableEnum.ACTIVE,
                 extended: false,
                 length: accontCount.account,
                 data: accountData,
-                gridNameTitle: ConstantStringEnum.ACCOUNT_2,
-                stateName: ConstantStringEnum.ACCOUNTS_2,
-                tableConfiguration: ConstantStringEnum.ACCOUNT,
+                gridNameTitle: AccountStringEnum.ACCOUNT_2,
+                stateName: AccountStringEnum.ACCOUNTS_2,
+                tableConfiguration: AccountStringEnum.ACCOUNT,
                 isActive: true,
-                gridColumns: this.getGridColumns(ConstantStringEnum.ACCOUNT),
+                gridColumns: this.getGridColumns(AccountStringEnum.ACCOUNT),
             },
         ];
 
@@ -376,7 +376,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateDataCount() {
         const accountCount = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.ACCOUNT_TABLE_COUNT)
+            localStorage.getItem(AccountStringEnum.ACCOUNT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -639,7 +639,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.accountBackFilter(this.backFilterQuery, true);
                 break;
             }
-            case ConstantStringEnum.EDIT_ACCONUT: {
+            case AccountStringEnum.EDIT_ACCONUT: {
                 this.modalService.openModal(
                     AccountModalComponent,
                     { size: ComponentsTableEnum.SMALL },
@@ -664,7 +664,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.clipboard.copy(event.data.password);
                 break;
             }
-            case ConstantStringEnum.DELETE_ACCOUNT: {
+            case AccountStringEnum.DELETE_ACCOUNT: {
                 this.accountService
                     .deleteCompanyAccountById(event.id)
                     .pipe(takeUntil(this.destroy$))

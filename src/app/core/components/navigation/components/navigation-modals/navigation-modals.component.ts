@@ -23,11 +23,11 @@ import { NavigationService } from '../../services/navigation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 //Components
-import { AccountModalComponent } from 'src/app/core/components/modals/account-modal/account-modal.component';
+import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
 import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
 import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
-import { ContactModalComponent } from 'src/app/core/components/modals/contact-modal/contact-modal.component';
+import { ContactsModalComponent } from 'src/app/pages/contacts/pages/contacts-modal/contacts-modal.component';
 import { BrokerModalComponent } from 'src/app/core/components/modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
@@ -144,7 +144,7 @@ export class NavigationModalsComponent {
                 break;
             }
             case 'contact': {
-                this.modalService.openModal(ContactModalComponent, {
+                this.modalService.openModal(ContactsModalComponent, {
                     size: 'small',
                 });
                 break;

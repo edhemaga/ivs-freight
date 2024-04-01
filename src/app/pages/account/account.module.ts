@@ -25,7 +25,7 @@ import { AppTooltipComponent } from 'src/app/core/components/standalone-componen
 @NgModule({
     declarations: [AccountCardComponent, AccountTableComponent],
     imports: [
-        // Modules
+        // modules
         CommonModule,
         AccountRoutingModule,
         ClipboardModule,
@@ -33,10 +33,10 @@ import { AppTooltipComponent } from 'src/app/core/components/standalone-componen
         FormsModule,
         ReactiveFormsModule,
 
-        // Directives
+        // directives
         TextToggleDirective,
 
-        // Components
+        // components
         AppTooltipComponent,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,

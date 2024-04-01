@@ -39,7 +39,7 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from '../../../services/form/form.service';
-import { UserTService } from 'src/app/pages/user/services/user.service';
+import { UserService } from 'src/app/pages/user/services/user.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { TaUserService } from '../../../services/user/user.service';
 
@@ -194,7 +194,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private companyUserService: UserTService,
+        private userService: UserService,
         private taUserService: TaUserService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
@@ -733,7 +733,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission: commission ? parseFloat(commission) : null,
         };
 
-        this.companyUserService
+        this.userService
             .updateUser(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -799,7 +799,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission: commission ? parseFloat(commission) : null,
         };
 
-        this.companyUserService
+        this.userService
             .addUser(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -821,7 +821,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private deleteUserById(id: number) {
-        this.companyUserService
+        this.userService
             .deleteUserById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -843,7 +843,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private getUserById(id: number) {
-        this.companyUserService
+        this.userService
             .getUserByid(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -972,7 +972,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private updateUserStatus(id: number) {
-        this.companyUserService
+        this.userService
             .updateUserStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -991,7 +991,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private getModalDropdowns() {
-        this.companyUserService
+        this.userService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({

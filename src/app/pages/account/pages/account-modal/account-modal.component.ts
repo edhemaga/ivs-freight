@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import {
     FormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import {
     Component,
@@ -11,7 +13,30 @@ import {
     ViewEncapsulation,
     OnDestroy,
 } from '@angular/core';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
+
+import { Subject, switchMap, takeUntil } from 'rxjs';
+
+// services
+import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { AccountService } from 'src/app/pages/account/services/account.service';
+import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { FormService } from '../../../../core/services/form/form.service';
+
+// validations
+import {
+    labelValidation,
+    urlValidation,
+    usernameValidation,
+    passwordAccountValidation,
+} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+// components
+import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
+import { TaInputDropdownLabelComponent } from '../../../../core/components/shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
+
+// models
 import {
     AccountColorResponse,
     CompanyAccountModalResponse,
@@ -20,22 +45,6 @@ import {
     CreateResponse,
     UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { AccountTService } from 'src/app/pages/account/services/account.service';
-import { Subject, switchMap, takeUntil } from 'rxjs';
-import {
-    labelValidation,
-    urlValidation,
-    usernameValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../services/form/form.service';
-import { passwordAccountValidation } from '../../shared/ta-input/ta-input.regex-validations';
-import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-account-modal',
@@ -45,12 +54,12 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
 
-        // Component
+        // components
         TaModalComponent,
         TaInputComponent,
         TaInputDropdownLabelComponent,
@@ -80,7 +89,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private accountService: AccountTService,
+        private accountService: AccountService,
         private formService: FormService
     ) {}
 

@@ -22,18 +22,18 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaModalTableComponent } from '../../standalone-components/ta-modal-table/ta-modal-table.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaLogoChangeComponent } from 'src/app/core/components/shared/ta-logo-change/ta-logo-change.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputDropdownLabelComponent } from 'src/app/core/components/shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaModalTableComponent } from 'src/app/core/components/standalone-components/ta-modal-table/ta-modal-table.component';
 
 // validations
 import {
@@ -41,19 +41,19 @@ import {
     addressValidation,
     departmentValidation,
     fullNameValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // services
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ContactsService } from 'src/app/pages/contacts/services/contacts.service';
-import { FormService } from '../../../services/form/form.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ContactsService } from '../../services/contacts.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 // enums
-import { ConstantStringEnum } from './state/enums/contact-modal.enum';
+import { ContactsModalStringEnum } from './enums/contacts-modal-string.enum';
 
 // constants
-import { ContactModalConstants } from './state/utils/constants/contact-modal.constants';
+import { ContactsModalConstants } from './utils/constants/contacts-modal.constants';
 
 // models
 import {
@@ -68,12 +68,12 @@ import {
     EnumValue,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { EditData } from '../load-modal/state/models/load-modal-model/edit-data.model';
+import { EditData } from 'src/app/core/components/modals/load-modal/state/models/load-modal-model/edit-data.model';
 
 @Component({
     selector: 'app-contact-modal',
-    templateUrl: './contact-modal.component.html',
-    styleUrls: ['./contact-modal.component.scss'],
+    templateUrl: './contacts-modal.component.html',
+    styleUrls: ['./contacts-modal.component.scss'],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
@@ -99,7 +99,7 @@ import { EditData } from '../load-modal/state/models/load-modal-model/edit-data.
         TaModalTableComponent,
     ],
 })
-export class ContactModalComponent implements OnInit, OnDestroy {
+export class ContactsModalComponent implements OnInit, OnDestroy {
     @Input() editData: EditData;
 
     private destroy$ = new Subject<void>();
@@ -111,7 +111,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public isCardAnimationDisabled: boolean = false;
 
     public croppieOptions: CroppieOptions =
-        ContactModalConstants.CROPIE_OPTIONS;
+        ContactsModalConstants.CROPIE_OPTIONS;
 
     public contactLabels: EnumValue[] = [];
     public selectedContactLabel: CompanyContactLabelResponse = null;
@@ -177,9 +177,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case ConstantStringEnum.CLOSE:
+            case ContactsModalStringEnum.CLOSE:
                 break;
-            case ConstantStringEnum.SAVE_AND_ADD_NEW:
+            case ContactsModalStringEnum.SAVE_AND_ADD_NEW:
                 if (this.contactForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.contactForm);
 
@@ -188,12 +188,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                 this.addCompanyContact();
 
-                this.modalService.openModal(ContactModalComponent, {
-                    size: ConstantStringEnum.SMALL,
+                this.modalService.openModal(ContactsModalComponent, {
+                    size: ContactsModalStringEnum.SMALL,
                 });
 
                 break;
-            case ConstantStringEnum.SAVE:
+            case ContactsModalStringEnum.SAVE:
                 if (this.contactForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.contactForm);
 
@@ -207,7 +207,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-            case ConstantStringEnum.DELETE:
+            case ContactsModalStringEnum.DELETE:
                 if (this.editData)
                     this.deleteCompanyContactById(this.editData.id);
 
@@ -219,17 +219,19 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     private followSharedCheckbox(): void {
         this.contactForm
-            .get(ConstantStringEnum.SHARED)
+            .get(ContactsModalStringEnum.SHARED)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value) {
                     this.inputService.changeValidators(
-                        this.contactForm.get(ConstantStringEnum.SHARED_LABEL_ID)
+                        this.contactForm.get(
+                            ContactsModalStringEnum.SHARED_LABEL_ID
+                        )
                     );
                 } else {
                     this.inputService.changeValidators(
                         this.contactForm.get(
-                            ConstantStringEnum.SHARED_LABEL_ID
+                            ContactsModalStringEnum.SHARED_LABEL_ID
                         ),
                         false
                     );
@@ -242,7 +244,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         type: string
     ): void {
         switch (type) {
-            case ConstantStringEnum.PHONE:
+            case ContactsModalStringEnum.PHONE:
                 if (
                     !this.isEachPhoneRowValid ||
                     this.contactPhones.length === 3
@@ -256,7 +258,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 }, 400);
 
                 break;
-            case ConstantStringEnum.EMAIL:
+            case ContactsModalStringEnum.EMAIL:
                 if (
                     !this.isEachEmailRowValid ||
                     this.contactEmails.length === 2
@@ -282,27 +284,27 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         type: string
     ): void {
         switch (type) {
-            case ConstantStringEnum.PHONE:
+            case ContactsModalStringEnum.PHONE:
                 this.contactPhones = modalTableDataValue;
 
                 this.contactForm
-                    .get(ConstantStringEnum.CONTACT_PHONES)
+                    .get(ContactsModalStringEnum.CONTACT_PHONES)
                     .patchValue(this.contactPhones);
 
                 this.contactForm
-                    .get(ConstantStringEnum.CONTACT_PHONES_HELPER)
+                    .get(ContactsModalStringEnum.CONTACT_PHONES_HELPER)
                     .patchValue(JSON.stringify(this.contactPhones));
 
                 break;
-            case ConstantStringEnum.EMAIL:
+            case ContactsModalStringEnum.EMAIL:
                 this.contactEmails = modalTableDataValue;
 
                 this.contactForm
-                    .get(ConstantStringEnum.CONTACT_EMAILS)
+                    .get(ContactsModalStringEnum.CONTACT_EMAILS)
                     .patchValue(this.contactEmails);
 
                 this.contactForm
-                    .get(ConstantStringEnum.CONTACT_EMAILS_HELPER)
+                    .get(ContactsModalStringEnum.CONTACT_EMAILS_HELPER)
                     .patchValue(JSON.stringify(this.contactEmails));
 
                 break;
@@ -316,11 +318,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         type: string
     ): void {
         switch (type) {
-            case ConstantStringEnum.PHONE:
+            case ContactsModalStringEnum.PHONE:
                 this.isEachPhoneRowValid = validStatus;
 
                 break;
-            case ConstantStringEnum.EMAIL:
+            case ContactsModalStringEnum.EMAIL:
                 this.isEachEmailRowValid = validStatus;
 
                 break;
@@ -387,7 +389,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                     this.inputService.changeValidators(
                         this.contactForm.get(
-                            ConstantStringEnum.SHARED_LABEL_ID
+                            ContactsModalStringEnum.SHARED_LABEL_ID
                         ),
                         false
                     );
@@ -544,14 +546,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: ConstantStringEnum.DELETE,
+                        action: ContactsModalStringEnum.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: ConstantStringEnum.DELETE,
+                        action: ContactsModalStringEnum.DELETE,
                         status: false,
                         close: false,
                     });
@@ -563,17 +565,17 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.selectedSharedDepartment = event;
 
         this.contactForm
-            .get(ConstantStringEnum.DEPARTMENT_HELPER)
+            .get(ContactsModalStringEnum.DEPARTMENT_HELPER)
             .patchValue(JSON.stringify(event));
 
         if (this.selectedSharedDepartment?.length) {
             this.inputService.changeValidators(
-                this.contactForm.get(ConstantStringEnum.SHARED_LABEL_ID),
+                this.contactForm.get(ContactsModalStringEnum.SHARED_LABEL_ID),
                 false
             );
         } else {
             this.inputService.changeValidators(
-                this.contactForm.get(ConstantStringEnum.SHARED_LABEL_ID)
+                this.contactForm.get(ContactsModalStringEnum.SHARED_LABEL_ID)
             );
         }
     }
@@ -586,18 +588,18 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event) {
-        this.contactForm.get(ConstantStringEnum.AVATAR).patchValue(event);
-        this.contactForm.get(ConstantStringEnum.AVATAR).setErrors(null);
+        this.contactForm.get(ContactsModalStringEnum.AVATAR).patchValue(event);
+        this.contactForm.get(ContactsModalStringEnum.AVATAR).setErrors(null);
     }
 
     public onImageValidation(event: boolean): void {
         if (!event) {
             this.contactForm
-                .get(ConstantStringEnum.AVATAR)
+                .get(ContactsModalStringEnum.AVATAR)
                 .setErrors({ invalid: true });
         } else {
             this.inputService.changeValidators(
-                this.contactForm.get(ConstantStringEnum.AVATAR),
+                this.contactForm.get(ContactsModalStringEnum.AVATAR),
                 false
             );
         }
@@ -630,7 +632,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public onSaveLabel(data: { data: EnumValue; action: string }): void {
         switch (data.action) {
-            case ConstantStringEnum.EDIT:
+            case ContactsModalStringEnum.EDIT:
                 this.selectedContactLabel = data.data;
 
                 this.contactService
@@ -650,7 +652,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     });
 
                 break;
-            case ConstantStringEnum.NEW:
+            case ContactsModalStringEnum.NEW:
                 this.selectedContactLabel = {
                     id: data.data.id,
                     name: data.data.name,
