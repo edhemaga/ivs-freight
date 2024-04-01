@@ -14,13 +14,13 @@ import { Subject, takeUntil } from 'rxjs';
 import { Offcanvas } from 'bootstrap';
 
 // services
-import { WebsiteActionsService } from '../../state/service/website-actions.service';
+import { WebsiteActionsService } from '../../services/website-actions.service';
 
 // animations
-import { fadeInAnimation } from '../../state/utils/animation';
+import { fadeInAnimation } from '../../utils/animation';
 
 // enums
-import { ConstantString } from '../../state/enum/const-string.enum';
+import { ConstantString } from '../../enums/const-string.enum';
 
 @Component({
     selector: 'app-website-sidebar',

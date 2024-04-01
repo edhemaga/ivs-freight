@@ -8,7 +8,7 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // components
-import { WebsiteMainComponent } from './components/website-main/website-main.component';
+import { WebsiteMainComponent } from './pages/website-main/website-main.component';
 import { WebsiteNavbarComponent } from './components/website-navbar/website-navbar.component';
 import { SidebarConfirmBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-confirm-btn/sidebar-confirm-btn.component';
 import { SidebarResendBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-resend-btn/sidebar-resend-btn.component';
