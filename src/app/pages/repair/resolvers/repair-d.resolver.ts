@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
-import { RepairDService } from './repair-d.service';
-import { RepairDState } from './repair-d.store';
+import { RepairDService } from '../services/repair-d.service';
+import { RepairDState } from '../state/details-state/repair-d.store';
 import { tap } from 'rxjs/operators';
-import { RepairTService } from '../repair.service';
+import { RepairTService } from '../services/repair.service';
 
 @Injectable({
     providedIn: 'root',
@@ -23,9 +23,7 @@ export class RepairDResolver implements Resolve<RepairDState> {
             true
         );
 
-        const repairList$ = this.repairDService.getRepairList(
-            repairShopId,
-        );
+        const repairList$ = this.repairDService.getRepairList(repairShopId);
 
         const repairShopMinimalList$ =
             this.repairDService.getRepairShopMinimalList(1, 25);
@@ -47,8 +45,7 @@ export class RepairDResolver implements Resolve<RepairDState> {
                     data.repairedVehicleList;
                 this.repairDService.updateRepairShopMinimal =
                     data.repairShopMinimalList;
-                
-                })
+            })
         );
     }
 }

@@ -2,15 +2,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { RepairRoutingModule } from './repair-routing.module';
+import { RepairRoutingModule } from '../routing/repair-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // Components
-import { RepairTableComponent } from './repair-table/repair-table.component';
-import { RepairCardComponent } from './repair-card/repair-card.component';
+import { RepairTableComponent } from '../pages/repair-table/repair-table.component';
+import { RepairCardComponent } from '../components/repair-card/repair-card.component';
 import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
 import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
 import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';

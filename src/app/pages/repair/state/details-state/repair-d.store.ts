@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { IRepairD } from './repair-d.model';
+import { IRepairD } from '../../models/repair-d.model';
 
 export interface RepairDState extends EntityState<IRepairD> {}
 

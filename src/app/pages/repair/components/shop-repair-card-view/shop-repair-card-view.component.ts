@@ -13,8 +13,8 @@ import { RepairShopResponse } from 'appcoretruckassist';
 import { map, Subject, takeUntil } from 'rxjs';
 
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { RepairDQuery } from '../state/details-state/repair-d.query';
-import { RepairTService } from '../state/repair.service';
+import { RepairDQuery } from '../../state/details-state/repair-d.query';
+import { RepairTService } from '../../services/repair.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 

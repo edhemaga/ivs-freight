@@ -17,14 +17,14 @@ import {
     RepairShopResponse,
     // RepairDriverResponse,
 } from 'appcoretruckassist';
-import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
-import { RepairTrailerStore } from './repair-trailer-state/repair-trailer.store';
-import { ShopStore } from './shop-state/shop.store';
-import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
-import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
-import { ShopQuery } from './shop-state/shop.query';
-import { RepairDQuery } from './details-state/repair-d.query';
-import { RepairDStore } from './details-state/repair-d.store';
+import { RepairTruckStore } from '../state/repair-truck-state/repair-truck.store';
+import { RepairTrailerStore } from '../state/repair-trailer-state/repair-trailer.store';
+import { ShopStore } from '../state/shop-state/shop.store';
+import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
+import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
+import { ShopQuery } from '../state/shop-state/shop.query';
+import { RepairDQuery } from '../state/details-state/repair-d.query';
+import { RepairDStore } from '../state/details-state/repair-d.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 

@@ -14,7 +14,7 @@ import { ResetPasswordHelperComponent } from './pages/website/components/website
 
 import { BrokerResolver } from './pages/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './pages/customer/state/shipper-state/shipper.resolver';
-import { ShopResolver } from './pages/repair/state/shop-state/shop.resolver';
+import { ShopResolver } from './pages/repair/resolvers/shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
 import { TruckActiveResolver } from './pages/truck/resolvers/truck-active.resolver';
@@ -24,8 +24,8 @@ import { TrailerInactiveResolver } from './pages/trailer/resolvers/trailer-inact
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './pages/owner/state/owner-inactive-state/owner-inactive.resolver';
 import { AccountResolver } from './pages/account/state/account-state/account.resolver';
-import { RepairTruckResolver } from './pages/repair/state/repair-truck-state/repair-truck.resolver';
-import { RepairTrailerResolver } from './pages/repair/state/repair-trailer-state/repair-trailer.resolver';
+import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
+import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactResolver } from './pages/contacts/state/resolvers/contact.resolver';
 import { pmTrailerResolver } from './pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './pages/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
@@ -180,7 +180,9 @@ const routes: Routes = [
     {
         path: 'list/repair',
         loadChildren: () =>
-            import('./pages/repair/repair.module').then((m) => m.RepairModule),
+            import('./pages/repair/modules/repair.module').then(
+                (m) => m.RepairModule
+            ),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
             repairTruck: RepairTruckResolver,

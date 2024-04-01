@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, Subject, forkJoin, takeUntil, tap } from 'rxjs';
-import { ShopState, ShopStore } from './shop.store';
-import { RepairTService } from '../repair.service';
+import { ShopState, ShopStore } from '../state/shop-state/shop.store';
+import { RepairTService } from '../services/repair.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({

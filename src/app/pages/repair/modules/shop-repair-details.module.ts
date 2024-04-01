@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // Routing
-import { ShopRepairDetailsRoutes } from './shop-repair-details.routing';
+import { ShopRepairDetailsRoutes } from '../routing/shop-repair-details.routing';
 
 // Components
-import { ShopRepairDetailsComponent } from './shop-repair-details.component';
-import { ShopRepairDetailsItemComponent } from './shop-repair-details-item/shop-repair-details-item.component';
-import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repair-card-view.component';
+import { ShopRepairDetailsComponent } from '../pages/shop-repair-details/shop-repair-details.component';
+import { ShopRepairDetailsItemComponent } from '../components/shop-repair-details-item/shop-repair-details-item.component';
+import { ShopRepairCardViewComponent } from '../components/shop-repair-card-view/shop-repair-card-view.component';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
 import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';

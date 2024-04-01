@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 // Services
-import { RepairTService } from '../state/repair.service';
+import { RepairTService } from '../../services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
@@ -47,18 +47,18 @@ import {
 } from 'src/assets/utils/settings/repair-columns';
 
 // Store
-import { ShopQuery } from '../state/shop-state/shop.query';
-import { ShopState, ShopStore } from '../state/shop-state/shop.store';
+import { ShopQuery } from '../../state/shop-state/shop.query';
+import { ShopState, ShopStore } from '../../state/shop-state/shop.store';
 
-import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
-import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
+import { RepairTruckState } from '../../state/repair-truck-state/repair-truck.store';
+import { RepairTruckQuery } from '../../state/repair-truck-state/repair-truck.query';
 
-import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
+import { RepairTrailerQuery } from '../../state/repair-trailer-state/repair-trailer.query';
 
 import {
     RepairTrailerState,
     RepairTrailerStore,
-} from '../state/repair-trailer-state/repair-trailer.store';
+} from '../../state/repair-trailer-state/repair-trailer.store';
 
 // Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
@@ -71,7 +71,7 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 
 // Animations
 
-import { DisplayRepairConfiguration } from '../state/constants/repair-card.constants';
+import { DisplayRepairConfiguration } from '../../utils/constants/repair-card.constants';
 
 //Helpers
 import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
@@ -91,7 +91,7 @@ import { RepairShopModalComponent } from 'src/app/core/components/modals/repair-
     templateUrl: './repair-table.component.html',
     styleUrls: [
         './repair-table.component.scss',
-        '../../../../assets/scss/maps.scss',
+        '../../../../../assets/scss/maps.scss',
     ],
     providers: [TaThousandSeparatorPipe],
 })

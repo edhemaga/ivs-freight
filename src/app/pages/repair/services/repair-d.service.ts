@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
-import { RepairDStore } from './repair-d.store';
+import { RepairDStore } from '../state/details-state/repair-d.store';
 
-import { RepairDQuery } from './repair-d.query';
+import { RepairDQuery } from '../state/details-state/repair-d.query';
 import {
     RepairShopService,
     RepairService,

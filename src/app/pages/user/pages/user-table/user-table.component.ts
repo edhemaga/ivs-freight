@@ -12,7 +12,7 @@ import {
 //Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { UserTService } from '../state/user.service';
+import { UserTService } from '../../services/user.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
@@ -24,8 +24,8 @@ import { UserModalComponent } from 'src/app/core/components/modals/user-modal/us
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
 
 //State
-import { UserQuery } from '../state/user-state/user.query';
-import { UserState } from '../state/user-state/user.store';
+import { UserQuery } from '../../state/user-state/user.query';
+import { UserState } from '../../state/user-state/user.store';
 
 //Pipe
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
@@ -44,12 +44,12 @@ import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
 import {
     UserTableDropdown,
     UserTableOwnerDropdown,
-} from '../utils/constants/user.constants';
+} from '../../utils/constants/user.constants';
 
 //Enum
 
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { DisplayUserConfiguration } from '../user-card-data';
+import { DisplayUserConfiguration } from '../../utils/constants/user-card-data';
 
 @Component({
     selector: 'app-user-table',

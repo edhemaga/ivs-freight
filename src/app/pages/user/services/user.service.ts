@@ -20,8 +20,8 @@ import {
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // store
-import { UserStore } from './user-state/user.store';
-import { UserQuery } from './user-state/user.query';
+import { UserStore } from '../state/user-state/user.store';
+import { UserQuery } from '../state/user-state/user.query';
 
 @Injectable({
     providedIn: 'root',
