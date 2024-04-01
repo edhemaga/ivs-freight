@@ -1,4 +1,4 @@
-import { TableOptions } from './../models/accounting-table';
+import { TableOptions } from '../../models/accounting-table.model';
 import {
     Component,
     HostListener,

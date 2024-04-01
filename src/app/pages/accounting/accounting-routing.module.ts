@@ -1,8 +1,8 @@
-import { PayrollComponent } from './payroll/payroll/payroll.component';
-import { AccountingPayrollComponent } from './accounting-payroll/accounting-payroll.component';
+import { PayrollComponent } from './pages/payroll/payroll/payroll.component';
+import { AccountingPayrollComponent } from './pages/accounting-payroll/accounting-payroll.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PayrolldResolver } from './payroll/payroll/state/payroll-resolver';
+import { PayrolldResolver } from './pages/payroll/payroll/state/payroll-resolver';
 
 const routes: Routes = [
     {

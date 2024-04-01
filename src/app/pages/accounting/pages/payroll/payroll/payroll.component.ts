@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { getPayrollDriverMilesDefinition } from 'src/assets/utils/settings/payroll-columns';
-import { DriversActiveQuery } from '../../../driver/state/driver-active-state/driver-active.query';
-import { DriversActiveState } from '../../../driver/state/driver-active-state/driver-active.store';
-import { DriversInactiveQuery } from '../../../driver/state/driver-inactive-state/driver-inactive.query';
-import { DriversInactiveState } from '../../../driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversActiveQuery } from '../../../../driver/state/driver-active-state/driver-active.query';
+import { DriversActiveState } from '../../../../driver/state/driver-active-state/driver-active.store';
+import { DriversInactiveQuery } from '../../../../driver/state/driver-inactive-state/driver-inactive.query';
+import { DriversInactiveState } from '../../../../driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from './state/payroll.query';
 import { Observable } from 'rxjs';
 

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 import { DropResult } from 'ngx-smooth-dnd';
-import { TodoQuery } from '../../state/todo.query';
+import { TodoQuery } from '../../state/to-do.query';
 
 // models
 import {

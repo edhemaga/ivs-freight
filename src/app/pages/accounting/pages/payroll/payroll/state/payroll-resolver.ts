@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of, tap } from 'rxjs';
-import { PayrollStoreService } from './payroll.service';
+import { PayrollStoreService } from '../../../../services/payroll.service';
 
 @Injectable({
     providedIn: 'root',

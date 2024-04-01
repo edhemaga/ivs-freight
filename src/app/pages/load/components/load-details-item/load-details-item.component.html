@@ -9,7 +9,7 @@
         [ngSwitch]="loadItem.template"
     >
         <div *ngSwitchCase="'general'">
-            <app-load-card-view [load]="loadItem?.data"></app-load-card-view>
+            <app-load-details-card [load]="loadItem?.data"></app-load-details-card>
         </div>
         <div *ngSwitchCase="'finance'">
             <div

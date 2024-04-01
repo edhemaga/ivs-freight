@@ -29,7 +29,7 @@ import { RepairTrailerResolver } from './pages/repair/state/repair-trailer-state
 import { ContactResolver } from './pages/contacts/state/resolvers/contact.resolver';
 import { pmTrailerResolver } from './pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './pages/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
-import { TodoResolverService } from './pages/to-do/state/todo-resolver.service';
+import { TodoResolverService } from './pages/to-do/resolvers/to-do-resolver.service';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';

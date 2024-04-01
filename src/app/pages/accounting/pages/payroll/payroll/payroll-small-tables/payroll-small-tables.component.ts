@@ -12,7 +12,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import {
     small_table_config,
     small_table_config_resize,
-} from '../state/table-settings/small-tables-config';
+} from '../../../../utils/constants/small-tables-config.constants';
 
 @Component({
     selector: 'app-payroll-small-tables',

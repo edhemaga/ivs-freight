@@ -2,7 +2,7 @@ import {
     TableColumnDefinitionAccount,
     TableData,
     TableMainOptions,
-} from './../models/accounting-table';
+} from '../../models/accounting-table.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 

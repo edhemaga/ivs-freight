@@ -1,4 +1,4 @@
-import { TodoQuery } from './todo.query';
+import { TodoQuery } from '../state/to-do.query';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';

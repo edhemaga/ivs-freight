@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PayrollStore } from './payroll.store';
+import { PayrollStore } from '../pages/payroll/payroll/state/payroll.store';
 import { PayrollService } from 'appcoretruckassist';
-import { driver_miles_table_settings } from './table-settings/driver_miles';
-import { driver_commision_table_settings } from './table-settings/driver_commision';
-import { owner_table_settings } from './table-settings/owner';
+import { driver_miles_table_settings } from '../utils/constants/driver_miles.constants';
+import { driver_commision_table_settings } from '../utils/constants/driver_commision.constants';
+import { owner_table_settings } from '../utils/constants/owner.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollStoreService {
