@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';
 
-import { ApplicantWelcomeScreenComponent } from './pages/applicant/pages/applicant-welcome-screen/applicant-welcome-screen.component';
-import { ApplicantEndScreenComponent } from './pages/applicant/pages/applicant-end-screen/applicant-end-screen.component';
-import { SphFormThankYouComponent } from './pages/applicant/pages/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
+import { ApplicantWelcomeScreenComponent } from './pages/applicant/pages/applicant/components/applicant-welcome-screen/applicant-welcome-screen.component';
+import { ApplicantEndScreenComponent } from './pages/applicant/pages/applicant/components/applicant-end-screen/applicant-end-screen.component';
+import { ApplicantSphFormThankYouComponent } from './pages/applicant/pages/applicant-sph/pages/applicant-sph-form/components/applicant-sph-form-thank-you/applicant-sph-form-thank-you.component';
 
 import { RegisterUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
 import { RegisterUserHaveAccountHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/register-user-have-account-helper/register-user-have-account-helper.component';
@@ -22,13 +22,13 @@ import { TrailerActiveResolver } from './pages/trailer/resolvers/trailer-active.
 import { TrailerInactiveResolver } from './pages/trailer/resolvers/trailer-inactive.resolver';
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './pages/owner/state/owner-inactive-state/owner-inactive.resolver';
+import { TodoResolver } from './pages/to-do/resolvers/to-do.resolver';
 import { AccountResolver } from './pages/account/resolvers/account.resolver';
 import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
 import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
-import { TodoResolverService } from './pages/to-do/state/todo-resolver.service';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';
@@ -41,7 +41,7 @@ import { AccidentNonReportedResolver } from './pages/safety/accident/resolvers/a
 import { ApplicantResolver } from './pages/applicant/resolvers/applicant.resolver';
 import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver';
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
-import { ApplicantSphFormResolver } from './pages/applicant/resolvers/applicant-sph-form.resolver';
+import { ApplicantSphFormResolver } from './pages/applicant/pages/applicant-sph/resolvers/applicant-sph-form.resolver';
 import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.resolver';
 import { DispatcherResolverService } from './pages/dispatch/services/dispatcher-resolver.service';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
@@ -392,7 +392,7 @@ const routes: Routes = [
         loadChildren: () =>
             import('./pages/to-do/to-do.module').then((m) => m.ToDoModule),
         canActivate: [CompanySettingsGuard, AuthGuard],
-        resolve: { todo: TodoResolverService },
+        resolve: { todo: TodoResolver },
     },
     // ------- Applicant Section
     {
@@ -415,8 +415,8 @@ const routes: Routes = [
         path: 'owner-info/:id',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/owner-info/owner-info.module'
-            ).then((m) => m.OwnerInfoModule),
+                './pages/applicant/pages/applicant-owner-info/applicant-owner-info.module'
+            ).then((m) => m.ApplicantOwnerInfoModule),
         canActivate: [ApplicantGuard],
         resolve: { applicant: ApplicantResolver },
         data: {
@@ -427,8 +427,8 @@ const routes: Routes = [
         path: 'medical-certificate/:id',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/medical-certificate/medical-certificate.module'
-            ).then((m) => m.MedicalCertificateModule),
+                './pages/applicant/pages/applicant-medical-certificate/applicant-medical-certificate.module'
+            ).then((m) => m.ApplicantMedicalCertificateModule),
         canActivate: [ApplicantGuard],
         resolve: { applicant: ApplicantResolver },
         data: {
@@ -439,8 +439,8 @@ const routes: Routes = [
         path: 'mvr-authorization/:id',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/mvr-authorization/mvr-authorization.module'
-            ).then((m) => m.MvrAuthorizationModule),
+                './pages/applicant/pages/applicant-mvr-authorization/applicant-mvr-authorization.module'
+            ).then((m) => m.ApplicantMvrAuthorizationModule),
         canActivate: [ApplicantGuard],
         resolve: { applicant: ApplicantResolver },
         data: {
@@ -451,8 +451,8 @@ const routes: Routes = [
         path: 'psp-authorization/:id',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/psp-authorization/psp-authorization.module'
-            ).then((m) => m.PspAuthorizationModule),
+                './pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.module'
+            ).then((m) => m.ApplicantPspAuthorizationModule),
         canActivate: [ApplicantGuard],
         data: {
             routeIdx: 4,
@@ -462,8 +462,8 @@ const routes: Routes = [
         path: 'sph/:id',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/sph/sph.module'
-            ).then((m) => m.SphModule),
+                './pages/applicant/pages/applicant-sph/applicant-sph.module'
+            ).then((m) => m.ApplicantSphModule),
         canActivate: [ApplicantGuard],
         data: {
             routeIdx: 5,
@@ -473,13 +473,13 @@ const routes: Routes = [
         path: 'sph-form',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/sph/sph-form/sph-form.module'
-            ).then((m) => m.SphFormModule),
+                './pages/applicant/pages/applicant-sph/pages/applicant-sph-form/applicant-sph-form.module'
+            ).then((m) => m.ApplicantSphFormModule),
         resolve: { applicantSphForm: ApplicantSphFormResolver },
     },
     {
         path: 'sph-form-end',
-        component: SphFormThankYouComponent,
+        component: ApplicantSphFormThankYouComponent,
         data: { title: 'End Screen' },
         resolve: { applicantSphForm: ApplicantSphFormResolver },
     },
@@ -487,8 +487,8 @@ const routes: Routes = [
         path: 'hos-rules/:id',
         loadChildren: () =>
             import(
-                './pages/applicant/pages/applicant-tabs/hos-rules/hos-rules.module'
-            ).then((m) => m.HosRulesModule),
+                './pages/applicant/pages/applicant-hos-rules/applicant-hos-rules.module'
+            ).then((m) => m.ApplicantHosRulesModule),
         canActivate: [ApplicantGuard],
         data: {
             routeIdx: 6,

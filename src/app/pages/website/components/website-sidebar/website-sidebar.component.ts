@@ -17,7 +17,7 @@ import { Offcanvas } from 'bootstrap';
 import { WebsiteActionsService } from '../../services/website-actions.service';
 
 // animations
-import { fadeInAnimation } from '../../utils/animation';
+import { fadeInAnimation } from '../../animations/website-animation';
 
 // enums
 import { ConstantString } from '../../enums/const-string.enum';

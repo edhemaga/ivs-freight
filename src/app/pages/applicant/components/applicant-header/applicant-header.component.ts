@@ -15,7 +15,7 @@ import { ApplicantQuery } from '../../state/applicant.query';
 import {
     isAnyPropertyInObjectFalse,
     isAnyValueInArrayTrue,
-} from '../../utils/applicant-utils';
+} from '../../utils/helpers/applicant.helper';
 
 // enums
 import { SelectedMode } from '../../enums/selected-mode.enum';
