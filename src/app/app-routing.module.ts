@@ -22,13 +22,13 @@ import { TrailerActiveResolver } from './pages/trailer/resolvers/trailer-active.
 import { TrailerInactiveResolver } from './pages/trailer/resolvers/trailer-inactive.resolver';
 import { OwnerActiveResolver } from './pages/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './pages/owner/state/owner-inactive-state/owner-inactive.resolver';
+import { TodoResolver } from './pages/to-do/resolvers/to-do.resolver';
 import { AccountResolver } from './pages/account/resolvers/account.resolver';
 import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
 import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
-import { TodoResolverService } from './pages/to-do/state/todo-resolver.service';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';
@@ -394,7 +394,7 @@ const routes: Routes = [
         loadChildren: () =>
             import('./pages/to-do/to-do.module').then((m) => m.ToDoModule),
         canActivate: [CompanySettingsGuard, AuthGuard],
-        resolve: { todo: TodoResolverService },
+        resolve: { todo: TodoResolver },
     },
     // ------- Applicant Section
     {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 //Store
-import { PayrollStore } from './payroll.store';
+import { PayrollStore } from '../pages/payroll/payroll/state/payroll.store';
 
 //Services
 import { PayrollService } from 'appcoretruckassist';

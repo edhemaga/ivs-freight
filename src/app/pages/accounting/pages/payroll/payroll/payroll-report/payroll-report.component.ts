@@ -5,18 +5,18 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { PayrollStoreService } from '../state/payroll.service';
-import { commision_driver_open_loads } from '../state/table-settings/commision_driver_open_loads';
+import { PayrollStoreService } from '../../../../services/payroll.service';
+import { commision_driver_open_loads } from '../../../../utils/constants/commision_driver_open_loads.constants';
 import {
     owner_open_loads,
     owner_open_loads_resizable,
-} from '../state/table-settings/owner_open_load';
+} from '../../../../utils/constants/owner_open_load.constants';
 import * as AppConst from 'src/app/const';
 import { UntypedFormControl } from '@angular/forms';
 import {
     miles_driver_open_loads,
     miles_driver_open_loads_resizable,
-} from '../state/table-settings/miles_driver_open_loads';
+} from '../../../../utils/constants/miles_driver_open_loads.constants';
 
 @Component({
     selector: 'app-payroll-report',

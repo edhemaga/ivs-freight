@@ -13,12 +13,12 @@ import { LoadMinimalListQuery } from '../../state/load-details-state/load-minima
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
-    selector: 'app-load-card-view',
-    templateUrl: './load-card-view.component.html',
-    styleUrls: ['./load-card-view.component.scss'],
+    selector: 'app-load-details-card',
+    templateUrl: './load-details-card.component.html',
+    styleUrls: ['./load-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class LoadCardViewComponent implements OnInit, OnChanges {
+export class LoadDetailsCardComponent implements OnInit, OnChanges {
     @Input() load: LoadResponse | any;
     @Input() templateCard: boolean;
     public loadNote: UntypedFormControl = new UntypedFormControl();
