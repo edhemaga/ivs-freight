@@ -9,9 +9,9 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
 import { AccountService, SignInResponse } from 'appcoretruckassist';
-import { WebsiteAuthService } from 'src/app/pages/website/state/service/website-auth.service';
+import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserLoggedService } from 'src/app/pages/website/state/service/user-logged.service';
+import { UserLoggedService } from 'src/app/pages/website/services/user-logged.service';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {

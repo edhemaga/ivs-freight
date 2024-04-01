@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // utils
-import { NAVBAR_MENU_ITEMS } from '../../state/utils/static';
+import { NAVBAR_MENU_ITEMS } from '../../utils/static';
 
 // services
-import { WebsiteActionsService } from '../../state/service/website-actions.service';
+import { WebsiteActionsService } from '../../services/website-actions.service';
 
 // enums
-import { ConstantString } from '../../state/enum/const-string.enum';
+import { ConstantString } from '../../enums/const-string.enum';
 
 // models
-import { NavigationModel } from '../../state/model/navigation.model';
+import { NavigationModel } from '../../models/navigation.model';
 
 @Component({
     selector: 'app-website-navbar',
