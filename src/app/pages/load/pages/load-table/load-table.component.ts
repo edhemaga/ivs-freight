@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
-import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';

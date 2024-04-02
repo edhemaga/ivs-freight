@@ -28,7 +28,7 @@ import {
     RoutingService,
     RoutingResponse,
 } from 'appcoretruckassist';
-import { Load } from 'src/app/core/components/modals/load-modal/state/models/load-modal-model/load.model';
+import { Load } from 'src/app/pages/load/models/load.model';
 
 @Injectable({
     providedIn: 'root',

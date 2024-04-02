@@ -1,3 +1,11 @@
+import { DriverCdl } from "./driver-cdl.model";
+import { DriverMedical } from "./driver-medical.model";
+import { DriverMvr } from "./driver-mvr.model";
+import { Endorsement } from "./driver-endorsement.model";
+import { Work } from "src/app/shared/models/work.model";
+import { License } from "./driver-license.model";
+import { DriverAdditional } from "./driver-additional.model";
+
 export interface Driver {
     id: number;
     companyId: number;
@@ -11,8 +19,8 @@ export interface Driver {
     ssnApplicant: number;
     rev: boolean;
     sph: number;
-    medical: Medical;
-    cdl: CDL;
+    medical: DriverMedical;
+    cdl: DriverCdl;
     email: string;
     ssn: string;
     dateOdobfBirth?: any;
@@ -21,11 +29,11 @@ export interface Driver {
     firstName: string;
     lastName: string;
     phone: string;
-    additionalData: Additional;
+    additionalData: DriverAdditional;
     workData: Work;
     licenseData: License[];
-    medicalData: Medical[];
-    mvrData: MVR[];
+    medicalData: DriverMedical[];
+    mvrData: DriverMvr[];
     bankId?: any;
     accountNumber?: any;
     routingNumber?: any;
@@ -67,144 +75,8 @@ export interface Driver {
     bankImage: any;
     restrictions?: any;
     endorsements: Endorsement[];
-    tableCDLData: CDL;
-    tableMedicalData: Medical;
-    tableMvrData: MVR;
+    tableCDLData: DriverCdl;
+    tableMedicalData: DriverMedical;
+    tableMvrData: DriverMvr;
     isSelected: boolean;
-}
-
-interface Medical {
-    id?: string;
-    end: string;
-    start: string;
-    attachments?: Attachment[];
-}
-
-interface MVR {
-    id?: string;
-    startDate: string;
-    attachments?: Attachment[];
-}
-
-interface CDL {
-    id?: string;
-    end: string;
-    start: string;
-}
-
-interface Avatar {
-    id: string;
-    src: string;
-}
-
-interface Address {
-    city: string;
-    state: string;
-    address: string;
-    country: string;
-    zipCode: string;
-    streetName: string;
-    addressUnit?: any;
-    streetNumber: string;
-    stateShortName: string;
-}
-
-interface Bank {
-    id?: any;
-    bankLogo?: any;
-    bankName?: any;
-    bankLogoWide?: any;
-    accountNumber?: any;
-    routingNumber?: any;
-}
-
-interface Bussiness {
-    taxId?: any;
-    isOwner: number;
-    businessName?: any;
-    isBusinessOwner: number;
-}
-
-interface Work {
-    id: string;
-    endDate: string;
-    startDate: string;
-    endDateShort?: any;
-    startDateShort: string;
-}
-
-interface Class {
-    id: number;
-    key: string;
-    value: string;
-    domain: string;
-    entityId?: any;
-    parentId?: any;
-    companyId: number;
-    createdAt: string;
-    protected: number;
-    updatedAt: string;
-    entityName?: any;
-}
-
-interface State {
-    key: string;
-    value: string;
-}
-
-interface Country {
-    id: number;
-    key: string;
-    value: string;
-    domain: string;
-    entityId?: any;
-    parentId?: any;
-    companyId: number;
-    createdAt: string;
-    protected: number;
-    updatedAt: string;
-    entityName?: any;
-}
-
-interface Attachment {
-    url: string;
-    fileName: string;
-    fileItemGuid: string;
-}
-
-interface Endorsement {
-    id: number;
-    domain?: any;
-    protected?: any;
-    endorsementCode: string;
-    endorsementName: string;
-}
-
-interface Additional {
-    note?: any;
-    type: string;
-    email: string;
-    phone: string;
-    avatar: Avatar;
-    address: Address;
-    bankData: Bank;
-    dateOfBirth: string;
-    paymentType: any;
-    businessData: Bussiness;
-    notifications: any[];
-    birthDateShort: string;
-}
-
-interface License {
-    id: string;
-    note?: any;
-    class: Class;
-    state: State;
-    number: string;
-    country: Country;
-    endDate: string;
-    startDate: string;
-    attachments: Attachment[];
-    endorsements: Endorsement[];
-    restrictions: any;
 }

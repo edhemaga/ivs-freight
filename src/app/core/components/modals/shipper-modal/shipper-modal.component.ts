@@ -48,7 +48,7 @@ import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
-import { LoadModalComponent } from '../load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from '../../../../pages/load/pages/load-modal/load-modal.component';
 import { ShipperResponse } from '../../../../../../appcoretruckassist/model/shipperResponse';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';

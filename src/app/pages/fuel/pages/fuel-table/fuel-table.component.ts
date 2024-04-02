@@ -10,8 +10,8 @@ import { AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 //Components
-import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { FuelPurchaseModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 //Services

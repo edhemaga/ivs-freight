@@ -37,10 +37,10 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 //Components
-import { DriverCdlModalComponent } from 'src/app/core/components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 //Store
@@ -70,7 +70,8 @@ import {
     TestResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
-import { DriverDateInfo, DriverDropdowns } from '../../models/driver-details-card.model';
+import { DriverDropdown } from '../../models/driver-dropdown.model';
+import { DriverDateInfo } from '../../models/driver-date.model';
 
 //Constants
 import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
@@ -123,7 +124,7 @@ export class DriverDetailsCardComponent
     public currentDriverIndex: number;
 
     // Driver Dropdown
-    public driversDropdowns: DriverDropdowns[];
+    public driversDropdowns: DriverDropdown[];
     public driversList: DriverMinimalResponse[] =
         this.driverMinimalQuery.getAll();
     public dataCDl: CdlResponse;
@@ -664,7 +665,7 @@ export class DriverDetailsCardComponent
         ).format('DD MMMM, YYYY');
         this.showTooltip = true;
     }
-    public getDriversDropdown(): DriverDropdowns | void {
+    public getDriversDropdown(): DriverDropdown | void {
         this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
             const fullname = item.firstName + ' ' + item.lastName;
             return {
@@ -681,7 +682,7 @@ export class DriverDetailsCardComponent
         );
     }
 
-    public onSelectedDriver(event: DriverDropdowns): void {
+    public onSelectedDriver(event: DriverDropdown): void {
         if (event && event.id !== this.driver.id) {
             this.driversDropdowns = this.driverMinimalQuery
                 .getAll()

@@ -1,18 +1,4 @@
-export class TodoList {
-    comments: any[];
-    commentsCount: any;
-    createdAt: any;
-    deadline: any;
-    departments: any[];
-    description: any;
-    id: any;
-    note: any;
-    status: any;
-    title: any;
-    todoUsers: any[];
-    updatedAt: any;
-    url: any;
-}
+import { TodoList } from "./to-do-list.model";
 
 export interface ITodo {
     todoList: TodoList[];

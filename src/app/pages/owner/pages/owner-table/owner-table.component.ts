@@ -3,13 +3,13 @@ import { Subject, takeUntil } from 'rxjs';
 // Modules
 
 // Components
-import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
+import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
 
 // Models
-import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
+import { GetOwnerListResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
@@ -22,11 +22,9 @@ import {
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import {
-    MapOwnerData,
-    OwnerBackFilterFilter,
-} from '../../models/owner-table.model';
-import { OwnerBodyResponse } from '../../models/owner.model';
+import { OwnerData } from '../../models/owner-table.model';
+import { OwnerFilter } from '../../models/owner-filter.model';
+import { OwnerBodyResponse } from '../../models/owner-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
@@ -50,7 +48,6 @@ import {
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // Pipes
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
@@ -675,7 +672,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapOwnerData(data): MapOwnerData {
+    private mapOwnerData(data): OwnerData {
         return {
             ...data,
             isSelected: false,
@@ -718,10 +715,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Owner Back Filter
-    private ownerBackFilter(
-        filter: OwnerBackFilterFilter,
-        isShowMore?: boolean
-    ): void {
+    private ownerBackFilter(filter: OwnerFilter, isShowMore?: boolean): void {
         this.ownerService
             .getOwner(
                 filter.active,

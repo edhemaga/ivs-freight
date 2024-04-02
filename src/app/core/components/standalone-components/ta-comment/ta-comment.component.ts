@@ -52,7 +52,7 @@ import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
 import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
 
 // models
-import { CommentCompanyUser } from '../../modals/load-modal/state/models/load-modal-model/comment-company-user';
+import { CommentCompanyUser } from '../../../../shared/models/comment-company-user.model';
 import { CommentData } from 'src/app/core/model/comment-data';
 import { Comment } from '../../shared/model/card-table-data.model';
 

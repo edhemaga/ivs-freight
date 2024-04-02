@@ -99,7 +99,7 @@ import {
 } from 'appcoretruckassist';
 import { CroppieOptions } from 'croppie';
 import { Tabs } from '../../../shared/model/modal-tabs';
-import { EditData } from '../../load-modal/state/models/load-modal-model/edit-data.model';
+import { EditData } from '../../../../../shared/models/edit-data.model';
 import { AnimationObject } from 'src/app/core/model/animation-object.model';
 
 @Component({
