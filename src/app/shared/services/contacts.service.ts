@@ -6,7 +6,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // store
-import { ContactStore } from '../state/contact.store';
+import { ContactStore } from '../../pages/contacts/state/contact.store';
 
 // models
 import {

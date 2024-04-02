@@ -47,7 +47,7 @@ import { ModalService } from '../../../../core/components/shared/ta-modal/modal.
 import { FormService } from '../../../../core/services/form/form.service';
 import { UserService } from 'src/app/pages/user/services/user.service';
 import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { TaUserService } from '../../../../core/services/user/user.service';
+import { UserProfileUpdateService } from '../../../../shared/services/user-profile-update.service';
 
 // animations
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
@@ -201,7 +201,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private userService: UserService,
-        private taUserService: TaUserService,
+        private taUserService: UserProfileUpdateService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal

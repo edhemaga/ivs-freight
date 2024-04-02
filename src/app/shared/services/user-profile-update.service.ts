@@ -7,12 +7,12 @@ import {
 } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CheckUserByEmailResponse } from '../../../../../appcoretruckassist/model/checkUserByEmailResponse';
+import { CheckUserByEmailResponse } from '../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TaUserService {
+export class UserProfileUpdateService {
     private updateUserProfileSubject: BehaviorSubject<boolean> =
         new BehaviorSubject<boolean>(false);
 
