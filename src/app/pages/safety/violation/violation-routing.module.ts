@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-//Resolvers
+// resolvers
 import { RoadsideDetailsResolver } from './resolvers/roadside-details.resolver';
 import { RoadsideMinimalResolver } from './resolvers/roadside-minimal.resolver';
 
-//Components
+// components
 import { ViolationTableComponent } from './pages/violation-table/violation-table.component';
 
 const routes: Routes = [

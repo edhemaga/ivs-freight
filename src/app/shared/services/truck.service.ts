@@ -1,8 +1,23 @@
-import { Observable, of, Subject, tap, takeUntil, switchMap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-//Models
+import { Observable, of, Subject, tap, takeUntil, switchMap } from 'rxjs';
+
+// store
+import { TruckInactiveStore } from '../../pages/truck/state/truck-inactive-state/truck-inactive.store';
+import { TruckActiveStore } from '../../pages/truck/state/truck-active-state/truck-active.store';
+import { TruckInactiveQuery } from '../../pages/truck/state/truck-inactive-state/truck-inactive.query';
+import { TruckActiveQuery } from '../../pages/truck/state/truck-active-state/truck-active.query';
+import { TrucksMinimalListQuery } from '../../pages/truck/state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListStore } from '../../pages/truck/state/truck-details-minima-list-state/truck-details-minimal.store';
+import { TruckItemStore } from '../../pages/truck/state/truck-details-state/truck.details.store';
+import { TrucksDetailsListStore } from '../../pages/truck/state/truck-details-list-state/truck-details-list.store';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+// models
 import {
     GetTruckModalResponse,
     TruckListResponse,
@@ -15,19 +30,6 @@ import {
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
 
-//Store
-import { TruckInactiveStore } from '../../pages/truck/state/truck-inactive-state/truck-inactive.store';
-import { TruckActiveStore } from '../../pages/truck/state/truck-active-state/truck-active.store';
-import { TruckInactiveQuery } from '../../pages/truck/state/truck-inactive-state/truck-inactive.query';
-import { TruckActiveQuery } from '../../pages/truck/state/truck-active-state/truck-active.query';
-import { TrucksMinimalListQuery } from '../../pages/truck/state/truck-details-minima-list-state/truck-details-minimal.query';
-import { TrucksMinimalListStore } from '../../pages/truck/state/truck-details-minima-list-state/truck-details-minimal.store';
-import { TruckItemStore } from '../../pages/truck/state/truck-details-state/truck.details.store';
-import { TrucksDetailsListStore } from '../../pages/truck/state/truck-details-list-state/truck-details-list.store';
-
-//Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 @Injectable({ providedIn: 'root' })
 export class TruckService implements OnDestroy {
     public truckId: number;

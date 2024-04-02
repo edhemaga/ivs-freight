@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
-//Service
+import { Observable, forkJoin, tap } from 'rxjs';
+
+// services
 import { TruckService } from '../../../shared/services/truck.service';
 
-//Store
+// store
 import {
     TruckItemState,
     TruckItemStore,

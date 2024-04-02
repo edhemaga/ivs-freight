@@ -1,14 +1,23 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { ViolationModalComponent } from 'src/app/pages/safety/violation/pages/violation-modal/violation-modal.component';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+// store
 import { RoadsideInactiveState } from '../../state/roadside-state/roadside-inactive/roadside-inactive.store';
 import { RoadsideActiveState } from '../../state/roadside-state/roadside-active/roadside-active.store';
 import { RoadsideActiveQuery } from '../../state/roadside-state/roadside-active/roadside-active.query';
 import { RoadsideInactiveQuery } from '../../state/roadside-state/roadside-inactive/roadside-inactive.query';
-import { DatePipe } from '@angular/common';
+
+// helpers
 import { getRoadsideInspectionColums } from 'src/assets/utils/settings/safety-columns';
+
+// components
+import { ViolationModalComponent } from 'src/app/pages/safety/violation/pages/violation-modal/violation-modal.component';
 
 @Component({
     selector: 'app-violation-table',

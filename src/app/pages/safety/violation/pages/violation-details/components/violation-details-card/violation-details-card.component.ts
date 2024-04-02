@@ -6,7 +6,11 @@ import {
     OnChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
+// services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+
+// store
 import { RoadsideMinimalListQuery } from '../../../../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';
 
 @Component({

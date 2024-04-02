@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 
-//Modules
+// modules
 import { AccidentRoutingModule } from './accident-routing.module';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
-//Components
+// components
 import { AccidentTableComponent } from './pages/accident-table/accident-table.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';

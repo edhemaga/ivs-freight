@@ -22,6 +22,9 @@ import { TrailersMinimalListStore } from '../../state/trailer-minimal-list-state
 import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state/trailer-details-list.query';
 
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
 // models
 import { TableOptions } from 'src/app/core/model/table.model';
 import {
@@ -29,9 +32,6 @@ import {
     TrailerDetailsConfig,
 } from 'src/app/core/model/trailer.model';
 import { TrailerResponse } from 'appcoretruckassist';
-
-// enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({
     selector: 'app-trailer-details',

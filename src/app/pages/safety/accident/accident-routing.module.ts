@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-//Components
+// components
 import { AccidentTableComponent } from './pages/accident-table/accident-table.component';
 
 const routes: Routes = [

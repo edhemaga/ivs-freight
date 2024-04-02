@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
     FormsModule,
@@ -7,10 +8,23 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// animations
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+
+// services
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
+import { FormService } from '../../../../../core/services/form/form.service';
+import { RoadsideService } from 'src/app/pages/safety/violation/services/roadside.service';
+import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
+
+// models
+import { AddressEntity } from 'appcoretruckassist';
+
+// validations
 import {
     addressValidation,
     departmentValidation,
@@ -19,24 +33,27 @@ import {
     phoneFaxRegex,
     vinNumberValidation,
 } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../../core/services/form/form.service';
-import { RoadsideService } from 'src/app/pages/safety/violation/services/roadside.service';
-import {
-    convertDateFromBackend,
-    convertTimeFromBackend,
-} from '../../../../../core/utils/methods.calculations';
-import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
-import { AccidentModalResponse } from '../../../../../../../appcoretruckassist/model/accidentModalResponse';
-import { RoadsideInspectionResponse } from '../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
-import { ITaInput } from '../../../../../core/components/shared/ta-input/ta-input.config';
-import { CommonModule } from '@angular/common';
+
+// components
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+
+// helpers
+import {
+    convertDateFromBackend,
+    convertTimeFromBackend,
+} from '../../../../../core/utils/methods.calculations';
+
+// models
+import {
+    AccidentModalResponse,
+    RoadsideInspectionResponse,
+} from 'appcoretruckassist';
+import { ITaInput } from '../../../../../core/components/shared/ta-input/ta-input.config';
 
 @Component({
     selector: 'app-violation-modal',
@@ -46,12 +63,12 @@ import { InputAddressDropdownComponent } from '../../../../../core/components/sh
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
 
-        //  Component
+        // components
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,

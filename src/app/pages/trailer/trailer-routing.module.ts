@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-//resolvers
+// resolvers
 import { TrailerItemsResolver } from './resolvers/trailer-items.resolver';
 import { TrailerMinimalResolver } from './resolvers/trailer-minimal.resolver';
 
-//components
+// components
 import { TrailerTableComponent } from './pages/trailer-table/trailer-table.component';
 
 const routes: Routes = [

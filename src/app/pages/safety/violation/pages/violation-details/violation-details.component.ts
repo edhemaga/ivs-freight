@@ -1,11 +1,17 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { LoadResponse, RoadsideInspectionResponse } from 'appcoretruckassist';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { RoadsideDetailsListQuery } from '../../state/roadside-details-state/roadside-details-list-state/roadside-details-list.query';
+
 import { takeUntil, take, Subject } from 'rxjs';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+
+// services
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { RoadsideService } from '../../services/roadside.service';
+
+// store
+import { RoadsideDetailsListQuery } from '../../state/roadside-details-state/roadside-details-list-state/roadside-details-list.query';
+
+// models
+import { LoadResponse, RoadsideInspectionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-violation-details',
@@ -22,7 +28,6 @@ export class ViolationDetailsComponent implements OnInit {
     constructor(
         private act_route: ActivatedRoute,
         private router: Router,
-        private notificationService: NotificationService,
         private detailsPageService: DetailsPageService,
         private rsdlq: RoadsideDetailsListQuery,
         private roadSer: RoadsideService

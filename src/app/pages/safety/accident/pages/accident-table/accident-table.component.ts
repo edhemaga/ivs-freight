@@ -1,19 +1,20 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { AfterViewInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-//Services
+import { Subject, takeUntil } from 'rxjs';
+
+// services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
-//Components
+// components
 import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
 
-//Utils
+// helpers
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 
-//States
+// store
 import { AccidentActiveState } from '../../state/accident-active/accident-active.store';
 import { AccidentInactiveState } from '../../state/accident-inactive/accident-inactive.store';
 import { AccidentNonReportedState } from '../../state/accident-non-reported/accident-non-reported.store';
@@ -21,7 +22,7 @@ import { AccidentActiveQuery } from '../../state/accident-active/accident-active
 import { AccidentNonReportedQuery } from '../../state/accident-non-reported/accident-non-reported.query';
 import { AccidentInactiveQuery } from '../../state/accident-inactive/accident-inactive.query';
 
-//Models
+// models
 import { AccidentShortResponse } from 'appcoretruckassist';
 
 @Component({

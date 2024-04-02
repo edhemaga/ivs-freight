@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Subject, take, takeUntil } from 'rxjs';
 
-//Services
+// services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -12,13 +13,13 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
-//Store
+// store
 import { TrucksDetailsListQuery } from '../../state/truck-details-list-state/truck-details-list.query';
 import { TrucksMinimalListQuery } from '../../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TrucksMinimalListStore } from '../../state/truck-details-minima-list-state/truck-details-minimal.store';
 import { TruckItemStore } from '../../state/truck-details-state/truck.details.store';
 
-//Components
+// components
 import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';

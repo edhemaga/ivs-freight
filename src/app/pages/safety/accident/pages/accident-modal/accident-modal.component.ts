@@ -7,6 +7,7 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // bootstrap
@@ -42,7 +43,7 @@ import { TaInputDropdownComponent } from '../../../../../core/components/shared/
 import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-input-note/ta-input-note.component';
 
-//  models
+// models
 import {
     AddressEntity,
     AccidentResponse,

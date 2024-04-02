@@ -1,8 +1,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TruckDetailsRoutes } from './trailer-details.routing';
-import { TrailerDetailsComponent } from './trailer-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
+
+// modules
+import { TruckDetailsRoutes } from './trailer-details.routing';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
@@ -24,6 +25,7 @@ import { TruckassistProgressExpirationComponent } from 'src/app/core/components/
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 import { TrailerDetailsCardComponent } from './components/trailer-details-card/trailer-details-card.component';
 import { TrailerDetailsItemComponent } from './components/trailer-details-item/trailer-details-item.component';
+import { TrailerDetailsComponent } from './trailer-details.component';
 
 @NgModule({
     declarations: [

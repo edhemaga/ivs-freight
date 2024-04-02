@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
 import {
     FormsModule,
@@ -13,9 +14,20 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
+
+import { skip, Subject, takeUntil, tap } from 'rxjs';
+
+// services
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { TrailerService } from 'src/app/shared/services/trailer.service';
+import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
+import { FormService } from '../../../../core/services/form/form.service';
+
+// animations
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
-import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
+
+// validations
 import {
     axlesValidation,
     emptyWeightValidation,
@@ -26,27 +38,12 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
+    trailerVolumeValidation,
 } from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { TrailerService } from 'src/app/shared/services/trailer.service';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+// components
 import { OwnerModalComponent } from '../../../../core/components/modals/owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../../../../core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { skip, Subject, takeUntil, tap } from 'rxjs';
-import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
-import { trailerVolumeValidation } from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../core/services/form/form.service';
-import { TrailerAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/trailerAutocompleteModelResponse';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../core/utils/methods.calculations';
-import {
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../core/utils/methods.calculations';
-import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
@@ -57,6 +54,24 @@ import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-up
 import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
 import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
 
+// helpers
+import {
+    convertDateToBackend,
+    convertDateFromBackend,
+    convertThousanSepInNumber,
+    convertNumberInThousandSep,
+} from '../../../../core/utils/methods.calculations';
+
+// bootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+// models
+import {
+    GetTrailerModalResponse,
+    VinDecodeResponse,
+    TrailerAutocompleteModelResponse,
+} from 'appcoretruckassist';
+
 @Component({
     selector: 'app-trailer-modal',
     templateUrl: './trailer-modal.component.html',
@@ -66,12 +81,12 @@ import { TaCheckboxComponent } from '../../../../core/components/shared/ta-check
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
 
-        // Component
+        // components
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,

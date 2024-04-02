@@ -3,18 +3,18 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-//Services
+// services
 import { RoadsideService } from '../services/roadside.service';
 
-//Models
-import { RoadsideInspectionResponse } from 'appcoretruckassist';
-
-//States
+// store
 import {
     RoadItemState,
     RoadItemStore,
 } from '../state/roadside-details-state/roadside-details.store';
 import { RoadsideDetailsListStore } from '../state/roadside-details-state/roadside-details-list-state/roadside-details-list.store';
+
+// models
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
+import { Observable, of, catchError, tap } from 'rxjs';
+
+// models
 import { AccidentListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+
+// services
 import { AccidentService } from '../services/accident.service';
+
+// store
 import {
     AccidentInactiveState,
     AccidentInactiveStore,

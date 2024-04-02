@@ -1,20 +1,53 @@
+import { DatePipe } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-// Components
+// components
 import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
-// Services
+// services
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
 
-// Models
+// store
+import { TrailerActiveQuery } from '../../state/trailer-active-state/trailer-active.query';
+import { TrailerActiveState } from '../../state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveQuery } from '../../state/trailer-inactive-state/trailer-inactive.query';
+import { TrailerInactiveState } from '../../state/trailer-inactive-state/trailer-inactive.store';
+import { TrailerInactiveStore } from '../../state/trailer-inactive-state/trailer-inactive.store';
+
+// pipes
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
+// helpers
+import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
+
+// animations
+import {
+    closeAnimationAction,
+    tableSearch,
+} from 'src/app/core/utils/methods.globals';
+
+// constants
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+// configuration
+import { trailerCardDataConstants } from './utils/constants/trailer-card-data.constants';
+
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import {
+    TooltipColors,
+    TrailerName,
+} from 'src/app/core/utils/enums/trailer-component.enum';
+
+// models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
 import { TrailerMapped } from './models/trailer-mapped.model';
@@ -27,38 +60,6 @@ import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-co
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
 import { TraillerData } from './models/trailer-data.model';
 import { TrailerBodyResponse } from './models/trailer-body-response.model';
-
-// Store
-import { TrailerActiveQuery } from '../../state/trailer-active-state/trailer-active.query';
-import { TrailerActiveState } from '../../state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveQuery } from '../../state/trailer-inactive-state/trailer-inactive.query';
-import { TrailerInactiveState } from '../../state/trailer-inactive-state/trailer-inactive.store';
-import { TrailerInactiveStore } from '../../state/trailer-inactive-state/trailer-inactive.store';
-
-// Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-
-import { DatePipe } from '@angular/common';
-
-// Animations
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
-
-// Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-
-// Configuration
-import { trailerCardDataConstants } from './utils/constants/trailer-card-data.constants';
-
-// Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import {
-    TooltipColors,
-    TrailerName,
-} from 'src/app/core/utils/enums/trailer-component.enum';
-import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
 import {
     TableColumnConfig,
     DataForCardsAndTables,

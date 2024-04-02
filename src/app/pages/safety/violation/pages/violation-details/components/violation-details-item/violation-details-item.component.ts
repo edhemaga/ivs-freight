@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
-//Utils
+// helpers
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
-//Animations
+// animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 @Component({

@@ -1,10 +1,6 @@
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from '../../../../core/utils/methods.calculations';
-import { Options } from '@angular-slider/ngx-slider';
+import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
+import { Options } from '@angular-slider/ngx-slider';
 import {
     Component,
     Input,
@@ -19,9 +15,32 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
+import { Subject, takeUntil, skip, tap } from 'rxjs';
+
+// bootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+// helpers
+import {
+    convertDateToBackend,
+    convertDateFromBackend,
+    convertNumberInThousandSep,
+} from '../../../../core/utils/methods.calculations';
+import { convertThousanSepInNumber } from '../../../../core/utils/methods.calculations';
+
+// services
+import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
+import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
+import { FormService } from '../../../../core/services/form/form.service';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+
+// animations
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+
+// validations
 import {
     axlesValidation,
     emptyWeightValidation,
@@ -33,19 +52,10 @@ import {
     yearValidation,
     yearValidRegex,
 } from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { TruckService } from 'src/app/shared/services/truck.service';
+
+// components
 import { OwnerModalComponent } from '../../../../core/components/modals/owner-modal/owner-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../../../../core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { Subject, takeUntil, skip, tap } from 'rxjs';
-import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
-import { convertThousanSepInNumber } from '../../../../core/utils/methods.calculations';
-import { FormService } from '../../../../core/services/form/form.service';
-import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
@@ -57,6 +67,13 @@ import { TaInputNoteComponent } from '../../../../core/components/shared/ta-inpu
 import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '../../../../core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
 
+// models
+import {
+    GetTruckModalResponse,
+    VinDecodeResponse,
+    TruckAutocompleteModelResponse,
+} from 'appcoretruckassist';
+
 @Component({
     selector: 'app-truck-modal',
     templateUrl: './truck-modal.component.html',
@@ -66,12 +83,12 @@ import { TaNgxSliderComponent } from '../../../../core/components/shared/ta-ngx-
     providers: [ModalService, TaInputService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
 
-        // Component
+        // components
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,

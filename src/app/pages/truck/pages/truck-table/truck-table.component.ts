@@ -2,29 +2,48 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
-// Components
+// components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
-// Services
-
+// services
 import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
-// Queries
+// store
 import { TruckActiveQuery } from '../../state/truck-active-state/truck-active.query';
 import { TruckInactiveQuery } from '../../state/truck-inactive-state/truck-inactive.query';
-
-// Stores
 import { TruckActiveState } from '../../state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '../../state/truck-inactive-state/truck-inactive.store';
+import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
 
-// Modals
+// constants
+import { TruckCardDataConstants } from './utils/constants/truck-card-data.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+
+// pipes
+import { DatePipe } from '@angular/common';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
+import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
+
+//Helpers
+import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
+import {
+    closeAnimationAction,
+    tableSearch,
+} from 'src/app/core/utils/methods.globals';
+import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
+
+// models
 import { TruckListResponse } from 'appcoretruckassist';
 import {
     CardRows,
@@ -34,37 +53,12 @@ import {
     DataForCardsAndTables,
     TableColumnConfig,
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-
-import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
 import { TruckFilter } from './models/truck-filter.model';
 import {
     DropdownItem,
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
 import { TruckBodyResponse } from './models/truck-body-response.model';
-import { TruckCardDataConstants } from './utils/constants/truck-card-data.constants';
-
-// Pipes
-import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-
-//Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-
-// Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
-import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
-
-//Utils
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
-
-//Helpers
-import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
 
 @Component({
     selector: 'app-truck-table',

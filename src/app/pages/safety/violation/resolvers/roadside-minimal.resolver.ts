@@ -3,13 +3,13 @@ import { catchError, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Resolve } from '@angular/router';
 
-//Services
+// services
 import { RoadsideService } from '../services/roadside.service';
 
-//Models
+// models
 import { RoadsideInspectionMinimalListResponse } from 'appcoretruckassist';
 
-//State
+// state
 import {
     RoadsideMinimalListState,
     RoadsideMinimalListStore,

@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+// services
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+
+// models
 import {
     RoadsideInspectionListResponse,
     ViolationService,
+    RoadsideInspectionResponse,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
-import { RoadsideInspectionResponse } from 'appcoretruckassist';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
