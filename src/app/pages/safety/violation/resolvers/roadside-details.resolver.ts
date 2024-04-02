@@ -19,7 +19,7 @@ import { RoadsideDetailsListStore } from '../state/roadside-details-state/roadsi
 @Injectable({
     providedIn: 'root',
 })
-export class RoadItemResolver implements Resolve<RoadItemState> {
+export class RoadsideDetailsResolver implements Resolve<RoadItemState> {
     constructor(
         private roadService: RoadsideService,
         private roadDetailsStore: RoadItemStore,

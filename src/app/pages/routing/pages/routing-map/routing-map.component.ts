@@ -37,7 +37,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { RoutingStateService } from '../../services/routing-state.service';
+import { RoutingStateService } from '../../../../shared/services/routing-state.service';
 
 //States
 import { RoutingStateQuery } from '../../state/routing-state/routing-state.query';

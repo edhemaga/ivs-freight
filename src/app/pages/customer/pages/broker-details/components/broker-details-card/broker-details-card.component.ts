@@ -41,7 +41,7 @@ import { TaChartComponent } from 'src/app/core/components/standalone-components/
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings-arrow-actions.enum';
+import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 import { BrokerTabEnum } from '../../enums/broker-enum';
 
 @Component({
@@ -218,7 +218,7 @@ export class BrokerDetailsCardComponent
         );
 
         switch (action) {
-            case SETTINGS_ARROW_ACTIONS.PREVIOUS:
+            case ArrowActionsEnum.PREVIOUS:
                 currentIndex = --currentIndex;
 
                 if (currentIndex != -1) {
@@ -231,7 +231,7 @@ export class BrokerDetailsCardComponent
                     this.brokerIndex = currentIndex;
                 }
                 break;
-            case SETTINGS_ARROW_ACTIONS.NEXT:
+            case ArrowActionsEnum.NEXT:
                 currentIndex = ++currentIndex;
 
                 if (

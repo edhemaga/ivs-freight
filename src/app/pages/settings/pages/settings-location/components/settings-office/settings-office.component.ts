@@ -10,7 +10,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { CompanyOfficeService } from '../../../custom-agreement/service/company-office.service';
+import { CompanyOfficeService } from '../../../../../../shared/services/company-office.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
 
 //Utils

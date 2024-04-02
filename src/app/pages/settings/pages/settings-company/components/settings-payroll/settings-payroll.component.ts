@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SettingsCompanyService } from '../../services/settings-company.service';
+import { SettingsCompanyService } from '../../../../services/settings-company.service';
 
 @Component({
     selector: 'app-settings-payroll',

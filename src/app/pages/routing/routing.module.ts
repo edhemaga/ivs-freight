@@ -10,7 +10,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 //Pipes
-import { FilterRoutesPipe } from './pipes/filter-routes.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 //Components
@@ -20,7 +19,7 @@ import { InputAddressDropdownComponent } from 'src/app/core/components/shared/in
 import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
 
 @NgModule({
-    declarations: [RoutingMapComponent, FilterRoutesPipe],
+    declarations: [RoutingMapComponent],
     imports: [
         // Modules
         CommonModule,

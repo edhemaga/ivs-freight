@@ -1,4 +1,4 @@
-import { TrailerService } from '../services/trailer.service';
+import { TrailerService } from '../../../shared/services/trailer.service';
 import { Injectable } from '@angular/core';
 
 import { Resolve } from '@angular/router';

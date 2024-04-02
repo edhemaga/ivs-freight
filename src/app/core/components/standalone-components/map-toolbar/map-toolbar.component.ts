@@ -28,7 +28,7 @@ import { TruckListResponse } from 'appcoretruckassist';
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckService } from 'src/app/pages/truck/services/truck.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
 
 // animations
 import { card_component_animation } from '../../shared/animations/card-component.animations';

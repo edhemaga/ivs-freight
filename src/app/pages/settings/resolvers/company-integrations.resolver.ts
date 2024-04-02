@@ -6,7 +6,7 @@ import { IntegrationStore } from '../state/settings-integration-state/integratio
 @Injectable({
     providedIn: 'root',
 })
-export class integrationResolver implements Resolve<any> {
+export class CompanyIntegrationsResolver implements Resolve<any> {
     constructor(
         private integrationService: IntegrationService,
         private integrationStore: IntegrationStore

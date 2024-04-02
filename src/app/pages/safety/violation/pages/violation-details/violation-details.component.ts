@@ -13,7 +13,7 @@ import { RoadsideService } from '../../services/roadside.service';
     styleUrls: ['./violation-details.component.scss'],
     providers: [DetailsPageService],
 })
-export class ViolationDetailsPageComponent implements OnInit {
+export class ViolationDetailsComponent implements OnInit {
     public violationInitCongif: any[] = [];
     public violationData: any;
     private destroy$ = new Subject<void>();

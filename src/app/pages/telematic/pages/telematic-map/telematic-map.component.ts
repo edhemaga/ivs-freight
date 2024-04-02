@@ -18,15 +18,15 @@ import {
 } from '@angular/forms';
 
 // services
-import { TruckService } from '../../../truck/services/truck.service';
-import { TrailerService } from '../../../trailer/services/trailer.service';
+import { TruckService } from '../../../../shared/services/truck.service';
+import { TrailerService } from '../../../../shared/services/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 import { GpsServiceService } from 'src/app/global/services/gps-service.service';
-import { CompanyOfficeService } from 'src/app/pages/settings/pages/custom-agreement/service/company-office.service';
+import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
 
 // store
 import { TelematicStateQuery } from '../../state/telematic-state.query';

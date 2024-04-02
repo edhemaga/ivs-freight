@@ -7,7 +7,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
-import { CompanyParkingService } from './service/company-parking.service';
+import { CompanyParkingService } from '../../../../services/company-parking.service';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 @Component({

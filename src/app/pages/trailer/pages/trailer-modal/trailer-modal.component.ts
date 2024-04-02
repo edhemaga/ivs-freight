@@ -28,7 +28,7 @@ import {
     yearValidRegex,
 } from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { TrailerService } from 'src/app/pages/trailer/services/trailer.service';
+import { TrailerService } from 'src/app/shared/services/trailer.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../../../../core/components/modals/owner-modal/owner-modal.component';

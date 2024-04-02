@@ -4,14 +4,14 @@ import { CompanyResponse } from 'appcoretruckassist';
 import { catchError, Observable, of, tap } from 'rxjs';
 
 //Service
-import { SettingsCompanyService } from '../pages/settings-company/services/settings-company.service';
+import { SettingsCompanyService } from '../services/settings-company.service';
 
 //Store
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { CompanyStore } from '../state/company-state/company-settings.store';
 
 @Injectable({ providedIn: 'root' })
-export class companySettingsResolver implements Resolve<CompanyResponse[]> {
+export class CompanySettingsResolver implements Resolve<CompanyResponse[]> {
     public showNoDataComponent: boolean;
     constructor(
         private settingsCompanyService: SettingsCompanyService,

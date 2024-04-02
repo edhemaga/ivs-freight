@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViolationDetailsRoutes } from './violation-details.routing';
-import { ViolationDetailsPageComponent } from './violation-details.component';
-import { ViolationDetailsSingleComponent } from './components/violation-details-single/violation-details-single.component';
-import { ViolationCardViewComponent } from './components/violation-card-view/violation-card-view.component';
+import { ViolationDetailsComponent } from './violation-details.component';
+import { ViolationDetailsItemComponent } from './components/violation-details-item/violation-details-item.component';
+import { ViolationDetailsCardComponent } from './components/violation-details-card/violation-details-card.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
@@ -19,11 +19,11 @@ import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-detai
 
 @NgModule({
     declarations: [
-        ViolationDetailsPageComponent,
-        ViolationDetailsSingleComponent,
-        ViolationCardViewComponent,
+        ViolationDetailsComponent,
+        ViolationDetailsItemComponent,
+        ViolationDetailsCardComponent,
     ],
-    exports: [ViolationCardViewComponent, SharedModule],
+    exports: [ViolationDetailsCardComponent, SharedModule],
     imports: [
         CommonModule,
         ViolationDetailsRoutes,

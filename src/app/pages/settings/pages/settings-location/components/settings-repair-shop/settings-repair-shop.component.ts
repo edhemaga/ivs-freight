@@ -5,7 +5,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
-import { CompanyRepairShopService } from './services/company-repairshop.service';
+import { CompanyRepairShopService } from '../../../../services/company-repairshop.service';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { RepairTService } from 'src/app/pages/repair/services/repair.service';

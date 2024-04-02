@@ -24,15 +24,15 @@ import { TerminalListResponse } from 'appcoretruckassist';
 //Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { CompanyParkingService } from '../components/settings-parking/service/company-parking.service';
-import { CompanyTerminalService } from '../components/settings-terminal/services/company-terminal.service';
-import { CompanyOfficeService } from '../../custom-agreement/service/company-office.service';
+import { CompanyParkingService } from '../../../services/company-parking.service';
+import { CompanyTerminalService } from '../../../services/company-terminal.service';
+import { CompanyOfficeService } from '../../../../../shared/services/company-office.service';
 
 //Components
-import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 //Stores
 import { ParkingStore } from '../../../state/parking-state/company-parking.store';

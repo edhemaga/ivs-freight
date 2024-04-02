@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { CompanyParkingService } from '../pages/settings-location/components/settings-parking/service/company-parking.service';
+import { CompanyParkingService } from '../services/company-parking.service';
 import {
     ParkingState,
     ParkingStore,
@@ -12,7 +12,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class ParkingResolver implements Resolve<ParkingState> {
+export class CompanyParkingResolver implements Resolve<ParkingState> {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;

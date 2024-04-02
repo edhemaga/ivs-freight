@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerService } from '../services/trailer.service';
+import { TrailerService } from '../../../shared/services/trailer.service';
 import {
     TrailerActiveState,
     TrailerActiveStore,

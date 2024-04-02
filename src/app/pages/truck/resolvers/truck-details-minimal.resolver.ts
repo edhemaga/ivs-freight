@@ -5,7 +5,7 @@ import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 //Service
-import { TruckService } from '../services/truck.service';
+import { TruckService } from '../../../shared/services/truck.service';
 //Model
 import { TruckMinimalListResponse } from 'appcoretruckassist';
 

@@ -4,7 +4,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { CompanyTerminalService } from './services/company-terminal.service';
+import { CompanyTerminalService } from '../../../../services/company-terminal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ActivatedRoute } from '@angular/router';

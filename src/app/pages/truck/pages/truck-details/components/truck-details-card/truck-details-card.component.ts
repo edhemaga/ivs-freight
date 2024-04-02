@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 //Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckService } from '../../../../services/truck.service';
+import { TruckService } from '../../../../../../shared/services/truck.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 //Animations

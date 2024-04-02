@@ -5,7 +5,7 @@ import {
     SimpleChanges,
     OnDestroy,
 } from '@angular/core';
-import { SettingsCompanyService } from '../../services/settings-company.service';
+import { SettingsCompanyService } from '../../../../services/settings-company.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CompanyStore } from '../../../../state/company-state/company-settings.store';

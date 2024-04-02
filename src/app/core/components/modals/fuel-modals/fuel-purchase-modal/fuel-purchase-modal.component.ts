@@ -20,7 +20,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
-import { TruckService } from 'src/app/pages/truck/services/truck.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
 
 //Components
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';

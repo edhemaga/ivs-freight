@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 //Service
-import { CompanyOfficeService } from '../pages/custom-agreement/service/company-office.service';
+import { CompanyOfficeService } from '../../../shared/services/company-office.service';
 
 //Store
 import {
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class cOfficeResolver implements Resolve<OfficeState> {
+export class CompanyOfficeResolver implements Resolve<OfficeState> {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;

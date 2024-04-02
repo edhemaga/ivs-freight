@@ -3,13 +3,13 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { SettingsCompanyService } from '../settings-company/services/settings-company.service';
+import { SettingsCompanyService } from '../../services/settings-company.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // model
 import { File } from 'src/app/core/components/shared/model/card-table-data.model';
 import { FileEvent } from 'src/app/core/model/file-event.model';
-import { DocumentAction } from './enums/settings-document.enum';
+import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
 import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
 
 import { UploadFile } from 'src/app/core/components/shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
@@ -48,9 +48,9 @@ export class SettingsDocumentComponent
     public resizeObserver: ResizeObserver;
 
     private documentActionConfig: DocumentActionConfig = {
-        [DocumentAction.ADD]: this.addDocument,
-        [DocumentAction.DELETE]: this.deleteDocument,
-        [DocumentAction.TAG]: this.tagDocument,
+        [SettingsDocumentStringEnum.ADD]: this.addDocument,
+        [SettingsDocumentStringEnum.DELETE]: this.deleteDocument,
+        [SettingsDocumentStringEnum.TAG]: this.tagDocument,
     };
 
     ngOnInit() {

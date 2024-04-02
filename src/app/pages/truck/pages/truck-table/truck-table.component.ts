@@ -11,7 +11,7 @@ import { TtTitleModalComponent } from 'src/app/core/components/modals/common-tru
 
 // Services
 
-import { TruckService } from '../../services/truck.service';
+import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
