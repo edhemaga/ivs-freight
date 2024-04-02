@@ -17,7 +17,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     styleUrls: ['./contacts-card.component.scss'],
 })
 export class ContactsCardComponent implements OnInit, OnDestroy {
-    // All data
     @Input() viewData: CardDetails[];
 
     // Card body endpoints

@@ -1,5 +1,41 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { UserService } from '../../services/user.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+// components
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
+
+// helpers
+import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
+import {
+    closeAnimationAction,
+    tableSearch,
+} from 'src/app/core/utils/methods.globals';
+import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+
+// store
+import { UserQuery } from '../../state/user.query';
+import { UserState } from '../../state/user.store';
+
+// pipes
+import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+
+// constants
+import { UserConstants } from '../../utils/constants/user.constants';
+
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 // models
 import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
@@ -8,48 +44,6 @@ import {
     CompanyUserResponse,
     GetCompanyUserListResponse,
 } from 'appcoretruckassist';
-
-//Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { UserTService } from '../../services/user.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-
-//Components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { UserModalComponent } from 'src/app/core/components/modals/user-modal/user-modal.component';
-
-//Utils
-import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
-
-//State
-import { UserQuery } from '../../state/user-state/user.query';
-import { UserState } from '../../state/user-state/user.store';
-
-//Pipe
-import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { DatePipe } from '@angular/common';
-
-//Methodes
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
-
-//Helpers
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
-import {
-    UserTableDropdown,
-    UserTableOwnerDropdown,
-} from '../../utils/constants/user.constants';
-
-//Enum
-
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { DisplayUserConfiguration } from '../../utils/constants/user-card-data. constants';
 
 @Component({
     selector: 'app-user-table',
@@ -101,7 +95,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phoneFormater: formatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private imageBase64Service: ImageBase64Service,
-        private userService: UserTService,
+        private userService: UserService,
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService
@@ -580,11 +574,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get User Dropdown Content
     public getOwnerDropdown(data: CompanyUserResponse): DropdownItem[] {
-        return UserTableOwnerDropdown(data);
+        return UserConstants.getUserTableOwnerDropdown(data);
     }
 
     public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
-        const dropdownContent = UserTableDropdown(data);
+        const dropdownContent = UserConstants.getUserTableDropdown(data);
         data.verified ? dropdownContent.splice(2, 1) : dropdownContent;
         return dropdownContent;
     }

@@ -29,10 +29,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     providers: [ValueByStringPath],
 })
 export class AccountCardComponent implements OnInit, OnChanges {
-    // All data
     @Input() viewData: CardDetails[];
-
-    // Page
     @Input() selectedTab: string;
 
     // Card body endpoints

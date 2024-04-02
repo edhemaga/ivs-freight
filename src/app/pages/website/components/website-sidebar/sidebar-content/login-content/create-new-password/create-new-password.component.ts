@@ -17,7 +17,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { SetNewPasswordCommand } from 'appcoretruckassist';
@@ -85,20 +85,20 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
     public passwordsNotSame(): void {
         this.createNewPasswordForm
-            .get(ConstantString.CONFIRM_PASSWORD)
+            .get(WebsiteStringEnum.CONFIRM_PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value ===
-                    this.createNewPasswordForm.get(ConstantString.PASSWORD)
+                    this.createNewPasswordForm.get(WebsiteStringEnum.PASSWORD)
                         .value
                 ) {
                     this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
                     this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors({
                             invalid: true,
                         });
@@ -106,21 +106,21 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             });
 
         this.createNewPasswordForm
-            .get(ConstantString.PASSWORD)
+            .get(WebsiteStringEnum.PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value ===
                     this.createNewPasswordForm.get(
-                        ConstantString.CONFIRM_PASSWORD
+                        WebsiteStringEnum.CONFIRM_PASSWORD
                     ).value
                 ) {
                     this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
                     this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors({
                             invalid: true,
                         });
@@ -147,7 +147,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
         const saveData: SetNewPasswordCommand = {
             newPassword: this.createNewPasswordForm.get(
-                ConstantString.NEW_PASSWORD
+                WebsiteStringEnum.NEW_PASSWORD
             ).value,
         };
 

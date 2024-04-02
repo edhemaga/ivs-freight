@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // utils
-import { NAVBAR_MENU_ITEMS } from '../../utils/constants/website.constants';
+import { WebsiteConstants } from '../../utils/constants/website.constants';
 
 // services
 import { WebsiteActionsService } from '../../services/website-actions.service';
 
 // enums
-import { ConstantString } from '../../enums/const-string.enum';
+import { WebsiteStringEnum } from '../../enums/website-string.enum';
 
 // models
 import { NavigationModel } from '../../models/navigation.model';
@@ -23,7 +23,8 @@ import { NavigationModel } from '../../models/navigation.model';
 export class WebsiteNavbarComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public navbarMenuItems: NavigationModel[] = null;
+    public navbarMenuItems: NavigationModel[] =
+        WebsiteConstants.NAVBAR_MENU_ITEMS;
 
     public isSidebarOpen: boolean = true;
     public isEmailRoute: boolean = false;
@@ -36,8 +37,6 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.navbarMenuItems = NAVBAR_MENU_ITEMS;
-
         this.checkIsSidebarOpen();
 
         this.getSidebarContentWidth();
@@ -62,7 +61,7 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
     }
 
     public handleNavbarBtnClick(navPosition: string, type: string): void {
-        if (navPosition === ConstantString.LEFT) {
+        if (navPosition === WebsiteStringEnum.LEFT) {
             this.router.navigate([type]);
         } else {
             if (this.isSidebarOpen) {

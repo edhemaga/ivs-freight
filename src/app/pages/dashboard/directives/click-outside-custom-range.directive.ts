@@ -10,7 +10,9 @@ import {
 } from '@angular/core';
 
 import { Subscription, filter, fromEvent } from 'rxjs';
-import { ConstantStringEnum } from '../enums/constant-string.enum';
+
+// enums
+import { DashboardStringEnum } from '../enums/dashboard-string.enum';
 
 @Directive({
     selector: '[clickOutsideElement]',
@@ -35,7 +37,7 @@ export class ClickOutsideCustomRangeDirective
     private startDocumentClickSubscriptipon(): void {
         this.documentClickSubscription = fromEvent(
             this.document,
-            ConstantStringEnum.CLICK
+            DashboardStringEnum.CLICK
         )
             .pipe(
                 filter((event) => {
@@ -52,7 +54,7 @@ export class ClickOutsideCustomRangeDirective
     private checkIfInsideClick(elementToCheck: HTMLElement): boolean {
         return (
             elementToCheck.classList.contains(
-                ConstantStringEnum.CLASS_DROPDOWN_OPTION
+                DashboardStringEnum.CLASS_DROPDOWN_OPTION
             ) ||
             elementToCheck === this.element.nativeElement ||
             this.element.nativeElement.contains(elementToCheck)

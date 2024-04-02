@@ -1,124 +1,135 @@
-import { CompanyUserResponse } from 'appcoretruckassist';
+// enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
-export function UserTableDropdown(data: CompanyUserResponse) {
-    return [
-        {
-            title: ConstantStringTableComponentsEnum.EDIT_2,
-            name: ConstantStringTableComponentsEnum.EDIT,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
+// models
+import { CompanyUserResponse } from 'appcoretruckassist';
+import { UserTableDropdown } from '../../models/user-table-dropdown.model';
+
+export class UserConstants {
+    static getUserTableDropdown(
+        data: CompanyUserResponse
+    ): UserTableDropdown[] {
+        return [
+            {
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                hasBorder: true,
             },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            hasBorder: true,
-        },
-        {
-            title: 'Reset Password',
-            name: ConstantStringTableComponentsEnum.RESET_PASSWORD,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
+            {
+                title: 'Reset Password',
+                name: ConstantStringTableComponentsEnum.RESET_PASSWORD,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: !data.verified,
             },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
+            {
+                title: 'Resend Invitation',
+                name: ConstantStringTableComponentsEnum.RESEND_INVITATION,
+                svgUrl: !data.verified
+                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
+                    : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
+                svgStyle: {
+                    width: !data.verified ? 18 : 14,
+                    height: !data.verified ? 18 : 14,
+                },
+                svgClass: data.verified
+                    ? ConstantStringTableComponentsEnum.CHECK
+                    : ConstantStringTableComponentsEnum.REGULAR,
+                hasBorder: true,
+                mutedStyle: data.verified,
             },
-            mutedStyle: !data.verified,
-        },
-        {
-            title: 'Resend Invitation',
-            name: ConstantStringTableComponentsEnum.RESEND_INVITATION,
-            svgUrl: !data.verified
-                ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
-                : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
-            svgStyle: {
-                width: !data.verified ? 18 : 14,
-                height: !data.verified ? 18 : 14,
+            {
+                title: data.status
+                    ? ConstantStringTableComponentsEnum.DEACTIVATE_2
+                    : ConstantStringTableComponentsEnum.ACTIVATE_2,
+                name: data.status
+                    ? ConstantStringTableComponentsEnum.DEACTIVATE
+                    : ConstantStringTableComponentsEnum.ACTIVATE,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: !data.verified
+                    ? ConstantStringTableComponentsEnum.REGULAR
+                    : data.status
+                    ? ConstantStringTableComponentsEnum.DEACTIVATE
+                    : ConstantStringTableComponentsEnum.ACTIVATE,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: !data.verified,
             },
-            svgClass: data.verified
-                ? ConstantStringTableComponentsEnum.CHECK
-                : ConstantStringTableComponentsEnum.REGULAR,
-            hasBorder: true,
-            mutedStyle: data.verified,
-        },
-        {
-            title: data.status
-                ? ConstantStringTableComponentsEnum.DEACTIVATE_2
-                : ConstantStringTableComponentsEnum.ACTIVATE_2,
-            name: data.status
-                ? ConstantStringTableComponentsEnum.DEACTIVATE
-                : ConstantStringTableComponentsEnum.ACTIVATE,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
+            {
+                title: ConstantStringTableComponentsEnum.DELETE_2,
+                name: ConstantStringTableComponentsEnum.DELETE,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.DELETE,
             },
-            svgClass: !data.verified
-                ? ConstantStringTableComponentsEnum.REGULAR
-                : data.status
-                ? ConstantStringTableComponentsEnum.DEACTIVATE
-                : ConstantStringTableComponentsEnum.ACTIVATE,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
+        ];
+    }
+
+    static getUserTableOwnerDropdown(
+        data: CompanyUserResponse
+    ): UserTableDropdown[] {
+        return [
+            {
+                title: ConstantStringTableComponentsEnum.EDIT_2,
+                name: ConstantStringTableComponentsEnum.EDIT,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                hasBorder: true,
             },
-            mutedStyle: !data.verified,
-        },
-        {
-            title: ConstantStringTableComponentsEnum.DELETE_2,
-            name: ConstantStringTableComponentsEnum.DELETE,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
+            {
+                title: 'Reset Password',
+                name: ConstantStringTableComponentsEnum.RESET_PASSWORD,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: !data.verified,
             },
-            svgClass: ConstantStringTableComponentsEnum.DELETE,
-        },
-    ];
-}
-export function UserTableOwnerDropdown(data: CompanyUserResponse) {
-    return [
-        {
-            title: ConstantStringTableComponentsEnum.EDIT_2,
-            name: ConstantStringTableComponentsEnum.EDIT,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
+            {
+                title: 'Resend Invitation',
+                name: ConstantStringTableComponentsEnum.RESEND_INVITATION,
+                svgUrl: !data.verified
+                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
+                    : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
+                svgStyle: {
+                    width: !data.verified ? 18 : 14,
+                    height: !data.verified ? 18 : 14,
+                },
+                svgClass: data.verified
+                    ? ConstantStringTableComponentsEnum.CHECK
+                    : ConstantStringTableComponentsEnum.REGULAR,
+                mutedStyle: data.verified,
             },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            hasBorder: true,
-        },
-        {
-            title: 'Reset Password',
-            name: ConstantStringTableComponentsEnum.RESET_PASSWORD,
-            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
-            svgStyle: {
-                width: 18,
-                height: 18,
-            },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
-            tableListDropdownContentStyle: {
-                'margin-bottom.px': 4,
-            },
-            mutedStyle: !data.verified,
-        },
-        {
-            title: 'Resend Invitation',
-            name: ConstantStringTableComponentsEnum.RESEND_INVITATION,
-            svgUrl: !data.verified
-                ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
-                : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
-            svgStyle: {
-                width: !data.verified ? 18 : 14,
-                height: !data.verified ? 18 : 14,
-            },
-            svgClass: data.verified
-                ? ConstantStringTableComponentsEnum.CHECK
-                : ConstantStringTableComponentsEnum.REGULAR,
-            mutedStyle: data.verified,
-        },
-    ];
+        ];
+    }
 }

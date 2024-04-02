@@ -13,7 +13,7 @@ import { WebsiteActionsService } from 'src/app/pages/website/services/website-ac
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';
@@ -47,8 +47,8 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.resendConfirmationForm.get(ConstantString.EMAIL_ADDRESS),
-            ConstantString.EMAIL_ADDRESS,
+            this.resendConfirmationForm.get(WebsiteStringEnum.EMAIL_ADDRESS),
+            WebsiteStringEnum.EMAIL_ADDRESS,
             this.destroy$
         );
     }
@@ -71,8 +71,9 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
         this.displaySpinner = true;
 
         const saveData: ResendSignUpCompanyOrUserCommand = {
-            email: this.resendConfirmationForm.get(ConstantString.EMAIL_ADDRESS)
-                .value,
+            email: this.resendConfirmationForm.get(
+                WebsiteStringEnum.EMAIL_ADDRESS
+            ).value,
             isResendConfirmation: true,
         };
 
@@ -83,14 +84,14 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
                 tap({
                     next: () => {
                         this.websiteActionsService.setSidebarContentType(
-                            ConstantString.RESEND_CONFIRMATION_REQUESTED
+                            WebsiteStringEnum.RESEND_CONFIRMATION_REQUESTED
                         );
 
                         localStorage.setItem(
-                            ConstantString.CONFIRMATION_EMAIL,
+                            WebsiteStringEnum.CONFIRMATION_EMAIL,
                             JSON.stringify(
                                 this.resendConfirmationForm.get(
-                                    ConstantString.EMAIL_ADDRESS
+                                    WebsiteStringEnum.EMAIL_ADDRESS
                                 ).value
                             )
                         );
@@ -101,9 +102,10 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
                         const errorMessage = error.error.error;
 
                         this.resendConfirmationForm
-                            .get(ConstantString.EMAIL_ADDRESS)
+                            .get(WebsiteStringEnum.EMAIL_ADDRESS)
                             .setErrors(
-                                errorMessage === ConstantString.USER_NOT_FOUND
+                                errorMessage ===
+                                    WebsiteStringEnum.USER_NOT_FOUND
                                     ? { userDoesntExist: true }
                                     : { userAlreadyRegistered: true }
                             );
