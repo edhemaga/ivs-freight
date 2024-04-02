@@ -26,7 +26,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TaUserService } from '../../../services/user/user.service';
+import { UserProfileUpdateService } from '../../../../shared/services/user-profile-update.service';
 import { FormService } from '../../../services/form/form.service';
 
 // modules
@@ -124,7 +124,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
-        private userService: TaUserService,
+        private userProfileUpdateService: UserProfileUpdateService,
         private modalService: ModalService,
         private formService: FormService
     ) {}
@@ -231,7 +231,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                 this.userPasswordTyping = value?.toString().length >= 1;
                 if (value && value.length >= 8) {
                     this.loadingOldPassword = true;
-                    this.userService
+                    this.userProfileUpdateService
                         .validateUserPassword({ password: value })
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
@@ -323,7 +323,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     }
 
     private getUserById() {
-        this.userService
+        this.userProfileUpdateService
             .getUserById(this.user.userId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -371,7 +371,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
-        this.userService
+        this.userProfileUpdateService
             .updateUser(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -382,7 +382,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                         lastName: this.profileUserForm.get('lastName').value,
                         avatar: this.profileUserForm.get('avatar').value,
                     };
-                    this.userService.updateUserProfile(true);
+                    this.userProfileUpdateService.updateUserProfile(true);
                     localStorage.setItem('user', JSON.stringify(newUser));
                     this.modalService.setModalSpinner({
                         action: null,

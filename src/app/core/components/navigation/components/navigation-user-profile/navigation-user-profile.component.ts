@@ -24,7 +24,7 @@ import { NavigationUserPanel } from '../../models/navigation.model';
 import { NavigationService } from '../../services/navigation.service';
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { TaUserService } from 'src/app/core/services/user/user.service';
+import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Components
 import { ProfileUpdateModalComponent } from 'src/app/core/components/modals/profile-update-modal/profile-update-modal.component';
@@ -56,7 +56,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         private websiteAuthService: WebsiteAuthService,
         private navigationService: NavigationService,
         private modalService: ModalService,
-        private userService: TaUserService,
+        private userProfileUpdateService: UserProfileUpdateService,
         private imageBase64Service: ImageBase64Service
     ) {}
 
@@ -78,7 +78,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
                 : null,
         };
-        this.userService.updateUserProfile$
+        this.userProfileUpdateService.updateUserProfile$
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((val: boolean) => {
                 if (val) {

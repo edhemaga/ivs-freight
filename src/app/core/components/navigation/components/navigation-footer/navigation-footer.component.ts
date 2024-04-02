@@ -20,7 +20,7 @@ import {
     navigation_route_animation,
 } from '../../animations/navigation.animation';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { TaUserService } from 'src/app/core/services/user/user.service';
+import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
@@ -78,7 +78,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
         private router: Router,
         private navigationService: NavigationService,
         private imageBase64Service: ImageBase64Service,
-        private userService: TaUserService,
+        private userProfileUpdateService: UserProfileUpdateService,
         private cdRef: ChangeDetectorRef
     ) {}
 
@@ -132,7 +132,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
             },
         };
 
-        this.userService.updateUserProfile$
+        this.userProfileUpdateService.updateUserProfile$
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((val: boolean) => {
                 if (val) {
