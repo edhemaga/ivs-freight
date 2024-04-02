@@ -1,4 +1,4 @@
-export interface backFilterQueryInterface {
+export interface TruckFilter {
     active: number;
     pageIndex: number;
     pageSize: number;

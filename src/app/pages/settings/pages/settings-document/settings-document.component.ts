@@ -20,7 +20,7 @@ import {
 import { DocumentActionConfig } from 'src/app/core/model/document-action-config';
 
 // constants
-import { SettingsDocumentsConstants } from '../../utils/constants/settings-document.constants';
+import { SettingsDocumentsConstants } from './utils/constants/settings-document.constants';
 
 @Component({
     selector: 'app-settings-document',

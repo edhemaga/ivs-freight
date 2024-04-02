@@ -17,16 +17,16 @@ import { TrailerService } from '../../services/trailer.service';
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
-import { MappedTrailer } from '../../models/trailer.model';
+import { TrailerMapped } from './models/trailer-mapped.model';
 import {
     CardRows,
     TableOptionsInterface,
 } from 'src/app/core/components/shared/model/card-data.model';
 import { ToolbarActions } from 'src/app/core/model/table.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
-import { backFilterQueryInterface } from '../../models/trailer-back-filter-query.model';
-import { TraillerData } from '../../models/trailer-data.model';
-import { BodyResponseTrailer } from '../../models/trailer-body-response-trailer.model';
+import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
+import { TraillerData } from './models/trailer-data.model';
+import { TrailerBodyResponse } from './models/trailer-body-response.model';
 
 // Store
 import { TrailerActiveQuery } from '../../state/trailer-active-state/trailer-active.query';
@@ -50,7 +50,7 @@ import {
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Configuration
-import { DisplayTrailerConfiguration } from '../../utils/constants/trailer-card-data.constants';
+import { trailerCardDataConstants } from './utils/constants/trailer-card-data.constants';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -85,23 +85,23 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
     public activeTableData: string;
-    public backFilterQuery: backFilterQueryInterface =
+    public backFilterQuery: TrailerBackFilterQueryInterface =
         TableDropdownComponentConstants.BACK_FILTER_QUERY;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =
-        DisplayTrailerConfiguration.displayRowsFrontActive;
+        trailerCardDataConstants.displayRowsFrontActive;
     public displayRowsBackActive: CardRows[] =
-        DisplayTrailerConfiguration.displayRowsBackActive;
+        trailerCardDataConstants.displayRowsBackActive;
 
     public displayRowsFrontInactive: CardRows[] =
-        DisplayTrailerConfiguration.displayRowsFrontInactive;
+        trailerCardDataConstants.displayRowsFrontInactive;
     public displayRowsBackInactive: CardRows[] =
-        DisplayTrailerConfiguration.displayRowsBackInactive;
+        trailerCardDataConstants.displayRowsBackInactive;
 
-    public cardTitle: string = DisplayTrailerConfiguration.cardTitle;
-    public page: string = DisplayTrailerConfiguration.page;
-    public rows: number = DisplayTrailerConfiguration.rows;
+    public cardTitle: string = trailerCardDataConstants.cardTitle;
+    public page: string = trailerCardDataConstants.page;
+    public rows: number = trailerCardDataConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -574,7 +574,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTrailerData(data: TraillerData): MappedTrailer {
+    private mapTrailerData(data: TraillerData): TrailerMapped {
         return {
             ...data,
             isSelected: false,
@@ -998,7 +998,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: BodyResponseTrailer): void {
+    public onTableBodyActions(event: TrailerBodyResponse): void {
         const mappedEvent = {
             ...event,
             data: {

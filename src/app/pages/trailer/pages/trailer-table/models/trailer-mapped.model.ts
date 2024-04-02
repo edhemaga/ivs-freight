@@ -1,7 +1,7 @@
 import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
 import { TraillerData } from './trailer-data.model';
 
-export interface MappedTrailer extends TraillerData {
+export interface TrailerMapped extends TraillerData {
     isSelected: boolean;
     tableTrailerTypeIcon: string;
     tableVin: {

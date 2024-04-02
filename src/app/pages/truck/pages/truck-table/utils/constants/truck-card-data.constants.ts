@@ -1,11 +1,11 @@
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
-export class DisplayTrailerConfiguration {
+export class TruckCardDataConstants {
     static rows: number = 4;
 
-    static page: string = 'Trailer';
+    static page: string = 'Truck';
 
-    static cardTitle: string = 'trailerNumber';
+    static cardTitle: string = 'truckNumber';
 
     // Data for active trucks front
     static displayRowsFrontActive: CardRows[] = [
@@ -16,28 +16,27 @@ export class DisplayTrailerConfiguration {
         },
         {
             title: 'Make',
-            key: 'trailerMake.name',
+            key: 'truckMake.name',
         },
         {
             title: 'Model',
-            key: 'tableModel',
+            key: 'model',
         },
         {
-            title: 'Owner',
-            key: 'owner.name',
+            title: 'Mileage',
+            key: 'mileage',
         },
     ];
 
     // Data for active trucks back
     static displayRowsBackActive: CardRows[] = [
         {
-            title: 'Length',
-            key: 'tabelLength',
+            title: 'Owner',
+            key: 'owner.name',
         },
         {
-            title: 'Color',
-            key: 'color.code',
-            secondKey: 'color.name',
+            title: 'Commission',
+            key: 'tabelOwnerDetailsComm',
         },
         {
             title: 'Licence Exp.',
@@ -46,8 +45,8 @@ export class DisplayTrailerConfiguration {
         },
         {
             title: 'FHWA Exp.',
-            key: 'tableFHWAInspectionExpiration.expirationDaysText',
-            secondKey: 'tableFHWAInspectionExpiration.percentage',
+            key: 'tableFhwaInspectionExpiration.expirationDaysText',
+            secondKey: 'tableFhwaInspectionExpiration.percentage',
         },
     ];
 

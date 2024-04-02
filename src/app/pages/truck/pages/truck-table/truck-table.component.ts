@@ -36,13 +36,13 @@ import {
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
-import { FilterOptions } from '../../models/truck-filter.model';
+import { TruckFilter } from './models/truck-filter.model';
 import {
     DropdownItem,
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
-import { BodyResponseTruck } from '../../models/truck-bodyResponse.model';
-import { DisplayTruckConfiguration } from '../../utils/constants/truck-card-data.constants';
+import { TruckBodyResponse } from './models/truck-body-response.model';
+import { TruckCardDataConstants } from './utils/constants/truck-card-data.constants';
 
 // Pipes
 import { DatePipe } from '@angular/common';
@@ -86,25 +86,25 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = false;
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
-    public backFilterQuery: FilterOptions =
+    public backFilterQuery: TruckFilter =
         TableDropdownComponentConstants.BACK_FILTER_QUERY;
 
     public resizeObserver: ResizeObserver;
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =
-        DisplayTruckConfiguration.displayRowsFrontActive;
+        TruckCardDataConstants.displayRowsFrontActive;
     public displayRowsBackActive: CardRows[] =
-        DisplayTruckConfiguration.displayRowsBackActive;
+        TruckCardDataConstants.displayRowsBackActive;
 
     public displayRowsFrontInactive: CardRows[] =
-        DisplayTruckConfiguration.displayRowsFrontInactive;
+        TruckCardDataConstants.displayRowsFrontInactive;
     public displayRowsBackInactive: CardRows[] =
-        DisplayTruckConfiguration.displayRowsBackInactive;
+        TruckCardDataConstants.displayRowsBackInactive;
 
-    public cardTitle: string = DisplayTruckConfiguration.cardTitle;
-    public page: string = DisplayTruckConfiguration.page;
-    public rows: number = DisplayTruckConfiguration.rows;
+    public cardTitle: string = TruckCardDataConstants.cardTitle;
+    public page: string = TruckCardDataConstants.page;
+    public rows: number = TruckCardDataConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -1060,7 +1060,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private onTableBodyActions(event: BodyResponseTruck): void {
+    private onTableBodyActions(event: TruckBodyResponse): void {
         const mappedEvent = {
             ...event,
             data: {

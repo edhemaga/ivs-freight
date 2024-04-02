@@ -24,14 +24,14 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 
 // enums
-import { SETINGS_ENUMS } from '../../../../enums/settings.enum';
+import { SETINGS_ENUMS } from './enums/settings.enum';
 import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings-arrow-actions.enum';
 
 //Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 //Models
-import { CompanyProperties } from '../../../../models/settings.model';
+import { CompanyProperties } from './models/setting-company-properties.model';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

@@ -1,4 +1,4 @@
-export interface TruckInterface {
+export interface Truck {
     id: number;
     companyId: number;
     divisinFlag: number;

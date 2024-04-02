@@ -1,4 +1,4 @@
-export interface FilterOptions {
+export interface TrailerBackFilterQueryInterface {
     active: number;
     pageIndex: number;
     pageSize: number;
