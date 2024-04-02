@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 @Component({
     selector: 'app-register-user-have-account-helper',
@@ -27,8 +27,8 @@ export class RegisterUserHaveAccountHelperComponent implements OnInit {
         let isValid: boolean;
 
         this.route.queryParams.subscribe((params) => {
-            if (!params[ConstantString.EMAIL]) {
-                this.router.navigate([ConstantString.WEBSITE]);
+            if (!params[WebsiteStringEnum.EMAIL]) {
+                this.router.navigate([WebsiteStringEnum.WEBSITE]);
 
                 isValid = false;
 
@@ -40,18 +40,20 @@ export class RegisterUserHaveAccountHelperComponent implements OnInit {
 
         if (isValid) {
             const userAlreadyLoggedIn = localStorage.getItem(
-                ConstantString.USER
+                WebsiteStringEnum.USER
             );
 
             if (userAlreadyLoggedIn) {
-                this.router.navigate([ConstantString.WEBSITE_SELECT_COMPANY]);
+                this.router.navigate([
+                    WebsiteStringEnum.WEBSITE_SELECT_COMPANY,
+                ]);
             } else {
-                this.router.navigate([ConstantString.WEBSITE]);
+                this.router.navigate([WebsiteStringEnum.WEBSITE]);
 
                 this.websiteActionsService.setOpenSidebarSubject(true);
 
                 this.websiteActionsService.setSidebarContentType(
-                    ConstantString.LOGIN
+                    WebsiteStringEnum.LOGIN
                 );
 
                 this.websiteActionsService.setIsEmailRouteSubject(true);

@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
 import { WebsiteActionsService } from '../../../services/website-actions.service';
 
 // enums
-import { ConstantString } from '../../../enums/const-string.enum';
+import { WebsiteStringEnum } from '../../../enums/website-string.enum';
 
 @Component({
     selector: 'app-sidebar-dropdown',
@@ -28,14 +28,14 @@ export class SidebarDropdownComponent {
         type?: string
     ): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.RESET_PASSWORD_BTN)
+            if (type === WebsiteStringEnum.RESET_PASSWORD_BTN)
                 this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESET_PASSWORD
+                    WebsiteStringEnum.RESET_PASSWORD
                 );
 
-            if (type === ConstantString.RESEND_CONFIRMATION_BTN)
+            if (type === WebsiteStringEnum.RESEND_CONFIRMATION_BTN)
                 this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESEND_CONFIRMATION
+                    WebsiteStringEnum.RESEND_CONFIRMATION
                 );
         }
     }

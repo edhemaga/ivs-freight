@@ -26,7 +26,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TaUserService } from '../../../services/user/user.service';
+import { UserProfileUpdateService } from '../../../../shared/services/user-profile-update.service';
 import { FormService } from '../../../services/form/form.service';
 
 // modules
@@ -40,9 +40,6 @@ import { InputAddressDropdownComponent } from '../../shared/input-address-dropdo
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-
-// enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
 
 // models
 import {
@@ -127,7 +124,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
-        private userService: TaUserService,
+        private userProfileUpdateService: UserProfileUpdateService,
         private modalService: ModalService,
         private formService: FormService
     ) {}
@@ -196,26 +193,26 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     public changeCheckboxDetection() {
         this.profileUserForm
-            .get(ConstantString.CREATE_PASSWORD_NEW)
+            .get('createNewPassword')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value) {
                     this.inputService.changeValidators(
-                        this.profileUserForm.get(ConstantString.OLD_PASSWORD),
+                        this.profileUserForm.get('oldPassword'),
                         true,
                         [...passwordValidation]
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.profileUserForm.get(ConstantString.NEW_PASSWORD),
+                        this.profileUserForm.get('newPassword'),
                         false
                     );
                     this.inputService.changeValidators(
-                        this.profileUserForm.get(ConstantString.PASSWORD),
+                        this.profileUserForm.get('password'),
                         false
                     );
                     this.inputService.changeValidators(
-                        this.profileUserForm.get(ConstantString.OLD_PASSWORD),
+                        this.profileUserForm.get('oldPassword'),
                         false
                     );
                     this.setNewPassword = false;
@@ -228,13 +225,13 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     public confirmationOldPassword() {
         this.profileUserForm
-            .get(ConstantString.OLD_PASSWORD)
+            .get('oldPassword')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.userPasswordTyping = value?.toString().length >= 1;
                 if (value && value.length >= 8) {
                     this.loadingOldPassword = true;
-                    this.userService
+                    this.userProfileUpdateService
                         .validateUserPassword({ password: value })
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
@@ -244,7 +241,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
                                 if (!this.correctPassword) {
                                     this.profileUserForm
-                                        .get(ConstantString.OLD_PASSWORD)
+                                        .get('oldPassword')
                                         .setErrors({ invalid: true });
                                 }
                             },
@@ -258,42 +255,28 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     private passwordsNotSame(): void {
         this.profileUserForm
-            .get(ConstantString.NEW_PASSWORD)
+            .get('newPassword')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (
-                    value ===
-                    this.profileUserForm.get(ConstantString.PASSWORD).value
-                ) {
-                    this.profileUserForm
-                        .get(ConstantString.PASSWORD)
-                        .setErrors(null);
+                if (value === this.profileUserForm.get('password').value) {
+                    this.profileUserForm.get('password').setErrors(null);
                 } else {
-                    this.profileUserForm
-                        .get(ConstantString.PASSWORD)
-                        .setErrors({
-                            passwordDontMatch: true,
-                        });
+                    this.profileUserForm.get('password').setErrors({
+                        passwordDontMatch: true,
+                    });
                 }
             });
 
         this.profileUserForm
-            .get(ConstantString.PASSWORD)
+            .get('password')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (
-                    value ===
-                    this.profileUserForm.get(ConstantString.NEW_PASSWORD).value
-                ) {
-                    this.profileUserForm
-                        .get(ConstantString.PASSWORD)
-                        .setErrors(null);
+                if (value === this.profileUserForm.get('newPassword').value) {
+                    this.profileUserForm.get('password').setErrors(null);
                 } else {
-                    this.profileUserForm
-                        .get(ConstantString.PASSWORD)
-                        .setErrors({
-                            passwordDontMatch: true,
-                        });
+                    this.profileUserForm.get('password').setErrors({
+                        passwordDontMatch: true,
+                    });
                 }
             });
     }
@@ -302,12 +285,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         if (this.correctPassword) {
             this.setNewPassword = true;
             this.inputService.changeValidators(
-                this.profileUserForm.get(ConstantString.NEW_PASSWORD),
+                this.profileUserForm.get('newPassword'),
                 true,
                 [...passwordValidation]
             );
             this.inputService.changeValidators(
-                this.profileUserForm.get(ConstantString.PASSWORD),
+                this.profileUserForm.get('password'),
                 true,
                 [...passwordValidation]
             );
@@ -340,7 +323,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     }
 
     private getUserById() {
-        this.userService
+        this.userProfileUpdateService
             .getUserById(this.user.userId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -388,7 +371,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
-        this.userService
+        this.userProfileUpdateService
             .updateUser(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -399,7 +382,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                         lastName: this.profileUserForm.get('lastName').value,
                         avatar: this.profileUserForm.get('avatar').value,
                     };
-                    this.userService.updateUserProfile(true);
+                    this.userProfileUpdateService.updateUserProfile(true);
                     localStorage.setItem('user', JSON.stringify(newUser));
                     this.modalService.setModalSpinner({
                         action: null,

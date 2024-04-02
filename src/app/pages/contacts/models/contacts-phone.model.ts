@@ -1,12 +1,9 @@
-export interface ContactPhone {
+import { ContactsPhoneType } from './contacts-phone-type.model';
+
+export interface ContactsPhone {
     id?: number;
     phone?: string;
     phoneExt?: string;
-    contactPhoneType?: ContactPhoneType;
+    contactPhoneType?: ContactsPhoneType;
     primary?: boolean;
-}
-
-export interface ContactPhoneType {
-    id?: number;
-    name?: string;
 }

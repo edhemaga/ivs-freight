@@ -1,11 +1,8 @@
-export interface ContactEmail {
+import { ContactsEmailType } from './contacts-email-type.model';
+
+export interface ContactsEmail {
     id?: number;
     email?: string;
-    contactEmailType?: ContractEmailType;
+    contactEmailType?: ContactsEmailType;
     primary?: boolean;
-}
-
-export interface ContractEmailType {
-    id?: number;
-    name?: string;
 }

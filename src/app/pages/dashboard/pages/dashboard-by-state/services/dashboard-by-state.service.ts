@@ -12,10 +12,8 @@ import {
     RoadsideByStateListResponse,
     ViolationByStateListResponse,
 } from 'appcoretruckassist';
-import {
-    ByStateApiArguments,
-    ByStateWithLoadStopApiArguments,
-} from '../../../models/dashboard-by-state-models/by-state-api-arguments.model';
+import { ByStateApiArguments } from '../models/by-state-api-arguments.model';
+import { ByStateWithLoadStopApiArguments } from '../models/by-state-with-load-stop-api-arguments.model';
 
 @Injectable({
     providedIn: 'root',

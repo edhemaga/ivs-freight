@@ -5,7 +5,7 @@ import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { AccountTService } from '../services/account.service';
+import { AccountService } from '../services/account.service';
 
 // store
 import { AccountState, AccountStore } from '../state/account.store';
@@ -15,7 +15,7 @@ import { AccountState, AccountStore } from '../state/account.store';
 })
 export class AccountResolver implements Resolve<AccountState> {
     constructor(
-        private accountService: AccountTService,
+        private accountService: AccountService,
         private accountStore: AccountStore,
         private tableService: TruckassistTableService
     ) {}
