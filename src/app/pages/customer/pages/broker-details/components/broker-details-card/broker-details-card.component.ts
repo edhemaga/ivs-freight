@@ -13,11 +13,11 @@ import { UntypedFormControl } from '@angular/forms';
 
 //Store
 import { BrokerQuery } from '../../../../state/broker-state/broker.query';
-import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 //Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { BrokerTService } from '../../../../services/broker.service';
+import { BrokerService } from '../../../../services/broker.service';
 
 //Models
 import { BrokerResponse } from 'appcoretruckassist';
@@ -27,7 +27,7 @@ import {
     LegendAttributes,
 } from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
-import { BrokerDropdown } from '../../models/broker-model';
+import { BrokerDropdown } from '../../models/broker-dropdown.model';
 import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
 
 //Constants
@@ -42,7 +42,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
 import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
-import { BrokerTabEnum } from '../../enums/broker-enum';
+import { BrokerTabEnum } from '../../enums/broker-tab.enum';
 
 @Component({
     selector: 'app-broker-details-card',
@@ -119,7 +119,7 @@ export class BrokerDetailsCardComponent implements OnInit, OnChanges, OnDestroy 
 
         // Services
         private detailsPageDriverSer: DetailsPageService,
-        private brokerService: BrokerTService
+        private brokerService: BrokerService
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {

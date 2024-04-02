@@ -1,13 +1,5 @@
-import { DispatchBoardResponse, DispatchHosResponse, DispatchResponse } from 'appcoretruckassist';
-
-export interface IDispatcher {
-    modal: any[];
-    dispatchList: any[];
-}
-
-export interface IdispatcherHosResponse extends DispatchHosResponse{
-    indx: number;
-}
+import { DispatchBoardResponse, DispatchResponse } from 'appcoretruckassist';
+import { IdispatcherHosResponse } from './dispatcher-hos-response.model';
 
 interface DispatchBoardLResponse extends DispatchResponse {
     isPhone?: boolean;

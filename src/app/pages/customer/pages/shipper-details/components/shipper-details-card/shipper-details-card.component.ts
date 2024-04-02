@@ -15,11 +15,11 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // Store
-import { ShipperMinimalListQuery } from '../../../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
+import { ShipperMinimalListQuery } from '../../../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 
 // Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ShipperTService } from '../../../../services/shipper.service';
+import { ShipperService } from '../../../../services/shipper.service';
 
 @Component({
     selector: 'app-shipper-details-card',
@@ -157,7 +157,7 @@ export class ShipperDetailsCardComponent implements OnInit, OnChanges, OnDestroy
     constructor(
         // Services
         private detailsPageDriverSer: DetailsPageService,
-        private shipperService: ShipperTService,
+        private shipperService: ShipperService,
 
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery

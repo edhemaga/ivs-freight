@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, of, forkJoin } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 // Services
-import { BrokerTService } from '../services/broker.service';
+import { BrokerService } from '../services/broker.service';
 
 // Store
 import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
@@ -23,7 +23,7 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
         private router: Router,
         
         // Services
-        private brokerService: BrokerTService,
+        private brokerService: BrokerService,
 
         // Store
         private brokerDetailsStore: BrokerDetailsStore,

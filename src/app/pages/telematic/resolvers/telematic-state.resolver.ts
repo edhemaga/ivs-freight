@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+// Services
 import { TelematicStateService } from '../services/telematic-state.service';
+
+// Store
 import {
     TelematicStateState,
     TelematicStateStore,
@@ -18,7 +22,7 @@ export class TelematicResolver implements Resolve<TelematicStateState> {
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.telematicService.getAllGpsData({}),
+            this.telematicService.getAllGpsData(),
             this.telematicService.getCompanyUnassignedGpsData({})
         ]).pipe(
             tap(([assignedGpsData, unassignedGpsData]) => {

@@ -6,7 +6,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
 
 // service
-import { ShipperTService } from '../services/shipper.service';
+import { ShipperService } from '../services/shipper.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class ShipperResolver implements Resolve<ShipperState> {
         private shipperStore: ShipperStore,
 
         // service
-        private shipperService: ShipperTService,
+        private shipperService: ShipperService,
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {

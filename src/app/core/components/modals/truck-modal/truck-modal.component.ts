@@ -38,7 +38,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from 'src/app/pages/truck/services/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairOrderModalComponent } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil, skip, tap } from 'rxjs';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';

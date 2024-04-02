@@ -11,14 +11,14 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 // Components
-import { BrokerModalComponent } from 'src/app/core/components/modals/broker-modal/broker-modal.component';
-import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-modal/shipper-modal.component';
+import { BrokerModalComponent } from 'src/app/pages/customer/pages/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from 'src/app/pages/customer/pages/shipper-modal/shipper-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { BrokerTService } from '../../services/broker.service';
-import { ShipperTService } from '../../services/shipper.service';
+import { BrokerService } from '../../services/broker.service';
+import { ShipperService } from '../../services/shipper.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
@@ -44,11 +44,9 @@ import {
     CardRows,
     TableOptionsInterface,
 } from 'src/app/core/components/shared/model/card-data.model';
-import {
-    BodyResponse,
-    UpdateRating,
-    ViewDataResponse,
-} from '../../models/customer.model';
+import { CustomerBodyResponse } from '../../models/customer-body-response.model';
+import { CustomerUpdateRating } from '../../models/customer-update-rating.model';
+import { CustomerViewDataResponse } from '../../models/customer-viewdata-response.model';
 import {
     CardDetails,
     DropdownItem,
@@ -59,7 +57,7 @@ import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
 } from 'src/assets/utils/settings/customer-columns';
-import { DisplayCustomerConfiguration } from './utils/constants/customer-card-data.constants';
+import { CustomerCardDataConfig } from './utils/constants/customer-card-data-config.constants';
 import {
     FilterOptionBroker,
     FilterOptionshipper,
@@ -135,18 +133,18 @@ export class CustomerTableComponent
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
-        DisplayCustomerConfiguration.displayRowsFrontBroker;
+        CustomerCardDataConfig.displayRowsFrontBroker;
     public displayRowsBack: CardRows[] =
-        DisplayCustomerConfiguration.displayRowsBackBroker;
+        CustomerCardDataConfig.displayRowsBackBroker;
 
     //Data to display from model Shipper
     public displayRowsFrontShipper: CardRows[] =
-        DisplayCustomerConfiguration.displayRowsFrontShipper;
+        CustomerCardDataConfig.displayRowsFrontShipper;
     public displayRowsBackShipper: CardRows[] =
-        DisplayCustomerConfiguration.displayRowsBackShipper;
-    public cardTitle: string = DisplayCustomerConfiguration.cardTitle;
-    public page: string = DisplayCustomerConfiguration.page;
-    public rows: number = DisplayCustomerConfiguration.rows;
+        CustomerCardDataConfig.displayRowsBackShipper;
+    public cardTitle: string = CustomerCardDataConfig.cardTitle;
+    public page: string = CustomerCardDataConfig.page;
+    public rows: number = CustomerCardDataConfig.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -162,8 +160,8 @@ export class CustomerTableComponent
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private tableDropdownService: TableCardDropdownActionsService,
-        private brokerService: BrokerTService,
-        private shipperService: ShipperTService,
+        private brokerService: BrokerService,
+        private shipperService: ShipperService,
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
@@ -462,17 +460,14 @@ export class CustomerTableComponent
                         ConstantStringTableComponentsEnum.ACTIVE
                     ) {
                         this.brokerService
-                            .deleteBrokerList(response)
+                            .deleteBrokerList()
                             .pipe(takeUntil(this.destroy$))
                             .subscribe(() => {
                                 let brokerName:
                                     | ConstantStringTableComponentsEnum
                                     | string =
                                     ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
-                                let brokerText:
-                                    | ConstantStringTableComponentsEnum
-                                    | string =
-                                    ConstantStringTableComponentsEnum.BROKER_2;
+
                                 this.viewData.map((data: BrokerResponse) => {
                                     response.map((r: BrokerResponse) => {
                                         if (data.id === r.id) {
@@ -483,8 +478,6 @@ export class CustomerTableComponent
                                                     brokerName +
                                                     ConstantStringTableComponentsEnum.COMA +
                                                     data.businessName;
-                                                brokerText =
-                                                    ConstantStringTableComponentsEnum.BROKER_3;
                                             }
                                         }
                                     });
@@ -499,10 +492,7 @@ export class CustomerTableComponent
                             | ConstantStringTableComponentsEnum
                             | string =
                             ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
-                        let shipText:
-                            | ConstantStringTableComponentsEnum
-                            | string =
-                            ConstantStringTableComponentsEnum.SHIPPER_WITH_SPACE;
+                            
                         this.viewData.map((data: ShipperResponse) => {
                             response.map((r: ShipperResponse) => {
                                 if (data.id === r.id) {
@@ -513,15 +503,13 @@ export class CustomerTableComponent
                                             shipperName +
                                             ConstantStringTableComponentsEnum.COMA +
                                             data.businessName;
-                                        shipText =
-                                            ConstantStringTableComponentsEnum.SHIPPERS_WITH_SPACE;
                                     }
                                 }
                             });
                         });
 
                         this.shipperService
-                            .deleteShipperList(response)
+                            .deleteShipperList()
                             .pipe(takeUntil(this.destroy$))
                             .subscribe(() => {
                                 this.multipleDeleteData(response);
@@ -1184,8 +1172,6 @@ export class CustomerTableComponent
         type?: string;
         subType?: string;
     }): void {
-        let businessName: string =
-            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
@@ -1395,7 +1381,7 @@ export class CustomerTableComponent
                 .subscribe((res: RatingSetResponse) => {
                     let newViewData = [...this.viewData];
 
-                    newViewData.map((data: UpdateRating) => {
+                    newViewData.map((data: CustomerUpdateRating) => {
                         if (data.id === event.data.id) {
                             data.actionAnimation =
                                 ConstantStringTableComponentsEnum.UPDATE;
@@ -1445,7 +1431,7 @@ export class CustomerTableComponent
     }
 
     // Get Business Name
-    private getBusinessName(event: BodyResponse, businessName: string): string {
+    private getBusinessName(event: CustomerBodyResponse, businessName: string): string {
         if (!businessName) {
             return (businessName = event.data.businessName);
         } else {
@@ -1458,7 +1444,7 @@ export class CustomerTableComponent
 
     // Add Shipper Or Broker To Viewdata
     private addData(dataId: number): void {
-        this.viewData = this.viewData.map((data: ViewDataResponse) => {
+        this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
             if (data.id === dataId) {
                 data.actionAnimation = ConstantStringTableComponentsEnum.ADD;
             }
@@ -1496,7 +1482,7 @@ export class CustomerTableComponent
 
     // Delete Shipper Or Broker From Viewdata
     private deleteDataById(dataId: number): void {
-        this.viewData = this.viewData.map((data: ViewDataResponse) => {
+        this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
             if (data.id === dataId) {
                 data.actionAnimation = ConstantStringTableComponentsEnum.DELETE;
             }
@@ -1517,8 +1503,8 @@ export class CustomerTableComponent
     private multipleDeleteData(
         response: BrokerResponse[] | ShipperResponse[]
     ): void {
-        this.viewData = this.viewData.map((data: ViewDataResponse) => {
-            response.map((res: ViewDataResponse) => {
+        this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
+            response.map((res: CustomerViewDataResponse) => {
                 if (data.id === res.id) {
                     data.actionAnimation =
                         ConstantStringTableComponentsEnum.DELETE_MULTIPLE;

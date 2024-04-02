@@ -395,7 +395,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getGpsData() {
         this.telematicService
-            .getAllGpsData({})
+            .getAllGpsData()
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 gpsData.data.map((data, index) => {
@@ -693,7 +693,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDeviceToTruck({ deviceId: deviceId, truckId: truckId })
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe(() => {
                 this.getDataByDeviceId(deviceId, true);
             });
     }
@@ -702,7 +702,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDeviceToTrailer({ deviceId: deviceId, trailerId: trailerId })
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe(() => {
                 this.getDataByDeviceId(deviceId, true);
             });
     }
@@ -711,7 +711,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDevicesToCompany(devices)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {});
+            .subscribe(() => {});
     }
 
     onToolBarAction(event: any) {
@@ -934,15 +934,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     trailer.id
                 );
         }
-    }
-
-    saveDeviceSelection(event, location, column) {
-        // if (event.action === 'cancel') {
-        //     this.selectedDeviceUnit = {};
-        //     this.searchForm.get('truckUnit').patchValue(null);
-        // } else {
-        //     this.assignDeviceToTruck(item.deviceId, event.data.id);
-        // }
     }
 
     initDeviceFields() {
@@ -1258,7 +1249,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .getDeviceHistory(deviceId, date)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((gpsData: any) => {});
+            .subscribe(() => {});
     }
 
     showHideDevice(event, device) {

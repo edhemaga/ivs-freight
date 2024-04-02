@@ -48,7 +48,7 @@ import { DriversMinimalListQuery } from '../../state/driver-details-minimal-list
 
 //Enums
 import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
-import { BrokerTabEnum } from '../../../customer/pages/broker-details/enums/broker-enum';
+import { BrokerTabEnum } from '../../../customer/pages/broker-details/enums/broker-tab.enum';
 import { DriverEnum } from '../../enums/driver-details-card.enum';
 import { DriverImagesEnum } from '../../enums/driver-images.enum';
 

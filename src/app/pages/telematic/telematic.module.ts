@@ -1,17 +1,14 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { TelematicRoutingModule } from './telematic-routing.module';
-import { TelematicMapComponent } from './pages/telematic-map/telematic-map.component';
-import { AgmCoreModule } from '@agm/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TelematicRoutingModule } from './telematic-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
 // components
+import { TelematicMapComponent } from './pages/telematic-map/telematic-map.component';
 import { GpsProgressbarComponent } from 'src/app/core/components/shared/gps-progressbar/gps-progressbar.component';
 import { MapMarkerDropdownComponent } from 'src/app/core/components/shared/map-marker-dropdown/map-marker-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';

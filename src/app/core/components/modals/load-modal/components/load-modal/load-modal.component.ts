@@ -35,8 +35,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { LoadFinancialComponent } from '../load-modal-financial/load-modal-financial.component';
-import { BrokerModalComponent } from '../../../broker-modal/broker-modal.component';
-import { ShipperModalComponent } from '../../../shipper-modal/shipper-modal.component';
+import { BrokerModalComponent } from '../../../../../../pages/customer/pages/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from '../../../../../../pages/customer/pages/shipper-modal/shipper-modal.component';
 import { AppTooltipComponent } from '../../../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../standalone-components/ta-tab-switch/ta-tab-switch.component';

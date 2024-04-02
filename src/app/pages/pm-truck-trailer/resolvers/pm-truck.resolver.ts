@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { PmTService } from '../services/pm.service';
+import { PmService } from '../services/pm.service';
 
 // Store
 import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.store';
@@ -15,7 +15,7 @@ import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.sto
 })
 export class pmTruckResolver implements Resolve<PmTruckState> {
     constructor(
-        private pmService: PmTService,
+        private pmService: PmService,
         private pmTruckStore: PmTruckStore,
         private tableService: TruckassistTableService
     ) {}

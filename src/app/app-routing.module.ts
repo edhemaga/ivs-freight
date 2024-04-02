@@ -13,7 +13,7 @@ import { RegisterCompanyHelperComponent } from './pages/website/components/websi
 import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
 import { BrokerResolver } from './pages/customer/resolvers/broker.resolver';
 import { ShipperResolver } from './pages/customer/resolvers/shipper.resolver';
-import { ShopResolver } from './pages/repair/resolvers/shop.resolver';
+import { RepairShopResolver } from './pages/repair/resolvers/repair-shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
 import { TruckActiveResolver } from './pages/truck/resolvers/truck-active.resolver';
@@ -184,7 +184,7 @@ const routes: Routes = [
         resolve: {
             repairTruck: RepairTruckResolver,
             repairTrailer: RepairTrailerResolver,
-            repairShop: ShopResolver,
+            repairShop: RepairShopResolver,
         },
     },
     {

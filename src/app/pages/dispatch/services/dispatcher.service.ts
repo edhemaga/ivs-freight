@@ -18,7 +18,7 @@ import {
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
-export class DispatcherStoreService {
+export class DispatcherService {
     public parkingOpened: boolean = false;
 
     constructor(
@@ -141,7 +141,7 @@ export class DispatcherStoreService {
         return this.dispatchService
             .apiDispatchPut(updateData)
             .pipe(
-                flatMap((params) => {
+                flatMap(() => {
                     return this.getDispatchBoardRowById(updateData.id).pipe(
                         flatMap((response) => {
                             if (

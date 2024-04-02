@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
 
 // Services
-import { BrokerTService } from '../../services/broker.service';
+import { BrokerService } from '../../services/broker.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -12,9 +12,9 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 // Store
-import { BrokerMinimalListStore } from '../../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
+import { BrokerMinimalListStore } from '../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 import { BrokerDetailsStore } from '../../state/broker-details-state/broker-details.store';
-import { BrokerMinimalListQuery } from '../../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { BrokerMinimalListQuery } from '../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 import { BrokerDetailsListQuery } from '../../state/broker-details-state/broker-details-list-state/broker-details-list.query';
 
 // Pipes
@@ -47,7 +47,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
         // Services
         private notificationService: NotificationService,
-        private brokerService: BrokerTService,
+        private brokerService: BrokerService,
         private detailsPageService: DetailsPageService,
         private dropDownService: DropDownService,
         private tableService: TruckassistTableService,
