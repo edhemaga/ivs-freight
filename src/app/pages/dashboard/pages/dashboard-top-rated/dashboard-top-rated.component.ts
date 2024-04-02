@@ -18,12 +18,13 @@ import { DashboardService } from '../../services/dashboard.service';
 import { DashboardTopRatedConstants } from './utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
 import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
+import { DashboardByStateConstants } from '../dashboard-by-state/utils/constants/dashboard-by-state.constants';
 
 // helpers
 import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
 import { DashboardHelper } from '../../utils/helpers/dashboard.helper';
 
-// enum
+// enums
 import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
 import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
 
@@ -123,18 +124,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public barChartDateTitle: string;
     private barChartLabels: string[] | string[][] = [];
     private barChartTooltipLabels: string[];
-    private barChartValues: BarChartValues = {
-        defaultBarValues: {
-            topRatedBarValues: [],
-            otherBarValues: [],
-        },
-        defaultBarPercentages: {
-            topRatedBarPercentage: [],
-            otherBarPercentage: [],
-        },
-        selectedBarValues: [],
-        selectedBarPercentages: [],
-    };
+    private barChartValues: BarChartValues =
+        DashboardByStateConstants.BAR_CHART_INIT_VALUES;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

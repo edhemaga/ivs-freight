@@ -111,18 +111,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public barChartDateTitle: string;
     private barChartLabels: string[] | string[][] = [];
     private barChartTooltipLabels: string[];
-    private barChartValues: BarChartValues = {
-        defaultBarValues: {
-            topRatedBarValues: [],
-            otherBarValues: [],
-        },
-        defaultBarPercentages: {
-            topRatedBarPercentage: [],
-            otherBarPercentage: [],
-        },
-        selectedBarValues: [],
-        selectedBarPercentages: [],
-    };
+    private barChartValues: BarChartValues =
+        DashboardByStateConstants.BAR_CHART_INIT_VALUES;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
