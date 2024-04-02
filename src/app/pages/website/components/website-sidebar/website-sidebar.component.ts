@@ -17,17 +17,17 @@ import { Offcanvas } from 'bootstrap';
 import { WebsiteActionsService } from '../../services/website-actions.service';
 
 // animations
-import { fadeInAnimation } from '../../animations/website-animation';
+import { websiteFadeInAnimation } from '../../animations/website-fade-in.animation';
 
 // enums
-import { ConstantString } from '../../enums/const-string.enum';
+import { WebsiteStringEnum } from '../../enums/website-string.enum';
 
 @Component({
     selector: 'app-website-sidebar',
     templateUrl: './website-sidebar.component.html',
     styleUrls: ['./website-sidebar.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [fadeInAnimation()],
+    animations: [websiteFadeInAnimation()],
 })
 export class WebsiteSidebarComponent implements OnInit, OnDestroy {
     @ViewChild('hideSidebarBtn') hideSidebarBtn: ElementRef<HTMLElement>;
@@ -58,24 +58,24 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                     this.selectedContentType = res;
 
                     const WIDTH_ONE_ARR: string[] = [
-                        ConstantString.START_TRIAL_CONFIRMATION,
-                        ConstantString.START_TRIAL_WELCOME,
-                        ConstantString.LOGIN,
-                        ConstantString.RESET_PASSWORD_REQUESTED,
-                        ConstantString.PASSWORD_UPDATED,
-                        ConstantString.REGISTER_USER_CONFIRMATION,
-                        ConstantString.REGISTER_USER_WELCOME,
+                        WebsiteStringEnum.START_TRIAL_CONFIRMATION,
+                        WebsiteStringEnum.START_TRIAL_WELCOME,
+                        WebsiteStringEnum.LOGIN,
+                        WebsiteStringEnum.RESET_PASSWORD_REQUESTED,
+                        WebsiteStringEnum.PASSWORD_UPDATED,
+                        WebsiteStringEnum.REGISTER_USER_CONFIRMATION,
+                        WebsiteStringEnum.REGISTER_USER_WELCOME,
                     ];
 
                     const WIDTH_TWO_ARR: string[] = [
-                        ConstantString.RESET_PASSWORD,
-                        ConstantString.CREATE_NEW_PASSWORD,
-                        ConstantString.RESEND_CONFIRMATION,
+                        WebsiteStringEnum.RESET_PASSWORD,
+                        WebsiteStringEnum.CREATE_NEW_PASSWORD,
+                        WebsiteStringEnum.RESEND_CONFIRMATION,
                     ];
 
                     const WIDTH_THREE_ARR: string[] = [
-                        ConstantString.START_TRIAL,
-                        ConstantString.REGISTER_USER,
+                        WebsiteStringEnum.START_TRIAL,
+                        WebsiteStringEnum.REGISTER_USER,
                     ];
 
                     if (WIDTH_ONE_ARR.includes(this.selectedContentType))
@@ -110,7 +110,7 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    new Offcanvas(ConstantString.SIDEBAR).toggle();
+                    new Offcanvas(WebsiteStringEnum.SIDEBAR).toggle();
 
                     this.websiteActionsService.setOpenSidebarSubject(false);
                 } else {

@@ -14,23 +14,23 @@ import { DashboardPerformanceService } from './services/dashboard-performance.se
 import { DashboardService } from '../../services/dashboard.service';
 
 // constants
-import { DashboardPerformanceConstants } from '../../utils/constants/dashboard-performance.constants';
+import { DashboardPerformanceConstants } from './utils/constants/dashboard-performance.constants';
 import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
 import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
-import { DashboardTopRatedConstants } from '../../utils/constants/dashboard-top-rated.constants';
+import { DashboardTopRatedConstants } from '../dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 
 // helpers
-import { DashboardUtils } from '../../utils/dashboard-utils';
+import { DashboardHelper } from '../../utils/helpers/dashboard.helper';
 
 // enums
-import { ConstantStringEnum } from '../../enums/constant-string.enum';
-import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
+import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
 
 // models
 import { DashboardTab } from '../../models/dashboard-tab.model';
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { PerformanceDataItem } from '../../models/dashboard-performance-models/performance-data-item.model';
-import { PerformanceColorsPallete } from '../../models/dashboard-color-models/colors-pallete.model';
+import { PerformanceDataItem } from './models/performance-data-item.model';
+import { PerformanceColorsPallete } from '../../models/colors-pallete.model';
 import { CustomPeriodRange } from '../../models/custom-period-range.model';
 import {
     ChartDefaultConfig,
@@ -44,7 +44,7 @@ import {
     BarChartConfig,
     BarChartPerformanceValues,
 } from '../../models/dashboard-chart-models/bar-chart.model';
-import { PerformanceApiArguments } from '../../models/dashboard-performance-models/performance-api-arguments.model';
+import { PerformanceApiArguments } from './models/performance-api-arguments.model';
 import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
 import {
     IntervalLabelResponse,
@@ -170,33 +170,33 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         let matchingIdList: number[] = [];
 
         switch (activeTab.name) {
-            case ConstantStringEnum.TODAY:
+            case DashboardStringEnum.TODAY:
                 matchingIdList = DashboardSubperiodConstants.TODAY_ID_LIST;
 
                 break;
-            case ConstantStringEnum.WTD:
+            case DashboardStringEnum.WTD:
                 matchingIdList = DashboardSubperiodConstants.WTD_ID_LIST;
 
                 break;
-            case ConstantStringEnum.MTD:
+            case DashboardStringEnum.MTD:
                 matchingIdList = DashboardSubperiodConstants.MTD_ID_LIST;
 
                 break;
-            case ConstantStringEnum.QTD:
+            case DashboardStringEnum.QTD:
                 matchingIdList = DashboardSubperiodConstants.QTD_ID_LIST;
 
                 break;
-            case ConstantStringEnum.YTD:
+            case DashboardStringEnum.YTD:
                 matchingIdList = DashboardSubperiodConstants.YTD_ID_LIST;
 
                 break;
-            case ConstantStringEnum.ALL:
+            case DashboardStringEnum.ALL:
                 this.setCustomSubPeriodList(this.overallCompanyDuration);
 
                 this.getPerformanceListData();
 
                 break;
-            case ConstantStringEnum.CUSTOM:
+            case DashboardStringEnum.CUSTOM:
                 this.selectedDropdownWidthSubPeriod = this.selectedSubPeriod;
                 this.selectedSubPeriod = null;
 
@@ -206,11 +206,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         }
 
         if (
-            activeTab.name !== ConstantStringEnum.ALL &&
-            activeTab.name !== ConstantStringEnum.CUSTOM
+            activeTab.name !== DashboardStringEnum.ALL &&
+            activeTab.name !== DashboardStringEnum.CUSTOM
         ) {
             const { filteredSubPeriodDropdownList, selectedSubPeriod } =
-                DashboardUtils.setSubPeriodList(matchingIdList);
+                DashboardHelper.setSubPeriodList(matchingIdList);
 
             this.subPeriodDropdownList = filteredSubPeriodDropdownList;
             this.selectedSubPeriod = selectedSubPeriod;
@@ -224,7 +224,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         this.selectedSubPeriod = dropdownListItem;
 
-        if (this.currentActiveTab.name === ConstantStringEnum.CUSTOM) {
+        if (this.currentActiveTab.name === DashboardStringEnum.CUSTOM) {
             this.getPerformanceListData(this.selectedCustomPeriodRange);
         } else {
             this.getPerformanceListData();
@@ -292,7 +292,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
             // line chart
             this.lineChart.insertNewChartData(
-                ConstantChartStringEnum.ADD,
+                DashboardChartStringEnum.ADD,
                 performanceDataItem.title,
                 performanceDataItem.selectedColor.slice(1)
             );
@@ -309,7 +309,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
             // line chart
             this.lineChart.insertNewChartData(
-                ConstantChartStringEnum.REMOVE,
+                DashboardChartStringEnum.REMOVE,
                 performanceDataItem.title
             );
         }
@@ -341,7 +341,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
             this.lineChart.changeChartFillProperty(
                 this.performanceData[index].title,
-                ConstantChartStringEnum.EMPTY_STRING
+                DashboardChartStringEnum.EMPTY_STRING
             );
         }
     }
@@ -363,7 +363,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.currentActiveTab =
             DashboardPerformanceConstants.PERFORMANCE_TABS[5];
 
-        this.selectedSubPeriodLabel = ConstantStringEnum.DAILY;
+        this.selectedSubPeriodLabel = DashboardStringEnum.DAILY;
 
         this.performanceDataColors = JSON.parse(
             JSON.stringify(DashboardColors.PERFORMANCE_COLORS_PALLETE)
@@ -373,13 +373,13 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private getPerformanceListData(
         customPeriodRange?: CustomPeriodRange
     ): void {
-        const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
-            this.currentActiveTab.name === ConstantStringEnum.ALL
-                ? ConstantStringEnum.ALL_TIME
+        const selectedMainPeriod = DashboardHelper.ConvertMainPeriod(
+            this.currentActiveTab.name === DashboardStringEnum.ALL
+                ? DashboardStringEnum.ALL_TIME
                 : this.currentActiveTab.name
         ) as TimeInterval;
 
-        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
             this.selectedSubPeriod.name
         ) as SubintervalType;
 
@@ -467,7 +467,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                         } else {
                             if (
                                 selectedPerformanceType.performanceType ===
-                                ConstantChartStringEnum.BAR_LABEL_PER_GALLON
+                                DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                             ) {
                                 this.barChartValues.pricePerGallonValues = [
                                     ...this.barChartValues.pricePerGallonValues,
@@ -478,7 +478,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
                             if (
                                 selectedPerformanceType.performanceType ===
-                                ConstantChartStringEnum.BAR_LABEL_LOAD_PER_MILE
+                                DashboardChartStringEnum.BAR_LABEL_LOAD_PER_MILE
                             ) {
                                 this.barChartValues.loadRatePerMileValues = [
                                     ...this.barChartValues
@@ -515,7 +515,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {
         const { filteredSubPeriodDropdownList, selectedSubPeriod } =
-            DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
+            DashboardHelper.setCustomSubPeriodList(selectedDaysRange);
 
         this.subPeriodDropdownList = filteredSubPeriodDropdownList;
         this.selectedSubPeriod = selectedSubPeriod;
@@ -573,7 +573,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
             this.lineChart?.insertNewChartData(
-                ConstantChartStringEnum.ADD,
+                DashboardChartStringEnum.ADD,
                 selectedPerformanceDataItem.title,
                 this.performanceData[
                     performanceDataItemIndex
@@ -583,7 +583,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     private setLineChartDateTitle(startInterval: string, endInterval: string) {
-        const { chartTitle } = DashboardUtils.setChartDateTitle(
+        const { chartTitle } = DashboardHelper.setChartDateTitle(
             startInterval,
             endInterval
         );
@@ -596,9 +596,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             dataProperties: [],
             showLegend: false,
             chartValues: [2, 2],
-            defaultType: ConstantChartStringEnum.LINE,
-            chartWidth: ConstantChartStringEnum.LINE_1800_WIDTH,
-            chartHeight: ConstantChartStringEnum.LINE_1800_HEIGHT,
+            defaultType: DashboardChartStringEnum.LINE,
+            chartWidth: DashboardChartStringEnum.LINE_1800_WIDTH,
+            chartHeight: DashboardChartStringEnum.LINE_1800_HEIGHT,
             removeChartMargin: true,
             gridHoverBackground: true,
             allowAnimation: true,
@@ -611,7 +611,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             dataTooltipLabels: this.barChartTooltipLabels,
             pricePerGallonValue: this.barChartValues.pricePerGallonValues,
             loadRatePerMileValue: this.barChartValues.loadRatePerMileValues,
-            noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
+            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
         };
 
         this.lineChartConfig.dataProperties = this.performanceData.map(
@@ -645,7 +645,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             },
             horizontalAxes: {
                 visible: true,
-                position: ConstantChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
                 showGridLines: false,
             },
         };
@@ -654,12 +654,15 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
-        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
             this.selectedSubPeriod.name
         );
 
         const { filteredLabels, filteredTooltipLabels } =
-            DashboardUtils.setBarChartLabels(barChartLables, selectedSubPeriod);
+            DashboardHelper.setBarChartLabels(
+                barChartLables,
+                selectedSubPeriod
+            );
 
         this.barChartLabels = filteredLabels;
         this.barChartTooltipLabels = filteredTooltipLabels;
@@ -672,39 +675,41 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             dataProperties: [
                 {
                     defaultConfig: {
-                        type: ConstantChartStringEnum.BAR,
+                        type: DashboardChartStringEnum.BAR,
                         data: barChartValues.pricePerGallonValues,
                         backgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
-                        borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
+                            DashboardChartStringEnum.CHART_COLOR_GREY,
+                        borderColor:
+                            DashboardChartStringEnum.CHART_COLOR_GREY_4,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_5,
+                            DashboardChartStringEnum.CHART_COLOR_GREY_5,
                         hoverBorderColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
-                        label: ConstantChartStringEnum.BAR_LABEL_PER_GALLON,
+                            DashboardChartStringEnum.CHART_COLOR_GREY,
+                        label: DashboardChartStringEnum.BAR_LABEL_PER_GALLON,
                     },
                 },
                 {
                     defaultConfig: {
-                        type: ConstantChartStringEnum.BAR,
+                        type: DashboardChartStringEnum.BAR,
                         data: barChartValues.loadRatePerMileValues,
                         backgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
-                        borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
+                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
+                        borderColor:
+                            DashboardChartStringEnum.CHART_COLOR_GREY_3,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                            DashboardChartStringEnum.CHART_COLOR_GREY,
                         hoverBorderColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
-                        label: ConstantChartStringEnum.BAR_LABEL_LOAD_PER_MILE,
+                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
+                        label: DashboardChartStringEnum.BAR_LABEL_LOAD_PER_MILE,
                     },
                 },
             ],
             showLegend: false,
             chartValues: [2, 2],
-            defaultType: ConstantChartStringEnum.BAR,
+            defaultType: DashboardChartStringEnum.BAR,
             offset: true,
-            chartWidth: ConstantChartStringEnum.BAR_1800_WIDTH_2,
-            chartHeight: ConstantChartStringEnum.BAR_1800_HEIGHT_2,
+            chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH_2,
+            chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT_2,
             removeChartMargin: true,
             gridHoverBackground: true,
             hasHoverData: true,
@@ -712,7 +717,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             hoverOtherChart: true,
             tooltipOffset: { min: 134, max: 206 },
             dataLabels: this.barChartLabels,
-            noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
+            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
         };
 
         // bar max value
@@ -733,7 +738,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             },
             horizontalAxes: {
                 visible: true,
-                position: ConstantChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
                 showGridLines: false,
             },
         };
@@ -757,13 +762,13 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         this.axisNumber++;
         return {
             defaultConfig: {
-                type: ConstantChartStringEnum.LINE,
+                type: DashboardChartStringEnum.LINE,
                 data: selectedLineChartDataValues,
                 borderColor: null,
-                pointBorderColor: ConstantChartStringEnum.CHART_COLOR_NONE,
-                pointBackgroundColor: ConstantChartStringEnum.CHART_COLOR_NONE,
+                pointBorderColor: DashboardChartStringEnum.CHART_COLOR_NONE,
+                pointBackgroundColor: DashboardChartStringEnum.CHART_COLOR_NONE,
                 pointHoverBackgroundColor:
-                    ConstantChartStringEnum.CHART_COLOR_WHITE,
+                    DashboardChartStringEnum.CHART_COLOR_WHITE,
                 pointHoverBorderColor: null,
                 pointHoverRadius: 3,
                 pointBorderWidth: 3,
@@ -781,7 +786,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     private createLineChartEmptyLabels(
         barChartLabels: string[] | string[][]
     ): (string | string[])[] {
-        return DashboardUtils.createBarChartEmptyLabels(barChartLabels);
+        return DashboardHelper.createBarChartEmptyLabels(barChartLabels);
     }
 
     ngOnDestroy(): void {

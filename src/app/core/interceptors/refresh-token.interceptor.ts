@@ -11,14 +11,14 @@ import { Observable, catchError, throwError, switchMap } from 'rxjs';
 import { AccountService, SignInResponse } from 'appcoretruckassist';
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserLoggedService } from 'src/app/pages/website/services/user-logged.service';
+import { WebsiteUserLoggedService } from 'src/app/pages/website/services/website-user-logged.service';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
     constructor(
         private accountService: AccountService,
         private websiteAuthService: WebsiteAuthService,
-        private userLoggedService: UserLoggedService,
+        private userLoggedService: WebsiteUserLoggedService,
         private ngbModal: NgbModal
     ) {}
 

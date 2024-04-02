@@ -28,7 +28,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class AccountTService {
+export class AccountService {
     constructor(
         private accountService: CompanyAccountService,
         private tableService: TruckassistTableService,

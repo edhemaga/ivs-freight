@@ -14,10 +14,8 @@ import {
     TopTruckListResponse,
     TopDriverListResponse,
 } from 'appcoretruckassist';
-import {
-    TopRatedApiArguments,
-    TopRatedWithoutTabApiArguments,
-} from '../../../models/dashboard-top-rated-models/top-rated-api-arguments.model';
+import { TopRatedApiArguments } from '../models/top-rated-api-arguments.model';
+import { TopRatedWithoutTabApiArguments } from './../models/top-rated-without-tab-api-arguments.model';
 
 @Injectable({
     providedIn: 'root',

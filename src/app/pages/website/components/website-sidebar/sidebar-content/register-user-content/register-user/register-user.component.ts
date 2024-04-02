@@ -25,7 +25,7 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { AddressEntity, SignupUserCommand } from 'appcoretruckassist';
@@ -84,8 +84,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.registerUserForm.get(ConstantString.EMAIL_ADDRESS),
-            ConstantString.EMAIL_ADDRESS,
+            this.registerUserForm.get(WebsiteStringEnum.EMAIL_ADDRESS),
+            WebsiteStringEnum.EMAIL_ADDRESS,
             this.destroy$
         );
     }
@@ -118,26 +118,26 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
         if (!event.valid) {
             this.registerUserForm
-                .get(ConstantString.ADDRESS)
+                .get(WebsiteStringEnum.ADDRESS)
                 .setErrors({ invalid: true });
         }
     }
 
     public passwordsNotSame(): void {
         this.registerUserForm
-            .get(ConstantString.CONFIRM_PASSWORD)
+            .get(WebsiteStringEnum.CONFIRM_PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value ===
-                    this.registerUserForm.get(ConstantString.PASSWORD).value
+                    this.registerUserForm.get(WebsiteStringEnum.PASSWORD).value
                 ) {
                     this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
                     this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors({
                             passwordDontMatch: true,
                         });
@@ -145,20 +145,21 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             });
 
         this.registerUserForm
-            .get(ConstantString.PASSWORD)
+            .get(WebsiteStringEnum.PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value ===
-                    this.registerUserForm.get(ConstantString.CONFIRM_PASSWORD)
-                        .value
+                    this.registerUserForm.get(
+                        WebsiteStringEnum.CONFIRM_PASSWORD
+                    ).value
                 ) {
                     this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
                     this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors({
                             passwordDontMatch: true,
                         });
@@ -199,7 +200,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
         if (this.selectedAddress) {
             this.selectedAddress.addressUnit = this.registerUserForm.get(
-                ConstantString.ADDRESS_UNIT
+                WebsiteStringEnum.ADDRESS_UNIT
             ).value;
         }
 
@@ -216,14 +217,14 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                 tap({
                     next: () => {
                         this.websiteActionsService.setSidebarContentType(
-                            ConstantString.REGISTER_USER_CONFIRMATION
+                            WebsiteStringEnum.REGISTER_USER_CONFIRMATION
                         );
 
                         localStorage.setItem(
-                            ConstantString.CONFIRMATION_EMAIL,
+                            WebsiteStringEnum.CONFIRMATION_EMAIL,
                             JSON.stringify(
                                 this.registerUserForm.get(
-                                    ConstantString.EMAIL_ADDRESS
+                                    WebsiteStringEnum.EMAIL_ADDRESS
                                 ).value
                             )
                         );
@@ -236,10 +237,11 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                         const errorMessage = error.error.error;
 
                         if (
-                            errorMessage === ConstantString.PHONE_ALREADY_EXIST
+                            errorMessage ===
+                            WebsiteStringEnum.PHONE_ALREADY_EXIST
                         ) {
                             this.registerUserForm
-                                .get(ConstantString.PHONE)
+                                .get(WebsiteStringEnum.PHONE)
                                 .setErrors({ phoneAlreadyExist: true });
                         }
                     },

@@ -8,7 +8,7 @@ import { WebsiteActionsService } from 'src/app/pages/website/services/website-ac
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { UserInfoModel } from 'src/app/pages/website/models/user-info.model';
@@ -40,8 +40,8 @@ export class VerifyUserHelperComponent implements OnInit, OnDestroy {
         let isValid: boolean;
 
         this.route.queryParams.subscribe((params) => {
-            if (!params[ConstantString.EMAIL_HASH]) {
-                this.router.navigate([ConstantString.WEBSITE]);
+            if (!params[WebsiteStringEnum.EMAIL_HASH]) {
+                this.router.navigate([WebsiteStringEnum.WEBSITE]);
 
                 isValid = false;
 
@@ -49,16 +49,16 @@ export class VerifyUserHelperComponent implements OnInit, OnDestroy {
             }
 
             this.verifyData = {
-                emailHash: params[ConstantString.EMAIL_HASH]
+                emailHash: params[WebsiteStringEnum.EMAIL_HASH]
                     .split(' ')
                     .join('+'),
-                code: params[ConstantString.CODE].split(' ').join('+'),
+                code: params[WebsiteStringEnum.CODE].split(' ').join('+'),
             };
 
             this.verifyUserInfo = {
-                firstName: params[ConstantString.FIRST_NAME],
-                lastName: params[ConstantString.LAST_NAME],
-                email: params[ConstantString.EMAIL],
+                firstName: params[WebsiteStringEnum.FIRST_NAME],
+                lastName: params[WebsiteStringEnum.LAST_NAME],
+                email: params[WebsiteStringEnum.EMAIL],
             };
 
             isValid = true;

@@ -44,7 +44,6 @@ import { TaSpinnerComponent } from 'src/app/core/components/shared/ta-spinner/ta
         WebsiteNavbarComponent,
 
         // sidebar
-
         WebsiteSidebarComponent,
         SidebarConfirmBtnComponent,
         SidebarResendBtnComponent,

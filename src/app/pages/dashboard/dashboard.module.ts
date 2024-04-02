@@ -12,10 +12,10 @@ import { AgmCoreModule } from '@agm/core';
 import { ClickOutsideCustomRangeDirective } from './directives/click-outside-custom-range.directive';
 
 // pipes
-import { FormatNumberToThousandDecimal } from './pipes/thousand-pipe/thousand-formater.pipe';
-import { SetTrendIconPipe } from './pipes/set-trend-icon-pipe/set-trend-icon.pipe';
-import { SetTrendLabelPipe } from './pipes/set-trend-label-pipe/set-trend-label.pipe';
-import { CustomSubperiodWidthPipe } from './pipes/custom-subperiod-width-pipe/custom-subperiod-width.pipe';
+import { ThousandFormatterPipe } from './pipes/thousand-formater.pipe';
+import { SetTrendIconPipe } from './pages/dashboard-performance/pipes/set-trend-icon.pipe';
+import { SetTrendLabelPipe } from './pages/dashboard-performance/pipes/set-trend-label.pipe';
+import { CustomSubperiodWidthPipe } from './pipes/custom-subperiod-width.pipe';
 
 // components
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -23,8 +23,8 @@ import { DashboardTopRatedComponent } from './pages/dashboard-top-rated/dashboar
 import { DashboardPerformanceComponent } from './pages/dashboard-performance/dashboard-performance.component';
 import { DashboardByStateComponent } from './pages/dashboard-by-state/dashboard-by-state.component';
 import { DashboardMapComponent } from './pages/dashboard-map/dashboard-map.component';
-import { DashboardStateTrackingComponent } from './components/dashboard-state-tracking/dashboard-state-tracking.component';
-import { DashboardStateUsaComponent } from './components/dashboard-states/dashboard-state-usa/dashboard-state-usa.component';
+import { DashboardStateTrackingComponent } from './pages/dashboard-by-state/components/dashboard-state-tracking/dashboard-state-tracking.component';
+import { DashboardStateUsaComponent } from './pages/dashboard-by-state/components/dashboard-states/dashboard-state-usa/dashboard-state-usa.component';
 import { DashboardDataPlaceholderComponent } from './components/dashboard-data-placeholder/dashboard-data-placeholder.component';
 import { DashboardLoadingPlaceholderComponent } from './components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
 import { DashboardDropdownComponent } from './components/dashboard-dropdown/dashboard-dropdown.component';
@@ -61,7 +61,7 @@ import { TaSpinnerComponent } from 'src/app/core/components/shared/ta-spinner/ta
         ClickOutsideCustomRangeDirective,
 
         // pipes
-        FormatNumberToThousandDecimal,
+        ThousandFormatterPipe,
         SetTrendIconPipe,
         SetTrendLabelPipe,
         CustomSubperiodWidthPipe,

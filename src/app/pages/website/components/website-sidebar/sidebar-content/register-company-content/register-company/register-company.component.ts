@@ -24,7 +24,7 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // enums
-import { ConstantString } from '../../../../../enums/const-string.enum';
+import { WebsiteStringEnum } from '../../../../../enums/website-string.enum';
 
 // models
 import { SignUpCompanyCommand } from 'appcoretruckassist';
@@ -70,27 +70,28 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.registerCompanyForm.get(ConstantString.EMAIL_ADDRESS),
-            ConstantString.EMAIL_ADDRESS,
+            this.registerCompanyForm.get(WebsiteStringEnum.EMAIL_ADDRESS),
+            WebsiteStringEnum.EMAIL_ADDRESS,
             this.destroy$
         );
     }
 
     public passwordsNotSame(): void {
         this.registerCompanyForm
-            .get(ConstantString.CONFIRM_PASSWORD)
+            .get(WebsiteStringEnum.CONFIRM_PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value ===
-                    this.registerCompanyForm.get(ConstantString.PASSWORD).value
+                    this.registerCompanyForm.get(WebsiteStringEnum.PASSWORD)
+                        .value
                 ) {
                     this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
                     this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors({
                             passwordDontMatch: true,
                         });
@@ -98,21 +99,21 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             });
 
         this.registerCompanyForm
-            .get(ConstantString.PASSWORD)
+            .get(WebsiteStringEnum.PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value ===
                     this.registerCompanyForm.get(
-                        ConstantString.CONFIRM_PASSWORD
+                        WebsiteStringEnum.CONFIRM_PASSWORD
                     ).value
                 ) {
                     this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
                     this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
+                        .get(WebsiteStringEnum.CONFIRM_PASSWORD)
                         .setErrors({
                             passwordDontMatch: true,
                         });
@@ -151,14 +152,14 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
                 tap({
                     next: () => {
                         this.websiteActionsService.setSidebarContentType(
-                            ConstantString.START_TRIAL_CONFIRMATION
+                            WebsiteStringEnum.START_TRIAL_CONFIRMATION
                         );
 
                         localStorage.setItem(
-                            ConstantString.CONFIRMATION_EMAIL,
+                            WebsiteStringEnum.CONFIRMATION_EMAIL,
                             JSON.stringify(
                                 this.registerCompanyForm.get(
-                                    ConstantString.EMAIL_ADDRESS
+                                    WebsiteStringEnum.EMAIL_ADDRESS
                                 ).value
                             )
                         );
@@ -170,19 +171,27 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
                         const errorMessage = error.error.error;
 
-                        if (errorMessage === ConstantString.EIN_ALREADY_EXIST)
+                        if (
+                            errorMessage === WebsiteStringEnum.EIN_ALREADY_EXIST
+                        )
                             this.registerCompanyForm
-                                .get(ConstantString.EIN)
+                                .get(WebsiteStringEnum.EIN)
                                 .setErrors({ einAlreadyExist: true });
 
-                        if (errorMessage === ConstantString.PHONE_ALREADY_EXIST)
+                        if (
+                            errorMessage ===
+                            WebsiteStringEnum.PHONE_ALREADY_EXIST
+                        )
                             this.registerCompanyForm
-                                .get(ConstantString.PHONE)
+                                .get(WebsiteStringEnum.PHONE)
                                 .setErrors({ phoneAlreadyExist: true });
 
-                        if (errorMessage === ConstantString.EMAIL_ALREADY_EXIST)
+                        if (
+                            errorMessage ===
+                            WebsiteStringEnum.EMAIL_ALREADY_EXIST
+                        )
                             this.registerCompanyForm
-                                .get(ConstantString.EMAIL_ADDRESS)
+                                .get(WebsiteStringEnum.EMAIL_ADDRESS)
                                 .setErrors({ emailAlreadyExist: true });
                     },
                 })
