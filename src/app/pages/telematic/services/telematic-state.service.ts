@@ -10,7 +10,7 @@ import {
     AssignGpsDevicesToTruckCommand,
     AssignGpsDevicesToTrailerCommand,
 } from 'appcoretruckassist';
-import { GpsServiceService } from 'src/app/global/services/gps-service.service';
+import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
 
 @Injectable({ providedIn: 'root' })
 export class TelematicStateService implements OnDestroy {
