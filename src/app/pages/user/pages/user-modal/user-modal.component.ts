@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -5,6 +6,9 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { HttpResponseBase } from '@angular/common/http';
+
 import {
     distinctUntilChanged,
     Subject,
@@ -14,14 +18,15 @@ import {
     debounceTime,
     takeWhile,
 } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
+// bootstrap
 import { Options } from 'ng5-slider';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { HttpResponseBase } from '@angular/common/http';
 
-//Regex
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// validations
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -34,17 +39,18 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     salaryValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-//Services
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from '../../../services/form/form.service';
-import { UserTService } from 'src/app/pages/user/services/user.service';
-import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
-import { TaUserService } from '../../../services/user/user.service';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+
+// services
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { UserService } from 'src/app/pages/user/services/user.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Animation
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 
 //Core
 import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
@@ -61,23 +67,23 @@ import {
     convertDateToBackend,
     convertNumberInThousandSep,
     convertThousanSepInNumber,
-} from '../../../utils/methods.calculations';
+} from 'src/app/core/utils/methods.calculations';
 
 //Models
 import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 //Components
-import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaNgxSliderComponent } from 'src/app/core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-user-modal',
@@ -87,13 +93,13 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
     providers: [ModalService, BankVerificationService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
@@ -194,8 +200,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private companyUserService: UserTService,
-        private taUserService: TaUserService,
+        private companyUserService: UserService,
+        private userProfileUpdateService: UserProfileUpdateService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal
@@ -549,7 +555,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 debounceTime(500),
                 switchMap((value) => {
                     if (this.userForm.get('email').valid) {
-                        return this.taUserService.checkUserByEmail(value);
+                        return this.userProfileUpdateService.checkUserByEmail(
+                            value
+                        );
                     }
                     return of(null);
                 })
@@ -1099,29 +1107,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                     : this.helperForManagers;
                         }
 
-                        this.typeOfEmploye = this.typeOfEmploye.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked:
-                                        item.id === 3
-                                            ? !this.editData.data.isAdmin
-                                            : this.editData.data.isAdmin,
-                                };
-                            }
-                        );
+                        this.typeOfEmploye = this.typeOfEmploye.map((item) => {
+                            return {
+                                ...item,
+                                checked:
+                                    item.id === 3
+                                        ? !this.editData.data.isAdmin
+                                        : this.editData.data.isAdmin,
+                            };
+                        });
 
-                        this.typeOfPayroll = this.typeOfPayroll.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked:
-                                        item.id === 6
-                                            ? !this.editData.data.is1099
-                                            : this.editData.data.is1099,
-                                };
-                            }
-                        );
+                        this.typeOfPayroll = this.typeOfPayroll.map((item) => {
+                            return {
+                                ...item,
+                                checked:
+                                    item.id === 6
+                                        ? !this.editData.data.is1099
+                                        : this.editData.data.is1099,
+                            };
+                        });
 
                         this.onSelectedTab(
                             this.editData.data.isAdmin

@@ -7,27 +7,24 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 // services
-import { FormService } from '../../../../services/form/form.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-
-// enums
-import { PayPeriodEnum } from './state/enums/settings-office-modal.enum';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 
 // components
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { UserModalComponent } from '../../user-modal/user-modal.component';
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 
 // validations
 import {
@@ -38,9 +35,9 @@ import {
     phoneExtension,
     phoneFaxRegex,
     rentValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from './../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 
-// types
+// models
 import {
     AddressEntity,
     CompanyOfficeModalResponse,
@@ -57,8 +54,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
-} from '../../../../utils/methods.calculations';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+} from 'src/app/core/utils/methods.calculations';
+
+// animations
+import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -306,7 +305,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 this.officeForm.get('weeklyDay').patchValue(null);
                 this.selectedDay = null;
                 this.dayOptions =
-                    event?.name === PayPeriodEnum.WEEKLY
+                    event?.name === 'Weekly'
                         ? this.weeklyDays
                         : this.monthlyDays;
                 break;

@@ -23,19 +23,19 @@ import { NavigationService } from '../../services/navigation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 //Components
-import { AccountModalComponent } from 'src/app/core/components/modals/account-modal/account-modal.component';
+import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
 import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
-import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
-import { ContactModalComponent } from 'src/app/core/components/modals/contact-modal/contact-modal.component';
+import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { ContactsModalComponent } from 'src/app/pages/contacts/pages/contacts-modal/contacts-modal.component';
 import { BrokerModalComponent } from 'src/app/core/components/modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
-import { UserModalComponent } from 'src/app/core/components/modals/user-modal/user-modal.component';
+import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 import { TaskModalComponent } from 'src/app/core/components/modals/task-modal/task-modal.component';
 import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { AccidentModalComponent } from 'src/app/core/components/modals/accident-modal/accident-modal.component';
+import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from 'src/app/core/components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from 'src/app/core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';
@@ -144,7 +144,7 @@ export class NavigationModalsComponent {
                 break;
             }
             case 'contact': {
-                this.modalService.openModal(ContactModalComponent, {
+                this.modalService.openModal(ContactsModalComponent, {
                     size: 'small',
                 });
                 break;
