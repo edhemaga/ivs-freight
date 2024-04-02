@@ -13,21 +13,21 @@ import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 // services
-import { FormService } from '../../../../services/form/form.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from '../../../../../../core/services/form/form.service';
+import { TaInputService } from '../../../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../../../core/components/shared/ta-modal/modal.service';
 
 // enums
 import { PayPeriodEnum } from './state/enums/settings-office-modal.enum';
 
 // components
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { UserModalComponent } from '../../user-modal/user-modal.component';
+import { InputAddressDropdownComponent } from '../../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxCardComponent } from '../../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from '../../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../../../core/components/shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../../../../core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { UserModalComponent } from '../../../../../../core/components/modals/user-modal/user-modal.component';
 
 // validations
 import {
@@ -38,7 +38,7 @@ import {
     phoneExtension,
     phoneFaxRegex,
     rentValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 
 // types
 import {
@@ -57,8 +57,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
-} from '../../../../utils/methods.calculations';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+} from '../../../../../../core/utils/methods.calculations';
+import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
 
 @Component({
     selector: 'app-settings-office-modal',

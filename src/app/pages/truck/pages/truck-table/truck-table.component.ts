@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 
 // Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
+import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // Services
 
-import { TruckTService } from '../../services/truck.service';
+import { TruckService } from '../../services/truck.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
@@ -36,14 +36,12 @@ import {
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
-import {
-    BodyResponseTruck,
-    FilterOptions,
-} from '../../models/truck-filter.model';
+import { FilterOptions } from '../../models/truck-filter.model';
 import {
     DropdownItem,
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
+import { BodyResponseTruck } from '../../models/truck-bodyResponse.model';
 import { DisplayTruckConfiguration } from '../../utils/constants/truck-card-data.constants';
 
 // Pipes
@@ -115,7 +113,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private router: Router,
         private tableService: TruckassistTableService,
-        private truckService: TruckTService,
+        private truckService: TruckService,
         private confirmationService: ConfirmationService,
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,

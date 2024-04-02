@@ -15,7 +15,7 @@ export class FilterRoutesPipe implements PipeTransform {
             newRoutesArray = newRoutesArray.filter((route) => !route.freeMove);
         }
 
-        //return newRoutesArray;
-        return routes;
+        return newRoutesArray;
+        // return routes;
     }
 }

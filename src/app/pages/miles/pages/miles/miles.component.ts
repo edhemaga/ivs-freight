@@ -1,6 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+
+//Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+//Utils
 import { MilesTableQuery } from '../../state/miles.query';
 import { getMilesColumnsDefinition } from 'src/assets/utils/settings/miles-columns';
 
@@ -9,7 +13,7 @@ import { getMilesColumnsDefinition } from 'src/assets/utils/settings/miles-colum
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
 })
-export class MilesComponent implements OnInit, AfterViewInit {
+export class MilesComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     tableOptions: any = {};

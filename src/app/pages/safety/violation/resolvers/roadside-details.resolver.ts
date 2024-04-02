@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    Resolve,
-    Router,
-    RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+//Services
 import { RoadsideService } from '../services/roadside.service';
+
+//Models
+import { RoadsideInspectionResponse } from 'appcoretruckassist';
+
+//States
 import {
     RoadItemState,
     RoadItemStore,
 } from '../state/roadside-details-state/roadside-details.store';
-import { RoadsideInspectionResponse } from 'appcoretruckassist';
 import { RoadsideDetailsListStore } from '../state/roadside-details-state/roadside-details-list-state/roadside-details-list.store';
-import { RoadsideDetailsListQuery } from '../state/roadside-details-state/roadside-details-list-state/roadside-details-list.query';
 
 @Injectable({
     providedIn: 'root',
@@ -24,12 +24,10 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
         private roadService: RoadsideService,
         private roadDetailsStore: RoadItemStore,
         private rsdls: RoadsideDetailsListStore,
-        private rsdlq: RoadsideDetailsListQuery,
         private router: Router
     ) {}
     resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
+        route: ActivatedRouteSnapshot
     ): Observable<RoadItemState> | Observable<any> {
         const rs_id = route.paramMap.get('id');
         let id = parseInt(rs_id);
@@ -42,7 +40,7 @@ export class RoadItemResolver implements Resolve<RoadItemState> {
         //   );
         // } else {
         return this.roadService.getRoadsideById(id).pipe(
-            catchError((error) => {
+            catchError(() => {
                 this.router.navigate(['/safety/violation']);
                 return of('No road data for...' + id);
             }),

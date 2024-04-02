@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
     AccidentListResponse,
     AccidentResponse,
-    AccidentService,
+    AccidentService as AccidentTService,
     CreateResponse,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
@@ -11,8 +11,8 @@ import { AccidentModalResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class AccidentTService {
-    constructor(private accidentService: AccidentService) {}
+export class AccidentService {
+    constructor(private accidentService: AccidentTService) {}
 
     // Get Accident List
     public getAccidentList(

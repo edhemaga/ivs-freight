@@ -5,7 +5,7 @@ import {
     parkingSlotValidation,
     phoneExtension,
     terminalNameValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -22,29 +22,29 @@ import {
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../../../core/components/shared/ta-input/ta-input.service';
 import {
     phoneFaxRegex,
     rentValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 import {
     calculateParkingSlot,
     convertThousanSepInNumber,
     convertNumberInThousandSep,
-} from '../../../../utils/methods.calculations';
-import { Address } from '../../../shared/model/address';
-import { FormService } from '../../../../services/form/form.service';
+} from '../../../../../../core/utils/methods.calculations';
+import { Address } from '../../../../../../core/components/shared/model/address';
+import { FormService } from '../../../../../../core/services/form/form.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputComponent } from '../../../../../../core/components/shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../../core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '../../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { InputAddressDropdownComponent } from '../../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 
 @Component({
     selector: 'app-settings-terminal-modal',

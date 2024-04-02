@@ -1,10 +1,12 @@
 import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
 import { Injectable } from '@angular/core';
 
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TruckTService } from '../services/truck.service';
+//Service
+import { TruckService } from '../services/truck.service';
+//Model
 import { TruckMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
@@ -15,16 +17,14 @@ export class TruckMinimalResolver implements Resolve<TruckMinimalListResponse> {
     pageSize: number = 25;
     count: number;
     constructor(
-        private truckService: TruckTService,
+        private truckService: TruckService,
         private truckMinimalListStore: TrucksMinimalListStore
     ) {}
-    resolve(
-        route: ActivatedRouteSnapshot
-    ): Observable<TruckMinimalListResponse> | Observable<any> {
+    resolve(): Observable<TruckMinimalListResponse> | Observable<any> {
         return this.truckService
             .getTrucksMinimalList(this.pageIndex, this.pageSize)
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     return of('No truck data for...');
                 }),
                 tap((truckMinimal: TruckMinimalListResponse) => {

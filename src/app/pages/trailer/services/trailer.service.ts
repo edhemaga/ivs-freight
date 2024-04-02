@@ -7,7 +7,7 @@ import {
     TrailerListResponse,
     TrailerMinimalListResponse,
     TrailerResponse,
-    TrailerService,
+    TrailerService as TrailerTService,
     RegistrationService,
     TitleService,
     InspectionService,
@@ -29,7 +29,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({ providedIn: 'root' })
-export class TrailerTService implements OnDestroy {
+export class TrailerService implements OnDestroy {
     public trailerList: any;
     public trailerId: number;
     public currentIndex: number;
@@ -37,7 +37,7 @@ export class TrailerTService implements OnDestroy {
     constructor(
         private trailerActiveStore: TrailerActiveStore,
         private trailerInactiveStore: TrailerInactiveStore,
-        private trailerService: TrailerService,
+        private trailerService: TrailerTService,
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
         private tableService: TruckassistTableService,

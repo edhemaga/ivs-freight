@@ -4,7 +4,6 @@ import {
     OnInit,
     ViewEncapsulation,
     OnChanges,
-    SimpleChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -28,7 +27,7 @@ export class ViolationCardViewComponent implements OnInit, OnChanges {
         private violationMinimalQuery: RoadsideMinimalListQuery,
         private detailsPageDriverSer: DetailsPageService
     ) {}
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(): void {
         this.getViolationDropdown();
     }
     ngOnInit(): void {

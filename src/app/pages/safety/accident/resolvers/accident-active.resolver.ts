@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { AccidentTService } from '../services/accident.service';
+import { AccidentService } from '../services/accident.service';
 import {
     AccidentActiveState,
     AccidentActiveStore,
@@ -14,7 +14,7 @@ import {
 })
 export class AccidentActiveResolver implements Resolve<AccidentActiveState> {
     constructor(
-        private accidentService: AccidentTService,
+        private accidentService: AccidentService,
         private accidentStore: AccidentActiveStore,
         private tableService: TruckassistTableService
     ) {}

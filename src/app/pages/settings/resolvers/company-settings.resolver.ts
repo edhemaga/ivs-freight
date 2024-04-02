@@ -1,8 +1,12 @@
 import { Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { CompanyResponse } from 'appcoretruckassist';
-import { SettingsCompanyService } from '../pages/settings-company/services/settings-company.service';
 import { catchError, Observable, of, tap } from 'rxjs';
+
+//Service
+import { SettingsCompanyService } from '../pages/settings-company/services/settings-company.service';
+
+//Store
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { CompanyStore } from '../state/company-state/company-settings.store';
 
@@ -16,7 +20,7 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
     ) {}
     resolve(): Observable<CompanyResponse[]> | Observable<any> {
         return this.settingsCompanyService.getCompany().pipe(
-            catchError((error) => {
+            catchError(() => {
                 return of('error');
             }),
             tap((companyResponse: CompanyResponse) => {

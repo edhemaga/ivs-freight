@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { AccidentListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { AccidentTService } from '../services/accident.service';
+import { AccidentService } from '../services/accident.service';
 import {
     AccidentNonReportedState,
     AccidentNonReportedStore,
@@ -16,7 +16,7 @@ export class AccidentNonReportedResolver
     implements Resolve<AccidentNonReportedState>
 {
     constructor(
-        private accidentService: AccidentTService,
+        private accidentService: AccidentService,
         private accidentStore: AccidentNonReportedStore
     ) {}
     resolve(): Observable<AccidentNonReportedState | boolean> {

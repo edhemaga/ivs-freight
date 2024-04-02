@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 //Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckTService } from '../../../../services/truck.service';
+import { TruckService } from '../../../../services/truck.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 //Animations
@@ -391,7 +391,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckTService,
+        private truckService: TruckService,
         public imageBase64Service: ImageBase64Service
     ) {}
 
@@ -566,11 +566,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 );
             });
     }
-    public getPerformanceChart(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ) {
+    public getPerformanceChart(id: number, chartType: number) {
         if (
             id != this.performanceCall.id ||
             chartType != this.performanceCall.chartType
@@ -968,7 +964,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public getTruckChartData(id: number): void {
         this.getExpensesChartData(id, this.expensesCall.chartType, false);
-        this.getPerformanceChart(id, this.performanceCall.chartType, false);
+        this.getPerformanceChart(id, this.performanceCall.chartType);
 
         this.getFuelConsumtionChartData(id, this.fuelCall.chartType, false);
         this.getRevenueChartData(id, this.revenueCall.chartType, false);

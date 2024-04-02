@@ -8,6 +8,6 @@ export interface RoutingState {
 /**
  * A factory function that creates RoutingState
  */
-export function createRoutingState(params: Partial<RoutingState>) {
+export function createRoutingState() {
     return {} as RoutingState;
 }

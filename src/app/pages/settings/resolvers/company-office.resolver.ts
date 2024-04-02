@@ -1,9 +1,13 @@
 import { CompanyOfficeListResponse } from 'appcoretruckassist';
-import { CompanyTOfficeService } from '../pages/custom-agreement/service/company-office.service';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+//Service
+import { CompanyOfficeService } from '../pages/custom-agreement/service/company-office.service';
+
+//Store
 import {
     OfficeState,
     OfficeStore,
@@ -17,7 +21,7 @@ export class cOfficeResolver implements Resolve<OfficeState> {
     pageSize: number = 25;
     count: number;
     constructor(
-        private officeService: CompanyTOfficeService,
+        private officeService: CompanyOfficeService,
         private officeStore: OfficeStore
     ) {}
     resolve(): Observable<OfficeState | boolean> {

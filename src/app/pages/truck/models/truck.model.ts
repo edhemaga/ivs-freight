@@ -65,37 +65,11 @@ interface Owner {
     company: string;
     commision: string;
 }
-interface OwnerHistory {
-    id: number;
-    from: string;
-    to: string;
-    duration: string;
-}
 
-interface InspectionDate {
-    id: string;
-    startDate: string;
-    attachments: Attachment[];
-}
 interface Attachment {
     url: string;
     fileName: string;
     fileItemGuid: string;
-}
-
-interface activityHistory {
-    id: string;
-    dialog: boolean;
-    header: string;
-    startDate: string;
-    endDate: string;
-    ownerId: number;
-    showDelete: boolean;
-    showDialog: boolean;
-    endDateShort: string | null;
-    startDateShort: string;
-    showEndDateAction: boolean;
-    showStartDateAction: boolean;
 }
 
 interface State {
@@ -108,13 +82,7 @@ interface FHWA {
     end: string;
     file?: Attachment[];
 }
-interface LicenseData {
-    id: string;
-    startDate: string;
-    endDate: string;
-    attachments: Attachment[];
-    licensePlate: string;
-}
+
 interface Title {
     id: string;
     startDate: string;

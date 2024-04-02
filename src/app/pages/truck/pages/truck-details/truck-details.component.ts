@@ -7,7 +7,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TruckTService } from '../../services/truck.service';
+import { TruckService } from '../../services/truck.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -44,7 +44,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     public truckId: number;
     public newTruckId: number;
     constructor(
-        private truckTService: TruckTService,
+        private truckTService: TruckService,
         private notificationService: NotificationService,
         private activated_route: ActivatedRoute,
         private detailsPageDriverSer: DetailsPageService,
@@ -156,7 +156,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
 
     /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number): number {
         return index;
     }
     public print() {

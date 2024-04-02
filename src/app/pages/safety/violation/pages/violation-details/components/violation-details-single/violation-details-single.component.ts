@@ -1,8 +1,11 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
+//Utils
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+
+//Animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
-import { RoadsideInspectionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-violation-details-single',
@@ -22,7 +25,7 @@ export class ViolationDetailsSingleComponent implements OnInit {
     public identity(index: number, item: any): number {
         return item.id;
     }
-    public getViolationContainer(violation: RoadsideInspectionResponse) {}
+    public getViolationContainer() {}
     public onFileAction(action: string) {
         onFileActionMethods(action);
     }

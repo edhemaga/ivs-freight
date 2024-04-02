@@ -17,30 +17,30 @@ import {
     phoneFaxRegex,
     addressValidation,
     vinNumberValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 
 // animations
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // helpers
-import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import { convertDateFromBackend } from '../../../../../core/utils/methods.calculations';
 
 // services
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from '../../../services/form/form.service';
-import { AccidentTService } from 'src/app/pages/safety/accident/services/accident.service';
+import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
+import { FormService } from '../../../../../core/services/form/form.service';
+import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 
 // components
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { AppTooltipComponent } from '../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-input-note/ta-input-note.component';
 
 //  models
 import {
@@ -133,7 +133,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
-        private accidentTService: AccidentTService
+        private accidentTService: AccidentService
     ) {}
 
     ngOnInit() {

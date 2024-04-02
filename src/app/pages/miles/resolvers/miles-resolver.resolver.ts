@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+//Services
 import { MilesStoreService } from '../services/miles.service';
+
+//Store
 import { MilesTableStore } from '../state/miles.store';
 
 @Injectable({
@@ -13,7 +16,7 @@ export class MilesResolverService implements Resolve<any> {
         private milesStoreService: MilesStoreService,
         private store: MilesTableStore
     ) {}
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    resolve(): Observable<any> {
         const activeList = this.milesStoreService.getMiles(null, 1);
         const innactiveList = this.milesStoreService.getMiles(null, 0);
 

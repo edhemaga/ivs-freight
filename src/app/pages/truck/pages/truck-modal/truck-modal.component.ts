@@ -2,7 +2,7 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
     convertNumberInThousandSep,
-} from '../../../utils/methods.calculations';
+} from '../../../../core/utils/methods.calculations';
 import { Options } from '@angular-slider/ngx-slider';
 import { HttpResponseBase } from '@angular/common/http';
 import {
@@ -21,7 +21,7 @@ import {
 } from '@angular/forms';
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
 import {
     axlesValidation,
     emptyWeightValidation,
@@ -32,30 +32,30 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckTService } from 'src/app/pages/truck/services/truck.service';
-import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
+} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { TruckService } from 'src/app/pages/truck/services/truck.service';
+import { OwnerModalComponent } from '../../../../core/components/modals/owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairOrderModalComponent } from '../../../../core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil, skip, tap } from 'rxjs';
-import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
-import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
-import { FormService } from '../../../services/form/form.service';
+import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
+import { convertThousanSepInNumber } from '../../../../core/utils/methods.calculations';
+import { FormService } from '../../../../core/services/form/form.service';
 import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
-import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../../../core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
 
 @Component({
     selector: 'app-truck-modal',
@@ -169,7 +169,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
-        private truckModalService: TruckTService,
+        private truckModalService: TruckService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private vinDecoderService: VinDecoderService,

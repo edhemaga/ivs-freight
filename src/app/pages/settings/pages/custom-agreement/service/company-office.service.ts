@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+//Models
 import {
     CompanyOfficeListResponse,
-    CompanyOfficeService,
+    CompanyOfficeService as CompanyTOfficeService,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
-export class CompanyTOfficeService {
-    constructor(private companyOfficeService: CompanyOfficeService) {}
+export class CompanyOfficeService {
+    constructor(private companyOfficeService: CompanyTOfficeService) {}
 
     // Get Parking List
     public getOfficeList(

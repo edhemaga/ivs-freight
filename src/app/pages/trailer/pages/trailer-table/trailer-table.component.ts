@@ -6,29 +6,27 @@ import { Router } from '@angular/router';
 import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
+import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // Services
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerTService } from '../../services/trailer.service';
+import { TrailerService } from '../../services/trailer.service';
 
 // Models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
-import {
-    BodyResponseTrailer,
-    MappedTrailer,
-    TraillerData,
-    backFilterQueryInterface,
-} from '../../models/trailer.model';
+import { MappedTrailer } from '../../models/trailer.model';
 import {
     CardRows,
     TableOptionsInterface,
 } from 'src/app/core/components/shared/model/card-data.model';
 import { ToolbarActions } from 'src/app/core/model/table.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
+import { backFilterQueryInterface } from '../../models/trailer-back-filter-query.model';
+import { TraillerData } from '../../models/trailer-data.model';
+import { BodyResponseTrailer } from '../../models/trailer-body-response-trailer.model';
 
 // Store
 import { TrailerActiveQuery } from '../../state/trailer-active-state/trailer-active.query';
@@ -113,7 +111,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         public datePipe: DatePipe,
         private router: Router,
         private thousandSeparator: TaThousandSeparatorPipe,

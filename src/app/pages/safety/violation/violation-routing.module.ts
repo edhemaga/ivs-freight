@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+//Resolvers
 import { RoadItemResolver } from './resolvers/roadside-details.resolver';
 import { RoadsideMinimalResolver } from './resolvers/roadside-minimal.resolver';
+
+//Components
 import { ViolationTableComponent } from './pages/violation-table/violation-table.component';
 
 const routes: Routes = [

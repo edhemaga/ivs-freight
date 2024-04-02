@@ -8,7 +8,7 @@ import { TtRegistrationModalComponent } from 'src/app/core/components/modals/com
 import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // services
-import { TrailerTService } from '../../services/trailer.service';
+import { TrailerService } from '../../services/trailer.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -57,7 +57,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
         // services
         private modalService: ModalService,
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
         private DetailsDataService: DetailsDataService,

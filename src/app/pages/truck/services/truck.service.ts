@@ -1,16 +1,21 @@
 import { Observable, of, Subject, tap, takeUntil, switchMap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+
+//Models
 import {
     GetTruckModalResponse,
     TruckListResponse,
     TruckResponse,
-    TruckService,
+    TruckService as TruckTService,
     RegistrationService,
     TitleService,
     InspectionService,
     TruckMinimalListResponse,
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
+
+//Store
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 import { TruckActiveStore } from '../state/truck-active-state/truck-active.store';
 import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
@@ -18,12 +23,13 @@ import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
 import { TruckItemStore } from '../state/truck-details-state/truck.details.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from '../state/truck-details-list-state/truck-details-list.store';
-import { Router } from '@angular/router';
+
+//Services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 @Injectable({ providedIn: 'root' })
-export class TruckTService implements OnDestroy {
+export class TruckService implements OnDestroy {
     public truckId: number;
     public truckList: any;
     public currentIndex: number;
@@ -32,7 +38,7 @@ export class TruckTService implements OnDestroy {
     constructor(
         private truckActiveStore: TruckActiveStore,
         private truckInactiveStore: TruckInactiveStore,
-        private truckService: TruckService,
+        private truckService: TruckTService,
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private tableService: TruckassistTableService,

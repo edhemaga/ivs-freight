@@ -11,7 +11,7 @@ import {
     routingBankValidation,
     ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import { TruckModalComponent } from '../truck-modal/truck-modal.component';
+import { TruckModalComponent } from '../../../../pages/truck/pages/truck-modal/truck-modal.component';
 import {
     OwnerModalResponse,
     OwnerResponse,
@@ -36,7 +36,7 @@ import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from 'src/app/pages/owner/services/owner.service';
-import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
+import { TrailerModalComponent } from '../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { merge, Subject, takeUntil } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';

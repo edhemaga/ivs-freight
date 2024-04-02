@@ -1,10 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { OnDestroy } from '@angular/core';
+
+//States
 import { OfficeStore } from '../../state/setting-ofice-state/company-office.store';
 import { ParkingStore } from '../../state/parking-state/company-parking.store';
 import { CompanyRepairShopStore } from '../../state/setting-reapir-shop-state/company-repairshop.store';
 import { TerminalStore } from '../../state/settings-terminal-state/company-terminal.store';
-import { OnDestroy } from '@angular/core';
+
+//Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({

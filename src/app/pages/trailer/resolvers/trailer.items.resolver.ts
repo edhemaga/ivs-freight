@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    Resolve,
-    Router,
-    RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, tap, forkJoin } from 'rxjs';
-import { TrailerTService } from '../services/trailer.service';
 
+//Service
+import { TrailerService } from '../services/trailer.service';
+
+//State
 import {
     TrailerItemState,
     TrailerItemStore,
 } from '../state/trailer-details-state/trailer-details.store';
-import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
 import { TrailerDetailsListStore } from '../state/trailer-details-list-state/trailer-details-list.store';
 
 @Injectable({
@@ -20,16 +17,14 @@ import { TrailerDetailsListStore } from '../state/trailer-details-list-state/tra
 })
 export class TrailerItemResolver implements Resolve<TrailerItemState> {
     constructor(
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         private trailerDetailStore: TrailerItemStore,
-        private trailerDetailListQuery: TrailersDetailsListQuery,
-        private trailerDetailListStore: TrailerDetailsListStore,
-        private router: Router
+
+        private trailerDetailListStore: TrailerDetailsListStore
     ) {}
 
     resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
+        route: ActivatedRouteSnapshot
     ): Observable<TrailerItemState> | Observable<any> {
         const trailer_id = route.paramMap.get('id');
         let trid = parseInt(trailer_id);
@@ -59,32 +54,5 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
                 this.trailerDetailStore.set([trailerData]);
             })
         );
-
-        /*
-
-        if (this.trailerDetailListQuery.hasEntity(trid)) {
-            return this.trailerDetailListQuery.selectEntity(trid).pipe(
-                tap((trailerResponse: any) => {
-                    this.trailerDetailListStore.add(trailerResponse);
-                    this.trailerDetailStore.set([trailerResponse]);
-                }),
-                take(1)
-            );
-        } else {
-            
-            return this.trailerService.getTrailerById(trid).pipe(
-                catchError((error) => {
-                    this.router.navigate(['/trailer']);
-                    return of('No trailer data for...' + trailer_id);
-                }),
-                tap((trailerReponse: any) => {
-                    this.trailerDetailListStore.add(trailerReponse);
-                    this.trailerDetailStore.set([trailerReponse]);
-                })
-            );
-
-           
-        }
-         */
     }
 }

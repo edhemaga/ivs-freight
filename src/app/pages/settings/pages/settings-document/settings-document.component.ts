@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
@@ -27,7 +27,9 @@ import { SettingsDocumentsConstants } from '../../utils/constants/settings-docum
     templateUrl: './settings-document.component.html',
     styleUrls: ['./settings-document.component.scss'],
 })
-export class SettingsDocumentComponent implements OnInit {
+export class SettingsDocumentComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
     private destroy$ = new Subject<void>();
     constructor(
         private settingsCompanyService: SettingsCompanyService,

@@ -12,7 +12,10 @@ import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
-import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
 import { OwnerBodyResponse } from '../../models/owner.model';
 
 // helpers
@@ -28,8 +31,8 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 // component
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
-import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-owner-card',

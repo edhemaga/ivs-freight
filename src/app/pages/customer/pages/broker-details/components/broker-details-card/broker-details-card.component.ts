@@ -41,7 +41,7 @@ import { TaChartComponent } from 'src/app/core/components/standalone-components/
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
+import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings-arrow-actions.enum';
 import { BrokerTabEnum } from '../../enums/broker-enum';
 
 @Component({
@@ -51,7 +51,9 @@ import { BrokerTabEnum } from '../../enums/broker-enum';
     styleUrls: ['./broker-details-card.component.scss'],
     providers: [formatDatePipe],
 })
-export class BrokerDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
+export class BrokerDetailsCardComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @ViewChild('mileageChart') public mileageChart: TaChartComponent;
     @ViewChild('paymentChart') public paymentChart: TaChartComponent;
     @ViewChild('invoiceChart') public invoiceChart: TaChartComponent;
