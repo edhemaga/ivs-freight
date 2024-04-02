@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { Observable, tap } from 'rxjs';
 
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// store
+import { UserStore } from '../state/user.store';
+import { UserQuery } from '../state/user.query';
+
 // models
 import {
     AccountService,
@@ -16,17 +23,10 @@ import {
     UpdateCompanyUserCommand,
 } from 'appcoretruckassist';
 
-// services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-
-// store
-import { UserStore } from '../state/user-state/user.store';
-import { UserQuery } from '../state/user-state/user.query';
-
 @Injectable({
     providedIn: 'root',
 })
-export class UserTService {
+export class UserService {
     constructor(
         private userService: CompanyUserService,
         private accountUserService: AccountService,

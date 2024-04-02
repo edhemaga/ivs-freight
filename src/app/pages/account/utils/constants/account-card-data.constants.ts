@@ -1,13 +1,12 @@
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
-export class DisplayAccountConfiguration {
+export class AccountCardData {
     static ROWS: number = 4;
 
     static PAGE: string = 'Account';
 
     static CARD_TITLE: string = 'name';
 
-    // Data for active front
     static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
         {
             title: 'URL',

@@ -15,7 +15,7 @@ import { WebsiteAuthService } from '../../../../../services/website-auth.service
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // enums
-import { ConstantString } from '../../../../../enums/const-string.enum';
+import { WebsiteStringEnum } from '../../../../../enums/website-string.enum';
 
 @Component({
     selector: 'app-login',
@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.loginForm.get(ConstantString.EMAIL_ADDRESS),
-            ConstantString.EMAIL_ADDRESS,
+            this.loginForm.get(WebsiteStringEnum.EMAIL_ADDRESS),
+            WebsiteStringEnum.EMAIL_ADDRESS,
             this.destroy$
         );
     }
@@ -85,19 +85,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
                         if (
                             errorMessage ===
-                            ConstantString.THIS_USER_DOESENT_EXIST
+                            WebsiteStringEnum.THIS_USER_DOESENT_EXIST
                         ) {
                             this.loginForm
-                                .get(ConstantString.EMAIL_ADDRESS)
+                                .get(WebsiteStringEnum.EMAIL_ADDRESS)
                                 .setErrors({ userDoesntExist: true });
                         }
 
                         if (
                             errorMessage ===
-                            ConstantString.WRONG_PASSWORD_TRY_AGAIN
+                            WebsiteStringEnum.WRONG_PASSWORD_TRY_AGAIN
                         )
                             this.loginForm
-                                .get(ConstantString.PASSWORD)
+                                .get(WebsiteStringEnum.PASSWORD)
                                 .setErrors({ wrongPassword: true });
                     },
                 })

@@ -13,7 +13,7 @@ import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.
 import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { ForgotPasswordCommand } from 'appcoretruckassist';
@@ -47,8 +47,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.resetPasswordForm.get(ConstantString.EMAIL_ADDRESS),
-            ConstantString.EMAIL_ADDRESS,
+            this.resetPasswordForm.get(WebsiteStringEnum.EMAIL_ADDRESS),
+            WebsiteStringEnum.EMAIL_ADDRESS,
             this.destroy$
         );
     }
@@ -71,7 +71,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         this.displaySpinner = true;
 
         const saveData: ForgotPasswordCommand = {
-            email: this.resetPasswordForm.get(ConstantString.EMAIL_ADDRESS)
+            email: this.resetPasswordForm.get(WebsiteStringEnum.EMAIL_ADDRESS)
                 .value,
         };
 
@@ -82,14 +82,14 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
                 tap({
                     next: () => {
                         this.websiteActionsService.setSidebarContentType(
-                            ConstantString.RESET_PASSWORD_REQUESTED
+                            WebsiteStringEnum.RESET_PASSWORD_REQUESTED
                         );
 
                         localStorage.setItem(
-                            ConstantString.CONFIRMATION_EMAIL,
+                            WebsiteStringEnum.CONFIRMATION_EMAIL,
                             JSON.stringify(
                                 this.resetPasswordForm.get(
-                                    ConstantString.EMAIL_ADDRESS
+                                    WebsiteStringEnum.EMAIL_ADDRESS
                                 ).value
                             )
                         );
@@ -100,7 +100,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
                         this.displaySpinner = false;
 
                         this.resetPasswordForm
-                            .get(ConstantString.EMAIL_ADDRESS)
+                            .get(WebsiteStringEnum.EMAIL_ADDRESS)
                             .setErrors({ userDoesntExist: true });
                     },
                 })
