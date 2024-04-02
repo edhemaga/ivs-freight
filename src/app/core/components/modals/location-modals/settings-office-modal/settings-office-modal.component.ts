@@ -27,7 +27,7 @@ import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-i
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { UserModalComponent } from '../../user-modal/user-modal.component';
+import { UserModalComponent } from '../../../../../pages/user/pages/user-modal/user-modal.component';
 
 // validations
 import {

@@ -11,7 +11,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 
 // components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { UserModalComponent } from 'src/app/core/components/modals/user-modal/user-modal.component';
+import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 
 // helpers
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';

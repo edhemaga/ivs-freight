@@ -1,4 +1,4 @@
-export enum ConstantString {
+export enum WebsiteStringEnum {
     LOGIN = 'login',
     RESET_PASSWORD = 'reset password',
     RESET_PASSWORD_REQUESTED = 'reset password requested',

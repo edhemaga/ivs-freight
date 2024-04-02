@@ -36,7 +36,7 @@ import {
     TableHeadActionAccount,
     TableToolBarActionActionsAccount,
 } from 'src/app/core/model/account';
-import { DisplayAccountConfiguration } from '../../utils/constants/account-card-data.constants';
+import { AccountCardData } from '../../utils/constants/account-card-data.constants';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 @Component({
@@ -68,11 +68,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
-        DisplayAccountConfiguration.DISPLAY_ROWS_FRONT_ACTIVE;
+        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
 
-    public cardTitle: string = DisplayAccountConfiguration.CARD_TITLE;
-    public page: string = DisplayAccountConfiguration.PAGE;
-    public rows: number = DisplayAccountConfiguration.ROWS;
+    public cardTitle: string = AccountCardData.CARD_TITLE;
+    public page: string = AccountCardData.PAGE;
+    public rows: number = AccountCardData.ROWS;
 
     public sendDataToCardsFront: CardRows[];
 

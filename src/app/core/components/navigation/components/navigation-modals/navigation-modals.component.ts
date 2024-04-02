@@ -31,7 +31,7 @@ import { ContactsModalComponent } from 'src/app/pages/contacts/pages/contacts-mo
 import { BrokerModalComponent } from 'src/app/core/components/modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-modal/shipper-modal.component';
 import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
-import { UserModalComponent } from 'src/app/core/components/modals/user-modal/user-modal.component';
+import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 import { TaskModalComponent } from 'src/app/core/components/modals/task-modal/task-modal.component';
 import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';

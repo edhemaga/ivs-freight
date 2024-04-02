@@ -1,6 +1,6 @@
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
-export class DisplayAccountConfiguration {
+export class AccountCardData {
     static ROWS: number = 4;
 
     static PAGE: string = 'Account';

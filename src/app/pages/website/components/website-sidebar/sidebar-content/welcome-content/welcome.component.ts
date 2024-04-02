@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { UserInfoModel } from 'src/app/pages/website/models/user-info.model';
@@ -47,7 +47,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
             this.websiteActionsService.setSidebarContentType(
-                ConstantString.LOGIN
+                WebsiteStringEnum.LOGIN
             );
         }
     }

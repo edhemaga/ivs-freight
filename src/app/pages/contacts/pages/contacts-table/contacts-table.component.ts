@@ -37,7 +37,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // data for cards
-import { DisplayContactsConfiguration } from '../../utils/constants/contact-card-data.constants';
+import { ContactsCardData } from '../../utils/constants/contacts-card-data.constants';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // models
@@ -90,15 +90,15 @@ export class ContactsTableComponent
 
     public mapingIndex: number = 0;
 
-    public cardTitle: string = DisplayContactsConfiguration.cardTitle;
+    public cardTitle: string = ContactsCardData.cardTitle;
 
-    public page: string = DisplayContactsConfiguration.page;
-    public rows: number = DisplayContactsConfiguration.rows;
+    public page: string = ContactsCardData.page;
+    public rows: number = ContactsCardData.rows;
 
     public sendDataToCardsFront: CardRows[] =
-        DisplayContactsConfiguration.displayRowsFrontContacts;
+        ContactsCardData.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =
-        DisplayContactsConfiguration.displayRowsBackContacts;
+        ContactsCardData.displayRowsBackContacts;
 
     constructor(
         private modalService: ModalService,

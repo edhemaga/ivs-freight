@@ -5,6 +5,10 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpResponseBase } from '@angular/common/http';
+
 import {
     distinctUntilChanged,
     Subject,
@@ -14,14 +18,15 @@ import {
     debounceTime,
     takeWhile,
 } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// bootstrap
 import { Options } from 'ng5-slider';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { HttpResponseBase } from '@angular/common/http';
 
-//Regex
+// validations
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -34,50 +39,51 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     salaryValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-//Services
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from '../../../services/form/form.service';
+} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+// services
+import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { FormService } from '../../../../core/services/form/form.service';
 import { UserService } from 'src/app/pages/user/services/user.service';
-import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
-import { TaUserService } from '../../../services/user/user.service';
+import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
+import { TaUserService } from '../../../../core/services/user/user.service';
 
-//Animation
-import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
+// animations
+import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
 
-//Core
-import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
-import {
-    CompanyUserModalResponse,
-    CompanyUserResponse,
-    CreateCompanyUserCommand,
-    UpdateCompanyUserCommand,
-} from '../../../../../../appcoretruckassist';
-
-//Utils
+// helpers
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
     convertThousanSepInNumber,
-} from '../../../utils/methods.calculations';
+} from '../../../../core/utils/methods.calculations';
 
-//Models
-import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
+// components
+import { SettingsOfficeModalComponent } from '../../../../core/components/modals/location-modals/settings-office-modal/settings-office-modal.component';
+import { AppTooltipComponent } from '../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaNgxSliderComponent } from '../../../../core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 
-//Components
-import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+// models
+import {
+    AddressEntity,
+    CreateResponse,
+    EnumValue,
+    CompanyUserModalResponse,
+    CompanyUserResponse,
+    CreateCompanyUserCommand,
+    UpdateCompanyUserCommand,
+    CheckUserByEmailResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-user-modal',
@@ -87,13 +93,13 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
     providers: [ModalService, BankVerificationService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
@@ -203,7 +209,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
         this.getModalDropdowns();
+
         this.onBankSelected();
 
         this.trackUserPayroll();

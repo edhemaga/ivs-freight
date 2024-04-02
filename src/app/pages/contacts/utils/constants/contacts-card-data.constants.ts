@@ -1,6 +1,6 @@
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
-export class DisplayContactsConfiguration {
+export class ContactsCardData {
     static rows: number = 4;
 
     static page: string = 'Contact';

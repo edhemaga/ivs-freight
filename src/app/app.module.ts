@@ -17,7 +17,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { NavigationComponent } from './core/components/navigation/pages/navigation/navigation.component';
 import { ChangeLogoPipe } from './core/components/navigation/pipes/change-logo.pipe';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { UserLoggedService } from './pages/website/services/user-logged.service';
+import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
 
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
@@ -77,9 +77,9 @@ function playerFactory() {
     providers: [
         {
             provide: Configuration,
-            useFactory: (userLoggedService: UserLoggedService) =>
+            useFactory: (userLoggedService: WebsiteUserLoggedService) =>
                 configFactory(userLoggedService),
-            deps: [UserLoggedService],
+            deps: [WebsiteUserLoggedService],
             multi: false,
         },
 
