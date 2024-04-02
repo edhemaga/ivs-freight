@@ -1,4 +1,4 @@
-export enum ConstantChartStringEnum {
+export enum DashboardChartStringEnum {
     SELECTED = ' SELECTED',
     ALL_OTHERS = 'ALL OTHERS',
 

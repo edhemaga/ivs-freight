@@ -1,4 +1,4 @@
-export enum ConstantStringEnum {
+export enum DashboardStringEnum {
     USER = 'user',
     MEDIUM = 'medium',
     MODAL_TYPE = 'edit-company-first-login',

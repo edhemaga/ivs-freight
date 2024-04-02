@@ -3,7 +3,7 @@ import {
     PerformanceColorsPallete,
     TopRatedMainColorsPallete,
     TopRatedSecondaryColorsPallete,
-} from '../../models/dashboard-color-models/colors-pallete.model';
+} from '../../models/colors-pallete.model';
 
 export class DashboardColors {
     static TOP_RATED_MAIN_COLORS_PALLETE: TopRatedMainColorsPallete[] = [

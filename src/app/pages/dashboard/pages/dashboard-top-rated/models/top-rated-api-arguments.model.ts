@@ -15,14 +15,3 @@ export type TopRatedApiArguments = [
     string,
     SubintervalType
 ];
-
-export type TopRatedWithoutTabApiArguments = [
-    string[],
-    number,
-    number,
-    boolean,
-    TimeInterval,
-    string,
-    string,
-    SubintervalType
-];

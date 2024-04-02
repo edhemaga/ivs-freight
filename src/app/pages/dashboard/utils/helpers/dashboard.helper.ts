@@ -1,34 +1,34 @@
 // constants
-import { DashboardTopRatedConstants } from './constants/dashboard-top-rated.constants';
-import { DashboardSubperiodConstants } from './constants/dashboard-subperiod.constants';
-import { DashboardColors } from './constants/dashboard-colors.constants';
+import { DashboardTopRatedConstants } from '../../pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
+import { DashboardSubperiodConstants } from '../constants/dashboard-subperiod.constants';
+import { DashboardColors } from '../constants/dashboard-colors.constants';
 
 // helpers
-import { DashboardStringHelper } from './helpers/dashboard-string.helper';
+import { DashboardStringHelper } from './dashboard-string.helper';
 
 // enums
-import { ConstantStringEnum } from '../enums/constant-string.enum';
+import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
 
 // models
-import { DropdownListItem } from '../models/dropdown-list-item.model';
-import { FilteredSubperiod } from '../models/filtered-subperiod.model';
-import { BarChartLabels } from '../models/dashboard-chart-models/bar-chart.model';
+import { DropdownListItem } from '../../models/dropdown-list-item.model';
+import { FilteredSubperiod } from '../../models/filtered-subperiod.model';
+import { BarChartLabels } from '../../models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
-import { ByStateListItem } from '../models/dashboard-by-state-models/by-state-list-item.model';
+import { ByStateListItem } from '../../pages/dashboard-by-state/models/by-state-list-item.model';
 
-export class DashboardUtils {
+export class DashboardHelper {
     static ConvertMainPeriod(mainPeriod: string) {
         switch (mainPeriod) {
-            case ConstantStringEnum.WEEK_TO_DATE:
-                return ConstantStringEnum.WTD;
-            case ConstantStringEnum.MONTH_TO_DATE:
-                return ConstantStringEnum.MTD;
-            case ConstantStringEnum.QUARTAL_TO_DATE:
-                return ConstantStringEnum.QTD;
-            case ConstantStringEnum.YEAR_TO_DATE:
-                return ConstantStringEnum.YTD;
-            case ConstantStringEnum.ALL_TIME:
-                return ConstantStringEnum.ALT;
+            case DashboardStringEnum.WEEK_TO_DATE:
+                return DashboardStringEnum.WTD;
+            case DashboardStringEnum.MONTH_TO_DATE:
+                return DashboardStringEnum.MTD;
+            case DashboardStringEnum.QUARTAL_TO_DATE:
+                return DashboardStringEnum.QTD;
+            case DashboardStringEnum.YEAR_TO_DATE:
+                return DashboardStringEnum.YTD;
+            case DashboardStringEnum.ALL_TIME:
+                return DashboardStringEnum.ALT;
             default:
                 return mainPeriod;
         }
@@ -36,16 +36,16 @@ export class DashboardUtils {
 
     static ConvertSubPeriod(subPeriod: string) {
         switch (subPeriod) {
-            case ConstantStringEnum.THREE_HOURS:
-                return ConstantStringEnum.THS;
-            case ConstantStringEnum.SIX_HOURS:
-                return ConstantStringEnum.SHS;
-            case ConstantStringEnum.SEMI_DAILY:
-                return ConstantStringEnum.SMD;
-            case ConstantStringEnum.SEMI_MONTHLY:
-                return ConstantStringEnum.SML;
-            case ConstantStringEnum.BI_WEEKLY:
-                return ConstantStringEnum.BWL;
+            case DashboardStringEnum.THREE_HOURS:
+                return DashboardStringEnum.THS;
+            case DashboardStringEnum.SIX_HOURS:
+                return DashboardStringEnum.SHS;
+            case DashboardStringEnum.SEMI_DAILY:
+                return DashboardStringEnum.SMD;
+            case DashboardStringEnum.SEMI_MONTHLY:
+                return DashboardStringEnum.SML;
+            case DashboardStringEnum.BI_WEEKLY:
+                return DashboardStringEnum.BWL;
             default:
                 return subPeriod;
         }
@@ -131,15 +131,15 @@ export class DashboardUtils {
                 (DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST.includes(
                     selectedSubPeriod
                 ) &&
-                    !barChartLabel.label.includes(ConstantStringEnum.PM) &&
-                    !barChartLabel.label.includes(ConstantStringEnum.AM)) ||
+                    !barChartLabel.label.includes(DashboardStringEnum.PM) &&
+                    !barChartLabel.label.includes(DashboardStringEnum.AM)) ||
                 DashboardSubperiodConstants.CUSTOM_SUBPERIOD_LABEL_LIST_2.includes(
                     selectedSubPeriod
                 );
 
             if (isSelectedSubPeriodIncludedInCustomPeriodList) {
                 const splitLabel = barChartLabel.label.split(
-                    ConstantStringEnum.EMPTY_SPACE_STRING
+                    DashboardStringEnum.EMPTY_SPACE_STRING
                 );
 
                 if (splitLabel[2]) {
@@ -205,7 +205,7 @@ export class DashboardUtils {
             return text;
         }
 
-        const regex = new RegExp(searchValue, ConstantStringEnum.REGEX_GI);
+        const regex = new RegExp(searchValue, DashboardStringEnum.REGEX_GI);
 
         return text.replace(
             regex,

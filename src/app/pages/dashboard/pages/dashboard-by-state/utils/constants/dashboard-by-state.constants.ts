@@ -1,6 +1,6 @@
-import { ByStateListItem } from '../../models/dashboard-by-state-models/by-state-list-item.model';
-import { DashboardTab } from '../../models/dashboard-tab.model';
-import { DropdownItem } from '../../models/dropdown-item.model';
+import { ByStateListItem } from '../../models/by-state-list-item.model';
+import { DashboardTab } from '../../../../models/dashboard-tab.model';
+import { DropdownItem } from '../../../../models/dropdown-item.model';
 
 export class DashboardByStateConstants {
     static BY_STATE_DROPDOWN_DATA: DropdownItem[] = [

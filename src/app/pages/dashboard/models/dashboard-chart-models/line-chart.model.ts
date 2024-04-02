@@ -1,16 +1,13 @@
-// enum
-import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
-
 // models
 import { BarChartAxes } from './bar-chart.model';
 
 export interface ChartDefaultConfig {
-    type: string | ConstantChartStringEnum;
+    type: string;
     data: number[];
     borderColor?: string;
     pointBorderColor: string;
     pointBackgroundColor: string;
-    pointHoverBackgroundColor: string | ConstantChartStringEnum;
+    pointHoverBackgroundColor: string;
     pointHoverBorderColor?: string;
     pointHoverRadius: number;
     pointBorderWidth: number;

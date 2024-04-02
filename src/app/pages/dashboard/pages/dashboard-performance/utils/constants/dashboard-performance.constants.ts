@@ -1,71 +1,71 @@
 // enums
-import { ConstantStringEnum } from '../../enums/constant-string.enum';
+import { DashboardStringEnum } from '../../../../enums/dashboard-string.enum';
 
 // models
-import { DashboardTab } from '../../models/dashboard-tab.model';
-import { PerformanceDataItem } from '../../models/dashboard-performance-models/performance-data-item.model';
+import { DashboardTab } from '../../../../models/dashboard-tab.model';
+import { PerformanceDataItem } from '../../models/performance-data-item.model';
 
 export class DashboardPerformanceConstants {
     static PERFORMANCE_TABS: DashboardTab[] = [
         {
-            name: ConstantStringEnum.TODAY,
+            name: DashboardStringEnum.TODAY,
             checked: false,
         },
         {
-            name: ConstantStringEnum.WTD,
+            name: DashboardStringEnum.WTD,
             checked: false,
         },
         {
-            name: ConstantStringEnum.MTD,
+            name: DashboardStringEnum.MTD,
             checked: false,
         },
         {
-            name: ConstantStringEnum.QTD,
+            name: DashboardStringEnum.QTD,
             checked: false,
         },
         {
-            name: ConstantStringEnum.YTD,
+            name: DashboardStringEnum.YTD,
             checked: false,
         },
         {
-            name: ConstantStringEnum.ALL,
+            name: DashboardStringEnum.ALL,
             checked: true,
         },
         {
-            name: ConstantStringEnum.CUSTOM,
+            name: DashboardStringEnum.CUSTOM,
             checked: false,
             custom: true,
         },
     ];
 
     static TREND_LIST: string[] = [
-        ConstantStringEnum.NET_INCOME,
-        ConstantStringEnum.REVENUE_2,
-        ConstantStringEnum.LOAD_2,
-        ConstantStringEnum.MILES,
-        ConstantStringEnum.ROADSIDE_INSP,
-        ConstantStringEnum.DRIVER_2,
-        ConstantStringEnum.TRUCK_2,
-        ConstantStringEnum.TRAILER,
-        ConstantStringEnum.OWNER_2,
-        ConstantStringEnum.USER_2,
-        ConstantStringEnum.REPAIR_SHOP_2,
-        ConstantStringEnum.BROKER_2,
-        ConstantStringEnum.SHIPPER_2,
+        DashboardStringEnum.NET_INCOME,
+        DashboardStringEnum.REVENUE_2,
+        DashboardStringEnum.LOAD_2,
+        DashboardStringEnum.MILES,
+        DashboardStringEnum.ROADSIDE_INSP,
+        DashboardStringEnum.DRIVER_2,
+        DashboardStringEnum.TRUCK_2,
+        DashboardStringEnum.TRAILER,
+        DashboardStringEnum.OWNER_2,
+        DashboardStringEnum.USER_2,
+        DashboardStringEnum.REPAIR_SHOP_2,
+        DashboardStringEnum.BROKER_2,
+        DashboardStringEnum.SHIPPER_2,
     ];
 
     static TREND_LIST_2: string[] = [
-        ConstantStringEnum.EXPENSES,
-        ConstantStringEnum.FUEL_GALLON,
-        ConstantStringEnum.FUEL_COST,
-        ConstantStringEnum.REPAIR_COST,
-        ConstantStringEnum.VIOALTION,
-        ConstantStringEnum.ACCIDENT,
+        DashboardStringEnum.EXPENSES,
+        DashboardStringEnum.FUEL_GALLON,
+        DashboardStringEnum.FUEL_COST,
+        DashboardStringEnum.REPAIR_COST,
+        DashboardStringEnum.VIOALTION,
+        DashboardStringEnum.ACCIDENT,
     ];
 
     static PERFROMANCE_DATA: PerformanceDataItem[] = [
         {
-            title: ConstantStringEnum.NET_INCOME,
+            title: DashboardStringEnum.NET_INCOME,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -79,7 +79,7 @@ export class DashboardPerformanceConstants {
             ],
         },
         {
-            title: ConstantStringEnum.REVENUE_2,
+            title: DashboardStringEnum.REVENUE_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -90,7 +90,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.LOAD_2,
+            title: DashboardStringEnum.LOAD_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -101,7 +101,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.MILES,
+            title: DashboardStringEnum.MILES,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -112,7 +112,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.FUEL_GALLON,
+            title: DashboardStringEnum.FUEL_GALLON,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -123,7 +123,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.FUEL_COST,
+            title: DashboardStringEnum.FUEL_COST,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -134,7 +134,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.REPAIR_COST,
+            title: DashboardStringEnum.REPAIR_COST,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -145,7 +145,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.ROADSIDE_INSP,
+            title: DashboardStringEnum.ROADSIDE_INSP,
             isSelected: false,
             isHovered: false,
             selectedColor: null,
@@ -156,7 +156,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.VIOALTION,
+            title: DashboardStringEnum.VIOALTION,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -167,7 +167,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.ACCIDENT,
+            title: DashboardStringEnum.ACCIDENT,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -178,7 +178,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.EXPENSES,
+            title: DashboardStringEnum.EXPENSES,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -192,7 +192,7 @@ export class DashboardPerformanceConstants {
             ],
         },
         {
-            title: ConstantStringEnum.DRIVER_2,
+            title: DashboardStringEnum.DRIVER_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -203,7 +203,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.TRUCK_2,
+            title: DashboardStringEnum.TRUCK_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -214,7 +214,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.TRAILER,
+            title: DashboardStringEnum.TRAILER,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -225,7 +225,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.OWNER_2,
+            title: DashboardStringEnum.OWNER_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -236,7 +236,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.USER_2,
+            title: DashboardStringEnum.USER_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -247,7 +247,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.REPAIR_SHOP_2,
+            title: DashboardStringEnum.REPAIR_SHOP_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -258,7 +258,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.BROKER_2,
+            title: DashboardStringEnum.BROKER_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
@@ -269,7 +269,7 @@ export class DashboardPerformanceConstants {
             lineChartDataValues: [],
         },
         {
-            title: ConstantStringEnum.SHIPPER_2,
+            title: DashboardStringEnum.SHIPPER_2,
             isHovered: false,
             isSelected: false,
             selectedColor: null,
