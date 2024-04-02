@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
-import { ContactModalComponent } from 'src/app/core/components/modals/contact-modal/contact-modal.component';
+import { ContactsModalComponent } from '../contacts-modal/contacts-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // service
@@ -30,14 +30,14 @@ import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations'
 import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
 // enums
-import { ConstantStringEnum } from '../../enums/contacts-string.enum';
+import { ContactsStringEnum } from '../../enums/contacts-string.enum';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // data for cards
-import { DisplayContactsConfiguration } from '../../utils/constants/contact-card-data.constants';
+import { ContactsCardData } from '../../utils/constants/contacts-card-data.constants';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // models
@@ -48,8 +48,8 @@ import {
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { ContactsBackFilter } from '../../models/contacts-back-filter.model';
-import { ContactPhone } from '../../models/contacts-phone.model';
-import { ContactEmail } from '../../models/contacts-email.model';
+import { ContactsPhone } from '../../models/contacts-phone.model';
+import { ContactsEmail } from '../../models/contacts-email.model';
 import {
     TableBodyActionsContract,
     TableHeadActionContract,
@@ -90,15 +90,15 @@ export class ContactsTableComponent
 
     public mapingIndex: number = 0;
 
-    public cardTitle: string = DisplayContactsConfiguration.cardTitle;
+    public cardTitle: string = ContactsCardData.cardTitle;
 
-    public page: string = DisplayContactsConfiguration.page;
-    public rows: number = DisplayContactsConfiguration.rows;
+    public page: string = ContactsCardData.page;
+    public rows: number = ContactsCardData.rows;
 
     public sendDataToCardsFront: CardRows[] =
-        DisplayContactsConfiguration.displayRowsFrontContacts;
+        ContactsCardData.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =
-        DisplayContactsConfiguration.displayRowsBackContacts;
+        ContactsCardData.displayRowsBackContacts;
 
     constructor(
         private modalService: ModalService,
@@ -421,7 +421,7 @@ export class ContactsTableComponent
     // Send Contact Data
     private sendContactData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_VIEW)
+            localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -434,22 +434,22 @@ export class ContactsTableComponent
         this.initTableOptions();
 
         const contactCount = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_COUNT)
+            localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_COUNT)
         );
 
         const contactData = this.getTabData();
         this.tableData = [
             {
-                title: ConstantStringEnum.CONTACTS,
+                title: ContactsStringEnum.CONTACTS,
                 field: ConstantStringTableComponentsEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
-                gridNameTitle: ConstantStringEnum.CONTACT_2,
-                stateName: ConstantStringEnum.CONTACTS_2,
-                tableConfiguration: ConstantStringEnum.CONTACT,
+                gridNameTitle: ContactsStringEnum.CONTACT_2,
+                stateName: ContactsStringEnum.CONTACTS_2,
+                tableConfiguration: ContactsStringEnum.CONTACT,
                 isActive: true,
-                gridColumns: this.getGridColumns(ConstantStringEnum.CONTACT),
+                gridColumns: this.getGridColumns(ContactsStringEnum.CONTACT),
             },
         ];
 
@@ -466,7 +466,7 @@ export class ContactsTableComponent
     // Update Contact Count
     updateDataCount() {
         const contactCount = JSON.parse(
-            localStorage.getItem(ConstantStringEnum.CONTACT_TABLE_COUNT)
+            localStorage.getItem(ContactsStringEnum.CONTACT_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -622,7 +622,7 @@ export class ContactsTableComponent
             .subscribe();
     }
 
-    public createContactPhones(element: ContactPhone) {
+    public createContactPhones(element: ContactsPhone) {
         return [
             {
                 id: element.id ?? 0,
@@ -634,7 +634,7 @@ export class ContactsTableComponent
         ];
     }
 
-    public createContactEmails(element: ContactEmail) {
+    public createContactEmails(element: ContactsEmail) {
         return [
             {
                 id: element.id ?? 0,
@@ -647,7 +647,7 @@ export class ContactsTableComponent
     // On Toolbar Actions
     onToolBarAction(event: TableToolBarActionActionsContract) {
         if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
-            this.modalService.openModal(ContactModalComponent, {
+            this.modalService.openModal(ContactsModalComponent, {
                 size: ConstantStringTableComponentsEnum.SMALL,
             });
         } else if (
@@ -691,9 +691,9 @@ export class ContactsTableComponent
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
-        } else if (event.type === ConstantStringEnum.EDIT_CONTACT) {
+        } else if (event.type === ContactsStringEnum.EDIT_CONTACT) {
             this.modalService.openModal(
-                ContactModalComponent,
+                ContactsModalComponent,
                 { size: ConstantStringTableComponentsEnum.SMALL },
                 {
                     ...event,

@@ -7,7 +7,7 @@ import { WebsiteActionsService } from 'src/app/pages/website/services/website-ac
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { UserInfoModel } from '../../../../../models/user-info.model';
@@ -55,7 +55,7 @@ export class PasswordUpdatedComponent implements OnInit, OnDestroy {
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick)
             this.websiteActionsService.setSidebarContentType(
-                ConstantString.LOGIN
+                WebsiteStringEnum.LOGIN
             );
     }
 

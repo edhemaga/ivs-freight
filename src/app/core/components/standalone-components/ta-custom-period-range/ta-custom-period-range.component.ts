@@ -25,9 +25,6 @@ import moment from 'moment';
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
-// enums
-import { ConstantStringEnum } from 'src/app/pages/dashboard/enums/constant-string.enum';
-
 // models
 import { CustomPeriodRange } from 'src/app/pages/dashboard/models/custom-period-range.model';
 import { DropdownListItem } from 'src/app/pages/dashboard/models/dropdown-list-item.model';
@@ -115,8 +112,7 @@ export class TaCustomPeriodRangeComponent
                     const fromDate = moment(new Date(formValue.fromDate));
                     const toDate = moment(new Date(formValue.toDate));
 
-                    const selectedDaysRange =
-                        toDate.diff(fromDate, ConstantStringEnum.DAYS) + 1;
+                    const selectedDaysRange = toDate.diff(fromDate, 'days') + 1;
 
                     if (selectedDaysRange > 0) {
                         this.customPeriodRangeSubperiodEmitter.emit(

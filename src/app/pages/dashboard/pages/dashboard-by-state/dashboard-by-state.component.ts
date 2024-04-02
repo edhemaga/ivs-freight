@@ -14,25 +14,25 @@ import { DashboardByStateService } from './services/dashboard-by-state.service';
 import { DashboardService } from '../../services/dashboard.service';
 
 // enums
-import { ConstantStringEnum } from '../../enums/constant-string.enum';
-import { ConstantChartStringEnum } from '../../enums/constant-chart-string.enum';
+import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
 
 // helpers
-import { DashboardUtils } from '../../utils/dashboard-utils';
+import { DashboardHelper } from '../../utils/helpers/dashboard.helper';
 import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
 
 // constants
-import { DashboardByStateConstants } from '../../utils/constants/dashboard-by-state.constants';
+import { DashboardByStateConstants } from './utils/constants/dashboard-by-state.constants';
 import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
-import { DashboardTopRatedConstants } from '../../utils/constants/dashboard-top-rated.constants';
+import { DashboardTopRatedConstants } from '../dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
 
 // models
-import { ByStateListItem } from '../../models/dashboard-by-state-models/by-state-list-item.model';
+import { ByStateListItem } from './models/by-state-list-item.model';
 import { DropdownItem } from '../../models/dropdown-item.model';
 import { DashboardTab } from '../../models/dashboard-tab.model';
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { ByStateColorsPallete } from '../../models/dashboard-color-models/colors-pallete.model';
+import { ByStateColorsPallete } from '../../models/colors-pallete.model';
 import { CustomPeriodRange } from '../../models/custom-period-range.model';
 import {
     BarChart,
@@ -47,11 +47,9 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import {
-    ByStateApiArguments,
-    ByStateWithLoadStopApiArguments,
-} from '../../models/dashboard-by-state-models/by-state-api-arguments.model';
-import { MapListItem } from '../../models/dashboard-state-models/map-list-item.model';
+import { ByStateApiArguments } from './models/by-state-api-arguments.model';
+import { ByStateWithLoadStopApiArguments } from './models/by-state-with-load-stop-api-arguments.model';
+import { MapListItem } from './models/map-list-item.model';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',
@@ -64,7 +62,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public byStateForm: UntypedFormGroup;
-    public byStateTitle: string = ConstantStringEnum.PICKUP;
+    public byStateTitle: string = DashboardStringEnum.PICKUP;
 
     public isDisplayingPlaceholder: boolean = false;
     public isLoading: boolean = true;
@@ -113,18 +111,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public barChartDateTitle: string;
     private barChartLabels: string[] | string[][] = [];
     private barChartTooltipLabels: string[];
-    private barChartValues: BarChartValues = {
-        defaultBarValues: {
-            topRatedBarValues: [],
-            otherBarValues: [],
-        },
-        defaultBarPercentages: {
-            topRatedBarPercentage: [],
-            otherBarPercentage: [],
-        },
-        selectedBarValues: [],
-        selectedBarPercentages: [],
-    };
+    private barChartValues: BarChartValues =
+        DashboardByStateConstants.BAR_CHART_INIT_VALUES;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -177,7 +165,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     }
 
     public highlightSearchValue(text: string, isSelected: boolean) {
-        return DashboardUtils.highlightPartOfString(
+        return DashboardHelper.highlightPartOfString(
             text,
             this.searchValue,
             isSelected
@@ -224,9 +212,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         dropdownListItem: DropdownListItem,
         action: string
     ): void {
-        if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
+        if (action === DashboardStringEnum.MAIN_PERIOD_DROPDOWN) {
             if (
-                dropdownListItem.name !== ConstantStringEnum.CUSTOM &&
+                dropdownListItem.name !== DashboardStringEnum.CUSTOM &&
                 this.selectedMainPeriod.name === dropdownListItem.name
             )
                 return;
@@ -239,33 +227,33 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             let matchingIdList: number[] = [];
 
             switch (dropdownListItem.name) {
-                case ConstantStringEnum.TODAY:
+                case DashboardStringEnum.TODAY:
                     matchingIdList = DashboardSubperiodConstants.TODAY_ID_LIST;
 
                     break;
-                case ConstantStringEnum.WEEK_TO_DATE:
+                case DashboardStringEnum.WEEK_TO_DATE:
                     matchingIdList = DashboardSubperiodConstants.WTD_ID_LIST;
 
                     break;
-                case ConstantStringEnum.MONTH_TO_DATE:
+                case DashboardStringEnum.MONTH_TO_DATE:
                     matchingIdList = DashboardSubperiodConstants.MTD_ID_LIST;
 
                     break;
-                case ConstantStringEnum.QUARTAL_TO_DATE:
+                case DashboardStringEnum.QUARTAL_TO_DATE:
                     matchingIdList = DashboardSubperiodConstants.QTD_ID_LIST;
 
                     break;
-                case ConstantStringEnum.YEAR_TO_DATE:
+                case DashboardStringEnum.YEAR_TO_DATE:
                     matchingIdList = DashboardSubperiodConstants.YTD_ID_LIST;
 
                     break;
-                case ConstantStringEnum.ALL_TIME:
+                case DashboardStringEnum.ALL_TIME:
                     this.setCustomSubPeriodList(this.overallCompanyDuration);
 
                     this.getByStateListData();
 
                     break;
-                case ConstantStringEnum.CUSTOM:
+                case DashboardStringEnum.CUSTOM:
                     this.selectedDropdownWidthSubPeriod =
                         this.selectedSubPeriod;
 
@@ -280,11 +268,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             }
 
             if (
-                dropdownListItem.name !== ConstantStringEnum.ALL_TIME &&
-                dropdownListItem.name !== ConstantStringEnum.CUSTOM
+                dropdownListItem.name !== DashboardStringEnum.ALL_TIME &&
+                dropdownListItem.name !== DashboardStringEnum.CUSTOM
             ) {
                 const { filteredSubPeriodDropdownList, selectedSubPeriod } =
-                    DashboardUtils.setSubPeriodList(matchingIdList);
+                    DashboardHelper.setSubPeriodList(matchingIdList);
 
                 this.subPeriodDropdownList = filteredSubPeriodDropdownList;
                 this.selectedSubPeriod = selectedSubPeriod;
@@ -293,12 +281,12 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
+        if (action === DashboardStringEnum.SUB_PERIOD_DROPDOWN) {
             if (this.selectedSubPeriod.name === dropdownListItem.name) return;
 
             this.selectedSubPeriod = dropdownListItem;
 
-            if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+            if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
                 this.getByStateListData(this.selectedCustomPeriodRange);
             } else {
                 this.getByStateListData();
@@ -331,7 +319,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         byStateDropdownItem.isActive = true;
 
-        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
             this.selectedMainPeriod =
                 DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[5];
 
@@ -346,7 +334,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         this.currentActiveTab = activeTab;
 
-        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
             this.getByStateListData(this.selectedCustomPeriodRange);
         } else {
             this.getByStateListData();
@@ -356,7 +344,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public handleShowMoreClick(): void {
         this.isShowingMore = !this.isShowingMore;
 
-        if (this.selectedMainPeriod.name === ConstantStringEnum.CUSTOM) {
+        if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM) {
             this.getByStateListData(this.selectedCustomPeriodRange);
         } else {
             this.getByStateListData();
@@ -488,28 +476,28 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     private getByStateListData(customPeriodRange?: CustomPeriodRange): void {
         const loadStopType = (
-            this.byStateTitle === ConstantStringEnum.PICKUP
-                ? ConstantStringEnum.PICKUP
-                : ConstantStringEnum.DELIVERY
+            this.byStateTitle === DashboardStringEnum.PICKUP
+                ? DashboardStringEnum.PICKUP
+                : DashboardStringEnum.DELIVERY
         ) as LoadStopType;
 
         const selectedTab = (
-            this.currentActiveTab.name === ConstantStringEnum.SW
-                ? ConstantStringEnum.SEVERITY_WEIGHT
+            this.currentActiveTab.name === DashboardStringEnum.SW
+                ? DashboardStringEnum.SEVERITY_WEIGHT
                 : this.currentActiveTab.name
         ) as ByStateReportType;
 
-        const selectedMainPeriod = DashboardUtils.ConvertMainPeriod(
+        const selectedMainPeriod = DashboardHelper.ConvertMainPeriod(
             this.selectedMainPeriod.name
         ) as TimeInterval;
 
-        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
             this.selectedSubPeriod.name
         ) as SubintervalType;
 
         const byStateArgumentsData = [
-            ...(this.byStateTitle === ConstantStringEnum.PICKUP ||
-            this.byStateTitle === ConstantStringEnum.DELIVERY
+            ...(this.byStateTitle === DashboardStringEnum.PICKUP ||
+            this.byStateTitle === DashboardStringEnum.DELIVERY
                 ? [loadStopType]
                 : []),
             selectedTab,
@@ -528,43 +516,43 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         this.resetSelectedValues();
 
         switch (this.byStateTitle) {
-            case ConstantStringEnum.PICKUP:
+            case DashboardStringEnum.PICKUP:
                 this.getPickupByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateWithLoadStopApiArguments
                 );
                 break;
-            case ConstantStringEnum.DELIVERY:
+            case DashboardStringEnum.DELIVERY:
                 this.getDeliveryByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateWithLoadStopApiArguments
                 );
                 break;
-            case ConstantStringEnum.ROADSIDE:
+            case DashboardStringEnum.ROADSIDE:
                 this.getRoadsideByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateApiArguments
                 );
                 break;
-            case ConstantStringEnum.VIOLATION_2:
+            case DashboardStringEnum.VIOLATION_2:
                 this.getViolationByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateApiArguments
                 );
                 break;
-            case ConstantStringEnum.ACCIDENT_2:
+            case DashboardStringEnum.ACCIDENT_2:
                 this.getAccidentByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateApiArguments
                 );
                 break;
-            case ConstantStringEnum.REPAIR:
+            case DashboardStringEnum.REPAIR:
                 this.getRepairByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateApiArguments
                 );
                 break;
-            case ConstantStringEnum.FUEL:
+            case DashboardStringEnum.FUEL:
                 this.getFuelByStateListData(
                     selectedTab,
                     byStateArgumentsData as ByStateApiArguments
@@ -595,13 +583,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < pickup.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? pickup.intervals[i].count
                                     : pickup.intervals[i].revenue,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? pickup.intervals[i].countPercentage
                                     : pickup.intervals[i].revenuePercentage,
                             ];
@@ -621,11 +609,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: pickup.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? pickup.count.toString()
                                     : pickup.revenue.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? pickup.countPercentage.toString()
                                     : pickup.revenuePercentage.toString(),
                             isSelected: false,
@@ -645,7 +633,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? pickupData.topTen[i].count
                             : pickupData.topTen[i].revenue,
                     ];
@@ -654,7 +642,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? pickupData.topTen[i].countPercentage
                                 : pickupData.topTen[i].revenuePercentage,
                         ];
@@ -662,7 +650,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? pickupData.others[i].count
                             : pickupData.others[i].revenue,
                     ];
@@ -671,14 +659,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? pickupData.others[i].countPercentage
                                 : pickupData.others[i].revenuePercentage,
                         ];
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -715,13 +703,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < delivery.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? delivery.intervals[i].count
                                     : delivery.intervals[i].revenue,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? delivery.intervals[i].countPercentage
                                     : delivery.intervals[i].revenuePercentage,
                             ];
@@ -741,11 +729,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: delivery.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? delivery.count.toString()
                                     : delivery.revenue.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? delivery.countPercentage.toString()
                                     : delivery.revenuePercentage.toString(),
                             isSelected: false,
@@ -765,7 +753,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? deliveryData.topTen[i].count
                             : deliveryData.topTen[i].revenue,
                     ];
@@ -774,7 +762,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? deliveryData.topTen[i].countPercentage
                                 : deliveryData.topTen[i].revenuePercentage,
                         ];
@@ -782,7 +770,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? deliveryData.others[i].count
                             : deliveryData.others[i].revenue,
                     ];
@@ -791,14 +779,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? deliveryData.others[i].countPercentage
                                 : deliveryData.others[i].revenuePercentage,
                         ];
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -835,13 +823,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < roadside.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? roadside.intervals[i].count
                                     : roadside.intervals[i].severityWeight,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? roadside.intervals[i].countPercentage
                                     : roadside.intervals[i]
                                           .severityWeightPercentage,
@@ -862,11 +850,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: roadside.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? roadside.count.toString()
                                     : roadside.severityWeight.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? roadside.countPercentage.toString()
                                     : roadside.severityWeightPercentage.toString(),
                             isSelected: false,
@@ -886,7 +874,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? roadsideData.topTen[i].count
                             : roadsideData.topTen[i].severityWeight,
                     ];
@@ -895,7 +883,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? roadsideData.topTen[i].countPercentage
                                 : roadsideData.topTen[i]
                                       .severityWeightPercentage,
@@ -904,7 +892,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? roadsideData.others[i].count
                             : roadsideData.others[i].severityWeight,
                     ];
@@ -913,7 +901,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? roadsideData.others[i].countPercentage
                                 : roadsideData.others[i]
                                       .severityWeightPercentage,
@@ -921,7 +909,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -958,13 +946,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < violation.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? violation.intervals[i].count
                                     : violation.intervals[i].severityWeight,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? violation.intervals[i].countPercentage
                                     : violation.intervals[i]
                                           .severityWeightPercentage,
@@ -985,11 +973,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: violation.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? violation.count.toString()
                                     : violation.severityWeight.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? violation.countPercentage.toString()
                                     : violation.severityWeightPercentage.toString(),
                             isSelected: false,
@@ -1009,7 +997,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? violationData.topTen[i].count
                             : violationData.topTen[i].severityWeight,
                     ];
@@ -1018,7 +1006,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? violationData.topTen[i].countPercentage
                                 : violationData.topTen[i]
                                       .severityWeightPercentage,
@@ -1027,7 +1015,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? violationData.others[i].count
                             : violationData.others[i].severityWeight,
                     ];
@@ -1036,7 +1024,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? violationData.others[i].countPercentage
                                 : violationData.others[i]
                                       .severityWeightPercentage,
@@ -1044,7 +1032,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -1082,13 +1070,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < accident.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? accident.intervals[i].count
                                     : accident.intervals[i].severityWeight,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? accident.intervals[i].countPercentage
                                     : accident.intervals[i]
                                           .severityWeightPercentage,
@@ -1109,11 +1097,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: accident.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? accident.count.toString()
                                     : accident.severityWeight.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? accident.countPercentage.toString()
                                     : accident.severityWeightPercentage.toString(),
                             isSelected: false,
@@ -1133,7 +1121,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? accidentData.topTen[i].count
                             : accidentData.topTen[i].severityWeight,
                     ];
@@ -1142,7 +1130,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? accidentData.topTen[i].countPercentage
                                 : accidentData.topTen[i]
                                       .severityWeightPercentage,
@@ -1151,7 +1139,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? accidentData.others[i].count
                             : accidentData.others[i].severityWeight,
                     ];
@@ -1160,7 +1148,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? accidentData.others[i].countPercentage
                                 : accidentData.others[i]
                                       .severityWeightPercentage,
@@ -1168,7 +1156,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -1205,13 +1193,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < repair.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? repair.intervals[i].count
                                     : repair.intervals[i].cost,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? repair.intervals[i].countPercentage
                                     : repair.intervals[i].costPercentage,
                             ];
@@ -1231,11 +1219,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: repair.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? repair.count.toString()
                                     : repair.cost.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.COUNT
+                                selectedTab === DashboardStringEnum.COUNT
                                     ? repair.countPercentage.toString()
                                     : repair.costPercentage.toString(),
                             isSelected: false,
@@ -1255,7 +1243,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? repairData.topTen[i].count
                             : repairData.topTen[i].cost,
                     ];
@@ -1264,7 +1252,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? repairData.topTen[i].countPercentage
                                 : repairData.topTen[i].costPercentage,
                         ];
@@ -1272,7 +1260,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.COUNT
+                        selectedTab === DashboardStringEnum.COUNT
                             ? repairData.others[i].count
                             : repairData.others[i].cost,
                     ];
@@ -1281,14 +1269,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.COUNT
+                            selectedTab === DashboardStringEnum.COUNT
                                 ? repairData.others[i].countPercentage
                                 : repairData.others[i].costPercentage,
                         ];
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -1325,13 +1313,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < fuel.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === ConstantStringEnum.GALLON
+                                selectedTab === DashboardStringEnum.GALLON
                                     ? fuel.intervals[i].gallon
                                     : fuel.intervals[i].cost,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
-                                selectedTab === ConstantStringEnum.GALLON
+                                selectedTab === DashboardStringEnum.GALLON
                                     ? fuel.intervals[i].gallonPercentage
                                     : fuel.intervals[i].costPercentage,
                             ];
@@ -1351,11 +1339,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                             id: index + 1,
                             state: fuel.stateShortName,
                             value:
-                                selectedTab === ConstantStringEnum.GALLON
+                                selectedTab === DashboardStringEnum.GALLON
                                     ? fuel.gallon.toString()
                                     : fuel.cost.toString(),
                             percent:
-                                selectedTab === ConstantStringEnum.GALLON
+                                selectedTab === DashboardStringEnum.GALLON
                                     ? fuel.gallonPercentage.toString()
                                     : fuel.costPercentage.toString(),
                             isSelected: false,
@@ -1375,7 +1363,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     this.barChartValues.defaultBarValues.topRatedBarValues = [
                         ...this.barChartValues.defaultBarValues
                             .topRatedBarValues,
-                        selectedTab === ConstantStringEnum.GALLON
+                        selectedTab === DashboardStringEnum.GALLON
                             ? fuelData.topTen[i].gallon
                             : fuelData.topTen[i].cost,
                     ];
@@ -1384,7 +1372,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .topRatedBarPercentage,
-                            selectedTab === ConstantStringEnum.GALLON
+                            selectedTab === DashboardStringEnum.GALLON
                                 ? fuelData.topTen[i].gallonPercentage
                                 : fuelData.topTen[i].costPercentage,
                         ];
@@ -1392,7 +1380,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                     // other intervals
                     this.barChartValues.defaultBarValues.otherBarValues = [
                         ...this.barChartValues.defaultBarValues.otherBarValues,
-                        selectedTab === ConstantStringEnum.GALLON
+                        selectedTab === DashboardStringEnum.GALLON
                             ? fuelData.others[i].gallon
                             : fuelData.others[i].cost,
                     ];
@@ -1401,14 +1389,14 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                         [
                             ...this.barChartValues.defaultBarPercentages
                                 .otherBarPercentage,
-                            selectedTab === ConstantStringEnum.GALLON
+                            selectedTab === DashboardStringEnum.GALLON
                                 ? fuelData.others[i].gallonPercentage
                                 : fuelData.others[i].costPercentage,
                         ];
                 }
 
                 // colors range & map
-                DashboardUtils.setByStateListColorRange(this.byStateList);
+                DashboardHelper.setByStateListColorRange(this.byStateList);
 
                 this.setMapByState(this.byStateList);
 
@@ -1427,7 +1415,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     private setCustomSubPeriodList(selectedDaysRange: number): void {
         const { filteredSubPeriodDropdownList, selectedSubPeriod } =
-            DashboardUtils.setCustomSubPeriodList(selectedDaysRange);
+            DashboardHelper.setCustomSubPeriodList(selectedDaysRange);
 
         this.subPeriodDropdownList = filteredSubPeriodDropdownList;
         this.selectedSubPeriod = selectedSubPeriod;
@@ -1439,7 +1427,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         startInterval: string,
         endInterval: string
     ): void {
-        const { chartTitle } = DashboardUtils.setChartDateTitle(
+        const { chartTitle } = DashboardHelper.setChartDateTitle(
             startInterval,
             endInterval
         );
@@ -1448,12 +1436,15 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartLabels(barChartLables: IntervalLabelResponse[]): void {
-        const selectedSubPeriod = DashboardUtils.ConvertSubPeriod(
+        const selectedSubPeriod = DashboardHelper.ConvertSubPeriod(
             this.selectedSubPeriod.name
         );
 
         const { filteredLabels, filteredTooltipLabels } =
-            DashboardUtils.setBarChartLabels(barChartLables, selectedSubPeriod);
+            DashboardHelper.setBarChartLabels(
+                barChartLables,
+                selectedSubPeriod
+            );
 
         this.barChartLabels = filteredLabels;
         this.barChartTooltipLabels = filteredTooltipLabels;
@@ -1464,53 +1455,55 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             dataProperties: [
                 {
                     defaultConfig: {
-                        type: ConstantChartStringEnum.BAR,
+                        type: DashboardChartStringEnum.BAR,
                         data: barChartValues?.defaultBarValues
                             ?.topRatedBarValues,
                         dataPercentages:
                             barChartValues?.defaultBarPercentages
                                 ?.topRatedBarPercentage,
                         backgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
-                        borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_4,
+                            DashboardChartStringEnum.CHART_COLOR_GREY,
+                        borderColor:
+                            DashboardChartStringEnum.CHART_COLOR_GREY_4,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_5,
+                            DashboardChartStringEnum.CHART_COLOR_GREY_5,
                         hoverBorderColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                            DashboardChartStringEnum.CHART_COLOR_GREY,
                         label:
                             this.byStateList.length <= 10
-                                ? ConstantChartStringEnum.BAR_LABEL_TOP_3
+                                ? DashboardChartStringEnum.BAR_LABEL_TOP_3
                                 : this.byStateList.length > 10 &&
                                   this.byStateList.length <= 30
-                                ? ConstantChartStringEnum.BAR_LABEL_TOP_5
-                                : ConstantChartStringEnum.BAR_LABEL_TOP_10,
-                        id: ConstantChartStringEnum.BAR_ID_TOP,
+                                ? DashboardChartStringEnum.BAR_LABEL_TOP_5
+                                : DashboardChartStringEnum.BAR_LABEL_TOP_10,
+                        id: DashboardChartStringEnum.BAR_ID_TOP,
                     },
                 },
                 {
                     defaultConfig: {
-                        type: ConstantChartStringEnum.BAR,
+                        type: DashboardChartStringEnum.BAR,
                         data: barChartValues?.defaultBarValues?.otherBarValues,
                         dataPercentages:
                             barChartValues?.defaultBarPercentages
                                 ?.otherBarPercentage,
                         backgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
-                        borderColor: ConstantChartStringEnum.CHART_COLOR_GREY_3,
+                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
+                        borderColor:
+                            DashboardChartStringEnum.CHART_COLOR_GREY_3,
                         hoverBackgroundColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY,
+                            DashboardChartStringEnum.CHART_COLOR_GREY,
                         hoverBorderColor:
-                            ConstantChartStringEnum.CHART_COLOR_GREY_2,
-                        label: ConstantChartStringEnum.BAR_LABEL_OTHER,
-                        id: ConstantChartStringEnum.BAR_ID_OTHER,
+                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
+                        label: DashboardChartStringEnum.BAR_LABEL_OTHER,
+                        id: DashboardChartStringEnum.BAR_ID_OTHER,
                     },
                 },
             ],
             showLegend: false,
             chartValues: [2, 2],
-            defaultType: ConstantChartStringEnum.BAR,
-            chartWidth: ConstantChartStringEnum.BAR_1800_WIDTH,
-            chartHeight: ConstantChartStringEnum.BAR_1800_HEIGHT,
+            defaultType: DashboardChartStringEnum.BAR,
+            chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
+            chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
             removeChartMargin: true,
             gridHoverBackground: true,
             startGridBackgroundFromZero: true,
@@ -1523,7 +1516,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             dataLabels: this.barChartLabels,
             dataTooltipLabels: this.barChartTooltipLabels,
             selectedTab: this.currentActiveTab.name,
-            noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
+            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
         };
 
         // bar max value
@@ -1540,7 +1533,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             },
             horizontalAxes: {
                 visible: true,
-                position: ConstantChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
                 showGridLines: false,
             },
         };

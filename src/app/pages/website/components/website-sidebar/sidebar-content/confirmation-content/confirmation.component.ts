@@ -7,7 +7,7 @@ import { WebsiteActionsService } from 'src/app/pages/website/services/website-ac
 import { WebsiteAuthService } from '../../../../services/website-auth.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 @Component({
     selector: 'app-confirmation',
@@ -40,9 +40,9 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
         type: string
     ): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.LOGIN_BTN) {
+            if (type === WebsiteStringEnum.LOGIN_BTN) {
                 this.websiteActionsService.setSidebarContentType(
-                    ConstantString.LOGIN
+                    WebsiteStringEnum.LOGIN
                 );
             } else {
                 this.requestedResendEmail = true;
@@ -65,7 +65,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
 
     private getConfirmationEmail(): void {
         this.confirmationEmail = JSON.parse(
-            localStorage.getItem(ConstantString.CONFIRMATION_EMAIL)
+            localStorage.getItem(WebsiteStringEnum.CONFIRMATION_EMAIL)
         );
     }
 
@@ -90,8 +90,12 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
+    private clearLocalStorage(): void {
+        localStorage.removeItem(WebsiteStringEnum.CONFIRMATION_EMAIL);
+    }
+
     ngOnDestroy(): void {
-        localStorage.removeItem(ConstantString.CONFIRMATION_EMAIL);
+        this.clearLocalStorage();
 
         this.destroy$.next();
         this.destroy$.complete();

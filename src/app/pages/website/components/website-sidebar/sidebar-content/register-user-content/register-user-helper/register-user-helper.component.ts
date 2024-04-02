@@ -6,7 +6,7 @@ import { WebsiteActionsService } from 'src/app/pages/website/services/website-ac
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 
 // enums
-import { ConstantString } from 'src/app/pages/website/enums/const-string.enum';
+import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
 
 // models
 import { UserInfoModel } from 'src/app/pages/website/models/user-info.model';
@@ -34,8 +34,8 @@ export class RegisterUserHelperComponent implements OnInit {
         let isValid: boolean;
 
         this.route.queryParams.subscribe((params) => {
-            if (!params[ConstantString.FIRST_NAME]) {
-                this.router.navigate([ConstantString.WEBSITE]);
+            if (!params[WebsiteStringEnum.FIRST_NAME]) {
+                this.router.navigate([WebsiteStringEnum.WEBSITE]);
 
                 isValid = false;
 
@@ -43,12 +43,12 @@ export class RegisterUserHelperComponent implements OnInit {
             }
 
             this.registerUserInfo = {
-                firstName: params[ConstantString.FIRST_NAME],
-                lastName: params[ConstantString.LAST_NAME],
-                email: params[ConstantString.EMAIL],
-                department: params[ConstantString.DEPARTMENT],
-                companyName: params[ConstantString.COMPANY_NAME],
-                code: params[ConstantString.CODE].split(' ').join('+'),
+                firstName: params[WebsiteStringEnum.FIRST_NAME],
+                lastName: params[WebsiteStringEnum.LAST_NAME],
+                email: params[WebsiteStringEnum.EMAIL],
+                department: params[WebsiteStringEnum.DEPARTMENT],
+                companyName: params[WebsiteStringEnum.COMPANY_NAME],
+                code: params[WebsiteStringEnum.CODE].split(' ').join('+'),
             };
 
             isValid = true;
@@ -62,7 +62,7 @@ export class RegisterUserHelperComponent implements OnInit {
             this.websiteActionsService.setOpenSidebarSubject(true);
 
             this.websiteActionsService.setSidebarContentType(
-                ConstantString.REGISTER_USER
+                WebsiteStringEnum.REGISTER_USER
             );
 
             this.websiteActionsService.setIsEmailRouteSubject(true);

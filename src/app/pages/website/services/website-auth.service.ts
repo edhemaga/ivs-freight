@@ -10,7 +10,7 @@ import { WebsiteActionsService } from './website-actions.service';
 import { PersistState } from '@datorama/akita';
 
 // enums
-import { ConstantString } from '../enums/const-string.enum';
+import { WebsiteStringEnum } from '../enums/website-string.enum';
 
 // models
 import {
@@ -81,7 +81,7 @@ export class WebsiteAuthService {
                     this.websiteActionsService.setOpenSidebarSubject(true);
 
                     this.websiteActionsService.setSidebarContentType(
-                        ConstantString.START_TRIAL_WELCOME
+                        WebsiteStringEnum.START_TRIAL_WELCOME
                     );
 
                     this.websiteActionsService.setIsEmailRouteSubject(true);
@@ -103,7 +103,7 @@ export class WebsiteAuthService {
                     this.websiteActionsService.setOpenSidebarSubject(true);
 
                     this.websiteActionsService.setSidebarContentType(
-                        ConstantString.REGISTER_USER_WELCOME
+                        WebsiteStringEnum.REGISTER_USER_WELCOME
                     );
 
                     this.websiteActionsService.setIsEmailRouteSubject(true);
@@ -141,7 +141,7 @@ export class WebsiteAuthService {
     }
 
     public accountLogout(isEmailRoute: boolean = false): void {
-        this.router.navigate([ConstantString.WEBSITE]);
+        this.router.navigate([WebsiteStringEnum.WEBSITE]);
 
         // ---- PRODUCTION MODE ----
         this.persistStorage.clearStore();
@@ -170,7 +170,7 @@ export class WebsiteAuthService {
                 this.websiteActionsService.setOpenSidebarSubject(true);
 
                 this.websiteActionsService.setSidebarContentType(
-                    ConstantString.CREATE_NEW_PASSWORD
+                    WebsiteStringEnum.CREATE_NEW_PASSWORD
                 );
 
                 this.websiteActionsService.setResetPasswordToken(res.token);
@@ -190,7 +190,7 @@ export class WebsiteAuthService {
                     localStorage.removeItem('user');
 
                     this.websiteActionsService.setSidebarContentType(
-                        ConstantString.PASSWORD_UPDATED
+                        WebsiteStringEnum.PASSWORD_UPDATED
                     );
                 })
             );

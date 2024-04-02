@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 
 // animations
-import { fadeInAnimation } from '../../../../animations/website-animation';
+import { websiteFadeInAnimation } from 'src/app/pages/website/animations/website-fade-in.animation';
 
 @Component({
     selector: 'app-sidebar-resend-btn',
     templateUrl: './sidebar-resend-btn.component.html',
     styleUrls: ['./sidebar-resend-btn.component.scss'],
-    animations: [fadeInAnimation()],
+    animations: [websiteFadeInAnimation()],
 })
 export class SidebarResendBtnComponent implements OnChanges {
     @Input() btnText: string = null;

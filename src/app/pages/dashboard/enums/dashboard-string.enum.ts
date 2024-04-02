@@ -1,0 +1,140 @@
+export enum DashboardStringEnum {
+    USER = 'user',
+    MEDIUM = 'medium',
+    MODAL_TYPE = 'edit-company-first-login',
+
+    DISPATCHER = 'Dispatcher',
+    DRIVER = 'Driver',
+    TRUCK = 'Truck',
+    BROKER = 'Broker',
+    SHIPPER = 'Shipper',
+    OWNER = 'Owner',
+    REPAIR_SHOP = 'Repair Shop',
+    FUEL_STOP = 'Fuel Stop',
+
+    VISIT = 'Visit',
+    COST = 'Cost',
+    LOAD = 'Load',
+    REVENUE = 'Revenue',
+    MILEAGE = 'Mileage',
+    SW = 'SW',
+    COUNT = 'Count',
+    GALLON = 'Gallon',
+
+    NET_INCOME = 'NET INCOME',
+    REVENUE_2 = 'REVENUE',
+    EXPENSES = 'EXPENSES',
+    LOAD_2 = 'LOAD',
+    MILES = 'MILES',
+    FUEL_GALLON = 'FUEL GALLON',
+    FUEL_COST = 'FUEL COST',
+    REPAIR_COST = 'REPAIR COST',
+    ROADSIDE_INSP = 'ROADSIDE INSP.',
+    VIOALTION = 'VIOLATION',
+    ACCIDENT = 'ACCIDENT',
+    DRIVER_2 = 'DRIVER',
+    TRUCK_2 = 'TRUCK',
+    TRAILER = 'TRAILER',
+    OWNER_2 = 'OWNER',
+    USER_2 = 'USER',
+    REPAIR_SHOP_2 = 'REPAIR SHOP',
+    BROKER_2 = 'BROKER',
+    SHIPPER_2 = 'SHIPPER',
+
+    VIOLATION_2 = 'Violation',
+    ACCIDENT_2 = 'Accident',
+    REPAIR = 'Repair',
+    FUEL = 'Fuel',
+    ROADSIDE = 'Roadside',
+
+    MAIN_PERIOD_DROPDOWN = 'MAIN_PERIOD_DROPDOWN',
+    SUB_PERIOD_DROPDOWN = 'SUB_PERIOD_DROPDOWN',
+
+    TODAY = 'Today',
+    WEEK_TO_DATE = 'Week-to-Date',
+    MONTH_TO_DATE = 'Month-to-Date',
+    QUARTAL_TO_DATE = 'Quartal-to-Date',
+    YEAR_TO_DATE = 'Year-to-Date',
+    ALL_TIME = 'All Time',
+    CUSTOM = 'Custom',
+
+    THREE_HOURS = '3 Hours',
+    SIX_HOURS = '6 Hours',
+    SEMI_DAILY = 'Semi-Daily',
+    BI_WEEKLY = 'Bi-Weekly',
+    SEMI_MONTHLY = 'Semi-Monthly',
+
+    WTD = 'WTD',
+    MTD = 'MTD',
+    QTD = 'QTD',
+    YTD = 'YTD',
+    ALL = 'ALL',
+    ALT = 'AllTime',
+
+    HOURLY = 'Hourly',
+    DAILY = 'Daily',
+    WEEKLY = 'Weekly',
+    MONTHLY = 'Monthly',
+    QUARTERLY = 'Quarterly',
+    YEARLY = 'Yearly',
+
+    THS = 'ThreeHours',
+    SHS = 'SixHours',
+    SMD = 'SemiDaily',
+    SML = 'SemiMonthly',
+    BWL = 'BiWeekly',
+
+    SEVERITY_WEIGHT = 'SeverityWeight',
+
+    YESTERDAY = 'YESTERDAY',
+
+    LAST_WEEK = 'LAST WEEK',
+    LAST_MONTH = 'LAST MONTH',
+    LAST_QUARTAL = 'LAST QUARTAL',
+    LAST_PERIOD = 'LAST PERIOD',
+
+    AVERAGE = ' AVERAGE',
+    DAILY_AVERAGE = 'DAILY AVERAGE',
+    WEEKLY_AVERAGE = 'WEEKLY AVERAGE',
+    MONTHLY_AVERAGE = 'MONTHLY AVERAGE',
+    QUARTERLY_AVERAGE = 'QUARTERLY AVERAGE',
+    PERIOD_AVERAGE = 'PERIOD AVERAGE',
+
+    PICKUP = 'Pickup',
+    DELIVERY = 'Delivery',
+
+    CLICK = 'click',
+    CLASS_DROPDOWN_OPTION = 'dropdown-option',
+
+    DAYS = 'days',
+
+    PM = 'PM',
+    AM = 'AM',
+
+    H_1 = 'H1',
+    H_2 = 'H2',
+
+    EMPTY_SPACE_STRING = ' ',
+
+    REGEX_GI = 'gi',
+
+    TREND_UP_IMG = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
+    TREND_UP_IMG_2 = 'assets/svg/common/trend-up-red.svg',
+    TREND_DOWN_IMG = 'assets/svg/common/dashboard/trend-down-with-frame.svg',
+    TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
+
+    ZERO_STRING = '0',
+
+    MAP_STATE_DEFAULT_COLOR = '#E5E5E5',
+
+    DROPDOWN_CLASS_WIDTH_1 = 'dropdown-right-w-1',
+    DROPDOWN_CLASS_WIDTH_2 = 'dropdown-right-w-2',
+    DROPDOWN_CLASS_WIDTH_3 = 'dropdown-right-w-3',
+    DROPDOWN_CLASS_WIDTH_4 = 'dropdown-right-w-4',
+    DROPDOWN_CLASS_WIDTH_5 = 'dropdown-right-w-5',
+    DROPDOWN_CLASS_WIDTH_6 = 'dropdown-right-w-6',
+    DROPDOWN_CLASS_WIDTH_7 = 'dropdown-right-w-7',
+    DROPDOWN_CLASS_WIDTH_8 = 'dropdown-right-w-8',
+    DROPDOWN_CLASS_WIDTH_9 = 'dropdown-right-w-9',
+    DROPDOWN_CLASS_WIDTH_10 = 'dropdown-right-w-10',
+}

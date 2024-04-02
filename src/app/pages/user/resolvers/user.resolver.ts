@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { UserTService } from '../services/user.service';
-import { UserState, UserStore } from '../state/user-state/user.store';
+import { UserService } from '../services/user.service';
+
+// store
+import { UserState, UserStore } from '../state/user.store';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserResolver implements Resolve<UserState> {
     constructor(
-        private userService: UserTService,
+        private userService: UserService,
         private userStore: UserStore,
         private tableService: TruckassistTableService
     ) {}

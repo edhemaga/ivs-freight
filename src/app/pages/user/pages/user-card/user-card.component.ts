@@ -20,7 +20,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     providers: [ValueByStringPath],
 })
 export class UserCardComponent implements OnChanges {
-    // All data
     @Input() viewData: CardDetails[];
 
     // Card body endpoints

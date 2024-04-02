@@ -1,4 +1,4 @@
-import { ConstantStringEnum } from '../../enums/constant-string.enum';
+import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
 
 export class DashboardSubperiodConstants {
     static TODAY_ID_LIST: number[] = [1, 2, 3];
@@ -15,17 +15,17 @@ export class DashboardSubperiodConstants {
     static CUSTOM_PERIOD_ID_LIST_6: number[] = [9, 10, 11];
 
     static CUSTOM_SUBPERIOD_LABEL_LIST: string[] = [
-        ConstantStringEnum.HOURLY,
-        ConstantStringEnum.THS,
-        ConstantStringEnum.SHS,
-        ConstantStringEnum.SMD,
+        DashboardStringEnum.HOURLY,
+        DashboardStringEnum.THS,
+        DashboardStringEnum.SHS,
+        DashboardStringEnum.SMD,
     ];
 
     static CUSTOM_SUBPERIOD_LABEL_LIST_2: string[] = [
-        ConstantStringEnum.DAILY,
-        ConstantStringEnum.WEEKLY,
-        ConstantStringEnum.BWL,
-        ConstantStringEnum.SML,
-        ConstantStringEnum.QUARTERLY,
+        DashboardStringEnum.DAILY,
+        DashboardStringEnum.WEEKLY,
+        DashboardStringEnum.BWL,
+        DashboardStringEnum.SML,
+        DashboardStringEnum.QUARTERLY,
     ];
 }

@@ -1,4 +1,4 @@
-export enum ConstantStringEnum {
+export enum AccountStringEnum {
     EDIT_ACCONUT = 'edit-account',
     DELETE_ACCOUNT = 'delete-account',
     ACCOUNT = 'ACCOUNT',

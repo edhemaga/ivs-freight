@@ -5,10 +5,10 @@ import {
 
 import { environment } from '../environments/environment';
 
-import { UserLoggedService } from './pages/website/services/user-logged.service';
+import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
 
 export const configFactory = (
-    userLoggedService?: UserLoggedService
+    userLoggedService?: WebsiteUserLoggedService
 ): Configuration => {
     const params: ConfigurationParameters = {
         basePath: environment.API_ENDPOINT,

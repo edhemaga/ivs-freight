@@ -82,8 +82,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() modalTableData:
         | ContactPhoneResponse[]
-        | RepairDescriptionResponse[]
-        | ContactEmailResponse[] = [];
+        | ContactEmailResponse[]
+        | RepairDescriptionResponse[] = [];
 
     @Output() modalTableValueEmitter = new EventEmitter<
         CreateContactPhoneCommand[]
@@ -109,7 +109,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedContactEmailType: EnumValue[] = [];
     public contactEmailTypeOptions: EnumValue[] = [];
 
-    //  description table
+    // description table
     public subtotals: Subtotal[] = [];
 
     // repair table
@@ -187,7 +187,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.contactPhoneTypeOptions = res.contactPhoneType;
                     this.contactEmailTypeOptions = res.contactEmailType;
                 });
-        } else if (this.isContactTable) {
+        }
+
+        if (this.isContactTable) {
             this.shopService
                 .getRepairShopModalDropdowns()
                 .pipe(takeUntil(this.destroy$))
@@ -313,18 +315,18 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public calculateSubtotal(): void {
         this.modalTableForm
-            .get('descriptionTableItems')
+            .get(ConstantStringEnum.DESCRIPTION_TABLE_ITEMS)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 distinctUntilChanged(),
                 throttleTime(2)
             )
-            .subscribe((items) => {
-                if (items.length === 0) this.subtotals = [];
+            .subscribe((items: RepairDescriptionResponse[]) => {
+                if (items.length) this.subtotals = [];
 
                 items.forEach((item, index) => {
                     const calculateSubtotal =
-                        parseInt(item.qty) * parseInt(item.price);
+                        parseInt(String(item.qty)) * parseInt(item.price);
 
                     const existingItemIndex = this.subtotals.findIndex(
                         (item) => item.index === index
