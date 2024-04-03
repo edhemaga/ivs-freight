@@ -11,7 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-// models
+// Models
 import {
     CardDetails,
     SendDataCard,
@@ -21,15 +21,15 @@ import {
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
 
-// pipes
+// Pipes
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { TimeFormatPipe } from 'src/app/shared/pipes/time-format-am-pm.pipe';
 
-// services
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
-// helpers
+// Helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 @Component({

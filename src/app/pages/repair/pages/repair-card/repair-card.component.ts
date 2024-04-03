@@ -18,7 +18,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-//Models
+// Models
 import {
     CardDetails,
     SendDataCard,

@@ -1,15 +1,14 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-// Modules
+// Helpers
 import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
 } from 'src/assets/utils/settings/pm-columns';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Components
-import { RepairPmModalComponent } from 'src/app/core/components/modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
+import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 // Models
 import {
@@ -24,13 +23,14 @@ import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { PmTService } from '../../services/pm.service';
+import { PmService } from '../../services/pm.service';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-
-// Data
 import { DisplayPMConfiguration } from './utils/constants/pm-card-data.constants';
+
+// Enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import {
     TooltipColors,
@@ -83,7 +83,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
-        private pmService: PmTService,
+        private pmService: PmService,
 
         // Store
         private pmTruckQuery: PmTruckQuery,
@@ -330,7 +330,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ) {
             if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
                 this.modalService.openModal(
-                    RepairPmModalComponent,
+                    PmModalComponent,
                     { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         type: ConstantStringTableComponentsEnum.NEW,
@@ -340,7 +340,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
             } else {
                 this.modalService.openModal(
-                    RepairPmModalComponent,
+                    PmModalComponent,
                     { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         type: ConstantStringTableComponentsEnum.NEW,
@@ -360,7 +360,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (this.selectedTab) {
             case ConstantStringTableComponentsEnum.ACTIVE: {
                 this.modalService.openModal(
-                    RepairPmModalComponent,
+                    PmModalComponent,
                     { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,
@@ -372,7 +372,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case ConstantStringTableComponentsEnum.INACTIVE: {
                 this.modalService.openModal(
-                    RepairPmModalComponent,
+                    PmModalComponent,
                     { size: ConstantStringTableComponentsEnum.SMALL },
                     {
                         ...event,

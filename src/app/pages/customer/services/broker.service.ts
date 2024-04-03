@@ -4,24 +4,23 @@ import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 // Services
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { BrokerService as BrokerMainService, RatingReviewService } from 'appcoretruckassist';
 
 // Store
 import { BrokerStore } from '../state/broker-state/broker.store';
-import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
+import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 import { BrokerDetailsListStore } from '../state/broker-details-state/broker-details-list-state/broker-details-list.store';
 import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
-import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 // Models
 import {
     BrokerMinimalListResponse,
     BrokerModalResponse,
     BrokerResponse,
-    BrokerService,
     CreateRatingCommand,
     CreateResponse,
     GetBrokerListResponse,
-    RatingReviewService,
     UpdateReviewCommand,
     BrokerAvailableCreditCommand,
     BrokerAvailableCreditResponse,
@@ -30,7 +29,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerTService implements OnDestroy {
+export class BrokerService implements OnDestroy {
     public brokerId: number;
     public brokerList: any;
     public currentIndex: number;
@@ -38,7 +37,7 @@ export class BrokerTService implements OnDestroy {
 
     constructor(
         // Services
-        private brokerService: BrokerService,
+        private brokerService: BrokerMainService,
         private ratingReviewService: RatingReviewService,
         private tableService: TruckassistTableService,
         private formDataService: FormDataService,
@@ -195,24 +194,7 @@ export class BrokerTService implements OnDestroy {
     }
 
     // Delete Broker List
-    public deleteBrokerList(brokersToDelete: any[]): Observable<any> {
-        // let deleteOnBack = brokersToDelete.map((broker: any) => {
-        //   return broker.id;
-        // });
-
-        // return this.brokerService.apiBrokerListDelete({ ids: deleteOnBack }).pipe(
-        //   tap(() => {
-        //     let storeBrokers = this.brokerQuery.getAll();
-
-        //     storeBrokers.map((broker: any) => {
-        //       deleteOnBack.map((d) => {
-        //         if (d === broker.id) {
-        //           this.brokerStore.remove(({ id }) => id === broker.id);
-        //         }
-        //       });
-        //     });
-        //   })
-        // );
+    public deleteBrokerList(): Observable<any> {
         return of(null);
     }
 

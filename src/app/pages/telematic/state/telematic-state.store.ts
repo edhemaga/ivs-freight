@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
+
+// Akita
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+
+// Models
 import { TelematicState } from '../models/telematic-state.model';
 
 export interface TelematicStateState extends EntityState<TelematicState> {}

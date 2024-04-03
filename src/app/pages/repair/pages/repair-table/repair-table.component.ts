@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 // Services
-import { RepairTService } from '../../services/repair.service';
+import { RepairService } from '../../../../shared/services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
@@ -19,7 +19,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 
-// Modals
+// Models
 import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
@@ -47,8 +47,8 @@ import {
 } from 'src/assets/utils/settings/repair-columns';
 
 // Store
-import { ShopQuery } from '../../state/shop-state/shop.query';
-import { ShopState, ShopStore } from '../../state/shop-state/shop.store';
+import { RepairShopQuery } from '../../state/repair-shop-state/repair-shop.query';
+import { RepairShopState } from '../../state/repair-shop-state/repair-shop.store';
 
 import { RepairTruckState } from '../../state/repair-truck-state/repair-truck.store';
 import { RepairTruckQuery } from '../../state/repair-truck-state/repair-truck.query';
@@ -68,12 +68,9 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { RepairCardConfig } from '../../utils/constants/repair-card-config.constants';
 
-// Animations
-
-import { DisplayRepairConfiguration } from '../../utils/constants/repair-card.constants';
-
-//Helpers
+// Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // Methods
@@ -84,8 +81,9 @@ import {
 
 // Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { RepairOrderModalComponent } from 'src/app/core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import { RepairShopModalComponent } from 'src/app/core/components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+
 @Component({
     selector: 'app-repair-table',
     templateUrl: './repair-table.component.html',
@@ -109,7 +107,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
-    public repairShops: ShopState[] = [];
+    public repairShops: RepairShopState[] = [];
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public repairShopTabClicked: boolean = false;
@@ -124,51 +122,59 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //Data to display from model Truck
     public displayRowsFrontTruck: CardRows[] =
-        DisplayRepairConfiguration.displayRowsFrontTruck;
+        RepairCardConfig.displayRowsFrontTruck;
     public displayRowsBackTruck: CardRows[] =
-        DisplayRepairConfiguration.displayRowsBackTruck;
+        RepairCardConfig.displayRowsBackTruck;
 
     // Data to display from model Trailer
     public displayRowsFrontTrailer: CardRows[] =
-        DisplayRepairConfiguration.displayRowsFrontTruck;
+        RepairCardConfig.displayRowsFrontTruck;
     public displayRowsBackTrailer: CardRows[] =
-        DisplayRepairConfiguration.displayRowsBackTruck;
+        RepairCardConfig.displayRowsBackTruck;
 
     // Data to display from model Trailer
     public displayRowsFrontRepairShop: CardRows[] =
-        DisplayRepairConfiguration.displayRowsFrontRepairShop;
+        RepairCardConfig.displayRowsFrontRepairShop;
     public displayRowsBackRepairShop: CardRows[] =
-        DisplayRepairConfiguration.displayRowsBackRepairShop;
+        RepairCardConfig.displayRowsBackRepairShop;
 
     //Title
     public cardTitle: string =
         ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
 
     // Page
-    public page: string = DisplayRepairConfiguration.page;
+    public page: string = RepairCardConfig.page;
 
     //  Number of rows in card
-    public rows: number = DisplayRepairConfiguration.rows;
+    public rows: number = RepairCardConfig.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
     constructor(
+        // Router
+        public router: Router,
+
+        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
-        public router: Router,
-        private shopQuery: ShopQuery,
+        private repairService: RepairService,
+        private reviewRatingService: ReviewsRatingService,
+        private mapsService: MapsService,
+        private confiramtionService: ConfirmationService,
+
+        // Store
+        private repairShopQuery: RepairShopQuery,
         private repairTruckQuery: RepairTruckQuery,
         private repairTrailerQuery: RepairTrailerQuery,
-        private repairService: RepairTService,
+        private repairTrailerStore: RepairTrailerStore,
+
+        // Pipes
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
-        private reviewRatingService: ReviewsRatingService,
-        private ref: ChangeDetectorRef,
-        private mapsService: MapsService,
-        private repairTrailerStore: RepairTrailerStore,
-        private shopStore: ShopStore,
-        private confiramtionService: ConfirmationService
+
+        // Ref
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -694,7 +700,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (dataType === ConstantStringTableComponentsEnum.REPAIR_SHOP) {
             this.repairShopTabClicked = true;
 
-            this.repairShops = this.shopQuery.getAll();
+            this.repairShops = this.repairShopQuery.getAll();
 
             return this.repairShops?.length ? this.repairShops : [];
         }

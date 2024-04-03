@@ -9,7 +9,7 @@ import { CompanySettingsGuard } from './core/guards/company-settings.guard';
 // resolvers
 import { BrokerResolver } from './pages/customer/resolvers/broker.resolver';
 import { ShipperResolver } from './pages/customer/resolvers/shipper.resolver';
-import { ShopResolver } from './pages/repair/resolvers/shop.resolver';
+import { RepairShopResolver } from './pages/repair/resolvers/repair-shop.resolver';
 import { DriverInactiveResolver } from './pages/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { DriverActiveResolver } from './pages/driver/state/driver-active-state/driver-active.resolver';
 import { TruckActiveResolver } from './pages/truck/resolvers/truck-active.resolver';
@@ -23,8 +23,8 @@ import { AccountResolver } from './pages/account/resolvers/account.resolver';
 import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
-import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
-import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
+import { PmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
+import { PmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';
@@ -188,7 +188,7 @@ const routes: Routes = [
         resolve: {
             repairTruck: RepairTruckResolver,
             repairTrailer: RepairTrailerResolver,
-            repairShop: ShopResolver,
+            repairShop: RepairShopResolver,
         },
     },
     {
@@ -199,8 +199,8 @@ const routes: Routes = [
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
-            pmTrailer: pmTrailerResolver,
-            pmTruck: pmTruckResolver,
+            pmTrailer: PmTrailerResolver,
+            pmTruck: PmTruckResolver,
         },
     },
     {

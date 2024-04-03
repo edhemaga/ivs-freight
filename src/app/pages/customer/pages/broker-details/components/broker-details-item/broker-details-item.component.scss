@@ -167,10 +167,6 @@ app-broker-details-single {
                     }
                 }
             }
-            &:hover {
-                //cursor: pointer;
-                //background-color: #f3f3f3;
-            }
 
             &:hover{
                 cursor: pointer;
@@ -278,9 +274,6 @@ app-broker-details-single {
     max-height: calc(112vh - 62px);
     // min-height: calc(24vh - 8px);
     overflow-x: hidden;
-    &::-webkit-scrollbar {
-        //width: 4px;
-    }
 
     &::-webkit-scrollbar-track {
         border-radius: 1px;

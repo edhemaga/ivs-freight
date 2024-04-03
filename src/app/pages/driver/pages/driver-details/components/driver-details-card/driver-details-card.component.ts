@@ -48,9 +48,9 @@ import { DriversMinimalListQuery } from '../../../../state/driver-details-minima
 
 //Enums
 import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
-import { BrokerTabEnum } from '../../../../../customer/pages/broker-details/enums/broker-enum';
 import { DriverDetailsCardStringEnum } from './enums/driver-details-card-string.enum';
 import { DriverImagesStringEnum } from './enums/driver-images-string.enum';
+import { BrokerTabStringEnum } from 'src/app/pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
 //Models
 import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
@@ -288,32 +288,32 @@ export class DriverDetailsCardComponent
         this.tabsDriver = [
             {
                 id: 223,
-                name: BrokerTabEnum.ONE_MONTH,
+                name: BrokerTabStringEnum.ONE_MONTH,
                 checked: true,
             },
             {
                 id: 313,
-                name: BrokerTabEnum.THREE_MONTHS,
+                name: BrokerTabStringEnum.THREE_MONTHS,
                 checked: false,
             },
             {
                 id: 412,
-                name: BrokerTabEnum.SIX_MONTHS,
+                name: BrokerTabStringEnum.SIX_MONTHS,
                 checked: false,
             },
             {
                 id: 515,
-                name: BrokerTabEnum.ONE_YEAR,
+                name: BrokerTabStringEnum.ONE_YEAR,
                 checked: false,
             },
             {
                 id: 1210,
-                name: BrokerTabEnum.YEAR_TO_DATE,
+                name: BrokerTabStringEnum.YEAR_TO_DATE,
                 checked: false,
             },
             {
                 id: 1011,
-                name: BrokerTabEnum.ALL,
+                name: BrokerTabStringEnum.ALL,
                 checked: false,
             },
         ];
