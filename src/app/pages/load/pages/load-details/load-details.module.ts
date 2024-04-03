@@ -14,11 +14,11 @@ import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-no
 import { TaReCardComponent } from 'src/app/core/components/shared/ta-common-card/ta-re-card.component';
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { TaCounterComponent } from 'src/app/core/components/shared/ta-counter/ta-counter.component';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
 
 @NgModule({
@@ -41,12 +41,12 @@ import { MapsComponent } from 'src/app/core/components/shared/maps/maps.componen
         TaReCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
-        formatDatePipe,
+        FormatDatePipe,
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
-        formatCurrency,
-        MapsComponent
+        FormatCurrency,
+        MapsComponent,
     ],
 })
 export class LoadDetailsModule {}

@@ -14,7 +14,7 @@ import {
     CardDetails,
     DropdownItem,
     SendDataCard,
-} from '../../shared/model/card-table-data.model';
+} from '../../../../shared/models/card-table-data.model';
 
 @Component({
     selector: 'app-table-card-dropdown-actions',

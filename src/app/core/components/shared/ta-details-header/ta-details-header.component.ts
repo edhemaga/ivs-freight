@@ -8,7 +8,7 @@ import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FilterComponent } from '../../standalone-components/filter/filter.component';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { formatCurrency } from '../../../pipes/formatCurrency.pipe';
+import { FormatCurrency } from '../../../../shared/pipes/format-currency.pipe';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -26,7 +26,7 @@ import { formatCurrency } from '../../../pipes/formatCurrency.pipe';
         FilterComponent,
         RouterModule,
         NgbPopoverModule,
-        formatCurrency,
+        FormatCurrency,
     ],
 })
 export class TaCommonHeaderComponent implements OnInit {

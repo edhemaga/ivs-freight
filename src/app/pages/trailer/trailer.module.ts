@@ -8,8 +8,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // components
 import { TrailerTableComponent } from './pages/trailer-table/trailer-table.component';
@@ -40,8 +40,8 @@ import { TrailerCardComponent } from './pages/trailer-card/trailer-card.componen
         ProgresBarComponent,
 
         // pipes
-        TaThousandSeparatorPipe,
-        formatDatePipe,
+        ThousandSeparatorPipe,
+        FormatDatePipe,
     ],
 })
 export class TrailerModule {}

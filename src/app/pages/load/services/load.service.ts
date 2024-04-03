@@ -10,7 +10,7 @@ import { FormDataService } from 'src/app/core/services/formData/form-data.servic
 import {
     Comment,
     DeleteComment,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 
 // models
 import {

@@ -11,7 +11,7 @@ import { ConfirmationService } from 'src/app/core/components/modals/confirmation
 import { CompanyTerminalService } from '../../../../services/company-terminal.service';
 
 // pipes
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
 // utils
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
@@ -20,7 +20,7 @@ import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-p
     selector: 'app-settings-terminal',
     templateUrl: './settings-terminal.component.html',
     styleUrls: ['./settings-terminal.component.scss'],
-    providers: [formatCurrency],
+    providers: [FormatCurrency],
 })
 export class SettingsTerminalComponent implements OnInit, OnDestroy {
     public terminalData: any;

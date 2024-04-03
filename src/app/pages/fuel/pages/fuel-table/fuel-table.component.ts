@@ -27,10 +27,10 @@ import {
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 //Helpers
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import {
     convertDateFromBackend,
@@ -41,7 +41,7 @@ import {
 import { FuelStopListResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 
 //States
 import { FuelQuery } from '../../state/fule-state/fuel-state.query';
@@ -60,7 +60,7 @@ import { FuelTService } from '../../services/fuel.service';
         './fuel-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
@@ -95,7 +95,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
         private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef,
@@ -296,7 +296,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe();
     }
 
-    private deletFuelTransactionById(fuelTransactionId: number) {}
+    private deletFuelTransactionById() {}
 
     private deleteFuelTransactionList(ids: number[]): void {
         console.log('ids', ids);
@@ -515,7 +515,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: fuelCount.fuelTransactions,
                 data: this.fuelData,
                 gridNameTitle: ConstantStringTableComponentsEnum.FUEL,
-                fuelArray: checkSpecialFilterArray(
+                fuelArray: DataFilterHelper.checkSpecialFilterArray(
                     this.fuelData,
                     ConstantStringTableComponentsEnum.ARCHIVED_DATA
                 ),
@@ -534,7 +534,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: fuelCount.fuelStops,
                 data: this.fuelData,
                 gridNameTitle: ConstantStringTableComponentsEnum.FUEL,
-                closedArray: checkSpecialFilterArray(
+                closedArray: DataFilterHelper.checkSpecialFilterArray(
                     this.fuelData,
                     ConstantStringTableComponentsEnum.IS_CLOSED
                 ),

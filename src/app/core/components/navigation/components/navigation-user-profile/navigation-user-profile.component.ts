@@ -61,15 +61,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        // ----------------------- PRODUCSTION MODE ----------------------------
-        // if(this.authQuery.getEntity(1)) {
-        //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
-
-        //   if (currentUser.token) {
-        //     return true;
-        //   }
-        // }
-        // ----------------------- DEVELOP MODE ----------------------------
         this.loggedUser = JSON.parse(localStorage.getItem('user'));
 
         this.loggedUser = {

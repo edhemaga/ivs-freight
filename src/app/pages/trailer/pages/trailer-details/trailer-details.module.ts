@@ -8,8 +8,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // components
 import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
@@ -44,7 +44,7 @@ import { TrailerDetailsComponent } from './trailer-details.component';
         TaReCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
-        formatDatePipe,
+        FormatDatePipe,
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
@@ -53,7 +53,7 @@ import { TrailerDetailsComponent } from './trailer-details.component';
         AngularSvgIconModule,
 
         // PIPES
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

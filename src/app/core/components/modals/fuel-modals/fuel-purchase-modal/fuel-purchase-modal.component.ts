@@ -50,10 +50,10 @@ import {
     FuelTruckType,
 } from './state/models/fuel.model';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { Trailer } from '../../../shared/model/card-table-data.model';
+import { Trailer } from '../../../../../shared/models/card-table-data.model';
 
 //Pipes
-import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '../../../../../shared/pipes/sum-arrays.pipe';
 
 //Enums
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';

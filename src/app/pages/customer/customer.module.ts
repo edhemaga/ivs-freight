@@ -34,8 +34,8 @@ import { TableCardDropdownActionsComponent } from 'src/app/core/components/stand
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 
 //pipes
-import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatEinPipe } from 'src/app/shared/pipes/format-ein.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [
@@ -70,8 +70,8 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         TaNoteComponent,
 
         //pipes
-        formatDatePipe,
-        formatEinPipe,
+        FormatDatePipe,
+        FormatEinPipe,
     ],
 })
 export class CustomerModule {}

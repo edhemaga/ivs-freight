@@ -9,7 +9,7 @@ import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // Models
-import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';
+import { GetOwnerListResponse } from 'appcoretruckassist';
 import {
     tableSearch,
     closeAnimationAction,
@@ -20,7 +20,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import {
     MapOwnerData,
@@ -50,23 +50,22 @@ import {
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
 
 // Pipes
-import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
+import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 import { DisplayOwnerConfiguration } from '../../utils/constants/owner-card.constants';
 
 //helpers
-import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
+import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
 
 @Component({
     selector: 'app-owner-table',
     templateUrl: './owner-table.component.html',
     styleUrls: ['./owner-table.component.scss'],
-    providers: [formatPhonePipe],
+    providers: [FormatPhonePipe],
 })
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -107,7 +106,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerActiveQuery: OwnerActiveQuery,
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
-        private phonePipe: formatPhonePipe,
+        private phonePipe: FormatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore,
         private confirmationService: ConfirmationService,
         private sharedService: SharedService,
@@ -700,7 +699,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownOwnerContent(): DropdownItem[] {
-        return getDropdownOwnerContent(this.selectedTab);
+        return DropdownContentHelper.getDropdownOwnerContent();
     }
 
     private getTabData(dataType: string) {

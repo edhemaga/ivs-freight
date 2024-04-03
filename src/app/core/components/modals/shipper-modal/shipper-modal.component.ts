@@ -416,7 +416,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        // -------------------------- DEVELOP MODE --------------------------------
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(

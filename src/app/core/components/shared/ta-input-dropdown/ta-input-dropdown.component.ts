@@ -33,13 +33,13 @@ import { CommonModule } from '@angular/common';
 import { FormControlPipe } from '../ta-input/form-control.pipe';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { DropdownCountPipe } from './dropdown-count.pipe';
-import { HighlightSearchPipe } from 'src/app/core/pipes/highlight-search.pipe';
+import { HighlightSearchPipe } from 'src/app/shared/pipes/highlight-search.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
-import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
+import { TaSvgPipe } from '../../../../shared/pipes/ta-svg.pipe';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
+import { HoverSvgDirective } from '../../../../shared/directives/hover-svg.directive';
 
 @Component({
     selector: 'app-ta-input-dropdown',

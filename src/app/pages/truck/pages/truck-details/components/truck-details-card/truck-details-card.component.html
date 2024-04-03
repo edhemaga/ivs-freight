@@ -253,7 +253,7 @@
                         <div class="common-template-item-value">
                             <app-ta-copy
                                 [copyValue]="
-                                    (truck?.emptyWeight | taThousandSeparator) +
+                                    (truck?.emptyWeight | thousandSeparator) +
                                     ' Ibs'
                                 "
                                 [textColor]="'#2f2f2f'"
@@ -434,8 +434,7 @@
                         <div class="common-template-item-value">
                             <app-ta-copy
                                 [copyValue]="
-                                    (truck?.mileage | taThousandSeparator) +
-                                    'mi'
+                                    (truck?.mileage | thousandSeparator) + 'mi'
                                 "
                                 [textColor]="'#2f2f2f'"
                             >
@@ -528,7 +527,7 @@
                             <app-ta-copy
                                 [copyValue]="
                                     '$' +
-                                    (truck?.purchasePrice | taThousandSeparator)
+                                    (truck?.purchasePrice | thousandSeparator)
                                 "
                                 [textColor]="'#2f2f2f'"
                             >

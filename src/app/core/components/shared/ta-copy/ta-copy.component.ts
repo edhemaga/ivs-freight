@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { HideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
-import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
+import { DriverHideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
+import { HidePasswordPipe } from '../../../../shared/pipes/hide-password.pipe';
 @Component({
     selector: 'app-ta-copy',
     templateUrl: './ta-copy.component.html',
@@ -18,11 +18,11 @@ import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
         AppTooltipComponent,
         NgbModule,
         AngularSvgIconModule,
-        HideAccountPipe,
+        DriverHideAccountPipe,
 
         // Pipes
 
-        HidePasswordPipe
+        HidePasswordPipe,
     ],
 })
 export class TaCopyComponent implements OnInit {
@@ -47,7 +47,7 @@ export class TaCopyComponent implements OnInit {
     /* To copy any Text */
     public copyText(val: any) {
         this.textCopied = true;
-        if ( this.arrayText ) {
+        if (this.arrayText) {
             val = this.copyValue[0] + this.copyValue[1];
         }
         this.clipboar.copy(val);

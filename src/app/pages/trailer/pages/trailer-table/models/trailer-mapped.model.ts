@@ -1,4 +1,4 @@
-import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 import { TraillerData } from './trailer-data.model';
 
 export interface TrailerMapped extends TraillerData {
