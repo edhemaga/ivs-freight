@@ -46,6 +46,7 @@ import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driv
 import { PayrollDeductionModalComponent } from 'src/app/pages/accounting/pages/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollBonusModalComponent } from 'src/app/pages/accounting/pages/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from 'src/app/pages/accounting/pages/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 
 @Component({
     selector: 'app-navigation-modals',

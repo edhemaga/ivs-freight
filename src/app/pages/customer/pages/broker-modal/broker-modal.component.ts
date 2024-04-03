@@ -81,7 +81,7 @@ import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-up
 import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
-import { LoadModalComponent } from '../../../../core/components/modals/load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 import {
     ReviewCommentModal,
     TaUserReviewComponent,
