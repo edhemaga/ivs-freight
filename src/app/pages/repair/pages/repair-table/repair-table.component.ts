@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 // Services
-import { RepairService } from '../../services/repair.service';
+import { RepairService } from '../../../../shared/services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';

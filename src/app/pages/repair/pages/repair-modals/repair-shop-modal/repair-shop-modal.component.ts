@@ -32,10 +32,10 @@ import {
     SignInResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { RepairTypes } from '../repair-order-modal/state/models/repair-types.model';
+import { RepairTypes } from '../repair-order-modal/models/repair-types.model';
 
 // Services
-import { RepairService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
@@ -87,7 +87,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Constants
-import { RepairOrder } from '../repair-order-modal/state/constants/repair-order.constant';
+import { RepairOrder } from '../repair-order-modal/utils/constants/repair-order.constant';
 
 @Component({
     selector: 'app-repair-shop-modal',

@@ -6,7 +6,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { RepairShopState, RepairShopStore } from '../state/repair-shop-state/repair-shop.store';
 
 // Services
-import { RepairService } from '../services/repair.service';
+import { RepairService } from '../../../shared/services/repair.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({

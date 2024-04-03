@@ -1,5 +1,5 @@
 import { DispatchHosResponse } from "appcoretruckassist";
 
-export interface IdispatcherHosResponse extends DispatchHosResponse{
+export interface DispatcherHosResponse extends DispatchHosResponse{
     indx: number;
 }

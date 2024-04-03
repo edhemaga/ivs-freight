@@ -1,5 +1,5 @@
-import { RepairTypes } from '../models/repair-types.model';
-import { RepairData } from '../models/repair-data.model';
+import { RepairTypes } from '../../models/repair-types.model';
+import { RepairData } from '../../models/repair-data.model';
 
 export class RepairOrder {
     static REPAIR_TYPES: RepairTypes[] = [

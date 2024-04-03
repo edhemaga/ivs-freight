@@ -16,7 +16,7 @@ import { map, Subject, takeUntil } from 'rxjs';
 import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
 
 // Services
-import { RepairService } from '../../../../services/repair.service';
+import { RepairService } from '../../../../../../shared/services/repair.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 

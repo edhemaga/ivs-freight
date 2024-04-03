@@ -30,7 +30,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
 import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
-import { RepairService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 import { RoutingStateService } from 'src/app/pages/routing/services/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { CompanyTOfficeService } from 'src/app/pages/settings/pages/custom-agreement/service/company-office.service';

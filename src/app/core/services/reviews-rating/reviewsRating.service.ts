@@ -20,7 +20,7 @@ import { RepairShopStore } from 'src/app/pages/repair/state/repair-shop-state/re
 // services
 import { BrokerService } from 'src/app/pages/customer/services/broker.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
-import { RepairService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',

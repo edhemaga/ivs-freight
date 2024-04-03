@@ -20,7 +20,7 @@ import {
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { DispatchBoardLocalResponse } from '../../../../models/dispatcher.model';
+import { DispatchBoardLocalResponse } from './models/dispatcher.model';
 
 // Pipes
 import { ColorFinderPipe } from '../../../../pipes/color-finder.pipe';

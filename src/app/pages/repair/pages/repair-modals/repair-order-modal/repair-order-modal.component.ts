@@ -43,7 +43,7 @@ import { ModalService } from '../../../../../core/components/shared/ta-modal/mod
 import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { RepairService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 
 // models
 import {
@@ -52,9 +52,9 @@ import {
     RepairShopResponse,
 } from 'appcoretruckassist';
 import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
-import { RepairTypes } from './state/models/repair-types.model';
-import { RepairSubtotal } from './state/models/repair-subtotal.model';
-import { RepairData } from './state/models/repair-data.model';
+import { RepairTypes } from './models/repair-types.model';
+import { RepairSubtotal } from './models/repair-subtotal.model';
+import { RepairData } from './models/repair-data.model';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -67,7 +67,7 @@ import {
 } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 
 // constants
-import { RepairOrder } from './state/constants/repair-order.constant';
+import { RepairOrder } from './utils/constants/repair-order.constant';
 
 // components
 import { TruckModalComponent } from '../../../../../core/components/modals/truck-modal/truck-modal.component';

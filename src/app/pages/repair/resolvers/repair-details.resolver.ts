@@ -8,7 +8,7 @@ import { RepairDetailsState } from '../state/repair-details-state/repair-details
 
 // Services
 import { RepairDetailsService } from '../services/repair-details.service';
-import { RepairService } from '../services/repair.service';
+import { RepairService } from '../../../shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',

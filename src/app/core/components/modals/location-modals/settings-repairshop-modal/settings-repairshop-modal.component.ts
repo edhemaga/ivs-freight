@@ -17,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { RepairService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 import { FormService } from '../../../../services/form/form.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';

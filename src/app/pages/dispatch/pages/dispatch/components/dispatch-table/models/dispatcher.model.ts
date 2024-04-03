@@ -1,9 +1,9 @@
 import { DispatchBoardResponse, DispatchResponse } from 'appcoretruckassist';
-import { IdispatcherHosResponse } from './dispatcher-hos-response.model';
+import { DispatcherHosResponse } from '../../../../../models/dispatcher-hos-response.model';
 
 interface DispatchBoardLResponse extends DispatchResponse {
     isPhone?: boolean;
-    hoursOfService?: Array<IdispatcherHosResponse> | null;
+    hoursOfService?: Array<DispatcherHosResponse> | null;
 }
 
 export interface DispatchBoardLocalResponse extends DispatchBoardResponse {

@@ -27,8 +27,8 @@ import { AccountResolver } from './pages/account/resolvers/account.resolver';
 import { RepairTruckResolver } from './pages/repair/resolvers/repair-truck.resolver';
 import { RepairTrailerResolver } from './pages/repair/resolvers/repair-trailer.resolver';
 import { ContactsResolver } from './pages/contacts/resolvers/contacts.resolver';
-import { pmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
-import { pmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
+import { PmTrailerResolver } from './pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
+import { PmTruckResolver } from './pages/pm-truck-trailer/resolvers/pm-truck.resolver';
 import { LoadPandingResolver } from './pages/load/state/load-pending-state/load-panding.resolver';
 import { LoadClosedResolver } from './pages/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './pages/load/state/load-active-state/load-active.resolver';
@@ -195,8 +195,8 @@ const routes: Routes = [
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
-            pmTrailer: pmTrailerResolver,
-            pmTruck: pmTruckResolver,
+            pmTrailer: PmTrailerResolver,
+            pmTruck: PmTruckResolver,
         },
     },
     {

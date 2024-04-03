@@ -13,7 +13,7 @@ import { PmTrailerState, PmTrailerStore } from '../state/pm-trailer-state/pm-tra
 @Injectable({
     providedIn: 'root',
 })
-export class pmTrailerResolver implements Resolve<PmTrailerState> {
+export class PmTrailerResolver implements Resolve<PmTrailerState> {
     constructor(
         private pmService: PmService,
         private pmTrailerStore: PmTrailerStore,

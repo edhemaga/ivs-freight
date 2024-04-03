@@ -13,8 +13,6 @@ import { CarrierSearchComponent } from 'src/app/core/components/standalone-compo
 import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 
-// FullCalendarModule.registerPlugins([dayGridPlugin, interactionPlugin]);
-
 @NgModule({
     declarations: [CalendarComponent, CalendarMonthComponent],
     imports: [

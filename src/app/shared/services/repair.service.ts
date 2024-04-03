@@ -20,11 +20,11 @@ import {
 
 // Store
 import { RepairShopService } from 'appcoretruckassist';
-import { RepairTruckStore } from '../state/repair-truck-state/repair-truck.store';
-import { RepairTrailerStore } from '../state/repair-trailer-state/repair-trailer.store';
-import { RepairShopStore } from '../state/repair-shop-state/repair-shop.store';
-import { RepairDetailsQuery } from '../state/repair-details-state/repair-details.query';
-import { RepairDetailsStore } from '../state/repair-details-state/repair-details.store';
+import { RepairTruckStore } from '../../pages/repair/state/repair-truck-state/repair-truck.store';
+import { RepairTrailerStore } from '../../pages/repair/state/repair-trailer-state/repair-trailer.store';
+import { RepairShopStore } from '../../pages/repair/state/repair-shop-state/repair-shop.store';
+import { RepairDetailsQuery } from '../../pages/repair/state/repair-details-state/repair-details.query';
+import { RepairDetailsStore } from '../../pages/repair/state/repair-details-state/repair-details.store';
 
 // Services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
@@ -40,15 +40,18 @@ export class RepairService implements OnDestroy {
     public repairShopId: number;
     private destroy$ = new Subject<void>();
     constructor(
+        // Services
         private repairService: RepairMainService,
         private shopServices: RepairShopService,
+        private tableService: TruckassistTableService,
+        private formDataService: FormDataService,
+
+        // Store
         private repairTruckStore: RepairTruckStore,
         private repairTrailerStore: RepairTrailerStore,
         private repairShopStore: RepairShopStore,
-        private tableService: TruckassistTableService,
         private repairDetailsStore: RepairDetailsStore,
-        private repairDetailsQuery: RepairDetailsQuery,
-        private formDataService: FormDataService
+        private repairDetailsQuery: RepairDetailsQuery
     ) {}
 
     // <----------------------- Repair Truck And Trailer -------------------->
@@ -301,7 +304,9 @@ export class RepairService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (shop: RepairShopResponse | any) => {
-                            this.repairShopStore.remove(({ id }) => id === data.id);
+                            this.repairShopStore.remove(
+                                ({ id }) => id === data.id
+                            );
                             this.repairShopStore.add(shop);
 
                             // this.repairDetailsStore.update((store) => {

@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { RepairService } from '../services/repair.service';
+import { RepairService } from '../../../shared/services/repair.service';
 
 // Store
 import {

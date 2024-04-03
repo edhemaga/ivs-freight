@@ -13,7 +13,7 @@ import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.sto
 @Injectable({
     providedIn: 'root',
 })
-export class pmTruckResolver implements Resolve<PmTruckState> {
+export class PmTruckResolver implements Resolve<PmTruckState> {
     constructor(
         private pmService: PmService,
         private pmTruckStore: PmTruckStore,
