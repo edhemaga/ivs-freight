@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
 // model
-import { DisplayLoadConfiguration } from 'src/app/pages/load/utils/constants/load-card.constants';
+import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 import { ModalModelData } from '../../models/modal-input.model';
 
@@ -12,29 +12,29 @@ export const initialState = (): LoadDataState => {
     const template: ModalModelData = {
         numberOfRows: 4,
         checked: true,
-        front_side: DisplayLoadConfiguration.displayRowsFrontTemplate,
-        back_side: DisplayLoadConfiguration.displayRowsBackTemplate,
+        front_side: LoadCardConfiguration.displayRowsFrontTemplate,
+        back_side: LoadCardConfiguration.displayRowsBackTemplate,
     };
 
     const pending: ModalModelData = {
         numberOfRows: 4,
         checked: true,
-        front_side: DisplayLoadConfiguration.displayRowsFrontPending,
-        back_side: DisplayLoadConfiguration.displayRowsBackPending,
+        front_side: LoadCardConfiguration.displayRowsFrontPending,
+        back_side: LoadCardConfiguration.displayRowsBackPending,
     };
 
     const active: ModalModelData = {
         numberOfRows: 4,
         checked: true,
-        front_side: DisplayLoadConfiguration.displayRowsFrontPending,
-        back_side: DisplayLoadConfiguration.displayRowsBackActive,
+        front_side: LoadCardConfiguration.displayRowsFrontPending,
+        back_side: LoadCardConfiguration.displayRowsBackActive,
     };
 
     const closed: ModalModelData = {
         numberOfRows: 4,
         checked: true,
-        front_side: DisplayLoadConfiguration.displayRowsFrontClosed,
-        back_side: DisplayLoadConfiguration.displayRowsBackClosed,
+        front_side: LoadCardConfiguration.displayRowsFrontClosed,
+        back_side: LoadCardConfiguration.displayRowsBackClosed,
     };
 
     return {

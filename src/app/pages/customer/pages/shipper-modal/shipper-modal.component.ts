@@ -61,7 +61,7 @@ import {
     ReviewCommentModal,
     TaUserReviewComponent,
 } from '../../../../core/components/shared/ta-user-review/ta-user-review.component';
-import { LoadModalComponent } from '../../../../core/components/modals/load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 import { AppTooltipComponent } from '../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';

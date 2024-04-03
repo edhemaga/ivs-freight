@@ -10,8 +10,8 @@ import { AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 //Components
-import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
-import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { FuelPurchaseModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
+import { FuelStopModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 //Services
@@ -51,7 +51,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { SortTypes } from 'src/app/core/model/fuel';
 
 //Services
-import { FuelTService } from '../../services/fuel.service';
+import { FuelService } from '../../../../shared/services/fuel.service';
 
 @Component({
     selector: 'app-fuel-table',
@@ -100,7 +100,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private fuelQuery: FuelQuery,
         private ref: ChangeDetectorRef,
         private confiramtionService: ConfirmationService,
-        private fuelService: FuelTService
+        private fuelService: FuelService
     ) {}
 
     //-------------------------------NG ON INIT-------------------------------

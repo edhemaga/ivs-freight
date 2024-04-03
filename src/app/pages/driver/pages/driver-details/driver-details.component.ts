@@ -1,27 +1,29 @@
-import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverCdlModalComponent } from 'src/app/core/components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, take, takeUntil } from 'rxjs';
+import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DriverTService } from '../../services/driver.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+
+//Components
+import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+
+//Services
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { DriverService } from '../../services/driver.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DriverCdlService } from '../../services/driver-cdl.service';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
+//Store
 import { DriversMinimalListStore } from '../../state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '../../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { CdlTService } from '../../services/cdl.service';
-import { Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsListQuery } from '../../state/driver-details-list-state/driver-details-list.query';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { DriversDetailsListStore } from '../../state/driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from '../../state/driver-details-state/driver-details.store';
-import moment from 'moment';
 
 @Component({
     selector: 'app-driver-details',
@@ -54,9 +56,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private activated_route: ActivatedRoute,
         private modalService: ModalService,
-        private driverService: DriverTService,
+        private driverService: DriverService,
         private router: Router,
-        private notificationService: NotificationService,
         private detailsPageDriverService: DetailsPageService,
         private cdRef: ChangeDetectorRef,
         private tableService: TruckassistTableService,
@@ -65,9 +66,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private driverMinimalQuery: DriversMinimalListQuery,
         private dropDownService: DropDownService,
         private driverDQuery: DriversDetailsListQuery,
-        private cdlService: CdlTService,
+        private cdlService: DriverCdlService,
         private DetailsDataService: DetailsDataService,
-        private DriversDetailsListStore: DriversDetailsListStore,
         private DriversItemStore: DriversItemStore
     ) {
         let storeData$ = this.DriversItemStore._select((state) => state);

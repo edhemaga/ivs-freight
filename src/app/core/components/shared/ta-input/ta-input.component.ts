@@ -48,7 +48,7 @@ import { InputErrorPipe } from './input-error.pipe';
 import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
-import { LoadModalProgressBarComponent } from '../../modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { LoadModalProgressBarComponent } from '../../../../pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HoverSvgDirective } from '../../../../shared/directives/hover-svg.directive';
 

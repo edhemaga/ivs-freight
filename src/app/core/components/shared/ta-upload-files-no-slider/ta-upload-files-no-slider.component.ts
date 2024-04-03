@@ -26,7 +26,7 @@ import { TaUploadFilesCarouselComponent } from '../ta-upload-files/ta-upload-fil
 
 //Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
-import { Tags } from '../../modals/load-modal/state/models/load-modal-model/tags.model';
+import { Tags } from '../../../../shared/models/tags.model';
 
 //Services
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';

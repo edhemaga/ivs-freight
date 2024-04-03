@@ -1,18 +1,22 @@
 import {
     Component,
     OnInit,
-    OnChanges,
-    SimpleChanges,
     OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
+
+//Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { LoadService } from '../../../../shared/services/load.service';
+
+//Models
 import { LoadResponse } from 'appcoretruckassist';
-import { LoadDetailsListQuery } from '../../state/load-details-state/load-details-list-state/load-d-list.query';
-import { LoadTService } from '../../services/load.service';
 import { MapRouteModel } from 'src/app/core/components/shared/model/map-route';
+
+//Store
+import { LoadDetailsListQuery } from '../../state/load-details-state/load-details-list-state/load-d-list.query';
+
 interface IStopRoutes {
     longitude: number;
     latitude: number;
@@ -27,7 +31,7 @@ interface IStopRoutes {
     styleUrls: ['./load-details.component.scss'],
     providers: [DetailsPageService],
 })
-export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
+export class LoadDetailsComponent implements OnInit, OnDestroy {
     public loadConfig: any;
     private destroy$ = new Subject<void>();
     public statusIsClosed: boolean;
@@ -36,12 +40,10 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private activated_route: ActivatedRoute,
         private detailsPageService: DetailsPageService,
-        private loadTservice: LoadTService,
         private router: Router,
-        private notificationService: NotificationService,
+        private loadService: LoadService,
         private ldlQuery: LoadDetailsListQuery
     ) {}
-    ngOnChanges(changes: SimpleChanges) {}
     ngOnInit(): void {
         this.detailsPageService.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
@@ -50,7 +52,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                 if (this.ldlQuery.hasEntity(id)) {
                     query = this.ldlQuery.selectEntity(id).pipe(take(1));
                 } else {
-                    query = this.loadTservice.getLoadById(id);
+                    query = this.loadService.getLoadById(id);
                 }
                 query.pipe(takeUntil(this.destroy$)).subscribe({
                     next: (res: LoadResponse) => {
@@ -110,7 +112,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         ];
     }
     /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number): number {
         return index;
     }
 

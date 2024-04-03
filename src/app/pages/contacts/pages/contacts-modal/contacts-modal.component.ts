@@ -68,7 +68,7 @@ import {
     EnumValue,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { EditData } from 'src/app/core/components/modals/load-modal/state/models/load-modal-model/edit-data.model';
+import { EditData } from '../../../../shared/models/edit-data.model';
 
 @Component({
     selector: 'app-contact-modal',

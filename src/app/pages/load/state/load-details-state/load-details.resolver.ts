@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { LoadResponse } from 'appcoretruckassist';
-import { LoadTService } from '../../services/load.service';
+import { LoadService } from '../../../../shared/services/load.service';
 import { LoadDetailsListQuery } from './load-details-list-state/load-d-list.query';
 import { LoadDetailsListStore } from './load-details-list-state/load-d-list.store';
 import { LoadItemStore } from './load-details.store';
@@ -14,7 +14,7 @@ import { LoadItemStore } from './load-details.store';
 })
 export class LoatItemResolver implements Resolve<LoadResponse[]> {
     constructor(
-        private loadService: LoadTService,
+        private loadService: LoadService,
         private loadItemStore: LoadItemStore,
         private router: Router,
         private ldlStore: LoadDetailsListStore,

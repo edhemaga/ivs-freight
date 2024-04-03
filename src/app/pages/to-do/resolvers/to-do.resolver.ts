@@ -1,19 +1,19 @@
 import { TodoQuery } from '../state/to-do.query';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TodoTService } from '../services/to-do.service';
+import { TodoService } from '../services/to-do.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TodoResolver implements Resolve<any> {
     constructor(
-        private todoService: TodoTService,
+        private todoService: TodoService,
         private todoQuery: TodoQuery
     ) {}
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    resolve(): Observable<any> {
         if (this.todoQuery.todoGetTodoList.todayObject) {
             return this.todoQuery.todoGetTodoList;
         } else {

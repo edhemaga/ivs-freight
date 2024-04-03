@@ -11,12 +11,12 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // models
+import { OwnerData } from '../../models/owner-data.model';
 import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 import {
     CardRows,
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
-import { OwnerBodyResponse } from '../../models/owner.model';
 
 // helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
@@ -30,7 +30,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // component
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
+import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
@@ -145,7 +145,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
         return item;
     }
 
-    public onCardActions(event: OwnerBodyResponse): void {
+    public onCardActions(event: OwnerData): void {
         if (event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,

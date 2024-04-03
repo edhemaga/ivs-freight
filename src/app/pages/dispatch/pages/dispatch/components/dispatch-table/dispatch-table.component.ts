@@ -30,9 +30,9 @@ import { DispatcherService } from '../../../../services/dispatcher.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // Modals
+import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-dispatch-table',

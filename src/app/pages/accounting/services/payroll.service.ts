@@ -27,24 +27,25 @@ export class PayrollStoreService {
 
     constructor(
         private payrollStore: PayrollStore,
-        private ps: PayrollService
+        private payrollService: PayrollService
     ) {}
 
     // This gives error changed on back check what it is
-    getPayrollOwnerOpenReport(id: number) {
-        // return this.ps.apiPayrollOwnerIdGet(id);
+    getPayrollOwnerOpenReport() {
+        // return this.payrollService.apiPayrollOwnerIdGet(id);
     }
 
     getPayrollCommisionDriverOpenReport(id: number) {
-        return this.ps.apiPayrollDriverCommissionGet(id);
+        return this.payrollService.apiPayrollDriverCommissionGet(id);
     }
     // This gives error as with getPayrollOwnerOpenReport
+    // eslint-disable-next-line no-unused-vars
     getPayrollMileageDriverOpenReport(id: number) {
-        // return this.ps.apiPayrollDriverMileageIdGet(id);
+        // return this.payrollService.apiPayrollDriverMileageIdGet(id);
     }
 
     getPayrollList() {
-        return this.ps.apiPayrollListGet();
+        return this.payrollService.apiPayrollListGet();
     }
 
     set payrollList(data) {

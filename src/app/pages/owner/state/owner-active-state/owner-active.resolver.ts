@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { OwnerTService } from '../../services/owner.service';
+import { OwnerService } from '../../services/owner.service';
 import { OwnerActiveState, OwnerActiveStore } from './owner-active.store';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { OwnerActiveState, OwnerActiveStore } from './owner-active.store';
 })
 export class OwnerActiveResolver implements Resolve<OwnerActiveState> {
     constructor(
-        private ownerService: OwnerTService,
+        private ownerService: OwnerService,
         private ownerStore: OwnerActiveStore,
         private tableService: TruckassistTableService
     ) {}
