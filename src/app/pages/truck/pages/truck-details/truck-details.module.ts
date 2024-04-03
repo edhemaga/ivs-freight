@@ -1,14 +1,16 @@
-import { TruckDetailsItemComponent } from './components/truck-details-item/truck-details-item.component';
-import { TruckDetailsComponent } from './truck-details.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+// modules
+import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
-import { TruckDetailsCardComponent } from './components/truck-details-card/truck-details-card.component';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+// components
+import { TruckDetailsItemComponent } from './components/truck-details-item/truck-details-item.component';
+import { TruckDetailsComponent } from './truck-details.component';
+import { TruckDetailsCardComponent } from './components/truck-details-card/truck-details-card.component';
 import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
 import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
@@ -21,7 +23,11 @@ import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-detai
 import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+
+// pipes
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
 @NgModule({
     declarations: [
         TruckDetailsComponent,

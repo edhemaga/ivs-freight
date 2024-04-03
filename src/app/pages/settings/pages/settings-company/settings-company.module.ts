@@ -1,9 +1,9 @@
-import { SettingsCompanyRoutes } from './settings-company.routing';
-
-// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+
+// Modules
+import { SettingsCompanyRoutes } from './settings-company.routing';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // Components

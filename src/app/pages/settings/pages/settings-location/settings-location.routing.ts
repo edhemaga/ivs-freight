@@ -1,4 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
+
+// components
 import { SettingsLocationComponent } from './settings-location.component';
 
 const routes: Routes = [{ path: '', component: SettingsLocationComponent }];

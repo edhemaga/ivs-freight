@@ -25,8 +25,8 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 //Components
 import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
 import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
-import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { ContactsModalComponent } from 'src/app/pages/contacts/pages/contacts-modal/contacts-modal.component';
 import { BrokerModalComponent } from 'src/app/pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from 'src/app/pages/customer/pages/shipper-modal/shipper-modal.component';
@@ -35,7 +35,7 @@ import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-mod
 import { TaskModalComponent } from 'src/app/core/components/modals/task-modal/task-modal.component';
 import { FuelPurchaseModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from 'src/app/core/components/modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { AccidentModalComponent } from 'src/app/core/components/modals/accident-modal/accident-modal.component';
+import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';

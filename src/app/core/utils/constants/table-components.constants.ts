@@ -19,8 +19,8 @@ import { SortTypes } from '../../model/fuel';
 // enums
 import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
 import { OwnerBackFilterQuery } from 'src/app/shared/models/owner-table.model';
-import { backFilterQueryInterface } from 'src/app/pages/trailer/models/trailer.model';
-import { FilterOptions } from 'src/app/pages/truck/models/truck-filter.model';
+import { TrailerBackFilterQueryInterface } from 'src/app/pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
+import { TruckFilter } from 'src/app/pages/truck/pages/truck-table/models/truck-filter.model';
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {
@@ -415,7 +415,7 @@ export class TableDropdownComponentConstants {
         },
     ];
 
-    static DRIVER_BACK_FILTER_QUERY: FilterOptions = {
+    static DRIVER_BACK_FILTER_QUERY: TruckFilter = {
         active: 1,
         pageIndex: 1,
         pageSize: 25,
@@ -426,7 +426,7 @@ export class TableDropdownComponentConstants {
         searchThree: undefined,
     };
 
-    static BACK_FILTER_QUERY: backFilterQueryInterface = {
+    static BACK_FILTER_QUERY: TrailerBackFilterQueryInterface = {
         active: 1,
         pageIndex: 1,
         pageSize: 25,

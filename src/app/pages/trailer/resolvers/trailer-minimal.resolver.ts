@@ -1,7 +1,7 @@
-import { TrailerTService } from '../services/trailer.service';
+import { TrailerService } from '../../../shared/services/trailer.service';
 import { Injectable } from '@angular/core';
 
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TrailersMinimalListStore } from '../state/trailer-minimal-list-state/trailer-minimal.store';
@@ -17,16 +17,14 @@ export class TrailerMinimalResolver
     pageSize: number = 25;
     count: number;
     constructor(
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         private trailerMinimalListStore: TrailersMinimalListStore
     ) {}
-    resolve(
-        route: ActivatedRouteSnapshot
-    ): Observable<TrailerMinimalListResponse> | Observable<any> {
+    resolve(): Observable<TrailerMinimalListResponse> | Observable<any> {
         return this.trailerService
             .getTrailersMinimalList(this.pageIndex, this.pageSize, this.count)
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     return of('No trailer data for...');
                 }),
                 tap((trailerMinimal: TrailerMinimalListResponse) => {

@@ -1,9 +1,16 @@
-import { CompanyOfficeListResponse } from 'appcoretruckassist';
-import { CompanyTOfficeService } from '../pages/custom-agreement/service/company-office.service';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+//core
+import { CompanyOfficeListResponse } from 'appcoretruckassist';
+
+//Service
+import { CompanyOfficeService } from '../../../shared/services/company-office.service';
+
+//Store
 import {
     OfficeState,
     OfficeStore,
@@ -12,12 +19,12 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class cOfficeResolver implements Resolve<OfficeState> {
+export class CompanyOfficeResolver implements Resolve<OfficeState> {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;
     constructor(
-        private officeService: CompanyTOfficeService,
+        private officeService: CompanyOfficeService,
         private officeStore: OfficeStore
     ) {}
     resolve(): Observable<OfficeState | boolean> {

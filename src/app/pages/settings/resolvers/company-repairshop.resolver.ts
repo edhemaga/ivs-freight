@@ -1,19 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// state
 import { CompanyStore } from '../state/company-state/company-settings.store';
-import { CompanyRepairShopService } from '../pages/settings-location/components/settings-repair-shop/services/company-repairshop.service';
 import {
     CompanyRepairShopState,
     CompanyRepairShopStore,
 } from '../state/setting-reapir-shop-state/company-repairshop.store';
+
+// services
+import { CompanyRepairShopService } from '../services/company-repairshop.service';
+
+//core
 import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class companyRepairShopResolver
+export class CompanyRepairShopResolver
     implements Resolve<CompanyRepairShopState>
 {
     pageIndex: number = 1;

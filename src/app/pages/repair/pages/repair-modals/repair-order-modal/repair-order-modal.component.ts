@@ -70,8 +70,8 @@ import {
 import { RepairOrder } from './utils/constants/repair-order.constant';
 
 // components
-import { TruckModalComponent } from '../../../../../core/components/modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../../../../core/components/modals/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '../../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { AppTooltipComponent } from '../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';

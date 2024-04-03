@@ -1,16 +1,26 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
-import { CompanyRepairShopService } from './services/company-repairshop.service';
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { RepairShopResponse } from 'appcoretruckassist';
 import { RepairService } from 'src/app/shared/services/repair.service';
+import { CompanyRepairShopService } from '../../../../services/company-repairshop.service';
+
+// pipes
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+
+// core
+import { RepairShopResponse } from 'appcoretruckassist';
+
+// utils
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { ActivatedRoute } from '@angular/router';
+
 @Component({
     selector: 'app-settings-repair-shop',
     templateUrl: './settings-repair-shop.component.html',

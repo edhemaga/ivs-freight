@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+
 import { QueryEntity } from '@datorama/akita';
+
+// state
 import { OfficeState, OfficeStore } from './company-office.store';
 
 @Injectable({ providedIn: 'root' })

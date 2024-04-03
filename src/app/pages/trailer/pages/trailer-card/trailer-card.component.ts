@@ -1,4 +1,3 @@
-import { Subject, takeUntil } from 'rxjs';
 import {
     Component,
     Input,
@@ -8,18 +7,20 @@ import {
     SimpleChanges,
 } from '@angular/core';
 
-// models
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { Subject, takeUntil } from 'rxjs';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// models
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
+import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
 
 @Component({
     selector: 'app-trailer-card',

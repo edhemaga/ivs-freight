@@ -41,7 +41,7 @@ import { TaChartComponent } from 'src/app/core/components/standalone-components/
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 //Enums
-import { SETTINGS_ARROW_ACTIONS } from 'src/app/pages/settings/enums/settings.enum';
+import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 import { BrokerTabStringEnum } from '../../enums/broker-tab-string.enum';
 
 @Component({
@@ -51,7 +51,9 @@ import { BrokerTabStringEnum } from '../../enums/broker-tab-string.enum';
     styleUrls: ['./broker-details-card.component.scss'],
     providers: [formatDatePipe],
 })
-export class BrokerDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
+export class BrokerDetailsCardComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @ViewChild('mileageChart') public mileageChart: TaChartComponent;
     @ViewChild('paymentChart') public paymentChart: TaChartComponent;
     @ViewChild('invoiceChart') public invoiceChart: TaChartComponent;
@@ -216,7 +218,7 @@ export class BrokerDetailsCardComponent implements OnInit, OnChanges, OnDestroy 
         );
 
         switch (action) {
-            case SETTINGS_ARROW_ACTIONS.PREVIOUS:
+            case ArrowActionsEnum.PREVIOUS:
                 currentIndex = --currentIndex;
 
                 if (currentIndex != -1) {
@@ -229,7 +231,7 @@ export class BrokerDetailsCardComponent implements OnInit, OnChanges, OnDestroy 
                     this.brokerIndex = currentIndex;
                 }
                 break;
-            case SETTINGS_ARROW_ACTIONS.NEXT:
+            case ArrowActionsEnum.NEXT:
                 currentIndex = ++currentIndex;
 
                 if (

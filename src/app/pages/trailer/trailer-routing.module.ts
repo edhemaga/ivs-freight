@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TrailerItemResolver } from './resolvers/trailer.items.resolver';
+
+// resolvers
+import { TrailerItemsResolver } from './resolvers/trailer-items.resolver';
 import { TrailerMinimalResolver } from './resolvers/trailer-minimal.resolver';
+
+// components
 import { TrailerTableComponent } from './pages/trailer-table/trailer-table.component';
 
 const routes: Routes = [
@@ -17,7 +21,7 @@ const routes: Routes = [
                 (m) => m.TrailerDetailsModule
             ),
         resolve: {
-            trailer: TrailerItemResolver,
+            trailer: TrailerItemsResolver,
             trailerMinimal: TrailerMinimalResolver,
         },
         data: { title: 'Trailer detail' },
