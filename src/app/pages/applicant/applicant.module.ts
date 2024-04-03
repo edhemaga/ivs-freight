@@ -12,7 +12,7 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 // pipes
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
 // components
 import { ApplicantComponent } from './pages/applicant/applicant.component';

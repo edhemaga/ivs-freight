@@ -8,7 +8,7 @@ import {
 import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 import {
     CardRows,
     DataResult,
@@ -17,7 +17,7 @@ import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from 'src/app/core/components/shared/model/tableBody';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -26,7 +26,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     selector: 'app-account-card',
     templateUrl: './account-card.component.html',
     styleUrls: ['./account-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class AccountCardComponent implements OnInit, OnChanges {
     @Input() viewData: CardDetails[];
@@ -49,7 +49,7 @@ export class AccountCardComponent implements OnInit, OnChanges {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit(): void {
@@ -66,13 +66,13 @@ export class AccountCardComponent implements OnInit, OnChanges {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
@@ -87,10 +87,7 @@ export class AccountCardComponent implements OnInit, OnChanges {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }

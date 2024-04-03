@@ -6,16 +6,19 @@ import {
     SimpleChanges,
     OnChanges,
 } from '@angular/core';
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // pipes
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { FormatNumberMiPipe } from 'src/app/core/pipes/formatMiles.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { FormatMilesPipe } from 'src/app/shared/pipes/format-miles.pipe';
 
 // models
-import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -25,13 +28,13 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
 import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
-    providers: [FormatNumberMiPipe, formatCurrency, ValueByStringPath],
+    providers: [FormatMilesPipe, FormatCurrency, CardHelper],
 })
 export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data
@@ -64,7 +67,7 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
         private router: Router,
-        private valueByStringPath: ValueByStringPath,
+        private cardHelper: CardHelper,
         private loadQuery: LoadQuery
     ) {}
 
@@ -87,19 +90,19 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -132,10 +135,7 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
@@ -146,15 +146,12 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
         endpoint: string,
         value: string
     ): boolean {
-        return (
-            this.valueByStringPath.getValueByStringPath(card, endpoint) ===
-            value
-        );
+        return this.cardHelper.getValueByStringPath(card, endpoint) === value;
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

@@ -6,7 +6,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Pipe
-import { MaskNumberPipe } from 'src/app/core/pipes/maskNumber.pipe';
+import { MaskNumberPipe } from 'src/app/pages/owner/pages/owner-card/pipes/mask-number.pipe';
 
 // Components
 import { OwnerTableComponent } from './pages/owner-table/owner-table.component';

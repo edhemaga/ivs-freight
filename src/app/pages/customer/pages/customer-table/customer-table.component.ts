@@ -52,9 +52,9 @@ import {
 import {
     CardDetails,
     DropdownItem,
-    MappedShipperBroker,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
+import { MappedShipperBroker } from './models/mapped-shipper-broker.model';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
@@ -80,7 +80,7 @@ import {
 } from 'src/app/core/utils/methods.globals';
 
 // Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -88,17 +88,9 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
-//Filters
-import {
-    calculateDistanceBetweenTwoCitysByCoordinates,
-    checkSpecialFilterArray,
-} from 'src/app/core/helpers/dataFilter';
-
-//helpers
-import {
-    getDropdownBrokerContent,
-    getDropdownShipperContent,
-} from 'src/app/core/helpers/dropdown-content';
+// helpers
+import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 @Component({
     selector: 'app-customer-table',
@@ -107,7 +99,7 @@ import {
         './customer-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class CustomerTableComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -174,7 +166,7 @@ export class CustomerTableComponent
         private shipperQuery: ShipperQuery,
 
         // Pipes
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
 
         // Router
@@ -334,7 +326,7 @@ export class CustomerTableComponent
                             this.viewData = this.customerTableData.filter(
                                 (address) => {
                                     const distance =
-                                        calculateDistanceBetweenTwoCitysByCoordinates(
+                                        DataFilterHelper.calculateDistanceBetweenTwoCitysByCoordinates(
                                             res.queryParams.latValue,
                                             res.queryParams.longValue,
                                             address.latitude,
@@ -692,15 +684,15 @@ export class CustomerTableComponent
                 gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
                 stateName: ConstantStringTableComponentsEnum.BROKER_3,
                 tableConfiguration: ConstantStringTableComponentsEnum.BROKER,
-                bannedArray: checkSpecialFilterArray(
+                bannedArray: DataFilterHelper.checkSpecialFilterArray(
                     brokerActiveData,
                     ConstantStringTableComponentsEnum.BAN
                 ),
-                dnuArray: checkSpecialFilterArray(
+                dnuArray: DataFilterHelper.checkSpecialFilterArray(
                     brokerActiveData,
                     ConstantStringTableComponentsEnum.DNU
                 ),
-                closedArray: checkSpecialFilterArray(
+                closedArray: DataFilterHelper.checkSpecialFilterArray(
                     brokerActiveData,
                     ConstantStringTableComponentsEnum.STATUS
                 ),
@@ -719,7 +711,7 @@ export class CustomerTableComponent
                 moneyCountSelected: false,
                 extended: false,
                 isCustomer: true,
-                closedArray: checkSpecialFilterArray(
+                closedArray: DataFilterHelper.checkSpecialFilterArray(
                     shipperActiveData,
                     ConstantStringTableComponentsEnum.STATUS
                 ),
@@ -950,9 +942,7 @@ export class CustomerTableComponent
                       ConstantStringTableComponentsEnum.DATE_FORMAT
                   )
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: ConstantStringTableComponentsEnum.NA, // data.updatedAt
-            //? this.datePipe.transform(data.updatedAt, ConstantStringTableComponentsEnum.DATE_FORMAT)
-            //: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+            tableEdited: ConstantStringTableComponentsEnum.NA,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownShipperContent(data),
@@ -961,11 +951,11 @@ export class CustomerTableComponent
     }
 
     private getDropdownBrokerContent(data): DropdownItem[] {
-        return getDropdownBrokerContent(data);
+        return DropdownContentHelper.getDropdownBrokerContent(data);
     }
 
     private getDropdownShipperContent(data): DropdownItem[] {
-        return getDropdownShipperContent(data);
+        return DropdownContentHelper.getDropdownShipperContent(data);
     }
 
     // Update Broker And Shipper Count
@@ -1184,8 +1174,6 @@ export class CustomerTableComponent
         type?: string;
         subType?: string;
     }): void {
-        let businessName: string =
-            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {

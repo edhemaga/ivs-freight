@@ -22,7 +22,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import {
     CardDetails,
     SendDataCard,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import {
     CardRows,
     DataResult,
@@ -35,14 +35,14 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Helpers
-import { CardArrayHelper } from 'src/app/core/helpers/card-array-helper';
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardArrayHelper } from 'src/app/shared/utils/helpers/card-array-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-repair-card',
     templateUrl: './repair-card.component.html',
     styleUrls: ['./repair-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class RepairCardComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -86,7 +86,7 @@ export class RepairCardComponent
         private tableService: TruckassistTableService,
         private ngZone: NgZone,
         private renderer: Renderer2,
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -96,7 +96,7 @@ export class RepairCardComponent
     ngOnChanges(cardChanges: SimpleChanges): void {
         setTimeout(() => {
             this.itemsContainers.forEach((containerRef: ElementRef) => {
-                this.valueByStringPath.calculateItemsToFit(
+                this.cardHelper.calculateItemsToFit(
                     containerRef.nativeElement,
                     this.renderer
                 );
@@ -124,19 +124,19 @@ export class RepairCardComponent
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -172,10 +172,7 @@ export class RepairCardComponent
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
@@ -228,7 +225,7 @@ export class RepairCardComponent
                     if (width) {
                         this.itemsContainers.forEach(
                             (containerRef: ElementRef) => {
-                                this.valueByStringPath.calculateItemsToFit(
+                                this.cardHelper.calculateItemsToFit(
                                     containerRef.nativeElement,
                                     this.renderer
                                 );
@@ -252,7 +249,7 @@ export class RepairCardComponent
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public trackCard(item: number): number {

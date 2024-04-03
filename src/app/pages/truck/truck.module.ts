@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TruckTableComponent } from './pages/truck-table/truck-table.component';
 import { TruckCardComponent } from './pages/truck-card/truck-card.component';
 
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
@@ -39,7 +39,7 @@ import { ProgresBarComponent } from 'src/app/core/components/standalone-componen
         ProgresBarComponent,
 
         //pipes
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
         DatePipe,
     ],
 })

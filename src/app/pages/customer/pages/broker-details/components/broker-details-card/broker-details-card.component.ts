@@ -38,7 +38,7 @@ import { BrokerConstants } from '../../utils/constants/broker.constants';
 import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 //Pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 //Enums
 import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
@@ -49,7 +49,7 @@ import { BrokerTabEnum } from '../../enums/broker-enum';
     templateUrl: './broker-details-card.component.html',
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./broker-details-card.component.scss'],
-    providers: [formatDatePipe],
+    providers: [FormatDatePipe],
 })
 export class BrokerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy

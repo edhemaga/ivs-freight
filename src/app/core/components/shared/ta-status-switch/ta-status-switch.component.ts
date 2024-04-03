@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
-import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
+import { StatusPipe } from '../../../../shared/pipes/status-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -26,9 +26,9 @@ export interface IDispatchModel {
     templateUrl: './ta-status-switch.component.html',
     styleUrls: ['./ta-status-switch.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [StatusPipePipe],
+    providers: [StatusPipe],
     standalone: true,
-    imports: [CommonModule, FormsModule, StatusPipePipe, NgbModule],
+    imports: [CommonModule, FormsModule, StatusPipe, NgbModule],
     animations: [
         trigger('shadowAnimation', [
             transition(':enter', [
@@ -70,7 +70,6 @@ export class TaStatusSwitchComponent implements OnInit {
     @Output() changeStatus: EventEmitter<any> = new EventEmitter();
 
     constructor(
-        private statusPipe: StatusPipePipe,
         private cdr: ChangeDetectorRef,
         private dispatchService: DispatchService
     ) {}

@@ -31,7 +31,7 @@ import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scrol
 import moment from 'moment';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
 import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,
@@ -43,14 +43,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
 import { InputTypePipe } from './input-type.pipe';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
+import { TaSvgPipe } from '../../../../shared/pipes/ta-svg.pipe';
 import { InputErrorPipe } from './input-error.pipe';
 import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
+import { HoverSvgDirective } from '../../../../shared/directives/hover-svg.directive';
 
 @Component({
     selector: 'app-ta-input',
@@ -59,7 +59,7 @@ import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
     providers: [
         NgbDropdownConfig,
         CalendarScrollService,
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
         InputTypePipe,
     ],
     encapsulation: ViewEncapsulation.None,
@@ -233,7 +233,7 @@ export class TaInputComponent
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
         private calendarService: CalendarScrollService,
-        private thousandSeparatorPipe: TaThousandSeparatorPipe,
+        private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
         public imageBase64Service: ImageBase64Service,

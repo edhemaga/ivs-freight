@@ -116,9 +116,6 @@ export class WebsiteAuthService {
     public accountLogin(data: SignInCommand): Observable<SignInResponse> {
         return this.accountService.apiAccountLoginPost(data).pipe(
             tap((user: SignInResponse) => {
-                // ---- PRODUCTION MODE ----
-                // this.authStore.set({ 1: user });
-                // ---- DEVELOP MODE ----
                 if (user.companies.length > 1) {
                     this.moreThenOneCompany = user;
 
@@ -143,11 +140,9 @@ export class WebsiteAuthService {
     public accountLogout(isEmailRoute: boolean = false): void {
         this.router.navigate([WebsiteStringEnum.WEBSITE]);
 
-        // ---- PRODUCTION MODE ----
         this.persistStorage.clearStore();
         this.persistStorage.destroy();
 
-        // ---- DEVELOP MODE ----
         localStorage.removeItem('user');
 
         if (!isEmailRoute) {

@@ -9,7 +9,7 @@ import { ToDoRoutingModule } from './to-do-routing.module';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
 import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
@@ -42,7 +42,7 @@ import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.c
         TaUserReviewComponent,
 
         //Pipes
-        formatDatePipe,
+        FormatDatePipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

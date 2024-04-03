@@ -22,7 +22,7 @@ import { AppTooltipComponent } from 'src/app/core/components/standalone-componen
 import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
 
 // Pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [RepairTableComponent, RepairCardComponent],
@@ -48,7 +48,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         AppTooltipComponent,
 
         // Pipes
-        formatDatePipe,
+        FormatDatePipe,
     ],
 })
 export class RepairModule {}

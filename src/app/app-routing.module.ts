@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// guards
 import { AuthGuard } from './core/guards/authentication.guard';
+import { ApplicantGuard } from './core/guards/applicant.guard';
+import { CompanySettingsGuard } from './core/guards/company-settings.guard';
 
-import { ApplicantWelcomeScreenComponent } from './pages/applicant/pages/applicant/components/applicant-welcome-screen/applicant-welcome-screen.component';
-import { ApplicantEndScreenComponent } from './pages/applicant/pages/applicant/components/applicant-end-screen/applicant-end-screen.component';
-import { ApplicantSphFormThankYouComponent } from './pages/applicant/pages/applicant-sph/pages/applicant-sph-form/components/applicant-sph-form-thank-you/applicant-sph-form-thank-you.component';
-
-import { RegisterUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
-import { RegisterUserHaveAccountHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/register-user-have-account-helper/register-user-have-account-helper.component';
-import { VerifyUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
-import { RegisterCompanyHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
-import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
+// resolvers
 import { BrokerResolver } from './pages/customer/resolvers/broker.resolver';
 import { ShipperResolver } from './pages/customer/resolvers/shipper.resolver';
 import { ShopResolver } from './pages/repair/resolvers/shop.resolver';
@@ -44,12 +40,20 @@ import { ApplicantTableResolver } from './pages/driver/state/applicant-state/app
 import { ApplicantSphFormResolver } from './pages/applicant/pages/applicant-sph/resolvers/applicant-sph-form.resolver';
 import { MilesResolver } from './pages/miles/resolvers/miles.resolver';
 import { DispatcherResolver } from './pages/dispatch/resolvers/dispatcher.resolver';
-import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
-import { ApplicantGuard } from './core/guards/applicant.guard';
 import { RoutingStateResolver } from './pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from './pages/telematic/resolvers/telematic-state.resolver';
 import { DashboardResolver } from './pages/dashboard/resolvers/dashboard.resolver';
-import { CompanySettingsGuard } from './core/guards/company-settings.guard';
+
+// components
+import { ApplicantWelcomeScreenComponent } from './pages/applicant/pages/applicant/components/applicant-welcome-screen/applicant-welcome-screen.component';
+import { ApplicantEndScreenComponent } from './pages/applicant/pages/applicant/components/applicant-end-screen/applicant-end-screen.component';
+import { ApplicantSphFormThankYouComponent } from './pages/applicant/pages/applicant-sph/pages/applicant-sph-form/components/applicant-sph-form-thank-you/applicant-sph-form-thank-you.component';
+import { RegisterUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
+import { RegisterUserHaveAccountHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/register-user-have-account-helper/register-user-have-account-helper.component';
+import { VerifyUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
+import { RegisterCompanyHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
+import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
+import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 
 const routes: Routes = [
     /* WEBSITE */

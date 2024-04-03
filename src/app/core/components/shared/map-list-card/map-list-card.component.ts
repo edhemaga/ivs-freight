@@ -12,22 +12,21 @@ import {
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
     selector: 'app-map-list-card',
     templateUrl: './map-list-card.component.html',
     styleUrls: ['./map-list-card.component.scss'],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
     standalone: true,
     imports: [
         // Modules
@@ -41,8 +40,8 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
         ProfileImagesComponent,
 
         // Pipes
-        formatDatePipe,
-        TaThousandSeparatorPipe,
+        FormatDatePipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {

@@ -25,8 +25,8 @@ import { TaChartComponent } from 'src/app/core/components/standalone-components/
 import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 @NgModule({
     declarations: [
@@ -40,7 +40,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
         TruckDetailsRoutes,
         SharedModule,
         ReactiveFormsModule,
-        formatDatePipe,
+        FormatDatePipe,
         ProfileImagesComponent,
         TaCopyComponent,
         TaCustomCardComponent,
@@ -49,7 +49,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
         TaReCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
-        formatDatePipe,
+        FormatDatePipe,
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
@@ -57,7 +57,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
         AngularSvgIconModule,
 
         // PIPES
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -57,7 +57,7 @@ import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { ActiveItemsPipe } from '../../../../pipes/activeItems.pipe';
+import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
@@ -558,18 +558,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         ) {
             return;
         }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
-        // -------------------------- DEVELOP MODE --------------------------------
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(

@@ -23,9 +23,9 @@ import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-detai
 import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
 
 // Pipes
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { FormatEinPipe } from 'src/app/shared/pipes/format-ein.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [
@@ -55,9 +55,9 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         DetailsDropdownComponent,
 
         // Pipes
-        formatCurrency,
-        formatEinPipe,
-        formatDatePipe,
+        FormatCurrency,
+        FormatEinPipe,
+        FormatDatePipe,
     ],
 })
 export class BrokerDetailsModule {}
