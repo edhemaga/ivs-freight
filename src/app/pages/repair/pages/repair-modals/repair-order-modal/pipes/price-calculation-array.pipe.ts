@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { convertNumberWithCurrencyFormatterToBackend } from '../../../../../utils/methods.calculations';
+import { convertNumberWithCurrencyFormatterToBackend } from '../../../../../../core/utils/methods.calculations';
 
 @Pipe({
     name: 'priceCalculationArray',
