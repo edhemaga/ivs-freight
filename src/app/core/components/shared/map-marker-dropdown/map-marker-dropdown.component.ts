@@ -19,7 +19,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
-import { TaCounterComponent } from '../ta-counter/ta-counter.component';
+import { TaCounterComponent } from '../../../../shared/components/ta-counter/ta-counter.component';
 import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.component';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -50,7 +50,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class MapMarkerDropdownComponent implements OnInit {
     private destroy$ = new Subject<void>();
-    
+
     @Input() title: string = '';
     @Input() item: any = {};
     @Input() type: string = '';
@@ -62,7 +62,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
     @Output() assignUnitToDevice: EventEmitter<any> = new EventEmitter();
-    @ViewChild("detailsDropdown") detailsDropdown: any;
+    @ViewChild('detailsDropdown') detailsDropdown: any;
 
     public dropdownActions: any = [];
 
@@ -97,7 +97,11 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.markerUpdateChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                if ( (item.id != null && (item.id == this.item.id)) || (item.deviceId != null && (item.deviceId == this.item.deviceId)) ) {
+                if (
+                    (item.id != null && item.id == this.item.id) ||
+                    (item.deviceId != null &&
+                        item.deviceId == this.item.deviceId)
+                ) {
                     this.item = item;
                     this.getDropdownActions();
                     this.ref.detectChanges();
@@ -107,7 +111,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                if (id != this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
@@ -116,7 +120,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                if (id != this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }

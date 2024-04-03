@@ -106,7 +106,12 @@
 
                                         <div
                                             class="bottom-item-body d-flex align-items-center"
-                                            [ngStyle]="{ marginTop: row.title === 'Fleet' ? '3px' : 0 }"
+                                            [ngStyle]="{
+                                                marginTop:
+                                                    row.title === 'Fleet'
+                                                        ? '3px'
+                                                        : 0
+                                            }"
                                         >
                                             <ng-container
                                                 *ngIf="row.title === 'Fleet'"
@@ -201,10 +206,10 @@
                     <div class="top-side">
                         <!-- Open dropdown element-->
 
-                        <app-table-card-dropdown-actions
+                        <app-ta-table-card-dropdown-actions
                             [card]="card"
                             (bodyActions)="onCardActions($event)"
-                        ></app-table-card-dropdown-actions>
+                        ></app-ta-table-card-dropdown-actions>
 
                         <!-- Note element -->
 

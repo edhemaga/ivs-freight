@@ -6,10 +6,10 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ITaInput } from '../../../shared/ta-input/ta-input.config';
+import { ITaInput } from '../../../../../shared/components/ta-input/ta-input.config';
 import { PayrollDeductionService } from 'src/app/pages/accounting/services/payroll-deduction.service';
 import { FormService } from '../../../../services/form/form.service';
 import { PayrollDeductionModalResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionModalResponse';
@@ -23,11 +23,11 @@ import {
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-payroll-deduction-modal',

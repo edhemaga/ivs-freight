@@ -1,0 +1,571 @@
+<div class="toolbar-container">
+    <!-- LIST NAME -->
+    <div
+        class="list-name"
+        *ngIf="listName && !options.toolbarActions.hideListName"
+    >
+        {{ listName }}
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-wrapper">
+        <div
+            *ngFor="let data of tableData"
+            class="tab-container"
+            [ngClass]="{
+                'tab-inactive': selectedTab !== data.field,
+                'tab-active': selectedTab === data.field
+            }"
+            (click)="onSelectTab(data)"
+        >
+            <div class="tab">
+                <div class="data-count">{{ data.length }}</div>
+                <div class="tab-title">{{ data.title }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW MODE SELECT -->
+    <div
+        class="view-mode-container"
+        *ngIf="!options.toolbarActions.hideViewMode"
+    >
+        <div
+            class="mode"
+            [ngClass]="{
+                'mode-active': options.toolbarActions.viewModeActive == 'List'
+            }"
+            (click)="changeModeView('List')"
+        >
+            List
+        </div>
+        <div
+            class="mode"
+            [ngClass]="{
+                'mode-active': options.toolbarActions.viewModeActive == 'Card'
+            }"
+            (click)="changeModeView('Card')"
+        >
+            Card
+        </div>
+        <div
+            class="mode"
+            [ngClass]="{
+                'mode-active': options.toolbarActions.viewModeActive == 'Map'
+            }"
+            (click)="changeModeView('Map')"
+            *ngIf="options.toolbarActions.showMapView"
+        >
+            Map
+        </div>
+    </div>
+
+    <!-- BORDER -->
+    <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
+        <div class="border"></div>
+    </div>
+
+    <!-- TRUCK FILTER -->
+    <div
+        class="location-filter-container"
+        [ngClass]="{ 'active-option': truckFilterActive }"
+        *ngIf="!options.toolbarActions.hideTruckFilter"
+    >
+        <app-ta-filter
+            [type]="'truckTypeFilter'"
+            [filterTitle]="'Truck Type Legend'"
+            [defFilterHolder]="true"
+            [icon]="'truck'"
+            [leftSideIcon]="true"
+            [largeLeftIcon]="true"
+            [legendView]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-ta-filter>
+    </div>
+
+    <!-- TRAILER FILTER -->
+    <div
+        class="location-filter-container"
+        [ngClass]="{ 'active-option': trailerFilterActive }"
+        *ngIf="!options.toolbarActions.hideTrailerFilter"
+    >
+        <app-ta-filter
+            [type]="'trailerTypeFilter'"
+            [filterTitle]="'Trailer Type Legend'"
+            [defFilterHolder]="true"
+            [icon]="'trailer'"
+            [leftSideIcon]="true"
+            [largeLeftIcon]="true"
+            [legendView]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-ta-filter>
+    </div>
+
+    <!-- DRIVER FILTER -->
+    <div
+        class="location-filter-container"
+        [ngClass]="{ 'active-option': driverFilterActive }"
+        *ngIf="!options.toolbarActions.hideDriverFilter"
+    >
+        <app-ta-filter
+            [type]="'driverFilter'"
+            [filterTitle]="'Driver'"
+            [defFilterHolder]="true"
+            [icon]="'ic_steering-wheel'"
+            [leftSideIcon]="true"
+            [largeLeftIcon]="true"
+            [legendView]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-ta-filter>
+    </div>
+
+    <!-- BORDER -->
+    <div
+        class="border-container"
+        *ngIf="!options.toolbarActions.hideLocationFilter"
+    >
+        <div class="border"></div>
+    </div>
+
+    <!-- LOCATION FILTER -->
+    <div
+        class="location-filter-container"
+        *ngIf="!options.toolbarActions.hideLocationFilter"
+    >
+        <app-ta-filter
+            [type]="'locationFilter'"
+            [icon]="'address'"
+            [filterTitle]="'Location Filter'"
+            [locationDefType]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-ta-filter>
+    </div>
+
+    <!-- TABLE ACTIONS -->
+    <div class="table-actions">
+        <div class="actions-container">
+            <!-- Route Stop Picker -->
+            <div
+                *ngIf="!options.toolbarActions.hideStopPicker"
+                class="action-div"
+                (click)="onToolBarAction('open-stop-picker')"
+                [ngClass]="{
+                    'action-active': stopPickerActive,
+                    disabled: activeTableData?.length < 1
+                }"
+            >
+                <div
+                    *ngIf="activeTableData?.length < 1"
+                    class="tooltip-hold"
+                ></div>
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+                    [src]="'assets/svg/common/routing/ic_route_stop_picker.svg'"
+                    class="action-svg"
+                ></svg-icon>
+            </div>
+
+            <!-- Route Compare -->
+            <div
+                *ngIf="!options.toolbarActions.hideRouteCompare"
+                class="action-div"
+                (click)="onToolBarAction('open-route-compare')"
+                [ngClass]="{
+                    disabled: activeTableData?.length < 2
+                }"
+            >
+                <div
+                    *ngIf="activeTableData?.length < 2"
+                    class="tooltip-hold"
+                ></div>
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+                    [src]="'assets/svg/common/routing/ic_route_compare.svg'"
+                    class="action-svg"
+                ></svg-icon>
+            </div>
+
+            <!-- Route Keyboard Controls -->
+            <div
+                *ngIf="!options.toolbarActions.hideKeyboardControls"
+                class="action-div"
+                #op4="ngbPopover"
+                (click)="onShowKeyboardShortcutsPopover(op4)"
+                [autoClose]="true"
+                [ngbPopover]="keyboardShortcutsPopover"
+                [placement]="'bottom-right'"
+                [autoClose]="'outside'"
+                popoverClass="keyboard-shortcuts-popover"
+                [ngClass]="{ 'active-options-maps': keyboardPopupOpen }"
+                triggers="manual"
+                (hidden)="keyboardPopupOpen = false"
+            >
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+                    [src]="'assets/svg/common/routing/ic_route_keyboard.svg'"
+                    class="action-svg"
+                ></svg-icon>
+            </div>
+
+            <!-- Route Info -->
+            <div
+                *ngIf="!options.toolbarActions.hideInfo"
+                class="action-div"
+                [ngClass]="{ 'action-active': infoActive }"
+                (click)="onToolBarAction('open-route-info')"
+            >
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+                    [src]="'assets/svg/common/routing/ic_route_info.svg'"
+                    class="action-svg"
+                ></svg-icon>
+            </div>
+
+            <!-- OPEN MAP LAYERS BUTTON -->
+            <div
+                *ngIf="!options.toolbarActions.hideMapLayers"
+                class="action-div general-pm-open-container map-layers-container"
+                #op3="ngbPopover"
+                (click)="onShowLayersPopover(op3)"
+                [autoClose]="true"
+                [ngbPopover]="layersPopover"
+                [placement]="'bottom-right'"
+                [autoClose]="'outside'"
+                popoverClass="table-dropdown-popover layers-popover"
+                [ngClass]="{
+                    'active-options-maps': layersPopupOpen,
+                    'action-active':
+                        isTollRoadsActive ||
+                        isTimeZoneActive ||
+                        isDopplerOn ||
+                        trafficLayerShow
+                }"
+                triggers="manual"
+                (hidden)="layersPopupOpen = false"
+            >
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="'assets/svg/common/routing/ic_route_layers.svg'"
+                    class="action-svg"
+                ></svg-icon>
+            </div>
+
+            <!-- BORDER -->
+            <div
+                *ngIf="!options.toolbarActions.hideAddRouteButton"
+                class="border-container"
+            >
+                <div class="border-line"></div>
+            </div>
+
+            <!-- Route Settings -->
+            <div
+                *ngIf="!options.toolbarActions.hideRouteSettings"
+                class="action-div"
+                (click)="onShowMapSettings()"
+                [ngClass]="{ 'active-options-maps': mapSettingsPopupOpen }"
+            >
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+                    [src]="'assets/svg/common/routing/ic_route_settings.svg'"
+                    class="action-svg"
+                ></svg-icon>
+            </div>
+
+            <!-- BORDER -->
+            <div
+                class="border-container"
+                [ngStyle]="{ width: '2px' }"
+                *ngIf="
+                    !options.toolbarActions.hideAddRouteButton &&
+                    activeTableData?.length == 8
+                "
+            >
+                <div class="border-line"></div>
+            </div>
+
+            <!-- Dummy action -->
+            <div
+                *ngIf="!options.toolbarActions.hideAddRouteButton"
+                class="action-div dummy-div"
+            ></div>
+        </div>
+    </div>
+
+    <div
+        *ngIf="!options.toolbarActions.hideUnassignedDevicesButton"
+        class="tab-wrapper mg-left-4"
+    >
+        <div
+            class="tab-container"
+            [ngClass]="{
+                'tab-inactive': !unassignedDevicesActive,
+                'tab-active': unassignedDevicesActive
+            }"
+            (click)="showHideUnassignedDevices()"
+        >
+            <div class="tab">
+                <div class="data-count">{{ unassignedDevices?.length }}</div>
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="'assets/svg/common/telematics/ic_unlink.svg'"
+                ></svg-icon>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPEN MODAL BUTTON -->
+    <div
+        *ngIf="!options.toolbarActions.hideAddRouteButton"
+        class="modal-open-container"
+        (click)="onShowRoutePopover()"
+        [ngClass]="{
+            'active-options-maps': addRoutePopupOpen,
+            disabled: activeTableData?.length == 8
+        }"
+    >
+        <div
+            *ngIf="activeTableData?.length == 8"
+            class="tooltip-hold"
+            [tooltipBackground]="'#424242'"
+            ngbTooltip
+            [mainTooltip]="'8 Route Limit'"
+            position="bottom-right"
+        ></div>
+        <div class="svg-holder">
+            <svg-icon
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+            ></svg-icon>
+        </div>
+    </div>
+
+    <div
+        *ngIf="!options.toolbarActions.hideCartButton"
+        class="modal-open-container cart-button"
+    >
+        <div class="svg-holder">
+            <svg-icon
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="'assets/svg/common/telematics/ic_shopping-cart.svg'"
+            ></svg-icon>
+        </div>
+    </div>
+</div>
+
+<ng-template #layersPopover>
+    <div class="table-dropdown">
+        <div
+            (click)="onToolBarAction('toggle-toll-roads')"
+            class="table-dropdown-content"
+            [ngClass]="{ 'active-option': isTollRoadsActive }"
+        >
+            <svg-icon
+                class="action-svg"
+                src="assets/svg/common/routing/ic_route_toll_roads.svg"
+                [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+            ></svg-icon>
+            <div class="dropdown-content-text">Toll road</div>
+        </div>
+        <div
+            (click)="onToolBarAction('toggle-time-zones')"
+            class="table-dropdown-content"
+            [ngClass]="{ 'active-option': isTimeZoneActive }"
+        >
+            <svg-icon
+                class="action-svg"
+                src="assets/svg/common/routing/ic_route_timezones.svg"
+                [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+            ></svg-icon>
+            <div class="dropdown-content-text">Time zones</div>
+        </div>
+        <div
+            (click)="onToolBarAction('toggle-radar')"
+            class="table-dropdown-content"
+            [ngClass]="{ 'active-option': isDopplerOn }"
+        >
+            <svg-icon
+                class="action-svg"
+                src="assets/svg/common/routing/ic_route_radar.svg"
+                [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+            ></svg-icon>
+            <div class="dropdown-content-text">Doppler Radar</div>
+        </div>
+        <div
+            (click)="onToolBarAction('toggle-traffic')"
+            class="table-dropdown-content"
+            [ngClass]="{ 'active-option': trafficLayerShow }"
+        >
+            <svg-icon
+                class="action-svg"
+                src="assets/svg/common/routing/ic_route_traffic.svg"
+                [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+            ></svg-icon>
+            <div class="dropdown-content-text">Traffic</div>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Legends -->
+<div class="legend-container" *ngIf="!layersPopup?.isOpen()">
+    <div class="doppler-conatiner">
+        <div class="doppler-legend" *ngIf="isDopplerOn">
+            <div class="doppler_header">
+                <span>Light</span>
+                <span>Heavy</span>
+            </div>
+            <div class="doplay_body">
+                <div class="quantity-text">
+                    <p appSelectionColor class="light" style="color: #b7b7b7">
+                        Raining
+                    </p>
+                    <div class="quantity-rain">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="quantity-text">
+                    <p appSelectionColor class="light" style="color: #b7b7b7">
+                        Sleeting
+                    </p>
+                    <div class="quantity-rain-snow">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="quantity-text">
+                    <p appSelectionColor class="light" style="color: #b7b7b7">
+                        Snowing
+                    </p>
+                    <div class="quantity-snow">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        [ngStyle]="{ 'margin-top': isDopplerOn ? '6px' : '0px' }"
+        class="traffic-conatiner"
+    >
+        <div class="truffic-container" *ngIf="trafficLayerShow">
+            <div class="truffic-title">
+                <div class="fast">Fast</div>
+                <div class="slow">Slow</div>
+            </div>
+            <div class="layers">
+                <div
+                    *ngFor="let layer of trafficColors; let i = index"
+                    [ngClass]="{
+                        'add-margin-right': i !== trafficColors.length - 1
+                    }"
+                    [ngStyle]="{ background: layer.color }"
+                    class="layers-color"
+                ></div>
+            </div>
+        </div>
+    </div>
+    <div
+        [ngStyle]="{
+            'margin-top': isDopplerOn || trafficLayerShow ? '6px' : '0px'
+        }"
+        class="timezone-conatiner"
+    >
+        <div class="time-zone-container" *ngIf="isTimeZoneActive">
+            <div
+                *ngFor="let timezone of timezones; let i = index"
+                [ngClass]="{ 'add-margin': i !== 0 }"
+                class="time-zone"
+            >
+                <div
+                    [ngStyle]="{ background: timezone.color }"
+                    class="timezone-color"
+                ></div>
+                <div class="timezone-data">{{ timezone.text }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #keyboardShortcutsPopover>
+    <div class="keyboard-container show-lagend">
+        <div class="legend-item">
+            <p class="shortcut">Esc</p>
+            <p class="shortcut-explination">Remove focus</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">Del.</p>
+            <p class="shortcut-explination">Remove route</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">Tab</p>
+            <p class="shortcut-explination">Next route</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">Shift</p>
+            <svg-icon
+                class="legend-plus"
+                src="assets/svg/common/routing/ic_keyboard_plus.svg"
+            ></svg-icon>
+            <p class="shortcut">Tab</p>
+            <p class="shortcut-explination">Previous route</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">Alt</p>
+            <p class="shortcut-explination">Toggle Empty/Loaded</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">F5</p>
+            <p class="shortcut-explination">Focus on input</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">F7</p>
+            <p class="shortcut-explination">Insert before</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">F8</p>
+            <p class="shortcut-explination">Remove waypoint</p>
+        </div>
+        <div class="legend-item">
+            <div class="legend-up-down-arrow legend-margin">
+                <svg-icon
+                    src="assets/svg/common/routing/ic_keyboard_arrow_up.svg"
+                ></svg-icon>
+            </div>
+            <div class="legend-up-down-arrow">
+                <svg-icon
+                    src="assets/svg/common/routing/ic_keyboard_arrow_down.svg"
+                ></svg-icon>
+            </div>
+            <p class="shortcut-explination">Move Up or Down</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">
+                <svg-icon
+                    class="legend-plus shortcut-icon"
+                    src="assets/svg/common/routing/ic_keyboard_plus.svg"
+                    [svgStyle]="{ 'width.px': 8, 'height.px': 8 }"
+                ></svg-icon>
+            </p>
+            <p class="shortcut-explination">Open Add Route Modal</p>
+        </div>
+        <div class="legend-item">
+            <p class="shortcut">Enter</p>
+            <p class="shortcut-explination">Add Route</p>
+        </div>
+    </div>
+</ng-template>

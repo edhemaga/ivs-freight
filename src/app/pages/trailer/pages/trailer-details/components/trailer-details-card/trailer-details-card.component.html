@@ -1,8 +1,13 @@
 <div *ngIf="trailer" class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [ngClass]="{ 'disabedPreviousArrow': trailerIndex == 0, 'disableNextArrow': trailerIndex == (trailer_list.length -1 ) }"
-        [tooltipNext]=" trailerIndex == (trailer_list.length -1 )  ?  '' : 'Next Trailer' "
-        [tooltipPrevious]=" trailerIndex == 0 ? '' : 'Previous Trailer' "
+        [ngClass]="{
+            disabedPreviousArrow: trailerIndex == 0,
+            disableNextArrow: trailerIndex == trailer_list.length - 1
+        }"
+        [tooltipNext]="
+            trailerIndex == trailer_list.length - 1 ? '' : 'Next Trailer'
+        "
+        [tooltipPrevious]="trailerIndex == 0 ? '' : 'Previous Trailer'"
         [cardDetailsDate]="trailer.createdAt | formatDateP"
         [options]="trailerDropDowns"
         [sortOptions]="'active-drivers'"
@@ -86,7 +91,7 @@
                         [copyValue]="getLastSixChars(trailer?.vin)"
                         [textColor]="'#2f2f2f'"
                         [boldText]="true"
-                        [arrayText]=" trailer?.vin.length > 6"
+                        [arrayText]="trailer?.vin.length > 6"
                     >
                     </app-ta-copy>
                 </div>
@@ -114,29 +119,48 @@
                 class="first-custom-card"
             >
                 <div class="assignTo">
-                    <div class="assignTo-item first" *ngIf="trailer?.assignedTo?.truck?.id">
-                        <svg-icon 
+                    <div
+                        class="assignTo-item first"
+                        *ngIf="trailer?.assignedTo?.truck?.id"
+                    >
+                        <svg-icon
                             class="assignTo-vehicle backImage"
-                            [src]="'assets/svg/common/trucks/' + trailer.assignedTo.truck.truckType.logoName "
-                            > </svg-icon>
-                        <p class="assignTo-value no-truck">{{trailer.assignedTo.truck.truckNumber}}</p>
-                       <span
+                            [src]="
+                                'assets/svg/common/trucks/' +
+                                trailer.assignedTo.truck.truckType.logoName
+                            "
+                        >
+                        </svg-icon>
+                        <p class="assignTo-value no-truck">
+                            {{ trailer.assignedTo.truck.truckNumber }}
+                        </p>
+                        <span
                             tooltipBackground="#6c6c6c"
                             ngbTooltip
                             mainTooltip="View in Modal"
                             position="top"
                             class="semi-tooltip"
-                            >
+                        >
                             <svg-icon
                                 class="open-modal-icon"
                                 src="assets/svg/common/arrow_top_right.svg"
                             ></svg-icon>
                         </span>
                     </div>
-                    <div class="assignTo-item second" *ngIf="!trailer?.assignedTo?.truck?.id">
-                        <p class="assignTo-value no-truck inactive-assignTo-value">No truck</p>
+                    <div
+                        class="assignTo-item second"
+                        *ngIf="!trailer?.assignedTo?.truck?.id"
+                    >
+                        <p
+                            class="assignTo-value no-truck inactive-assignTo-value"
+                        >
+                            No truck
+                        </p>
                     </div>
-                    <div class="assignTo-item second" *ngIf="trailer?.assignedTo?.driver?.id">
+                    <div
+                        class="assignTo-item second"
+                        *ngIf="trailer?.assignedTo?.driver?.id"
+                    >
                         <svg-icon class="assignTo-vehicle"></svg-icon>
 
                         <svg-icon
@@ -147,26 +171,40 @@
                         <img
                             *ngIf="trailer.assignedTo.driver.avatar"
                             class="driverAvatarImg"
-                            [src]="imageBase64Service.sanitizer(trailer.assignedTo.driver.avatar)"
+                            [src]="
+                                imageBase64Service.sanitizer(
+                                    trailer.assignedTo.driver.avatar
+                                )
+                            "
                             alt="driver-image"
                         />
 
-                        <p class="assignTo-value no-truck">{{trailer?.assignedTo?.driver?.firstName}} {{trailer?.assignedTo?.driver?.lastName}}</p>
+                        <p class="assignTo-value no-truck">
+                            {{ trailer?.assignedTo?.driver?.firstName }}
+                            {{ trailer?.assignedTo?.driver?.lastName }}
+                        </p>
                         <span
                             tooltipBackground="#6c6c6c"
                             ngbTooltip
                             mainTooltip="View in Modal"
                             position="top"
                             class="semi-tooltip"
-                            >
+                        >
                             <svg-icon
                                 class="open-modal-icon2"
                                 src="assets/svg/common/arrow_top_right.svg"
                             ></svg-icon>
                         </span>
                     </div>
-                    <div class="assignTo-item second" *ngIf="!trailer?.assignedTo?.driver?.id">
-                        <p class="assignTo-value no-truck inactive-assignTo-value">No Driver</p>
+                    <div
+                        class="assignTo-item second"
+                        *ngIf="!trailer?.assignedTo?.driver?.id"
+                    >
+                        <p
+                            class="assignTo-value no-truck inactive-assignTo-value"
+                        >
+                            No Driver
+                        </p>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -209,7 +247,10 @@
                             {{ trailer.mileage | taThousandSeparator }} mi
                         </div>
                     </div>
-                    <div *ngIf="trailer?.reeferUnit?.name" class="common-template-item">
+                    <div
+                        *ngIf="trailer?.reeferUnit?.name"
+                        class="common-template-item"
+                    >
                         <div class="common-template-item-name">Reefer Unit</div>
                         <div class="common-template-item-value">
                             {{ trailer?.reeferUnit?.name }}
@@ -268,7 +309,9 @@
 
             <!-- Owner -->
             <app-ta-custom-card
-                [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name "
+                [cardName]="
+                    ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name
+                "
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
@@ -311,7 +354,9 @@
                             ></svg-icon>
                             <p class="information-value">
                                 <app-ta-copy
-                                    [copyValue]="trailer?.owner?.address?.address"
+                                    [copyValue]="
+                                        trailer?.owner?.address?.address
+                                    "
                                     [textColor]="'#2f2f2f'"
                                 >
                                 </app-ta-copy>
@@ -334,20 +379,23 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div class="owner-history-container">
-                    
-                </div>
+                <div class="owner-history-container"></div>
             </app-ta-custom-card>
             <app-ta-custom-card
                 *ngIf="trailer?.files.length"
                 [cardName]="'Document'"
                 [isCardOpen]="false"
-                [hasCounter]="trailer?.files?.length ? trailer?.files.length : 0"
+                [hasCounter]="
+                    trailer?.files?.length ? trailer?.files.length : 0
+                "
                 class="item-cards"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
             >
-                <div class="card_files_holder" [class.active]="trailer?.files?.length > 1">
+                <div
+                    class="card_files_holder"
+                    [class.active]="trailer?.files?.length > 1"
+                >
                     <app-ta-upload-files
                         [files]="trailer?.files"
                         [customClassName]="'driver-card-pdf'"
@@ -395,7 +443,7 @@
                             trackBy: identity
                         "
                     >
-                        <app-ta-re-card
+                        <app-ta-common-card
                             [cardDocumentCounter]="1"
                             (resizePage)="toggleResizePage(i, 'registration')"
                             [cardNameCommon]="reg.licensePlate"
@@ -474,7 +522,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </app-ta-re-card>
+                        </app-ta-common-card>
                     </div>
                 </app-ta-custom-card>
             </div>
@@ -498,7 +546,7 @@
                             trackBy: identity
                         "
                     >
-                        <app-ta-re-card
+                        <app-ta-common-card
                             [options]="dataEdit"
                             [cardNameCommon]="fhwa.issueDate | formatDateP"
                             [optionsId]="fhwa.id"
@@ -554,7 +602,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </app-ta-re-card>
+                        </app-ta-common-card>
                     </div>
                 </app-ta-custom-card>
             </div>
@@ -577,7 +625,7 @@
                             trackBy: identity
                         "
                     >
-                        <app-ta-re-card
+                        <app-ta-common-card
                             [cardDocumentCounter]="1"
                             (resizePage)="toggleResizePage(i, 'title')"
                             [cardNameCommon]="title.number"
@@ -659,7 +707,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </app-ta-re-card>
+                        </app-ta-common-card>
                     </div>
                 </app-ta-custom-card>
             </div>

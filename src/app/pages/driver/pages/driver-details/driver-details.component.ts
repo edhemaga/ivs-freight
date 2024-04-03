@@ -2,7 +2,7 @@ import { DriverMvrModalComponent } from 'src/app/core/components/modals/driver-m
 import { DriverMedicalModalComponent } from 'src/app/core/components/modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from 'src/app/core/components/modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverCdlModalComponent } from 'src/app/core/components/modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../../services/driver.service';

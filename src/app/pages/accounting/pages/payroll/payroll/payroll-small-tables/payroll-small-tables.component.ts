@@ -6,7 +6,7 @@ import { PayrollBonusModalComponent } from 'src/app/core/components/modals/payro
 import { PayrollDeductionModalComponent } from 'src/app/core/components/modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 //Services
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 //Config
 import {

@@ -25,7 +25,7 @@
         </div>
     </div>
     <span class="settings-body">
-        <app-ta-re-card
+        <app-ta-common-card
             *ngFor="let item of parkingData?.data; trackBy: identity"
             [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
             [cardNameCommon]="item.name"
@@ -42,14 +42,22 @@
                         class="company-icons"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.phone" [textColor]="'#2f2f2f'"> </app-ta-copy>
+                    <app-ta-copy
+                        [copyValue]="item?.phone"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.email" [textColor]="'#2f2f2f'"> </app-ta-copy>
+                    <app-ta-copy
+                        [copyValue]="item?.email"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
                 </div>
                 <div *ngIf="item.address" class="single-item">
                     <svg-icon
@@ -72,13 +80,21 @@
                 >
                     <div class="parking-template-item">
                         <p class="parking-template-number">
-                            {{ item.parkingSlotCount ? item.parkingSlotCount : 0 }}
+                            {{
+                                item.parkingSlotCount
+                                    ? item.parkingSlotCount
+                                    : 0
+                            }}
                         </p>
                         <p class="parking-template-text">Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <p class="parking-template-number">
-                            {{ item.fullParkingSlotCount ? item.fullParkingSlotCount : 0 }}
+                            {{
+                                item.fullParkingSlotCount
+                                    ? item.fullParkingSlotCount
+                                    : 0
+                            }}
                         </p>
                         <p class="parking-template-text">Full Parking Slot</p>
                     </div>
@@ -120,6 +136,6 @@
                     [darkText]="true"
                 ></app-truckassist-progress-expiration>
             </div>
-        </app-ta-re-card>
+        </app-ta-common-card>
     </span>
 </div>

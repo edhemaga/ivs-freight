@@ -2,7 +2,7 @@ import { NameInitialsPipe } from './../../../pipes/nameinitials';
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

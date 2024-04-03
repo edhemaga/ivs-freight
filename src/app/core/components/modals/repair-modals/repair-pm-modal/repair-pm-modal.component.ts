@@ -16,23 +16,23 @@ import {
     UpdatePMTruckDefaultListCommand,
     UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
-import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from '../../../shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

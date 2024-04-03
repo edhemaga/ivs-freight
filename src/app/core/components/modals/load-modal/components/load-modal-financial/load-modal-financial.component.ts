@@ -11,7 +11,7 @@ import { card_modal_animation } from '../../../../shared/animations/card-modal.a
 import { convertThousanSepInNumber } from '../../../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../../../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 

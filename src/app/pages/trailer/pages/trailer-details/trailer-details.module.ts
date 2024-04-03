@@ -13,16 +13,16 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 
 // components
 import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
-import { TaReCardComponent } from 'src/app/core/components/shared/ta-common-card/ta-re-card.component';
-import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
-import { TaCounterComponent } from 'src/app/core/components/shared/ta-counter/ta-counter.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
-import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-details-header/ta-details-header.component';
-import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
+import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
+import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
-import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
 import { TrailerDetailsCardComponent } from './components/trailer-details-card/trailer-details-card.component';
 import { TrailerDetailsItemComponent } from './components/trailer-details-item/trailer-details-item.component';
 import { TrailerDetailsComponent } from './trailer-details.component';
@@ -41,11 +41,11 @@ import { TrailerDetailsComponent } from './trailer-details.component';
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaReCardComponent,
+        TaCommonCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
         formatDatePipe,
-        TaCommonHeaderComponent,
+        TaDetailsHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
         ProfileImagesComponent,

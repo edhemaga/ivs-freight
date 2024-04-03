@@ -17,10 +17,10 @@ import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { AccountCardComponent } from './pages/account-card/account-card.component';
-import { TaInputDropdownLabelComponent } from 'src/app/core/components/shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
-import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaInputDropdownLabelComponent } from 'src/app/shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
+import { TaAppTooltipComponent } from 'src/app/shared/components/ta-app-tooltip/ta-app-tooltip.component';
 
 @NgModule({
     declarations: [AccountCardComponent, AccountTableComponent],
@@ -37,12 +37,12 @@ import { AppTooltipComponent } from 'src/app/core/components/standalone-componen
         TextToggleDirective,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipComponent,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         TaInputDropdownLabelComponent,
-        TableCardDropdownActionsComponent,
+        TaTableCardDropdownActionsComponent,
         TaNoteComponent,
     ],
 })

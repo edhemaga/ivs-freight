@@ -44,14 +44,14 @@ import { Step4FormComponent } from './components/applicant-forms/step4-form/step
 import { Step3FormComponent } from './components/applicant-forms/step3-form/step3-form.component';
 import { Step2FormComponent } from './components/applicant-forms/step2-form/step2-form.component';
 
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
-import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputArrowsComponent } from 'src/app/core/components/shared/ta-input-arrows/ta-input-arrows.component';
-import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputArrowsComponent } from 'src/app/shared/components/ta-input-arrows/ta-input-arrows.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 
 @NgModule({
     declarations: [

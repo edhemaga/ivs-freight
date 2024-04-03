@@ -4,7 +4,7 @@ import {
     fuelStopValidation,
     fuelStoreValidation,
     phoneFaxRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,
@@ -13,9 +13,9 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
@@ -24,14 +24,14 @@ import {
     GetFuelStopModalResponse,
 } from '../../../../../../../appcoretruckassist';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-fuel-stop-modal',

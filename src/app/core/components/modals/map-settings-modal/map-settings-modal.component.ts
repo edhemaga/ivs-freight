@@ -8,14 +8,14 @@ import {
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { UpdateMapCommand } from 'appcoretruckassist';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-map-settings-modal',

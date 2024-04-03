@@ -72,12 +72,12 @@
     </ng-container>
 
     <!-- SEARCH -->
-    <app-carrier-search
+    <app-ta-carrier-search
         *ngIf="!options.toolbarActions.hideSearch"
         [searchType]="'tabel'"
         [selectedTabData]="activeTableData"
         [toolbarSearch]="true"
-    ></app-carrier-search>
+    ></app-ta-carrier-search>
 
     <!-- SEARCH BORDER ONLY -->
     <ng-container *ngIf="!options.toolbarActions.hideSearch">
@@ -88,7 +88,7 @@
         </div>
     </ng-container>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="options.toolbarActions.showArhiveCount"
         [type]="'archiveFilter'"
         [icon]="'ic_deactivate'"
@@ -98,7 +98,7 @@
         [selectedFilter]="
             this.activeTableData.deactivatedUserArray.selectedFilter
         "
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
     <!-- BORDER -->
     <ng-container
@@ -129,7 +129,7 @@
     </ng-container>
 
     <!-- LOCATION FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showLocationFilter"
         [type]="'locationFilter'"
         [icon]="'address'"
@@ -137,10 +137,10 @@
         [locationDefType]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- FUEL STOP FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showFuelStopFilter"
         [type]="'fuelStopFilter'"
         [icon]="'fuel'"
@@ -149,10 +149,10 @@
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- STATE FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showStateFilter"
         [type]="'stateFilter'"
         [icon]="'state'"
@@ -161,10 +161,10 @@
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- ARHIVE FILTER -->
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="options.toolbarActions.showArhiveFilter"
         [type]="'archiveFilter'"
         [icon]="'ic_driver_arhive'"
@@ -174,20 +174,20 @@
         [selectedFilter]="
             this.activeTableData.driverArhivedArray.selectedFilter
         "
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
     <!-- TIME FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showTimeFilter"
         [type]="'timeFilter'"
         [icon]="'ic_time'"
         [filterTitle]="'Time Filter'"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- TRUCK FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showTruckFilter"
         [type]="'truckFilter'"
         [icon]="'truck'"
@@ -196,10 +196,10 @@
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- TRAILER FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showTrailerFilter"
         [type]="'trailerFilter'"
         [icon]="'trailer'"
@@ -208,10 +208,10 @@
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- INJURY FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showInjuryFilter"
         [type]="'injuryFilter'"
         [icon]="'ic_injury'"
@@ -219,10 +219,10 @@
         [swipeFilter]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- PM FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showPMFilter"
         [type]="'pmFilter'"
         [icon]="'default_pm'"
@@ -233,10 +233,10 @@
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- CATEGORY REPAIR FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showCategoryRepairFilter"
         [type]="'categoryRepairFilter'"
         [icon]="'ic_key-repair'"
@@ -246,10 +246,10 @@
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- CATEGORY FUEL FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showCategoryFuelFilter"
         [type]="'categoryFuelFilter'"
         [icon]="'ic_funnel'"
@@ -258,10 +258,10 @@
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- DISPECHER FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showDispatcherFilter"
         [type]="'userFilter'"
         [searchState]="true"
@@ -269,10 +269,10 @@
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- STATUS FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showStatusFilter"
         [type]="'statusFilter'"
         [icon]="'broker-half-circle'"
@@ -281,10 +281,10 @@
         [noLeftIcon]="false"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- TRUCK TYPE FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showTruckTypeFilter"
         [type]="'truckTypeFilter'"
         [icon]="'truck'"
@@ -295,10 +295,10 @@
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- TRAILER TYPE FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showTrailerTypeFilter"
         [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
@@ -309,10 +309,10 @@
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- MONEY FILTER -->
-    <app-filter
+    <app-ta-filter
         *ngIf="options.toolbarActions.showMoneyFilter"
         [type]="'moneyFilter'"
         [icon]="'dollar'"
@@ -322,7 +322,7 @@
         [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
         (setFilter)="onFilter($event)"
     >
-    </app-filter>
+    </app-ta-filter>
 
     <!-- FILTER -->
     <ng-container *ngIf="options.toolbarActions.showLtlFilter">
@@ -344,7 +344,7 @@
         </div>
     </ng-container>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="
             options.toolbarActions.showLtlFilter &&
             showFtl &&
@@ -356,9 +356,9 @@
         [dataArray]="this.activeTableData.ftlArray"
         (setFilter)="onSpecialFilter($event, 'ftlArray')"
         [selectedFilter]="this.activeTableData.ftlArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="
             options.toolbarActions.showLtlFilter &&
             showLtl &&
@@ -370,9 +370,9 @@
         [dataArray]="this.activeTableData.ltlArray"
         (setFilter)="onSpecialFilter($event, 'ltlArray')"
         [selectedFilter]="this.activeTableData.ltlArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="
             options.toolbarActions.showBrokerFilter &&
             this.activeTableData.bannedArray.filteredArray.length > 0
@@ -383,9 +383,9 @@
         [dataArray]="this.activeTableData.bannedArray"
         (setFilter)="onSpecialFilter($event, 'ban')"
         [selectedFilter]="this.activeTableData.bannedArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="
             options.toolbarActions.showBrokerFilter &&
             this.activeTableData.dnuArray.filteredArray.length > 0
@@ -396,9 +396,9 @@
         [dataArray]="this.activeTableData.dnuArray"
         (setFilter)="onSpecialFilter($event, 'dnu')"
         [selectedFilter]="this.activeTableData.dnuArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="
             (options.toolbarActions.showBrokerFilter ||
                 options.toolbarActions.showRepairShop ||
@@ -412,9 +412,9 @@
         [dataArray]="this.activeTableData.closedArray"
         (setFilter)="onSpecialFilter($event, 'closedArray')"
         [selectedFilter]="this.activeTableData.closedArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="options.toolbarActions.showFuelStopFilter"
         [type]="'fuel-filter'"
         [icon]="'ic_fuel_transaction'"
@@ -422,9 +422,9 @@
         [dataArray]="this.activeTableData.fuelArray"
         (setFilter)="onSpecialFilter($event, 'specialFilterArray1')"
         [selectedFilter]="this.activeTableData.fuelArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 
-    <app-special-filter
+    <app-ta-special-filter
         *ngIf="options.toolbarActions.showRepairOrderFilter"
         [type]="'repair-filter'"
         [icon]="'ic_repair_track'"
@@ -432,5 +432,5 @@
         [dataArray]="this.activeTableData.repairArray"
         (setFilter)="onSpecialFilter($event, 'repairArray')"
         [selectedFilter]="this.activeTableData.repairArray.selectedFilter"
-    ></app-special-filter>
+    ></app-ta-special-filter>
 </div>

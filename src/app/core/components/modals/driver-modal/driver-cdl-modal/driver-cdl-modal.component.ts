@@ -8,19 +8,19 @@ import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
 import { CdlTService } from 'src/app/pages/driver/services/cdl.service';
 import { DriverTService } from 'src/app/pages/driver/services/driver.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AppTooltipComponent } from '../../../shared/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
 import {
     convertDateFromBackend,
     convertDateToBackend,
@@ -28,7 +28,7 @@ import {
 import {
     cdlCANADAValidation,
     cdlUSValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 @Component({
     selector: 'app-driver-cdl-modal',

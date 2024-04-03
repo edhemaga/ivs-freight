@@ -32,19 +32,19 @@ import {
     phoneFaxRegex,
     repairShopValidation,
     routingBankValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../../services/form/form.service';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
-import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal } from '../../../../../shared/components/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
-} from '../../../shared/ta-like-dislike/ta-like-dislike.service';
+} from '../../../../../shared/components/ta-like-dislike/ta-like-dislike.service';
 import {
     CreateRatingCommand,
     CreateReviewCommand,
@@ -54,22 +54,22 @@ import {
 import moment from 'moment';
 import { debounceTime } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { AppTooltipComponent } from '../../../shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ActiveItemsPipe } from '../../../../pipes/activeItems.pipe';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
 import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RepairTypes } from '../repair-order-modal/state/models/repair.model';
 import { RepairOrder } from '../repair-order-modal/state/constants/repair-order.constant';
-import { TaModalTableComponent } from '../../../standalone-components/ta-modal-table/ta-modal-table.component';
+import { TaModalTableComponent } from '../../../../../shared/components/ta-modal-table/ta-modal-table.component';
 
 @Component({
     selector: 'app-repair-shop-modal',

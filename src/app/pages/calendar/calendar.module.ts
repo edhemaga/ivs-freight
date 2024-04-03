@@ -9,9 +9,9 @@ import { CalendarRoutingModule } from './calendar-routing.module';
 // Components
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { CalendarMonthComponent } from './pages/calendar/components/calendar-month/calendar-month.component';
-import { CarrierSearchComponent } from 'src/app/core/components/standalone-components/carrier-search/carrier-search.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // FullCalendarModule.registerPlugins([dayGridPlugin, interactionPlugin]);
 
@@ -27,7 +27,7 @@ import { TaTabSwitchComponent } from 'src/app/core/components/standalone-compone
         FullCalendarModule,
 
         // Components
-        CarrierSearchComponent,
+        TaCarrierSearchComponent,
         TaCustomCardComponent,
         TaTabSwitchComponent,
     ],

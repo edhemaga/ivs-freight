@@ -7,7 +7,7 @@ import { ContactsModalComponent } from '../contacts-modal/contacts-modal.compone
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // service
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { ContactsService } from '../../../../shared/services/contacts.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

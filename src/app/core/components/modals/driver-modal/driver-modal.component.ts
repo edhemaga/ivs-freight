@@ -10,7 +10,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
 import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
@@ -32,13 +32,13 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     ssnNumberRegex,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
+import { TaUploadFileService } from '../../../../shared/components/ta-upload-files/ta-upload-file.service';
 import { DriverTService } from 'src/app/pages/driver/services/driver.service';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '../../../../shared/components/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
 import {
@@ -49,19 +49,19 @@ import {
 } from '../../../utils/methods.calculations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { AppTooltipComponent } from '../../shared/app-tooltip/app-tooltip.component';
+import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
-import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
-import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../../../shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { TaUploadFilesComponent } from '../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaCheckboxCardComponent } from '../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaLogoChangeComponent } from '../../../../shared/components/ta-logo-change/ta-logo-change.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

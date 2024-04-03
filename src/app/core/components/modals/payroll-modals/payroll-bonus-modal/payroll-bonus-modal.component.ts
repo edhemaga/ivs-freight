@@ -9,9 +9,9 @@ import {
 import {
     creditLimitValidation,
     descriptionPayrollBonusValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { PayrollBonusService } from 'src/app/pages/accounting/services/payroll-bonus.service';
 import { PayrollBonusModalResponse } from '../../../../../../../appcoretruckassist/model/payrollBonusModalResponse';
@@ -26,10 +26,10 @@ import {
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-payroll-bonus-modal',

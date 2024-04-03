@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="settings-body">
-        <app-ta-re-card
+        <app-ta-common-card
             *ngFor="
                 let item of terminalData?.data;
                 let i = index;
@@ -43,14 +43,22 @@
                         class="company-icons"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.phone" [textColor]="'#2f2f2f'"> </app-ta-copy>
+                    <app-ta-copy
+                        [copyValue]="item?.phone"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.email" [textColor]="'#2f2f2f'"> </app-ta-copy>
+                    <app-ta-copy
+                        [copyValue]="item?.email"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
                 </div>
                 <div *ngIf="item.address.address" class="single-item">
                     <svg-icon
@@ -74,7 +82,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.officePhone" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.officePhone"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
 
@@ -86,7 +97,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone-extension.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.officeExtPhone" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.officeExtPhone"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                     <div class="parking-template-item">
@@ -95,7 +109,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.officeEmail" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.officeEmail"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                 </div>
@@ -117,7 +134,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.warehousePhone" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.warehousePhone"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
 
@@ -129,7 +149,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone-extension.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.warehouseExtPhone" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.warehouseExtPhone"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                     <div class="parking-template-item">
@@ -138,7 +161,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.warehouseEmail" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.warehouseEmail"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                 </div>
@@ -160,7 +186,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.parkingPhone" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.parkingPhone"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
 
@@ -170,7 +199,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="item.parkingEmail" [textColor]="'#2f2f2f'">
+                        <app-ta-copy
+                            [copyValue]="item.parkingEmail"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                     <div
@@ -219,6 +251,6 @@
                     </div>
                 </div>
             </app-ta-custom-card>
-        </app-ta-re-card>
+        </app-ta-common-card>
     </div>
 </div>

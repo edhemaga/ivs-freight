@@ -14,7 +14,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
 
@@ -33,17 +33,17 @@ import {
     mcFFValidation,
     phoneExtension,
     phoneFaxRegex,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import {
     ReviewCommentModal,
     TaUserReviewComponent,
-} from '../../shared/ta-user-review/ta-user-review.component';
+} from '../../../../shared/components/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
-} from '../../shared/ta-like-dislike/ta-like-dislike.service';
+} from '../../../../shared/components/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from 'src/app/pages/customer/services/broker.service';
 import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
@@ -51,7 +51,7 @@ import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
-import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { poBoxValidation } from '../../../../shared/components/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
 import { LoadModalComponent } from '../load-modal/components/load-modal/load-modal.component';
 import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
@@ -59,22 +59,22 @@ import { BrokerResponse } from '../../../../../../appcoretruckassist/model/broke
 import {
     name2_24Validation,
     creditLimitValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
 import { CommonModule } from '@angular/common';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from '../../shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
-import { TaCurrencyProgressBarComponent } from '../../shared/ta-currency-progress-bar/ta-currency-progress-bar.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { TaCurrencyProgressBarComponent } from '../../../../shared/components/ta-currency-progress-bar/ta-currency-progress-bar.component';
+import { TaUploadFilesComponent } from '../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaSpinnerComponent } from '../../shared/ta-spinner/ta-spinner.component';
+import { TaSpinnerComponent } from '../../../../shared/components/ta-spinner/ta-spinner.component';
 
 @Component({
     selector: 'app-broker-modal',

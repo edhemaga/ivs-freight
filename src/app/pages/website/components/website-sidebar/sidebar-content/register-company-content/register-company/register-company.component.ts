@@ -10,7 +10,7 @@ import {
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import { WebsiteAuthService } from '../../../../../services/website-auth.service';
 import { WebsiteActionsService } from '../../../../../services/website-actions.service';
 
@@ -21,7 +21,7 @@ import {
     lastNameValidation,
     passwordValidation,
     phoneFaxRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // enums
 import { WebsiteStringEnum } from '../../../../../enums/website-string.enum';

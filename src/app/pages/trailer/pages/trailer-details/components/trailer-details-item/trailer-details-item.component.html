@@ -8,7 +8,7 @@
             </div>
             <!---------------------------- Registration TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'registration'">
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let reg of trailers?.data;
                         let i = index;
@@ -22,12 +22,16 @@
                     [hasCopyIcon]="true"
                     [options]="dataTest"
                     [expDateClose]="formatDate(reg.expDate)"
-                    [isCardOpen]="i == 0  && reg.expDate > currentDate ? true : false"
+                    [isCardOpen]="
+                        i == 0 && reg.expDate > currentDate ? true : false
+                    "
                     [notExpired]="currentDate > reg.expDate ? false : true"
-                    [openCloseStatus]="i == 0 ? false : true" 
+                    [openCloseStatus]="i == 0 ? false : true"
                     [optionsId]="reg.id"
                     [mainData]="reg"
-                    [forcedOpen]="reg.expDate == '1970-01-01T00:00:00' ? true : false"
+                    [forcedOpen]="
+                        reg.expDate == '1970-01-01T00:00:00' ? true : false
+                    "
                     [cardNameCurrent]="'registration'"
                     [noteIcons]="
                         reg.note
@@ -50,20 +54,21 @@
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(reg.issueDate)}}
+                                        {{ formatDate(reg.issueDate) }}
                                     </div>
                                 </div>
                             </div>
                             <div
                                 class="card-row-progress second-progress"
-                                *ngIf="reg.expDate && reg.expDate != '1970-01-01T00:00:00'"
+                                *ngIf="
+                                    reg.expDate &&
+                                    reg.expDate != '1970-01-01T00:00:00'
+                                "
                             >
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [expireDate]="formatDate(reg.expDate)"
-                                        [startDate]="
-                                            formatDate(reg.issueDate)
-                                        "
+                                        [startDate]="formatDate(reg.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -148,11 +153,11 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
             <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let fhwa of trailers?.data;
                         let i = index;
@@ -161,7 +166,9 @@
                     [options]="dataFHWA"
                     [cardNameCommon]="formatDate(fhwa.expDate)"
                     [optionsId]="fhwa.id"
-                    [isCardOpen]="i == 0  && fhwa.expDate > currentDate ? true : false"
+                    [isCardOpen]="
+                        i == 0 && fhwa.expDate > currentDate ? true : false
+                    "
                     [cardDocumentCounter]="
                         fhwa?.files?.length ? fhwa?.files?.length : 0
                     "
@@ -173,24 +180,18 @@
                     "
                     [expDateClose]="formatDate(fhwa.expDate)"
                     [notExpired]="currentDate > fhwa.expDate ? false : true"
-                    [openCloseStatus]="i == 0 ? false : true"  
+                    [openCloseStatus]="i == 0 ? false : true"
                     (dropActions)="
                         optionsEvent($event, trailers.data, 'inspection')
                     "
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
-                            <div
-                                class="card-row-progress second-progress"
-                            >
+                            <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
-                                        [expireDate]="
-                                            formatDate(fhwa.expDate)
-                                        "
-                                        [startDate]="
-                                            formatDate(fhwa.issueDate)
-                                        "
+                                        [expireDate]="formatDate(fhwa.expDate)"
+                                        [startDate]="formatDate(fhwa.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -273,12 +274,12 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
 
             <!---------------------------- Title TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'title'">
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let title of trailers?.data;
                         let i = index;
@@ -303,7 +304,6 @@
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
-                            
                             <div class="card-row-endor">
                                 <div class="card-item">
                                     <div class="card-item-name">Purchased</div>
@@ -394,7 +394,7 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
             <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'lease-purchase'">

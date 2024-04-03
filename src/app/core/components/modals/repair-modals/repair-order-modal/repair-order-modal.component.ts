@@ -38,8 +38,8 @@ import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
 
 // services
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { FormService } from '../../../../services/form/form.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
@@ -61,7 +61,7 @@ import {
     invoiceValidation,
     repairOdometerValidation,
     vehicleUnitValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // constants
 import { RepairOrder } from './state/constants/repair-order.constant';
@@ -70,17 +70,17 @@ import { RepairOrder } from './state/constants/repair-order.constant';
 import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
-import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
+import { AppTooltipComponent } from '../../../shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaCopyComponent } from '../../../../../shared/components/ta-copy/ta-copy.component';
 import { RepairData, Subtotal } from './state/models/repair.model';
-import { TaModalTableComponent } from '../../../standalone-components/ta-modal-table/ta-modal-table.component';
+import { TaModalTableComponent } from '../../../../../shared/components/ta-modal-table/ta-modal-table.component';
 import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 
 @Component({

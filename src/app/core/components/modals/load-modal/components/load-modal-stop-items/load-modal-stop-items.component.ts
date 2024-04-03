@@ -23,11 +23,11 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '../../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // validations
-import { descriptionValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from '../../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // constants
 import { LoadStopItemsConstants } from '../../state/utils/constants/load-stop-items.constants';

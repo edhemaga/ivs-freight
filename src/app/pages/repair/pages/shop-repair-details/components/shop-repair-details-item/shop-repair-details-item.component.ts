@@ -17,7 +17,7 @@ import { RepairDQuery } from '../../../../state/details-state/repair-d.query';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { RepairOrderModalComponent } from 'src/app/core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 

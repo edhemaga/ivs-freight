@@ -5,7 +5,7 @@ import {
     ChartImagesEnum,
     ChartLegendDataEnum,
     ChartTypesEnum,
-} from 'src/app/core/components/standalone-components/ta-chart/enums/chart-enums';
+} from 'src/app/shared/components/ta-chart/enums/chart-enums';
 
 export class DriverConstants {
     static BAR_CHART_CONFIG = {

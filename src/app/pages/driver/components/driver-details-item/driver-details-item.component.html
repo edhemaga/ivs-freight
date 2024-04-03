@@ -11,7 +11,7 @@
         </div>
         <div class="card-width" *ngSwitchCase="'cdl'">
             <div>
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let cdl of dataCDl;
                         let i = index;
@@ -35,7 +35,8 @@
                     (clickedCard)="getNameForDrop($event, cdl.id)"
                     [cardNameCurrent]="'cdl'"
                     [noteIcons]="
-                        cdl.note && cdl.note != null && cdl.note != 'null' || cdlNote?.value
+                        (cdl.note && cdl.note != null && cdl.note != 'null') ||
+                        cdlNote?.value
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -63,7 +64,7 @@
                                 <div class="card-restriction">
                                     <div class="restriction-name">Issued</div>
                                     <div class="restriction-item-value">
-                                        {{ formatDate(cdl?.issueDate)}}
+                                        {{ formatDate(cdl?.issueDate) }}
                                     </div>
                                 </div>
                                 <div
@@ -72,7 +73,7 @@
                                 >
                                     <div class="restriction-name">Voided</div>
                                     <div class="restriction-item-value">
-                                        {{ formatDate(cdl.dateDeactivated)}}
+                                        {{ formatDate(cdl.dateDeactivated) }}
                                     </div>
                                 </div>
                             </div>
@@ -152,17 +153,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="card-row-progress second-progress"
-                            >
+                            <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
-                                        [expireDate]="
-                                            formatDate(cdl?.expDate)
-                                        "
-                                        [startDate]="
-                                            formatDate(cdl?.issueDate)
-                                        "
+                                        [expireDate]="formatDate(cdl?.expDate)"
+                                        [startDate]="formatDate(cdl?.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -180,7 +175,9 @@
                                 <div
                                     (click)="openCommand(cdl, 'renew-licence')"
                                     *ngIf="
-                                        !cdl.showButton && !cdl.dateDeactivated && cdl.issueDate < currentDate
+                                        !cdl.showButton &&
+                                        !cdl.dateDeactivated &&
+                                        cdl.issueDate < currentDate
                                     "
                                     class="activate-button"
                                 >
@@ -269,12 +266,12 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
         </div>
         <div class="card-width" *ngSwitchCase="'drug-alcohol'">
             <div>
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let test of driverItem?.data;
                         let i = index;
@@ -326,8 +323,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="second-progress"
-                    ></div>
+                    <div class="second-progress"></div>
                     <div class="cards-container">
                         <div
                             [@showHideCardBody]="
@@ -408,12 +404,12 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
         </div>
         <div class="card-width" *ngSwitchCase="'medical'">
             <div>
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let med of driverItem?.data;
                         let i = index;
@@ -440,17 +436,11 @@
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
-                            <div
-                                class="card-row-progress second-progress"
-                            >
+                            <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
-                                        [expireDate]="
-                                            formatDate(med?.expDate)
-                                        "
-                                        [startDate]="
-                                            formatDate(med?.issueDate)
-                                        "
+                                        [expireDate]="formatDate(med?.expDate)"
+                                        [startDate]="formatDate(med?.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -537,12 +527,12 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
         </div>
         <div class="card-width" *ngSwitchCase="'mvr'">
             <div>
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let mvr of driverItem?.data;
                         let i = index;
@@ -572,17 +562,11 @@
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
-                            <div
-                                class="card-row-progress second-progress"
-                            >
+                            <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
-                                        [startDate]="
-                                            formatDate(mvr?.issueDate)
-                                        "
-                                        [expireDate]="
-                                            formatDate(mvr?.expDate)
-                                        "
+                                        [startDate]="formatDate(mvr?.issueDate)"
+                                        [expireDate]="formatDate(mvr?.expDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
@@ -669,7 +653,7 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
         </div>
     </div>

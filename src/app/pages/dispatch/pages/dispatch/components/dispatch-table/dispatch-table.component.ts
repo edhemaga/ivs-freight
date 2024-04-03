@@ -27,7 +27,7 @@ import { ColorFinderPipe } from '../../../../pipes/color-finder.pipe';
 
 // Services
 import { DispatcherStoreService } from '../../../../services/dispatcher.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 // Modals
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';

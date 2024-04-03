@@ -22,8 +22,8 @@ import moment from 'moment';
 
 // services
 import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';
 
 // validations
@@ -45,7 +45,7 @@ import {
     deductableValidation,
     comprehenCollisionValidation,
     trailerValueInsurancePolicyValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // helpers
 import {
@@ -59,15 +59,15 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
 import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',

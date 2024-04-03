@@ -16,7 +16,7 @@ import { ShipperModalComponent } from 'src/app/core/components/modals/shipper-mo
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // Services
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { BrokerTService } from '../../services/broker.service';
 import { ShipperTService } from '../../services/shipper.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -71,7 +71,7 @@ import {
 
 // Services
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/table-card-dropdown-actions.service';
 
 // Globals
 import {

@@ -23,7 +23,7 @@ import { CalendarScrollService } from './calendar-scroll.service';
 import { DateCalendarsComponent } from './date-calendars/date-calendars.component';
 
 // models
-import { ITaInput } from '../ta-input/ta-input.config';
+import { ITaInput } from '../../../../shared/components/ta-input/ta-input.config';
 
 @Component({
     selector: 'app-custom-datetime-pickers',

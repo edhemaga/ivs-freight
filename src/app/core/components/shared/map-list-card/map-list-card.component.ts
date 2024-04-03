@@ -13,7 +13,7 @@ import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { ModalService } from './../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

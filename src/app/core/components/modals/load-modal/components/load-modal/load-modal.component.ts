@@ -37,23 +37,23 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { LoadFinancialComponent } from '../load-modal-financial/load-modal-financial.component';
 import { BrokerModalComponent } from '../../../broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../../shipper-modal/shipper-modal.component';
-import { AppTooltipComponent } from '../../../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '../../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../../../shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../../../shared/ta-checkbox/ta-checkbox.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../../../../../shared/components/ta-checkbox/ta-checkbox.component';
 import { LoadStopComponent } from '../load-modal-stop/load-modal-stop.component';
-import { TaUploadFilesComponent } from '../../../../shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../shared/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../../../shared/components/ta-input-note/ta-input-note.component';
 import { MapsComponent } from '../../../../shared/maps/maps.component';
-import { TaCommentComponent } from '../../../../standalone-components/ta-comment/ta-comment.component';
+import { TaCommentComponent } from '../../../../../../shared/components/ta-comment/ta-comment.component';
 import { LoadModalStopItemsComponent } from '../load-modal-stop-items/load-modal-stop-items.component';
 
 // services
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../../shared/components/ta-modal/modal.service';
 import { FormService } from '../../../../../services/form/form.service';
 import { LoadTService } from 'src/app/pages/load/services/load.service';
 
@@ -99,7 +99,7 @@ import {
     TagResponse,
     LoadStopItemCommand,
 } from 'appcoretruckassist';
-import { ITaInput } from '../../../../shared/ta-input/ta-input.config';
+import { ITaInput } from '../../../../../../shared/components/ta-input/ta-input.config';
 import {
     IBilling,
     IPayment,

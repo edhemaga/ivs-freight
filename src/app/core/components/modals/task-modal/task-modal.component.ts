@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -11,18 +11,18 @@ import {
     TodoResponse,
     UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { TodoTService } from 'src/app/pages/to-do/services/to-do.service';
 import {
     ReviewCommentModal,
     TaUserReviewComponent,
-} from '../../shared/ta-user-review/ta-user-review.component';
+} from '../../../../shared/components/ta-user-review/ta-user-review.component';
 import {
     departmentValidation,
     descriptionValidation,
     titleValidation,
     urlValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { FormService } from '../../../services/form/form.service';
@@ -31,12 +31,12 @@ import {
     convertDateFromBackend,
 } from '../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../../../shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-task-modal',

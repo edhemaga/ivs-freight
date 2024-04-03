@@ -20,7 +20,7 @@ import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { CdlTService } from '../../services/cdl.service';
 import { MedicalTService } from '../../services/medical.service';
 import { MvrTService } from '../../services/mvr.service';

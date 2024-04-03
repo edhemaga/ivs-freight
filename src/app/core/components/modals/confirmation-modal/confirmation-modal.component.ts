@@ -11,8 +11,8 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
 
 // services

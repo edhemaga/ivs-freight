@@ -51,11 +51,11 @@ import {
     firstNameValidation,
     bankValidation,
     lastNameValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // services
 import { ApplicantService } from '../../../../services/applicant.service';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 
 // store

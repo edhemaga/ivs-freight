@@ -17,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../model/map-route';
 
 import { CommonModule } from '@angular/common';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { MapMarkerDropdownComponent } from '../map-marker-dropdown/map-marker-dropdown.component';
 import { AgmDirectionModule } from 'agm-direction';
