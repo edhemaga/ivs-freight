@@ -8,18 +8,29 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 
-import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
+// Models
+import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
+
+// Services
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// Helpers
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+
+// Store
+import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
+
+// Components
+import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+
+// Animations
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 @Component({
     selector: 'app-repair-shop-details-item',
@@ -44,14 +55,20 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
     public repairsTest: any;
 
     constructor(
+        // Services
         private dropDownService: DropDownService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
-        private repairDetailsQuery: RepairDetailsQuery,
-        private cdr: ChangeDetectorRef,
         private reviewRatingService: ReviewsRatingService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+
+        // Store
+        private repairDetailsQuery: RepairDetailsQuery,
+
+        // Ref
+        private cdr: ChangeDetectorRef
     ) {}
+    
     ngOnChanges(changes: SimpleChanges): void {
         if (
             changes.repairShopItem?.currentValue?.data !=

@@ -21,8 +21,12 @@ export class BrokerMinimalListResolver
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;
+
     constructor(
+        // Services
         private brokerService: BrokerService,
+
+        // Store
         private brokerMinimalListStore: BrokerMinimalListStore
     ) {}
     resolve(): Observable<BrokerMinimalListResponse> | Observable<any> {

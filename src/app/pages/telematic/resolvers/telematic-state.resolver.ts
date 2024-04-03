@@ -17,7 +17,10 @@ import {
 })
 export class TelematicResolver implements Resolve<TelematicStateState> {
     constructor(
+        // Services
         private telematicService: TelematicStateService,
+
+        // Store
         private telematicStore: TelematicStateStore
     ) {}
     resolve(): Observable<any> {

@@ -8,17 +8,17 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-// models
+// Models
 import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
 import {
     CardRows,
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
 
-// helpers
+// Helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
-// services
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({

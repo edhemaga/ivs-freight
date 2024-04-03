@@ -1,4 +1,3 @@
-import { distinctUntilChanged } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
     ChangeDetectorRef,
@@ -7,10 +6,10 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { RepairShopResponse } from 'appcoretruckassist';
 import { Subject, take, takeUntil } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
-// services
+// Services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { RepairService } from '../../../../shared/services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
@@ -18,9 +17,12 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
-// store
+// Store
 import { RepairDetailsQuery } from '../../state/repair-details-state/repair-details.query';
 import { RepairDetailsStore } from '../../state/repair-details-state/repair-details.store';
+
+// Models
+import { RepairShopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-details',
@@ -42,15 +44,22 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public repairedDataLength: number = 0;
     public currentIndex: number = 0;
     constructor(
-        private act_route: ActivatedRoute,
-        private detailsPageDriverService: DetailsPageService,
+        // Router
         private router: Router,
+        private act_route: ActivatedRoute,
+
+        // Services
+        private detailsPageDriverService: DetailsPageService,
         private shopService: RepairService,
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
-        private cdRef: ChangeDetectorRef,
         private DetailsDataService: DetailsDataService,
         private dropDownService: DropDownService,
+
+        // Ref
+        private cdRef: ChangeDetectorRef,
+
+        // Store
         private repairDetailsQuery: RepairDetailsQuery,
         private repairDetailsStore: RepairDetailsStore
     ) {}
@@ -297,18 +306,16 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         let last = this.repairList.at(-1);
         if (
             last.id ===
-            this.repairDetailsStore.getValue().repairShopMinimal.pagination.data[
-                this.currentIndex
-            ].id
+            this.repairDetailsStore.getValue().repairShopMinimal.pagination
+                .data[this.currentIndex].id
         ) {
             this.currentIndex = --this.currentIndex;
         } else {
             this.currentIndex = ++this.currentIndex;
         }
         let repairId =
-            this.repairDetailsStore.getValue().repairShopMinimal.pagination.data[
-                this.currentIndex
-            ].id;
+            this.repairDetailsStore.getValue().repairShopMinimal.pagination
+                .data[this.currentIndex].id;
 
         this.shopService
             .deleteRepairShopByIdDetails(id)

@@ -1,9 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { takeUntil, Subject, tap, of } from 'rxjs';
-
-// Store
-import { TelematicStateStore } from '../state/telematic-state.store';
 
 // Services
 import { GpsServiceService } from 'src/app/global/services/gps-service.service';
@@ -21,8 +17,7 @@ export class TelematicStateService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private telematicStateStore: TelematicStateStore,
-        private http: HttpClient,
+        // Services
         private gpsService: GpsServiceService,
         private telematicsService: TelematicsService
     ) {}

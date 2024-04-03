@@ -35,7 +35,9 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     public dotsData: any;
     public stopsDataPickup: any;
     public stopsDataDelivery: any;
+
     constructor(private reviewRatingService: ReviewsRatingService) {}
+    
     ngOnChanges(changes: SimpleChanges) {
         if (
             changes.brokerData?.currentValue !=

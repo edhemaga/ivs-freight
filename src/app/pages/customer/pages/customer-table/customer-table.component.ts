@@ -23,16 +23,16 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
 
-// Queries
+// Store
+import { BrokerState } from '../../state/broker-state/broker.store';
+import { ShipperState } from '../../state/shipper-state/shipper.store';
 import { BrokerQuery } from '../../state/broker-state/broker.query';
 import { ShipperQuery } from '../../state/shipper-state/shipper.query';
 
-// Stores
-import { BrokerState } from '../../state/broker-state/broker.store';
-import { ShipperState } from '../../state/shipper-state/shipper.store';
-
-// Modals
+// Models
 import {
     BrokerResponse,
     GetBrokerListResponse,
@@ -54,11 +54,6 @@ import {
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
 import {
-    getBrokerColumnDefinition,
-    getShipperColumnDefinition,
-} from 'src/assets/utils/settings/customer-columns';
-import { CustomerCardDataConfig } from './utils/constants/customer-card-data-config.constants';
-import {
     FilterOptionBroker,
     FilterOptionshipper,
 } from 'src/app/core/components/shared/model/table-components/customer.modals';
@@ -67,15 +62,9 @@ import {
     TableColumnConfig,
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
-// Services
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
-
-// Globals
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+// Constants
+import { CustomerCardDataConfig } from './utils/constants/customer-card-data-config.constants';
+import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 // Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
@@ -83,20 +72,23 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
-// Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-
-//Filters
-import {
-    calculateDistanceBetweenTwoCitysByCoordinates,
-    checkSpecialFilterArray,
-} from 'src/app/core/helpers/dataFilter';
-
-//helpers
+// Helpers
 import {
     getDropdownBrokerContent,
     getDropdownShipperContent,
 } from 'src/app/core/helpers/dropdown-content';
+import {
+    calculateDistanceBetweenTwoCitysByCoordinates,
+    checkSpecialFilterArray,
+} from 'src/app/core/helpers/dataFilter';
+import {
+    getBrokerColumnDefinition,
+    getShipperColumnDefinition,
+} from 'src/assets/utils/settings/customer-columns';
+import {
+    tableSearch,
+    closeAnimationAction,
+} from 'src/app/core/utils/methods.globals';
 
 @Component({
     selector: 'app-customer-table',
@@ -492,7 +484,7 @@ export class CustomerTableComponent
                             | ConstantStringTableComponentsEnum
                             | string =
                             ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
-                            
+
                         this.viewData.map((data: ShipperResponse) => {
                             response.map((r: ShipperResponse) => {
                                 if (data.id === r.id) {
@@ -1431,7 +1423,10 @@ export class CustomerTableComponent
     }
 
     // Get Business Name
-    private getBusinessName(event: CustomerBodyResponse, businessName: string): string {
+    private getBusinessName(
+        event: CustomerBodyResponse,
+        businessName: string
+    ): string {
         if (!businessName) {
             return (businessName = event.data.businessName);
         } else {

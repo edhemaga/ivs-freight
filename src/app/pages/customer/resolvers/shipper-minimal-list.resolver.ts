@@ -21,8 +21,12 @@ export class ShipperMinimalListResolver
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;
+
     constructor(
+        // Services
         private shipperService: ShipperService,
+
+        // Store
         private shipperMinimalListStore: ShipperMinimalListStore
     ) {}
     resolve(): Observable<ShipperMinimalListResponse> | Observable<any> {

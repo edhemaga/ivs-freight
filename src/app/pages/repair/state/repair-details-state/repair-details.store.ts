@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
 // Models
-import { IRepairD } from '../../models/repair-d.model';
+import { RepairResponse } from '../../models/repair-response.model';
 
-export interface RepairDetailsState extends EntityState<IRepairD> {}
+export interface RepairDetailsState extends EntityState<RepairResponse> {}
 
 export const initialState = (): RepairDetailsState => {
     return {

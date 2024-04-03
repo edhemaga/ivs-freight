@@ -11,19 +11,19 @@ import {
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-// models
+// Models
 import { CardDetails, SendDataCard } from 'src/app/core/components/shared/model/card-table-data.model';
 import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
 
-// pipes
+// Pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { TimeFormatPipe } from 'src/app/core/pipes/time-format-am-pm.pipe';
 
-// services
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
-// helpers
+// Helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
 
 @Component({

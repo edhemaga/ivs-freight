@@ -53,16 +53,19 @@ import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
+        NgbModule,
+
+        // Components
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
-        ReactiveFormsModule,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaInputComponent,
-        NgbModule,
     ],
 })
 export class PmModalComponent implements OnInit, OnDestroy {
@@ -77,7 +80,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
+        // Form
         private formBuilder: UntypedFormBuilder,
+
+        // Services
         private pmService: PmService,
         private inputService: TaInputService,
         private modalService: ModalService,

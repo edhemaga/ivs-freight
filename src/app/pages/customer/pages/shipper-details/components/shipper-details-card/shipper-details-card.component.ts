@@ -162,6 +162,7 @@ export class ShipperDetailsCardComponent implements OnInit, OnChanges, OnDestroy
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery
     ) {}
+    
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.note.patchValue(changes?.shipper.currentValue.note);

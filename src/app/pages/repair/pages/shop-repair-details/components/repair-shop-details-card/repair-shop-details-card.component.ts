@@ -161,13 +161,20 @@ export class RepairShopCardViewComponent
     };
 
     constructor(
-        private detailsPageDriverSer: DetailsPageService,
-        private tableService: TruckassistTableService,
-        private cdRef: ChangeDetectorRef,
-        private repairDetailsQuery: RepairDetailsQuery,
+        // Router
         private act_route: ActivatedRoute,
         private router: Router,
-        private repairService: RepairService
+
+        // Services
+        private detailsPageDriverSer: DetailsPageService,
+        private tableService: TruckassistTableService,
+        private repairService: RepairService,
+
+        // Ref
+        private cdRef: ChangeDetectorRef,
+
+        // Store
+        private repairDetailsQuery: RepairDetailsQuery
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {

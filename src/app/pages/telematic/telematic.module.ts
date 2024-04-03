@@ -7,7 +7,7 @@ import { TelematicRoutingModule } from './telematic-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-// components
+// Components
 import { TelematicMapComponent } from './pages/telematic-map/telematic-map.component';
 import { GpsProgressbarComponent } from 'src/app/core/components/shared/gps-progressbar/gps-progressbar.component';
 import { MapMarkerDropdownComponent } from 'src/app/core/components/shared/map-marker-dropdown/map-marker-dropdown.component';

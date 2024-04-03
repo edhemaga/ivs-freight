@@ -14,7 +14,10 @@ import { DispatcherService } from '../services/dispatcher.service';
 })
 export class DispatcherResolver implements Resolve<any> {
     constructor(
+        // Services
         private dispatcherService: DispatcherService,
+
+        // Store
         private dispatcherQuery: DispatcherQuery
     ) {}
     resolve(): Observable<any> {

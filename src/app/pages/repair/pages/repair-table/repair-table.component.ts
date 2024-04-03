@@ -152,20 +152,29 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public sendDataToCardsBack: CardRows[];
 
     constructor(
+        // Router
+        public router: Router,
+
+        // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
-        public router: Router,
+        private repairService: RepairService,
+        private reviewRatingService: ReviewsRatingService,
+        private mapsService: MapsService,
+        private confiramtionService: ConfirmationService,
+
+        // Store
         private repairShopQuery: RepairShopQuery,
         private repairTruckQuery: RepairTruckQuery,
         private repairTrailerQuery: RepairTrailerQuery,
-        private repairService: RepairService,
+        private repairTrailerStore: RepairTrailerStore,
+
+        // Pipes
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private reviewRatingService: ReviewsRatingService,
-        private ref: ChangeDetectorRef,
-        private mapsService: MapsService,
-        private repairTrailerStore: RepairTrailerStore,
-        private confiramtionService: ConfirmationService
+
+        // Ref
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {

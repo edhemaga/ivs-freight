@@ -1,12 +1,11 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-// Modules
+// Helpers
 import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
 } from 'src/assets/utils/settings/pm-columns';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Components
 import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
@@ -28,9 +27,10 @@ import { PmService } from '../../services/pm.service';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-
-// Data
 import { DisplayPMConfiguration } from './utils/constants/pm-card-data.constants';
+
+// Enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import {
     TooltipColors,

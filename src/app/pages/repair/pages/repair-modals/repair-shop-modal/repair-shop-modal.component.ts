@@ -195,7 +195,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public contactAddedCounter: number = 0;
 
     constructor(
+        // Form
         private formBuilder: UntypedFormBuilder,
+
+        // Services
         private inputService: TaInputService,
         private shopService: RepairService,
         private modalService: ModalService,
@@ -203,6 +206,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private reviewRatingService: ReviewsRatingService,
         private taLikeDislikeService: TaLikeDislikeService,
+
+        // Ref
         private cdr: ChangeDetectorRef
     ) {}
 

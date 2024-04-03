@@ -15,8 +15,11 @@ import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.sto
 })
 export class PmTruckResolver implements Resolve<PmTruckState> {
     constructor(
-        private pmService: PmService,
+        // Store
         private pmTruckStore: PmTruckStore,
+        
+        // Services
+        private pmService: PmService,
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {

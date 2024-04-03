@@ -24,7 +24,7 @@ import { CommonModule } from '@angular/common';
 // moment
 import moment from 'moment';
 
-// helpers
+// Helpers
 import {
     convertDateFromBackend,
     convertDateToBackend,
@@ -32,12 +32,12 @@ import {
     convertThousanSepInNumber,
 } from '../../../../../core/utils/methods.calculations';
 
-// pipes
+// Pipes
 import { PriceCalculationArraysPipe } from '../../../../../core/pipes/price-calculation-arrays.pipe';
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { formatPhonePipe } from '../../../../../core/pipes/formatPhone.pipe';
 
-// services
+// Services
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
@@ -45,21 +45,21 @@ import { FormService } from '../../../../../core/services/form/form.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 
-// models
+// Models
 import {
     EnumValue,
     RepairModalResponse,
     RepairShopResponse,
+    RepairResponse,
 } from 'appcoretruckassist';
-import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
 import { RepairTypes } from './models/repair-types.model';
 import { RepairSubtotal } from './models/repair-subtotal.model';
 import { RepairData } from './models/repair-data.model';
 
-// modules
+// Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// validators
+// Validators
 import {
     invoiceValidation,
     repairOdometerValidation,
