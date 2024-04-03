@@ -51,7 +51,7 @@ import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassis
 import { Trailer } from '../../../../../shared/models/card-table-data.model';
 
 //Pipes
-import { SumArraysPipe } from '../../../../../shared/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
 //Enums
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
