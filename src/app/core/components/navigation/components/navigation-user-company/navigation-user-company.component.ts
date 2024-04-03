@@ -37,16 +37,6 @@ export class NavigationUserCompanyComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        // ----------------------- PRODUCSTION MODE ----------------------------
-        // if(this.authQuery.getEntity(1)) {
-        //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
-
-        //   if (currentUser.token) {
-        //     return true;
-        //   }
-        // }
-
-        // ----------------------- DEVELOP MODE ----------------------------
         let arr = JSON.parse(localStorage.getItem('user')).companies;
 
         arr.length > 1

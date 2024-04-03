@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 //Pipes
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
 //Animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';

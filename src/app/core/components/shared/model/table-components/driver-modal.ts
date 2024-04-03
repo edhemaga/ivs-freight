@@ -1,4 +1,4 @@
-import { DropdownItem } from '../card-table-data.model';
+import { DropdownItem } from '../../../../../shared/models/card-table-data.model';
 
 export interface DriverModal {
     id: number;

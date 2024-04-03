@@ -8,7 +8,9 @@
         <div class="title-container">
             <div
                 class="marker-info-text marker-bold-text uppercase text-ellipsis"
-                [ngClass]="{ 'permanently-closed-text': status == 0 || item.isClosed }"
+                [ngClass]="{
+                    'permanently-closed-text': status == 0 || item.isClosed
+                }"
             >
                 <span *ngIf="status == 0 || item.isClosed">
                     <svg-icon
@@ -17,12 +19,17 @@
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     ></svg-icon>
                 </span>
-                <span class="title-text">{{ title }} <ng-container *ngIf="type == 'fuelStop'">- {{ item.store }}</ng-container></span>
+                <span class="title-text"
+                    >{{ title }}
+                    <ng-container *ngIf="type == 'fuelStop'"
+                        >- {{ item.store }}</ng-container
+                    ></span
+                >
             </div>
             <div class="d-flex">
                 <svg-icon
                     class="favorite-svg"
-                    [ngClass]="{ 'active': item?.favourite }"
+                    [ngClass]="{ active: item?.favourite }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     *ngIf="
@@ -108,8 +115,12 @@
                     ></svg-icon>
                 </span>
                 <span class="marker-like-text marker-medium-text"
-                    ><span class="marker-bold-text">${{ item.pricePerGallon ? item.pricePerGallon : '3.31' }}</span> - 4 days
-                    ago</span
+                    ><span class="marker-bold-text"
+                        >${{
+                            item.pricePerGallon ? item.pricePerGallon : '3.31'
+                        }}</span
+                    >
+                    - 4 days ago</span
                 >
             </div>
             <div *ngIf="sortCategory.name == 'Date Added'">
@@ -122,7 +133,16 @@
             </div>
             <div *ngIf="sortCategory.name == 'Last Used Date'">
                 <div class="marker-like-text marker-medium-text">
-                    Last Used <span class="marker-bold-text">{{ item?.lastUsed != null ? (item?.lastUsed | formatDateP) : item?.lastVisited != null ? (item.lastVisited | formatDateP) : item?.updatedAt != null ? (item.updatedAt | formatDateP) : '&nbsp;' }}</span>
+                    Last Used
+                    <span class="marker-bold-text">{{
+                        item?.lastUsed != null
+                            ? (item?.lastUsed | formatDateP)
+                            : item?.lastVisited != null
+                            ? (item.lastVisited | formatDateP)
+                            : item?.updatedAt != null
+                            ? (item.updatedAt | formatDateP)
+                            : '&nbsp;'
+                    }}</span>
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Pickups'">
@@ -186,14 +206,25 @@
             </div>
             <div *ngIf="sortCategory.name == 'Transaction'">
                 <div class="marker-like-text">
-                    <span class="marker-bold-text">{{ item.fuelTransactions ? item.fuelTransactions.length : '2,473' }}</span> Transaction
+                    <span class="marker-bold-text">{{
+                        item.fuelTransactions
+                            ? item.fuelTransactions.length
+                            : '2,473'
+                    }}</span>
+                    Transaction
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Total Cost'">
                 <div class="marker-like-text">
                     Total Cost
                     <span class="marker-bold-text"
-                        >${{ item.totalCost != null && item.totalCost > 0 ? (item.totalCost | taThousandSeparator) : item.cost != null && item.cost > 0 ? (item.cost | taThousandSeparator) : '0' }}</span
+                        >${{
+                            item.totalCost != null && item.totalCost > 0
+                                ? (item.totalCost | thousandSeparator)
+                                : item.cost != null && item.cost > 0
+                                ? (item.cost | thousandSeparator)
+                                : '0'
+                        }}</span
                     >
                 </div>
             </div>

@@ -15,7 +15,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import { Truck, Trailer } from 'src/app/core/components/shared/model/pm';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
@@ -42,13 +42,13 @@ import { PmTruckQuery } from '../../state/pm-truck-state/pm-truck.query';
 import { PmTrailerQuery } from '../../state/pm-trailer-state/pm-trailer.query';
 
 // Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 @Component({
     selector: 'app-pm-table',
     templateUrl: './pm-table.component.html',
     styleUrls: ['./pm-table.component.scss'],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -90,7 +90,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private pmTrailerQuery: PmTrailerQuery,
 
         // Pipes
-        private thousandSeparator: TaThousandSeparatorPipe
+        private thousandSeparator: ThousandSeparatorPipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------

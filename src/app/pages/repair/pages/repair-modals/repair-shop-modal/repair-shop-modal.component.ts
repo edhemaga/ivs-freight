@@ -80,7 +80,7 @@ import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta
 import { TaModalTableComponent } from '../../../../../core/components/standalone-components/ta-modal-table/ta-modal-table.component';
 
 // Pipes
-import { ActiveItemsPipe } from '../../../../../core/pipes/activeItems.pipe';
+import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -581,18 +581,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         ) {
             return;
         }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
-        // -------------------------- DEVELOP MODE --------------------------------
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(

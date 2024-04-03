@@ -9,14 +9,14 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Models
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 import {
     CardRows,
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
 
 // Helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -25,7 +25,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     selector: 'app-pm-card',
     templateUrl: './pm-card.component.html',
     styleUrls: ['./pm-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     // All data
@@ -54,7 +54,7 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -74,19 +74,19 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -111,17 +111,14 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public trackCard(item: number): number {

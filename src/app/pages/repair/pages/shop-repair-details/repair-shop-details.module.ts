@@ -27,8 +27,8 @@ import { DetailsDropdownComponent } from 'src/app/core/components/shared/details
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 // Pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
 @NgModule({
     declarations: [
@@ -63,8 +63,8 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
         DetailsDropdownComponent,
 
         // Pipes
-        formatDatePipe,
-        formatCurrency,
+        FormatDatePipe,
+        FormatCurrency,
     ],
 })
 export class RepairShopDetailsModule {}

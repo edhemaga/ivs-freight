@@ -1,6 +1,6 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { DropdownItem } from '../card-table-data.model';
-import { CommentResponse } from 'appcoretruckassist';
+import { DropdownItem } from '../../../../../shared/models/card-table-data.model';
+import { LoadBroker } from 'src/app/shared/models/load-broker.model';
 
 export interface LoadResponse {
     id?: number;
@@ -134,11 +134,6 @@ interface LoadDispatcher {
     avatar: string | SafeResourceUrl;
 }
 
-interface LoadBroker {
-    hasBanDnu: boolean;
-    isDnu?: boolean;
-    name: string;
-}
 interface LoadInvoice {
     invoice: string;
     type: string;

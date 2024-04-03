@@ -23,45 +23,45 @@ import { TaPickupDeliveryComponent } from 'src/app/core/components/shared/ta-pic
 import { ColorFinderPipe } from './pipes/color-finder.pipe';
 import { HosFilterPipe } from './pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from './pipes/tooltip-width.pipe';
-import { CdkIdPipe } from 'src/app/core/pipes/cdkid.pipe';
-import { CdkConnectPipe } from 'src/app/core/pipes/cdkconnect.pipe';
-import { HosTimePipe } from 'src/app/core/pipes/hostime';
+import { CdkIdPipe } from 'src/app/pages/dispatch/pipes/cdk-id.pipe';
+import { CdkConnectPipe } from 'src/app/pages/dispatch/pipes/cdk-connect.pipe';
+import { HosTimePipe } from 'src/app/pages/dispatch/pipes/hos-time.pipe';
 
 @NgModule({
-  declarations: [
-    // Components
-    DispatchComponent,
-    DispatchTableComponent,
+    declarations: [
+        // Components
+        DispatchComponent,
+        DispatchTableComponent,
 
-    // Pipes
-    ColorFinderPipe,
-    HosFilterPipe,
-    TooltipWidthPipe
-  ],
-  imports: [
-    // Modules
-    AngularSvgIconModule,
-    CommonModule,
-    DispatchRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    NgbModule,
+        // Pipes
+        ColorFinderPipe,
+        HosFilterPipe,
+        TooltipWidthPipe,
+    ],
+    imports: [
+        // Modules
+        AngularSvgIconModule,
+        CommonModule,
+        DispatchRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        NgbModule,
 
-    // Pipes
-    CdkIdPipe,
-    CdkConnectPipe,
-    HosTimePipe,
+        // Pipes
+        CdkIdPipe,
+        CdkConnectPipe,
+        HosTimePipe,
 
-    // Components
-    AppTooltipComponent,
-    TruckassistTableToolbarComponent,
-    TaInputDropdownComponent,
-    InputAddressDropdownComponent,
-    TaStatusSwitchComponent,
-    GpsProgressbarComponent,
-    TaNoteComponent,
-    TaPickupDeliveryComponent
-  ]
+        // Components
+        AppTooltipComponent,
+        TruckassistTableToolbarComponent,
+        TaInputDropdownComponent,
+        InputAddressDropdownComponent,
+        TaStatusSwitchComponent,
+        GpsProgressbarComponent,
+        TaNoteComponent,
+        TaPickupDeliveryComponent,
+    ],
 })
-export class DispatchModule { }
+export class DispatchModule {}

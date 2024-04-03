@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+
+// services
 import { NotificationService } from '../services/notification/notification.service';
 
 @Injectable({ providedIn: 'root' })
@@ -10,26 +12,17 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     canActivate() {
-        // ----------------------- PRODUCSTION MODE ----------------------------
-        // if(this.authQuery.getEntity(1)) {
-        //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
-
-        //   if (currentUser.token) {
-        //     return true;
-        //   }
-        // }
-
-        // ----------------------- DEVELOP MODE ----------------------------
         const user = JSON.parse(localStorage.getItem('user'));
 
-        if (user) {
-            return true;
-        }
+        if (user) return true;
+
         this.router.navigate(['/website']);
+
         this.notification.warning(
             'Access forbidden, please contact administrator.',
             'Warning:'
         );
+
         return false;
     }
 }

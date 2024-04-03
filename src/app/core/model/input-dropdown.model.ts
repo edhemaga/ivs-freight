@@ -1,4 +1,4 @@
-import { CardDetails } from '../components/shared/model/card-table-data.model';
+import { CardDetails } from '../../shared/models/card-table-data.model';
 
 export interface DropdownData {
     card: CardDetails;

@@ -18,7 +18,7 @@ import { ContactState } from '../../state/contact.store';
 import { ContactQuery } from '../../state/contact.query';
 
 // pipes
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 
 // helpers
 import {
@@ -56,7 +56,7 @@ import {
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
-import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 
 @Component({
     selector: 'app-contacts-table',

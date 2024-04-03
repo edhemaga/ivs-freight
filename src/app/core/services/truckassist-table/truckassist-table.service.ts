@@ -11,7 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {
     Column,
     ColumnWidthData,
-} from '../../components/shared/model/card-table-data.model';
+} from '../../../shared/models/card-table-data.model';
 
 import { AllTableAnimationModel } from 'src/app/shared/models/all-table-animation.model';
 

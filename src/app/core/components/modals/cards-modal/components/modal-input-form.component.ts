@@ -23,7 +23,7 @@ import { LoadQuery } from '../state/store/load-modal.query';
 import { CardModalEnum } from '../utils/enums/card-modals.enum';
 
 // helper
-import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
+import { CardDropdownHelper } from 'src/app/shared/utils/helpers/card-dropdown-helper';
 
 @Component({
     selector: 'app-modal-input-form',
@@ -162,7 +162,7 @@ export class ModalInputFormComponent implements ControlValueAccessor {
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        return higlihtComment.higlitsPartOfCommentSearchValue(
+        return CardDropdownHelper.higlitsPartOfCommentSearchValue(
             commentTitle,
             this.lattersToHighlight,
             this.sanitizer

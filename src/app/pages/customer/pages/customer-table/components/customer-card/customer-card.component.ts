@@ -12,25 +12,31 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // Models
-import { CardDetails, SendDataCard } from 'src/app/core/components/shared/model/card-table-data.model';
-import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
+import {
+    CardDetails,
+    SendDataCard,
+} from 'src/app/shared/models/card-table-data.model';
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
 
 // Pipes
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { TimeFormatPipe } from 'src/app/core/pipes/time-format-am-pm.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { TimeFormatPipe } from 'src/app/shared/pipes/time-format-am-pm.pipe';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
 // Helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-customer-card',
     templateUrl: './customer-card.component.html',
     styleUrls: ['./customer-card.component.scss'],
-    providers: [formatCurrency, TimeFormatPipe, ValueByStringPath],
+    providers: [FormatCurrency, TimeFormatPipe, CardHelper],
 })
 export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
@@ -66,7 +72,7 @@ export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
         private router: Router,
 
         // Helpers
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -86,19 +92,19 @@ export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -130,7 +136,7 @@ export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

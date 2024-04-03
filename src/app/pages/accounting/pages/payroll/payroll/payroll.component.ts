@@ -5,7 +5,7 @@ import {
     ViewEncapsulation,
     AfterViewInit,
 } from '@angular/core';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { getPayrollDriverMilesDefinition } from 'src/assets/utils/settings/payroll-columns';
 import { DriversActiveQuery } from '../../../../driver/state/driver-active-state/driver-active.query';
 import { DriversActiveState } from '../../../../driver/state/driver-active-state/driver-active.store';

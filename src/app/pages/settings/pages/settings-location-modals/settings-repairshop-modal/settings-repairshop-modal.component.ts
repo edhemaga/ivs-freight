@@ -45,7 +45,7 @@ import { InputAddressDropdownComponent } from '../../../../../core/components/sh
 import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
 
 // pipes
-import { ActiveItemsPipe } from '../../../../../core/pipes/activeItems.pipe';
+import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
 
 // utils
 import {

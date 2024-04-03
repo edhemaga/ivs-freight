@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { CardDetails } from '../../shared/model/card-table-data.model';
+import { CardDetails } from '../../../../shared/models/card-table-data.model';
 
 @Injectable({
     providedIn: 'root',

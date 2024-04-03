@@ -28,7 +28,7 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 
 // pipes
 import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -36,7 +36,7 @@ import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
 import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
 
 //Helpers
-import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 import {
     closeAnimationAction,
     tableSearch,
@@ -57,14 +57,14 @@ import { TruckFilter } from './models/truck-filter.model';
 import {
     DropdownItem,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import { TruckBodyResponse } from './models/truck-body-response.model';
 
 @Component({
     selector: 'app-truck-table',
     templateUrl: './truck-table.component.html',
     styleUrls: ['./truck-table.component.scss'],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -112,7 +112,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe
     ) {}
 
@@ -616,7 +616,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
             ),
             tabelLength: data?.truckLength?.name
-                ? getLengthNumber(data?.truckLength?.name)
+                ? DataFilterHelper.getLengthNumber(data?.truckLength?.name)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             textMake: data?.truckMake?.name
                 ? data.truckMake.name

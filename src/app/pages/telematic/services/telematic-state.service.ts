@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { takeUntil, Subject, tap, of } from 'rxjs';
 
 // Services
-import { GpsServiceService } from 'src/app/global/services/gps-service.service';
+import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
 
 // Models
 import {

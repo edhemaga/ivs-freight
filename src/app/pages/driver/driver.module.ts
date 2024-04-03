@@ -35,7 +35,7 @@ import { TableCardDropdownActionsComponent } from 'src/app/core/components/stand
 import { ProgresBarComponent } from 'src/app/core/components/standalone-components/progres-bar/progres-bar.component';
 
 //pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 
@@ -66,7 +66,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         ProgresBarComponent,
 
         //pipes
-        formatDatePipe,
+        FormatDatePipe,
     ],
 })
 export class DriverModule {}

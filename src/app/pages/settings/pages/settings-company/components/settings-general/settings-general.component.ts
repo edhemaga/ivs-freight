@@ -21,7 +21,7 @@ import { ConfirmationService } from 'src/app/core/components/modals/confirmation
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // pipes
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
 
 // enums
 import { SettingsGeneralStringEnum } from '../../../../enums/settings-general-string.enum';

@@ -21,8 +21,8 @@ import { SpecialFilterComponent } from 'src/app/core/components/standalone-compo
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 //Pipe
-import { moneyFilterPipe } from 'src/app/core/pipes/moneyFilter.pipe';
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { MoneyFilterPipe } from 'src/app/core/pipes/money-filter.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
 //Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -38,8 +38,8 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
         CarrierSearchComponent,
         FilterComponent,
         AngularSvgIconModule,
-        formatCurrency,
-        moneyFilterPipe,
+        FormatCurrency,
+        MoneyFilterPipe,
         SpecialFilterComponent,
     ],
 })

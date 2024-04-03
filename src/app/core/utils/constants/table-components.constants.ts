@@ -11,7 +11,7 @@ import {
     FilterOptionApplicant,
     FilterOptionDriver,
 } from '../../components/shared/model/table-components/driver-modal';
-import { DropdownItem } from '../../components/shared/model/card-table-data.model';
+import { DropdownItem } from '../../../shared/models/card-table-data.model';
 import { FilterOptionsLoad } from '../../components/shared/model/table-components/load-modal';
 
 import { SortTypes } from '../../model/fuel';

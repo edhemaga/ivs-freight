@@ -32,7 +32,7 @@ import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
 import {
     DropdownItem,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import {
     TableOptionsInterface,
     CardRows,
@@ -61,7 +61,7 @@ import {
 } from '../../state/repair-trailer-state/repair-trailer.store';
 
 // Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -71,7 +71,7 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 import { RepairCardConfig } from '../../utils/constants/repair-card-config.constants';
 
 // Helpers
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // Methods
 import {
@@ -91,7 +91,7 @@ import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-moda
         './repair-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private destroy$ = new Subject<void>();
@@ -171,7 +171,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // Pipes
         public datePipe: DatePipe,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
 
         // Ref
         private ref: ChangeDetectorRef
@@ -593,7 +593,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 moneyCountSelected: false,
                 data: repairTruckData,
                 gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
-                repairArray: checkSpecialFilterArray(
+                repairArray: DataFilterHelper.checkSpecialFilterArray(
                     repairTruckData,
                     ConstantStringTableComponentsEnum.ORDER_2,
                     ConstantStringTableComponentsEnum.REPAIR_TYPE
@@ -620,7 +620,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 moneyCountSelected: false,
                 data: repairTrailerData,
                 gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
-                repairArray: checkSpecialFilterArray(
+                repairArray: DataFilterHelper.checkSpecialFilterArray(
                     repairTrailerData,
                     ConstantStringTableComponentsEnum.ORDER_2,
                     ConstantStringTableComponentsEnum.REPAIR_TYPE
@@ -642,7 +642,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 data: repairShopData,
                 gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
                 stateName: 'repair_shops',
-                closedArray: checkSpecialFilterArray(
+                closedArray: DataFilterHelper.checkSpecialFilterArray(
                     repairShopData,
                     ConstantStringTableComponentsEnum.STATUS
                 ),
