@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { RoutingStateService } from '../services/routing-state.service';
+
+// services
+import { RoutingStateService } from '../../../shared/services/routing-state.service';
+
+//store
 import {
     RoutingStateState,
     RoutingStateStore,
@@ -11,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class RoutingResolver implements Resolve<RoutingStateState> {
+export class RoutingStateResolver implements Resolve<RoutingStateState> {
     constructor(
         private routingService: RoutingStateService,
         private routingStore: RoutingStateStore

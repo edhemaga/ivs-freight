@@ -1,14 +1,20 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+
+//Pipe
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+
+//Service
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { CompanyOfficeService } from '../../../../../../shared/services/company-office.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
-import { CompanyTOfficeService } from '../../../custom-agreement/service/company-office.service';
+
+//Utils
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 @Component({
     selector: 'app-settings-office',
     templateUrl: './settings-office.component.html',
@@ -22,7 +28,7 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
     public officeDataById: any;
     constructor(
         private settingsLocationService: SettingsLocationService,
-        private companyOfficeService: CompanyTOfficeService,
+        private companyOfficeService: CompanyOfficeService,
         private tableService: TruckassistTableService,
         private cdRef: ChangeDetectorRef,
         private dropDownService: DropDownService,

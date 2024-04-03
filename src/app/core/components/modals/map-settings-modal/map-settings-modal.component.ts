@@ -10,7 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { RoutingStateService } from 'src/app/pages/routing/services/routing-state.service';
+import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { UpdateMapCommand } from 'appcoretruckassist';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';

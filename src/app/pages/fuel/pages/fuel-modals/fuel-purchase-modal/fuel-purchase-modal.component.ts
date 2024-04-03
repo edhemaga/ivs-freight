@@ -20,7 +20,7 @@ import { TaInputService } from '../../../../../core/components/shared/ta-input/t
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
-import { TruckTService } from 'src/app/pages/truck/services/truck.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
 
 //Components
 import { AppTooltipComponent } from '../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
@@ -146,7 +146,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private fuelService: FuelTService,
         private sumArrays: SumArraysPipe,
-        private truckService: TruckTService
+        private truckService: TruckService
     ) {}
 
     ngOnInit() {

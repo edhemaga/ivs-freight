@@ -1,14 +1,18 @@
-import { SettingsComponent } from './pages/settings/settings.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { companySettingsResolver } from './resolvers/company-settings.resolver';
-import { ParkingResolver } from './resolvers/company-parking.resolver';
-import { cOfficeResolver } from './resolvers/company-office.resolver';
-import { TerminalResolver } from './resolvers/company-terminal.resolver';
-import { companyRepairShopResolver } from './resolvers/company-repairshop.resolver';
+
+// resolvers
+import { CompanySettingsResolver } from './resolvers/company-settings.resolver';
+import { CompanyParkingResolver } from './resolvers/company-parking.resolver';
+import { CompanyOfficeResolver } from './resolvers/company-office.resolver';
+import { CompanyTerminalResolver } from './resolvers/company-terminal.resolver';
+import { CompanyRepairShopResolver } from './resolvers/company-repairshop.resolver';
 import { UserResolver } from '../user/resolvers/user.resolver';
+import { CompanyIntegrationsResolver } from './resolvers/company-integrations.resolver';
+
+// components
 import { UnderConstructionComponent } from '../../core/components/under-construction/under-construction.component';
-import { integrationResolver } from './resolvers/company-integrations.resolver';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
     {
@@ -23,11 +27,11 @@ const routes: Routes = [
                         './pages/settings-company/settings-company.module'
                     ).then((m) => m.SettingsCompanyModule),
                 resolve: {
-                    company: companySettingsResolver,
-                    parking: ParkingResolver,
-                    office: cOfficeResolver,
-                    terminal: TerminalResolver,
-                    companyrepairshop: companyRepairShopResolver,
+                    company: CompanySettingsResolver,
+                    parking: CompanyParkingResolver,
+                    office: CompanyOfficeResolver,
+                    terminal: CompanyTerminalResolver,
+                    companyrepairshop: CompanyIntegrationsResolver,
                 },
                 data: { title: 'Company' },
             },
@@ -38,10 +42,10 @@ const routes: Routes = [
                         './pages/settings-location/settings-location.module'
                     ).then((m) => m.SettingsLocationModule),
                 resolve: {
-                    parking: ParkingResolver,
-                    office: cOfficeResolver,
-                    terminal: TerminalResolver,
-                    companyrepairshop: companyRepairShopResolver,
+                    parking: CompanyParkingResolver,
+                    office: CompanyOfficeResolver,
+                    terminal: CompanyTerminalResolver,
+                    companyrepairshop: CompanyRepairShopResolver,
                 },
                 data: { title: 'Location' },
             },
@@ -96,7 +100,7 @@ const routes: Routes = [
                         './pages/settings-integration/settings-integration.module'
                     ).then((m) => m.SettingsIntegrationModule),
                 data: { title: 'Integration' },
-                resolve: { integrationResolver },
+                resolve: { CompanyIntegrationsResolver },
             },
         ],
     },

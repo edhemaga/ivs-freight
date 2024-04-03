@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { CompanyTerminalService } from '../pages/settings-location/components/settings-terminal/services/company-terminal.service';
+
+// services
+import { CompanyTerminalService } from '../services/company-terminal.service';
+
+// state
 import {
     TerminalState,
     TerminalStore,
 } from '../state/settings-terminal-state/company-terminal.store';
+
+//core
 import { TerminalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TerminalResolver implements Resolve<TerminalState> {
+export class CompanyTerminalResolver implements Resolve<TerminalState> {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;

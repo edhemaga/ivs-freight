@@ -10,15 +10,6 @@ import {
     HostListener,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-
-//Services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckTService } from '../../../../services/truck.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-
-//Animations
-
 import {
     animate,
     style,
@@ -26,32 +17,40 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// services
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { TruckService } from '../../../../../../shared/services/truck.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
+// animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
-//Store
+// store
 import { TrucksMinimalListQuery } from '../../../../state/truck-details-minima-list-state/truck-details-minimal.query';
 
-//Models
-import { TruckResponse } from 'appcoretruckassist';
-
-import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
-
-//Enums
+// enums
 import {
     AxisPositionEnum,
     ChartLegendDataEnum,
 } from 'src/app/core/components/standalone-components/ta-chart/enums/chart-enums';
 
-//Constants
+// constants
 import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
 
-//Components
+// components
+import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+
+// models
+import { TruckResponse } from 'appcoretruckassist';
+import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     ChartApiCall,
     LegendAttributes,
 } from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
-import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -391,7 +390,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckTService,
+        private truckService: TruckService,
         public imageBase64Service: ImageBase64Service
     ) {}
 
@@ -566,11 +565,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 );
             });
     }
-    public getPerformanceChart(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ) {
+    public getPerformanceChart(id: number, chartType: number) {
         if (
             id != this.performanceCall.id ||
             chartType != this.performanceCall.chartType
@@ -968,7 +963,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public getTruckChartData(id: number): void {
         this.getExpensesChartData(id, this.expensesCall.chartType, false);
-        this.getPerformanceChart(id, this.performanceCall.chartType, false);
+        this.getPerformanceChart(id, this.performanceCall.chartType);
 
         this.getFuelConsumtionChartData(id, this.fuelCall.chartType, false);
         this.getRevenueChartData(id, this.revenueCall.chartType, false);

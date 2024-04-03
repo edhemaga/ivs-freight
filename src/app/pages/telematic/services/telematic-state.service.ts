@@ -1,9 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { ID } from '@datorama/akita';
 import { HttpClient } from '@angular/common/http';
 import { TelematicStateStore } from '../state/telematic-state.store';
-import { TelematicState } from '../models/telematic-state.model';
-import { takeUntil, Subject, Observable, tap, BehaviorSubject, of } from 'rxjs';
+import { takeUntil, Subject, tap, of } from 'rxjs';
 import {
     TelematicsService,
     AssignGpsDevicesToCompanyCommand,

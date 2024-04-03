@@ -1,14 +1,23 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { ViolationModalComponent } from 'src/app/core/components/modals/violation-modal/violation-modal.component';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+// store
 import { RoadsideInactiveState } from '../../state/roadside-state/roadside-inactive/roadside-inactive.store';
 import { RoadsideActiveState } from '../../state/roadside-state/roadside-active/roadside-active.store';
 import { RoadsideActiveQuery } from '../../state/roadside-state/roadside-active/roadside-active.query';
 import { RoadsideInactiveQuery } from '../../state/roadside-state/roadside-inactive/roadside-inactive.query';
-import { DatePipe } from '@angular/common';
+
+// helpers
 import { getRoadsideInspectionColums } from 'src/assets/utils/settings/safety-columns';
+
+// components
+import { ViolationModalComponent } from 'src/app/pages/safety/violation/pages/violation-modal/violation-modal.component';
 
 @Component({
     selector: 'app-violation-table',
@@ -88,23 +97,7 @@ export class ViolationTableComponent
         // Search
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                /*  if (res) {
-          this.mapingIndex = 0;
-
-          this.backFilterQuery.pageIndex = 1;
-
-          const searchEvent = tableSearch(res, this.backFilterQuery);
-
-          if (searchEvent) {
-            if (searchEvent.action === 'api') {
-              this.contactBackFilter(searchEvent.query, true);
-            } else if (searchEvent.action === 'store') {
-              this.sendViolationData();
-            }
-          }
-        } */
-            });
+            .subscribe(() => {});
 
         // Roadside Inspection Actions
         this.tableService.currentActionAnimation
@@ -176,35 +169,7 @@ export class ViolationTableComponent
         // Delete Selected Rows
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                /*  if (response.length) {
-          this.contactService
-            .deleteAccountList(response)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((contact: any) => {
-                response.map((r: any) => {
-                  if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete-multiple';
-                  }
-                });
-
-                return contact;
-              });
-
-              this.updateDataCount();
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 900);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
-        } */
-            });
+            .subscribe(() => {});
     }
 
     // -------------------------------NgAfterViewInit-------------------------------

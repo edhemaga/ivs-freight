@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SettingsDocumentComponent } from './settings-document.component';
+
+// modules
 import { SettingsDocumentRoutes } from './settings-document.routing';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
+
+// components
+import { SettingsDocumentComponent } from './settings-document.component';
 import { CarrierSearchComponent } from 'src/app/core/components/standalone-components/carrier-search/carrier-search.component';
 import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
