@@ -1,4 +1,4 @@
-import { SettingsCompanyService } from '../../services/settings-company.service';
+import { SettingsCompanyService } from '../../../../services/settings-company.service';
 import {
     Component,
     ElementRef,
@@ -24,16 +24,14 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 
 // enums
-import {
-    SETINGS_ENUMS,
-    SETTINGS_ARROW_ACTIONS,
-} from '../../../../enums/settings.enum';
+import { SettingsGeneralStringEnum } from '../../../../enums/settings-general-string.enum';
+import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 
 //Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 //Models
-import { CompanyProperties } from '../../../../models/settings.model';
+import { SettingsCompanyProperties } from '../../../../models/settings-company-properties.model';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -47,7 +45,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('logoText') logoText: ElementRef;
     @ViewChild('logoBox') logoBox: ElementRef;
 
-    @Input() public set optionsCompany(value: CompanyProperties[]) {
+    @Input() public set optionsCompany(value: SettingsCompanyProperties[]) {
         this._optionsCompany = value;
         this.setIndexCompany();
     }
@@ -56,7 +54,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     @Output() selectValue = new EventEmitter<string>();
     @Output() selectDropDown = new EventEmitter<boolean>();
 
-    public _optionsCompany: CompanyProperties[];
+    public _optionsCompany: SettingsCompanyProperties[];
     public isAccountVisible: boolean = false;
     public inputFormControl: UntypedFormControl = new UntypedFormControl();
     public optionsDivisonId: number;
@@ -143,7 +141,10 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 next: (res) => {
                     switch (res.type) {
                         case 'delete': {
-                            if (res.template === SETINGS_ENUMS.COMPANY)
+                            if (
+                                res.template ===
+                                SettingsGeneralStringEnum.COMPANY
+                            )
                                 this.deleteDivisionCompanyById(res.id);
                             break;
                         }
@@ -162,7 +163,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public onAction(modal: {
         modalName: string;
         type: string;
-        company?: CompanyProperties;
+        company?: SettingsCompanyProperties;
     }): void {
         this.settingsCompanyService.onModalAction(modal);
     }
@@ -203,7 +204,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         );
 
         switch (action) {
-            case SETTINGS_ARROW_ACTIONS.PREVIOUS: {
+            case ArrowActionsEnum.PREVIOUS: {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     const data = this._optionsCompany[currentIndex];
@@ -212,7 +213,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 break;
             }
-            case SETTINGS_ARROW_ACTIONS.NEXT: {
+            case ArrowActionsEnum.NEXT: {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
@@ -236,15 +237,15 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         const numberOfLettersAndSpaces = textContent?.length;
 
         if (numberOfLettersAndSpaces <= 12) {
-            this.fontSizeLogo = SETINGS_ENUMS.SIXTY;
+            this.fontSizeLogo = SettingsGeneralStringEnum.SIXTY;
         } else if (numberOfLettersAndSpaces <= 16) {
-            this.fontSizeLogo = SETINGS_ENUMS.FOURTY_EIGHT;
+            this.fontSizeLogo = SettingsGeneralStringEnum.FOURTY_EIGHT;
         } else if (numberOfLettersAndSpaces <= 25) {
-            this.fontSizeLogo = SETINGS_ENUMS.THIRTY_TWO;
+            this.fontSizeLogo = SettingsGeneralStringEnum.THIRTY_TWO;
         } else if (numberOfLettersAndSpaces <= 35) {
-            this.fontSizeLogo = SETINGS_ENUMS.TWENTY_THREE;
+            this.fontSizeLogo = SettingsGeneralStringEnum.TWENTY_THREE;
         } else {
-            this.fontSizeLogo = SETINGS_ENUMS.TWENTY;
+            this.fontSizeLogo = SettingsGeneralStringEnum.TWENTY;
         }
     }
 

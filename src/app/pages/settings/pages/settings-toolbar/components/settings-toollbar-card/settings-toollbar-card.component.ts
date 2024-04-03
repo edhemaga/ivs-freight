@@ -1,7 +1,8 @@
-import { Subject, takeUntil } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+
 import { filter } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-settings-toollbar-card',

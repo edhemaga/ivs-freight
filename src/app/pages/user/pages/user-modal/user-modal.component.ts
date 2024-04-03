@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -6,7 +7,6 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
 
 import {
@@ -19,12 +19,12 @@ import {
     takeWhile,
 } from 'rxjs';
 
-// modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
 // bootstrap
 import { Options } from 'ng5-slider';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // validations
 import {
@@ -39,51 +39,51 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     salaryValidation,
-} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 // services
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { UserService } from 'src/app/pages/user/services/user.service';
-import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { UserProfileUpdateService } from '../../../../shared/services/user-profile-update.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
-// animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+//Animation
+import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 
-// helpers
+//Core
+import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
+import {
+    CompanyUserModalResponse,
+    CompanyUserResponse,
+    CreateCompanyUserCommand,
+    UpdateCompanyUserCommand,
+} from '../../../../../../appcoretruckassist';
+
+//Utils
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
     convertThousanSepInNumber,
-} from '../../../../core/utils/methods.calculations';
+} from 'src/app/core/utils/methods.calculations';
 
-// components
-import { SettingsOfficeModalComponent } from '../../../../core/components/modals/location-modals/settings-office-modal/settings-office-modal.component';
-import { AppTooltipComponent } from '../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaNgxSliderComponent } from '../../../../core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
-import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+//Models
+import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
-// models
-import {
-    AddressEntity,
-    CreateResponse,
-    EnumValue,
-    CompanyUserModalResponse,
-    CompanyUserResponse,
-    CreateCompanyUserCommand,
-    UpdateCompanyUserCommand,
-    CheckUserByEmailResponse,
-} from 'appcoretruckassist';
+//Components
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaNgxSliderComponent } from 'src/app/core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-user-modal',
@@ -200,8 +200,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private userService: UserService,
-        private taUserService: UserProfileUpdateService,
+        private companyUserService: UserService,
+        private userProfileUpdateService: UserProfileUpdateService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal
@@ -209,9 +209,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
-
         this.getModalDropdowns();
-
         this.onBankSelected();
 
         this.trackUserPayroll();
@@ -557,7 +555,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 debounceTime(500),
                 switchMap((value) => {
                     if (this.userForm.get('email').valid) {
-                        return this.taUserService.checkUserByEmail(value);
+                        return this.userProfileUpdateService.checkUserByEmail(
+                            value
+                        );
                     }
                     return of(null);
                 })
@@ -741,7 +741,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission: commission ? parseFloat(commission) : null,
         };
 
-        this.userService
+        this.companyUserService
             .updateUser(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -807,7 +807,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission: commission ? parseFloat(commission) : null,
         };
 
-        this.userService
+        this.companyUserService
             .addUser(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -829,7 +829,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private deleteUserById(id: number) {
-        this.userService
+        this.companyUserService
             .deleteUserById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -851,7 +851,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private getUserById(id: number) {
-        this.userService
+        this.companyUserService
             .getUserByid(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -980,7 +980,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private updateUserStatus(id: number) {
-        this.userService
+        this.companyUserService
             .updateUserStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -999,7 +999,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private getModalDropdowns() {
-        this.userService
+        this.companyUserService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1107,29 +1107,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                     : this.helperForManagers;
                         }
 
-                        this.typeOfEmploye = this.typeOfEmploye.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked:
-                                        item.id === 3
-                                            ? !this.editData.data.isAdmin
-                                            : this.editData.data.isAdmin,
-                                };
-                            }
-                        );
+                        this.typeOfEmploye = this.typeOfEmploye.map((item) => {
+                            return {
+                                ...item,
+                                checked:
+                                    item.id === 3
+                                        ? !this.editData.data.isAdmin
+                                        : this.editData.data.isAdmin,
+                            };
+                        });
 
-                        this.typeOfPayroll = this.typeOfPayroll.map(
-                            (item, index) => {
-                                return {
-                                    ...item,
-                                    checked:
-                                        item.id === 6
-                                            ? !this.editData.data.is1099
-                                            : this.editData.data.is1099,
-                                };
-                            }
-                        );
+                        this.typeOfPayroll = this.typeOfPayroll.map((item) => {
+                            return {
+                                ...item,
+                                checked:
+                                    item.id === 6
+                                        ? !this.editData.data.is1099
+                                        : this.editData.data.is1099,
+                            };
+                        });
 
                         this.onSelectedTab(
                             this.editData.data.isAdmin

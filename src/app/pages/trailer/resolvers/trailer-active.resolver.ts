@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerTService } from '../services/trailer.service';
+import { TrailerService } from '../../../shared/services/trailer.service';
 import {
     TrailerActiveState,
     TrailerActiveStore,
@@ -14,7 +14,7 @@ import {
 })
 export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
     constructor(
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         private trailerStore: TrailerActiveStore,
         private tableService: TruckassistTableService
     ) {}

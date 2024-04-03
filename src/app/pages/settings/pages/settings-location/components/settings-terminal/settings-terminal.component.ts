@@ -1,13 +1,21 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// services
 import { SettingsLocationService } from '../../services/settings-location.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { CompanyTerminalService } from '../../../../services/company-terminal.service';
+
+// pipes
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
-import { CompanyTerminalService } from './services/company-terminal.service';
-import { Subject, takeUntil } from 'rxjs';
+
+// utils
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { ActivatedRoute } from '@angular/router';
+
 @Component({
     selector: 'app-settings-terminal',
     templateUrl: './settings-terminal.component.html',

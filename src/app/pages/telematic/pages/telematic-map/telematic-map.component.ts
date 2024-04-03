@@ -18,15 +18,15 @@ import {
 } from '@angular/forms';
 
 // services
-import { TruckTService } from '../../../truck/services/truck.service';
-import { TrailerTService } from '../../../trailer/services/trailer.service';
+import { TruckService } from '../../../../shared/services/truck.service';
+import { TrailerService } from '../../../../shared/services/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 import { GpsServiceService } from 'src/app/global/services/gps-service.service';
-import { CompanyTOfficeService } from 'src/app/pages/settings/pages/custom-agreement/service/company-office.service';
+import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
 
 // store
 import { TelematicStateQuery } from '../../state/telematic-state.query';
@@ -326,11 +326,11 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         private telematicService: TelematicStateService,
         private gpsService: GpsServiceService,
         private formBuilder: UntypedFormBuilder,
-        private truckService: TruckTService,
-        private trailerService: TrailerTService,
+        private truckService: TruckService,
+        private trailerService: TrailerService,
         private sanitizer: DomSanitizer,
         private ref: ChangeDetectorRef,
-        private companyOfficeService: CompanyTOfficeService,
+        private companyOfficeService: CompanyOfficeService,
         private detailsDataService: DetailsDataService,
         private telematicQuery: TelematicStateQuery,
         private telematicStore: TelematicStateStore

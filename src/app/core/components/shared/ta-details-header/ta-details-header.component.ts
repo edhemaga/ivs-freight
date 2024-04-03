@@ -102,7 +102,7 @@ export class TaCommonHeaderComponent implements OnInit {
         }
         this.changeDataArrowDown.emit(val);
     }
-    public trackByIndex(index: number, obj: any): any {
+    public trackByIndex(index: number, _: any): any {
         return index;
     }
 

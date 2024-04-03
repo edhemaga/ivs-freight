@@ -5,15 +5,22 @@ import {
     SimpleChanges,
     OnDestroy,
 } from '@angular/core';
-import { SettingsCompanyService } from '../../services/settings-company.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { Subject, takeUntil } from 'rxjs';
-import { CompanyStore } from '../../../../state/company-state/company-settings.store';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 import { OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// serivces
+import { SettingsCompanyService } from '../../../../services/settings-company.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+// state
+import { CompanyStore } from '../../../../state/company-state/company-settings.store';
+
+// components
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-settings-factoring',

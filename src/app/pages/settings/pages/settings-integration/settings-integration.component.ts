@@ -1,9 +1,15 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
-import { getIntegrationsColumnDefinition } from 'src/assets/utils/settings/integration-columns';
-import { IntegrationActiveQuery } from '../../state/settings-integration-state/integration-active.query';
 import moment from 'moment';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
+
+//Utils
+import { getIntegrationsColumnDefinition } from 'src/assets/utils/settings/integration-columns';
+
+//States
+import { IntegrationActiveQuery } from '../../state/settings-integration-state/integration-active.query';
+
+//Services
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',

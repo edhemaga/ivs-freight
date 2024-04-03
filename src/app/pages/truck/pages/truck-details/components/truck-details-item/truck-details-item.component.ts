@@ -8,9 +8,9 @@ import {
     Input,
     ViewChildren,
     SimpleChanges,
+    OnChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
 import {
     animate,
     style,
@@ -19,23 +19,28 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
-import { OnChanges } from '@angular/core';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// decorators
+import { Titles } from 'src/app/core/utils/application.decorators';
+
+// moment
 import moment from 'moment';
 
-//Services
+// services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
 
-//Utils
+// helpers
 import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { Titles } from 'src/app/core/utils/application.decorators';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
-//Components
+// animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 @Titles()

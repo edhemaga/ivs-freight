@@ -28,7 +28,7 @@ import { TruckListResponse } from 'appcoretruckassist';
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckTService } from 'src/app/pages/truck/services/truck.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
 
 // animations
 import { card_component_animation } from '../../shared/animations/card-component.animations';
@@ -252,7 +252,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef,
         private inputService: TaInputService,
-        private truckService: TruckTService,
+        private truckService: TruckService,
         private modalService: ModalService
     ) {}
 
@@ -797,10 +797,5 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    setFilterEvent(event) {
-        // this.toolBarAction.emit({
-        //     action: 'activate-filter',
-        //     data: filter
-        // });
-    }
+    setFilterEvent() {}
 }

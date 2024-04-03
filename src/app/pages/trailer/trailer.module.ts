@@ -1,15 +1,17 @@
 //modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+// modules
 import { TrailerRoutingModule } from './trailer-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-//pipes
+// pipes
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
-//components
+// components
 import { TrailerTableComponent } from './pages/trailer-table/trailer-table.component';
 import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
 import { ProgresBarComponent } from 'src/app/core/components/standalone-components/progres-bar/progres-bar.component';
@@ -22,13 +24,13 @@ import { TrailerCardComponent } from './pages/trailer-card/trailer-card.componen
 @NgModule({
     declarations: [TrailerTableComponent, TrailerCardComponent],
     imports: [
-        //modules
+        // mmodules
         CommonModule,
         TrailerRoutingModule,
         AngularSvgIconModule,
         NgbModule,
 
-        //components
+        // components
         AppTooltipComponent,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
@@ -37,7 +39,7 @@ import { TrailerCardComponent } from './pages/trailer-card/trailer-card.componen
         TableCardDropdownActionsComponent,
         ProgresBarComponent,
 
-        //pipes
+        // pipes
         TaThousandSeparatorPipe,
         formatDatePipe,
     ],
