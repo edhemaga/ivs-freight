@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-//Services
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
-//Utils
+// utils
 import { MilesTableQuery } from '../../state/miles.query';
 import { getMilesColumnsDefinition } from 'src/assets/utils/settings/miles-columns';
 

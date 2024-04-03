@@ -1,8 +1,11 @@
-import { CompanyOfficeListResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+//core
+import { CompanyOfficeListResponse } from 'appcoretruckassist';
 
 //Service
 import { CompanyOfficeService } from '../../../shared/services/company-office.service';

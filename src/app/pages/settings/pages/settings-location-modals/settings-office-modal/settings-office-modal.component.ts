@@ -7,9 +7,9 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
-import { CommonModule } from '@angular/common';
 
 // services
 import { FormService } from 'src/app/core/services/form/form.service';

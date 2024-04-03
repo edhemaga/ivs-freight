@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// services
 import { CompanyTerminalService } from '../services/company-terminal.service';
+
+// state
 import {
     TerminalState,
     TerminalStore,
 } from '../state/settings-terminal-state/company-terminal.store';
+
+//core
 import { TerminalListResponse } from 'appcoretruckassist';
 
 @Injectable({

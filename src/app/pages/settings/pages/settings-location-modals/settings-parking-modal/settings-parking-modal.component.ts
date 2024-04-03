@@ -4,6 +4,15 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+
+// icon
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// models
 import {
     AddressEntity,
     CompanyOfficeModalResponse,
@@ -11,25 +20,30 @@ import {
     ParkingResponse,
     UpdateParkingCommand,
 } from 'appcoretruckassist';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
 
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
+// animations
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+
+// services
+import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { rentValidation } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../../core/services/form/form.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { SumArraysPipe } from '../../../../../core/pipes/sum-arrays.pipe';
 import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
+
+// pipes
+import { SumArraysPipe } from '../../../../../core/pipes/sum-arrays.pipe';
+
+// validators
 import {
     addressValidation,
     addressUnitValidation,
@@ -39,6 +53,8 @@ import {
     parkingSlotValidation,
     fullParkingSlotValidation,
 } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+// utils
 import {
     calculateParkingSlot,
     convertThousanSepInNumber,

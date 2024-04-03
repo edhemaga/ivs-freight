@@ -1,4 +1,19 @@
 import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+
+// icon
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// validators
+import {
     addressUnitValidation,
     addressValidation,
     fullParkingSlotValidation,
@@ -7,11 +22,11 @@ import {
     terminalNameValidation,
 } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
 import {
-    UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
-} from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+    phoneFaxRegex,
+    rentValidation,
+} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+// models
 import {
     AddressEntity,
     CompanyOfficeModalResponse,
@@ -19,32 +34,31 @@ import {
     TerminalResponse,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
+import { Address } from '../../../../../core/components/shared/model/address';
 
-import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
+// animation
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+
+// services
+import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import {
-    phoneFaxRegex,
-    rentValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import {
-    calculateParkingSlot,
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../../core/utils/methods.calculations';
-import { Address } from '../../../../../core/components/shared/model/address';
 import { FormService } from '../../../../../core/services/form/form.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+
+// utils
+import {
+    calculateParkingSlot,
+    convertThousanSepInNumber,
+    convertNumberInThousandSep,
+} from '../../../../../core/utils/methods.calculations';
 
 @Component({
     selector: 'app-settings-terminal-modal',

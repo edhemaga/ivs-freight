@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-//Services
+
+// services
 import { MilesStoreService } from '../services/miles-store.service';
 
-//Store
+//s tore
 import { MilesTableStore } from '../state/miles.store';
 
 @Injectable({

@@ -1,15 +1,24 @@
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
+
+import moment from 'moment';
+
+// services
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
 import { CompanyParkingService } from '../../../../services/company-parking.service';
-import { ActivatedRoute } from '@angular/router';
-import moment from 'moment';
+
+// pipes
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+
+// utils
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+
 @Component({
     selector: 'app-settings-parking',
     templateUrl: './settings-parking.component.html',

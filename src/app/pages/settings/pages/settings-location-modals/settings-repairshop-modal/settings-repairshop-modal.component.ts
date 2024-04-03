@@ -1,37 +1,53 @@
+import { Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// icons
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// validators
 import {
     phoneFaxRegex,
     phoneExtension,
     addressValidation,
     addressUnitValidation,
 } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+    repairShopValidation,
+    rentValidation,
+} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+// models
 import {
     AddressEntity,
     RepairShopModalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
 
-import { Subject, takeUntil } from 'rxjs';
+// animations
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+
+// services
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 import { FormService } from '../../../../../core/services/form/form.service';
-import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { ActiveItemsPipe } from '../../../../../core/pipes/activeItems.pipe';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import {
-    repairShopValidation,
-    rentValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+// pipes
+import { ActiveItemsPipe } from '../../../../../core/pipes/activeItems.pipe';
+
+// utils
 import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,

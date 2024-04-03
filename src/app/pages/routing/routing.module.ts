@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { AgmCoreModule } from '@agm/core';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+
+//routes
 import { RoutingRoutingModule } from './routing-routing.module';
 import { RoutingMapComponent } from './pages/routing-map/routing-map.component';
+
+//bootstrap
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+
+//module
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 
 //Pipes
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';

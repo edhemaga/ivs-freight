@@ -1,4 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
+// services
 import { SettingsCompanyService } from '../../../../services/settings-company.service';
 
 @Component({

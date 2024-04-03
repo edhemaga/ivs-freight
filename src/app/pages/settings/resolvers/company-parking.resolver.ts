@@ -1,9 +1,16 @@
-import { ParkingListResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// core
+import { ParkingListResponse } from 'appcoretruckassist';
+
+// services
 import { CompanyParkingService } from '../services/company-parking.service';
+
+// state
 import {
     ParkingState,
     ParkingStore,

@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { OnDestroy } from '@angular/core';
+
+import { Subject, takeUntil } from 'rxjs';
 
 //States
 import { OfficeStore } from '../../state/setting-ofice-state/company-office.store';

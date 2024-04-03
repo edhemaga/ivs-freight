@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+// services
 import { RoutingStateService } from '../../../shared/services/routing-state.service';
+
+//store
 import {
     RoutingStateState,
     RoutingStateStore,

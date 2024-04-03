@@ -1,14 +1,18 @@
-import { SettingsComponent } from './pages/settings/settings.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// resolvers
 import { CompanySettingsResolver } from './resolvers/company-settings.resolver';
 import { CompanyParkingResolver } from './resolvers/company-parking.resolver';
 import { CompanyOfficeResolver } from './resolvers/company-office.resolver';
 import { CompanyTerminalResolver } from './resolvers/company-terminal.resolver';
 import { CompanyRepairShopResolver } from './resolvers/company-repairshop.resolver';
 import { UserResolver } from '../user/resolvers/user.resolver';
-import { UnderConstructionComponent } from '../../core/components/under-construction/under-construction.component';
 import { CompanyIntegrationsResolver } from './resolvers/company-integrations.resolver';
+
+// components
+import { UnderConstructionComponent } from '../../core/components/under-construction/under-construction.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
     {

@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+
+// animations
 import { settingsCardAnimation } from '../../animations/settings-card.animation';
 
 @Component({

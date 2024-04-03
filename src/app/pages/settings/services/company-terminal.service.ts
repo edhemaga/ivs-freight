@@ -1,7 +1,10 @@
-import { ParkingListResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
-import { TerminalService } from 'appcoretruckassist';
+
 import { Observable } from 'rxjs';
+
+// core
+import { TerminalService } from 'appcoretruckassist';
+import { ParkingListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

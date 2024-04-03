@@ -1,12 +1,15 @@
 import { Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { CompanyResponse } from 'appcoretruckassist';
+
 import { catchError, Observable, of, tap } from 'rxjs';
 
-//Service
+// core
+import { CompanyResponse } from 'appcoretruckassist';
+
+// service
 import { SettingsCompanyService } from '../services/settings-company.service';
 
-//Store
+// store
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { CompanyStore } from '../state/company-state/company-settings.store';
 
