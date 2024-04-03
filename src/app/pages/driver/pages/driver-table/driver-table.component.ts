@@ -13,11 +13,11 @@ import { ApplicantModalComponent } from 'src/app/core/components/modals/applican
 
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { DriverTService } from '../../services/driver.service';
+import { DriverService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ApplicantTService } from '../../services/applicant.service';
+import { ApplicantService } from '../../../../shared/services/applicant.service';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 
 // Queries
@@ -63,7 +63,7 @@ import {
     closeAnimationAction,
 } from 'src/app/core/utils/methods.globals';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
-import { DisplayDriverConfiguration } from '../../utils/constants/driver-card-data.constants';
+
 import {
     DropdownItem,
     GridColumn,
@@ -75,6 +75,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
 
 //Helpers
 import {
@@ -113,35 +114,35 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public isSearching: boolean = false;
     //Data to display from model Active & Inactive
     public displayRowsFront: CardRows[] =
-        DisplayDriverConfiguration.displayRowsActiveFront;
+        DriverTableConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
-        DisplayDriverConfiguration.displayRowsActiveBack;
+        DriverTableConfiguration.displayRowsActiveBack;
 
     //Data to display from model Applicants
     public displayRowsFrontApplicants: CardRows[] =
-        DisplayDriverConfiguration.displayRowsFrontApplicants;
+        DriverTableConfiguration.displayRowsFrontApplicants;
     public displayRowsBackApplicants: CardRows[] =
-        DisplayDriverConfiguration.displayRowsBackApplicants;
+        DriverTableConfiguration.displayRowsBackApplicants;
 
     //Title
-    public cardTitle: string = DisplayDriverConfiguration.cardTitle;
+    public cardTitle: string = DriverTableConfiguration.cardTitle;
 
     // Page
-    public page: string = DisplayDriverConfiguration.page;
+    public page: string = DriverTableConfiguration.page;
 
     public activeTab: string;
     //  Number of rows in card
-    public rows: number = DisplayDriverConfiguration.rows;
+    public rows: number = DriverTableConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
     constructor(
         private addressService: AddressService,
-        private applicantService: ApplicantTService,
+        private applicantService: ApplicantService,
         private modalService: ModalService,
         private tableService: TruckassistTableService,
-        private driverTService: DriverTService,
+        private driverService: DriverService,
         private imageBase64Service: ImageBase64Service,
         private confirmationService: ConfirmationService,
         private driversActiveQuery: DriversActiveQuery,
@@ -1238,7 +1239,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         isShowMore?: boolean
     ): void {
-        this.driverTService
+        this.driverService
             .getDrivers(
                 filter.active,
                 filter.long,
@@ -1357,7 +1358,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ConstantStringTableComponentsEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
-                this.driverTService
+                this.driverService
                     .getDrivers(0, undefined, undefined, undefined, 1, 25)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((driverPagination) => {
@@ -1613,7 +1614,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private changeDriverStatus(id: number): void {
-        this.driverTService
+        this.driverService
             .changeDriverStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1623,7 +1624,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private deleteDriverById(id: number): void {
-        this.driverTService
+        this.driverService
             .deleteDriverById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1654,7 +1655,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // This function gets called but service deleteDriverList is commented out so it will not delete any drivers
     private multipleDeleteDrivers(response: DriverResponse[]): void {
-        this.driverTService
+        this.driverService
             .deleteDriverList(response)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {

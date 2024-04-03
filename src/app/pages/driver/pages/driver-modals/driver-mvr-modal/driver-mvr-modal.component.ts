@@ -4,21 +4,34 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
-import { DriverTService } from 'src/app/pages/driver/services/driver.service';
-import { MvrTService } from 'src/app/pages/driver/services/mvr.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+
+//Models
+import {
+    GetMvrModalResponse,
+    MvrResponse,
+    DriverListResponse,
+} from 'appcoretruckassist';
+
+//Services
+import { DriverService } from 'src/app/pages/driver/services/driver.service';
+import { DriverMvrService } from 'src/app/pages/driver/services/driver-mvr.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { FormService } from '../../../../../core/services/form/form.service';
+
+//Helpers
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../../core/utils/methods.calculations';
-import { DriverListResponse } from '../../../../../../../appcoretruckassist/model/driverListResponse';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Components
 import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
@@ -75,10 +88,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private driverService: DriverTService,
+        private driverService: DriverService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private mvrService: MvrTService,
+        private mvrService: DriverMvrService,
         private formService: FormService
     ) {}
 

@@ -36,7 +36,7 @@ import { DropdownCountPipe } from './dropdown-count.pipe';
 import { HighlightSearchPipe } from 'src/app/core/pipes/highlight-search.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
-import { LoadModalProgressBarComponent } from '../../../../pages/load/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { LoadModalProgressBarComponent } from '../../../../pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';

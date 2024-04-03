@@ -1,7 +1,7 @@
-import { OwnerTableBodyResponse } from "./owner-body.model";
+import { OwnerTableBody } from "./owner-table-body.model";
 
-export interface OwnerBodyResponse {
+export interface OwnerData {
     id: number;
     type: string;
-    data: OwnerTableBodyResponse;
+    data: OwnerTableBody;
 }

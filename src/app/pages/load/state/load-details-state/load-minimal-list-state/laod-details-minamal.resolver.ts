@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { LoadTService } from '../../../services/load.service';
+import { LoadService } from '../../../../../shared/services/load.service';
 import { LoadMinimalListStore } from './load-details-minimal.store';
 import { LoadMinimalListResponse } from 'appcoretruckassist';
 
@@ -16,7 +16,7 @@ export class LoadMinimalListResolver
     pageIndex: number = 1;
     pageSize: number = 25;
     constructor(
-        private loadService: LoadTService,
+        private loadService: LoadService,
         private loadMinimalListStore: LoadMinimalListStore
     ) {}
     resolve(

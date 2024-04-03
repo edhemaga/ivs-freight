@@ -1,4 +1,4 @@
-export interface Endorsement {
+export interface DriverEndorsement {
     id: number;
     domain?: any;
     protected?: any;

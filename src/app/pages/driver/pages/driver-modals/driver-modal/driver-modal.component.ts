@@ -7,16 +7,33 @@ import {
     Validators,
 } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
+import { CommonModule } from '@angular/common';
+
+//Models
+import { Options } from '@angular-slider/ngx-slider';
 import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
     CreateResponse,
     GetDriverModalResponse,
 } from 'appcoretruckassist';
+import { HttpResponseBase } from '@angular/common/http';
+import { DropZoneConfig } from '../../../../../core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+
+//Animations
+import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+
+//Services
+import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
+import { TaUploadFileService } from '../../../../../core/components/shared/ta-upload-files/ta-upload-file.service';
+import { DriverService } from 'src/app/pages/driver/services/driver.service';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../../../core/services/form/form.service';
+
+//Helpers
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -33,25 +50,19 @@ import {
     routingBankValidation,
     ssnNumberRegex,
 } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { TaUploadFileService } from '../../../../../core/components/shared/ta-upload-files/ta-upload-file.service';
-import { DriverTService } from 'src/app/pages/driver/services/driver.service';
-import { HttpResponseBase } from '@angular/common/http';
-
-import { DropZoneConfig } from '../../../../../core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../../core/services/form/form.service';
 import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../../../core/utils/methods.calculations';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { CommonModule } from '@angular/common';
+
+//Components
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
+
 import { AppTooltipComponent } from '../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { ConfirmationModalComponent } from '../../../../../core/components/modals/confirmation-modal/confirmation-modal.component';
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
@@ -62,10 +73,13 @@ import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-i
 import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaLogoChangeComponent } from '../../../../../core/components/shared/ta-logo-change/ta-logo-change.component';
+
+//Modules
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { ConfirmationModalComponent } from '../../../../../core/components/modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-driver-modal',
@@ -220,7 +234,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
-        private driverTService: DriverTService,
+        private driverService: DriverService,
         private modalService: ModalService,
         private uploadFileService: TaUploadFileService,
         private bankVerificationService: BankVerificationService,
@@ -1067,7 +1081,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (value?.length === 10) {
                     this.loadingOwnerEin = true;
-                    this.driverTService
+                    this.driverService
                         .checkOwnerEinNumber(value.toString())
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
@@ -1089,7 +1103,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private getDriverDropdowns(): void {
-        this.driverTService
+        this.driverService
             .getDriverDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1551,7 +1565,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             tags: tagsArray,
         };
 
-        this.driverTService
+        this.driverService
             .addDriver(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1968,7 +1982,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             tags: tagsArray,
         };
 
-        this.driverTService
+        this.driverService
             .updateDriver(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1991,7 +2005,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private getDriverById(id: number): void {
-        this.driverTService
+        this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -2263,7 +2277,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private deleteDriverById(id: number): void {
-        this.driverTService
+        this.driverService
             .deleteDriverById(id, !this.driverStatus ? 'active' : 'inactive')
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -2285,7 +2299,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private updateDriverStatus() {
-        this.driverTService
+        this.driverService
             .changeDriverStatus(
                 this.editData.id,
                 !this.driverStatus ? 'active' : 'inactive'

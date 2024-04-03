@@ -29,7 +29,7 @@ import { DropDownService } from '../../../services/details-page/drop-down.servic
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
 import { ShipperTService } from 'src/app/pages/customer/services/shipper.service';
-import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
+import { FuelService } from 'src/app/shared/services/fuel.service';
 import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
@@ -175,7 +175,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         private mapsService: MapsService,
         private repairShopService: RepairTService,
         private shipperService: ShipperTService,
-        private fuelStopService: FuelTService,
+        private fuelStopService: FuelService,
         private routingService: RoutingStateService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyOfficeService,

@@ -1,7 +1,7 @@
 import { DriverCdl } from "./driver-cdl.model";
 import { DriverMedical } from "./driver-medical.model";
 import { DriverMvr } from "./driver-mvr.model";
-import { Endorsement } from "./driver-endorsement.model";
+import { DriverEndorsement } from "./driver-endorsement.model";
 import { Work } from "src/app/shared/models/work.model";
 import { License } from "./driver-license.model";
 import { DriverAdditional } from "./driver-additional.model";
@@ -74,7 +74,7 @@ export interface Driver {
     textRouting: any;
     bankImage: any;
     restrictions?: any;
-    endorsements: Endorsement[];
+    endorsements: DriverEndorsement[];
     tableCDLData: DriverCdl;
     tableMedicalData: DriverMedical;
     tableMvrData: DriverMvr;

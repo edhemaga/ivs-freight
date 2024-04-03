@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { FuelStateModal } from '../../models/fuel-state.model';
 
-export interface FuelState extends EntityState<FuelStateModal> {}
+//Models
+import { FuelState as FuelStateModel } from '../../models/fuel-state.model';
+
+export interface FuelState extends EntityState<FuelStateModel> {}
 
 export const initialState = (): FuelState => {
     return {

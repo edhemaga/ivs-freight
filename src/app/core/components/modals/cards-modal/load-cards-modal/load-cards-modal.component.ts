@@ -19,7 +19,7 @@ import { CardRows } from '../../../shared/model/card-data.model';
 import { ModalModelData } from '../models/modal-input.model';
 
 // Configuration for modals
-import { DisplayLoadConfiguration } from 'src/app/pages/load/utils/constants/load-card.constants';
+import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
 
 // Services
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -165,10 +165,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontTemplate;
+                    LoadCardConfiguration.displayRowsFrontTemplate;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackTemplate;
+                    LoadCardConfiguration.displayRowsBackTemplate;
             });
     }
 
@@ -179,10 +179,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontPending;
+                    LoadCardConfiguration.displayRowsFrontPending;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackPending;
+                    LoadCardConfiguration.displayRowsBackPending;
             });
     }
 
@@ -193,10 +193,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontPending;
+                    LoadCardConfiguration.displayRowsFrontPending;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackActive;
+                    LoadCardConfiguration.displayRowsBackActive;
             });
     }
 
@@ -207,10 +207,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontClosed;
+                    LoadCardConfiguration.displayRowsFrontClosed;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackClosed;
+                    LoadCardConfiguration.displayRowsBackClosed;
             });
     }
 

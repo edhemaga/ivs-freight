@@ -19,7 +19,7 @@ import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { FormService } from '../../../../../core/services/form/form.service';
-import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
+import { FuelService } from 'src/app/shared/services/fuel.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 
 //Components
@@ -43,10 +43,10 @@ import {
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
 } from 'appcoretruckassist';
-import { FuelData } from '../../../models/fuel-data.model';
-import { FuelItems } from '../../../models/fuel-items.model';
-import { FuelItemsDropdown } from '../../../models/fuel-items-dropdown.model';
-import { FuelTruckType } from '../../../models/fuel-truck-type.model';
+import { FuelData } from './models/fuel-data.model';
+import { FuelItems } from './models/fuel-items.model';
+import { FuelItemsDropdown } from './models/fuel-items-dropdown.model';
+import { FuelTruckType } from './models/fuel-truck-type.model';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { Trailer } from '../../../../../core/components/shared/model/card-table-data.model';
 
@@ -55,12 +55,10 @@ import { SumArraysPipe } from '../../../../../core/pipes/sum-arrays.pipe';
 
 //Enums
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
-import {
-    FuelDropdownOptions,
-    FuelValues,
-    FuelModalActions,
-    FuelDataOptions,
-} from '../../../enums/fuel.enum';
+import { FuelDataOptionsStringEnum } from '../../../enums/fuel-data-options-string.enum';
+import { FuelDropdownOptionsStringEnum } from './enums/fuel-dropdown-optioins-string.enum';
+import { FuelValuesStringEnum } from './enums/fuel-values-string.enum';
+import { FuelModalActionsStringEnum } from './enums/fuel-modal-actions-string.enum';
 
 //Validations
 import {
@@ -144,7 +142,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
-        private fuelService: FuelTService,
+        private fuelService: FuelService,
         private sumArrays: SumArraysPipe,
         private truckService: TruckService
     ) {}
@@ -173,23 +171,24 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: [null],
         });
 
-        if (this.editData?.type !== FuelDataOptions.EDIT) {
+        if (this.editData?.type !== FuelDataOptionsStringEnum.EDIT) {
             this.addFuelItems({ check: true, action: null });
         }
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case FuelModalActions.CLOSE:
+            case FuelModalActionsStringEnum.CLOSE:
                 break;
 
-            case FuelModalActions.SAVE:
+            case FuelModalActionsStringEnum.SAVE:
                 if (this.fuelForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelForm);
                     return;
                 }
                 if (this.editData) {
-                    this.fuelTransactionType?.name !== FuelValues.MANUAL
+                    this.fuelTransactionType?.name !==
+                    FuelValuesStringEnum.MANUAL
                         ? this.updateFuelEFS(this.editData.id)
                         : this.updateFuel(this.editData.id);
 
@@ -214,7 +213,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     public get fuelItems(): UntypedFormArray {
-        return this.fuelForm.get(FuelValues.FUEL_ITEMS) as UntypedFormArray;
+        return this.fuelForm.get(
+            FuelValuesStringEnum.FUEL_ITEMS
+        ) as UntypedFormArray;
     }
 
     private createFuelItems(data?: {
@@ -277,7 +278,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     public onChange(formControlName: string, index: number): void {
-        if (formControlName === FuelValues.QTY) {
+        if (formControlName === FuelValuesStringEnum.QTY) {
             this.fuelItems
                 .at(index)
                 .get(formControlName)
@@ -293,11 +294,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                     this.subtotal = [...this.subtotal];
 
-                    if (this.fuelItems.at(index).get(FuelValues.PRICE).value) {
+                    if (
+                        this.fuelItems.at(index).get(FuelValuesStringEnum.PRICE)
+                            .value
+                    ) {
                         const price = parseInt(
                             this.fuelItems
                                 .at(index)
-                                .get(FuelValues.PRICE)
+                                .get(FuelValuesStringEnum.PRICE)
                                 .value?.toString()
                                 ?.replace(/,/g, '')
                         );
@@ -305,7 +309,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             this.quantity[index] * price;
                         this.fuelItems
                             .at(index)
-                            .get(FuelValues.SUBTOTAL)
+                            .get(FuelValuesStringEnum.SUBTOTAL)
                             .patchValue(this.subtotal[index].value);
                     }
                 });
@@ -322,7 +326,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         this.quantity[index] = 1;
                         this.fuelItems
                             .at(index)
-                            .get(FuelValues.QTY)
+                            .get(FuelValuesStringEnum.QTY)
                             .patchValue(1);
                     }
 
@@ -333,7 +337,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.subtotal[index].value = this.quantity[index] * price;
                     this.fuelItems
                         .at(index)
-                        .get(FuelValues.SUBTOTAL)
+                        .get(FuelValuesStringEnum.SUBTOTAL)
                         .patchValue(this.subtotal[index].value);
                 });
         }
@@ -342,14 +346,16 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public onSelectDropDown(event: any, action: string, index?: number): void {
         //leave any for now
         switch (action) {
-            case FuelDropdownOptions.TRUCK:
+            case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;
-                this.getDriverTrailerBySelectedTruck(FuelValues.TRUCK_ID);
+                this.getDriverTrailerBySelectedTruck(
+                    FuelValuesStringEnum.TRUCK_ID
+                );
                 break;
-            case FuelDropdownOptions.FUEL:
+            case FuelDropdownOptionsStringEnum.FUEL:
                 this.selectedFuelStop = event;
                 break;
-            case FuelDropdownOptions.FUEL_ITEMS:
+            case FuelDropdownOptionsStringEnum.FUEL_ITEMS:
                 this.selectedFuelItemDropFArray[index] = event;
                 break;
             default:
@@ -380,9 +386,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 form.transactionDate,
                 form.transactionTime
             ),
-            invoice: this.fuelForm.get(FuelValues.INVOICE).value,
+            invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
             total: this.sumArrays.transform(this.subtotal),
-            fuelItems: this.premmapedItems(FuelValues.UPDATE) as any, //leave any for now
+            fuelItems: this.premmapedItems(FuelValuesStringEnum.UPDATE) as any, //leave any for now
             files: [],
             filesForDeleteIds: [],
         };
@@ -450,7 +456,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 ? this.selectedDispatchHistory.driverId
                 : null,
             truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
-            invoice: this.fuelForm.get(FuelValues.INVOICE).value,
+            invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
             trailerId: this.selectedTrailerType
                 ? this.selectedTrailerType.id
                 : null,
@@ -464,7 +470,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 form.transactionTime
             ),
             total: this.sumArrays.transform(this.subtotal),
-            fuelItems: this.premmapedItems(FuelValues.CREATE) as any, //leave any for now
+            fuelItems: this.premmapedItems(FuelValuesStringEnum.CREATE) as any, //leave any for now
             files: [],
             filesForDeleteIds: [],
         };
@@ -529,11 +535,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         number: res.truck.truckNumber,
                         logoName: res.truck.truckType.logoName,
                         name: res.truck.truckNumber,
-                        folder: FuelValues.COMMON,
-                        subFolder: FuelValues.TRUCKS,
+                        folder: FuelValuesStringEnum.COMMON,
+                        subFolder: FuelValuesStringEnum.TRUCKS,
                     };
 
-                    this.getDriverTrailerBySelectedTruck(FuelValues.TRUCK_ID);
+                    this.getDriverTrailerBySelectedTruck(
+                        FuelValuesStringEnum.TRUCK_ID
+                    );
 
                     this.selectedDispatchHistory = {
                         ...this.selectedDispatchHistory,
@@ -623,7 +631,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 next: (res: GetFuelModalResponse) => {
                     this.fuelItemsDropdown = res.itemFuel;
 
-                    if (this.editData?.type === FuelDataOptions.EDIT) {
+                    if (
+                        this.editData?.type === FuelDataOptionsStringEnum.EDIT
+                    ) {
                         this.disableCardAnimation = true;
                         this.getFuelById(this.editData.id);
                     } else {
@@ -635,7 +645,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private getDriverTrailerBySelectedTruck(
-        formControlName: string = FuelValues.TRANSACTION_DATE
+        formControlName: string = FuelValuesStringEnum.TRANSACTION_DATE
     ): any {
         //leave any for now
         this.fuelForm
@@ -645,11 +655,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 switchMap(() => {
                     if (
                         this.selectedTruckType &&
-                        this.fuelForm.get(FuelValues.TRANSACTION_DATE).value
+                        this.fuelForm.get(FuelValuesStringEnum.TRANSACTION_DATE)
+                            .value
                     ) {
                         return this.fuelService.getDriverBySelectedTruckAndDate(
                             this.selectedTruckType.id,
-                            this.fuelForm.get(FuelValues.TRANSACTION_DATE).value
+                            this.fuelForm.get(
+                                FuelValuesStringEnum.TRANSACTION_DATE
+                            ).value
                         );
                     } else {
                         return of();
@@ -660,7 +673,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 if (res) {
                     this.selectedDispatchHistory = res;
                     this.fuelForm
-                        .get(FuelValues.DRIVER_FULL_NAME)
+                        .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
                         .patchValue(res.firstName.concat(' ', res.lastName));
                 }
             });
@@ -743,8 +756,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                 number: item.truckNumber,
                                 logoName: item.truckType.logoName,
                                 name: item.truckNumber,
-                                folder: FuelValues.COMMON,
-                                subFolder: FuelValues.TRUCKS,
+                                folder: FuelValuesStringEnum.COMMON,
+                                subFolder: FuelValuesStringEnum.TRUCKS,
                             };
                         }),
                     ];
@@ -761,19 +774,21 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private premmapedItems(crud: string): FuelItems[] {
-        if (crud === FuelValues.UPDATE) {
+        if (crud === FuelValuesStringEnum.UPDATE) {
             return this.fuelItems.controls.map((item) => {
                 return {
-                    itemfuel: item.get(FuelValues.ITEM_ID).value,
-                    price: item.get(FuelValues.PRICE).value
+                    itemfuel: item.get(FuelValuesStringEnum.ITEM_ID).value,
+                    price: item.get(FuelValuesStringEnum.PRICE).value
                         ? convertThousanSepInNumber(
-                              item.get(FuelValues.PRICE).value
+                              item.get(FuelValuesStringEnum.PRICE).value
                           )
                         : null,
-                    qty: item.get(FuelValues.QTY).value
-                        ? parseInt(item.get(FuelValues.QTY).value)
+                    qty: item.get(FuelValuesStringEnum.QTY).value
+                        ? parseInt(item.get(FuelValuesStringEnum.QTY).value)
                         : null,
-                    subtotal: parseInt(item.get(FuelValues.SUBTOTAL).value),
+                    subtotal: parseInt(
+                        item.get(FuelValuesStringEnum.SUBTOTAL).value
+                    ),
                 };
             });
         } else {
@@ -782,15 +797,17 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     itemfuel: this.selectedFuelItemDropFArray[index]
                         ? this.selectedFuelItemDropFArray[index].id
                         : null,
-                    price: item.get(FuelValues.PRICE).value
+                    price: item.get(FuelValuesStringEnum.PRICE).value
                         ? convertThousanSepInNumber(
-                              item.get(FuelValues.PRICE).value
+                              item.get(FuelValuesStringEnum.PRICE).value
                           )
                         : null,
-                    qty: item.get(FuelValues.QTY).value
-                        ? parseInt(item.get(FuelValues.QTY).value)
+                    qty: item.get(FuelValuesStringEnum.QTY).value
+                        ? parseInt(item.get(FuelValuesStringEnum.QTY).value)
                         : null,
-                    subtotal: parseInt(item.get(FuelValues.SUBTOTAL).value),
+                    subtotal: parseInt(
+                        item.get(FuelValuesStringEnum.SUBTOTAL).value
+                    ),
                 };
             });
         }

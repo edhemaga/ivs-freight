@@ -1,9 +1,9 @@
-import { DriverDetailsCardComponent } from '../../components/driver-details-card/driver-details-card.component';
+import { DriverDetailsCardComponent } from './components/driver-details-card/driver-details-card.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
-import { DriverDetailsItemComponent } from '../../components/driver-details-item/driver-details-item.component';
+import { DriverDetailsItemComponent } from './components/driver-details-item/driver-details-item.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';

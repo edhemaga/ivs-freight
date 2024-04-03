@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { DriverTService } from '../../services/driver.service';
+import { DriverService } from '../../services/driver.service';
 import { DriversItemStore } from './driver-details.store';
 import { DriversDetailsListStore } from '../driver-details-list-state/driver-details-list.store';
-import { DriversDetailsListQuery } from '../driver-details-list-state/driver-details-list.query';
 
 @Injectable({
     providedIn: 'root',
@@ -15,11 +14,9 @@ export class DriverItemResolver implements Resolve<any[]> {
     pageIndex: number = 1;
     pageSize: number = 25;
     constructor(
-        private driverService: DriverTService,
+        private driverService: DriverService,
         private driverItemStore: DriversItemStore,
-        private driverDetailsListQuery: DriversDetailsListQuery,
         private driverDetailsListStore: DriversDetailsListStore,
-        private router: Router
     ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
 

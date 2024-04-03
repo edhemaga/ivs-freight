@@ -1,22 +1,4 @@
 import {
-    accountBankValidation,
-    addressUnitValidation,
-    addressValidation,
-    bankValidation,
-    businessNameValidation,
-    einNumberRegex,
-    firstNameValidation,
-    lastNameValidation,
-    phoneFaxRegex,
-    routingBankValidation,
-    ssnNumberRegex,
-} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
-import { TruckModalComponent } from '../../../../pages/truck/pages/truck-modal/truck-modal.component';
-import {
-    OwnerModalResponse,
-    OwnerResponse,
-} from '../../../../../../appcoretruckassist';
-import {
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -31,16 +13,28 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
-import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { TabSwitcherComponent } from '../../../../core/components/switchers/tab-switcher/tab-switcher.component';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { OwnerTService } from 'src/app/pages/owner/services/owner.service';
-import { TrailerModalComponent } from '../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { merge, Subject, takeUntil } from 'rxjs';
-import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../core/services/form/form.service';
 import { CommonModule } from '@angular/common';
+
+//Validations
+import {
+    accountBankValidation,
+    addressUnitValidation,
+    addressValidation,
+    bankValidation,
+    businessNameValidation,
+    einNumberRegex,
+    firstNameValidation,
+    lastNameValidation,
+    phoneFaxRegex,
+    routingBankValidation,
+    ssnNumberRegex,
+} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+
+//Components
+import { TruckModalComponent } from '../../../../pages/truck/pages/truck-modal/truck-modal.component';
+import { TabSwitcherComponent } from '../../../../core/components/switchers/tab-switcher/tab-switcher.component';
+import { TrailerModalComponent } from '../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
@@ -49,6 +43,21 @@ import { InputAddressDropdownComponent } from '../../../../core/components/share
 import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
+
+//Models
+import {
+    OwnerModalResponse,
+    OwnerResponse,
+    AddressEntity,
+    CreateResponse,
+} from 'appcoretruckassist';
+
+//Services
+import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { OwnerService } from 'src/app/pages/owner/services/owner.service';
+import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../../core/services/form/form.service';
 
 @Component({
     selector: 'app-owner-modal',
@@ -117,7 +126,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private ownerModalService: OwnerTService,
+        private ownerModalService: OwnerService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService
     ) {}

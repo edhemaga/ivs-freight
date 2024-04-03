@@ -4,21 +4,28 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Models
 import {
     DriverListResponse,
     GetTestModalResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
 
-import { DriverTService } from 'src/app/pages/driver/services/driver.service';
-import { TestTService } from 'src/app/pages/driver/services/test.service';
+//Services
+import { DriverService } from 'src/app/pages/driver/services/driver.service';
+import { DriverTestService } from 'src/app/pages/driver/services/driver-test.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { FormService } from '../../../../../core/services/form/form.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Components
 import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
@@ -26,6 +33,8 @@ import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-input-note/ta-input-note.component';
+
+//Helpers
 import {
     convertDateToBackend,
     convertDateFromBackend,
@@ -90,8 +99,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private driverService: DriverTService,
-        private testService: TestTService,
+        private driverService: DriverService,
+        private testService: DriverTestService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService

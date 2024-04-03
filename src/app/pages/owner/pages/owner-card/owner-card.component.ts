@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 // models
 import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
 import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
-import { OwnerBodyResponse } from '../../models/owner-data.model';
+import { OwnerData } from '../../models/owner-data.model';
 
 // helpers
 import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
@@ -146,7 +146,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
         return item;
     }
 
-    public onCardActions(event: OwnerBodyResponse): void {
+    public onCardActions(event: OwnerData): void {
         if (event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,

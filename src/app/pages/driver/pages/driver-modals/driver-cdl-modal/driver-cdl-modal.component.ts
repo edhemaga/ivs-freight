@@ -4,16 +4,24 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
-import { CdlTService } from 'src/app/pages/driver/services/cdl.service';
-import { DriverTService } from 'src/app/pages/driver/services/driver.service';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Models
+import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
+
+//Services
+import { DriverCdlService } from 'src/app/pages/driver/services/driver-cdl.service';
+import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { FormService } from '../../../../../core/services/form/form.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//Components
 import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
@@ -21,6 +29,8 @@ import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta
 import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-input-note/ta-input-note.component';
+
+//Helpers
 import {
     convertDateFromBackend,
     convertDateToBackend,
@@ -85,8 +95,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private driverService: DriverTService,
-        private cdlService: CdlTService,
+        private driverService: DriverService,
+        private cdlService: DriverCdlService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService

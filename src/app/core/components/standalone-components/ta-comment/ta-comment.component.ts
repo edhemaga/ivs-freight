@@ -31,7 +31,7 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { TaInputDropdownTableService } from '../ta-input-dropdown-table/utils/services/ta-input-dropdown-table.service';
-import { LoadTService } from 'src/app/pages/load/services/load.service';
+import { LoadService } from 'src/app/shared/services/load.service';
 
 // utils
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
@@ -119,7 +119,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
         private formatDatePipe: formatDatePipe,
         private commentsService: CommentsService,
-        private loadService: LoadTService,
+        private loadService: LoadService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private taInputDropdownTableService: TaInputDropdownTableService,

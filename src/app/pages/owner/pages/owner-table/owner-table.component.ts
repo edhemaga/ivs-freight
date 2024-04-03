@@ -22,14 +22,14 @@ import {
     ToolbarActions,
 } from 'src/app/core/components/shared/model/card-table-data.model';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import { OwnerData } from '../../models/owner-table.model';
+import { OwnerTableData } from '../../models/owner-table-data.model';
 import { OwnerFilter } from '../../models/owner-filter.model';
-import { OwnerBodyResponse } from '../../models/owner-data.model';
+import { OwnerData } from '../../models/owner-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { OwnerTService } from '../../services/owner.service';
+import { OwnerService } from '../../services/owner.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
@@ -54,7 +54,7 @@ import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import { DisplayOwnerConfiguration } from '../../utils/constants/owner-card.constants';
+import { OwnerConfiguration } from './utils/constants/owner-configuration.constants';
 
 //helpers
 import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
@@ -83,18 +83,18 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
-        DisplayOwnerConfiguration.displayRowsFrontActive;
+        OwnerConfiguration.displayRowsFrontActive;
     public displayRowsBack: CardRows[] =
-        DisplayOwnerConfiguration.displayRowsBackActive;
+        OwnerConfiguration.displayRowsBackActive;
 
     //Data to display from model Shipper
     public displayRowsFrontInactive: CardRows[] =
-        DisplayOwnerConfiguration.displayRowsFrontInactive;
+        OwnerConfiguration.displayRowsFrontInactive;
     public displayRowsBackInactive: CardRows[] =
-        DisplayOwnerConfiguration.displayRowsBackInactive;
-    public cardTitle: string = DisplayOwnerConfiguration.cardTitle;
-    public page: string = DisplayOwnerConfiguration.page;
-    public rows: number = DisplayOwnerConfiguration.rows;
+        OwnerConfiguration.displayRowsBackInactive;
+    public cardTitle: string = OwnerConfiguration.cardTitle;
+    public page: string = OwnerConfiguration.page;
+    public rows: number = OwnerConfiguration.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -103,7 +103,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private ownerActiveQuery: OwnerActiveQuery,
         private ownerInactiveQuery: OwnerInactiveQuery,
-        private ownerService: OwnerTService,
+        private ownerService: OwnerService,
         private phonePipe: formatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore,
         private confirmationService: ConfirmationService,
@@ -672,7 +672,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapOwnerData(data): OwnerData {
+    private mapOwnerData(data): OwnerTableData {
         return {
             ...data,
             isSelected: false,
@@ -856,7 +856,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: OwnerBodyResponse): void {
+    public onTableBodyActions(event: OwnerData): void {
         if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
             this.backFilterQuery.active =
                 this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE

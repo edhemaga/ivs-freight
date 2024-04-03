@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { DriverMinimalListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { DriverTService } from '../../services/driver.service';
+import { DriverService } from '../../services/driver.service';
 import {
     DriverMinimalListState,
     DriversMinimalListStore,
@@ -18,16 +18,14 @@ export class DriverMinimalResolver implements Resolve<DriverMinimalListState> {
     pageSize: number = 25;
     count: number;
     constructor(
-        private driverService: DriverTService,
+        private driverService: DriverService,
         private driverMinimalListStore: DriversMinimalListStore
     ) {}
-    resolve(
-        route: ActivatedRouteSnapshot
-    ): Observable<DriverMinimalListResponse> | Observable<any> {
+    resolve(): Observable<DriverMinimalListResponse> | Observable<any> {
         return this.driverService
             .getDriversMinimalList(this.pageIndex, this.pageSize, this.count)
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     return of('No drivers data for...');
                 }),
                 tap((driverMinimalList: DriverMinimalListResponse) => {
