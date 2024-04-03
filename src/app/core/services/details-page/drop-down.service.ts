@@ -18,12 +18,12 @@ import { DriverModalComponent } from '../../components/modals/driver-modal/drive
 import { RepairOrderModalComponent } from '../../components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '../../components/modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ShipperModalComponent } from '../../components/modals/shipper-modal/shipper-modal.component';
-import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
-import { TruckModalComponent } from '../../components/modals/truck-modal/truck-modal.component';
-import { SettingsOfficeModalComponent } from '../../components/modals/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../components/modals/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../components/modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../components/modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { TrailerModalComponent } from '../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from '../../../pages/truck/pages/truck-modal/truck-modal.component';
+import { SettingsOfficeModalComponent } from '../../../pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '../../../pages/settings/pages/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '../../../pages/settings/pages/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '../../../pages/settings/pages/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @Injectable({
     providedIn: 'root',

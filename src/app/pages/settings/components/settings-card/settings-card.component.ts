@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { settings_card_animation } from '../settings-animation/settings-card.animation';
+
+// animations
+import { settingsCardAnimation } from '../../animations/settings-card.animation';
 
 @Component({
     selector: 'app-settings-card',
     templateUrl: './settings-card.component.html',
     styleUrls: ['./settings-card.component.scss'],
-    animations: [settings_card_animation('openCloseBodyCard')],
+    animations: [settingsCardAnimation('openCloseBodyCard')],
 })
 export class SettingsCardComponent {
     @Input() cardTemplate: string = null;

@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { AccidentListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { AccidentTService } from '../services/accident.service';
+
+import { Observable, of, catchError, tap } from 'rxjs';
+
+// services
+import { AccidentService } from '../services/accident.service';
+
+// store
 import {
     AccidentNonReportedState,
     AccidentNonReportedStore,
 } from '../state/accident-non-reported/accident-non-reported.store';
+
+// models
+import { AccidentListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +22,7 @@ export class AccidentNonReportedResolver
     implements Resolve<AccidentNonReportedState>
 {
     constructor(
-        private accidentService: AccidentTService,
+        private accidentService: AccidentService,
         private accidentStore: AccidentNonReportedStore
     ) {}
     resolve(): Observable<AccidentNonReportedState | boolean> {

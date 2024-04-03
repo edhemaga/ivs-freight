@@ -8,7 +8,7 @@ import { TtRegistrationModalComponent } from 'src/app/core/components/modals/com
 import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 // services
-import { TrailerTService } from '../../services/trailer.service';
+import { TrailerService } from '../../../../shared/services/trailer.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -22,6 +22,9 @@ import { TrailersMinimalListStore } from '../../state/trailer-minimal-list-state
 import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state/trailer-details-list.query';
 
+// enums
+import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+
 // models
 import { TableOptions } from 'src/app/core/model/table.model';
 import {
@@ -29,9 +32,6 @@ import {
     TrailerDetailsConfig,
 } from 'src/app/core/model/trailer.model';
 import { TrailerResponse } from 'appcoretruckassist';
-
-// enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({
     selector: 'app-trailer-details',
@@ -57,7 +57,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
         // services
         private modalService: ModalService,
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
         private DetailsDataService: DetailsDataService,

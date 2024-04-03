@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { TruckListResponse } from 'appcoretruckassist';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TruckTService } from '../services/truck.service';
+import { TruckService } from '../../../shared/services/truck.service';
+
+// store
 import {
     TruckActiveState,
     TruckActiveStore,
@@ -15,7 +18,7 @@ import {
 })
 export class TruckActiveResolver implements Resolve<TruckActiveState> {
     constructor(
-        private truckService: TruckTService,
+        private truckService: TruckService,
         private truckStore: TruckActiveStore,
         private tableService: TruckassistTableService
     ) {}

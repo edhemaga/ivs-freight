@@ -11,7 +11,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { SettingsCompanyService } from 'src/app/pages/settings/pages/settings-company/services/settings-company.service';
+import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';

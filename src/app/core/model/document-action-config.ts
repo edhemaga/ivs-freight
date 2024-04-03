@@ -1,4 +1,3 @@
-import { DocumentAction } from 'src/app/pages/settings/pages/settings-document/enums/settings-document.enum';
 import { FileEvent } from './file-event.model';
 
 type DocumentActionFunction = (event: FileEvent) => void;

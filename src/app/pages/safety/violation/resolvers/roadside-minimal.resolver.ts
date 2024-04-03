@@ -1,11 +1,15 @@
-import { RoadsideInspectionMinimalListResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
-
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-
-import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { Resolve } from '@angular/router';
+
+// services
 import { RoadsideService } from '../services/roadside.service';
+
+// models
+import { RoadsideInspectionMinimalListResponse } from 'appcoretruckassist';
+
+// state
 import {
     RoadsideMinimalListState,
     RoadsideMinimalListStore,
@@ -23,13 +27,11 @@ export class RoadsideMinimalResolver
         private rsService: RoadsideService,
         private rsMinimalListStore: RoadsideMinimalListStore
     ) {}
-    resolve(
-        route: ActivatedRouteSnapshot
-    ): Observable<RoadsideMinimalListState> | Observable<any> {
+    resolve(): Observable<RoadsideMinimalListState> | Observable<any> {
         return this.rsService
             .getRoadsideMinimalList(this.pageIndex, this.pageSize)
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     return of('No drivers data for...');
                 }),
                 tap((rsMinimalList: RoadsideInspectionMinimalListResponse) => {

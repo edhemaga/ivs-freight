@@ -42,11 +42,11 @@ import { ApplicantResolver } from './pages/applicant/resolvers/applicant.resolve
 import { FuelResolver } from './pages/fuel/state/fule-state/fuel-state.resolver';
 import { ApplicantTableResolver } from './pages/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './pages/applicant/pages/applicant-sph/resolvers/applicant-sph-form.resolver';
-import { MilesResolverService } from './pages/miles/resolvers/miles-resolver.resolver';
+import { MilesResolver } from './pages/miles/resolvers/miles.resolver';
 import { DispatcherResolver } from './pages/dispatch/resolvers/dispatcher.resolver';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { ApplicantGuard } from './core/guards/applicant.guard';
-import { RoutingResolver } from './pages/routing/resolvers/routing-state.resolver';
+import { RoutingStateResolver } from './pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from './pages/telematic/resolvers/telematic-state.resolver';
 import { DashboardResolver } from './pages/dashboard/resolvers/dashboard.resolver';
 import { CompanySettingsGuard } from './core/guards/company-settings.guard';
@@ -254,7 +254,7 @@ const routes: Routes = [
             ),
         canActivate: [CompanySettingsGuard, AuthGuard],
         resolve: {
-            routing: RoutingResolver,
+            routing: RoutingStateResolver,
         },
     },
     {
@@ -306,7 +306,7 @@ const routes: Routes = [
         loadChildren: () =>
             import('./pages/miles/miles.module').then((m) => m.MilesModule),
         canActivate: [CompanySettingsGuard, AuthGuard],
-        resolve: { miles: MilesResolverService },
+        resolve: { miles: MilesResolver },
     },
     {
         path: 'tools/1099',

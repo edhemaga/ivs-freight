@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { IntegrationService } from 'appcoretruckassist';
+
 import { Observable, tap } from 'rxjs';
+
+// core
+import { IntegrationService } from 'appcoretruckassist';
+
+// state
 import { IntegrationStore } from '../state/settings-integration-state/integrationActiveStore';
+
 @Injectable({
     providedIn: 'root',
 })
-export class integrationResolver implements Resolve<any> {
+export class CompanyIntegrationsResolver implements Resolve<any> {
     constructor(
         private integrationService: IntegrationService,
         private integrationStore: IntegrationStore

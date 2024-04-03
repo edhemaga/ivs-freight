@@ -31,9 +31,9 @@ import { Confirmation } from '../../modals/confirmation-modal/state/models/confi
 import { ShipperTService } from 'src/app/pages/customer/services/shipper.service';
 import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
 import { RepairTService } from 'src/app/pages/repair/services/repair.service';
-import { RoutingStateService } from 'src/app/pages/routing/services/routing-state.service';
+import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
-import { CompanyTOfficeService } from 'src/app/pages/settings/pages/custom-agreement/service/company-office.service';
+import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
 
 @Component({
     selector: 'app-maps',
@@ -178,7 +178,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         private fuelStopService: FuelTService,
         private routingService: RoutingStateService,
         private confirmationService: ConfirmationService,
-        private companyOfficeService: CompanyTOfficeService,
+        private companyOfficeService: CompanyOfficeService,
         private tableService: TruckassistTableService,
         private dropdownService: DropDownService,
         private detailsDataService: DetailsDataService

@@ -1,18 +1,29 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { AccidentModalComponent } from 'src/app/core/components/modals/accident-modal/accident-modal.component';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 import { AfterViewInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// services
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+// components
+import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
+
+// helpers
+import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
+
+// store
 import { AccidentActiveState } from '../../state/accident-active/accident-active.store';
 import { AccidentInactiveState } from '../../state/accident-inactive/accident-inactive.store';
 import { AccidentNonReportedState } from '../../state/accident-non-reported/accident-non-reported.store';
 import { AccidentActiveQuery } from '../../state/accident-active/accident-active.query';
 import { AccidentNonReportedQuery } from '../../state/accident-non-reported/accident-non-reported.query';
 import { AccidentInactiveQuery } from '../../state/accident-inactive/accident-inactive.query';
+
+// models
 import { AccidentShortResponse } from 'appcoretruckassist';
-import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-accident-table',
@@ -127,23 +138,7 @@ export class AccidentTableComponent
         // Search
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                /*  if (res) {
-          this.mapingIndex = 0;
-
-          this.backFilterQuery.pageIndex = 1;
-
-          const searchEvent = tableSearch(res, this.backFilterQuery);
-
-          if (searchEvent) {
-            if (searchEvent.action === 'api') {
-              this.contactBackFilter(searchEvent.query, true);
-            } else if (searchEvent.action === 'store') {
-              this.sendViolationData();
-            }
-          }
-        } */
-            });
+            .subscribe(() => {});
 
         // Accident Actions
         this.tableService.currentActionAnimation
@@ -151,103 +146,19 @@ export class AccidentTableComponent
             .subscribe((res: any) => {
                 // Add Accident
                 if (res.animation === 'add') {
-                    /* this.viewData.push(this.mapContactData(res.data));
-
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'add';
-            }
-
-            return contact;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 2300);
-
-           */
                 }
                 // Update Accident
                 else if (res.animation === 'update') {
-                    /* const updatedContact = this.mapContactData(res.data, true);
-
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact = updatedContact;
-              contact.actionAnimation = 'update';
-            }
-
-            return contact;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000); */
                 }
                 // Delete Accident
                 else if (res.animation === 'delete') {
-                    /* let contactIndex: number;
-
-          this.viewData = this.viewData.map((contact: any, index: number) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'delete';
-              contact = index;
-            }
-
-            return contact;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(contactIndex, 1);
-            clearInterval(inetval);
-          }, 900);
-
-           */
                 }
             });
 
         // Delete Selected Rows
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                /*  if (response.length) {
-          this.contactService
-            .deleteAccountList(response)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((contact: any) => {
-                response.map((r: any) => {
-                  if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete-multiple';
-                  }
-                });
-
-                return contact;
-              });
-
-              this.updateDataCount();
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 900);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
-        } */
-            });
+            .subscribe(() => {});
     }
 
     // -------------------------------NgAfterViewInit-------------------------------

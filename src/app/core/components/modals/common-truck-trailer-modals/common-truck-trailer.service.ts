@@ -11,8 +11,8 @@ import {
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
-import { TruckTService } from 'src/app/pages/truck/services/truck.service';
-import { TrailerTService } from 'src/app/pages/trailer/services/trailer.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
+import { TrailerService } from 'src/app/shared/services/trailer.service';
 import { TruckItemStore } from 'src/app/pages/truck/state/truck-details-state/truck.details.store';
 import { TrailerItemStore } from 'src/app/pages/trailer/state/trailer-details-state/trailer-details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -32,9 +32,9 @@ export class CommonTruckTrailerService {
         private registrationService: RegistrationService,
         private inspectionService: InspectionService,
         private titleService: TitleService,
-        private truckService: TruckTService,
+        private truckService: TruckService,
         private tableService: TruckassistTableService,
-        private trailerService: TrailerTService,
+        private trailerService: TrailerService,
         private truckItemStore: TruckItemStore,
         private trailerItemStore: TrailerItemStore,
         private tdlStore: TrucksDetailsListStore,

@@ -5,8 +5,8 @@ import { Subject, takeUntil } from 'rxjs';
 // Components
 import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { TruckModalComponent } from 'src/app/core/components/modals/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/core/components/modals/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // Models
 import { GetOwnerListResponse, OwnerResponse } from 'appcoretruckassist';

@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
+import { Observable, of, catchError, tap } from 'rxjs';
+
+// models
 import { AccidentListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { AccidentTService } from '../services/accident.service';
+
+// services
+import { AccidentService } from '../services/accident.service';
+
+// store
 import {
     AccidentInactiveState,
     AccidentInactiveStore,
@@ -16,7 +22,7 @@ export class AccidentInactiveResolver
     implements Resolve<AccidentInactiveState>
 {
     constructor(
-        private accidentService: AccidentTService,
+        private accidentService: AccidentService,
         private accidentStore: AccidentInactiveStore
     ) {}
     resolve(): Observable<AccidentInactiveState | boolean> {

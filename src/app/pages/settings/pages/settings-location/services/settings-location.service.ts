@@ -1,8 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
+
+//Models
 import {
     CompanyOfficeModalResponse,
     CompanyOfficeResponse,
-    CompanyOfficeService,
+    CompanyOfficeService as CompanyTOfficeService,
     CreateCompanyOfficeCommand,
     CreateParkingCommand,
     CreateResponse,
@@ -16,20 +19,25 @@ import {
     UpdateParkingCommand,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { TerminalListResponse } from 'appcoretruckassist';
+
+//Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { SettingsOfficeModalComponent } from 'src/app/core/components/modals/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from 'src/app/core/components/modals/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from 'src/app/core/components/modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from 'src/app/core/components/modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
-import { CompanyParkingService } from '../components/settings-parking/service/company-parking.service';
+import { CompanyParkingService } from '../../../services/company-parking.service';
+import { CompanyTerminalService } from '../../../services/company-terminal.service';
+import { CompanyOfficeService } from '../../../../../shared/services/company-office.service';
+
+//Components
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+
+//Stores
 import { ParkingStore } from '../../../state/parking-state/company-parking.store';
 import { OfficeStore } from '../../../state/setting-ofice-state/company-office.store';
-import { CompanyTOfficeService } from '../../custom-agreement/service/company-office.service';
 import { TerminalStore } from '../../../state/settings-terminal-state/company-terminal.store';
-import { CompanyTerminalService } from '../components/settings-terminal/services/company-terminal.service';
-import { TerminalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -39,14 +47,14 @@ export class SettingsLocationService implements OnDestroy {
 
     constructor(
         private modalService: ModalService,
-        private companyOfficeService: CompanyOfficeService,
+        private companyOfficeService: CompanyTOfficeService,
         private companyParkingService: ParkingService,
         private parkingService: CompanyParkingService,
         private companyTerminalService: TerminalService,
         private tableService: TruckassistTableService,
         private parkingStore: ParkingStore,
         private officeStore: OfficeStore,
-        private officeService: CompanyTOfficeService,
+        private officeService: CompanyOfficeService,
         private terminalStore: TerminalStore,
         private terminalService: CompanyTerminalService
     ) {}
@@ -106,7 +114,7 @@ export class SettingsLocationService implements OnDestroy {
     // Location Parking
     public deleteCompanyParkingById(parkingId: number): Observable<any> {
         return this.companyParkingService.apiParkingIdDelete(parkingId).pipe(
-            tap((res: CreateResponse) => {
+            tap(() => {
                 const parkingSub = this.parkingService
                     .getParkingList(1, 25)
                     .pipe(takeUntil(this.destroy$))
@@ -136,7 +144,7 @@ export class SettingsLocationService implements OnDestroy {
         data: CreateParkingCommand
     ): Observable<CreateResponse | any> {
         return this.companyParkingService.apiParkingPost(data).pipe(
-            tap((res: CreateResponse) => {
+            tap(() => {
                 const parkingSub = this.parkingService
                     .getParkingList(1, 25)
                     .pipe(takeUntil(this.destroy$))
@@ -158,7 +166,7 @@ export class SettingsLocationService implements OnDestroy {
 
     public updateCompanyParking(data: UpdateParkingCommand): Observable<any> {
         return this.companyParkingService.apiParkingPut(data).pipe(
-            tap((res: CreateResponse) => {
+            tap(() => {
                 const parkingSub = this.parkingService
                     .getParkingList(1, 25)
                     .pipe(takeUntil(this.destroy$))
@@ -187,7 +195,7 @@ export class SettingsLocationService implements OnDestroy {
         return this.companyOfficeService
             .apiCompanyofficeIdDelete(officeId)
             .pipe(
-                tap((res: CreateResponse) => {
+                tap(() => {
                     const officeSub = this.officeService
                         .getOfficeList(1, 25)
                         .pipe(takeUntil(this.destroy$))
@@ -222,7 +230,7 @@ export class SettingsLocationService implements OnDestroy {
         data: CreateCompanyOfficeCommand
     ): Observable<CreateResponse> {
         return this.companyOfficeService.apiCompanyofficePost(data).pipe(
-            tap((res: CreateResponse) => {
+            tap(() => {
                 const officeSub = this.officeService
                     .getOfficeList(1, 25)
                     .pipe(takeUntil(this.destroy$))
@@ -271,7 +279,7 @@ export class SettingsLocationService implements OnDestroy {
     // Location Terminal
     public deleteCompanyTerminalById(terminalId: number): Observable<any> {
         return this.companyTerminalService.apiTerminalIdDelete(terminalId).pipe(
-            tap((res: CreateResponse) => {
+            tap(() => {
                 const terminalSub = this.terminalService
                     .getTerminalList(1, 25)
                     .pipe(takeUntil(this.destroy$))
