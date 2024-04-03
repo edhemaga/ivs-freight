@@ -33,9 +33,9 @@ import {
 } from '../../../../utils/methods.calculations';
 
 // pipes
-import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
-import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
-import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
+import { PriceCalculationArrayPipe } from './pipes/price-calculation-array.pipe';
+import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
+import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone.pipe';
 
 // services
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -87,7 +87,7 @@ import { RepairTService } from 'src/app/pages/repair/services/repair.service';
     selector: 'app-repair-order-modal',
     templateUrl: './repair-order-modal.component.html',
     styleUrls: ['./repair-order-modal.component.scss'],
-    providers: [PriceCalculationArraysPipe, ModalService, FormService],
+    providers: [PriceCalculationArrayPipe, ModalService, FormService],
     standalone: true,
     imports: [
         // Module
@@ -111,8 +111,8 @@ import { RepairTService } from 'src/app/pages/repair/services/repair.service';
 
         // Pipe
         ActiveItemsPipe,
-        formatPhonePipe,
-        PriceCalculationArraysPipe,
+        FormatPhonePipe,
+        PriceCalculationArrayPipe,
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
@@ -187,7 +187,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private repairService: RepairTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private priceArrayPipe: PriceCalculationArraysPipe,
+        private priceArrayPipe: PriceCalculationArrayPipe,
         private formService: FormService,
         private DetailsDataService: DetailsDataService,
         private tagsService: EditTagsService,

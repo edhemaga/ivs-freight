@@ -18,7 +18,7 @@ import { BrokerMinimalListQuery } from '../../state/broker-details-state/broker-
 import { BrokerDetailsListQuery } from '../../state/broker-details-state/broker-details-list-state/broker-details-list.query';
 
 // Pipes
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
 // Models
 import { BrokerResponse } from 'appcoretruckassist';

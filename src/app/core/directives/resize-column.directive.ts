@@ -13,7 +13,7 @@ import {
 
 @Directive({
     selector: '[resizeColumn]',
-    standalone: true
+    standalone: true,
 })
 export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
     @Output() resizeing: EventEmitter<any> = new EventEmitter();

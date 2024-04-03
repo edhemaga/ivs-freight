@@ -20,7 +20,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import { OwnerTableData } from '../../models/owner-table-data.model';
 import { OwnerFilter } from '../../models/owner-filter.model';
@@ -32,14 +32,10 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 import { OwnerService } from '../../services/owner.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 // Store
 import { OwnerActiveQuery } from '../../state/owner-active-state/owner-active.query';
-import {
-    OwnerActiveState,
-    OwnerActiveStore,
-} from '../../state/owner-active-state/owner-active.store';
+import { OwnerActiveState } from '../../state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '../../state/owner-inactive-state/owner-inactive.query';
 import {
     OwnerInactiveState,
@@ -50,20 +46,20 @@ import {
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 // Pipes
-import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
+import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 import { OwnerConfiguration } from './utils/constants/owner-configuration.constants';
 
 //helpers
-import { getDropdownOwnerContent } from 'src/app/core/helpers/dropdown-content';
+import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
 
 @Component({
     selector: 'app-owner-table',
     templateUrl: './owner-table.component.html',
     styleUrls: ['./owner-table.component.scss'],
-    providers: [formatPhonePipe],
+    providers: [FormatPhonePipe],
 })
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -104,11 +100,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerActiveQuery: OwnerActiveQuery,
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerService,
-        private phonePipe: formatPhonePipe,
+        private phonePipe: FormatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore,
-        private confirmationService: ConfirmationService,
-        private sharedService: SharedService,
-        private ownerActiveStore: OwnerActiveStore
+        private confirmationService: ConfirmationService
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -697,7 +691,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownOwnerContent(): DropdownItem[] {
-        return getDropdownOwnerContent(this.selectedTab);
+        return DropdownContentHelper.getDropdownOwnerContent();
     }
 
     private getTabData(dataType: string) {

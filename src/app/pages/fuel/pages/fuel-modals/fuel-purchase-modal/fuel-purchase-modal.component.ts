@@ -48,10 +48,10 @@ import { FuelItems } from './models/fuel-items.model';
 import { FuelItemsDropdown } from './models/fuel-items-dropdown.model';
 import { FuelTruckType } from './models/fuel-truck-type.model';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { Trailer } from '../../../../../core/components/shared/model/card-table-data.model';
+import { Trailer } from '../../../../../shared/models/card-table-data.model';
 
 //Pipes
-import { SumArraysPipe } from '../../../../../core/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '../../../../../shared/pipes/sum-arrays.pipe';
 
 //Enums
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';

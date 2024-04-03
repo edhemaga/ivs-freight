@@ -10,12 +10,12 @@ import {
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
 import { Router } from '@angular/router';
 import { MapsService } from '../../../services/shared/maps.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
@@ -29,7 +29,7 @@ import { Subject, takeUntil } from 'rxjs';
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
     standalone: true,
     imports: [
         // Modules
@@ -44,13 +44,13 @@ import { Subject, takeUntil } from 'rxjs';
         GpsProgressbarComponent,
 
         // Pipes
-        formatDatePipe,
-        TaThousandSeparatorPipe,
+        FormatDatePipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {
     private destroy$ = new Subject<void>();
-    
+
     @Input() title: string = '';
     @Input() item: any = {};
     @Input() type: string = '';
@@ -62,7 +62,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
     @Output() assignUnitToDevice: EventEmitter<any> = new EventEmitter();
-    @ViewChild("detailsDropdown") detailsDropdown: any;
+    @ViewChild('detailsDropdown') detailsDropdown: any;
 
     public dropdownActions: any = [];
 
@@ -97,7 +97,11 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.markerUpdateChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                if ( (item.id != null && (item.id == this.item.id)) || (item.deviceId != null && (item.deviceId == this.item.deviceId)) ) {
+                if (
+                    (item.id != null && item.id == this.item.id) ||
+                    (item.deviceId != null &&
+                        item.deviceId == this.item.deviceId)
+                ) {
                     this.item = item;
                     this.getDropdownActions();
                     this.ref.detectChanges();
@@ -107,7 +111,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.selectedMarkerChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                if (id != this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }
@@ -116,7 +120,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                if (id != this.item.id && this.detailsDropdown?.tooltip) {
                     this.detailsDropdown.dropDownActive = -1;
                     this.detailsDropdown.tooltip.close();
                 }

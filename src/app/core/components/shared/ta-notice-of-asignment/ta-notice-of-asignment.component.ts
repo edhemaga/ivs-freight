@@ -3,7 +3,6 @@ import {
     Component,
     ElementRef,
     EventEmitter,
-    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -21,13 +20,13 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { CommonModule } from '@angular/common';
-import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 // helpers
-import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+import { CopyPasteHelper } from 'src/app/shared/utils/helpers/copy-paste.helper';
 
 @Component({
     selector: 'app-ta-notice-of-asignment',
@@ -158,9 +157,9 @@ export class TaNoticeOfAsignmentComponent
     writeValue(obj: any): void {
         this.noticeRef.nativeElement.value = obj;
     }
-    registerOnChange(fn: any): void {}
-    registerOnTouched(fn: any): void {}
-    setDisabledState?(isDisabled: boolean): void {}
+    registerOnChange(_: any): void {}
+    registerOnTouched(_: any): void {}
+    setDisabledState?(_: boolean): void {}
 
     ngOnInit(): void {
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };
@@ -371,6 +370,6 @@ export class TaNoticeOfAsignmentComponent
     }
 
     public onPaste(event: ClipboardEvent): void {
-        PasteHelper.onPaste(event);
+        CopyPasteHelper.onPaste(event);
     }
 }

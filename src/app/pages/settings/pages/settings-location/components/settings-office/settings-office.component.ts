@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 //Pipe
-import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
 //Service
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -19,7 +19,7 @@ import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-p
     selector: 'app-settings-office',
     templateUrl: './settings-office.component.html',
     styleUrls: ['./settings-office.component.scss'],
-    providers: [formatCurrency],
+    providers: [FormatCurrency],
 })
 export class SettingsOfficeComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -34,7 +34,7 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private formatCurrency: formatCurrency,
+        private FormatCurrency: FormatCurrency,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -182,7 +182,7 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
         return (
             data.payPeriod.name +
             ' Rent ' +
-            `- ${this.formatCurrency.transform(data.rent)}`
+            `- ${this.FormatCurrency.transform(data.rent)}`
         );
     }
     ngOnDestroy(): void {

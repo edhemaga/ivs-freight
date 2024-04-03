@@ -9,20 +9,23 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // model
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
-import { CardRows, DataResult } from 'src/app/core/components/shared/model/card-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
+import {
+    CardRows,
+    DataResult,
+} from 'src/app/core/components/shared/model/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-driver-card',
     templateUrl: './driver-card.component.html',
     styleUrls: ['./driver-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class DriverCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data
@@ -44,7 +47,7 @@ export class DriverCardComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -66,19 +69,19 @@ export class DriverCardComponent implements OnInit, OnDestroy, OnChanges {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -103,17 +106,14 @@ export class DriverCardComponent implements OnInit, OnDestroy, OnChanges {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public trackCard(id: number): number {

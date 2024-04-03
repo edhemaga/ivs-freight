@@ -1,6 +1,5 @@
 import * as AppConst from 'src/app/const';
-import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
-import { LoadStatusPipe } from '../../../pipes/load-status.pipe';
+import { StatusPipe } from '../../../../shared/pipes/status-pipe.pipe';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,9 +8,9 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-ta-status-select',
     templateUrl: './ta-status-select.component.html',
     styleUrls: ['./ta-status-select.component.scss'],
-    providers: [StatusPipePipe, LoadStatusPipe],
+    providers: [StatusPipe],
     standalone: true,
-    imports: [CommonModule, FormsModule]
+    imports: [CommonModule, FormsModule],
 })
 export class TaStatusSelectComponent implements OnInit {
     @Input() placeholder: string;
@@ -37,7 +36,7 @@ export class TaStatusSelectComponent implements OnInit {
     tonyRate: any;
     savedTonuStatus: any;
 
-    constructor(private statusPipe: StatusPipePipe) {}
+    constructor(private statusPipe: StatusPipe) {}
 
     ngOnInit(): void {
         //   this.items = this.statusPipe.transform(

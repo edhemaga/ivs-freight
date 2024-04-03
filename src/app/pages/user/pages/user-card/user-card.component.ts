@@ -5,10 +5,10 @@ import {
     CardRows,
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -17,7 +17,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     selector: 'app-user-card',
     templateUrl: './user-card.component.html',
     styleUrls: ['./user-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class UserCardComponent implements OnChanges {
     @Input() viewData: CardDetails[];
@@ -37,7 +37,7 @@ export class UserCardComponent implements OnChanges {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnChanges(cardChanges: SimpleChanges) {
@@ -53,19 +53,19 @@ export class UserCardComponent implements OnChanges {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -82,17 +82,14 @@ export class UserCardComponent implements OnChanges {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public trackCard(item: number): number {

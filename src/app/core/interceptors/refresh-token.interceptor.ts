@@ -1,4 +1,3 @@
-import { configFactory } from './../../app.config';
 import { Injectable } from '@angular/core';
 import {
     HttpInterceptor,
@@ -7,11 +6,21 @@ import {
     HttpHandler,
     HttpErrorResponse,
 } from '@angular/common/http';
+
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
-import { AccountService, SignInResponse } from 'appcoretruckassist';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
+
+// bootstrap
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+// services
+import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 import { WebsiteUserLoggedService } from 'src/app/pages/website/services/website-user-logged.service';
+
+// models
+import { AccountService, SignInResponse } from 'appcoretruckassist';
+
+// config
+import { configFactory } from './../../app.config';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {

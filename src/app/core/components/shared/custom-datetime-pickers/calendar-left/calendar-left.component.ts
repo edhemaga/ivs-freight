@@ -21,7 +21,7 @@ import {
 } from '@angular/cdk/scrolling';
 
 // pipes
-import { CalendarMonthsPipe } from '../../../../pipes/calendarMonths.pipe';
+import { CalendarMonthsPipe } from '../../../../pipes/calendar-months.pipe';
 
 // strategy
 import {

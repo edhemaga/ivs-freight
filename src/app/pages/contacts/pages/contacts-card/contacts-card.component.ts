@@ -2,11 +2,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -26,7 +26,7 @@ export class ContactsCardComponent implements OnInit, OnDestroy {
     @Input() displayRowsBack: CardRows;
     @Input() cardTitleLink: string;
 
-    public valueByStringPathInstance = new ValueByStringPath();
+    public valueByStringPathInstance = new CardHelper();
 
     public isCardFlippedCheckInCards: number[] = [];
 

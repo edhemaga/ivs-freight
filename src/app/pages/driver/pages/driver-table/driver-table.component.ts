@@ -35,8 +35,8 @@ import { ApplicantTableStore } from '../../state/applicant-state/applicant-table
 
 // Pipes
 import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // Modals
 import {
@@ -68,7 +68,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -78,16 +78,13 @@ import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/ta
 import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
 
 //Helpers
-import {
-    calculateDistanceBetweenTwoCitysByCoordinates,
-    checkSpecialFilterArray,
-} from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
     styleUrls: ['./driver-table.component.scss'],
-    providers: [NameInitialsPipe, TaThousandSeparatorPipe],
+    providers: [NameInitialsPipe, ThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public driverTableData: any[] = [];
@@ -150,7 +147,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private applicantQuery: ApplicantTableQuery,
         public datePipe: DatePipe,
         private nameInitialsPipe: NameInitialsPipe,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         private driversInactiveStore: DriversInactiveStore,
         private applicantStore: ApplicantTableStore,
         private router: Router
@@ -260,7 +257,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                         .pipe(
                                             map((address) => {
                                                 const distance =
-                                                    calculateDistanceBetweenTwoCitysByCoordinates(
+                                                    DataFilterHelper.calculateDistanceBetweenTwoCitysByCoordinates(
                                                         res.queryParams
                                                             .latValue,
                                                         res.queryParams
@@ -635,7 +632,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 gridNameTitle: ConstantStringTableComponentsEnum.DRIVER_1,
                 stateName: ConstantStringTableComponentsEnum.APPLICANTS,
                 tableConfiguration: ConstantStringTableComponentsEnum.APPLICANT,
-                driverArhivedArray: checkSpecialFilterArray(
+                driverArhivedArray: DataFilterHelper.checkSpecialFilterArray(
                     applicantsData,
                     ConstantStringTableComponentsEnum.ARCHIVED_DATA
                 ),

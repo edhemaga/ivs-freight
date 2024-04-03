@@ -12,7 +12,7 @@
             [isDopplerOn]="isDopplerOn"
             [trafficLayerShow]="trafficLayerShow"
         ></app-map-toolbar>
-    </div> 
+    </div>
 
     <div class="customer-map-container">
         <div class="route-card-container">
@@ -498,7 +498,7 @@
                                                               : '')
                                                         : item.value.text
                                                     : (stop[item.value.value]
-                                                      | taThousandSeparator)
+                                                      | thousandSeparator)
                                             }}
                                         </div>
                                     </div>
@@ -1247,7 +1247,7 @@
                                                               : '')
                                                         : item.value.text
                                                     : (stop[item.value.value]
-                                                      | taThousandSeparator)
+                                                      | thousandSeparator)
                                             }}
                                         </div>
                                     </div>
@@ -1986,7 +1986,8 @@
                                         transform="translate(9 9.001)"
                                         [ngStyle]="{
                                             fill: tableData[selectedMapIndex]
-                                                ?.routes[focusedRouteIndex].color
+                                                ?.routes[focusedRouteIndex]
+                                                .color
                                         }"
                                     />
 

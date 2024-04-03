@@ -41,7 +41,7 @@ import { InputAddressDropdownComponent } from '../../../../../core/components/sh
 import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
 
 // pipes
-import { SumArraysPipe } from '../../../../../core/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '../../../../../shared/pipes/sum-arrays.pipe';
 
 // validators
 import {

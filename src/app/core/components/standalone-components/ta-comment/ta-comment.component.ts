@@ -40,28 +40,28 @@ import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
 // pipes
-import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
-import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
-import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
+import { CopyPasteHelper } from 'src/app/shared/utils/helpers/copy-paste.helper';
+import { CardDropdownHelper } from 'src/app/shared/utils/helpers/card-dropdown-helper';
 
 // models
 import { CommentCompanyUser } from '../../../../shared/models/comment-company-user.model';
 import { CommentData } from 'src/app/core/model/comment-data';
-import { Comment } from '../../shared/model/card-table-data.model';
+import { Comment } from '../../../../shared/models/card-table-data.model';
 
 @Component({
     selector: 'app-ta-comment',
     templateUrl: './ta-comment.component.html',
     styleUrls: ['./ta-comment.component.scss'],
     standalone: true,
-    providers: [formatDatePipe],
+    providers: [FormatDatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         // modules
@@ -117,7 +117,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public loggedUserCommented: boolean;
     constructor(
         private imageBase64Service: ImageBase64Service,
-        private formatDatePipe: formatDatePipe,
+        private FormatDatePipe: FormatDatePipe,
         private commentsService: CommentsService,
         private loadService: LoadService,
         private modalService: ModalService,
@@ -147,7 +147,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public transformDate(date: string): void {
         this.commentCardsDataDropdown.createdAt =
-            this.formatDatePipe.transform(date);
+            this.FormatDatePipe.transform(date);
     }
 
     public abbreviateFullName(fullName: string): string {
@@ -241,7 +241,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        return higlihtComment.higlitsPartOfCommentSearchValue(
+        return CardDropdownHelper.higlitsPartOfCommentSearchValue(
             commentTitle,
             this.commentHighlight,
             this.sanitizer
@@ -389,7 +389,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onPaste(event: ClipboardEvent): void {
-        PasteHelper.onPaste(event);
+        CopyPasteHelper.onPaste(event);
     }
 
     private checkIfNewCommentOpen(): void {
