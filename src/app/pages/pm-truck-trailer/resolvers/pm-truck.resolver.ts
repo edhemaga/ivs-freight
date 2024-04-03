@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { PmTService } from '../services/pm.service';
+import { PmService } from '../services/pm.service';
 
 // Store
 import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.store';
@@ -13,10 +13,13 @@ import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.sto
 @Injectable({
     providedIn: 'root',
 })
-export class pmTruckResolver implements Resolve<PmTruckState> {
+export class PmTruckResolver implements Resolve<PmTruckState> {
     constructor(
-        private pmService: PmTService,
+        // Store
         private pmTruckStore: PmTruckStore,
+        
+        // Services
+        private pmService: PmService,
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {

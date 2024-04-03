@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
+
+// Akita
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+
+// Models
 import { PMTrailerUnitResponse } from 'appcoretruckassist';
 
 export interface PmTrailerState

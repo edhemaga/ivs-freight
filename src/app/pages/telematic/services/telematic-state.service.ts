@@ -1,22 +1,23 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { TelematicStateStore } from '../state/telematic-state.store';
 import { takeUntil, Subject, tap, of } from 'rxjs';
+
+// Services
+import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
+
+// Models
 import {
     TelematicsService,
     AssignGpsDevicesToCompanyCommand,
     AssignGpsDevicesToTruckCommand,
     AssignGpsDevicesToTrailerCommand,
 } from 'appcoretruckassist';
-import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
 
 @Injectable({ providedIn: 'root' })
 export class TelematicStateService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private telematicStateStore: TelematicStateStore,
-        private http: HttpClient,
+        // Services
         private gpsService: GpsServiceService,
         private telematicsService: TelematicsService
     ) {}
@@ -47,7 +48,7 @@ export class TelematicStateService implements OnDestroy {
         this.gpsService.closeConnection();
     }
 
-    getAllGpsData(request) {
+    getAllGpsData() {
         return this.telematicsService.apiTelematicsDataAllGet();
     }
 
@@ -61,38 +62,7 @@ export class TelematicStateService implements OnDestroy {
         return this.telematicsService.apiTelematicsUnassignCompanyGet(request);
     }
 
-    getUnassignedClusters(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        zoomLevel?: number,
-        addedNew?: boolean,
-        pageIndex?: number,
-        pageSize?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ) {
-        // return this.telematicsService.apiTelematicsClustersGet(
-        //     null,
-        //     null,
-        //     null,
-        //     northEastLatitude,
-        //     northEastLongitude,
-        //     southWestLatitude,
-        //     southWestLongitude,
-        //     zoomLevel,
-        //     addedNew,
-        //     pageIndex,
-        //     pageSize,
-        //     null,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
+    getUnassignedClusters() {
         return of(null);
     }
 
@@ -115,41 +85,11 @@ export class TelematicStateService implements OnDestroy {
         return this.telematicsService
             .apiTelematicsAssignCompanyPost(devicesArray)
             .pipe(
-                tap((res: any) => {
+                tap(() => {
                     const subDevice = this.getCompanyAssignedData({})
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
-                            next: (data: any) => {
-                                // this.shipperStore.add(shipper);
-                                // this.shipperMinimalStore.add(shipper);
-                                // const brokerShipperCount = JSON.parse(
-                                //   localStorage.getItem('brokerShipperTableCount')
-                                // );
-
-                                // brokerShipperCount.shipper++;
-
-                                // localStorage.setItem(
-                                //   'brokerShipperTableCount',
-                                //   JSON.stringify({
-                                //     broker: brokerShipperCount.broker,
-                                //     shipper: brokerShipperCount.shipper,
-                                //   })
-                                // );
-
-                                // this.tableService.sendActionAnimation({
-                                //   animation: 'add',
-                                //   tab: 'shipper',
-                                //   data: shipper,
-                                //   id: shipper.id,
-                                // });
-
-                                // this.sendUpdatedData({
-                                //     type: 'route',
-                                //     data: route,
-                                //     mapId: data.mapId,
-                                //     id: route.id,
-                                // });
-
+                            next: () => {
                                 subDevice.unsubscribe();
                             },
                         });
@@ -159,41 +99,11 @@ export class TelematicStateService implements OnDestroy {
 
     assignDeviceToTruck(data: AssignGpsDevicesToTruckCommand) {
         return this.telematicsService.apiTelematicsAssignTruckPost(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const subDevice = this.getDeviceData(data.deviceId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (data: any) => {
-                            // this.shipperStore.add(shipper);
-                            // this.shipperMinimalStore.add(shipper);
-                            // const brokerShipperCount = JSON.parse(
-                            //   localStorage.getItem('brokerShipperTableCount')
-                            // );
-
-                            // brokerShipperCount.shipper++;
-
-                            // localStorage.setItem(
-                            //   'brokerShipperTableCount',
-                            //   JSON.stringify({
-                            //     broker: brokerShipperCount.broker,
-                            //     shipper: brokerShipperCount.shipper,
-                            //   })
-                            // );
-
-                            // this.tableService.sendActionAnimation({
-                            //   animation: 'add',
-                            //   tab: 'shipper',
-                            //   data: shipper,
-                            //   id: shipper.id,
-                            // });
-
-                            // this.sendUpdatedData({
-                            //     type: 'route',
-                            //     data: route,
-                            //     mapId: data.mapId,
-                            //     id: route.id,
-                            // });
-
+                        next: () => {
                             subDevice.unsubscribe();
                         },
                     });
@@ -203,41 +113,11 @@ export class TelematicStateService implements OnDestroy {
 
     assignDeviceToTrailer(data: AssignGpsDevicesToTrailerCommand) {
         return this.telematicsService.apiTelematicsAssignTrailerPost(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const subDevice = this.getDeviceData(data.deviceId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (data: any) => {
-                            // this.shipperStore.add(shipper);
-                            // this.shipperMinimalStore.add(shipper);
-                            // const brokerShipperCount = JSON.parse(
-                            //   localStorage.getItem('brokerShipperTableCount')
-                            // );
-
-                            // brokerShipperCount.shipper++;
-
-                            // localStorage.setItem(
-                            //   'brokerShipperTableCount',
-                            //   JSON.stringify({
-                            //     broker: brokerShipperCount.broker,
-                            //     shipper: brokerShipperCount.shipper,
-                            //   })
-                            // );
-
-                            // this.tableService.sendActionAnimation({
-                            //   animation: 'add',
-                            //   tab: 'shipper',
-                            //   data: shipper,
-                            //   id: shipper.id,
-                            // });
-
-                            // this.sendUpdatedData({
-                            //     type: 'route',
-                            //     data: route,
-                            //     mapId: data.mapId,
-                            //     id: route.id,
-                            // });
-
+                        next: () => {
                             subDevice.unsubscribe();
                         },
                     });

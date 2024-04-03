@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // Services
-import { ShipperTService } from '../../services/shipper.service';
+import { ShipperService } from '../../services/shipper.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -12,10 +12,10 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Store
-import { ShipperMinimalListStore } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
+import { ShipperMinimalListStore } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
 import { ShipperDetailsListStore } from '../../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { ShipperItemStore } from '../../state/shipper-state/shipper-details-state/shipper-details.store';
-import { ShipperMinimalListQuery } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
+import { ShipperDetailsStore } from '../../state/shipper-state/shipper-details-state/shipper-details.store';
+import { ShipperMinimalListQuery } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 import { ShipperDetailsListQuery } from '../../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
 
 @Component({
@@ -44,7 +44,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         private router: Router,
 
         // Services
-        private shipperService: ShipperTService,
+        private shipperService: ShipperService,
         private notificationService: NotificationService,
         private detailsPageService: DetailsPageService,
         private dropDownService: DropDownService,
@@ -55,11 +55,11 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         // Store
         private shipperMinimalStore: ShipperMinimalListStore,
         private shipperStore: ShipperDetailsListStore,
-        private ShipperItemStore: ShipperItemStore,
+        private shipperDetailsStore: ShipperDetailsStore,
         private shipperMinimalQuery: ShipperMinimalListQuery,
         private slq: ShipperDetailsListQuery
     ) {
-        let storeData$ = this.ShipperItemStore._select((state) => state);
+        let storeData$ = this.shipperDetailsStore._select((state) => state);
         storeData$.subscribe((state) => {
             let newShipData = { ...state.entities[this.newShipperId] };
             if (!this.isEmpty(newShipData)) {
@@ -129,7 +129,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
         let shipperId = this.activated_route.snapshot.params.id;
         let shipperData = {
-            ...this.ShipperItemStore?.getValue()?.entities[shipperId],
+            ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
         };
         this.shipperConf(shipperData);
     }

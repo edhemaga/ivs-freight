@@ -2,8 +2,12 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+// Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { RepairTService } from '../services/repair.service';
+import { RepairService } from '../../../shared/services/repair.service';
+
+// Store
 import {
     RepairTruckState,
     RepairTruckStore,
@@ -14,7 +18,7 @@ import {
 })
 export class RepairTruckResolver implements Resolve<RepairTruckState> {
     constructor(
-        private repairService: RepairTService,
+        private repairService: RepairService,
         private repairTruckStore: RepairTruckStore,
         private tableService: TruckassistTableService
     ) {}

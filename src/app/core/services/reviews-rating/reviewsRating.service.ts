@@ -15,12 +15,12 @@ import { Router } from '@angular/router';
 // store
 import { BrokerStore } from 'src/app/pages/customer/state/broker-state/broker.store';
 import { ShipperStore } from 'src/app/pages/customer/state/shipper-state/shipper.store';
-import { ShopStore } from 'src/app/pages/repair/state/shop-state/shop.store';
+import { RepairShopStore } from 'src/app/pages/repair/state/repair-shop-state/repair-shop.store';
 
 // services
-import { BrokerTService } from 'src/app/pages/customer/services/broker.service';
-import { ShipperTService } from 'src/app/pages/customer/services/shipper.service';
-import { RepairTService } from 'src/app/pages/repair/services/repair.service';
+import { BrokerService } from 'src/app/pages/customer/services/broker.service';
+import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',
@@ -32,11 +32,11 @@ export class ReviewsRatingService {
         private reviewRatingService: RatingReviewService,
         private brokerStore: BrokerStore,
         private shipperStore: ShipperStore,
-        private shopStore: ShopStore,
+        private repairShopStore: RepairShopStore,
         private router: Router,
-        private BrokerTService: BrokerTService,
-        private ShipperTService: ShipperTService,
-        private RepairTService: RepairTService
+        private brokerService: BrokerService,
+        private shipperService: ShipperService,
+        private repairService: RepairService
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
@@ -67,7 +67,7 @@ export class ReviewsRatingService {
                         }
                     );
                 } else if (rating.entityType.name === 'Repair shop') {
-                    this.shopStore.update(({ id }) => id === rating.entityId, {
+                    this.repairShopStore.update(({ id }) => id === rating.entityId, {
                         upCount: rating.upCount,
                         downCount: rating.downCount,
                         currentCompanyUserRating:
@@ -84,15 +84,15 @@ export class ReviewsRatingService {
                 let splitUrl = this.router.url.split('/');
                 let customerId = parseInt(splitUrl[3]);
                 if (this.router.url.indexOf('broker') > -1) {
-                    this.BrokerTService.deleteReview(id, customerId);
+                    this.brokerService.deleteReview(id, customerId);
                 }
 
                 if (this.router.url.indexOf('shipper') > -1) {
-                    this.ShipperTService.deleteReview(id, customerId);
+                    this.shipperService.deleteReview(id, customerId);
                 }
 
                 if (this.router.url.indexOf('shop-details') > -1) {
-                    this.RepairTService.deleteReview(id, customerId);
+                    this.repairService.deleteReview(id, customerId);
                 }
             })
         );
@@ -114,19 +114,19 @@ export class ReviewsRatingService {
                             let customerId = parseInt(splitUrl[3]);
 
                             if (this.router.url.indexOf('broker') > -1) {
-                                this.BrokerTService.addNewReview(
+                                this.brokerService.addNewReview(
                                     resp,
                                     customerId
                                 );
                             }
                             if (this.router.url.indexOf('shipper') > -1) {
-                                this.ShipperTService.addNewReview(
+                                this.shipperService.addNewReview(
                                     resp,
                                     customerId
                                 );
                             }
                             if (this.router.url.indexOf('shop-details') > -1) {
-                                this.RepairTService.addNewReview(
+                                this.repairService.addNewReview(
                                     resp,
                                     customerId
                                 );
@@ -144,11 +144,11 @@ export class ReviewsRatingService {
                 let splitUrl = this.router.url.split('/');
                 let customerId = parseInt(splitUrl[3]);
                 if (this.router.url.indexOf('broker') > -1) {
-                    this.BrokerTService.updatedReviewNew(data, customerId);
+                    this.brokerService.updatedReviewNew(data, customerId);
                 }
 
                 if (this.router.url.indexOf('shipper') > -1) {
-                    this.ShipperTService.updatedReviewNew(data, customerId);
+                    this.shipperService.updatedReviewNew(data, customerId);
                 }
             })
         );

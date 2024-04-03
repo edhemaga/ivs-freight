@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
+
+// Akita
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { IDispatcher } from '../models/dispatcher.model';
+
+// Models
+import { IDispatcher } from '../models/dispatcher-state.model';
 
 export interface DispatcherState extends EntityState<IDispatcher, string> {}
 

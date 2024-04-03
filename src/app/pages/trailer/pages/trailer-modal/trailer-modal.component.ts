@@ -43,7 +43,7 @@ import {
 
 // components
 import { OwnerModalComponent } from '../../../../core/components/modals/owner-modal/owner-modal.component';
-import { RepairOrderModalComponent } from '../../../../core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairOrderModalComponent } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';

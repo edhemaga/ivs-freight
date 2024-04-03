@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { BrokerTService } from '../services/broker.service';
+import { BrokerService } from '../services/broker.service';
 
 // Store
 import { BrokerState, BrokerStore } from '../state/broker-state/broker.store';
@@ -16,7 +16,7 @@ import { BrokerState, BrokerStore } from '../state/broker-state/broker.store';
 export class BrokerResolver implements Resolve<BrokerState> {
     constructor(
         // Services
-        private brokerService: BrokerTService,
+        private brokerService: BrokerService,
         private tableService: TruckassistTableService,
 
         // Store

@@ -29,7 +29,7 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
 // services
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
-import { RepairTService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 
 // constants
 import { ModalTableConstants } from 'src/app/core/utils/constants/ta-modal-table.constants';
@@ -51,10 +51,8 @@ import {
     DepartmentResponse,
     EnumValue,
 } from 'appcoretruckassist';
-import {
-    RepairDescriptionResponse,
-    Subtotal,
-} from '../../modals/repair-modals/repair-order-modal/state/models/repair.model';
+import { RepairSubtotal } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+import { RepairDescriptionResponse } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -90,7 +88,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     >();
     @Output() modalTableValidStatusEmitter = new EventEmitter<boolean>();
 
-    @Output() total = new EventEmitter<Subtotal[]>();
+    @Output() total = new EventEmitter<RepairSubtotal[]>();
 
     private destroy$ = new Subject<void>();
 
@@ -110,7 +108,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public contactEmailTypeOptions: EnumValue[] = [];
 
     // description table
-    public subtotals: Subtotal[] = [];
+    public subtotals: RepairSubtotal[] = [];
 
     // repair table
     public repairDepartmentOptions: DepartmentResponse[];
@@ -119,7 +117,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private contactService: ContactsService,
         private inputService: TaInputService,
-        private shopService: RepairTService
+        private shopService: RepairService
     ) {}
 
     ngOnInit(): void {

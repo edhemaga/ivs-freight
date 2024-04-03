@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShipperCardViewComponent } from './shipper-details-card.component';
+import { ShipperDetailsCardComponent } from './shipper-details-card.component';
 
-describe('ShipperCardViewComponent', () => {
-    let component: ShipperCardViewComponent;
-    let fixture: ComponentFixture<ShipperCardViewComponent>;
+describe('ShipperDetailsCardComponent', () => {
+    let component: ShipperDetailsCardComponent;
+    let fixture: ComponentFixture<ShipperDetailsCardComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ShipperCardViewComponent],
+            declarations: [ShipperDetailsCardComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ShipperCardViewComponent);
+        fixture = TestBed.createComponent(ShipperDetailsCardComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

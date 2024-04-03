@@ -1,40 +1,37 @@
-
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Resolve } from '@angular/router';
+import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Store
 import { DispatcherQuery } from '../state/dispatcher.query';
 
 // Services
-import { DispatcherStoreService } from '../services/dispatcher.service';
-
-//import { ProductService } from '../product/product.service';
+import { DispatcherService } from '../services/dispatcher.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DispatcherResolver implements Resolve<any> {
     constructor(
-        private dispatcherStoreService: DispatcherStoreService,
+        // Services
+        private dispatcherService: DispatcherService,
+
+        // Store
         private dispatcherQuery: DispatcherQuery
     ) {}
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        // if (!this.dispatcherQuery.modalList?.dispatchBoards?.length) {
-        //     return this.dispatcherQuery.modalList;
-        // } else {
+    resolve(): Observable<any> {
         const dispatcherId = localStorage.getItem('dispatchUserSelect')
             ? JSON.parse(localStorage.getItem('dispatchUserSelect')).id
             : -1;
 
         const dispatchList =
             dispatcherId == -1
-                ? this.dispatcherStoreService.getDispatchboardList()
-                : this.dispatcherStoreService.getDispatchBoardByDispatcherList(
+                ? this.dispatcherService.getDispatchboardList()
+                : this.dispatcherService.getDispatchBoardByDispatcherList(
                       dispatcherId
                   );
-        const modalList = this.dispatcherStoreService.getDispatcherList();
+        const modalList = this.dispatcherService.getDispatcherList();
 
         let join = forkJoin([modalList, dispatchList]).pipe(
             map((list: any) => {
@@ -47,14 +44,12 @@ export class DispatcherResolver implements Resolve<any> {
                               },
                           };
 
-                this.dispatcherStoreService.dispatcherData = list;
+                this.dispatcherService.dispatcherData = list;
 
                 return list;
             })
         );
 
         return join;
-        // }
-        return of(true);
     }
 }

@@ -33,7 +33,7 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 // services
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { RepairTService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 
 // components
@@ -129,7 +129,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private repairService: RepairTService,
+        private repairService: RepairService,
         private formService: FormService
     ) {}
 
