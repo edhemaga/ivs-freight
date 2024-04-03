@@ -69,9 +69,9 @@ import {
 } from '../../../../core/utils/methods.calculations';
 
 // pipes
-import { FinancialCalculationPipe } from '../../pipes/financial-calculation.pipe';
-import { LoadDatetimeRangePipe } from '../../pipes/load-datetime-range.pipe';
-import { LoadTimeTypePipe } from '../../pipes/load-time-type.pipe';
+import { FinancialCalculationPipe } from './pipes/financial-calculation.pipe';
+import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
+import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
 
 // constants
 import { LoadModalConstants } from './utils/constants/load-modal.constants';
@@ -467,8 +467,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // configurations
         this.loadDispatchesTTDInputConfig =
             LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG;
-        this.loadBrokerInputConfig =
-            LoadModalConfig.LOAD_BROKER_INPUT_CONFIG;
+        this.loadBrokerInputConfig = LoadModalConfig.LOAD_BROKER_INPUT_CONFIG;
         this.loadBrokerContactsInputConfig =
             LoadModalConfig.LOAD_BROKER_CONTACTS_INPUT_CONFIG;
         this.loadPickupShipperInputConfig =
@@ -725,7 +724,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.selectedGeneralCommodity = event;
 
                 this.isHazardousPicked =
-                    event?.name?.toLowerCase() === LoadModalStringEnum.HAZARDOUS;
+                    event?.name?.toLowerCase() ===
+                    LoadModalStringEnum.HAZARDOUS;
 
                 if (!this.isHazardousPicked) this.isHazardousVisible = false;
 
@@ -1075,7 +1075,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             };
 
             if (
-                this.selectedDispatches.payType === LoadModalStringEnum.FLAT_RATE
+                this.selectedDispatches.payType ===
+                LoadModalStringEnum.FLAT_RATE
             ) {
                 this.inputService.changeValidators(
                     this.loadForm.get(LoadModalStringEnum.DRIVER_RATE)
@@ -1170,7 +1171,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 logoName: null,
                                 isProgressBar:
                                     this.selectedBroker.availableCreditType
-                                        ?.name !== LoadModalStringEnum.UNLIMITED,
+                                        ?.name !==
+                                    LoadModalStringEnum.UNLIMITED,
                             },
                             {
                                 value: this.selectedBroker.loadsCount,
@@ -1847,7 +1849,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.isVisibleBillDropdown = false;
 
-        this.loadForm.get(LoadModalStringEnum.BILLING_DROPDOWN).patchValue(null);
+        this.loadForm
+            .get(LoadModalStringEnum.BILLING_DROPDOWN)
+            .patchValue(null);
     }
 
     public removeAdditionalBilling(type: string, index: number): void {
@@ -1978,7 +1982,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     .value
                             ))
                 ) {
-                    this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE).reset();
+                    this.loadForm
+                        .get(LoadModalStringEnum.ADJUSTED_RATE)
+                        .reset();
                 }
             });
 
@@ -2095,7 +2101,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .map((item) => {
                 const biilingRate = this.additionalBillings().controls.find(
                     (control) =>
-                        control.get(LoadModalStringEnum.NAME).value === item.name
+                        control.get(LoadModalStringEnum.NAME).value ===
+                        item.name
                 );
 
                 return {
@@ -2143,7 +2150,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             name: LoadModalStringEnum.INPUT_DROPDOWN,
             type: LoadModalStringEnum.TEXT,
             multipleLabel: {
-                labels: [LoadModalStringEnum.CONTACT, LoadModalStringEnum.PHONE],
+                labels: [
+                    LoadModalStringEnum.CONTACT,
+                    LoadModalStringEnum.PHONE,
+                ],
                 customClass: LoadModalStringEnum.LOAD_SHIPPER_CONTACT,
             },
             isDropdown: true,
@@ -2638,7 +2648,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     }
 
                                     this.loadForm
-                                        .get(LoadModalStringEnum.PICKUP_LEG_COST)
+                                        .get(
+                                            LoadModalStringEnum.PICKUP_LEG_COST
+                                        )
                                         .patchValue(item.cost);
                                 }
                                 // extra stops

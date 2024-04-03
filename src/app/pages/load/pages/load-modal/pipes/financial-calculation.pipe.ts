@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { convertThousanSepInNumber } from '../../../core/utils/methods.calculations';
+import { convertThousanSepInNumber } from '../../../../../core/utils/methods.calculations';
 
 @Pipe({
     name: 'financialCalculation',
