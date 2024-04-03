@@ -28,9 +28,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropDownService } from '../../../services/details-page/drop-down.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
-import { ShipperTService } from 'src/app/pages/customer/services/shipper.service';
 import { FuelService } from 'src/app/shared/services/fuel.service';
-import { RepairTService } from 'src/app/pages/repair/services/repair.service';
+import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
 import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
@@ -173,9 +173,9 @@ export class MapsComponent implements OnInit, OnDestroy {
     constructor(
         private ref: ChangeDetectorRef,
         private mapsService: MapsService,
-        private repairShopService: RepairTService,
-        private shipperService: ShipperTService,
         private fuelStopService: FuelService,
+        private repairShopService: RepairService,
+        private shipperService: ShipperService,
         private routingService: RoutingStateService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyOfficeService,

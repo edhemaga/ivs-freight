@@ -6,10 +6,10 @@ import { BrokerCardComponent } from './pages/broker-card/broker-card.component';
 import { CustomerTableComponent } from './pages/customer-table/customer-table.component';
 
 // Resolvers
-import { ShipperSingleResolver } from './resolvers/shipper-single.resolver';
+import { ShipperItemResolver } from './resolvers/shipper-item.resolver';
 import { BrokerDetailsResolver } from './resolvers/broker-details.resolver';
-import { BrokerMinimalListResolver } from './resolvers/broker-minimal.resolver';
-import { ShipperMinimalListResolver } from './resolvers/shipper-minimal.resolver';
+import { BrokerMinimalListResolver } from './resolvers/broker-minimal-list.resolver';
+import { ShipperMinimalListResolver } from './resolvers/shipper-minimal-list.resolver';
 
 const routes: Routes = [
     {
@@ -24,7 +24,7 @@ const routes: Routes = [
                 (m) => m.ShipperDetailsModule
             ),
         resolve: {
-            shipper: ShipperSingleResolver,
+            shipper: ShipperItemResolver,
             shipperMinimalList: ShipperMinimalListResolver,
         },
         data: { title: 'Shipper detail' },

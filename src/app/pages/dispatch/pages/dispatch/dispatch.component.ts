@@ -1,9 +1,17 @@
-import { Component, OnInit, AfterViewInit, Input, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    Input,
+    ChangeDetectorRef,
+    ViewEncapsulation,
+    OnChanges,
+} from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 // Services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DispatcherStoreService } from '../../services/dispatcher.service';
+import { DispatcherService } from '../../services/dispatcher.service';
 
 // Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
@@ -18,8 +26,8 @@ import { DispatcherQuery } from '../../state/dispatcher.query';
     styleUrls: ['./dispatch.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class DispatchComponent implements OnInit, AfterViewInit {
-    @Input() test: any = "test";
+export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
+    @Input() test: any = 'test';
     tableOptions: any = {};
     tableData: any[] = [];
     selectedTab = 'active';
@@ -32,7 +40,9 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     isBoardLocked = true;
     maxToolbarWidth: number = 0;
 
-    selectedDispatcher = localStorage.getItem('dispatchUserSelect') ? JSON.parse(localStorage.getItem('dispatchUserSelect')) : -1;
+    selectedDispatcher = localStorage.getItem('dispatchUserSelect')
+        ? JSON.parse(localStorage.getItem('dispatchUserSelect'))
+        : -1;
 
     constructor(
         private cd: ChangeDetectorRef,
@@ -41,13 +51,13 @@ export class DispatchComponent implements OnInit, AfterViewInit {
         private dispatcherQuery: DispatcherQuery,
 
         // Services
-        public dispatcherStoreService: DispatcherStoreService,
-        private tableService: TruckassistTableService,
+        public dispatcherService: DispatcherService,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
         setTimeout(() => {
-            this.test = "333";
+            this.test = '333';
             this.cd.detectChanges();
         }, 5000);
         this.dispatcherQuery.modalBoardListData$
@@ -66,9 +76,9 @@ export class DispatchComponent implements OnInit, AfterViewInit {
             case 'select-action':
                 this.changeDisparcher(event.data);
                 break;
-            case 'toggle-locked': 
+            case 'toggle-locked':
                 this.isBoardLocked = !this.isBoardLocked;
-            break;
+                break;
         }
     }
 
@@ -115,7 +125,7 @@ export class DispatchComponent implements OnInit, AfterViewInit {
                 hideOpenModalButton: true,
                 showDispatchAdd: true,
                 hideListColumn: true,
-                showDispatchSettings: true
+                showDispatchSettings: true,
             },
         };
     }
@@ -124,10 +134,8 @@ export class DispatchComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.observTableContainer();
             this.getToolbarWidth();
-            
         }, 10);
     }
-
 
     getToolbarWidth() {
         const tableContainer = document.querySelector('.table-container');
@@ -139,7 +147,9 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -149,11 +159,11 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     changeDisparcher(dispatcher: { id: number }) {
         const dispatcherId = dispatcher.id;
         if (dispatcherId > -1) {
-            this.dispatcherStoreService.getDispatchBoardByDispatcherListAndUpdate(
+            this.dispatcherService.getDispatchBoardByDispatcherListAndUpdate(
                 dispatcherId
             );
         } else {
-            this.dispatcherStoreService.getDispatchboardAllListAndUpdate();
+            this.dispatcherService.getDispatchboardAllListAndUpdate();
         }
 
         this.selectedDispatcher = dispatcher;
@@ -186,11 +196,11 @@ export class DispatchComponent implements OnInit, AfterViewInit {
                         svg: false,
                         image: true,
                         url: this.selectedDispatcher?.logoName,
-                        nameInitialsInsteadUrl:
-                            !this.selectedDispatcher?.logoName
-                                ? this.selectedDispatcher?.name
-                                : null,
-                        template: 'user'
+                        nameInitialsInsteadUrl: !this.selectedDispatcher
+                            ?.logoName
+                            ? this.selectedDispatcher?.name
+                            : null,
+                        template: 'user',
                     },
                     textTransform: 'capitalize',
                     dropdownWidthClass: 'w-col-192',
@@ -218,7 +228,5 @@ export class DispatchComponent implements OnInit, AfterViewInit {
         ];
     }
 
-    ngOnChanges(){
-
-    }
+    ngOnChanges() {}
 }

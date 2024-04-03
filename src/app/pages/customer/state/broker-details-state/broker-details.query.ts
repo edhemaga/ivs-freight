@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
+
+// Akita
 import { QueryEntity } from '@datorama/akita';
+
+// Store
 import { BrokerItemState, BrokerDetailsStore } from './broker-details.store';
 
 @Injectable({ providedIn: 'root' })

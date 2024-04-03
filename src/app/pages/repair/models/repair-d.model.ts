@@ -1,8 +1,8 @@
 import {
-    RepairedVehicleListResponse,
     RepairListResponse,
     RepairShopMinimalResponse,
     RepairShopResponse,
+    RepairedVehicleListResponse,
 } from 'appcoretruckassist';
 
 export interface IRepairD {

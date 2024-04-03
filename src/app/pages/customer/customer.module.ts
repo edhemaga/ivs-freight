@@ -1,4 +1,4 @@
-//modules
+// Modules
 import { ShipperDetailsModule } from './pages/shipper-details/shipper-details.module';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -10,7 +10,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 import { BrokerDetailsModule } from './pages/broker-details/broker-details.module';
 
-//components
+// Components
 import { BrokerCardComponent } from './pages/broker-card/broker-card.component';
 
 import { CustomerTableComponent } from './pages/customer-table/customer-table.component';
@@ -44,7 +44,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         CustomerCardComponent,
     ],
     imports: [
-        //modules
+        // Modules
         CommonModule,
         CustomerRoutingModule,
         ShipperDetailsModule,
@@ -55,7 +55,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         AgmSnazzyInfoWindowModule,
         NgbModule,
 
-        //components
+        // Components
         AppTooltipComponent,
         TaCopyComponent,
         TaCustomCardComponent,
@@ -69,7 +69,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         TableCardDropdownActionsComponent,
         TaNoteComponent,
 
-        //pipes
+        // Pipes
         FormatDatePipe,
         FormatEinPipe,
     ],

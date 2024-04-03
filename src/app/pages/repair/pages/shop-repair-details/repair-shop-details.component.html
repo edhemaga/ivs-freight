@@ -1,0 +1,44 @@
+<div class="repair-details-container">
+    <div *ngFor="let item of shopRepairConfig; trackBy: identity">
+        <app-ta-details-header
+            [route]="'/list/repair'"
+            [tooltipHeaderName]="'Back to Repair List'"
+            [headerText]="item.nameDefault"
+            [counterData]="item.length"
+            [hasIcon]="item.icon"
+            [hidePlus]="item.hide"
+            [options]="repairDrop ? repairDrop : []"
+            [customText]="item.customText"
+            [statusInactive]="item.hide"
+            [arrayIcons]="item.icons"
+            [hasDateArrow]=" item.hasDateArrow ? true : false"
+            [showClosedBadge]="true"
+            [businessOpen]="businessOpen"
+            [totalCost]="item.total"
+            [optionsId]="repairShopId"
+            [mainData]="item"
+            [timeFilter]="true"
+            [unitFilter]="true"
+            [repairOrderFilter]="true"
+            [pmFilter]="true"
+            [categoryFilter]="true"
+            [moneyFilter]="true"
+            [repairHeader]="item.nameDefault == 'Repair'"
+            (dropActions)="dropActionRepair($event)"
+            (openModalAction)="onModalAction($event)"
+        >
+        </app-ta-details-header>
+    </div>
+    <div class="repair-details-cmp">
+        <app-repair-shop-details-item
+            class="repair-component"
+            
+            *ngFor="let item of shopRepairConfig; trackBy: identity"
+            [class.vehicleHolder]="item.nameDefault === 'Repaired Vehicle'"
+            [class.reviewShopHolder]="item.nameDefault === 'Review & Rating'"
+            [repairShopItem]="item"
+            [customClass]=" item.nameDefault === 'Repaired Vehicle' ? 'vehicleHolder' : '' || item.nameDefault === 'Review & Rating' ? 'reviewShopHolder' : '' "
+        >
+        </app-repair-shop-details-item>
+    </div>
+</div>

@@ -35,21 +35,21 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { LoadModalFinancialComponent } from './components/load-modal-financial/load-modal-financial.component';
-import { BrokerModalComponent } from '../../../../core/components/modals/broker-modal/broker-modal.component';
-import { ShipperModalComponent } from '../../../../core/components/modals/shipper-modal/shipper-modal.component';
-import { AppTooltipComponent } from '../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
 import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-stop.component';
-import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
-import { MapsComponent } from '../../../../core/components/shared/maps/maps.component';
-import { TaCommentComponent } from '../../../../core/components/standalone-components/ta-comment/ta-comment.component';
 import { LoadModalStopItemsComponent } from './components/load-modal-stop-items/load-modal-stop-items.component';
+import { BrokerModalComponent } from 'src/app/pages/customer/pages/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from 'src/app/pages/customer/pages/shipper-modal/shipper-modal.component';
+import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
+import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
+import { TaCommentComponent } from 'src/app/core/components/standalone-components/ta-comment/ta-comment.component';
 
 // services
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';

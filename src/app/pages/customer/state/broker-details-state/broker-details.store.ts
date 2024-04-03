@@ -1,6 +1,10 @@
-import { BrokerResponse } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
+
+// Akita
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+
+// Models
+import { BrokerResponse } from 'appcoretruckassist';
 
 export interface BrokerItemState extends EntityState<BrokerResponse, number> {}
 
