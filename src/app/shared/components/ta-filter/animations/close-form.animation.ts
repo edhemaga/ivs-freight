@@ -6,7 +6,7 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const close_form = (type: string) =>
+export const closeForm = (type: string) =>
     trigger(type, [
         state(
             'true',

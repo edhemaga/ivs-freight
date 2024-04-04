@@ -7,7 +7,7 @@ import {
     keyframes,
 } from '@angular/animations';
 
-export const in_out_animation = (type: string) =>
+export const inOutAnimation = (type: string) =>
     trigger(type, [
         state('in', style({ opacity: 1, scale: 1, height: '28px' })),
         transition(':enter', [

@@ -7,7 +7,7 @@ import {
     keyframes,
 } from '@angular/animations';
 
-export const area_left_side_animation = (type: string) =>
+export const areaLeftSideAnimation = (type: string) =>
     trigger(type, [
         state('in', style({ width: '100%', position: 'relative' })),
         transition(':enter', [

@@ -3,6 +3,7 @@ import {
     ElementRef,
     EventEmitter,
     Input,
+    OnDestroy,
     OnInit,
     Output,
     ViewChild,
@@ -32,8 +33,8 @@ import { Tags } from '../../models/tags.model';
 import { TaUploadFileService } from './services/ta-upload-file.service';
 
 //Enums
-import { FileTypes } from './enums/file-types.enum';
-import { FilesSize } from './enums/files-size.enum';
+import { FileTypesEnum } from './enums/file-types.enum';
+import { FilesSizeEnum } from './enums/files-size.enum';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -53,7 +54,7 @@ import { FilesSize } from './enums/files-size.enum';
         TaUploadFileComponent,
     ],
 })
-export class TaUploadFilesComponent implements OnInit {
+export class TaUploadFilesComponent implements OnInit, OnDestroy {
     @ViewChild(TaUploadFilesCarouselComponent)
     public modalCarousel: TaUploadFilesCarouselComponent;
 
@@ -70,14 +71,14 @@ export class TaUploadFilesComponent implements OnInit {
     //General
     @Input() set files(value: UploadFile[]) {
         this._files = value;
-        if (this.type == FileTypes.DETAILS) {
+        if (this.type == FileTypesEnum.DETAILS) {
             this.modalCarousel?.slideToFile(0);
         }
     }
     @Input() customClassName: string;
-    @Input() type: FileTypes;
+    @Input() type;
     @Input() hasNumberOfPages: boolean = false;
-    @Input() size: string = FilesSize.SMALL;
+    @Input() size: string = FilesSizeEnum.SMALL;
     @Input() modalSize: string;
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
@@ -164,9 +165,9 @@ export class TaUploadFilesComponent implements OnInit {
                 this.currentSlide = this._files.length - 1;
 
                 if (
-                    (this.size === FilesSize.MODAL_LARGE &&
+                    (this.size === FilesSizeEnum.MODAL_LARGE &&
                         this._files.length < 4) ||
-                    (this.size === FilesSize.MODAL_MEDIUM &&
+                    (this.size === FilesSizeEnum.MODAL_MEDIUM &&
                         this._files.length < 3)
                 ) {
                     this.modalCarousel.currentSlide = 0;

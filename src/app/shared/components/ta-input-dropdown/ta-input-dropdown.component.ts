@@ -29,7 +29,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // animation
-import { input_dropdown_animation } from './animations/input-dropdown.animation';
+import { inputDropdownAnimation } from './animations/input-dropdown.animation';
 
 // uuid
 import { v4 as uuidv4 } from 'uuid';
@@ -64,7 +64,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
     styleUrls: ['./ta-input-dropdown.component.scss'],
     providers: [FormControlPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [input_dropdown_animation('showHideDropdownOptions')],
+    animations: [inputDropdownAnimation('showHideDropdownOptions')],
     standalone: true,
     imports: [
         // Module

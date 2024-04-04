@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 import { Subject } from 'rxjs';
-import { ModalOptions } from '../options/modal.options';
-import { EncryptionDecryptionService } from '../../../../core/services/encryption-decryption/EncryptionDecryption.service';
+
+// bootstrap
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
+// models
 import { ConfirmationReset } from '../../../../core/components/modals/confirmation-modal/state/models/confirmation-reset.model';
+import { ModalOptions } from '../models/modal-options.model';
+
+// services
+import { EncryptionDecryptionService } from '../../../../core/services/encryption-decryption/EncryptionDecryption.service';
 @Injectable({
     providedIn: 'root',
 })

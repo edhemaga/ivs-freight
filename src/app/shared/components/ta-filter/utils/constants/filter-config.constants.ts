@@ -1,6 +1,6 @@
 import { Options } from '@angular-slider/ngx-slider';
 
-export class filterConfig {
+export class FilterConfigConstants {
     static SLIDER_DATA: Options = {
         floor: 0,
         ceil: 10,

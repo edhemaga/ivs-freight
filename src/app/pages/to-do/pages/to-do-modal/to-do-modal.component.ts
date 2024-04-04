@@ -13,10 +13,9 @@ import {
 } from 'appcoretruckassist';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TodoService } from 'src/app/pages/to-do/services/to-do.service';
-import {
-    ReviewCommentModal,
-    TaUserReviewComponent,
-} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+
 import {
     departmentValidation,
     descriptionValidation,
@@ -183,7 +182,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public changeCommentsEvent(comments: ReviewCommentModal) {
+    public changeCommentsEvent(comments: ReviewComment) {
         switch (comments.action) {
             case 'delete': {
                 this.deleteComment(comments);
@@ -223,7 +222,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private addComment(comments: ReviewCommentModal) {
+    private addComment(comments: ReviewComment) {
         const comment: CreateCommentCommand = {
             entityTypeCommentId: 1,
             entityTypeId: this.editData.id,
@@ -249,7 +248,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateComment(comments: ReviewCommentModal) {
+    private updateComment(comments: ReviewComment) {
         this.comments = comments.sortData;
 
         const comment: UpdateCommentCommand = {
@@ -263,7 +262,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private deleteComment(comments: ReviewCommentModal) {
+    private deleteComment(comments: ReviewComment) {
         this.comments = comments.sortData;
         this.commentsService
             .deleteCommentById(comments.data)

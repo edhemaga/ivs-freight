@@ -44,17 +44,17 @@ import { FilterStateService } from './services/filter-state.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // constants
-import { DirectiveConstants } from './constants/directive.constants';
-import { filterConfig } from './constants/filter_config.constants';
+import { DirectiveConstants } from './utils/constants/directive.constants';
+import { FilterConfigConstants } from './utils/constants/filter-config.constants';
 
 // animations
 
-import { area_left_side_animation } from './animations/area-left-side.animation';
-import { area_right_side_animation } from './animations/area-right-side.animation';
-import { close_form } from './animations/close-form.animation';
-import { in_out_animation } from './animations/in-out.animation';
-import { show_animation } from './animations/show.animation';
-import { state_header } from './animations/state-header.animation';
+import { areaLeftSideAnimation } from './animations/area-left-side.animation';
+import { areaRightSideAnimation } from './animations/area-right-side.animation';
+import { closeForm } from './animations/close-form.animation';
+import { inOutAnimation } from './animations/in-out.animation';
+import { showAnimation } from './animations/show.animation';
+import { stateHeader } from './animations/state-header.animation';
 // models
 import { ArrayStatus } from './model/array-status.model';
 @Component({
@@ -86,12 +86,12 @@ import { ArrayStatus } from './model/array-status.model';
     providers: [NgbDropdownConfig, ThousandSeparatorPipe, TaSvgPipe],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        close_form('closeForm'),
-        in_out_animation('inOutAnimation'),
-        state_header('stateHeader'),
-        show_animation('showAnimation'),
-        area_right_side_animation('areaRightSideAnimation'),
-        area_left_side_animation('areaLeftSideAnimation'),
+        closeForm('closeForm'),
+        inOutAnimation('inOutAnimation'),
+        stateHeader('stateHeader'),
+        showAnimation('showAnimation'),
+        areaRightSideAnimation('areaRightSideAnimation'),
+        areaLeftSideAnimation('areaLeftSideAnimation'),
     ],
 })
 export class TaFilterComponent implements OnInit {
@@ -197,13 +197,14 @@ export class TaFilterComponent implements OnInit {
     public hoverClose: any = false;
     public areaFilterSelected: any = 'Location';
 
-    public sliderData: Options = filterConfig.SLIDER_DATA;
+    public sliderData: Options = FilterConfigConstants.SLIDER_DATA;
 
-    public locationSliderData: Options = filterConfig.LOACTION_SLIDER_DATA;
+    public locationSliderData: Options =
+        FilterConfigConstants.LOACTION_SLIDER_DATA;
 
-    public paySliderData: Options = filterConfig.PAY_SLIDER_DATA;
+    public paySliderData: Options = FilterConfigConstants.PAY_SLIDER_DATA;
 
-    public milesSliderData: Options = filterConfig.MILES_SLIDER_DATA;
+    public milesSliderData: Options = FilterConfigConstants.MILES_SLIDER_DATA;
 
     public minValueRange: string = '0';
     public maxValueRange: string = '5,000';

@@ -1,4 +1,4 @@
-import { ArrayStatus } from '../model/array-status.model';
+import { ArrayStatus } from '../../model/array-status.model';
 
 export class DirectiveConstants {
     static LABEL_ARRAY: ArrayStatus[] = [

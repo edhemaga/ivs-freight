@@ -6,7 +6,7 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const show_animation = (type: string) =>
+export const showAnimation = (type: string) =>
     trigger(type, [
         state(
             'true',

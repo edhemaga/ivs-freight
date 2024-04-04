@@ -36,7 +36,7 @@ import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipe
-import { LogoSliderPipe } from './pipes/logoSlider.pipe';
+import { LogoSliderPipe } from './pipes/logo-slider.pipe';
 
 @Component({
     selector: 'app-ta-logo-change',

@@ -41,6 +41,7 @@ import {
     UpdateReviewCommand,
     ShipperResponse,
 } from 'appcoretruckassist';
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
 
 // Services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
@@ -57,10 +58,7 @@ import { FormService } from '../../../../core/services/form/form.service';
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
 
 // Components
-import {
-    TaUserReviewComponent,
-    ReviewCommentModal,
-} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
@@ -399,7 +397,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.selectedContractDepartmentFormArray[ind] = event;
     }
 
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -509,7 +507,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewCommentModal) {
+    private addReview(reviews: ReviewComment) {
         const review: CreateReviewCommand = {
             entityTypeReviewId: 3,
             entityTypeId: this.editData.id,
@@ -536,7 +534,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -545,7 +543,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,

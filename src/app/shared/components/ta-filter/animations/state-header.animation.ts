@@ -7,7 +7,7 @@ import {
     keyframes,
 } from '@angular/animations';
 
-export const state_header = (type: string) =>
+export const stateHeader = (type: string) =>
     trigger(type, [
         state('in', style({ opacity: 1, height: '*' })),
         transition(':enter', [

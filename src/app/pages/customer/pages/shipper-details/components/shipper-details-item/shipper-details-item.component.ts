@@ -9,12 +9,10 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Models
 import { ShipperResponse, UpdateReviewCommand } from 'appcoretruckassist';
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
 
 // Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
-
-// Components
-import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
 // Services
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
@@ -70,7 +68,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
             };
         });
     }
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -90,7 +88,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
         }
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
             comment: reviews.data.commentContent,
@@ -104,7 +102,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))

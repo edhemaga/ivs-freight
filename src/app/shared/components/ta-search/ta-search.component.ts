@@ -18,6 +18,8 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 
 @Component({
     selector: 'app-ta-search',
+    templateUrl: './ta-search.component.html',
+    styleUrls: ['./ta-search.component.scss'],
     standalone: true,
     imports: [
         CommonModule,
@@ -26,8 +28,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
         ReactiveFormsModule,
         NgbTooltipModule,
     ],
-    templateUrl: './ta-search.component.html',
-    styleUrls: ['./ta-search.component.scss'],
 })
 export class TaSearchComponent implements OnInit, OnChanges, OnDestroy {
     @Input() toolbarSearch?: boolean = true;

@@ -82,11 +82,11 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
+import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
-import {
-    TaUserReviewComponent,
-    ReviewCommentModal,
-} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+// models
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+
 @Component({
     selector: 'app-broker-modal',
     templateUrl: './broker-modal.component.html',
@@ -651,7 +651,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -762,7 +762,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewCommentModal) {
+    private addReview(reviews: ReviewComment) {
         const review: CreateReviewCommand = {
             entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
@@ -790,7 +790,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -799,7 +799,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,

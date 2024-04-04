@@ -6,7 +6,7 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const input_dropdown_animation = (type: string) =>
+export const inputDropdownAnimation = (type: string) =>
     trigger(type, [
         state(
             'true',
