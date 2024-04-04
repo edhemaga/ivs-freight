@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
     selector: 'ta-app-note',
     standalone: true,
     imports: [CommonModule, FormsModule],
-    templateUrl: './app-note.component.html',
-    styleUrls: ['./app-note.component.scss'],
+    templateUrl: './ta-app-note.component.html',
+    styleUrls: ['./ta-app-note.component.scss'],
 })
 export class TaAppNoteComponent implements OnInit {
     @Input() note: any;
