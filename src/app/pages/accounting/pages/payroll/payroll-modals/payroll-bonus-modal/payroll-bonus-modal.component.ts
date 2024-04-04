@@ -13,13 +13,13 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     creditLimitValidation,
     descriptionPayrollBonusValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { PayrollBonusService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
-import { FormService } from '../../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 // Models
 import {
@@ -31,11 +31,11 @@ import {
 import {
     convertDateFromBackend,
     convertNumberInThousandSep,
-} from '../../../../../../core/utils/methods.calculations';
+} from 'src/app/core/utils/methods.calculations';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
-} from '../../../../../../core/utils/methods.calculations';
+} from 'src/app/core/utils/methods.calculations';
 
 // Components
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';

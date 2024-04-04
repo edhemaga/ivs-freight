@@ -12,8 +12,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
 import { PmService } from 'src/app/pages/pm-truck-trailer/services/pm.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { FormService } from '../../../../core/services/form/form.service';
 
 // Models
@@ -27,7 +27,7 @@ import {
 } from 'appcoretruckassist';
 
 // Validators
-import { descriptionValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
 import {

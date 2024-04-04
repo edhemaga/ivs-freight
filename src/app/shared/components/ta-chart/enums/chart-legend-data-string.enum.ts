@@ -1,0 +1,15 @@
+export enum ChartLegendDataStringEnum {
+    AVG_PAY_PERIODD = 'Avg. Pay Period',
+    PAY_PERIOD = 'Pay Period',
+    PAY_TERM = 'Pay Term',
+    DAYS = 'days',
+    REVENUE = 'Revenue',
+    LOAD = 'Load',
+    DOLLAR = '$',
+    AVG_RATE = 'Avg. Rate',
+    HIGHEST_RATE = 'Highest Rate',
+    LOWEST_RATE = 'Lowest Rate',
+    SALARY = 'Salary',
+    MILES = 'Miles',
+    MI = 'mi',
+}

@@ -20,7 +20,7 @@ import {
 } from '../../utils/constants/navigation-data.constants';
 //Services
 import { NavigationService } from '../../services/navigation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 //Components
 

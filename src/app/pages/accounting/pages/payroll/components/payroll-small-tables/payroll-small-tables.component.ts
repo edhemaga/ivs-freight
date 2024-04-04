@@ -6,7 +6,7 @@ import { PayrollBonusModalComponent } from 'src/app/pages/accounting/pages/payro
 import { PayrollDeductionModalComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // Constants
 import { PayrollSmallTableConfigConstants } from './utils/constants/payroll-small-tables-config.constants';

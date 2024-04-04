@@ -13,8 +13,8 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { FormService } from 'src/app/core/services/form/form.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 
 // components
@@ -35,7 +35,7 @@ import {
     phoneExtension,
     phoneFaxRegex,
     rentValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {

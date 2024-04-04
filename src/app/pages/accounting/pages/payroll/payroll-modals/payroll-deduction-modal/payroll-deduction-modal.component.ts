@@ -10,13 +10,13 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // Services
-import { TaInputService } from '../../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { PayrollDeductionService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/services/payroll-deduction.service';
-import { FormService } from '../../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 // Models
-import { ITaInput } from '../../../../../../shared/components/ta-input/ta-input.config';
+import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
 import { PayrollDeductionModalResponse, PayrollDeductionResponse } from 'appcoretruckassist';
 
 // Helpers

@@ -2,7 +2,7 @@ import {
     firstNameValidation,
     lastNameValidation,
     phoneFaxRegex,
-} from '../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,
@@ -11,8 +11,8 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ApplicantService } from 'src/app/shared/services/applicant.service';
 import { FormService } from '../../../services/form/form.service';

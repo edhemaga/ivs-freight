@@ -1,4 +1,4 @@
-export enum FileAction {
+export enum FileActionEnum {
     TAG = 'tag',
     ADD = 'add',
     DELETE = 'delete',

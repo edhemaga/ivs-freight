@@ -17,7 +17,7 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 //Components
-import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
 
 @Component({
     selector: 'app-load-details-item',
@@ -85,7 +85,7 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     public identity(index: number, item: any): number {
         return item.id;
     }
-    changeCommentEvent(comments: ReviewCommentModal) {
+    changeCommentEvent(comments: ReviewComment) {
         switch (comments.action) {
             case 'delete': {
                 this.deleteComment(comments);
@@ -101,7 +101,7 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    private deleteComment(comments: ReviewCommentModal) {
+    private deleteComment(comments: ReviewComment) {
         this.comments = comments.sortData;
         this.commentsService
             .deleteCommentById(comments.data)
@@ -112,7 +112,7 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    private updateComment(comments: ReviewCommentModal) {
+    private updateComment(comments: ReviewComment) {
         this.comments = comments.sortData;
 
         const comment: UpdateCommentCommand = {

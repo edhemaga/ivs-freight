@@ -18,8 +18,8 @@ import {
 //Services
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { DriverMvrService } from 'src/app/pages/driver/services/driver-mvr.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 
 //Helpers

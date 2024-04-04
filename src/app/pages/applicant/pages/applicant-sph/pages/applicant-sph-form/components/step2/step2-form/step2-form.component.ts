@@ -33,10 +33,10 @@ import { isFormValueEqual } from 'src/app/pages/applicant/utils/helpers/applican
 import {
     addressValidation,
     descriptionValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 // components

@@ -6,11 +6,11 @@ import {
     RegistrationModalResponse,
     RegistrationResponse,
 } from 'appcoretruckassist';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { licensePlateValidation } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+import { licensePlateValidation } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,

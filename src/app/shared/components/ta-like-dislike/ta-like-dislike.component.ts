@@ -16,7 +16,7 @@ import {
 import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
-} from './ta-like-dislike.service';
+} from './services/ta-like-dislike.service';
 import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
 
 // model

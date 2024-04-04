@@ -9,7 +9,7 @@ import { CalendarRoutingModule } from './calendar-routing.module';
 // Components
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { CalendarMonthComponent } from './pages/calendar/components/calendar-month/calendar-month.component';
-import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
+import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
@@ -25,7 +25,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
         FullCalendarModule,
 
         // Components
-        TaCarrierSearchComponent,
+        TaSearchComponent,
         TaCustomCardComponent,
         TaTabSwitchComponent,
     ],

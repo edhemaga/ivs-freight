@@ -44,7 +44,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
 
 // constants
-import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
+import { RatingReviewTabsConstants } from './utils/constants/rating-review-tabs.constants';
 
 // helpers
 import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
@@ -53,13 +53,13 @@ import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.he
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
-import { TaNewCommentComponent } from './ta-new-comment/ta-new-comment.component';
+import { TaNewCommentComponent } from './components/ta-new-comment/ta-new-comment.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '../ta-custom-card/ta-custom-card.component';
 
 // models
 import { DepartmentResponse } from 'appcoretruckassist';
-import { ContactsData } from './utils/models/contacts-data.model';
+import { ContactsData } from './models/contacts-data.model';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',

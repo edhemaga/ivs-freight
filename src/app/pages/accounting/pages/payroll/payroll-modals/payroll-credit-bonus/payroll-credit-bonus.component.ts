@@ -10,9 +10,9 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // Services
-import { TaInputService } from '../../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../../shared/components/ta-modal/modal.service';
-import { FormService } from '../../../../../../core/services/form/form.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { PayrollCreditService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 
 // Models
@@ -20,23 +20,23 @@ import {
     PayrollCreditModalResponse,
     PayrollCreditResponse,
 } from 'appcoretruckassist';
-import { ITaInput } from '../../../../../../shared/components/ta-input/ta-input.config';
+import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
 
 // Helpers
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
-} from '../../../../../../core/utils/methods.calculations';
+} from 'src/app/core/utils/methods.calculations';
 import {
     convertDateFromBackend,
     convertNumberInThousandSep,
-} from '../../../../../../core/utils/methods.calculations';
+} from 'src/app/core/utils/methods.calculations';
 
 // Components
-import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-payroll-credit-bonus',
