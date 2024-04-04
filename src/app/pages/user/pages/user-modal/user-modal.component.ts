@@ -44,9 +44,9 @@ import {
 // services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { UserService } from 'src/app/pages/user/services/user.service';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Animation

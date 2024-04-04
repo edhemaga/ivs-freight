@@ -10,7 +10,7 @@ import {
 import { RenewCdlCommand } from 'appcoretruckassist';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { DriverService } from './driver.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 

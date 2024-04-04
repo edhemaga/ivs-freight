@@ -28,7 +28,7 @@ import { DriversItemStore } from '../state/driver-details-state/driver-details.s
 import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Components

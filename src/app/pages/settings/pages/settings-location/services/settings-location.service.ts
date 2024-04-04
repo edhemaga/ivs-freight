@@ -22,7 +22,7 @@ import {
 import { TerminalListResponse } from 'appcoretruckassist';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { CompanyParkingService } from '../../../services/company-parking.service';
 import { CompanyTerminalService } from '../../../services/company-terminal.service';

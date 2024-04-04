@@ -14,7 +14,7 @@ import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-revie
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // Services
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 
 // Models
 import { BrokerResponse, UpdateReviewCommand } from 'appcoretruckassist';
@@ -37,7 +37,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     public stopsDataDelivery: any;
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
-    
+
     ngOnChanges(changes: SimpleChanges) {
         if (
             changes.brokerData?.currentValue !=

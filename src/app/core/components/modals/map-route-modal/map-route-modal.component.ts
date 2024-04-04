@@ -6,7 +6,7 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';

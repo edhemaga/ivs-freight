@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 
 @Component({
     selector: 'app-map-list-card',

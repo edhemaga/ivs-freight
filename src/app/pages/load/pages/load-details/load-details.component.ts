@@ -1,13 +1,9 @@
-import {
-    Component,
-    OnInit,
-    OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
 
 //Services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { LoadService } from '../../../../shared/services/load.service';
 
 //Models

@@ -16,7 +16,7 @@ import { BrokerQuery } from '../../../../state/broker-state/broker.query';
 import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 //Services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { BrokerService } from '../../../../services/broker.service';
 
 //Models

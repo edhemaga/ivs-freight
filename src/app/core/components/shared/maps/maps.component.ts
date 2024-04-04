@@ -23,10 +23,10 @@ import { MapMarkerDropdownComponent } from '../map-marker-dropdown/map-marker-dr
 import { AgmDirectionModule } from 'agm-direction';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DropDownService } from '../../../services/details-page/drop-down.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DropDownService } from '../../../../shared/services/drop-down.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
 import { FuelService } from 'src/app/shared/services/fuel.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';

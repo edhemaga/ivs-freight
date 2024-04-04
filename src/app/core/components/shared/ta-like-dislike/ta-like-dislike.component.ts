@@ -17,7 +17,7 @@ import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
 } from './ta-like-dislike.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 
 // model
 import { SendDataCard } from '../../../../shared/models/card-table-data.model';

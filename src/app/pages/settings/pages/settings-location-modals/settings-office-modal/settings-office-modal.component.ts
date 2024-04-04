@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';

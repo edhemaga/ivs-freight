@@ -30,7 +30,7 @@ import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 // Services
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { OwnerService } from '../../services/owner.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Store

@@ -15,7 +15,7 @@ import { ModalService } from '../../../../../core/components/shared/ta-modal/mod
 import { Subject, takeUntil } from 'rxjs';
 import { PayrollBonusService } from 'src/app/pages/accounting/services/payroll-bonus.service';
 import { PayrollBonusModalResponse } from '../../../../../../../appcoretruckassist/model/payrollBonusModalResponse';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import { PayrollBonusResponse } from '../../../../../../../appcoretruckassist/model/payrollBonusResponse';
 import {
     convertDateFromBackend,

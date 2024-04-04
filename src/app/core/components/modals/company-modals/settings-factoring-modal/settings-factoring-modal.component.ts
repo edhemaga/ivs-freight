@@ -17,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { phoneFaxRegex } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';

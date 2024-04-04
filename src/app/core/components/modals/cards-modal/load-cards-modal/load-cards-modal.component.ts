@@ -23,7 +23,7 @@ import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-c
 
 // Services
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // Store
 import { LoadQuery } from '../state/store/load-modal.query';

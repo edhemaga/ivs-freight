@@ -13,7 +13,7 @@ import {
 } from 'appcoretruckassist';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 //Store
 import { ApplicantTableStore } from '../../pages/driver/state/applicant-state/applicant-table.store';

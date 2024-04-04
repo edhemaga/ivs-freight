@@ -9,7 +9,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
 import { Router } from '@angular/router';
 import { MapsService } from '../../../services/shared/maps.service';

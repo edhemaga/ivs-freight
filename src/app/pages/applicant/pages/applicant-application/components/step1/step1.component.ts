@@ -56,7 +56,7 @@ import {
 // services
 import { ApplicantService } from '../../../../services/applicant.service';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
 
 // store
 import { ApplicantStore } from '../../../../state/applicant.store';

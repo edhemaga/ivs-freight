@@ -20,7 +20,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 
 //Services
 import { SettingsCompanyService } from '../../../../services/settings-company.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 

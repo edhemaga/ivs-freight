@@ -12,7 +12,7 @@ import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import {
     convertDateToBackend,
     convertDateFromBackend,

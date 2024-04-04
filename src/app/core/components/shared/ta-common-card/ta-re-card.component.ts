@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 import {
     animate,
     style,

@@ -29,7 +29,7 @@ import { RepairDetailsStore } from '../../pages/repair/state/repair-details-stat
 // Services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',

@@ -22,7 +22,7 @@ import { WebsiteUserLoggedService } from './pages/website/services/website-user-
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
 
-import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
+import { EncryptionDecryptionService } from './core/services/encryption-decryption/encryption-decryption.service';
 
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';

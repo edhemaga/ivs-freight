@@ -12,7 +12,7 @@ import { InspectionResponse } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import {
     convertDateFromBackend,
     convertDateToBackend,

@@ -7,7 +7,7 @@ import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 
 //Services
 import { DriverService } from './driver.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 //Store

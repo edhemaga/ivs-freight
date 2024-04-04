@@ -17,7 +17,7 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 // services
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import { RoadsideService } from 'src/app/pages/safety/violation/services/roadside.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 

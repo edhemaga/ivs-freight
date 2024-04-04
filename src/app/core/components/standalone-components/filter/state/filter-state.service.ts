@@ -4,16 +4,18 @@ import { HttpClient } from '@angular/common/http';
 import { FilterStateStore } from './filter-state.store';
 import { FilterState } from './filter-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { TruckTypeService, 
-    TrailerTypeService, 
-    RepairService, 
-    FuelService, 
-    StateService, 
-    DepartmentService, 
-    LoadService, 
+import {
+    TruckTypeService,
+    TrailerTypeService,
+    RepairService,
+    FuelService,
+    StateService,
+    DepartmentService,
+    LoadService,
     TruckService,
-    TrailerService } from 'appcoretruckassist';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+    TrailerService,
+} from 'appcoretruckassist';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { co } from '@fullcalendar/core/internal-common';
 
 @Injectable({ providedIn: 'root' })
@@ -52,8 +54,8 @@ export class FilterStateService implements OnDestroy {
     // remove(id: ID) {
     //     this.filterStateStore.remove(id);
     // }
-    
-    public getTruckType(){
+
+    public getTruckType() {
         const truckType = this.TruckTypeService.apiTrucktypeFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -62,15 +64,14 @@ export class FilterStateService implements OnDestroy {
                         animation: 'truck-type-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
 
                     truckType.unsubscribe();
                 },
             });
-            
-    }    
+    }
 
-    public getTrailerType(){
+    public getTrailerType() {
         const trailerType = this.TrailerTypeService.apiTrailertypeFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -79,15 +80,16 @@ export class FilterStateService implements OnDestroy {
                         animation: 'trailer-type-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
 
                     trailerType.unsubscribe();
                 },
             });
     }
 
-    public getRepairCategory(){
-        const repairCategory = this.repairService.apiRepairCategoryFilterGet()
+    public getRepairCategory() {
+        const repairCategory = this.repairService
+            .apiRepairCategoryFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -95,15 +97,16 @@ export class FilterStateService implements OnDestroy {
                         animation: 'repair-category-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
 
                     repairCategory.unsubscribe();
                 },
             });
     }
 
-    public getFuelCategory(){
-        const fuelCategory = this.fuelService.apiFuelCategoryFilterGet()
+    public getFuelCategory() {
+        const fuelCategory = this.fuelService
+            .apiFuelCategoryFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -111,14 +114,15 @@ export class FilterStateService implements OnDestroy {
                         animation: 'fuel-category-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
                     fuelCategory.unsubscribe();
                 },
             });
     }
 
-    public getStateData(){
-        const stateData = this.stateService.apiStateFilterGet()
+    public getStateData() {
+        const stateData = this.stateService
+            .apiStateFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -126,14 +130,15 @@ export class FilterStateService implements OnDestroy {
                         animation: 'state-data-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
                     stateData.unsubscribe();
                 },
             });
     }
 
-    public getDepartmentData(){
-        const departmentData = this.departmentService.apiDepartmentFilterGet()
+    public getDepartmentData() {
+        const departmentData = this.departmentService
+            .apiDepartmentFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -141,14 +146,15 @@ export class FilterStateService implements OnDestroy {
                         animation: 'department-data-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
                     departmentData.unsubscribe();
                 },
             });
     }
 
-    public getDispatchData(){
-        const dispatcherData = this.loadService.apiLoadDispatcherFilterGet()
+    public getDispatchData() {
+        const dispatcherData = this.loadService
+            .apiLoadDispatcherFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -156,47 +162,47 @@ export class FilterStateService implements OnDestroy {
                         animation: 'dispatch-data-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
                     dispatcherData.unsubscribe();
                 },
             });
-
-        
     }
 
-    public getPmData(mod){
-       
-        if ( mod == 'truck' ) {
-            const pmTruckData = this.repairService.apiRepairPmTruckFilterListGet()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (data: any) => {
-                    this.tableService.sendActionAnimation({
-                        animation: 'pm-truck-data-update',
-                        data: data,
-                        id: null,
-                    }); 
-                    pmTruckData.unsubscribe();
-                },
-            });
+    public getPmData(mod) {
+        if (mod == 'truck') {
+            const pmTruckData = this.repairService
+                .apiRepairPmTruckFilterListGet()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (data: any) => {
+                        this.tableService.sendActionAnimation({
+                            animation: 'pm-truck-data-update',
+                            data: data,
+                            id: null,
+                        });
+                        pmTruckData.unsubscribe();
+                    },
+                });
         } else {
-            const pmTrailerkData = this.repairService.apiRepairPmTrailerFilterListGet()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (data: any) => {
-                    this.tableService.sendActionAnimation({
-                        animation: 'pm-trailer-data-update',
-                        data: data,
-                        id: null,
-                    }); 
-                    pmTrailerkData.unsubscribe();
-                },
-            });
+            const pmTrailerkData = this.repairService
+                .apiRepairPmTrailerFilterListGet()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (data: any) => {
+                        this.tableService.sendActionAnimation({
+                            animation: 'pm-trailer-data-update',
+                            data: data,
+                            id: null,
+                        });
+                        pmTrailerkData.unsubscribe();
+                    },
+                });
         }
     }
 
-    public getTruckData(){    
-        const truckList = this.truckService.apiTruckFilterGet()
+    public getTruckData() {
+        const truckList = this.truckService
+            .apiTruckFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -204,16 +210,15 @@ export class FilterStateService implements OnDestroy {
                         animation: 'truck-list-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
                     truckList.unsubscribe();
                 },
             });
-            
-        
     }
 
-    public getTrailerData(){
-        const trailerList = this.trailerService.apiTrailerFilterGet()
+    public getTrailerData() {
+        const trailerList = this.trailerService
+            .apiTrailerFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {
@@ -221,11 +226,10 @@ export class FilterStateService implements OnDestroy {
                         animation: 'trailer-list-update',
                         data: data,
                         id: null,
-                    }); 
+                    });
                     trailerList.unsubscribe();
                 },
             });
-
     }
 
     ngOnDestroy(): void {

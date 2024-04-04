@@ -11,7 +11,7 @@ import { ModalService } from '../../../../../core/components/shared/ta-modal/mod
 import { Subject, takeUntil } from 'rxjs';
 import { ITaInput } from '../../../../../core/components/shared/ta-input/ta-input.config';
 import { PayrollDeductionService } from 'src/app/pages/accounting/services/payroll-deduction.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import { PayrollDeductionModalResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionModalResponse';
 import { PayrollDeductionResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionResponse';
 import {

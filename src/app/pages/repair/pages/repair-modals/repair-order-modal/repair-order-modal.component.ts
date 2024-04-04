@@ -40,8 +40,8 @@ import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone.pipe';
 // Services
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { DetailsDataService } from '../../../../../shared/services/details-data.service';
+import { FormService } from '../../../../../shared/services/form.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 

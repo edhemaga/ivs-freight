@@ -22,7 +22,7 @@ import { ShipperDetailsStore } from '../state/shipper-state/shipper-details-stat
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { ShipperService as ShipperMainService } from 'appcoretruckassist';
 
@@ -488,7 +488,9 @@ export class ShipperService implements OnDestroy {
             tap((shipper) => {
                 const shipperId = id;
                 const shipperData = {
-                    ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
+                    ...this.shipperDetailsStore?.getValue()?.entities[
+                        shipperId
+                    ],
                 };
 
                 this.shipperStore.remove(({ id }) => id === shipperId);

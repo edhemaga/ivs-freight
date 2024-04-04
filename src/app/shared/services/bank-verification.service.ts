@@ -10,8 +10,8 @@ import {
     accountBankValidation,
     bankRoutingValidator,
     routingBankValidation,
-} from '../../components/shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../components/shared/ta-input/ta-input.service';
+} from '../../core/components/shared/ta-input/ta-input.regex-validations';
+import { TaInputService } from '../../core/components/shared/ta-input/ta-input.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable({

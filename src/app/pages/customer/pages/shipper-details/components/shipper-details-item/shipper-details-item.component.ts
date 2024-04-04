@@ -17,7 +17,7 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
 
 // Services
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 
 @Titles()
 @Component({
@@ -35,7 +35,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
     private destroy$ = new Subject<void>();
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
-    
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.shipper = changes.shipper.currentValue;

@@ -5,7 +5,7 @@ import {
     HttpHandler,
 } from '@angular/common/http';
 import { catchError, Observable, tap } from 'rxjs';
-import { NotificationService } from './core/services/notification/notification.service';
+import { NotificationService } from './shared/services/notification.service';
 import { FormDataService } from './core/services/formData/form-data.service';
 
 @Injectable()

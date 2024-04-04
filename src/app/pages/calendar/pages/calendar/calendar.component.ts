@@ -4,7 +4,7 @@ import {
     ViewChild,
     ViewEncapsulation,
     OnDestroy,
-    AfterViewInit
+    AfterViewInit,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -18,7 +18,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 // Services
 import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-calendar',

@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 
 // store

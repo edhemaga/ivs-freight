@@ -54,7 +54,7 @@ import { TaCommentComponent } from 'src/app/core/components/standalone-component
 // services
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { FormService } from '../../../../shared/services/form.service';
 import { LoadService } from 'src/app/shared/services/load.service';
 
 // animations

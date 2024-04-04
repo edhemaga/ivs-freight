@@ -19,7 +19,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 
 //services
 import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 import { SharedService } from '../../../services/shared/shared.service';
 
 //popover

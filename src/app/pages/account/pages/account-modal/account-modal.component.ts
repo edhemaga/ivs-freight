@@ -20,7 +20,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
 import { AccountService } from 'src/app/pages/account/services/account.service';
 import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 // validations
 import {

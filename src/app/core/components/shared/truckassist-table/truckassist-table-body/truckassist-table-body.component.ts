@@ -34,9 +34,9 @@ import { CommonModule } from '@angular/common';
 import { TableStrategy } from './table_strategy';
 
 // services
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../../../shared/services/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
-import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../../shared/services/details-data.service';
 import { FilesService } from 'src/app/core/services/shared/files.service';
 
 // decorators
@@ -787,8 +787,10 @@ export class TruckassistTableBodyComponent
         }
 
         this.progressDropdownActive = tooltip.isOpen() ? row.textUnit : -1;
-        this.progressDropdownColumnActive = tooltip.isOpen() ? column.field : "";
-        this.progressDropdownData = {row: row, column: row[column.field]};
+        this.progressDropdownColumnActive = tooltip.isOpen()
+            ? column.field
+            : '';
+        this.progressDropdownData = { row: row, column: row[column.field] };
     }
 
     // Dropdown Actions

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { TableCardDropdownActionsService } from './table-card-dropdown-actions.service';
 
 // modules

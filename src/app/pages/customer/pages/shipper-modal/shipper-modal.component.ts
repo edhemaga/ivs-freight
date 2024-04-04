@@ -50,8 +50,8 @@ import {
     TaLikeDislikeService,
 } from '../../../../core/components/shared/ta-like-dislike/ta-like-dislike.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
-import { ReviewsRatingService } from '../../../../core/services/reviews-rating/reviewsRating.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { ReviewsRatingService } from '../../../../shared/services/reviews-rating.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 // Animations
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';

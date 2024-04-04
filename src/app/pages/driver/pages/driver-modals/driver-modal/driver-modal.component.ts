@@ -30,8 +30,8 @@ import { ModalService } from '../../../../../core/components/shared/ta-modal/mod
 import { TaUploadFileService } from '../../../../../core/components/shared/ta-upload-files/ta-upload-file.service';
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 //Helpers
 import {

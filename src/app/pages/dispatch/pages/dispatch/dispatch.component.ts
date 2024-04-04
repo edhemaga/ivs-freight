@@ -10,7 +10,7 @@ import {
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { DispatcherService } from '../../services/dispatcher.service';
 
 // Decorators

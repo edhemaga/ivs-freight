@@ -32,9 +32,9 @@ import { DriverMedicalService } from '../../../../services/driver-medical.servic
 import { DriverMvrService } from '../../../../services/driver-mvr.service';
 import { DriverTestService } from '../../../../services/driver-test.service';
 import { DriverService } from '../../../../services/driver.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 
 //Components
 import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
@@ -223,13 +223,25 @@ export class DriverDetailsCardComponent
                     next: (res) => {
                         switch (res.type) {
                             case DriverDetailsCardStringEnum.DELETE_2:
-                                if (res.template === DriverDetailsCardStringEnum.CDL_2)
+                                if (
+                                    res.template ===
+                                    DriverDetailsCardStringEnum.CDL_2
+                                )
                                     this.deleteCdlByIdFunction(res.id);
-                                else if (res.template === DriverDetailsCardStringEnum.MEDICAL_2)
+                                else if (
+                                    res.template ===
+                                    DriverDetailsCardStringEnum.MEDICAL_2
+                                )
                                     this.deleteMedicalByIdFunction(res.id);
-                                else if (res.template === DriverDetailsCardStringEnum.MVR_2)
+                                else if (
+                                    res.template ===
+                                    DriverDetailsCardStringEnum.MVR_2
+                                )
                                     this.deleteMvrByIdFunction(res.id);
-                                else if (res.template === DriverDetailsCardStringEnum.TEST_2)
+                                else if (
+                                    res.template ===
+                                    DriverDetailsCardStringEnum.TEST_2
+                                )
                                     this.deleteTestByIdFunction(res.id);
                                 break;
                             default: {
@@ -548,20 +560,27 @@ export class DriverDetailsCardComponent
     }
 
     public onModalAction(action: string): void {
-        if (action.includes(DriverDetailsCardStringEnum.DRUG)) action = DriverDetailsCardStringEnum.DRUG_ALCOHOL;
+        if (action.includes(DriverDetailsCardStringEnum.DRUG))
+            action = DriverDetailsCardStringEnum.DRUG_ALCOHOL;
         switch (action) {
             case DriverDetailsCardStringEnum.CDL:
                 this.modalService.openModal(
                     DriverCdlModalComponent,
                     { size: DriverDetailsCardStringEnum.SMALL },
-                    { id: this.driver.id, type: DriverDetailsCardStringEnum.NEW_LICENCE }
+                    {
+                        id: this.driver.id,
+                        type: DriverDetailsCardStringEnum.NEW_LICENCE,
+                    }
                 );
                 break;
             case DriverDetailsCardStringEnum.DRUG_ALCOHOL:
                 this.modalService.openModal(
                     DriverDrugAlcoholModalComponent,
                     { size: DriverDetailsCardStringEnum.SMALL },
-                    { id: this.driver.id, type: DriverDetailsCardStringEnum.NEW_DRUG }
+                    {
+                        id: this.driver.id,
+                        type: DriverDetailsCardStringEnum.NEW_DRUG,
+                    }
                 );
 
                 break;
@@ -569,14 +588,20 @@ export class DriverDetailsCardComponent
                 this.modalService.openModal(
                     DriverMedicalModalComponent,
                     { size: DriverDetailsCardStringEnum.SMALL },
-                    { id: this.driver.id, type: DriverDetailsCardStringEnum.NEW_MEDICAL }
+                    {
+                        id: this.driver.id,
+                        type: DriverDetailsCardStringEnum.NEW_MEDICAL,
+                    }
                 );
                 break;
             case DriverDetailsCardStringEnum.MVR:
                 this.modalService.openModal(
                     DriverMvrModalComponent,
                     { size: DriverDetailsCardStringEnum.SMALL },
-                    { id: this.driver.id, type: DriverDetailsCardStringEnum.NEW_MVR }
+                    {
+                        id: this.driver.id,
+                        type: DriverDetailsCardStringEnum.NEW_MVR,
+                    }
                 );
                 break;
             default:
@@ -629,7 +654,9 @@ export class DriverDetailsCardComponent
                 this.deactivatePeriod = false;
             }
             this.firstDate = dateRes;
-            if (!arrMaxDate.includes(DriverDetailsCardStringEnum.INVALID_DATE)) {
+            if (
+                !arrMaxDate.includes(DriverDetailsCardStringEnum.INVALID_DATE)
+            ) {
                 let maxEmpDate = moment(
                     new Date(Math.max.apply(null, arrMaxDate))
                 ).format(DriverDetailsCardStringEnum.DATE_FORMAT);
@@ -692,7 +719,9 @@ export class DriverDetailsCardComponent
                         id: item.id,
                         name: fullname,
                         status: item.status,
-                        svg: item.owner ? DriverImagesStringEnum.OWNER_STATUS : null,
+                        svg: item.owner
+                            ? DriverImagesStringEnum.OWNER_STATUS
+                            : null,
                         folder: DriverDetailsCardStringEnum.COMMON,
                         active: item.id === event.id,
                     };

@@ -15,7 +15,7 @@ import { TruckService } from 'src/app/shared/services/truck.service';
 import { TrailerService } from 'src/app/shared/services/trailer.service';
 import { TruckItemStore } from 'src/app/pages/truck/state/truck-details-state/truck.details.store';
 import { TrailerItemStore } from 'src/app/pages/trailer/state/trailer-details-state/trailer-details.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TrucksDetailsListStore } from 'src/app/pages/truck/state/truck-details-list-state/truck-details-list.store';
 import { TrailerDetailsListStore } from 'src/app/pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';

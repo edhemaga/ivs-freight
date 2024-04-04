@@ -18,7 +18,7 @@ import {
     FormsModule,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { CommonModule } from '@angular/common';
 import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';

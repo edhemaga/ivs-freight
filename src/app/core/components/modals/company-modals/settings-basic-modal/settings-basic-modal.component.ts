@@ -17,9 +17,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // services
 import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { FormService } from '../../../../services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 // components
 import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';

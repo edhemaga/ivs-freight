@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
     providedIn: 'root',
 })
-export class GpsServiceService {
+export class GpsService {
     private hubConnection: signalR.HubConnection;
     private destroy$ = new Subject<void>();
     public gpsStatusChange = new Subject<any>();

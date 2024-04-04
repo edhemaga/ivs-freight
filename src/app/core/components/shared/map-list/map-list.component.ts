@@ -21,7 +21,7 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../../shared/services/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
@@ -49,7 +49,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
         AgmSnazzyInfoWindowModule,
 
         // Components
-        TaInputComponent
+        TaInputComponent,
     ],
 })
 export class MapListComponent

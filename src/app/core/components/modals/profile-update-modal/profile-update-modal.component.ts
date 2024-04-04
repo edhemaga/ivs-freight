@@ -27,7 +27,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { UserProfileUpdateService } from '../../../../shared/services/user-profile-update.service';
-import { FormService } from '../../../services/form/form.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 // modules
 import Croppie from 'croppie';

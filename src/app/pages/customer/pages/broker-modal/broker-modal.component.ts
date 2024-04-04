@@ -31,8 +31,8 @@ import {
 } from '../../../../core/utils/methods.calculations';
 
 // Services
-import { FormService } from '../../../../core/services/form/form.service';
-import { ReviewsRatingService } from '../../../../core/services/reviews-rating/reviewsRating.service';
+import { FormService } from '../../../../shared/services/form.service';
+import { ReviewsRatingService } from '../../../../shared/services/reviews-rating.service';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,

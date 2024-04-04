@@ -21,8 +21,8 @@ import { skip, Subject, takeUntil, tap } from 'rxjs';
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
 import { TrailerService } from 'src/app/shared/services/trailer.service';
-import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { VinDecoderService } from '../../../../shared/services/vin-decoder.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 // animations
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';

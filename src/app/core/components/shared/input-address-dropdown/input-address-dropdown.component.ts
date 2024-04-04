@@ -30,7 +30,7 @@ import {
 import { ITaInput } from '../ta-input/ta-input.config';
 
 //Services
-import { AddressService } from 'src/app/core/services/shared/address.service';
+import { AddressService } from 'src/app/shared/services/address.service';
 
 //Components
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';

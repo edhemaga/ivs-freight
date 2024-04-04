@@ -25,7 +25,7 @@ import { MoneyFilterPipe } from 'src/app/core/pipes/money-filter.pipe';
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-toolbar-filters',

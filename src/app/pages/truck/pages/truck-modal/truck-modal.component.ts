@@ -33,8 +33,8 @@ import { convertThousanSepInNumber } from '../../../../core/utils/methods.calcul
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
-import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { VinDecoderService } from '../../../../shared/services/vin-decoder.service';
+import { FormService } from '../../../../shared/services/form.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
 // animations

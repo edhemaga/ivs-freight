@@ -20,7 +20,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
-import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../../shared/services/details-data.service';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
@@ -85,8 +85,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
         new EventEmitter<{ file: UploadFile; action: string }>(null);
 
-    @Output() fileHover: EventEmitter<{ }> =
-        new EventEmitter<{ }>(null);
+    @Output() fileHover: EventEmitter<{}> = new EventEmitter<{}>(null);
 
     // Review
     @Input() isReview: boolean;

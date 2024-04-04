@@ -49,7 +49,7 @@ import {
 
 // services
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // store
 import { ApplicantQuery } from '../../../state/applicant.query';

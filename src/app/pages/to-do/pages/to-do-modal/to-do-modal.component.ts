@@ -25,7 +25,7 @@ import {
 } from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from '../../../../core/services/comments/comments.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { FormService } from '../../../../shared/services/form.service';
 import {
     convertDateToBackend,
     convertDateFromBackend,
@@ -306,10 +306,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
-        const {
-            deadline,
-            ...form
-        } = this.taskForm.value;
+        const { deadline, ...form } = this.taskForm.value;
 
         const newData: any = {
             id: id,
@@ -345,10 +342,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     }
 
     private addTask() {
-        const {
-            deadline,
-            ...form
-        } = this.taskForm.value;
+        const { deadline, ...form } = this.taskForm.value;
 
         let documents = [];
         this.documents.map((item) => {

@@ -56,8 +56,8 @@ import {
 import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
 import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
 import { OwnerService } from 'src/app/pages/owner/services/owner.service';
-import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { BankVerificationService } from '../../../../shared/services/bank-verification.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 @Component({
     selector: 'app-owner-modal',

@@ -7,7 +7,7 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../services/form/form.service';
+import { FormService } from '../../../../shared/services/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';

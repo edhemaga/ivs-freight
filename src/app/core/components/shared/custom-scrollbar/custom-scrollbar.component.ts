@@ -17,7 +17,7 @@ import { AfterViewInit, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ObserversModule } from '@angular/cdk/observers';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 let hasTablePageHeight = false;
 @Component({

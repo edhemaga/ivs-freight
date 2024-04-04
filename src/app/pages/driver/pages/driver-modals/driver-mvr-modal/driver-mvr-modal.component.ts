@@ -20,7 +20,7 @@ import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { DriverMvrService } from 'src/app/pages/driver/services/driver-mvr.service';
 import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 //Helpers
 import {

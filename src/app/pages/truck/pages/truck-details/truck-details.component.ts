@@ -4,14 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store
 import { TrucksDetailsListQuery } from '../../state/truck-details-list-state/truck-details-list.query';

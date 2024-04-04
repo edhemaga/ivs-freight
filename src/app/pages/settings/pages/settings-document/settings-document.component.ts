@@ -4,7 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { SettingsCompanyService } from '../../services/settings-company.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // model
 import { File } from 'src/app/shared/models/card-table-data.model';
