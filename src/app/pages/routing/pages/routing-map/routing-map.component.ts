@@ -33,7 +33,7 @@ import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { imageMapType } from 'src/assets/utils/methods-global';
 
 //Services
-import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { MapsService } from 'src/app/shared/services/maps.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
