@@ -32,9 +32,9 @@ import { DriverMedicalService } from '../../../../services/driver-medical.servic
 import { DriverMvrService } from '../../../../services/driver-mvr.service';
 import { DriverTestService } from '../../../../services/driver-test.service';
 import { DriverService } from '../../../../services/driver.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 
 //Components
 import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';

@@ -17,7 +17,7 @@ import { FuelTransactionResponse } from 'appcoretruckassist';
 import { ClusterResponse } from 'appcoretruckassist';
 
 //Service
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Store
 import { FuelStore } from '../../pages/fuel/state/fule-state/fuel-state.store';

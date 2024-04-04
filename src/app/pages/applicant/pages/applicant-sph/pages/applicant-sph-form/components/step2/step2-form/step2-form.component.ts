@@ -37,7 +37,7 @@ import {
 
 // services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // components
 import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';

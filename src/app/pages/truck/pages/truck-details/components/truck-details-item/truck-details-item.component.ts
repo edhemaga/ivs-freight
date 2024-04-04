@@ -29,9 +29,9 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 import moment from 'moment';
 
 // services
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
 

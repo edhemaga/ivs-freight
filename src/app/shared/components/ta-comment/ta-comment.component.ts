@@ -27,7 +27,7 @@ import moment from 'moment';
 
 // services
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { CommentsService } from '../../services/comments.service';
 import { ModalService } from '../ta-modal/services/modal.service';
 import { ConfirmationService } from '../../../core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TaInputDropdownTableService } from '../ta-input-dropdown-table/services/ta-input-dropdown-table.service';

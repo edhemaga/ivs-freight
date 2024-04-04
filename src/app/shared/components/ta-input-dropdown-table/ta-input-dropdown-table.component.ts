@@ -34,7 +34,7 @@ import { Tabs } from '../../../core/components/shared/model/modal-tabs';
 import { CardRows } from '../../../core/components/shared/model/card-data.model';
 
 // services
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // pipes

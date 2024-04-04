@@ -39,9 +39,9 @@ import { ReviewComment } from '../../../../../shared/models/review-comment.model
 import { RepairService } from 'src/app/shared/services/repair.service';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../../core/services/form/form.service';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
+import { FormService } from 'src/app/shared/services/form.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 
 import {
     TaLikeDislikeService,

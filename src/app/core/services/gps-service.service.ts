@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
     providedIn: 'root',
 })
-export class GpsServiceService {
+export class GpsService {
     private hubConnection: signalR.HubConnection;
     private destroy$ = new Subject<void>();
     public gpsStatusChange = new Subject<any>();
@@ -17,7 +17,7 @@ export class GpsServiceService {
                 filter((route) => route instanceof NavigationEnd),
                 takeUntil(this.destroy$)
             )
-            .subscribe((route: NavigationEnd) => {});
+            .subscribe(() => {});
     }
 
     public startConnection = () => {
@@ -27,7 +27,6 @@ export class GpsServiceService {
                 .withUrl(`${environment.GPS_ENDPOINT}/gpsHub`, {
                     accessTokenFactory: () => user?.token,
                 })
-                // .withAutomaticReconnect()
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 

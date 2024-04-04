@@ -1,4 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
+// moment
 import moment from 'moment';
 
 @Pipe({

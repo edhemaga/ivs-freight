@@ -14,7 +14,7 @@ import {
     MapResponse,
 } from 'appcoretruckassist';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class RoutingStateService implements OnDestroy {

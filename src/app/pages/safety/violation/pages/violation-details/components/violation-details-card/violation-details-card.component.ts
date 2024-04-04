@@ -8,7 +8,7 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 
 // store
 import { RoadsideMinimalListQuery } from '../../../../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';

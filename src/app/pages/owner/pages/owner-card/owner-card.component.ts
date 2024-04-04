@@ -22,7 +22,7 @@ import {
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // enum

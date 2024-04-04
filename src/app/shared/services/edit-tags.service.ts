@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { OnDestroy } from '@angular/core';
-import { TagService } from './../../../../../appcoretruckassist/api/tag.service';
+import { TagService } from '../../../../appcoretruckassist/api/tag.service';
 
 @Injectable({
     providedIn: 'root',

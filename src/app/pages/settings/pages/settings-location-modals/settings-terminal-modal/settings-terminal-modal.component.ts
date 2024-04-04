@@ -43,7 +43,7 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // components
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';

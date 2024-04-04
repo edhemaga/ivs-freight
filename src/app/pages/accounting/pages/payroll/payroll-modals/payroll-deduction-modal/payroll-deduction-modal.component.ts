@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { PayrollDeductionService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/services/payroll-deduction.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // Models
 import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';

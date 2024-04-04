@@ -17,15 +17,15 @@ import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search
 import { TaFilterComponent } from '../../../../../../shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from 'src/app/shared/components/ta-special-filter/ta-special-filter.component';
 
-//Enum
+// enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
-//Pipe
-import { MoneyFilterPipe } from 'src/app/core/pipes/money-filter.pipe';
+// pipes
+import { MoneyFilterPipe } from 'src/app/shared/pipes/money-filter.pipe';
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
-//Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+// services
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-toolbar-filters',

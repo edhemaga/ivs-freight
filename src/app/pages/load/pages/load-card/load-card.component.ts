@@ -21,8 +21,8 @@ import {
 } from 'src/app/core/components/shared/model/card-data.model';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store
 import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';

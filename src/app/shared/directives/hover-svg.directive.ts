@@ -8,10 +8,9 @@ import {
 
 @Directive({
     selector: '[appHoverSvg]',
-    standalone: true
+    standalone: true,
 })
 export class HoverSvgDirective {
-    public _fill: string = null;
     @Input() set fill(value: string) {
         if (value) {
             this._fill = value;
@@ -24,12 +23,14 @@ export class HoverSvgDirective {
         }
     }
 
-    public _fillHover: string = null;
     @Input() set fillHover(value: string) {
         if (value) {
             this._fillHover = value;
         }
     }
+
+    public _fill: string = null;
+    public _fillHover: string = null;
 
     constructor(private elRef: ElementRef, private renderer2: Renderer2) {}
 

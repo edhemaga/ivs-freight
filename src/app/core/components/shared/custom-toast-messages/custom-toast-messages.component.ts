@@ -9,8 +9,8 @@ import {
 } from '@angular/animations';
 import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

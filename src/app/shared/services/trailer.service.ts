@@ -25,8 +25,8 @@ import { TrailerInactiveQuery } from '../../pages/trailer/state/trailer-inactive
 import { TrailersMinimalListQuery } from '../../pages/trailer/state/trailer-minimal-list-state/trailer-minimal.query';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {

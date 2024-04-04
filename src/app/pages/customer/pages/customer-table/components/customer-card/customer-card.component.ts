@@ -26,8 +26,8 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { TimeFormatPipe } from 'src/app/shared/pipes/time-format-am-pm.pipe';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // Helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';

@@ -6,11 +6,11 @@ import { Subject } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import { ConfirmationReset } from '../../../../core/components/modals/confirmation-modal/state/models/confirmation-reset.model';
+import { ConfirmationReset } from 'src/app/core/components/modals/confirmation-modal/state/models/confirmation-reset.model';
 import { ModalOptions } from '../models/modal-options.model';
 
 // services
-import { EncryptionDecryptionService } from '../../../../core/services/encryption-decryption/EncryptionDecryption.service';
+import { EncryptionDecryptionService } from 'src/app/shared/services/encryption-decryption.service';
 @Injectable({
     providedIn: 'root',
 })

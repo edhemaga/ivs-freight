@@ -31,11 +31,11 @@ import { TaSpinnerComponent } from '../../../ta-spinner/ta-spinner.component';
 
 // services
 import { TaInputService } from '../../../ta-input/services/ta-input.service';
-import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // pipes
-import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
-import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
+import { UrlExtensionPipe } from 'src/app/shared/components/ta-upload-files/pipes/url-extension.pipe';
+import { ByteConvertPipe } from 'src/app/shared/components/ta-upload-files/pipes/byte-convert.pipe';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';

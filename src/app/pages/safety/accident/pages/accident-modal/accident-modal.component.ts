@@ -28,8 +28,8 @@ import { convertDateFromBackend } from '../../../../../core/utils/methods.calcul
 
 // services
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 
 // components

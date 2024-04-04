@@ -23,7 +23,7 @@ import moment from 'moment';
 import { ConstantStringTableDropdownEnum } from '../../../../../core/utils/enums/ta-input-dropdown-table';
 
 // services
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { CommentsService } from 'src/app/shared/services/comments.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputDropdownTableService } from '../../services/ta-input-dropdown-table.service';
 import { LoadService } from 'src/app/shared/services/load.service';

@@ -17,8 +17,8 @@ import { RepairDetailsQuery } from '../../../../state/repair-details-state/repai
 
 // Services
 import { RepairService } from '../../../../../../shared/services/repair.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // Models
 import { RepairShopResponse } from 'appcoretruckassist';

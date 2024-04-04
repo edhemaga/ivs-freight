@@ -18,7 +18,7 @@ import {
     TrailerService,
 } from 'appcoretruckassist';
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {

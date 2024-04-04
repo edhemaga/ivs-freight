@@ -5,8 +5,8 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { SettingsLocationService } from '../../services/settings-location.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { CompanyTerminalService } from '../../../../services/company-terminal.service';
 

@@ -13,11 +13,11 @@ import { DatePipe } from '@angular/common';
 // Services
 import { RepairService } from '../../../../shared/services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
+import { MapsService } from 'src/app/shared/services/maps.service';
 
 // Models
 import {

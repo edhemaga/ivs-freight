@@ -8,7 +8,7 @@ import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal
 
 // services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { AccountService } from '../../services/account.service';
 
 // store

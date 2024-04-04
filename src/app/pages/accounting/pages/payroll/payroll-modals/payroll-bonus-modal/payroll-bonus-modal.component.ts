@@ -19,7 +19,7 @@ import {
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { PayrollBonusService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // Models
 import {

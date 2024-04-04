@@ -41,7 +41,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
 
 // services
 import { FilterStateService } from './services/filter-state.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../services/truckassist-table.service';
 
 // constants
 import { DirectiveConstants } from './utils/constants/directive.constants';

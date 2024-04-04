@@ -31,7 +31,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { ConfirmationResetService } from '../../../modals/confirmation-modal/state/state/services/confirmation-reset.service';
 

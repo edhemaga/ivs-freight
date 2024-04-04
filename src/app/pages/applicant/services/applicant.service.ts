@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 // services
 import { ApplicantService as ApplicantBackendService } from 'appcoretruckassist';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 // models
 import {
