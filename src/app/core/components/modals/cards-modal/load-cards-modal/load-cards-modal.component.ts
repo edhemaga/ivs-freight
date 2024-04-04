@@ -22,7 +22,7 @@ import { ModalModelData } from '../models/modal-input.model';
 import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { FormService } from 'src/app/shared/services/form.service';
 
 // Store

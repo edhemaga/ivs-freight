@@ -13,7 +13,7 @@ import { DetailsPageService } from 'src/app/shared/services/details-page.service
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store

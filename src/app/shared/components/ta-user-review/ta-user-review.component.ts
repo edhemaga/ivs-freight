@@ -1,4 +1,4 @@
-import { ReviewsSortPipe } from './reviews-sort.pipe';
+import { ReviewsSortPipe } from './pipes/reviews-sort.pipe';
 import {
     Component,
     ElementRef,
@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import { SignInResponse } from 'appcoretruckassist';
+import { ReviewComment } from '../../models/review-comment.model';
 
 // utils
 import { ImageBase64Service } from '../../../core/utils/base64.image';
@@ -28,12 +29,6 @@ import { ProfileImagesComponent } from '../../../core/components/shared/profile-
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
-export interface ReviewCommentModal {
-    sortData: any[];
-    data: any | number;
-    action: string;
-}
 
 @Component({
     selector: 'app-ta-user-review',
@@ -60,8 +55,8 @@ export class TaUserReviewComponent implements OnChanges {
      */
     @Input() isNewReview: boolean = false;
 
-    @Output() changeReviewsEvent: EventEmitter<ReviewCommentModal> =
-        new EventEmitter<ReviewCommentModal>();
+    @Output() changeReviewsEvent: EventEmitter<ReviewComment> =
+        new EventEmitter<ReviewComment>();
 
     private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
     valueChanged: boolean = false;

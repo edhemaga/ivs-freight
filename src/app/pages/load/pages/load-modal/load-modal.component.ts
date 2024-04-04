@@ -52,8 +52,8 @@ import { MapsComponent } from 'src/app/core/components/shared/maps/maps.componen
 import { TaCommentComponent } from 'src/app/shared/components/ta-comment/ta-comment.component';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { FormService } from 'src/app/shared/services/form.service';
 import { LoadService } from 'src/app/shared/services/load.service';
 
@@ -98,7 +98,7 @@ import {
     TagResponse,
     LoadStopItemCommand,
 } from 'appcoretruckassist';
-import { ITaInput } from 'src/app/shared/components/ta-input/ta-input.config';
+import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
 import { LoadBilling } from './models/load-billing.model';
 import { LoadPayment } from './models/load-payment.model';
 import { MapRouteModel } from '../../../../core/components/shared/model/map-route';

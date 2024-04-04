@@ -7,7 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
 
 // services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { AccountService } from '../../services/account.service';
 

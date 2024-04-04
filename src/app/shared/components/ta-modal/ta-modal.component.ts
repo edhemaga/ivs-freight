@@ -30,15 +30,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
-import { ModalService } from './modal.service';
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { ModalService } from './services/modal.service';
+import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
 
 // components
-import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
-} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+} from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { CustomScrollbarComponent } from '../../../core/components/shared/custom-scrollbar/custom-scrollbar.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';

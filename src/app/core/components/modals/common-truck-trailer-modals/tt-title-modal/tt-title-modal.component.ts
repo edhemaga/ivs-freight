@@ -6,8 +6,8 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 

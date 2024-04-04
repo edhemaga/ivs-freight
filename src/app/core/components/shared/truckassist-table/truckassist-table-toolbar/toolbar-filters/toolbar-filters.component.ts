@@ -12,8 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
 
-// components
-import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
+//Components
+import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from '../../../../../../shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from 'src/app/shared/components/ta-special-filter/ta-special-filter.component';
 
@@ -35,7 +35,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
     imports: [
         CommonModule,
         FormsModule,
-        TaCarrierSearchComponent,
+        TaSearchComponent,
         TaFilterComponent,
         AngularSvgIconModule,
         FormatCurrency,

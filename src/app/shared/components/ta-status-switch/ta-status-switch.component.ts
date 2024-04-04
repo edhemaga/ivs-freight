@@ -8,23 +8,22 @@ import {
     Output,
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import moment from 'moment-timezone';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+// moment
+import moment from 'moment-timezone';
+
 // bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// pipe
+// pipes
 import { StatusPipe } from '../../pipes/status-pipe.pipe';
+
 // models
 import { DispatchService } from 'appcoretruckassist';
-
-export interface IDispatchModel {
-    id: number;
-    name: string;
-}
+import { IDispatchModel } from './models/dispatch.model';
 
 @Component({
     selector: 'app-ta-status-switch',

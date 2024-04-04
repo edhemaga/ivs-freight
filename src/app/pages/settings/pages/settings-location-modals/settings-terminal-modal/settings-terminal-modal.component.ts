@@ -20,11 +20,11 @@ import {
     parkingSlotValidation,
     phoneExtension,
     terminalNameValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     phoneFaxRegex,
     rentValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -41,8 +41,8 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { FormService } from 'src/app/shared/services/form.service';
 
 // components

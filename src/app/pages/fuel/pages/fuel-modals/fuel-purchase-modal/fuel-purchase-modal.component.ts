@@ -16,8 +16,8 @@ import {
 import { Subject, takeUntil, switchMap, of } from 'rxjs';
 
 //Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { FormService } from 'src/app/shared/services/form.service';
 import { FuelService } from 'src/app/shared/services/fuel.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
@@ -64,7 +64,7 @@ import { FuelModalActionsStringEnum } from './enums/fuel-modal-actions-string.en
 import {
     priceValidation,
     fullNameValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 //Methods
 import {

@@ -29,7 +29,7 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     ssnNumberRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 //Components
 import { TruckModalComponent } from '../../../../pages/truck/pages/truck-modal/truck-modal.component';
 import { TabSwitcherComponent } from '../../../../core/components/switchers/tab-switcher/tab-switcher.component';
@@ -52,8 +52,8 @@ import {
 } from 'appcoretruckassist';
 
 //Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { OwnerService } from 'src/app/pages/owner/services/owner.service';
 import { BankVerificationService } from '../../../../shared/services/bank-verification.service';
 import { FormService } from '../../../../shared/services/form.service';

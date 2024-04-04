@@ -33,19 +33,20 @@ import {
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { RepairTypes } from '../repair-order-modal/models/repair-types.model';
+import { ReviewComment } from '../../../../../shared/models/review-comment.model';
 
 // Services
 import { RepairService } from 'src/app/shared/services/repair.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
 import { FormService } from 'src/app/shared/services/form.service';
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
+
 import {
     TaLikeDislikeService,
     LikeDislikeModel,
-} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
-
+} from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 // Validators
 import {
     accountBankValidation,
@@ -56,7 +57,7 @@ import {
     phoneFaxRegex,
     repairShopValidation,
     routingBankValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
@@ -66,7 +67,6 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 
 // Component
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
-import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -554,7 +554,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     // Reviews
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -1352,7 +1352,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewCommentModal) {
+    private addReview(reviews: ReviewComment) {
         const review: CreateReviewCommand = {
             entityTypeReviewId: 2,
             entityTypeId: this.editData.id,
@@ -1380,7 +1380,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -1389,7 +1389,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,

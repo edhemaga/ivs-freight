@@ -9,10 +9,10 @@ import {
 import {
     creditLimitValidation,
     descriptionPayrollBonusValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { PayrollBonusService } from 'src/app/pages/accounting/services/payroll-bonus.service';
 import { PayrollBonusModalResponse } from '../../../../../../../appcoretruckassist/model/payrollBonusModalResponse';

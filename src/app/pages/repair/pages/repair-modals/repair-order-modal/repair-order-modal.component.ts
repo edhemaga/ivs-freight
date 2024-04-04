@@ -38,8 +38,8 @@ import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
 import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 
 // Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { FormService } from 'src/app/shared/services/form.service';
 import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
@@ -64,7 +64,7 @@ import {
     invoiceValidation,
     repairOdometerValidation,
     vehicleUnitValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
 import { RepairOrder } from './utils/constants/repair-order.constant';

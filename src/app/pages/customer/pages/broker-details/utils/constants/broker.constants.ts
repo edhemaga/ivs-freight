@@ -2,60 +2,63 @@
 import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 
 //Enums
-import {
-    AxisPositionEnum,
-    ChartColorsEnum,
-    ChartDefaultsEnum,
-    ChartImagesEnum,
-    ChartLegendDataEnum,
-    ChartTypesEnum,
-} from 'src/app/shared/components/ta-chart/enums/chart-enums';
-
+import { ChartAxisPositionEnum } from 'src/app/shared/components/ta-chart/enums/chart-axis-position-string.enum';
+import { ChartColorsStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-colors-string.enum';
+import { ChartDefaultStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-default-string.enum';
+import { ChartImagesStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-images-string.enum';
+import { ChartLegendDataStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-legend-data-string.enum';
+import { ChartTypesStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-types-string.enum';
 export class BrokerConstants {
     static MILEAGE_CHART_CONFIG: DoughnutChartConfig = {
         dataProperties: [
             {
                 defaultConfig: {
-                    type: ChartTypesEnum.LINE,
+                    type: ChartTypesStringEnum.LINE,
                     data: [],
-                    label: ChartLegendDataEnum.SALARY,
+                    label: ChartLegendDataStringEnum.SALARY,
                     yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
+                    borderColor: ChartColorsStringEnum.SKY_BLUE,
+                    pointBackgroundColor: ChartColorsStringEnum.WHITE,
+                    pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
+                    pointHoverBorderColor: ChartColorsStringEnum.WHITE,
                     pointHoverRadius: 3,
                     pointBorderWidth: 2,
                 },
             },
             {
                 defaultConfig: {
-                    type: ChartTypesEnum.BAR,
+                    type: ChartTypesStringEnum.BAR,
                     data: [],
-                    label: ChartLegendDataEnum.MILES,
+                    label: ChartLegendDataStringEnum.MILES,
                     yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.PEACH,
-                    backgroundColor: ChartColorsEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsEnum.ORANGE,
+                    borderColor: ChartColorsStringEnum.PEACH,
+                    backgroundColor: ChartColorsStringEnum.PEACH,
+                    hoverBackgroundColor: ChartColorsStringEnum.ORANGE,
                     hasGradiendBackground: true,
-                    colors: [ChartColorsEnum.CYAN, ChartColorsEnum.APRICOT],
-                    hoverColors: [ChartColorsEnum.TEAL, ChartColorsEnum.AMBER],
+                    colors: [
+                        ChartColorsStringEnum.CYAN,
+                        ChartColorsStringEnum.APRICOT,
+                    ],
+                    hoverColors: [
+                        ChartColorsStringEnum.TEAL,
+                        ChartColorsStringEnum.AMBER,
+                    ],
                     maxBarThickness: 18,
                 },
             },
         ],
         showLegend: false,
         chartValues: [],
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
+        defaultType: ChartTypesStringEnum.BAR,
+        chartWidth: ChartDefaultStringEnum.WIDTH_417,
+        chartHeight: ChartDefaultStringEnum.HEIGHT_130,
         onHoverAnnotation: true,
         offset: true,
         hoverTimeDisplay: true,
         allowAnimation: true,
         animationOnlyOnLoad: true,
         dataLabels: [],
-        noChartImage: ChartImagesEnum.MIXED_NO_DATA,
+        noChartImage: ChartImagesStringEnum.MIXED_NO_DATA,
         showHoverTooltip: true,
         showZeroLine: true,
         dottedZeroLine: true,
@@ -72,31 +75,31 @@ export class BrokerConstants {
         },
         horizontalAxes: {
             visible: true,
-            position: AxisPositionEnum.BOTTOM,
+            position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
 
     static MILEAGE_CHART_LEGEND = [
         {
-            title: ChartLegendDataEnum.AVG_RATE,
+            title: ChartLegendDataStringEnum.AVG_RATE,
             value: 2.37,
-            image: ChartImagesEnum.BLUE_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
+            image: ChartImagesStringEnum.BLUE_CIRCLE,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 0,
         },
         {
-            title: ChartLegendDataEnum.HIGHEST_RATE,
+            title: ChartLegendDataStringEnum.HIGHEST_RATE,
             value: 2.86,
-            image: ChartImagesEnum.GREEN_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
+            image: ChartImagesStringEnum.GREEN_CIRCLE,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: [1, 0],
         },
         {
-            title: ChartLegendDataEnum.LOWEST_RATE,
+            title: ChartLegendDataStringEnum.LOWEST_RATE,
             value: 1.29,
-            image: ChartImagesEnum.YELLOW_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
+            image: ChartImagesStringEnum.YELLOW_CIRCLE,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: [1, 1],
         },
     ];
@@ -105,36 +108,36 @@ export class BrokerConstants {
         dataProperties: [
             {
                 defaultConfig: {
-                    type: ChartTypesEnum.LINE,
+                    type: ChartTypesStringEnum.LINE,
                     data: [],
                     yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
+                    borderColor: ChartColorsStringEnum.SKY_BLUE,
+                    pointBackgroundColor: ChartColorsStringEnum.WHITE,
+                    pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
+                    pointHoverBorderColor: ChartColorsStringEnum.WHITE,
                     pointHoverRadius: 3,
                     pointBorderWidth: 2,
                     fill: true,
                     hasGradiendBackground: true,
                     colors: [
-                        ChartColorsEnum.PASTEL_BLUE,
-                        ChartColorsEnum.RGB_WHITE,
+                        ChartColorsStringEnum.PASTEL_BLUE,
+                        ChartColorsStringEnum.RGB_WHITE,
                     ],
                 },
             },
         ],
         showLegend: false,
         chartValues: [],
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
+        defaultType: ChartTypesStringEnum.BAR,
+        chartWidth: ChartDefaultStringEnum.WIDTH_417,
+        chartHeight: ChartDefaultStringEnum.HEIGHT_130,
         annotation: 0,
         onHoverAnnotation: true,
         hoverTimeDisplay: true,
         allowAnimation: true,
         animationOnlyOnLoad: true,
         dataLabels: [],
-        noChartImage: ChartImagesEnum.NO_DATA_PAY,
+        noChartImage: ChartImagesStringEnum.NO_DATA_PAY,
         showHoverTooltip: true,
         showZeroLine: true,
         dottedZeroLine: true,
@@ -142,19 +145,19 @@ export class BrokerConstants {
 
     static PAYMENT_CHART_LEGEND = [
         {
-            title: ChartLegendDataEnum.AVG_PAY_PERIODD,
+            title: ChartLegendDataStringEnum.AVG_PAY_PERIODD,
             value: 27,
-            image: ChartImagesEnum.BLUE_RED_CIRCLE,
-            sufix: ChartLegendDataEnum.DAYS,
+            image: ChartImagesStringEnum.BLUE_RED_CIRCLE,
+            sufix: ChartLegendDataStringEnum.DAYS,
             elementId: 0,
-            titleReplace: ChartLegendDataEnum.PAY_PERIOD,
-            imageReplace: ChartImagesEnum.BLUE_CIRCLE,
+            titleReplace: ChartLegendDataStringEnum.PAY_PERIOD,
+            imageReplace: ChartImagesStringEnum.BLUE_CIRCLE,
         },
         {
-            title: ChartLegendDataEnum.PAY_TERM,
+            title: ChartLegendDataStringEnum.PAY_TERM,
             value: 32,
-            image: ChartImagesEnum.DASH_LINE,
-            sufix: ChartLegendDataEnum.DAYS,
+            image: ChartImagesStringEnum.DASH_LINE,
+            sufix: ChartLegendDataStringEnum.DAYS,
         },
     ];
 
@@ -168,7 +171,7 @@ export class BrokerConstants {
         },
         horizontalAxes: {
             visible: true,
-            position: AxisPositionEnum.BOTTOM,
+            position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
@@ -177,36 +180,36 @@ export class BrokerConstants {
         dataProperties: [
             {
                 defaultConfig: {
-                    type: ChartTypesEnum.LINE,
+                    type: ChartTypesStringEnum.LINE,
                     data: [],
-                    label: ChartLegendDataEnum.SALARY,
+                    label: ChartLegendDataStringEnum.SALARY,
                     yAxisID: 'y-axis-1', //leave this as a string
-                    borderColor: ChartColorsEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsEnum.WHITE,
+                    borderColor: ChartColorsStringEnum.SKY_BLUE,
+                    pointBackgroundColor: ChartColorsStringEnum.WHITE,
+                    pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
+                    pointHoverBorderColor: ChartColorsStringEnum.WHITE,
                     pointHoverRadius: 3,
                     pointBorderWidth: 2,
                 },
             },
             {
                 defaultConfig: {
-                    type: ChartTypesEnum.BAR,
+                    type: ChartTypesStringEnum.BAR,
                     data: [],
-                    label: ChartLegendDataEnum.MILES,
+                    label: ChartLegendDataStringEnum.MILES,
                     yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsEnum.PEACH,
-                    backgroundColor: ChartColorsEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsEnum.ORANGE,
+                    borderColor: ChartColorsStringEnum.PEACH,
+                    backgroundColor: ChartColorsStringEnum.PEACH,
+                    hoverBackgroundColor: ChartColorsStringEnum.ORANGE,
                     barThickness: 18,
                 },
             },
         ],
         showLegend: false,
         chartValues: [],
-        defaultType: ChartTypesEnum.BAR,
-        chartWidth: ChartDefaultsEnum.WIDTH_417,
-        chartHeight: ChartDefaultsEnum.HEIGHT_130,
+        defaultType: ChartTypesStringEnum.BAR,
+        chartWidth: ChartDefaultStringEnum.WIDTH_417,
+        chartHeight: ChartDefaultStringEnum.HEIGHT_130,
         hasValue: false,
         dataLabels: [],
         onHoverAnnotation: true,
@@ -214,7 +217,7 @@ export class BrokerConstants {
         allowAnimation: true,
         animationOnlyOnLoad: true,
         hoverTimeDisplay: true,
-        noChartImage: ChartImagesEnum.YELLOW_NO_DATA,
+        noChartImage: ChartImagesStringEnum.YELLOW_NO_DATA,
         showHoverTooltip: true,
         showZeroLine: true,
     };
@@ -236,23 +239,23 @@ export class BrokerConstants {
         },
         horizontalAxes: {
             visible: true,
-            position: AxisPositionEnum.BOTTOM,
+            position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
 
     static INVOICE_CHART_LEGEND = [
         {
-            title: ChartLegendDataEnum.REVENUE,
+            title: ChartLegendDataStringEnum.REVENUE,
             value: 0,
-            image: ChartImagesEnum.YELLOW_CIRCLE,
-            prefix: ChartLegendDataEnum.DOLLAR,
+            image: ChartImagesStringEnum.YELLOW_CIRCLE,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 1,
         },
         {
-            title: ChartLegendDataEnum.LOAD,
+            title: ChartLegendDataStringEnum.LOAD,
             value: 0,
-            image: ChartImagesEnum.BLUE_CIRCLE,
+            image: ChartImagesStringEnum.BLUE_CIRCLE,
             elementId: 0,
         },
     ];

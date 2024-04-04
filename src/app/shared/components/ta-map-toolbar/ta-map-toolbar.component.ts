@@ -26,8 +26,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckListResponse } from 'appcoretruckassist';
 
 // services
-import { TaInputService } from '../ta-input/ta-input.service';
-import { ModalService } from '../ta-modal/modal.service';
+import { TaInputService } from '../ta-input/services/ta-input.service';
+import { ModalService } from '../ta-modal/services/modal.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 
 // animations

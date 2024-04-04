@@ -25,7 +25,7 @@ import {
 import moment from 'moment';
 
 // validations
-import { addressValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
 import {
@@ -40,7 +40,7 @@ import {
 } from '../../../../utils/helpers/applicant.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantService } from '../../../../services/applicant.service';
 
 // store

@@ -16,7 +16,7 @@ import {
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 // animations
-import { dropdown_animation_comment } from './state/dropdown-animation-comment.animation';
+import { dropdownAnimationComment } from './animations/dropdown-animation-comment.animation';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -27,10 +27,10 @@ import moment from 'moment';
 
 // services
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { CommentsService } from 'src/app/shared/services/comments.service';
-import { ModalService } from '../ta-modal/modal.service';
+import { CommentsService } from '../../services/comments.service';
+import { ModalService } from '../ta-modal/services/modal.service';
 import { ConfirmationService } from '../../../core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { TaInputDropdownTableService } from '../ta-input-dropdown-table/utils/services/ta-input-dropdown-table.service';
+import { TaInputDropdownTableService } from '../ta-input-dropdown-table/services/ta-input-dropdown-table.service';
 import { LoadService } from '../../services/load.service';
 
 // utils
@@ -75,7 +75,7 @@ import { Comment } from '../../models/card-table-data.model';
         // components
         AppTooltipComponent,
     ],
-    animations: [dropdown_animation_comment('dropdownAnimationComment')],
+    animations: [dropdownAnimationComment('dropdownAnimationComment')],
 })
 export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('commentInput') public commentInput: ElementRef;

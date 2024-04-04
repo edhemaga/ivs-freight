@@ -10,7 +10,7 @@ import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driv
 import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 
 //Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverService } from '../../services/driver.service';
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';

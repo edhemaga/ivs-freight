@@ -12,17 +12,17 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-// service
+// services
 import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
-} from './ta-like-dislike.service';
+} from './services/ta-like-dislike.service';
 import { DetailsDataService } from '../../services/details-data.service';
 
-// model
+// models
 import { SendDataCard } from '../../models/card-table-data.model';
 
-// enum
+// enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
 @Component({

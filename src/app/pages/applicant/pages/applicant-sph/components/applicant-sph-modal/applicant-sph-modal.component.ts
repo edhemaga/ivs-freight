@@ -11,7 +11,7 @@ import {
     addressValidation,
     addressUnitValidation,
     descriptionValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // store
 import { ApplicantQuery } from '../../../../state/applicant.query';

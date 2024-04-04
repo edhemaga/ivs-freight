@@ -36,10 +36,10 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantService } from '../../services/applicant.service';
 import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
 import { VinDecoderService } from 'src/app/shared/services/vin-decoder.service';

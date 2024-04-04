@@ -22,8 +22,8 @@ import moment from 'moment';
 
 // services
 import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { FormService } from 'src/app/shared/services/form.service';
 
 // validations
@@ -45,7 +45,7 @@ import {
     deductableValidation,
     comprehenCollisionValidation,
     trailerValueInsurancePolicyValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
 import {

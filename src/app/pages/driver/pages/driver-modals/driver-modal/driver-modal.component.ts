@@ -19,15 +19,15 @@ import {
     GetDriverModalResponse,
 } from 'appcoretruckassist';
 import { HttpResponseBase } from '@angular/common/http';
-import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 
 //Animations
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 //Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
-import { TaUploadFileService } from 'src/app/shared/components/ta-upload-files/ta-upload-file.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { TaUploadFileService } from 'src/app/shared/components/ta-upload-files/services/ta-upload-file.service';
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
@@ -49,7 +49,7 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     ssnNumberRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     convertDateFromBackend,
     convertDateToBackend,

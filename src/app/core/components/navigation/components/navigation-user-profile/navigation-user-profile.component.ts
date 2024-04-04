@@ -23,7 +23,7 @@ import { NavigationUserPanel } from '../../models/navigation.model';
 //Services
 import { NavigationService } from '../../services/navigation.service';
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Components

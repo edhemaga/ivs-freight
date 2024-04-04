@@ -22,10 +22,10 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 // config
-import { ITaInput } from '../ta-input/ta-input.config';
+import { ITaInput } from '../ta-input/config/ta-input.config';
 
 // pipe
-import { FormControlPipe } from '../ta-input/form-control.pipe';
+import { FormControlPipe } from '../ta-input/pipes/form-control.pipe';
 
 @Component({
     selector: 'app-ta-input-dropdown-label',

@@ -16,13 +16,13 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
-import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { FormService } from 'src/app/shared/services/form.service';
 
 // components
-import { DropZoneConfig } from '../../../../../shared/components/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '../../../../../shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
@@ -77,7 +77,7 @@ import {
     startingValidation,
     cvcValidation,
     bankCardTypeValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
 import { SettingsModalConstants } from '../state/utils/constants/settings-modal.constants';

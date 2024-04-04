@@ -7,8 +7,8 @@ import {
     Validators,
 } from '@angular/forms';
 import { FormService } from 'src/app/shared/services/form.service';
-import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckService } from 'src/app/shared/services/truck.service';
 import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';

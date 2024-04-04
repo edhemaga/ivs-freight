@@ -8,7 +8,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Modals
-import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
 
 // Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
@@ -171,7 +171,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
             export: true,
         };
     }
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -191,7 +191,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
         }
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
             comment: reviews.data.commentContent,
@@ -205,7 +205,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))

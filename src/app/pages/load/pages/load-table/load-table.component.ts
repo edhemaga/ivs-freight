@@ -5,12 +5,12 @@ import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { LoadService } from '../../../../shared/services/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
 
 // Models
