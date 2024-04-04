@@ -1,4 +1,3 @@
-// time-format.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

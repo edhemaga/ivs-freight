@@ -16,7 +16,7 @@ import { DriverCdlService } from 'src/app/pages/driver/services/driver-cdl.servi
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';

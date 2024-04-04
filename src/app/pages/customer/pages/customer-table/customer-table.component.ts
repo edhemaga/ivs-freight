@@ -19,10 +19,10 @@ import { ConfirmationModalComponent } from 'src/app/core/components/modals/confi
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { BrokerService } from '../../services/broker.service';
 import { ShipperService } from '../../services/shipper.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
+import { MapsService } from 'src/app/shared/services/maps.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 

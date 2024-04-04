@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 // services
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 // models
 import {

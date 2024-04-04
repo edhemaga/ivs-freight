@@ -4,11 +4,14 @@ import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { PmService } from '../services/pm.service';
 
 // Store
-import { PmTruckState, PmTruckStore } from '../state/pm-truck-state/pm-truck.store';
+import {
+    PmTruckState,
+    PmTruckStore,
+} from '../state/pm-truck-state/pm-truck.store';
 
 @Injectable({
     providedIn: 'root',
@@ -17,7 +20,7 @@ export class PmTruckResolver implements Resolve<PmTruckState> {
     constructor(
         // Store
         private pmTruckStore: PmTruckStore,
-        
+
         // Services
         private pmService: PmService,
         private tableService: TruckassistTableService

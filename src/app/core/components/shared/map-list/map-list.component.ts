@@ -20,8 +20,8 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
-import { MapsService } from '../../../services/shared/maps.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { MapsService } from '../../../../shared/services/maps.service';
+import { TruckassistTableService } from '../../../../shared/services/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';

@@ -35,14 +35,14 @@ import {
 // Pipes
 import { PriceCalculationArrayPipe } from './pipes/price-calculation-array.pipe';
 import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
-import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone.pipe';
+import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 
 // Services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
-import { FormService } from '../../../../../core/services/form/form.service';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { FormService } from 'src/app/shared/services/form.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 
 // Models

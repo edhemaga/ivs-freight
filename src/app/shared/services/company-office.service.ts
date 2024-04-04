@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs';
 
-//Models
+// models
 import {
     CompanyOfficeListResponse,
     CompanyOfficeService as CompanyTOfficeService,

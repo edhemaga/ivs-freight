@@ -7,7 +7,7 @@ import { OwnerInactiveState, OwnerInactiveStore } from './owner-inactive.store';
 
 //Services
 import { OwnerService } from '../../services/owner.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 //Enums
 import { ComponentsTableEnum } from 'src/app/core/model/enums';

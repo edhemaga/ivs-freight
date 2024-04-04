@@ -23,8 +23,8 @@ import {
     urlValidation,
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { CommentsService } from '../../../../core/services/comments/comments.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { CommentsService } from '../../../../shared/services/comments.service';
+import { FormService } from '../../../../shared/services/form.service';
 import {
     convertDateToBackend,
     convertDateFromBackend,

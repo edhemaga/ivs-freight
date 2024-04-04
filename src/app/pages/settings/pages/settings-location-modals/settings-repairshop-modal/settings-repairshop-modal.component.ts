@@ -34,7 +34,7 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 // components
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';

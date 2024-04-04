@@ -9,6 +9,8 @@ import {
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// moment
 import moment from 'moment';
 
 // bootstrap
@@ -18,7 +20,7 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
 
 // services
-import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
+import { DetailsDataService } from '../../services/details-data.service';
 
 //components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';

@@ -10,12 +10,12 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 // Services
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { RepairService } from '../../../../shared/services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // Store
 import { RepairDetailsQuery } from '../../state/repair-details-state/repair-details.query';

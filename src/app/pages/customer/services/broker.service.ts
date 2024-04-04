@@ -2,9 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 // Services
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { BrokerService as BrokerMainService, RatingReviewService } from 'appcoretruckassist';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import {
+    BrokerService as BrokerMainService,
+    RatingReviewService,
+} from 'appcoretruckassist';
 
 // Store
 import { BrokerStore } from '../state/broker-state/broker.store';

@@ -29,7 +29,7 @@ import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-l
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { rentValidation } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // components
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';

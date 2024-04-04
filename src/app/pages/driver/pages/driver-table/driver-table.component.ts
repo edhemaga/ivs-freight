@@ -14,11 +14,11 @@ import { ApplicantModalComponent } from 'src/app/core/components/modals/applican
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverService } from '../../services/driver.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ApplicantService } from '../../../../shared/services/applicant.service';
-import { AddressService } from 'src/app/core/services/shared/address.service';
+import { AddressService } from 'src/app/shared/services/address.service';
 
 // Queries
 import { DriversActiveQuery } from '../../state/driver-active-state/driver-active.query';

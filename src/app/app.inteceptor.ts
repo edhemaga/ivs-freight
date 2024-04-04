@@ -5,8 +5,8 @@ import {
     HttpHandler,
 } from '@angular/common/http';
 import { catchError, Observable, tap } from 'rxjs';
-import { NotificationService } from './core/services/notification/notification.service';
-import { FormDataService } from './core/services/formData/form-data.service';
+import { NotificationService } from './shared/services/notification.service';
+import { FormDataService } from './shared/services/form-data.service';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {

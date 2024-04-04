@@ -12,7 +12,7 @@ import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal
 // services
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
 
 // store

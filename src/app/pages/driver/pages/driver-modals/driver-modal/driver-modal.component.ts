@@ -29,9 +29,9 @@ import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-i
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TaUploadFileService } from 'src/app/shared/components/ta-upload-files/services/ta-upload-file.service';
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
+import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 //Helpers
 import {

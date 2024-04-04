@@ -11,13 +11,13 @@ import {
 
 // services
 import { TodoService } from '../../services/to-do.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { CommentsService } from 'src/app/shared/services/comments.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 
 // moment
 import moment from 'moment';

@@ -8,10 +8,7 @@ import {
     UpdateTableConfigCommand,
 } from 'appcoretruckassist';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {
-    Column,
-    ColumnWidthData,
-} from '../../../shared/models/card-table-data.model';
+import { Column, ColumnWidthData } from '../models/card-table-data.model';
 
 import { AllTableAnimationModel } from 'src/app/shared/models/all-table-animation.model';
 

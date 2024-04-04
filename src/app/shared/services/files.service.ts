@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { OnDestroy } from '@angular/core';
-import { DriverService } from './../../../../../appcoretruckassist/api/driver.service';
-import { RepairShopService } from './../../../../../appcoretruckassist/api/repairShop.service';
-import { OwnerService } from './../../../../../appcoretruckassist/api/owner.service';
-import { RepairService } from './../../../../../appcoretruckassist/api/repair.service';
-import { TrailerService } from './../../../../../appcoretruckassist/api/trailer.service';
-import { TruckService } from './../../../../../appcoretruckassist/api/truck.service';
+import { DriverService } from '../../../../appcoretruckassist/api/driver.service';
+import { RepairShopService } from '../../../../appcoretruckassist/api/repairShop.service';
+import { OwnerService } from '../../../../appcoretruckassist/api/owner.service';
+import { RepairService } from '../../../../appcoretruckassist/api/repair.service';
+import { TrailerService } from '../../../../appcoretruckassist/api/trailer.service';
+import { TruckService } from '../../../../appcoretruckassist/api/truck.service';
 
 @Injectable({
     providedIn: 'root',

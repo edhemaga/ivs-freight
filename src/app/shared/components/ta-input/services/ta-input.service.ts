@@ -7,7 +7,9 @@ import {
     Validators,
 } from '@angular/forms';
 import validator from 'validator';
-import { NotificationService } from '../../../../core/services/notification/notification.service';
+
+// services
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Injectable({
     providedIn: 'root',

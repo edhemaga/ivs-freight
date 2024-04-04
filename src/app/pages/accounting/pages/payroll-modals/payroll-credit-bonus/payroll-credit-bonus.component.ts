@@ -9,7 +9,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { PayrollCreditService } from 'src/app/pages/accounting/services/payroll-credit.service';
 import { PayrollCreditModalResponse } from '../../../../../../../appcoretruckassist/model/payrollCreditModalResponse';
 import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-input.config';

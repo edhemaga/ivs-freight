@@ -1,18 +1,24 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+
+import { distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
+
+// validations
+import {
+    routingBankValidation,
+    accountBankValidation,
+    bankRoutingValidator,
+} from './../components/ta-input/validators/ta-input.regex-validations';
+
+// services
+import { TaInputService } from '../components/ta-input/services/ta-input.service';
+
+// models
 import {
     BankService,
     CreateBankCommand,
     CreateResponse,
 } from 'appcoretruckassist';
-import { distinctUntilChanged, Observable, Subject } from 'rxjs';
-import {
-    accountBankValidation,
-    bankRoutingValidator,
-    routingBankValidation,
-} from '../../../shared/components/ta-input/validators/ta-input.regex-validations';
-import { TaInputService } from '../../../shared/components/ta-input/services/ta-input.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',

@@ -11,7 +11,7 @@ import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { licensePlateValidation } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import {
     convertDateToBackend,
     convertDateFromBackend,

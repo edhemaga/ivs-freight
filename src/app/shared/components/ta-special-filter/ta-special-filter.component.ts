@@ -8,7 +8,7 @@ import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip
 
 //Pipe
 import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
-import { FilterClassPipe } from 'src/app/core/pipes/filter-class.pipe';
+import { FilterClassPipe } from 'src/app/shared/components/ta-special-filter/pipes/filter-class.pipe';
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

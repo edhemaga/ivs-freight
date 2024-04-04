@@ -36,7 +36,7 @@ import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,
 } from '../../../core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from '../../services/form.service';
 import { ImageBase64Service } from '../../../core/utils/base64.image';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
