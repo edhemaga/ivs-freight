@@ -67,7 +67,7 @@ import {
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrder } from './utils/constants/repair-order.constant';
+import { RepairOrderConstants } from './utils/constants/repair-order.constant';
 
 // components
 import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
@@ -124,17 +124,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public selectedHeaderTab: number = 1;
 
     public headerTabs: RepairData[] = JSON.parse(
-        JSON.stringify(RepairOrder.HEADER_TABS)
+        JSON.stringify(RepairOrderConstants.HEADER_TABS)
     );
 
     public typeOfRepair: RepairData[] = JSON.parse(
-        JSON.stringify(RepairOrder.TYPE_OF_REPAIR)
+        JSON.stringify(RepairOrderConstants.TYPE_OF_REPAIR)
     );
 
     // Unit
     public labelsUnit: any[] = [];
     // Paid
-    public paid: { id: number; name: string }[] = RepairOrder.PAID;
+    public paid: { id: number; name: string }[] = RepairOrderConstants.PAID;
     public unitTrucks: any[] = [];
     public unitTrailers: any[] = [];
     public selectedUnit: any = null;
@@ -177,7 +177,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public selectedPayType: string;
     public descriptions: RepairSubtotal[] = [];
 
-    public repairTypes: RepairTypes[] = RepairOrder.REPAIR_TYPES;
+    public repairTypes: RepairTypes[] = RepairOrderConstants.REPAIR_TYPES;
     public isSelectedRepairType: RepairTypes = null;
 
     public total: number = 0;
