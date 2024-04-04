@@ -17,15 +17,15 @@ import {
     firstNameValidation,
     lastNameValidation,
     passwordValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // animations
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 
 // services
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { UserProfileUpdateService } from '../../../../shared/services/user-profile-update.service';
 import { FormService } from '../../../../shared/services/form.service';
 
@@ -33,13 +33,13 @@ import { FormService } from '../../../../shared/services/form.service';
 import Croppie from 'croppie';
 
 // components
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
-import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaLogoChangeComponent } from '../../../../shared/components/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxCardComponent } from '../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
 
 // models
 import {

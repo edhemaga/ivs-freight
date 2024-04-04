@@ -22,7 +22,7 @@ import { ModalModelData } from '../models/modal-input.model';
 import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
 
 // Services
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { FormService } from 'src/app/shared/services/form.service';
 
 // Store
@@ -41,8 +41,8 @@ import { CardsModalConfigService } from '../utils/services/cards-modal-config.se
 import { LoadModalConstants } from '../utils/constants/load-modal.constants';
 
 // Components
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
 import { ModalInputFormComponent } from '../components/modal-input-form.component';
 
 @Component({

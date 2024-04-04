@@ -26,7 +26,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
-import { TaInputComponent } from '../ta-input/ta-input.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';

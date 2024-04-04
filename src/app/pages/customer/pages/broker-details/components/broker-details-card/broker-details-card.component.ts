@@ -25,17 +25,17 @@ import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-c
 import {
     ChartApiCall,
     LegendAttributes,
-} from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
+} from 'src/app/shared/components/ta-chart/models/chart-models';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import { BrokerDropdown } from '../../models/broker-dropdown.model';
-import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
+import { TabOptions } from 'src/app/shared/components/ta-tab-switch/state/models/tab-options.models';
 
 //Constants
-import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
 import { BrokerConstants } from '../../utils/constants/broker.constants';
 
 //Components
-import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
 
 //Pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';

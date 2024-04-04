@@ -39,11 +39,11 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     salaryValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { FormService } from 'src/app/shared/services/form.service';
 import { UserService } from 'src/app/pages/user/services/user.service';
 import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
@@ -74,16 +74,16 @@ import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/m
 
 //Components
 import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaNgxSliderComponent } from 'src/app/core/components/shared/ta-ngx-slider/ta-ngx-slider.component';
-import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-user-modal',

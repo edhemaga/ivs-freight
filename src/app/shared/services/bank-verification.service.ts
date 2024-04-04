@@ -6,12 +6,13 @@ import {
     CreateResponse,
 } from 'appcoretruckassist';
 import { distinctUntilChanged, Observable, Subject } from 'rxjs';
+
 import {
+    routingBankValidation,
     accountBankValidation,
     bankRoutingValidator,
-    routingBankValidation,
-} from '../../core/components/shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from '../../core/components/shared/ta-input/ta-input.service';
+} from './../components/ta-input/ta-input.regex-validations';
+import { TaInputService } from '../components/ta-input/ta-input.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable({

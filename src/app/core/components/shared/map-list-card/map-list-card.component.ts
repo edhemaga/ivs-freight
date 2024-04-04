@@ -11,9 +11,9 @@ import {
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DetailsDataService } from '../../../../shared/services/details-data.service';
-import { ModalService } from './../../shared/ta-modal/modal.service';
-import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';

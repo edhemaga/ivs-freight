@@ -21,7 +21,7 @@ import { SettingsInsurancePolicyModalComponent } from 'src/app/core/components/m
 import { SettingsFactoringModalComponent } from 'src/app/core/components/modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 
 //Service
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 

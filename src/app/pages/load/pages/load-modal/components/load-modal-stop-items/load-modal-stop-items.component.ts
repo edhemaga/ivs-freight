@@ -23,11 +23,11 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '../../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // validations
-import { descriptionValidation } from '../../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // constants
 import { LoadStopItems } from '../../utils/constants/load-stop-items.constants';
@@ -157,9 +157,7 @@ export class LoadModalStopItemsComponent
     }
 
     private createIsHoverRow(): boolean[] {
-        return JSON.parse(
-            JSON.stringify(LoadStopItems.IS_INPUT_HOVER_ROW)
-        );
+        return JSON.parse(JSON.stringify(LoadStopItems.IS_INPUT_HOVER_ROW));
     }
 
     private createStopItemsRow(): void {
@@ -219,7 +217,8 @@ export class LoadModalStopItemsComponent
                     this.getStopItemsDataValue();
 
                     if (
-                        this.getStopItems().status === LoadModalStopItemsStringEnum.VALID
+                        this.getStopItems().status ===
+                        LoadModalStopItemsStringEnum.VALID
                     ) {
                         this.stopItemsValidStatusEmitter.emit(true);
                     } else {

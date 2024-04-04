@@ -25,7 +25,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 //Services
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
 import { DriverMedicalService } from '../../../../services/driver-medical.service';
@@ -41,7 +41,7 @@ import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modal
 import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
 
 //Store
 import { DriversMinimalListQuery } from '../../../../state/driver-details-minimal-list-state/driver-minimal-list.query';
@@ -57,7 +57,8 @@ import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-c
 import {
     ChartApiCall,
     LegendAttributes,
-} from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
+} from 'src/app/shared/components/ta-chart/models/chart-models';
+
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
@@ -69,12 +70,12 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from 'src/app/core/components/standalone-components/ta-tab-switch/state/models/tab-models';
+import { TabOptions } from 'src/app/shared/components/ta-tab-switch/state/models/tab-options.models';
 import { DriverDropdown } from './models/driver-dropdown.model';
 import { DriverDateInfo } from '../../../../models/driver-date-info.model';
 
 //Constants
-import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
 import { DriverDetailsCard } from './utils/constants/driver-details-card.constants';
 
 @Component({

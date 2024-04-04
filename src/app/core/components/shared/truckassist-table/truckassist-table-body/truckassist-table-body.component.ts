@@ -44,13 +44,13 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 
 // components
 import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
-import { TaNoteComponent } from '../../ta-note/ta-note.component';
-import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
-import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
+import { TaNoteComponent } from '../../../../../shared/components/ta-note/ta-note.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownLabelComponent } from '../../../../../shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
-import { TaInputDropdownTableComponent } from '../../../standalone-components/ta-input-dropdown-table/ta-input-dropdown-table.component';
-import { ProgresBarComponent } from '../../../standalone-components/progres-bar/progres-bar.component';
+import { TaInputDropdownTableComponent } from '../../../../../shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
+import { TaProgresBarComponent } from '../../../../../shared/components/ta-progres-bar/ta-progres-bar.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -104,7 +104,7 @@ import {
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
-        ProgresBarComponent,
+        TaProgresBarComponent,
         ContactPhoneEmailIconPipe,
     ],
     providers: [

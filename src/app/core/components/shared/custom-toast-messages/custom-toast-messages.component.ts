@@ -14,7 +14,7 @@ import { DetailsDataService } from '../../../../shared/services/details-data.ser
 import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaSpinnerComponent } from '../../../../shared/components/ta-spinner/ta-spinner.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({

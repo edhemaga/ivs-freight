@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
 import { RepairService } from '../../../../shared/services/repair.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';

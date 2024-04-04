@@ -35,13 +35,13 @@ import { TrucksMinimalListQuery } from '../../../../state/truck-details-minima-l
 import {
     AxisPositionEnum,
     ChartLegendDataEnum,
-} from 'src/app/core/components/standalone-components/ta-chart/enums/chart-enums';
+} from 'src/app/shared/components/ta-chart/enums/chart-enums';
 
 // constants
-import { ChartConstants } from 'src/app/core/components/standalone-components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
 
 // components
-import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
+import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
 
 // models
 import { TruckResponse } from 'appcoretruckassist';
@@ -50,7 +50,7 @@ import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-mo
 import {
     ChartApiCall,
     LegendAttributes,
-} from 'src/app/core/components/standalone-components/ta-chart/models/chart-models';
+} from 'src/app/shared/components/ta-chart/models/chart-models';
 
 @Component({
     selector: 'app-truck-details-card',

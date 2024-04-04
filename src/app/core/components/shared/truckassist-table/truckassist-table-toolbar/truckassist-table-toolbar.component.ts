@@ -31,8 +31,8 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { TruckassistTableService } from '../../../../../shared/services/truckassist-table.service';
-import { ModalService } from '../../ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { ConfirmationResetService } from '../../../modals/confirmation-modal/state/state/services/confirmation-reset.service';
 
 // decorators
@@ -40,7 +40,7 @@ import { Titles } from 'src/app/core/utils/application.decorators';
 
 // components
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
-import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { AppTooltipComponent } from '../../app-tooltip/app-tooltip.component';
 import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-modal/load-cards-modal.component';
 import { ConfirmationModalResetComponent } from '../../../modals/confirmation-modal/confirmation-modal-reset/confirmation-modal-reset.component';

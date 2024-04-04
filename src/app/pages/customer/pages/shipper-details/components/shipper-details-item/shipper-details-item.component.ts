@@ -14,7 +14,7 @@ import { ShipperResponse, UpdateReviewCommand } from 'appcoretruckassist';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // Components
-import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
 // Services
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';

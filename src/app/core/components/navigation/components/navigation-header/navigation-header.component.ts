@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { navigation_route_animation } from '../../animations/navigation.animation';
 import { NavigationService } from '../../services/navigation.service';
-import { TooltipSlideComponent } from 'src/app/core/components/standalone-components/tooltip-slide/tooltip-slide.component';
+import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
     selector: 'app-navigation-header',
@@ -15,7 +15,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        TooltipSlideComponent,
+        TaTooltipSlideComponent,
         AngularSvgIconModule,
     ],
     animations: [navigation_route_animation('showHideDetails')],

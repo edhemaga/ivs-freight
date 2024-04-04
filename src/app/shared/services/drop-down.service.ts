@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../core/components/shared/ta-modal/modal.service';
+import { ModalService } from '../components/ta-modal/modal.service';
 
 // components
 import { DriverCdlModalComponent } from '../../pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';

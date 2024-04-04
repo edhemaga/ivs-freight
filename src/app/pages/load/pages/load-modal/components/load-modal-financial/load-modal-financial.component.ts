@@ -17,12 +17,11 @@ import { card_modal_animation } from '../../../../../../core/components/shared/a
 import { convertThousanSepInNumber } from '../../../../../../core/utils/methods.calculations';
 
 //Components
-import { AppTooltipComponent } from '../../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 
 @Component({
     selector: 'app-load-modal-financial',

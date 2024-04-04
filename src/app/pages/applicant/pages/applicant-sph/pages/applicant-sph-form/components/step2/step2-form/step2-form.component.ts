@@ -33,14 +33,14 @@ import { isFormValueEqual } from 'src/app/pages/applicant/utils/helpers/applican
 import {
     addressValidation,
     descriptionValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import { FormService } from 'src/app/shared/services/form.service';
 
 // components
-import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 // models
 import { SphFormAccidentModel } from 'src/app/pages/applicant/models/accident.model';

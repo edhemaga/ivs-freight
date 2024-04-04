@@ -27,14 +27,14 @@ import {
 } from '@angular/forms';
 
 //Config
-import { ITaInput } from '../ta-input/ta-input.config';
+import { ITaInput } from '../../../../shared/components/ta-input/ta-input.config';
 
 //Services
 import { AddressService } from 'src/app/shared/services/address.service';
 
 //Components
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
+import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 //Modules
 import { ReactiveFormsModule } from '@angular/forms';

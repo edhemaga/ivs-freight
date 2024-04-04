@@ -20,11 +20,11 @@ import {
     parkingSlotValidation,
     phoneExtension,
     terminalNameValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 import {
     phoneFaxRegex,
     rentValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // models
 import {
@@ -41,16 +41,16 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { FormService } from '../../../../../shared/services/form.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // components
-import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 
 // utils

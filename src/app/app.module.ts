@@ -27,7 +27,7 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
-import { TooltipSlideComponent } from './core/components/standalone-components/tooltip-slide/tooltip-slide.component';
+import { TaTooltipSlideComponent } from './shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
@@ -50,7 +50,7 @@ function playerFactory() {
         AppRoutingModule,
         HttpClientModule,
         SharedModule,
-        TooltipSlideComponent,
+        TaTooltipSlideComponent,
         LottieModule.forRoot({ player: playerFactory }),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',

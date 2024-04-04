@@ -16,23 +16,23 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { FormService } from '../../../../../shared/services/form.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // components
-import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { DropZoneConfig } from '../../../../../shared/components/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaLogoChangeComponent } from '../../../shared/ta-logo-change/ta-logo-change.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
-import { TaNgxSliderComponent } from '../../../shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaLogoChangeComponent } from '../../../../../shared/components/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../../../../shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
 // animations
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
@@ -77,7 +77,7 @@ import {
     startingValidation,
     cvcValidation,
     bankCardTypeValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // constants
 import { SettingsModalConstants } from '../state/utils/constants/settings-modal.constants';

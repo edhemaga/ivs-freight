@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 // store
 import { RoadsideInactiveState } from '../../state/roadside-state/roadside-inactive/roadside-inactive.store';

@@ -13,7 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { AppTooltipComponent } from '../../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 
 // animations
 import { collapseAnimation } from '../../utils/animations/collapse.animation';

@@ -6,23 +6,23 @@ import {
     RegistrationModalResponse,
     RegistrationResponse,
 } from 'appcoretruckassist';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { licensePlateValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { licensePlateValidation } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../../shared/services/form.service';
 import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-tt-registration-modal',

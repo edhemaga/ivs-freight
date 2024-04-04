@@ -29,7 +29,7 @@ import {
     phoneExtension,
     phoneFaxRegex,
     fullNameValidation,
-} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // Models
 import {
@@ -43,12 +43,12 @@ import {
 } from 'appcoretruckassist';
 
 // Services
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
-} from '../../../../core/components/shared/ta-like-dislike/ta-like-dislike.service';
+} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
 import { ReviewsRatingService } from '../../../../shared/services/reviews-rating.service';
 import { FormService } from '../../../../shared/services/form.service';
@@ -58,20 +58,20 @@ import { tab_modal_animation } from '../../../../core/components/shared/animatio
 
 // Components
 import {
-    ReviewCommentModal,
     TaUserReviewComponent,
-} from '../../../../core/components/shared/ta-user-review/ta-user-review.component';
+    ReviewCommentModal,
+} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
-import { AppTooltipComponent } from '../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
-import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // Helpers
 import { convertTimeFromBackend } from '../../../../core/utils/methods.calculations';

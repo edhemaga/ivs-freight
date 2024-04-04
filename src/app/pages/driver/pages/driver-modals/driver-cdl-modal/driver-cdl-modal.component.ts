@@ -14,21 +14,21 @@ import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
 //Services
 import { DriverCdlService } from 'src/app/pages/driver/services/driver-cdl.service';
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { FormService } from '../../../../../shared/services/form.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
 import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-input-note/ta-input-note.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 
 //Helpers
 import {
@@ -38,7 +38,7 @@ import {
 import {
     cdlCANADAValidation,
     cdlUSValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 @Component({
     selector: 'app-driver-cdl-modal',

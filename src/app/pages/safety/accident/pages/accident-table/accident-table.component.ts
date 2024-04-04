@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // components

@@ -13,17 +13,17 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { FormService } from 'src/app/shared/services/form.service';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { SettingsLocationService } from '../../settings-location/services/settings-location.service';
 
 // components
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
-import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 
 // validations
@@ -35,7 +35,7 @@ import {
     phoneExtension,
     phoneFaxRegex,
     rentValidation,
-} from './../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // models
 import {

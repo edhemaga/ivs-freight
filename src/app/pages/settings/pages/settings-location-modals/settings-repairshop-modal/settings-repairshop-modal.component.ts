@@ -14,11 +14,11 @@ import {
     phoneExtension,
     addressValidation,
     addressUnitValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 import {
     repairShopValidation,
     rentValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // models
 import {
@@ -31,18 +31,18 @@ import {
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // services
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 import { FormService } from '../../../../../shared/services/form.service';
 
 // components
-import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
 
 // pipes
 import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
