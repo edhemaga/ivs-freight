@@ -1,10 +1,16 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { NotificationService } from '../../shared/services/notification.service';
-import { Observable, Subject, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
+import { Observable, Subject, tap } from 'rxjs';
+
+// enviroment
+import { environment } from '../../../environments/environment';
+
+// services
+import { NotificationService } from './notification.service';
+
+// models
 import { AddressEntity } from 'appcoretruckassist';
 
 class OwnerData {}

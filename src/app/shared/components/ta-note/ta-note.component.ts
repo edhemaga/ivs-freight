@@ -20,7 +20,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 //services
 import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
 import { DetailsDataService } from '../../services/details-data.service';
-import { SharedService } from '../../../core/services/shared.service';
+import { SharedService } from '../../services/shared.service';
 
 //popover
 import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';

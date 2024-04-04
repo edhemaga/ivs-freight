@@ -1,7 +1,7 @@
 import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-//Models
+// models
 import { FuelStopResponse } from 'appcoretruckassist';
 import {
     FuelService as FuelBackendService,
@@ -16,14 +16,14 @@ import { FuelStopFranchiseResponse } from 'appcoretruckassist';
 import { FuelTransactionResponse } from 'appcoretruckassist';
 import { ClusterResponse } from 'appcoretruckassist';
 
-//Service
+// services
 import { FormDataService } from 'src/app/shared/services/form-data.service';
 
-//Store
+// store
 import { FuelStore } from '../../pages/fuel/state/fule-state/fuel-state.store';
 
-//Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+// enums
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -412,15 +412,13 @@ export class FuelService {
                 });
 
                 let tableCount = JSON.parse(
-                    localStorage.getItem(
-                        ConstantStringTableComponentsEnum.FUEL_TABLE_COUNT
-                    )
+                    localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
                 );
                 tableCount.fuelTransactions =
                     this.fuelStore.getValue().fuelTransactions.length;
 
                 localStorage.setItem(
-                    ConstantStringTableComponentsEnum.FUEL_TABLE_COUNT,
+                    TableStringEnum.FUEL_TABLE_COUNT,
                     JSON.stringify(tableCount)
                 );
             })

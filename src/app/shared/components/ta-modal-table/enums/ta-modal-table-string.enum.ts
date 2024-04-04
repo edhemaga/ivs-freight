@@ -1,4 +1,4 @@
-export enum ConstantStringEnum {
+export enum TaModalTableStringEnum {
     PHONE_TABLE_ITEMS = 'phoneTableItems',
     EMAIL_TABLE_ITEMS = 'emailTableItems',
     DESCRIPTION_TABLE_ITEMS = 'descriptionTableItems',

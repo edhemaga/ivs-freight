@@ -1,5 +1,5 @@
 import { AvatarColors } from '../components/shared/model/table-components/driver-modal';
-import { TableDropdownComponentConstants } from './constants/table-components.constants';
+import { TableDropdownComponentConstants } from '../../shared/utils/constants/table-dropdown-component.constants';
 
 // Get Avatar Color
 export class MAKE_COLORS_FOR_AVATAR {

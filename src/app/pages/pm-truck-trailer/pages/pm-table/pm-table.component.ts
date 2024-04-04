@@ -26,16 +26,14 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { PmService } from '../../services/pm.service';
 
 // Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 import { PmCardDataConfigConstants } from './utils/constants/pm-card-data-config.constants';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
-import {
-    TooltipColors,
-    TrailerName,
-} from 'src/app/core/utils/enums/trailer-component.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TruckNameStringEnum } from 'src/app/shared/enums/truck-name-string.enum';
+import { TrailerNameStringEnum } from 'src/app/shared/enums/trailer-name-string.enum';
+import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-string,enum';
 
 // Store
 import { PmTruckQuery } from '../../state/pm-truck-state/pm-truck.query';
@@ -56,8 +54,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     private viewData: any[] = [];
     public columns: GridColumn[] = [];
-    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab: string = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     private resizeObserver: ResizeObserver;
 
     //Data to display from model Broker
@@ -128,9 +126,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -141,16 +137,12 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hideOpenModalButton: true,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -160,9 +152,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private sendPMData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.PM_TABLE_VIEW
-            )
+            localStorage.getItem(TableStringEnum.PM_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -182,43 +172,30 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.TRUCK_2,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.TRUCK_2,
+                field: TableStringEnum.ACTIVE,
                 length: truckCount.pmTruck,
-                data: this.getTableData(
-                    ConstantStringTableComponentsEnum.TRUCK
-                ),
+                data: this.getTableData(TableStringEnum.TRUCK),
                 extended: false,
                 selectTab: true,
-                gridNameTitle: ConstantStringTableComponentsEnum.PM_2,
-                stateName: ConstantStringTableComponentsEnum.PM_TRUCKS,
-                tableConfiguration: ConstantStringTableComponentsEnum.PM_TRUCK,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.PM_TRUCK
-                ),
+                gridNameTitle: TableStringEnum.PM_2,
+                stateName: TableStringEnum.PM_TRUCKS,
+                tableConfiguration: TableStringEnum.PM_TRUCK,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.PM_TRUCK),
             },
             {
-                title: ConstantStringTableComponentsEnum.TRAILER_3,
-                field: ConstantStringTableComponentsEnum.INACTIVE,
+                title: TableStringEnum.TRAILER_3,
+                field: TableStringEnum.INACTIVE,
                 length: trailerCount.pmTrailer,
-                data: this.getTableData(
-                    ConstantStringTableComponentsEnum.TRAILER_2
-                ),
+                data: this.getTableData(TableStringEnum.TRAILER_2),
                 extended: false,
                 selectTab: true,
-                gridNameTitle: ConstantStringTableComponentsEnum.PM_2,
-                stateName: ConstantStringTableComponentsEnum.PM_TRAILERS,
-                tableConfiguration:
-                    ConstantStringTableComponentsEnum.PM_TRAILER,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.PM_TRAILER
-                ),
+                gridNameTitle: TableStringEnum.PM_2,
+                stateName: TableStringEnum.PM_TRAILERS,
+                tableConfiguration: TableStringEnum.PM_TRAILER,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.PM_TRAILER),
             },
         ];
 
@@ -232,7 +209,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (configType === ConstantStringTableComponentsEnum.PM_TRUCK) {
+        if (configType === TableStringEnum.PM_TRUCK) {
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getTruckPMColumnDefinition();
@@ -255,7 +232,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             // Set data for cards based on tab active
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),
                   (this.sendDataToCardsBack = this.displayRowsBack))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
@@ -308,7 +285,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         let data = [];
 
         for (let i = 0; i < numberOfCopy; i++) {
-            if (dataType === ConstantStringTableComponentsEnum.TRUCK) {
+            if (dataType === TableStringEnum.TRUCK) {
                 data.push(truck);
             } else {
                 data.push(trailer);
@@ -319,65 +296,59 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onToolBarAction(event: ToolbarActions): void {
-        if (event.action === ConstantStringTableComponentsEnum.TAB_SELECTED) {
+        if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
             this.sendPMData();
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.OPEN_MODAL
-        ) {
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.OPEN_GENERAL_PM
-        ) {
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+        } else if (event.action === TableStringEnum.OPEN_MODAL) {
+        } else if (event.action === TableStringEnum.OPEN_GENERAL_PM) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(
                     PmModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
-                        type: ConstantStringTableComponentsEnum.NEW,
-                        header: ConstantStringTableComponentsEnum.TRUCK_2,
-                        action: ConstantStringTableComponentsEnum.GENERIC_PM,
+                        type: TableStringEnum.NEW,
+                        header: TableStringEnum.TRUCK_2,
+                        action: TableStringEnum.GENERIC_PM,
                     }
                 );
             } else {
                 this.modalService.openModal(
                     PmModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
-                        type: ConstantStringTableComponentsEnum.NEW,
-                        header: ConstantStringTableComponentsEnum.TRAILER_3,
-                        action: ConstantStringTableComponentsEnum.GENERIC_PM,
+                        type: TableStringEnum.NEW,
+                        header: TableStringEnum.TRAILER_3,
+                        action: TableStringEnum.GENERIC_PM,
                     }
                 );
             }
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
         }
     }
 
     public onTableBodyActions(event: any): void {
         switch (this.selectedTab) {
-            case ConstantStringTableComponentsEnum.ACTIVE: {
+            case TableStringEnum.ACTIVE: {
                 this.modalService.openModal(
                     PmModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        header: ConstantStringTableComponentsEnum.TRUCK_2,
-                        action: ConstantStringTableComponentsEnum.UNIT_PM,
+                        header: TableStringEnum.TRUCK_2,
+                        action: TableStringEnum.UNIT_PM,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.INACTIVE: {
+            case TableStringEnum.INACTIVE: {
                 this.modalService.openModal(
                     PmModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        header: ConstantStringTableComponentsEnum.TRAILER_3,
-                        action: ConstantStringTableComponentsEnum.UNIT_PM,
+                        header: TableStringEnum.TRAILER_3,
+                        action: TableStringEnum.UNIT_PM,
                     }
                 );
                 break;
@@ -389,63 +360,63 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTruckTooltipColor(truckName: string): string {
-        if (truckName === TruckName.SEMI_TRUCK) {
-            return TooltipColors.LIGHT_GREEN;
-        } else if (truckName === TruckName.SEMI_SLEEPER) {
-            return TooltipColors.YELLOW;
-        } else if (truckName === TruckName.BOX_TRUCK) {
-            return TooltipColors.RED;
-        } else if (truckName === TruckName.CARGO_VAN) {
-            return TooltipColors.BLUE;
-        } else if (truckName === TruckName.CAR_HAULER) {
-            return TooltipColors.PINK;
-        } else if (truckName === TruckName.TOW_TRUCK) {
-            return TooltipColors.PURPLE;
-        } else if (truckName === TruckName.SPOTTER) {
-            return TooltipColors.BROWN;
+        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
+            return TooltipColorsStringEnum.YELLOW;
+        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (truckName === TruckNameStringEnum.SPOTTER) {
+            return TooltipColorsStringEnum.BROWN;
         }
     }
 
     private setTrailerTooltipColor(trailerName: string): string {
-        if (trailerName === TrailerName.REEFER) {
-            return TooltipColors.BLUE;
-        } else if (trailerName === TrailerName.DRY_VAN) {
-            return TooltipColors.DARK_BLUE;
-        } else if (trailerName === TrailerName.DUMPER) {
-            return TooltipColors.PURPLE;
-        } else if (trailerName === TrailerName.TANKER) {
-            return TooltipColors.GREEN;
-        } else if (trailerName === TrailerName.PNEUMATIC_TANKER) {
-            return TooltipColors.LIGHT_GREEN;
-        } else if (trailerName === TrailerName.CAR_HAULER) {
-            return TooltipColors.PINK;
-        } else if (trailerName === TrailerName.CAR_HAULER_STINGER) {
-            return TooltipColors.PINK;
-        } else if (trailerName === TrailerName.CHASSIS) {
-            return TooltipColors.BROWN;
-        } else if (trailerName === TrailerName.LOW_BOY_RGN) {
-            return TooltipColors.RED;
-        } else if (trailerName === TrailerName.STEP_DECK) {
-            return TooltipColors.RED;
-        } else if (trailerName === TrailerName.FLAT_BED) {
-            return TooltipColors.RED;
-        } else if (trailerName === TrailerName.SIDE_KIT) {
-            return TooltipColors.ORANGE;
-        } else if (trailerName === TrailerName.CONESTOGA) {
-            return TooltipColors.GOLD;
-        } else if (trailerName === TrailerName.CONTAINER) {
-            return TooltipColors.YELLOW;
+        if (trailerName === TrailerNameStringEnum.REEFER) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
+            return TooltipColorsStringEnum.DARK_BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (trailerName === TrailerNameStringEnum.TANKER) {
+            return TooltipColorsStringEnum.GREEN;
+        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
+            return TooltipColorsStringEnum.BROWN;
+        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
+            return TooltipColorsStringEnum.ORANGE;
+        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
+            return TooltipColorsStringEnum.GOLD;
+        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
+            return TooltipColorsStringEnum.YELLOW;
         }
     }
 
     private getTableData(dataType: string): (Truck | Trailer)[] {
-        if (dataType === ConstantStringTableComponentsEnum.TRUCK) {
+        if (dataType === TableStringEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
             const truckUnitsData = truckUnits.map((truckUnit) => {
                 const truck: any = {
                     truckTypeClass: truckUnit.truck.truckType.logoName.replace(
-                        ConstantStringTableComponentsEnum.SVG,
-                        ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                        TableStringEnum.SVG,
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER
                     ),
                     truckTypeIcon: truckUnit.truck.truckType.logoName,
                     tableTruckName: truckUnit.truck.truckType.name,
@@ -477,7 +448,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 };
 
                 const truckPMColumns = this.getGridColumns(
-                    ConstantStringTableComponentsEnum.PM_TRUCK
+                    TableStringEnum.PM_TRUCK
                 );
 
                 truckUnit.pMs.map((pm) => {
@@ -524,8 +495,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ),
                     tableTrailerTypeClass:
                         trailerUnit.trailer.trailerType.logoName.replace(
-                            ConstantStringTableComponentsEnum.SVG,
-                            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                            TableStringEnum.SVG,
+                            TableStringEnum.EMPTY_STRING_PLACEHOLDER
                         ),
                     textUnit: trailerUnit.trailer.trailerNumber,
                     textOdometer: trailerUnit.odometer
@@ -549,7 +520,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 };
 
                 const trailerColumns = this.getGridColumns(
-                    ConstantStringTableComponentsEnum.PM_TRAILER
+                    TableStringEnum.PM_TRAILER
                 );
 
                 trailerUnit.pMs.map((pm) => {

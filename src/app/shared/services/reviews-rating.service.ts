@@ -9,8 +9,9 @@ import {
     ReviewResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
 // store
 import { BrokerStore } from 'src/app/pages/customer/state/broker-state/broker.store';
@@ -67,12 +68,15 @@ export class ReviewsRatingService {
                         }
                     );
                 } else if (rating.entityType.name === 'Repair shop') {
-                    this.repairShopStore.update(({ id }) => id === rating.entityId, {
-                        upCount: rating.upCount,
-                        downCount: rating.downCount,
-                        currentCompanyUserRating:
-                            rating.currentCompanyUserRating,
-                    });
+                    this.repairShopStore.update(
+                        ({ id }) => id === rating.entityId,
+                        {
+                            upCount: rating.upCount,
+                            downCount: rating.downCount,
+                            currentCompanyUserRating:
+                                rating.currentCompanyUserRating,
+                        }
+                    );
                 }
             })
         );

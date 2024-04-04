@@ -79,7 +79,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-driver-modal',
@@ -261,10 +261,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (
-            data.action === ConstantStringTableComponentsEnum.DEACTIVATE &&
-            this.editData
-        ) {
+        if (data.action === TableStringEnum.DEACTIVATE && this.editData) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -275,13 +272,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.ngbActiveModal.close();
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    template: TableStringEnum.DRIVER,
                     type: data.bool
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     image: true,
                 }
             );
@@ -326,10 +323,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         }
         // Delete
-        else if (
-            data.action === ConstantStringTableComponentsEnum.DELETE &&
-            this.editData?.id
-        ) {
+        else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -340,11 +334,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.ngbActiveModal.close();
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: ConstantStringTableComponentsEnum.DRIVER,
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    template: TableStringEnum.DRIVER,
+                    type: TableStringEnum.DELETE,
                     image: true,
                 }
             );

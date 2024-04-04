@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+
+// models
 import {
     BrokerResponse,
     DriverResponse,
@@ -7,9 +11,7 @@ import {
     TableConfigService,
     UpdateTableConfigCommand,
 } from 'appcoretruckassist';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { Column, ColumnWidthData } from '../models/card-table-data.model';
-
 import { AllTableAnimationModel } from 'src/app/shared/models/all-table-animation.model';
 
 @Injectable({
