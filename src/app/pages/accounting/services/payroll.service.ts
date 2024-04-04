@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
-import { PayrollStore } from '../pages/payroll/payroll/state/payroll.store';
-import { PayrollService } from 'appcoretruckassist';
-import { driver_miles_table_settings } from '../utils/constants/driver_miles.constants';
-import { driver_commision_table_settings } from '../utils/constants/driver_commision.constants';
-import { owner_table_settings } from '../utils/constants/owner.constants';
+
+// Store
+import { PayrollStore } from '../pages/payroll/state/payroll.store';
+
+// Services
+import { PayrollService as PayrollMainService } from 'appcoretruckassist';
+
+// Constants
+import { DriverMilesTableSettings } from '../utils/constants/driver-miles-table-settings.constants';
+import { DriverCommisionTableSettings } from '../utils/constants/driver-commision-table-settings.constants';
+import { OwnerTableSettings } from '../utils/constants/owner-table-settings.constants';
 
 @Injectable({ providedIn: 'root' })
-export class PayrollStoreService {
+export class PayrollService {
     payrollData = {
         payrollDriverCommissions: {
             title: 'Driver (Commission)',
@@ -26,25 +32,28 @@ export class PayrollStoreService {
     };
 
     constructor(
+        // Store
         private payrollStore: PayrollStore,
-        private ps: PayrollService
+
+        // Services
+        private payrollService: PayrollMainService
     ) {}
 
     // This gives error changed on back check what it is
-    getPayrollOwnerOpenReport(id: number) {
-        // return this.ps.apiPayrollOwnerIdGet(id);
+    getPayrollOwnerOpenReport() {
+        // return this.payrollService.apiPayrollOwnerIdGet(id);
     }
 
     getPayrollCommisionDriverOpenReport(id: number) {
-        return this.ps.apiPayrollDriverCommissionGet(id);
+        return this.payrollService.apiPayrollDriverCommissionGet(id);
     }
     // This gives error as with getPayrollOwnerOpenReport
-    getPayrollMileageDriverOpenReport(id: number) {
-        // return this.ps.apiPayrollDriverMileageIdGet(id);
+    getPayrollMileageDriverOpenReport() {
+        // return this.payrollService.apiPayrollDriverMileageIdGet(id);
     }
 
     getPayrollList() {
-        return this.ps.apiPayrollListGet();
+        return this.payrollService.apiPayrollListGet();
     }
 
     set payrollList(data) {
@@ -69,11 +78,11 @@ export class PayrollStoreService {
     getTableDefinitions(title) {
         switch (title) {
             case 'Driver (Miles)':
-                return driver_miles_table_settings;
+                return DriverMilesTableSettings;
             case 'Driver (Commission)':
-                return driver_commision_table_settings;
+                return DriverCommisionTableSettings;
             case 'Owner':
-                return owner_table_settings;
+                return OwnerTableSettings;
         }
     }
 }

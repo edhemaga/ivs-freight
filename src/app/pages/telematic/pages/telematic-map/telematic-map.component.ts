@@ -23,7 +23,6 @@ import { TruckService } from '../../../../shared/services/truck.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
 import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
 import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
@@ -325,7 +324,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     constructor(
         // Services
-        private signalRService: SignalRService,
         private mapsService: MapsService,
         private telematicService: TelematicStateService,
         private gpsService: GpsServiceService,
