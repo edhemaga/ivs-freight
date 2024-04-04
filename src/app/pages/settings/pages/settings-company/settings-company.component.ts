@@ -14,7 +14,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { SettingsCompanyService } from '../../services/settings-company.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 // store
 import { CompanyQuery } from '../../state/company-state/company-settings.query';

@@ -12,8 +12,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
 import { PmService } from 'src/app/pages/pm-truck-trailer/services/pm.service';
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { FormService } from '../../../../core/services/form/form.service';
 
 // Models
@@ -27,7 +27,7 @@ import {
 } from 'appcoretruckassist';
 
 // Validators
-import { descriptionValidation } from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // Helpers
 import {
@@ -39,12 +39,12 @@ import {
 import { RepairOrderModalComponent } from '../../../repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // Components
-import { AppTooltipComponent } from '../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-pm-modal',

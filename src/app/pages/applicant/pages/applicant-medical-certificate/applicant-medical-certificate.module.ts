@@ -9,8 +9,8 @@ import { ApplicantModule } from '../../applicant.module';
 // components
 import { ApplicantMedicalCertificateComponent } from './applicant-medical-certificate.component';
 
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
-import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 
 @NgModule({
     declarations: [ApplicantMedicalCertificateComponent],

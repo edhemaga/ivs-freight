@@ -10,14 +10,14 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 // Components
 import { DispatchComponent } from './pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from './pages/dispatch/components/dispatch-table/dispatch-table.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaStatusSwitchComponent } from 'src/app/core/components/shared/ta-status-switch/ta-status-switch.component';
+import { TaStatusSwitchComponent } from 'src/app/shared/components/ta-status-switch/ta-status-switch.component';
 import { GpsProgressbarComponent } from 'src/app/core/components/shared/gps-progressbar/gps-progressbar.component';
-import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
-import { TaPickupDeliveryComponent } from 'src/app/core/components/shared/ta-pickup-delivery/ta-pickup-delivery.component';
+import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
+import { TaPickupDeliveryComponent } from 'src/app/shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 
 // Pipes
 import { ColorFinderPipe } from './pipes/color-finder.pipe';

@@ -8,7 +8,7 @@
             </div>
             <!---------------------------- Registration TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'registration'">
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let reg of trucks?.data;
                         let i = index;
@@ -155,11 +155,11 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
             <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let fhwa of trucks?.data;
                         let i = index;
@@ -276,12 +276,12 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
 
             <!---------------------------- Title TEMPLATE ----------------------------->
             <div class="card-width" *ngSwitchCase="'title'">
-                <app-ta-re-card
+                <app-ta-common-card
                     *ngFor="
                         let title of trucks?.data;
                         let i = index;
@@ -409,14 +409,14 @@
                             </div>
                         </div>
                     </div>
-                </app-ta-re-card>
+                </app-ta-common-card>
             </div>
             <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
             <ng-container
                 *ngIf="truck.length > 0 && truck.template === 'lease-purchase'"
             >
                 <div class="card-width" *ngSwitchCase="'lease-purchase'">
-                    <app-ta-re-card
+                    <app-ta-common-card
                         [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
                         (resizePage)="toggleResizePage(5, 'lease')"
                         [cardNameCommon]="'KSKA FREIGHT, INC'"
@@ -736,7 +736,7 @@
                                 </div>
                             </div>
                         </div>
-                    </app-ta-re-card>
+                    </app-ta-common-card>
                 </div>
             </ng-container>
         </div>

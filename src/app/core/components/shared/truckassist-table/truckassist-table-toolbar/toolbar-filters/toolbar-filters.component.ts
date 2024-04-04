@@ -13,9 +13,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
 
 //Components
-import { CarrierSearchComponent } from 'src/app/core/components/standalone-components/carrier-search/carrier-search.component';
-import { FilterComponent } from '../../../../standalone-components/filter/filter.component';
-import { SpecialFilterComponent } from 'src/app/core/components/standalone-components/special-filter/special-filter.component';
+import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
+import { TaFilterComponent } from '../../../../../../shared/components/ta-filter/ta-filter.component';
+import { TaSpecialFilterComponent } from 'src/app/shared/components/ta-special-filter/ta-special-filter.component';
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -35,12 +35,12 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     imports: [
         CommonModule,
         FormsModule,
-        CarrierSearchComponent,
-        FilterComponent,
+        TaCarrierSearchComponent,
+        TaFilterComponent,
         AngularSvgIconModule,
         FormatCurrency,
         MoneyFilterPipe,
-        SpecialFilterComponent,
+        TaSpecialFilterComponent,
     ],
 })
 export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {

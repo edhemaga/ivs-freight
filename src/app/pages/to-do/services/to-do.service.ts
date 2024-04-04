@@ -8,7 +8,7 @@ import {
     TodoListResponse,
     TodoModalResponse,
     TodoResponse,
-    TodoService,
+    TodoService as TodoBackendService,
     TodoStatus,
     UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
@@ -17,9 +17,9 @@ import { FormDataService } from 'src/app/core/services/formData/form-data.servic
 @Injectable({
     providedIn: 'root',
 })
-export class TodoTService {
+export class TodoService {
     constructor(
-        private todoService: TodoService,
+        private todoService: TodoBackendService,
         private todoStore: TodoStore,
         private formDataService: FormDataService
     ) {}
@@ -63,7 +63,7 @@ export class TodoTService {
     public updateTodo(data: any) {
         this.formDataService.extractFormDataFromFunction(data);
         return this.todoService.apiTodoPut().pipe(
-            flatMap((param) => {
+            flatMap(() => {
                 return this.getTodoById(data.id);
             }),
             tap((todo) => (this.updateTodoList = todo))

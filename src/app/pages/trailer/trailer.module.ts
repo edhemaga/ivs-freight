@@ -13,13 +13,13 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 
 // components
 import { TrailerTableComponent } from './pages/trailer-table/trailer-table.component';
-import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
-import { ProgresBarComponent } from 'src/app/core/components/standalone-components/progres-bar/progres-bar.component';
-import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
+import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
+import { TaProgresBarComponent } from 'src/app/shared/components/ta-progres-bar/ta-progres-bar.component';
+import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TrailerCardComponent } from './pages/trailer-card/trailer-card.component';
 @NgModule({
     declarations: [TrailerTableComponent, TrailerCardComponent],
@@ -36,8 +36,8 @@ import { TrailerCardComponent } from './pages/trailer-card/trailer-card.componen
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         TaNoteComponent,
-        TableCardDropdownActionsComponent,
-        ProgresBarComponent,
+        TaTableCardDropdownActionsComponent,
+        TaProgresBarComponent,
 
         // pipes
         ThousandSeparatorPipe,

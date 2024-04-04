@@ -14,7 +14,7 @@ import { ShipperResponse, UpdateReviewCommand } from 'appcoretruckassist';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 // Components
-import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
 // Services
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
@@ -35,7 +35,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
     private destroy$ = new Subject<void>();
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
-    
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.shipper = changes.shipper.currentValue;

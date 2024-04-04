@@ -9,9 +9,9 @@ import { ApplicantModule } from '../../applicant.module';
 // components
 import { ApplicantMvrAuthorizationComponent } from './applicant-mvr-authorization.component';
 
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
-import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 
 @NgModule({
     declarations: [ApplicantMvrAuthorizationComponent],

@@ -14,9 +14,9 @@ import { PayrollTableComponent } from './pages/payroll/components/payroll-table/
 import { PayrollReportComponent } from './pages/payroll/components/payroll-report/payroll-report.component';
 import { PayrollSmallTablesComponent } from './pages/payroll/components/payroll-small-tables/payroll-small-tables.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 
 // Pipes
 import { PayrollTablePipe } from './pages/payroll/components/payroll-table/pipes/payroll-table.pipe';

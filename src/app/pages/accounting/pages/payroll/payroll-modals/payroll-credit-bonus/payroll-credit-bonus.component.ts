@@ -10,8 +10,8 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // Services
-import { TaInputService } from '../../../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../../shared/components/ta-modal/modal.service';
 import { FormService } from '../../../../../../core/services/form/form.service';
 import { PayrollCreditService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
 
@@ -20,7 +20,7 @@ import {
     PayrollCreditModalResponse,
     PayrollCreditResponse,
 } from 'appcoretruckassist';
-import { ITaInput } from '../../../../../../core/components/shared/ta-input/ta-input.config';
+import { ITaInput } from '../../../../../../shared/components/ta-input/ta-input.config';
 
 // Helpers
 import {
@@ -33,10 +33,10 @@ import {
 } from '../../../../../../core/utils/methods.calculations';
 
 // Components
-import { TaModalComponent } from '../../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-payroll-credit-bonus',

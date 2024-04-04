@@ -19,10 +19,10 @@ import { CardRows } from '../../../shared/model/card-data.model';
 import { ModalModelData } from '../models/modal-input.model';
 
 // Configuration for modals
-import { DisplayLoadConfiguration } from 'src/app/pages/load/utils/constants/load-card.constants';
+import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
 
 // Services
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 // Store
@@ -41,8 +41,8 @@ import { CardsModalConfigService } from '../utils/services/cards-modal-config.se
 import { LoadModalConstants } from '../utils/constants/load-modal.constants';
 
 // Components
-import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
-import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaCheckboxComponent } from '../../../../../shared/components/ta-checkbox/ta-checkbox.component';
 import { ModalInputFormComponent } from '../components/modal-input-form.component';
 
 @Component({
@@ -165,10 +165,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontTemplate;
+                    LoadCardConfiguration.displayRowsFrontTemplate;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackTemplate;
+                    LoadCardConfiguration.displayRowsBackTemplate;
             });
     }
 
@@ -179,10 +179,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontPending;
+                    LoadCardConfiguration.displayRowsFrontPending;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackPending;
+                    LoadCardConfiguration.displayRowsBackPending;
             });
     }
 
@@ -193,10 +193,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontPending;
+                    LoadCardConfiguration.displayRowsFrontPending;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackActive;
+                    LoadCardConfiguration.displayRowsBackActive;
             });
     }
 
@@ -207,10 +207,10 @@ export class LoadCardsModalComponent implements OnInit {
                 this.setDataForModal(data);
 
                 this.setDefaultDataFront =
-                    DisplayLoadConfiguration.displayRowsFrontClosed;
+                    LoadCardConfiguration.displayRowsFrontClosed;
 
                 this.setDefaultDataBack =
-                    DisplayLoadConfiguration.displayRowsBackClosed;
+                    LoadCardConfiguration.displayRowsBackClosed;
             });
     }
 

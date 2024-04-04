@@ -29,7 +29,7 @@ import {
 } from '../../../../utils/helpers/applicant.helper';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import { ApplicantService } from '../../../../services/applicant.service';
 
 // store
@@ -41,7 +41,7 @@ import {
     addressUnitValidation,
     addressValidation,
     phoneFaxRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // enums
 import { SelectedMode } from '../../../../enums/selected-mode.enum';

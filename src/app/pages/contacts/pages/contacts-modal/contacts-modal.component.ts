@@ -22,18 +22,18 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaLogoChangeComponent } from 'src/app/core/components/shared/ta-logo-change/ta-logo-change.component';
-import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaInputDropdownLabelComponent } from 'src/app/core/components/shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaModalTableComponent } from 'src/app/core/components/standalone-components/ta-modal-table/ta-modal-table.component';
+import { TaInputDropdownLabelComponent } from 'src/app/shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/ta-modal-table.component';
 
 // validations
 import {
@@ -41,11 +41,11 @@ import {
     addressValidation,
     departmentValidation,
     fullNameValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { ContactsService } from '../../../../shared/services/contacts.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
@@ -68,7 +68,7 @@ import {
     EnumValue,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { EditData } from 'src/app/core/components/modals/load-modal/state/models/load-modal-model/edit-data.model';
+import { EditData } from '../../../../shared/models/edit-data.model';
 
 @Component({
     selector: 'app-contact-modal',

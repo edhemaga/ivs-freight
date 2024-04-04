@@ -13,11 +13,11 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     creditLimitValidation,
     descriptionPayrollBonusValidation,
-} from '../../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // Services
-import { TaInputService } from '../../../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { PayrollBonusService } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
 import { FormService } from '../../../../../../core/services/form/form.service';
 
@@ -38,10 +38,10 @@ import {
 } from '../../../../../../core/utils/methods.calculations';
 
 // Components
-import { TaModalComponent } from '../../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-payroll-bonus-modal',

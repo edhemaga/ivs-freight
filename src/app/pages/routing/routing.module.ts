@@ -20,8 +20,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 //Components
-import { MapToolbarComponent } from 'src/app/core/components/standalone-components/map-toolbar/map-toolbar.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/ta-map-toolbar.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
 import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
 
@@ -41,7 +41,7 @@ import { DetailsDropdownComponent } from 'src/app/core/components/shared/details
         AngularSvgIconModule,
 
         // Components
-        MapToolbarComponent,
+        TaMapToolbarComponent,
         AppTooltipComponent,
         InputAddressDropdownComponent,
         DetailsDropdownComponent,

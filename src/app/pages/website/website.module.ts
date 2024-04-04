@@ -33,10 +33,10 @@ import { SelectCompanyComponent } from './components/website-sidebar/sidebar-con
 
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
 
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
-import { TaSpinnerComponent } from 'src/app/core/components/shared/ta-spinner/ta-spinner.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
+import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spinner.component';
 
 @NgModule({
     declarations: [

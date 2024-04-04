@@ -4,7 +4,7 @@ import {
     GetOwnerListResponse,
     OwnerModalResponse,
     OwnerResponse,
-    OwnerService,
+    OwnerService as OwnerBackendService,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 
@@ -24,10 +24,10 @@ import { ComponentsTableEnum } from 'src/app/core/model/enums';
 @Injectable({
     providedIn: 'root',
 })
-export class OwnerTService {
+export class OwnerService {
     constructor(
         //Services
-        private ownerService: OwnerService,
+        private ownerService: OwnerBackendService,
         private tableService: TruckassistTableService,
         private ownerActiveStore: OwnerActiveStore,
         private ownerInactiveStore: OwnerInactiveStore,

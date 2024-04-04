@@ -9,7 +9,7 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 // components
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-applicant-review-feedback',

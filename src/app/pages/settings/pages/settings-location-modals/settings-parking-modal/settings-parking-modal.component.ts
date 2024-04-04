@@ -26,19 +26,19 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { rentValidation } from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { rentValidation } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../../core/services/form/form.service';
 
 // components
-import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaCheckboxCardComponent } from '../../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
 
 // pipes
 import { SumArraysPipe } from '../../../../../shared/pipes/sum-arrays.pipe';
@@ -52,7 +52,7 @@ import {
     parkingNameValidation,
     parkingSlotValidation,
     fullParkingSlotValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // utils
 import {
