@@ -1,5 +1,5 @@
-import { Address } from './address';
-import { IApplicant } from './applicant';
+import { Address } from 'src/app/core/model/address';
+import { IApplicant } from 'src/app/core/model/applicant';
 import { MetaData } from './shared/enums';
 import { OwnerData } from './shared/owner';
 

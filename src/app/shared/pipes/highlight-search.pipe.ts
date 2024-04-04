@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 // models
-import { HighlightText } from '../../core/model/searchFilter';
+import { HighlightText } from '../models/highlight-text.model';
 
 @Pipe({
     name: 'taHighlight',

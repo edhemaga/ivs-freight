@@ -34,7 +34,6 @@ import {
     TerminalResponse,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { Address } from '../../../../../core/components/shared/model/address';
 
 // animation
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
@@ -139,7 +138,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         params: { height: '0px' },
     };
 
-    public selectedAddress: Address | AddressEntity = null;
+    public selectedAddress: AddressEntity = null;
 
     public payPeriods: any[] = [];
     public selectedPayPeriod: any = null;

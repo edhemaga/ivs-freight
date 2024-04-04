@@ -56,7 +56,7 @@ import { inOutAnimation } from './animations/in-out.animation';
 import { showAnimation } from './animations/show.animation';
 import { stateHeader } from './animations/state-header.animation';
 // models
-import { ArrayStatus } from './model/array-status.model';
+import { ArrayStatus } from './models/array-status.model';
 @Component({
     selector: 'app-ta-filter',
     standalone: true,

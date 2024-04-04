@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { FilterStateStore, FilterStateState } from './filter-state.store';
-import { FilterState } from '../model/filter-state.model';
+import { FilterState } from '../models/filter-state.model';
 
 @Injectable({
     providedIn: 'root',
