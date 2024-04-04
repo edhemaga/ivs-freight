@@ -1,7 +1,7 @@
 import { RepairTypes } from '../../models/repair-types.model';
 import { RepairData } from '../../models/repair-data.model';
 
-export class RepairOrder {
+export class RepairOrderConstants {
     static REPAIR_TYPES: RepairTypes[] = [
         {
             id: 1,

@@ -63,7 +63,7 @@ import {
 } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 
 // Constants
-import { CustomerCardDataConfig } from './utils/constants/customer-card-data-config.constants';
+import { CustomerCardDataConfigConstants } from './utils/constants/customer-card-data-config.constants';
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 // Pipes
@@ -119,18 +119,18 @@ export class CustomerTableComponent
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
-        CustomerCardDataConfig.displayRowsFrontBroker;
+        CustomerCardDataConfigConstants.displayRowsFrontBroker;
     public displayRowsBack: CardRows[] =
-        CustomerCardDataConfig.displayRowsBackBroker;
+        CustomerCardDataConfigConstants.displayRowsBackBroker;
 
     //Data to display from model Shipper
     public displayRowsFrontShipper: CardRows[] =
-        CustomerCardDataConfig.displayRowsFrontShipper;
+        CustomerCardDataConfigConstants.displayRowsFrontShipper;
     public displayRowsBackShipper: CardRows[] =
-        CustomerCardDataConfig.displayRowsBackShipper;
-    public cardTitle: string = CustomerCardDataConfig.cardTitle;
-    public page: string = CustomerCardDataConfig.page;
-    public rows: number = CustomerCardDataConfig.rows;
+        CustomerCardDataConfigConstants.displayRowsBackShipper;
+    public cardTitle: string = CustomerCardDataConfigConstants.cardTitle;
+    public page: string = CustomerCardDataConfigConstants.page;
+    public rows: number = CustomerCardDataConfigConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];

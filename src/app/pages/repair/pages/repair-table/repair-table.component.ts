@@ -68,7 +68,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { RepairCardConfig } from '../../utils/constants/repair-card-config.constants';
+import { RepairCardConfigConstants } from '../../utils/constants/repair-card-config.constants';
 
 // Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
@@ -121,30 +121,30 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //Data to display from model Truck
     public displayRowsFrontTruck: CardRows[] =
-        RepairCardConfig.displayRowsFrontTruck;
+        RepairCardConfigConstants.displayRowsFrontTruck;
     public displayRowsBackTruck: CardRows[] =
-        RepairCardConfig.displayRowsBackTruck;
+        RepairCardConfigConstants.displayRowsBackTruck;
 
     // Data to display from model Trailer
     public displayRowsFrontTrailer: CardRows[] =
-        RepairCardConfig.displayRowsFrontTruck;
+        RepairCardConfigConstants.displayRowsFrontTruck;
     public displayRowsBackTrailer: CardRows[] =
-        RepairCardConfig.displayRowsBackTruck;
+        RepairCardConfigConstants.displayRowsBackTruck;
 
     // Data to display from model Trailer
     public displayRowsFrontRepairShop: CardRows[] =
-        RepairCardConfig.displayRowsFrontRepairShop;
+        RepairCardConfigConstants.displayRowsFrontRepairShop;
     public displayRowsBackRepairShop: CardRows[] =
-        RepairCardConfig.displayRowsBackRepairShop;
+        RepairCardConfigConstants.displayRowsBackRepairShop;
 
     //Title
     public cardTitle: string = TableStringEnum.TRUCK_TRUCK_NUMBER;
 
     // Page
-    public page: string = RepairCardConfig.page;
+    public page: string = RepairCardConfigConstants.page;
 
     //  Number of rows in card
-    public rows: number = RepairCardConfig.rows;
+    public rows: number = RepairCardConfigConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
