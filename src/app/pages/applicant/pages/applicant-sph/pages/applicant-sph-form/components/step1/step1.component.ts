@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // store
 import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
@@ -68,12 +68,14 @@ export class Step1Component implements OnInit, OnDestroy {
             employerAddress,
             employeeName,
             employeeSsn,
-            employeeDoB: convertDateFromBackend(employeeDoB),
+            employeeDoB:
+                MethodsCalculationsHelper.convertDateFromBackend(employeeDoB),
         };
 
         this.completedByDriverCard = {
-            dateFrom: convertDateFromBackend(dateFrom),
-            dateTo: convertDateFromBackend(dateTo),
+            dateFrom:
+                MethodsCalculationsHelper.convertDateFromBackend(dateFrom),
+            dateTo: MethodsCalculationsHelper.convertDateFromBackend(dateTo),
             reasonForLeaving,
             vehicleType,
         };

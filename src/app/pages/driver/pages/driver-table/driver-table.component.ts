@@ -58,10 +58,7 @@ import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applica
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 
 // Globals
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 import {
@@ -345,7 +342,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
 
-                    const searchEvent = tableSearch(
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
                         this.selectedTab === TableStringEnum.APPLICANTS
                             ? this.applicantBackFilterQuery
@@ -419,10 +416,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -447,10 +445,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -474,10 +473,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(driverIndex, 1);
                         clearInterval(inetval);
@@ -499,10 +499,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(driverIndex, 1);
                         clearInterval(inetval);
@@ -1547,10 +1548,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -1579,7 +1581,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);

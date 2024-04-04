@@ -17,17 +17,13 @@ import { FormService } from 'src/app/shared/services/form.service';
 
 // Models
 import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
-import { PayrollDeductionModalResponse, PayrollDeductionResponse } from 'appcoretruckassist';
+import {
+    PayrollDeductionModalResponse,
+    PayrollDeductionResponse,
+} from 'appcoretruckassist';
 
 // Helpers
-import {
-    convertDateToBackend,
-    convertThousanSepInNumber,
-} from '../../../../../../core/utils/methods.calculations';
-import {
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from '../../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // Components
 import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
@@ -280,10 +276,10 @@ export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
                             ? this.selectedTruck.id
                             : null
                         : null,
-                date: convertDateToBackend(
+                date: MethodsCalculationsHelper.convertDateToBackend(
                     this.payrollDeductionForm.get('date').value
                 ),
-                amount: convertThousanSepInNumber(
+                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                     this.payrollDeductionForm.get('amount').value
                 ),
                 recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : null,
@@ -294,7 +290,7 @@ export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
                     : null,
                 limitedAmount: this.payrollDeductionForm.get('limitedAmount')
                     .value
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.payrollDeductionForm.get('limitedAmount').value
                       )
                     : null,
@@ -336,10 +332,10 @@ export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
                             ? this.selectedTruck.id
                             : null
                         : null,
-                date: convertDateToBackend(
+                date: MethodsCalculationsHelper.convertDateToBackend(
                     this.payrollDeductionForm.get('date').value
                 ),
-                amount: convertThousanSepInNumber(
+                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                     this.payrollDeductionForm.get('amount').value
                 ),
                 recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : null,
@@ -350,7 +346,7 @@ export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
                     : null,
                 limitedAmount: this.payrollDeductionForm.get('limitedAmount')
                     .value
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.payrollDeductionForm.get('limitedAmount').value
                       )
                     : null,
@@ -428,16 +424,22 @@ export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
                               )
                             : null,
                         truckId: res.truck ? res.truck.truckNumber : null,
-                        date: convertDateFromBackend(res.date),
+                        date: MethodsCalculationsHelper.convertDateFromBackend(
+                            res.date
+                        ),
                         description: res.description,
-                        amount: convertNumberInThousandSep(res.amount),
+                        amount: MethodsCalculationsHelper.convertNumberInThousandSep(
+                            res.amount
+                        ),
                         recurringType: res.recurringType
                             ? res.recurringType.id
                             : null,
                         recurring: !!res.recurringType?.name,
                         limited: !!(res.limitedAmount && res.limitedNumber),
                         limitedAmount: res.limitedAmount
-                            ? convertNumberInThousandSep(res.limitedAmount)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.limitedAmount
+                              )
                             : null,
                         limitedNumber: res.limitedNumber,
                     });

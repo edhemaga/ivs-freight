@@ -28,14 +28,7 @@ import {
 } from 'appcoretruckassist';
 
 // Helpers
-import {
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from 'src/app/core/utils/methods.calculations';
-import {
-    convertDateToBackend,
-    convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // Components
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
@@ -184,10 +177,10 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
             .addPayrollBonus({
                 ...this.payrollBonusForm.value,
                 driverId: this.selectedDriver.id,
-                date: convertDateToBackend(
+                date: MethodsCalculationsHelper.convertDateToBackend(
                     this.payrollBonusForm.get('date').value
                 ),
-                amount: convertThousanSepInNumber(
+                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                     this.payrollBonusForm.get('amount').value
                 ),
             })
@@ -232,10 +225,10 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                 id: id,
                 ...this.payrollBonusForm.value,
                 driverId: this.selectedDriver.id,
-                date: convertDateToBackend(
+                date: MethodsCalculationsHelper.convertDateToBackend(
                     this.payrollBonusForm.get('date').value
                 ),
-                amount: convertThousanSepInNumber(
+                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                     this.payrollBonusForm.get('amount').value
                 ),
             })
@@ -270,10 +263,14 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                             res.driver.lastName
                         ),
                         date: res.date
-                            ? convertDateFromBackend(res.date)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.date
+                              )
                             : null,
                         description: res.description,
-                        amount: convertNumberInThousandSep(res.amount),
+                        amount: MethodsCalculationsHelper.convertNumberInThousandSep(
+                            res.amount
+                        ),
                     });
 
                     this.selectedDriver = {

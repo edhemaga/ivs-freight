@@ -30,7 +30,7 @@ import { TodoModalComponent } from 'src/app/pages/to-do/pages/to-do-modal/to-do-
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 // helpers
-import { applyDrag } from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-to-do-list-card',
@@ -423,13 +423,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             !this.scene.children[mainIndx].children[indx]['linkActive'];
     }
 
-    //// NEW ANIMATION
-
-    onDrop() {
-        // update item list according to the @dropResult
-        //this.items = applyDrag(this.items, dropResult);
-    }
-
     onCardDrop(columnId, dropResult) {
         if (
             dropResult.removedIndex !== null ||
@@ -440,7 +433,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             const columnIndex = scene.children.indexOf(column);
 
             const newColumn = Object.assign({}, column);
-            newColumn.children = applyDrag(newColumn.children, dropResult);
+            newColumn.children = MethodsGlobalHelper.applyDrag(
+                newColumn.children,
+                dropResult
+            );
             scene.children.splice(columnIndex, 1, newColumn);
 
             if (

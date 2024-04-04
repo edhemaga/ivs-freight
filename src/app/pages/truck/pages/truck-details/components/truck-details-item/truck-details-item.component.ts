@@ -37,8 +37,7 @@ import { CommonTruckTrailerService } from 'src/app/core/components/modals/common
 
 // helpers
 import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
@@ -275,7 +274,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
 
@@ -322,9 +321,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             .deleteTitleById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-    public onFileAction(action: string) {
-        onFileActionMethods(action);
     }
 
     public hiddenPassword(value: any, numberOfCharacterToHide: number) {
@@ -384,7 +380,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public formatDate(mod) {
-        return convertDateFromBackend(mod);
+        return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 
     ngOnDestroy(): void {

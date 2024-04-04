@@ -21,12 +21,9 @@ import { ContactQuery } from '../../state/contact.query';
 import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 
 // helpers
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 // enums
@@ -186,7 +183,10 @@ export class ContactsTableComponent
 
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -218,10 +218,11 @@ export class ContactsTableComponent
                     });
 
                     const interval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(interval);
                     }, 2300);
@@ -242,10 +243,11 @@ export class ContactsTableComponent
                     });
 
                     const interval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(interval);
                     }, 1000);
@@ -267,10 +269,11 @@ export class ContactsTableComponent
                     );
 
                     const interval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(contactIndex, 1);
                         clearInterval(interval);
@@ -357,7 +360,10 @@ export class ContactsTableComponent
                 this.updateDataCount();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(interval);
                 }, 1000);
@@ -514,8 +520,12 @@ export class ContactsTableComponent
                       color: data?.companyContactLabel?.code ?? null,
                   }
                 : null,
-            added: convertDateFromBackend(data?.createdAt),
-            edited: convertDateFromBackend(data?.updatedAt),
+            added: MethodsCalculationsHelper.convertDateFromBackend(
+                data?.createdAt
+            ),
+            edited: MethodsCalculationsHelper.convertDateFromBackend(
+                data?.updatedAt
+            ),
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownContactContent(),

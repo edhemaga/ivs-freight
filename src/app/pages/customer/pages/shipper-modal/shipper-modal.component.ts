@@ -72,7 +72,7 @@ import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // Helpers
-import { convertTimeFromBackend } from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -825,12 +825,16 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : convertTimeFromBackend(res.shippingFrom),
+                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                      res.shippingFrom
+                                  ),
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : convertTimeFromBackend(res.shippingTo),
+                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                      res.shippingTo
+                                  ),
                         note: res.note,
                         shipperContacts: [],
                     });

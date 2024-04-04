@@ -15,7 +15,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import moment from 'moment';
 
 // utils
-import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
@@ -63,7 +63,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
 
         data.companies.forEach((res) => {
             this.lastLoginInCompany = this.calculateDiff(
-                convertTimeFromBackend(res.lastLogin)
+                MethodsCalculationsHelper.convertTimeFromBackend(res.lastLogin)
             );
             this.dates.push(
                 moment.utc(res.lastLogin).local().format('MM/DD/YY HH:mm:ss')

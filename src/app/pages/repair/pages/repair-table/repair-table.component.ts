@@ -74,10 +74,7 @@ import { RepairCardConfigConstants } from '../../utils/constants/repair-card-con
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // Methods
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
@@ -306,7 +303,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.backFilterQuery.pageIndex = 1;
                     this.shopFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
                         this.selectedTab !== TableStringEnum.REPAIR_SHOP
                             ? this.backFilterQuery
@@ -364,10 +361,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -392,10 +390,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -421,10 +420,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.ref.detectChanges();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(repairIndex, 1);
                         clearInterval(inetval);
@@ -1314,10 +1314,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = [...newViewData];
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -1348,10 +1349,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = [...sortedByFavorite];
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);

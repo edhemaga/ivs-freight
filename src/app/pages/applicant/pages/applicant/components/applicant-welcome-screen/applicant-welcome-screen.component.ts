@@ -7,7 +7,7 @@ import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // helpers
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // servies
 import { ApplicantService } from '../../../../services/applicant.service';
@@ -67,9 +67,10 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
                 if (!res) {
                     this.router.navigate(['/website']);
                 } else {
-                    this.dateOfApplication = convertDateFromBackend(
-                        res.inviteDate
-                    ).replace(/-/g, '/');
+                    this.dateOfApplication =
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            res.inviteDate
+                        ).replace(/-/g, '/');
                     this.companyInfo = res.companyInfo;
                     this.applicantId = { id: res.personalInfo.applicantId };
                 }

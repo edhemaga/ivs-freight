@@ -28,10 +28,7 @@ import moment from 'moment';
 import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 import {
     anyInputInLineIncorrect,
     filterUnceckedRadiosId,
@@ -351,16 +348,16 @@ export class Step7Component implements OnInit, OnDestroy {
                 value: hos[i].hours,
             };
 
-            this.sevenDaysHosDateData[i + 1] = convertDateFromBackend(
-                hos[i].date
-            );
+            this.sevenDaysHosDateData[i + 1] =
+                MethodsCalculationsHelper.convertDateFromBackend(hos[i].date);
         }
 
         this.hosIds = hos.map((item) => item.id);
 
         this.sevenDaysHosForm.patchValue({
             isValidHos: releasedFromWork,
-            startDate: convertDateFromBackend(releasedDate),
+            startDate:
+                MethodsCalculationsHelper.convertDateFromBackend(releasedDate),
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
             /*   anotherEmployerExplain: workingForAnotherEmployerDescription, */
@@ -627,9 +624,10 @@ export class Step7Component implements OnInit, OnDestroy {
                                 .toLowerCase();
 
                             if (keyName === 'releasedate') {
-                                o['startDate'] = convertDateFromBackend(
-                                    this.stepValues.releasedDate
-                                );
+                                o['startDate'] =
+                                    MethodsCalculationsHelper.convertDateFromBackend(
+                                        this.stepValues.releasedDate
+                                    );
                             }
 
                             if (keyName === 'location') {
@@ -757,7 +755,7 @@ export class Step7Component implements OnInit, OnDestroy {
                         id: this.hosIds[index],
                     }),
                     hours: +item.hos,
-                    date: convertDateToBackend(
+                    date: MethodsCalculationsHelper.convertDateToBackend(
                         this.sevenDaysHosDateData[index + 1]
                     ),
                 };
@@ -773,7 +771,8 @@ export class Step7Component implements OnInit, OnDestroy {
             applicantId: this.applicantId,
             hos: [...filteredHosArray],
             releasedFromWork: isValidHos,
-            releasedDate: convertDateToBackend(startDate),
+            releasedDate:
+                MethodsCalculationsHelper.convertDateToBackend(startDate),
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
             /*    workingForAnotherEmployerDescription: anotherEmployerExplain, */

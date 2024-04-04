@@ -38,12 +38,7 @@ import { TaNgxSliderComponent } from '../../../../../shared/components/ta-ngx-sl
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 
 // utils
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // validations
 import {
@@ -1206,9 +1201,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate = convertDateToBackend(
-                bankCards[index].expireDate
-            );
+            bankCards[index].expireDate =
+                MethodsCalculationsHelper.convertDateToBackend(
+                    bankCards[index].expireDate
+                );
         }
 
         newData = {
@@ -1332,7 +1328,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         card: card.card,
                         cvc: card.cvc,
                         expireDate: card.expireDate
-                            ? convertDateFromBackend(card.expireDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  card.expireDate
+                              )
                             : null,
                     })
                 );
@@ -1374,9 +1372,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate = convertDateToBackend(
-                bankCards[index].expireDate
-            );
+            bankCards[index].expireDate =
+                MethodsCalculationsHelper.convertDateToBackend(
+                    bankCards[index].expireDate
+                );
         }
 
         newData = {
@@ -1485,7 +1484,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 ? this.selectedCompanyData.id
                 : null,
             dateOfIncorporation: dateOfIncorporation
-                ? convertDateToBackend(dateOfIncorporation)
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      dateOfIncorporation
+                  )
                 : null,
             preferredLoadType:
                 this.companyForm.get('preferredLoadType').value ===
@@ -1505,9 +1506,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate = convertDateToBackend(
-                bankCards[index].expireDate
-            );
+            bankCards[index].expireDate =
+                MethodsCalculationsHelper.convertDateToBackend(
+                    bankCards[index].expireDate
+                );
         }
 
         const accountingPayroll = {
@@ -1515,7 +1517,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedAccountingPayPeriod?.id,
             endingIn: this.selectedAccountingEndingIn?.id,
             defaultBase: accountingDefaultBase
-                ? convertThousanSepInNumber(accountingDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      accountingDefaultBase
+                  )
                 : null,
         };
 
@@ -1524,7 +1528,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedDispatchPayPeriod?.id,
             endingIn: this.selectedDispatchEndingIn?.id,
             defaultBase: dispatchDefaultBase
-                ? convertThousanSepInNumber(dispatchDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      dispatchDefaultBase
+                  )
                 : null,
             defaultCommission: dispatchDefaultCommission,
         };
@@ -1534,7 +1540,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedRecPayPeriod?.id,
             endingIn: this.selectedRecEndingIn?.id,
             defaultBase: recruitingDefaultBase
-                ? convertThousanSepInNumber(recruitingDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      recruitingDefaultBase
+                  )
                 : null,
         };
 
@@ -1543,7 +1551,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedRepairPayPeriod?.id,
             endingIn: this.selectedRepairEndingIn?.id,
             defaultBase: repairDefaultBase
-                ? convertThousanSepInNumber(repairDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      repairDefaultBase
+                  )
                 : null,
         };
 
@@ -1552,7 +1562,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedSafetyPayPeriod?.id,
             endingIn: this.selectedSafetyEndingIn?.id,
             defaultBase: safetyDefaultBase
-                ? convertThousanSepInNumber(safetyDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      safetyDefaultBase
+                  )
                 : null,
         };
 
@@ -1561,7 +1573,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedManagerPayPeriod?.id,
             endingIn: this.selectedManagerEndingIn?.id,
             defaultBase: managerDefaultBase
-                ? convertThousanSepInNumber(managerDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      managerDefaultBase
+                  )
                 : null,
             defaultCommission: managerDefaultCommission,
         };
@@ -1572,7 +1586,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedCompanyPayPeriod?.id,
             endingIn: this.selectedCompanyEndingIn?.id,
             defaultBase: companyOwnerDefaultBase
-                ? convertThousanSepInNumber(companyOwnerDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      companyOwnerDefaultBase
+                  )
                 : null,
         };
 
@@ -1581,7 +1597,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             payPeriod: this.selectedOtherPayPeriod?.id,
             endingIn: this.selectedOtherEndingIn?.id,
             defaultBase: otherDefaultBase
-                ? convertThousanSepInNumber(otherDefaultBase)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      otherDefaultBase
+                  )
                 : null,
         };
 
@@ -1608,7 +1626,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.selectedFleetType
                 )
                     ? soloPerStop
-                        ? convertThousanSepInNumber(soloPerStop)
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                              soloPerStop
+                          )
                         : null
                     : null,
             },
@@ -1625,7 +1645,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     : null,
                 perStop: ['Team', 'Combined'].includes(this.selectedFleetType)
                     ? teamPerStop
-                        ? convertThousanSepInNumber(teamPerStop)
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                              teamPerStop
+                          )
                         : null
                     : null,
             },
@@ -1646,10 +1668,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     : null
                 : null,
             soloPerLoad: soloPerLoad
-                ? convertThousanSepInNumber(soloPerLoad)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      soloPerLoad
+                  )
                 : null,
             teamPerLoad: teamPerLoad
-                ? convertThousanSepInNumber(teamPerLoad)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      teamPerLoad
+                  )
                 : null,
             defaultSoloDriverCommission: [
                 ConstantStringEnum.SOLO,
@@ -1729,7 +1755,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             companyType:
                 data.companyType?.id !== 0 ? data.companyType.name : null,
             dateOfIncorporation: data.dateOfIncorporation
-                ? convertDateFromBackend(data.dateOfIncorporation)
+                ? MethodsCalculationsHelper.convertDateFromBackend(
+                      data.dateOfIncorporation
+                  )
                 : null,
             logo: data.logo ? data.logo : null,
             //-------------------- Additional Tab
@@ -1826,7 +1854,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         card: card.card,
                         cvc: card.cvc,
                         expireDate: card.expireDate
-                            ? convertDateFromBackend(card.expireDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  card.expireDate
+                              )
                             : null,
                     })
                 );
@@ -1850,7 +1880,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('accountingDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -1875,7 +1905,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('dispatchDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -1902,7 +1932,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('recruitingDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -1926,7 +1956,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('repairDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -1950,7 +1980,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('safetyDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -1974,7 +2004,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('managerDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -2001,7 +2031,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('companyOwnerDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -2025,7 +2055,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('otherDefaultBase')
                             .patchValue(
                                 payroll.defaultBase
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.defaultBase
                                       )
                                     : null
@@ -2056,7 +2086,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('soloPerStop')
                             .patchValue(
                                 payroll.solo.perStop
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.solo.perStop
                                       )
                                     : null
@@ -2069,7 +2099,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('soloPerLoad')
                             .patchValue(
                                 payroll.soloPerLoad
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.soloPerLoad
                                       )
                                     : null
@@ -2089,7 +2119,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('teamPerStop')
                             .patchValue(
                                 payroll.team.perStop
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.team.perStop
                                       )
                                     : null
@@ -2103,7 +2133,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             .get('teamPerLoad')
                             .patchValue(
                                 payroll.teamPerLoad
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           payroll.teamPerLoad
                                       )
                                     : null

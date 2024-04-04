@@ -55,11 +55,7 @@ import {
 } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // utils
-import {
-    calculateParkingSlot,
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-parking-modal',
@@ -336,10 +332,11 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
-                this.parkingSlots[0].value = calculateParkingSlot(
-                    value,
-                    this.parkingForm.get('parkingSlot')
-                );
+                this.parkingSlots[0].value =
+                    MethodsCalculationsHelper.calculateParkingSlot(
+                        value,
+                        this.parkingForm.get('parkingSlot')
+                    );
             });
     }
 
@@ -349,10 +346,11 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
-                this.parkingSlots[1].value = calculateParkingSlot(
-                    value,
-                    this.parkingForm.get('fullParkingSlot')
-                );
+                this.parkingSlots[1].value =
+                    MethodsCalculationsHelper.calculateParkingSlot(
+                        value,
+                        this.parkingForm.get('fullParkingSlot')
+                    );
             });
     }
 
@@ -372,7 +370,9 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -439,7 +439,9 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -532,7 +534,9 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         gate: res.gate,
                         securityCamera: res.securityCamera,
                         rent: res.rent
-                            ? convertNumberInThousandSep(res.rent)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name

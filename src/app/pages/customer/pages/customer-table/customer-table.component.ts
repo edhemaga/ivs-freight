@@ -79,10 +79,7 @@ import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
 } from 'src/assets/utils/settings/customer-columns';
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-customer-table',
@@ -488,7 +485,7 @@ export class CustomerTableComponent
                     this.backBrokerFilterQuery.pageIndex = 1;
                     this.backShipperFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
                         this.selectedTab === TableStringEnum.ACTIVE
                             ? this.backBrokerFilterQuery
@@ -1223,10 +1220,11 @@ export class CustomerTableComponent
                                     this.updateDataCount();
 
                                     const interval = setInterval(() => {
-                                        this.viewData = closeAnimationAction(
-                                            true,
-                                            this.viewData
-                                        );
+                                        this.viewData =
+                                            MethodsGlobalHelper.closeAnimationAction(
+                                                true,
+                                                this.viewData
+                                            );
 
                                         clearInterval(interval);
                                     }, 900);
@@ -1283,10 +1281,11 @@ export class CustomerTableComponent
                     this.viewData = [...newViewData];
 
                     const interval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(interval);
                     }, 1000);
@@ -1337,7 +1336,10 @@ export class CustomerTableComponent
         this.updateDataCount();
 
         const interval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+            this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                false,
+                this.viewData
+            );
 
             clearInterval(interval);
         }, 2300);
@@ -1357,7 +1359,10 @@ export class CustomerTableComponent
         this.ref.detectChanges();
 
         const interval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+            this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                false,
+                this.viewData
+            );
 
             clearInterval(interval);
         }, 1000);
@@ -1376,7 +1381,10 @@ export class CustomerTableComponent
         this.updateDataCount();
 
         const interval = setInterval(() => {
-            this.viewData = closeAnimationAction(true, this.viewData);
+            this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                true,
+                this.viewData
+            );
 
             clearInterval(interval);
         }, 900);
@@ -1399,7 +1407,10 @@ export class CustomerTableComponent
         this.updateDataCount();
 
         const interval = setInterval(() => {
-            this.viewData = closeAnimationAction(true, this.viewData);
+            this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                true,
+                this.viewData
+            );
 
             clearInterval(interval);
         }, 900);

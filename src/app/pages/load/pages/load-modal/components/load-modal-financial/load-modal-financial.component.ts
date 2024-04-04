@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { card_modal_animation } from '../../../../../../core/components/shared/animations/card-modal.animation';
 
 //Helpers
-import { convertThousanSepInNumber } from '../../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
 
 //Components
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
@@ -75,11 +75,13 @@ export class LoadModalFinancialComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.payment?.currentValue !== changes.payment?.previousValue) {
-            const pay = convertThousanSepInNumber(
+            const pay = MethodsCalculationsHelper.convertThousanSepInNumber(
                 changes.payment?.currentValue.substring(1)
             );
 
-            const bill = convertThousanSepInNumber(this.billing.substring(1));
+            const bill = MethodsCalculationsHelper.convertThousanSepInNumber(
+                this.billing.substring(1)
+            );
 
             this.paymentDifference = pay - bill;
         }

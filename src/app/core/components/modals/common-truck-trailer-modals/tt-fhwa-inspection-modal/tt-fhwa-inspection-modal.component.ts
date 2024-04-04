@@ -13,10 +13,7 @@ import { InspectionResponse } from 'appcoretruckassist';
 import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../../shared/services/form.service';
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from '../../../../utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
@@ -133,7 +130,10 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: InspectionResponse) => {
                     this.fhwaInspectionForm.patchValue({
-                        issueDate: convertDateFromBackend(res.issueDate),
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
                         note: res.note,
                         files: res.files.length
                             ? JSON.stringify(res.files)
@@ -160,7 +160,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            issueDate: convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             id: this.editData.file_id,
             files: documents ? documents : this.fhwaInspectionForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -199,7 +200,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            issueDate: convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             truckId:
                 this.editData.modal === 'truck' ? this.editData.id : undefined,
             trailerId:

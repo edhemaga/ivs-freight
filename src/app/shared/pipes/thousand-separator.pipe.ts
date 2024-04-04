@@ -1,10 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // helpers
-import {
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../utils/helpers/methods-calculations.helper';
 
 @Pipe({
     name: 'thousandSeparator',
@@ -12,8 +9,10 @@ import {
 })
 export class ThousandSeparatorPipe implements PipeTransform {
     transform(value: any): any {
-        return convertNumberInThousandSep(
-            convertThousanSepInNumber(value ? value : '0')
+        return MethodsCalculationsHelper.convertNumberInThousandSep(
+            MethodsCalculationsHelper.convertThousanSepInNumber(
+                value ? value : '0'
+            )
         );
     }
 }

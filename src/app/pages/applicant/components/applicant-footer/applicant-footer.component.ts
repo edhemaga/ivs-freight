@@ -19,10 +19,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import {
-    convertDateFromBackend,
-    convertDateFromBackendToTime,
-} from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // moment
 import moment from 'moment';
@@ -273,11 +270,15 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    const inviteDate = convertDateFromBackend(res.inviteDate);
+                    const inviteDate =
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            res.inviteDate
+                        );
 
-                    const inviteTime = convertDateFromBackendToTime(
-                        res.inviteDate
-                    );
+                    const inviteTime =
+                        MethodsCalculationsHelper.convertDateFromBackendToTime(
+                            res.inviteDate
+                        );
 
                     this.previousRequests.push(this.createNewRequest());
 
@@ -305,13 +306,15 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
         setTimeout(() => {
             if (selectedRequestsLength) {
                 for (let i = 0; i < selectedRequestsLength; i++) {
-                    const inviteDate = convertDateFromBackend(
-                        selectedEmployerRequests.requests[i].inviteDate
-                    );
+                    const inviteDate =
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            selectedEmployerRequests.requests[i].inviteDate
+                        );
 
-                    const inviteTime = convertDateFromBackendToTime(
-                        selectedEmployerRequests.requests[i].inviteDate
-                    );
+                    const inviteTime =
+                        MethodsCalculationsHelper.convertDateFromBackendToTime(
+                            selectedEmployerRequests.requests[i].inviteDate
+                        );
 
                     this.previousRequests.push(this.createNewRequest());
 
@@ -442,9 +445,10 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
             .subscribe((res: ApplicantResponse) => {
                 this.companyInfo = res?.companyInfo;
 
-                this.dateOfApplication = convertDateFromBackend(
-                    res?.inviteDate
-                ).replace(/-/g, '/');
+                this.dateOfApplication =
+                    MethodsCalculationsHelper.convertDateFromBackend(
+                        res?.inviteDate
+                    ).replace(/-/g, '/');
             });
     }
 

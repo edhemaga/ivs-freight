@@ -53,7 +53,7 @@ import { LoadTemplateState } from '../../state/load-template-state/load-template
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
@@ -370,7 +370,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             : 1;
                     this.backLoadFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
                         this.backLoadFilterQuery
                     );

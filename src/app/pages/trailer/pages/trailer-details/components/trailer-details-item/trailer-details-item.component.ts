@@ -34,7 +34,7 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
 import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // helpers
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // moment
 import moment from 'moment';
@@ -367,7 +367,7 @@ export class TrailerDetailsItemComponent
     }
 
     public formatDate(date: string): string {
-        return convertDateFromBackend(date);
+        return MethodsCalculationsHelper.convertDateFromBackend(date);
     }
 
     ngOnDestroy(): void {
