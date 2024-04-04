@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
-//Models
+// services
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+
+// store
+import { ApplicantTableStore } from '../../pages/driver/state/applicant-state/applicant-table.store';
+
+// models
 import {
     ApplicantAdminResponse,
     ApplicantListResponse,
@@ -11,12 +17,6 @@ import {
     ResendInviteCommand,
     UpdateApplicantCommand,
 } from 'appcoretruckassist';
-
-//Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-
-//Store
-import { ApplicantTableStore } from '../../pages/driver/state/applicant-state/applicant-table.store';
 
 @Injectable({
     providedIn: 'root',

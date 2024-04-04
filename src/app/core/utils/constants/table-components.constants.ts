@@ -18,7 +18,7 @@ import { SortTypes } from '../../model/fuel';
 
 // enums
 import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
-import { OwnerBackFilterQuery } from 'src/app/shared/models/owner-table-filter-query.model';
+import { OwnerBackFilterQuery } from 'src/app/shared/models/owner-back-filter-query.model';
 import { TrailerBackFilterQueryInterface } from 'src/app/pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
 import { TruckFilter } from 'src/app/pages/truck/pages/truck-table/models/truck-filter.model';
 

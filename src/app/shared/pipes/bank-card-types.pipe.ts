@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// enum
+// enums
 import { BankCardTypesEnum } from '../../core/utils/enums/bank-card-types.enum';
 
 @Pipe({

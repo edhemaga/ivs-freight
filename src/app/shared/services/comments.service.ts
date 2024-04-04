@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+// models
 import {
     CreateCommentCommand,
     CreateResponse,
@@ -7,15 +11,12 @@ import {
     GetCommentModalResponse,
 } from 'appcoretruckassist';
 
-import { Observable } from 'rxjs';
-
 @Injectable({
     providedIn: 'root',
 })
 export class CommentsService {
     constructor(private commentService: CommentService) {}
 
-    // Comments
     public createComment(
         data: CreateCommentCommand
     ): Observable<CreateResponse> {
