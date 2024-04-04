@@ -1,7 +1,8 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService, IndividualConfig } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+
+import { ToastrService, IndividualConfig } from 'ngx-toastr';
 
 const notificationOptions: Partial<IndividualConfig> = {
     progressBar: false,

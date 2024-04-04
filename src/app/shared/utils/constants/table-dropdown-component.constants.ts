@@ -2,22 +2,22 @@
 import {
     RepairBackFilterModal,
     ShopbBckFilterQueryInterface,
-} from '../../model/repair.model';
+} from '../../../core/model/repair.model';
 import {
     FilterOptionBroker,
     FilterOptionshipper,
-} from '../../components/shared/model/table-components/customer.modals';
+} from '../../../core/components/shared/model/table-components/customer.modals';
 import {
     FilterOptionApplicant,
     FilterOptionDriver,
-} from '../../components/shared/model/table-components/driver-modal';
-import { DropdownItem } from '../../../shared/models/card-table-data.model';
-import { FilterOptionsLoad } from '../../components/shared/model/table-components/load-modal';
+} from '../../../core/components/shared/model/table-components/driver-modal';
+import { DropdownItem } from '../../models/card-table-data.model';
+import { FilterOptionsLoad } from '../../../core/components/shared/model/table-components/load-modal';
 
-import { SortTypes } from '../../model/fuel';
+import { SortTypes } from '../../../core/model/fuel';
 
 // enums
-import { ConstantStringTableComponentsEnum } from '../enums/table-components.enum';
+import { TableStringEnum } from '../../enums/table-string.enum';
 import { OwnerBackFilterQuery } from 'src/app/shared/models/owner-back-filter-query.model';
 import { TrailerBackFilterQueryInterface } from 'src/app/pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
 import { TruckFilter } from 'src/app/pages/truck/pages/truck-table/models/truck-filter.model';
@@ -621,62 +621,62 @@ export class TableDropdownComponentConstants {
 
     static DROPDOWN_FUEL_CONTENT: DropdownItem[] = [
         {
-            title: ConstantStringTableComponentsEnum.EDIT_2,
-            name: ConstantStringTableComponentsEnum.EDIT,
+            title: TableStringEnum.EDIT_2,
+            name: TableStringEnum.EDIT,
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
             hasBorder: true,
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            svgClass: TableStringEnum.REGULAR,
         },
         {
-            title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-            name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+            title: TableStringEnum.VIEW_DETAILS_2,
+            name: TableStringEnum.VIEW_DETAILS,
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            svgClass: TableStringEnum.REGULAR,
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
         },
         {
-            title: ConstantStringTableComponentsEnum.SHARE_2,
-            name: ConstantStringTableComponentsEnum.SHARE,
+            title: TableStringEnum.SHARE_2,
+            name: TableStringEnum.SHARE,
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            svgClass: TableStringEnum.REGULAR,
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
         },
         {
-            title: ConstantStringTableComponentsEnum.PRINT_2,
-            name: ConstantStringTableComponentsEnum.PRINT,
+            title: TableStringEnum.PRINT_2,
+            name: TableStringEnum.PRINT,
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
-            svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            svgClass: TableStringEnum.REGULAR,
             hasBorder: true,
         },
         {
-            title: ConstantStringTableComponentsEnum.DELETE_2,
-            name: ConstantStringTableComponentsEnum.DELETE_ITEM,
+            title: TableStringEnum.DELETE_2,
+            name: TableStringEnum.DELETE_ITEM,
             svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
-            svgClass: ConstantStringTableComponentsEnum.DELETE,
+            svgClass: TableStringEnum.DELETE,
         },
     ];
 

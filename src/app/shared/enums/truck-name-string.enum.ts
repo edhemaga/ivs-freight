@@ -1,4 +1,4 @@
-export enum TruckName {
+export enum TruckNameStringEnum {
     SEMI_TRUCK = 'Semi Truck',
     SEMI_SLEEPER = 'Semi Sleeper',
     BOX_TRUCK = 'Box Truck',

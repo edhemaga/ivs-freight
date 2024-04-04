@@ -7,7 +7,7 @@ export interface TableOptions {
 }
 
 export interface ToolbarActions {
-    action?: import('src/app/core/utils/enums/table-components.enum').ConstantStringTableComponentsEnum;
+    action?: import('src/app/shared/enums/table-string.enum').TableStringEnum;
     tabData?: any;
     mode?: string;
     hideViewMode: boolean;

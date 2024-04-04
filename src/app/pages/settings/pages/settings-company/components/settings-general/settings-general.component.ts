@@ -25,7 +25,7 @@ import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.
 
 // enums
 import { SettingsGeneralStringEnum } from '../../../../enums/settings-general-string.enum';
-import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 
 //Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
@@ -204,7 +204,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         );
 
         switch (action) {
-            case ArrowActionsEnum.PREVIOUS: {
+            case ArrowActionsStringEnum.PREVIOUS: {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     const data = this._optionsCompany[currentIndex];
@@ -213,7 +213,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 break;
             }
-            case ArrowActionsEnum.NEXT: {
+            case ArrowActionsStringEnum.NEXT: {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&

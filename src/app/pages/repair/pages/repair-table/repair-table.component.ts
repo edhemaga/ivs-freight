@@ -64,10 +64,10 @@ import {
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 import { RepairCardConfig } from '../../utils/constants/repair-card-config.constants';
 
 // Helpers
@@ -102,9 +102,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
-    public selectedTab: ConstantStringTableComponentsEnum | string =
-        ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab: TableStringEnum | string = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     public repairTrucks: RepairTruckState[] = [];
     public repairTrailers: RepairTrailerState[] = [];
     public repairShops: RepairShopState[] = [];
@@ -139,8 +138,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         RepairCardConfig.displayRowsBackRepairShop;
 
     //Title
-    public cardTitle: string =
-        ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
+    public cardTitle: string = TableStringEnum.TRUCK_TRUCK_NUMBER;
 
     // Page
     public page: string = RepairCardConfig.page;
@@ -203,7 +201,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.template === ConstantStringTableComponentsEnum.INFO)
+                if (res.template === TableStringEnum.INFO)
                     this.changeRepairShopStatus(res.data);
             });
     }
@@ -255,13 +253,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
-                    if (
-                        res.switchType ===
-                        ConstantStringTableComponentsEnum.PM_2
-                    ) {
-                        this.router.navigate([
-                            ConstantStringTableComponentsEnum.PM,
-                        ]);
+                    if (res.switchType === TableStringEnum.PM_2) {
+                        this.router.navigate([TableStringEnum.PM]);
                     }
                 }
             });
@@ -315,24 +308,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     const searchEvent = tableSearch(
                         res,
-                        this.selectedTab !==
-                            ConstantStringTableComponentsEnum.REPAIR_SHOP
+                        this.selectedTab !== TableStringEnum.REPAIR_SHOP
                             ? this.backFilterQuery
                             : this.shopFilterQuery
                     );
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             if (
-                                this.selectedTab !==
-                                ConstantStringTableComponentsEnum.REPAIR_SHOP
+                                this.selectedTab !== TableStringEnum.REPAIR_SHOP
                             ) {
                                 this.backFilterQuery.unitType =
-                                    this.selectedTab ===
-                                    ConstantStringTableComponentsEnum.ACTIVE
+                                    this.selectedTab === TableStringEnum.ACTIVE
                                         ? 1
                                         : 2;
 
@@ -341,8 +328,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.shopBackFilter(this.shopFilterQuery);
                             }
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendRepairData();
                         }
@@ -360,20 +346,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 // On Add Repair
                 if (
-                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
+                    res?.animation === TableStringEnum.ADD &&
                     this.selectedTab === res.tab
                 ) {
                     this.viewData.push(
-                        res.tab !==
-                            ConstantStringTableComponentsEnum.REPAIR_SHOP
+                        res.tab !== TableStringEnum.REPAIR_SHOP
                             ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data)
                     );
 
                     this.viewData = this.viewData.map((repair) => {
                         if (repair.id === res.id) {
-                            repair.actionAnimation =
-                                ConstantStringTableComponentsEnum.ADD;
+                            repair.actionAnimation = TableStringEnum.ADD;
                         }
 
                         return repair;
@@ -390,21 +374,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 // On Update Repair
                 else if (
-                    res?.animation ===
-                        ConstantStringTableComponentsEnum.UPDATE &&
+                    res?.animation === TableStringEnum.UPDATE &&
                     this.selectedTab === res.tab
                 ) {
                     const updatedRepair =
-                        res.tab !==
-                        ConstantStringTableComponentsEnum.REPAIR_SHOP
+                        res.tab !== TableStringEnum.REPAIR_SHOP
                             ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data);
 
                     this.viewData = this.viewData.map((repair) => {
                         if (repair.id === res.id) {
                             repair = updatedRepair;
-                            repair.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            repair.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return repair;
@@ -421,8 +402,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 // On Delete Repair
                 else if (
-                    res?.animation ===
-                        ConstantStringTableComponentsEnum.DELETE &&
+                    res?.animation === TableStringEnum.DELETE &&
                     this.selectedTab === res.tab
                 ) {
                     let repairIndex: number;
@@ -430,8 +410,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = this.viewData.map(
                         (repair, index: number) => {
                             if (repair.id === res.id) {
-                                repair.actionAnimation =
-                                    ConstantStringTableComponentsEnum.DELETE;
+                                repair.actionAnimation = TableStringEnum.DELETE;
                                 repairIndex = index;
                             }
 
@@ -465,9 +444,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -476,24 +453,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableOptions = {
             toolbarActions: {
                 showRepairShop:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP,
+                    this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 showTimeFilter:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP,
+                    this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 showRepairOrderFilter:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP,
-                showPMFilter:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP,
+                    this.selectedTab !== TableStringEnum.REPAIR_SHOP,
+                showPMFilter: this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 hideMoneySubType: true,
                 showLocationFilter: true,
                 showMoneyCount:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP,
+                    this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -501,43 +472,32 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Get View Mode Options
     private getViewModeOptions(): {
-        name: ConstantStringTableComponentsEnum;
+        name: TableStringEnum;
         active: boolean;
     }[] {
-        return this.selectedTab ===
-            ConstantStringTableComponentsEnum.REPAIR_SHOP
+        return this.selectedTab === TableStringEnum.REPAIR_SHOP
             ? [
                   {
-                      name: ConstantStringTableComponentsEnum.LIST,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.LIST,
+                      name: TableStringEnum.LIST,
+                      active: this.activeViewMode === TableStringEnum.LIST,
                   },
                   {
-                      name: ConstantStringTableComponentsEnum.CARD,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.CARD,
+                      name: TableStringEnum.CARD,
+                      active: this.activeViewMode === TableStringEnum.CARD,
                   },
                   {
-                      name: ConstantStringTableComponentsEnum.MAP,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.MAP,
+                      name: TableStringEnum.MAP,
+                      active: this.activeViewMode === TableStringEnum.MAP,
                   },
               ]
             : [
                   {
-                      name: ConstantStringTableComponentsEnum.LIST,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.LIST,
+                      name: TableStringEnum.LIST,
+                      active: this.activeViewMode === TableStringEnum.LIST,
                   },
                   {
-                      name: ConstantStringTableComponentsEnum.CARD,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.CARD,
+                      name: TableStringEnum.CARD,
+                      active: this.activeViewMode === TableStringEnum.CARD,
                   },
               ];
     }
@@ -545,9 +505,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // Send Repair Data
     private sendRepairData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.REPAIR_TABLE_VIEW
-            )
+            localStorage.getItem(TableStringEnum.REPAIR_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -561,95 +519,83 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem(
-                ConstantStringTableComponentsEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
             )
         );
 
         const repairTruckData =
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
         const repairTrailerData =
-            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+            this.selectedTab === TableStringEnum.INACTIVE
+                ? this.getTabData(TableStringEnum.INACTIVE)
                 : [];
 
         const repairShopData =
-            this.selectedTab === ConstantStringTableComponentsEnum.REPAIR_SHOP
-                ? this.getTabData(ConstantStringTableComponentsEnum.REPAIR_SHOP)
+            this.selectedTab === TableStringEnum.REPAIR_SHOP
+                ? this.getTabData(TableStringEnum.REPAIR_SHOP)
                 : [];
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.TRUCK_2,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.TRUCK_2,
+                field: TableStringEnum.ACTIVE,
                 length: repairTruckTrailerCount.repairTrucks,
                 moneyCount:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
+                    this.selectedTab === TableStringEnum.ACTIVE
                         ? repairTruckTrailerCount.truckMoneyTotal
                         : 0,
                 moneyCountSelected: false,
                 data: repairTruckData,
-                gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
+                gridNameTitle: TableStringEnum.REPAIR,
                 repairArray: DataFilterHelper.checkSpecialFilterArray(
                     repairTruckData,
-                    ConstantStringTableComponentsEnum.ORDER_2,
-                    ConstantStringTableComponentsEnum.REPAIR_TYPE
+                    TableStringEnum.ORDER_2,
+                    TableStringEnum.REPAIR_TYPE
                 ),
                 stateName: 'repair_trucks',
-                tableConfiguration:
-                    ConstantStringTableComponentsEnum.REPAIR_TRUCK,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.REPAIR_TRUCK
-                ),
+                tableConfiguration: TableStringEnum.REPAIR_TRUCK,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.REPAIR_TRUCK),
             },
             {
-                title: ConstantStringTableComponentsEnum.TRAILER,
-                field: ConstantStringTableComponentsEnum.INACTIVE,
+                title: TableStringEnum.TRAILER,
+                field: TableStringEnum.INACTIVE,
                 length: repairTruckTrailerCount.repairTrailers,
                 moneyCount:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE
+                    this.selectedTab === TableStringEnum.INACTIVE
                         ? repairTruckTrailerCount.trailerMoneyTotal
                         : 0,
                 moneyCountSelected: false,
                 data: repairTrailerData,
-                gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
+                gridNameTitle: TableStringEnum.REPAIR,
                 repairArray: DataFilterHelper.checkSpecialFilterArray(
                     repairTrailerData,
-                    ConstantStringTableComponentsEnum.ORDER_2,
-                    ConstantStringTableComponentsEnum.REPAIR_TYPE
+                    TableStringEnum.ORDER_2,
+                    TableStringEnum.REPAIR_TYPE
                 ),
                 stateName: 'repair_trailers',
-                tableConfiguration:
-                    ConstantStringTableComponentsEnum.REPAIR_TRAILER,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
+                tableConfiguration: TableStringEnum.REPAIR_TRAILER,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
                 gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.REPAIR_TRAILER
+                    TableStringEnum.REPAIR_TRAILER
                 ),
             },
             {
-                title: ConstantStringTableComponentsEnum.SHOP,
-                field: ConstantStringTableComponentsEnum.REPAIR_SHOP,
+                title: TableStringEnum.SHOP,
+                field: TableStringEnum.REPAIR_SHOP,
                 length: repairTruckTrailerCount.repairShops,
                 data: repairShopData,
-                gridNameTitle: ConstantStringTableComponentsEnum.REPAIR,
+                gridNameTitle: TableStringEnum.REPAIR,
                 stateName: 'repair_shops',
                 closedArray: DataFilterHelper.checkSpecialFilterArray(
                     repairShopData,
-                    ConstantStringTableComponentsEnum.STATUS
+                    TableStringEnum.STATUS
                 ),
                 tableConfiguration: 'REPAIR_SHOP',
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP,
+                isActive: this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 gridColumns: this.getGridColumns('REPAIR_SHOP'),
             },
         ];
@@ -661,20 +607,20 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Check If Selected Tab Has Active View Mode
     private checkActiveViewMode(): void {
-        if (this.activeViewMode === ConstantStringTableComponentsEnum.MAP) {
+        if (this.activeViewMode === TableStringEnum.MAP) {
             let hasMapView = false;
 
             let viewModeOptions =
                 this.tableOptions.toolbarActions.viewModeOptions;
 
             viewModeOptions.map((viewMode) => {
-                if (viewMode.name === ConstantStringTableComponentsEnum.MAP) {
+                if (viewMode.name === TableStringEnum.MAP) {
                     hasMapView = true;
                 }
             });
 
             if (!hasMapView) {
-                this.activeViewMode = ConstantStringTableComponentsEnum.LIST;
+                this.activeViewMode = TableStringEnum.LIST;
 
                 viewModeOptions = this.getViewModeOptions();
             }
@@ -687,17 +633,17 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Get Tab Data From Store Or Via Api
     private getTabData(dataType: string): RepairTruckState[] {
-        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (dataType === TableStringEnum.ACTIVE) {
             this.repairTrucks = this.repairTruckQuery.getAll();
 
             return this.repairTrucks?.length ? this.repairTrucks : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
+        } else if (dataType === TableStringEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.repairTrailers = this.repairTrailerQuery.getAll();
 
             return this.repairTrailers?.length ? this.repairTrailers : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.REPAIR_SHOP) {
+        } else if (dataType === TableStringEnum.REPAIR_SHOP) {
             this.repairShopTabClicked = true;
 
             this.repairShops = this.repairShopQuery.getAll();
@@ -713,8 +659,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         );
 
         if (
-            configType === ConstantStringTableComponentsEnum.REPAIR_TRUCK ||
-            configType === ConstantStringTableComponentsEnum.REPAIR_TRAILER
+            configType === TableStringEnum.REPAIR_TRUCK ||
+            configType === TableStringEnum.REPAIR_TRAILER
         ) {
             return tableColumnsConfig
                 ? tableColumnsConfig
@@ -735,28 +681,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.viewData = this.viewData.map((data) => {
                 if (
-                    this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE ||
-                    this.selectedTab ===
-                        ConstantStringTableComponentsEnum.INACTIVE
+                    this.selectedTab === TableStringEnum.ACTIVE ||
+                    this.selectedTab === TableStringEnum.INACTIVE
                 ) {
                     switch (this.selectedTab) {
-                        case ConstantStringTableComponentsEnum.ACTIVE:
+                        case TableStringEnum.ACTIVE:
                             this.sendDataToCardsFront =
                                 this.displayRowsFrontTruck;
                             this.sendDataToCardsBack =
                                 this.displayRowsBackTruck;
-                            this.cardTitle =
-                                ConstantStringTableComponentsEnum.TRUCK_TRUCK_NUMBER;
+                            this.cardTitle = TableStringEnum.TRUCK_TRUCK_NUMBER;
 
                             break;
-                        case ConstantStringTableComponentsEnum.INACTIVE:
+                        case TableStringEnum.INACTIVE:
                             this.sendDataToCardsFront =
                                 this.displayRowsFrontTrailer;
                             this.sendDataToCardsBack =
                                 this.displayRowsBackTrailer;
                             this.cardTitle =
-                                ConstantStringTableComponentsEnum.TRAILER_TRAILER_NUMBER;
+                                TableStringEnum.TRAILER_TRAILER_NUMBER;
                             break;
                     }
                     this.getSelectedTabTableData();
@@ -764,7 +707,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 } else {
                     this.sendDataToCardsFront = this.displayRowsFrontRepairShop;
                     this.sendDataToCardsBack = this.displayRowsBackRepairShop;
-                    this.cardTitle = ConstantStringTableComponentsEnum.NAME;
+                    this.cardTitle = TableStringEnum.NAME;
                     return this.mapShopData(data);
                 }
             });
@@ -782,40 +725,38 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         return {
             ...data,
             isSelected: false,
-            isRepairOrder:
-                data?.repairType?.name ===
-                ConstantStringTableComponentsEnum.ORDER,
+            isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
             tableUnit: data?.truck?.truckNumber
                 ? data.truck.truckNumber
                 : data?.trailer?.trailerNumber
                 ? data.trailer.trailerNumber
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType: ConstantStringTableComponentsEnum.NA,
-            tableMake: ConstantStringTableComponentsEnum.NA,
-            tableModel: ConstantStringTableComponentsEnum.NA,
-            tableYear: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableType: TableStringEnum.NA,
+            tableMake: TableStringEnum.NA,
+            tableModel: TableStringEnum.NA,
+            tableYear: TableStringEnum.NA,
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableIssued: data?.date
                 ? this.datePipe.transform(
                       data.date,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopName: data?.repairShop?.name
                 ? data.repairShop.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopAdress: data?.repairShop?.address?.address
                 ? data.repairShop.address.address
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableServices: data?.serviceTypes ? data?.serviceTypes : null,
 
             tableDescription: data?.items
                 ? data.items
                       .map((item) => item.description?.trim())
                       .join(
-                          ConstantStringTableComponentsEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
+                          TableStringEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
                       )
                 : null,
             descriptionItems: data?.items
@@ -823,41 +764,41 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       return {
                           ...item,
                           descriptionPrice: item?.price
-                              ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                              ? TableStringEnum.DOLLAR_SIGN +
                                 this.thousandSeparator.transform(item.price)
-                              : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                           descriptionTotalPrice: item?.subtotal
-                              ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                              ? TableStringEnum.DOLLAR_SIGN +
                                 this.thousandSeparator.transform(item.subtotal)
-                              : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                           pmDescription: item?.pmTruck
                               ? item.pmTruck
                               : item?.pmTrailer
                               ? item.pmTrailer
-                              : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                              : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                       };
                   })
                 : null,
             tabelDescriptionDropTotal: data?.total
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.total)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableCost: data?.total
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.total)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
@@ -875,56 +816,55 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             isSelected: false,
             tableAddress: data?.address?.address
                 ? data.address.address
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopServices: data?.serviceTypes ? data?.serviceTypes : null,
             tableOpenHours: data?.openHoursToday,
             tableBankDetailsBankName: data?.bank?.name
                 ? data.bank.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableBankDetailsRouting: data?.routing
                 ? data.routing
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableBankDetailsAccount: data?.account
                 ? data.account
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            TableDropdownComponentConstantsCountBill:
-                ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            TableDropdownComponentConstantsCountBill: TableStringEnum.NA,
             TableDropdownComponentConstantsCountOrder: data?.order
                 ? this.thousandSeparator.transform(data.order)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableShopRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount
                     ? data.upCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                    : TableStringEnum.NUMBER_0,
                 dislikeCount: data?.downCount
                     ? data.downCount
-                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                    : TableStringEnum.NUMBER_0,
             },
             tableContact: data?.contacts?.length ? data.contacts.length : 0,
             tableExpense: data?.cost
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.cost)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLUsed: data.lastVisited
                 ? this.datePipe.transform(
                       data.lastVisited,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             isFavorite: data.pinned,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
@@ -1041,7 +981,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private updateDataCount(): void {
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem(
-                ConstantStringTableComponentsEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
+                TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
             )
         );
 
@@ -1060,21 +1000,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Table Toolbar Actions
     public onToolBarAction(event: ToolbarActions): void {
-        if (event.action === ConstantStringTableComponentsEnum.TAB_SELECTED) {
+        if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.unitType =
-                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                    ? 1
-                    : 2;
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
 
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
             // Repair Trailer Api Call
             if (
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE &&
+                this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
                 forkJoin([
@@ -1111,43 +1048,37 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
                 this.sendRepairData();
             }
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.OPEN_MODAL
-        ) {
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+        } else if (event.action === TableStringEnum.OPEN_MODAL) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(
                     RepairOrderModalComponent,
                     {
-                        size: ConstantStringTableComponentsEnum.LARGE,
+                        size: TableStringEnum.LARGE,
                     },
                     {
-                        type: ConstantStringTableComponentsEnum.NEW_TRUCK,
+                        type: TableStringEnum.NEW_TRUCK,
                     }
                 );
-            } else if (
-                this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
-            ) {
+            } else if (this.selectedTab === TableStringEnum.INACTIVE) {
                 this.modalService.openModal(
                     RepairOrderModalComponent,
                     {
-                        size: ConstantStringTableComponentsEnum.LARGE,
+                        size: TableStringEnum.LARGE,
                     },
                     {
-                        type: ConstantStringTableComponentsEnum.NEW_TRAILER,
+                        type: TableStringEnum.NEW_TRAILER,
                     }
                 );
             } else {
                 this.modalService.openModal(RepairShopModalComponent, {
-                    size: ConstantStringTableComponentsEnum.SMALL,
+                    size: TableStringEnum.SMALL,
                 });
             }
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
 
             this.tableOptions.toolbarActions.hideSearch =
-                event.mode == ConstantStringTableComponentsEnum.MAP;
+                event.mode == TableStringEnum.MAP;
         }
     }
 
@@ -1156,21 +1087,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         action: string;
         direction: string;
     }): void {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
                 this.backFilterQuery.pageIndex = 1;
                 this.shopFilterQuery.pageIndex = 1;
 
-                if (
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP
-                ) {
+                if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
                     this.backFilterQuery.unitType =
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                            ? 1
-                            : 2;
+                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
 
                     this.repairBackFilter(this.backFilterQuery);
                 } else {
@@ -1186,51 +1111,45 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // Table Body Actions
     public onTableBodyActions(event: BodyResponseRepair): void {
         // Show More
-        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
-            if (
-                this.selectedTab !==
-                ConstantStringTableComponentsEnum.REPAIR_SHOP
-            ) {
+        if (event.type === TableStringEnum.SHOW_MORE) {
+            if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
                 this.backFilterQuery.unitType =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 2;
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 2;
             }
 
-            this.selectedTab !== ConstantStringTableComponentsEnum.REPAIR_SHOP
+            this.selectedTab !== TableStringEnum.REPAIR_SHOP
                 ? this.backFilterQuery.pageIndex++
                 : this.shopFilterQuery.pageIndex++;
 
-            this.selectedTab !== ConstantStringTableComponentsEnum.REPAIR_SHOP
+            this.selectedTab !== TableStringEnum.REPAIR_SHOP
                 ? this.repairBackFilter(this.backFilterQuery, true)
                 : this.shopBackFilter(this.shopFilterQuery, true);
         }
 
         // Edit
         else if (
-            event.type === ConstantStringTableComponentsEnum.EDIT ||
-            event.type === ConstantStringTableComponentsEnum.WRITE_REVIEW
+            event.type === TableStringEnum.EDIT ||
+            event.type === TableStringEnum.WRITE_REVIEW
         ) {
             switch (this.selectedTab) {
-                case ConstantStringTableComponentsEnum.ACTIVE: {
+                case TableStringEnum.ACTIVE: {
                     this.modalService.openModal(
                         RepairOrderModalComponent,
-                        { size: ConstantStringTableComponentsEnum.LARGE },
+                        { size: TableStringEnum.LARGE },
                         {
                             ...event,
-                            type: ConstantStringTableComponentsEnum.EDIT_TRUCK,
+                            type: TableStringEnum.EDIT_TRUCK,
                         }
                     );
                     break;
                 }
-                case ConstantStringTableComponentsEnum.INACTIVE: {
+                case TableStringEnum.INACTIVE: {
                     this.modalService.openModal(
                         RepairOrderModalComponent,
-                        { size: ConstantStringTableComponentsEnum.LARGE },
+                        { size: TableStringEnum.LARGE },
                         {
                             ...event,
-                            type: ConstantStringTableComponentsEnum.EDIT_TRAILER,
+                            type: TableStringEnum.EDIT_TRAILER,
                         }
                     );
                     break;
@@ -1238,51 +1157,42 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 default: {
                     this.modalService.openModal(
                         RepairShopModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             ...event,
                             openedTab:
-                                event.type ===
-                                ConstantStringTableComponentsEnum.ADD_CONTRACT
-                                    ? ConstantStringTableComponentsEnum.CONTRACT
+                                event.type === TableStringEnum.ADD_CONTRACT
+                                    ? TableStringEnum.CONTRACT
                                     : event.type ===
-                                      ConstantStringTableComponentsEnum.WRITE_REVIEW
-                                    ? ConstantStringTableComponentsEnum.REVIEW
-                                    : ConstantStringTableComponentsEnum.DETAILS,
+                                      TableStringEnum.WRITE_REVIEW
+                                    ? TableStringEnum.REVIEW
+                                    : TableStringEnum.DETAILS,
                         }
                     );
                     break;
                 }
             }
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.VIEW_DETAILS
-        ) {
-            if (
-                this.selectedTab ===
-                ConstantStringTableComponentsEnum.REPAIR_SHOP
-            )
+        } else if (event.type === TableStringEnum.VIEW_DETAILS) {
+            if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
                 this.router.navigate([`/list/repair/${event.id}/shop-details`]);
         }
         // Delete
         else if (
-            event.type === ConstantStringTableComponentsEnum.DELETE_REPAIR ||
-            event.type === ConstantStringTableComponentsEnum.DELETE
+            event.type === TableStringEnum.DELETE_REPAIR ||
+            event.type === TableStringEnum.DELETE
         ) {
             switch (this.selectedTab) {
-                case ConstantStringTableComponentsEnum.REPAIR_SHOP:
+                case TableStringEnum.REPAIR_SHOP:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.DELETE },
+                        { size: TableStringEnum.DELETE },
                         {
-                            type: ConstantStringTableComponentsEnum.DELETE,
+                            type: TableStringEnum.DELETE,
                         }
                     );
                     this.confiramtionService.confirmationData$.subscribe(
                         (response) => {
-                            if (
-                                response.type ===
-                                ConstantStringTableComponentsEnum.DELETE
-                            )
+                            if (response.type === TableStringEnum.DELETE)
                                 this.repairService
                                     .deleteRepairShopById(event.id)
                                     .pipe(takeUntil(this.destroy$))
@@ -1295,17 +1205,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 default:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.DELETE },
+                        { size: TableStringEnum.DELETE },
                         {
-                            type: ConstantStringTableComponentsEnum.DELETE,
+                            type: TableStringEnum.DELETE,
                         }
                     );
                     this.confiramtionService.confirmationData$.subscribe(
                         (response) => {
-                            if (
-                                response.type ===
-                                ConstantStringTableComponentsEnum.DELETE
-                            ) {
+                            if (response.type === TableStringEnum.DELETE) {
                                 this.repairService
                                     .deleteRepairById(
                                         event?.id,
@@ -1323,50 +1230,46 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     );
                     break;
             }
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.CLOSE_BUSINESS
-        ) {
+        } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 ...event,
                 type:
                     !event.data.status && event.data.status == 0
-                        ? ConstantStringTableComponentsEnum.OPEN
-                        : ConstantStringTableComponentsEnum.CLOSE,
+                        ? TableStringEnum.OPEN
+                        : TableStringEnum.CLOSE,
             };
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: ConstantStringTableComponentsEnum.INFO,
+                    template: TableStringEnum.INFO,
                     subType: 'repair shop',
-                    subTypeStatus: ConstantStringTableComponentsEnum.BUSINESS,
+                    subTypeStatus: TableStringEnum.BUSINESS,
                 }
             );
         }
         // Finish Order
-        else if (
-            event.type === ConstantStringTableComponentsEnum.FINISH_ORDER
-        ) {
+        else if (event.type === TableStringEnum.FINISH_ORDER) {
             switch (this.selectedTab) {
-                case ConstantStringTableComponentsEnum.ACTIVE: {
+                case TableStringEnum.ACTIVE: {
                     this.modalService.openModal(
                         RepairOrderModalComponent,
-                        { size: ConstantStringTableComponentsEnum.LARGE },
+                        { size: TableStringEnum.LARGE },
                         {
                             ...event.data,
-                            type: ConstantStringTableComponentsEnum.EDIT_FO_TRUCK,
+                            type: TableStringEnum.EDIT_FO_TRUCK,
                         }
                     );
                     break;
                 }
-                case ConstantStringTableComponentsEnum.INACTIVE: {
+                case TableStringEnum.INACTIVE: {
                     this.modalService.openModal(
                         RepairOrderModalComponent,
-                        { size: ConstantStringTableComponentsEnum.LARGE },
+                        { size: TableStringEnum.LARGE },
                         {
                             ...event.data,
-                            type: ConstantStringTableComponentsEnum.EDIT_FO_TRAILER,
+                            type: TableStringEnum.EDIT_FO_TRAILER,
                         }
                     );
                     break;
@@ -1378,14 +1281,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // Raiting
-        else if (event.type === ConstantStringTableComponentsEnum.RATING) {
+        else if (event.type === TableStringEnum.RATING) {
             const raitingData = {
                 entityTypeRatingId: 2,
                 entityTypeId: event.data.id,
-                thumb:
-                    event.subType === ConstantStringTableComponentsEnum.LIKE
-                        ? 1
-                        : -1,
+                thumb: event.subType === TableStringEnum.LIKE ? 1 : -1,
                 tableData: event.data,
             };
 
@@ -1397,17 +1297,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     newViewData.map((data) => {
                         if (data.id === event.data.id) {
-                            data.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            data.actionAnimation = TableStringEnum.UPDATE;
                             data.tableShopRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
                                 likeCount: res?.upCount
                                     ? res.upCount
-                                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                                    : TableStringEnum.NUMBER_0,
                                 dislikeCount: res?.downCount
                                     ? res.downCount
-                                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                                    : TableStringEnum.NUMBER_0,
                             };
                         }
                     });
@@ -1428,7 +1327,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // Favorite
-        else if (event.type === ConstantStringTableComponentsEnum.FAVORITE) {
+        else if (event.type === TableStringEnum.FAVORITE) {
             this.repairService
                 .addShopFavorite(event.data.id)
                 .pipe(takeUntil(this.destroy$))
@@ -1437,8 +1336,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     newViewData.map((data) => {
                         if (data.id === event.data.id) {
-                            data.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            data.actionAnimation = TableStringEnum.UPDATE;
                             data.isFavorite = !data.isFavorite;
                         }
                     });
@@ -1473,7 +1371,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
-            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+            type: TableStringEnum.SHOW_MORE,
         });
     }
 
@@ -1483,7 +1381,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableService.sendActionAnimation({});
         this.tableService.sendCurrentSwitchOptionSelected(null);
         // this.resizeObserver.unobserve(
-        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
+        //     document.querySelector(TableStringEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
     }

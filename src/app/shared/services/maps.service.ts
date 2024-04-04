@@ -1,14 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil, tap } from 'rxjs';
+
+// signalR
 import * as signalR from '@microsoft/signalr';
+
+// services
+import { DetailsDataService } from './details-data.service';
 import { NotificationService } from './notification.service';
 import { MapService } from '../../../../appcoretruckassist/api/map.service';
+
+// models
 import { CreateMapCommand } from '../../../../appcoretruckassist/model/createMapCommand';
 import { MapResponse } from '../../../../appcoretruckassist/model/mapResponse';
-import { tap } from 'rxjs';
-import { Router } from '@angular/router';
-import { DetailsDataService } from './details-data.service';
 
 declare var google: any;
 

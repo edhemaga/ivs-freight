@@ -56,13 +56,13 @@ import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 // Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // Store
@@ -84,8 +84,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
-    public selectedTab: string = ConstantStringTableComponentsEnum.PENDING;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.CARD;
+    public selectedTab: string = TableStringEnum.PENDING;
+    public activeViewMode: string = TableStringEnum.CARD;
     public resizeObserver: ResizeObserver;
     public loadActive: LoadActiveState[] = [];
     public loadClosed: LoadClosedState[] = [];
@@ -97,8 +97,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
-    public cardTitleLink: string =
-        ConstantStringTableComponentsEnum.LOAD_DETAILS;
+    public cardTitleLink: string = TableStringEnum.LOAD_DETAILS;
 
     public cardTitle: string;
     public sendDataToCardsFront: CardRows[];
@@ -159,19 +158,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private updateCardView(): void {
         switch (this.selectedTab) {
-            case ConstantStringTableComponentsEnum.PENDING:
+            case TableStringEnum.PENDING:
                 this.pendingTabCardsConfig();
                 break;
 
-            case ConstantStringTableComponentsEnum.TEMPLATE:
+            case TableStringEnum.TEMPLATE:
                 this.templateTabCardsConfig();
                 break;
 
-            case ConstantStringTableComponentsEnum.ACTIVE:
+            case TableStringEnum.ACTIVE:
                 this.activeTabCardsConfig();
                 break;
 
-            case ConstantStringTableComponentsEnum.CLOSED:
+            case TableStringEnum.CLOSED:
                 this.closedTabCardsConfig();
                 break;
 
@@ -192,8 +191,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle =
-                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
 
                     this.sendDataToCardsFront = filteredCardRowsFront;
 
@@ -215,8 +213,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         (row) => row !== null
                     );
 
-                    this.cardTitle =
-                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
 
                     this.sendDataToCardsFront = filteredCardRowsFront;
 
@@ -235,8 +232,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle =
-                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
 
                     this.sendDataToCardsFront = filteredCardRowsFront;
 
@@ -255,8 +251,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle =
-                        ConstantStringTableComponentsEnum.LOAD_INVOICE;
+                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
 
                     this.sendDataToCardsFront = filteredCardRowsFront;
 
@@ -366,14 +361,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res: Search) => {
                 if (res) {
                     this.backLoadFilterQuery.statusType =
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.TEMPLATE
+                        this.selectedTab === TableStringEnum.TEMPLATE
                             ? undefined
-                            : this.selectedTab ===
-                              ConstantStringTableComponentsEnum.ACTIVE
+                            : this.selectedTab === TableStringEnum.ACTIVE
                             ? 2
-                            : this.selectedTab ===
-                              ConstantStringTableComponentsEnum.CLOSED
+                            : this.selectedTab === TableStringEnum.CLOSED
                             ? 3
                             : 1;
                     this.backLoadFilterQuery.pageIndex = 1;
@@ -383,14 +375,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.backLoadFilterQuery
                     );
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             this.loadBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendLoadData();
                         }
@@ -415,12 +403,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: ConstantStringTableComponentsEnum.LOAD,
-                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            template: TableStringEnum.LOAD,
+                            type: TableStringEnum.MULTIPLE_DELETE,
                             image: true,
                         }
                     );
@@ -435,26 +423,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 // On Add Driver Active
 
                 if (
-                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
-                    this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
+                    res?.animation === TableStringEnum.ADD &&
+                    this.selectedTab === TableStringEnum.ACTIVE
                 ) {
                 }
                 // On Update Driver
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE) {
                 }
                 // On Update Driver Status
-                else if (
-                    res?.animation ===
-                    ConstantStringTableComponentsEnum.UPDATE_STATUS
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
                 }
                 // On Delete Driver
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.DELETE
-                ) {
+                else if (res?.animation === TableStringEnum.DELETE) {
                 }
             });
     }
@@ -469,9 +449,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -479,29 +457,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 hideActivationButton: true,
-                showTimeFilter:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.TEMPLATE,
+                showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showDispatcherFilter:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.TEMPLATE,
-                showStatusFilter:
-                    this.selectedTab !==
-                    ConstantStringTableComponentsEnum.TEMPLATE,
+                    this.selectedTab !== TableStringEnum.TEMPLATE,
+                showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
                 showMoneyFilter: true,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -509,24 +478,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public getStatusLabelStyle(status: string | undefined): string {
-        const styles = ConstantStringTableComponentsEnum.STYLES;
+        const styles = TableStringEnum.STYLES;
 
-        if (status === ConstantStringTableComponentsEnum.ASSIGNED) {
-            return styles + ConstantStringTableComponentsEnum.ASSIGNED_COLOR;
-        } else if (status === ConstantStringTableComponentsEnum.LOADED) {
-            return styles + ConstantStringTableComponentsEnum.LOADED_COLOR;
-        } else if (status === ConstantStringTableComponentsEnum.DISPATCHED) {
-            return styles + ConstantStringTableComponentsEnum.DISPATCHED_COLOR;
+        if (status === TableStringEnum.ASSIGNED) {
+            return styles + TableStringEnum.ASSIGNED_COLOR;
+        } else if (status === TableStringEnum.LOADED) {
+            return styles + TableStringEnum.LOADED_COLOR;
+        } else if (status === TableStringEnum.DISPATCHED) {
+            return styles + TableStringEnum.DISPATCHED_COLOR;
         } else {
-            return styles + ConstantStringTableComponentsEnum.DEFAULT_COLOR;
+            return styles + TableStringEnum.DEFAULT_COLOR;
         }
     }
 
     private sendLoadData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.LOAD_TABLE_VIEW
-            )
+            localStorage.getItem(TableStringEnum.LOAD_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -537,131 +504,121 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const loadCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.LOAD_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
         );
 
         const loadTemplateData =
-            this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
-                ? this.getTabData(ConstantStringTableComponentsEnum.TEMPLATE)
+            this.selectedTab === TableStringEnum.TEMPLATE
+                ? this.getTabData(TableStringEnum.TEMPLATE)
                 : [];
 
         const loadPendingData =
-            this.selectedTab === ConstantStringTableComponentsEnum.PENDING
-                ? this.getTabData(ConstantStringTableComponentsEnum.PENDING)
+            this.selectedTab === TableStringEnum.PENDING
+                ? this.getTabData(TableStringEnum.PENDING)
                 : [];
 
         const loadActiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
         const repairClosedData =
-            this.selectedTab === ConstantStringTableComponentsEnum.CLOSED
-                ? this.getTabData(ConstantStringTableComponentsEnum.CLOSED)
+            this.selectedTab === TableStringEnum.CLOSED
+                ? this.getTabData(TableStringEnum.CLOSED)
                 : [];
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.TEMPLATE_2,
-                field: ConstantStringTableComponentsEnum.TEMPLATE,
+                title: TableStringEnum.TEMPLATE_2,
+                field: TableStringEnum.TEMPLATE,
                 length: loadCount.templateCount,
                 data: loadTemplateData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                gridNameTitle: TableStringEnum.LOAD,
                 moneyCountSelected: false,
                 ltlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadTemplateData,
-                    ConstantStringTableComponentsEnum.LTL,
-                    ConstantStringTableComponentsEnum.TYPE
+                    TableStringEnum.LTL,
+                    TableStringEnum.TYPE
                 ),
                 ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadTemplateData,
-                    ConstantStringTableComponentsEnum.FTL,
-                    ConstantStringTableComponentsEnum.TYPE
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
                 ),
-                stateName: ConstantStringTableComponentsEnum.LOADS,
+                stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_TEMPLATE',
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.TEMPLATE,
+                isActive: this.selectedTab === TableStringEnum.TEMPLATE,
                 gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.TEMPLATE,
+                    TableStringEnum.TEMPLATE,
                     'LOAD_TEMPLATE'
                 ),
             },
             {
-                title: ConstantStringTableComponentsEnum.PENDING_2,
-                field: ConstantStringTableComponentsEnum.PENDING,
+                title: TableStringEnum.PENDING_2,
+                field: TableStringEnum.PENDING,
                 length: loadCount.pendingCount,
                 data: loadPendingData,
                 extended: false,
                 moneyCountSelected: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
+                gridNameTitle: TableStringEnum.LOAD,
                 ltlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadPendingData,
-                    ConstantStringTableComponentsEnum.LTL,
-                    ConstantStringTableComponentsEnum.TYPE
+                    TableStringEnum.LTL,
+                    TableStringEnum.TYPE
                 ),
                 ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadPendingData,
-                    ConstantStringTableComponentsEnum.FTL,
-                    ConstantStringTableComponentsEnum.TYPE
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
                 ),
-                stateName: ConstantStringTableComponentsEnum.LOADS,
+                stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.PENDING,
+                isActive: this.selectedTab === TableStringEnum.PENDING,
                 gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.PENDING,
+                    TableStringEnum.PENDING,
                     'LOAD_REGULAR'
                 ),
             },
             {
-                title: ConstantStringTableComponentsEnum.ACTIVE_2,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.ACTIVE_2,
+                field: TableStringEnum.ACTIVE,
                 length: loadCount.activeCount,
                 data: loadActiveData,
                 moneyCountSelected: false,
                 ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadActiveData,
-                    ConstantStringTableComponentsEnum.FTL,
-                    ConstantStringTableComponentsEnum.TYPE
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
                 ),
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
-                stateName: ConstantStringTableComponentsEnum.LOADS,
+                gridNameTitle: TableStringEnum.LOAD,
+                stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
                 gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.ACTIVE,
+                    TableStringEnum.ACTIVE,
                     'LOAD_REGULAR'
                 ),
             },
             {
-                title: ConstantStringTableComponentsEnum.CLOSED_2,
-                field: ConstantStringTableComponentsEnum.CLOSED,
+                title: TableStringEnum.CLOSED_2,
+                field: TableStringEnum.CLOSED,
                 length: loadCount.closedCount,
                 moneyCountSelected: false,
                 data: repairClosedData,
                 ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     repairClosedData,
-                    ConstantStringTableComponentsEnum.FTL,
-                    ConstantStringTableComponentsEnum.TYPE
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
                 ),
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
-                stateName: ConstantStringTableComponentsEnum.LOADS,
+                gridNameTitle: TableStringEnum.LOAD,
+                stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_CLOSED',
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.CLOSED,
+                isActive: this.selectedTab === TableStringEnum.CLOSED,
                 gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.CLOSED,
+                    TableStringEnum.CLOSED,
                     'LOAD_CLOSED'
                 ),
             },
@@ -677,11 +634,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (activeTab === ConstantStringTableComponentsEnum.TEMPLATE) {
+        if (activeTab === TableStringEnum.TEMPLATE) {
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getLoadTemplateColumnDefinition();
-        } else if (activeTab === ConstantStringTableComponentsEnum.CLOSED) {
+        } else if (activeTab === TableStringEnum.CLOSED) {
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getLoadClosedColumnDefinition();
@@ -733,47 +690,47 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             loadInvoice: {
                 invoice: data?.loadNumber
                     ? data.loadNumber
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 type: data?.type?.name
                     ? data.type.name
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadDispatcher: {
                 name: data?.dispatcher?.fullName
                     ? data.dispatcher.fullName
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 avatar: data?.dispatcher?.avatar
                     ? this.imageBase64Service.sanitizer(data.dispatcher.avatar)
                     : null,
             },
             loadTotal: {
                 total: data?.totalRate
-                    ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                    ? TableStringEnum.DOLLAR_SIGN +
                       this.thousandSeparator.transform(data.totalRate)
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 subTotal: data?.totalAdjustedRate
-                    ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                    ? TableStringEnum.DOLLAR_SIGN +
                       this.thousandSeparator.transform(data.totalAdjustedRate)
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadBroker: {
                 hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
                 isDnu: data?.broker?.dnu,
                 name: data?.broker?.businessName
                     ? data.broker.businessName
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadTruckNumber: {
                 number: data?.dispatch?.truck?.truckNumber
                     ? data.dispatch.truck.truckNumber
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-                color: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadTrailerNumber: {
                 number: data?.dispatch?.trailer?.trailerNumber
                     ? data.dispatch.trailer.trailerNumber
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-                color: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadPickup: {
                 count: data?.stops[0]?.stopLoadOrder
@@ -781,81 +738,81 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 location:
                     data?.stops[0]?.shipper?.address?.city +
-                    ConstantStringTableComponentsEnum.COMA +
+                    TableStringEnum.COMA +
                     data?.stops[0]?.shipper?.address?.stateShortName,
                 date: data?.stops[0]?.dateFrom
                     ? this.datePipe.transform(
                           data.stops[0].dateFrom,
-                          ConstantStringTableComponentsEnum.DATE_FORMAT
+                          TableStringEnum.DATE_FORMAT
                       )
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 time: data?.stops[0]?.timeFrom
                     ? data.stops[0].timeFrom
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadDelivery: {
                 count: data?.stops[data.stops.length - 1]?.stopLoadOrder
                     ? data.stops[data.stops.length - 1].stopLoadOrder
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 location:
                     data?.stops[data.stops.length - 1]?.shipper?.address?.city +
-                    ConstantStringTableComponentsEnum.COMA +
+                    TableStringEnum.COMA +
                     data?.stops[data.stops.length - 1]?.shipper?.address
                         ?.stateShortName,
                 date: data?.stops[data.stops.length - 1]?.dateFrom
                     ? this.datePipe.transform(
                           data.stops[data.stops.length - 1].dateFrom,
-                          ConstantStringTableComponentsEnum.DATE_FORMAT
+                          TableStringEnum.DATE_FORMAT
                       )
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 time: data?.stops[data.stops.length - 1]?.timeFrom
                     ? data.stops[data.stops.length - 1].timeFrom
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadStatus: {
                 status: data?.status?.name
                     ? data.status?.name
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-                color: ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 time:
                     data?.lastStatusPassed?.hours +
-                    ConstantStringTableComponentsEnum.HOURS +
+                    TableStringEnum.HOURS +
                     data?.lastStatusPassed?.minutes +
-                    ConstantStringTableComponentsEnum.MINUTES,
+                    TableStringEnum.MINUTES,
             },
             textMiles: data?.totalMiles
-                ? data.totalMiles + ConstantStringTableComponentsEnum.MILES
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.totalMiles + TableStringEnum.MILES
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textCommodity: data?.generalCommodity?.name
                 ? data.generalCommodity.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textWeight: data?.weight
-                ? data.weight + ConstantStringTableComponentsEnum.POUNDS
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.weight + TableStringEnum.POUNDS
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textBase: data?.baseRate
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.baseRate)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textAdditional: data?.additionalBillingRatesTotal
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(
                       data?.additionalBillingRatesTotal
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textAdvance: data?.advancePay
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.advancePay)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textPayTerms: data?.broker?.payTerm?.name
                 ? data.broker.payTerm?.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textDriver:
                 data?.dispatch?.driver?.firstName &&
                 data?.dispatch?.driver?.lastName
                     ? data?.dispatch?.driver?.firstName.charAt(0) +
-                      ConstantStringTableComponentsEnum.DOT +
+                      TableStringEnum.DOT +
                       data?.dispatch?.driver?.lastName
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             comments: commentsWithAvatarColor,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
@@ -871,18 +828,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getTabData(dataType: string): LoadActiveState {
-        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (dataType === TableStringEnum.ACTIVE) {
             this.loadActive = this.loadActiveQuery.getAll();
 
             return this.loadActive?.length ? this.loadActive : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.CLOSED) {
+        } else if (dataType === TableStringEnum.CLOSED) {
             this.loadClosed = this.loadClosedQuery.getAll();
 
             return this.loadClosed?.length ? this.loadClosed : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.PENDING) {
+        } else if (dataType === TableStringEnum.PENDING) {
             this.loadPanding = this.loadPandinQuery.getAll();
             return this.loadPanding?.length ? this.loadPanding : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.TEMPLATE) {
+        } else if (dataType === TableStringEnum.TEMPLATE) {
             this.loadTemplate = this.loadTemplateQuery.getAll();
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
@@ -956,30 +913,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // ---------------------------- Table Actions ------------------------------
     public onToolBarAction(event: ToolbarActions): void {
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
-        ) {
+        } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
             this.backLoadFilterQuery.statusType =
-                this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
+                this.selectedTab === TableStringEnum.TEMPLATE
                     ? undefined
-                    : this.selectedTab ===
-                      ConstantStringTableComponentsEnum.ACTIVE
+                    : this.selectedTab === TableStringEnum.ACTIVE
                     ? 2
-                    : this.selectedTab ===
-                      ConstantStringTableComponentsEnum.CLOSED
+                    : this.selectedTab === TableStringEnum.CLOSED
                     ? 3
                     : 1;
 
             this.backLoadFilterQuery.pageIndex = 1;
 
             this.sendLoadData();
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
         }
     }
@@ -988,17 +939,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         action: string;
         direction: string;
     }): void {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backLoadFilterQuery.statusType =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.TEMPLATE
+                    this.selectedTab === TableStringEnum.TEMPLATE
                         ? undefined
-                        : this.selectedTab ===
-                          ConstantStringTableComponentsEnum.ACTIVE
+                        : this.selectedTab === TableStringEnum.ACTIVE
                         ? 2
-                        : this.selectedTab ===
-                          ConstantStringTableComponentsEnum.CLOSED
+                        : this.selectedTab === TableStringEnum.CLOSED
                         ? 3
                         : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
@@ -1020,34 +968,30 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private onTableBodyActions(event: { type: string; id?: number }): void {
-        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
+        if (event.type === TableStringEnum.SHOW_MORE) {
             this.backLoadFilterQuery.statusType =
-                this.selectedTab === ConstantStringTableComponentsEnum.TEMPLATE
+                this.selectedTab === TableStringEnum.TEMPLATE
                     ? undefined
-                    : this.selectedTab ===
-                      ConstantStringTableComponentsEnum.ACTIVE
+                    : this.selectedTab === TableStringEnum.ACTIVE
                     ? 2
-                    : this.selectedTab ===
-                      ConstantStringTableComponentsEnum.CLOSED
+                    : this.selectedTab === TableStringEnum.CLOSED
                     ? 3
                     : 1;
 
             this.backLoadFilterQuery.pageIndex++;
 
             this.loadBackFilter(this.backLoadFilterQuery, true);
-        } else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
+        } else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.DELETE },
+                { size: TableStringEnum.DELETE },
                 {
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    type: TableStringEnum.DELETE,
                 }
             );
 
             this.confiramtionService.confirmationData$.subscribe((response) => {
-                if (
-                    response.type === ConstantStringTableComponentsEnum.DELETE
-                ) {
+                if (response.type === TableStringEnum.DELETE) {
                     this.loadServices
                         .deleteLoadById(event.id)
                         .pipe(takeUntil(this.destroy$))
@@ -1055,7 +999,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         .subscribe();
                 }
             });
-        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        } else if (event.type === TableStringEnum.EDIT) {
             this.loadServices
                 .getLoadById(event.id)
                 .pipe(
@@ -1070,7 +1014,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         this.modalService.openModal(
                             LoadModalComponent,
-                            { size: ConstantStringTableComponentsEnum.LOAD },
+                            { size: TableStringEnum.LOAD },
                             {
                                 ...editData,
                                 disableButton: false,
@@ -1092,7 +1036,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onShowMore(): void {
         this.onTableBodyActions({
-            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+            type: TableStringEnum.SHOW_MORE,
         });
     }
 

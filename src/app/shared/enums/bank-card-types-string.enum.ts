@@ -1,4 +1,4 @@
-export enum BankCardTypesEnum {
+export enum BankCardTypesStringEnum {
     VISA = 'visa',
     AMERICAN = 'amex',
     MASTERCARD = 'mastercard',

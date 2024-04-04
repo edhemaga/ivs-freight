@@ -32,7 +32,7 @@ import {
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // Helpers
 import { CardArrayHelper } from 'src/app/shared/utils/helpers/card-array-helper';
@@ -243,7 +243,7 @@ export class RepairCardComponent
     public onFinishOrder(card: CardDetails): void {
         this.bodyActions.emit({
             data: card,
-            type: ConstantStringTableComponentsEnum.FINISH_ORDER,
+            type: TableStringEnum.FINISH_ORDER,
         });
     }
 

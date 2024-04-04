@@ -5,13 +5,6 @@ import { Observable, Subject } from 'rxjs';
 // services
 import { FormDataService } from 'src/app/shared/services/form-data.service';
 
-//Model
-
-import {
-    Comment,
-    DeleteComment,
-} from 'src/app/shared/models/card-table-data.model';
-
 // models
 import {
     CreateResponse,
@@ -28,6 +21,11 @@ import {
     RoutingService,
     RoutingResponse,
 } from 'appcoretruckassist';
+
+import {
+    Comment,
+    DeleteComment,
+} from 'src/app/shared/models/card-table-data.model';
 import { Load } from 'src/app/pages/load/models/load.model';
 
 @Injectable({

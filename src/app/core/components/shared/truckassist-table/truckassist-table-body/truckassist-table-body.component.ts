@@ -35,7 +35,7 @@ import { TableStrategy } from './table_strategy';
 
 // services
 import { TruckassistTableService } from '../../../../../shared/services/truckassist-table.service';
-import { SharedService } from '../../../../services/shared.service';
+import { SharedService } from '../../../../../shared/services/shared.service';
 import { DetailsDataService } from '../../../../../shared/services/details-data.service';
 import { FilesService } from 'src/app/shared/services/files.service';
 
@@ -65,7 +65,7 @@ import { TableTextCountPipe } from 'src/app/core/components/shared/truckassist-t
 import { ContactPhoneEmailIconPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/contact-phone-email-icon.pipe';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
@@ -435,11 +435,10 @@ export class TruckassistTableBodyComponent
             let entity = this.activeTableData?.gridNameTitle;
 
             if (
-                entity === ConstantStringTableComponentsEnum.REPAIR &&
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP
+                entity === TableStringEnum.REPAIR &&
+                this.selectedTab === TableStringEnum.REPAIR_SHOP
             )
-                entity = ConstantStringTableComponentsEnum.REPAIR_SHOP_2;
+                entity = TableStringEnum.REPAIR_SHOP_2;
 
             this.filesService
                 .getFiles(entity, this.activeAttachment)
@@ -875,11 +874,10 @@ export class TruckassistTableBodyComponent
             let entity = this.activeTableData?.gridNameTitle?.toLowerCase();
 
             if (
-                entity === ConstantStringTableComponentsEnum.REPAIR &&
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP
+                entity === TableStringEnum.REPAIR &&
+                this.selectedTab === TableStringEnum.REPAIR_SHOP
             )
-                entity = ConstantStringTableComponentsEnum.REPAIR_SHOP_2;
+                entity = TableStringEnum.REPAIR_SHOP_2;
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 if (res?.length) {

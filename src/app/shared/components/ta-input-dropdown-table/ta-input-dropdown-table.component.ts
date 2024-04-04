@@ -41,7 +41,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 // enums
-import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
+import { TaInputDropdownTableStringEnum } from 'src/app/shared/components/ta-input-dropdown-table/enums/ta-input-dropdown-table-string.enum';
 
 // constants
 import { RatingReviewTabsConstants } from './utils/constants/rating-review-tabs.constants';
@@ -103,8 +103,7 @@ export class TaInputDropdownTableComponent
     @Input() svg: string;
 
     @Input() type: string;
-    @Input() searchPlaceholder?: string =
-        ConstantStringTableDropdownEnum.SEARCH;
+    @Input() searchPlaceholder?: string = TaInputDropdownTableStringEnum.SEARCH;
     @Input() checkForLoggedUser: boolean;
 
     private destroy$ = new Subject<void>();
@@ -144,7 +143,7 @@ export class TaInputDropdownTableComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.type === ConstantStringTableDropdownEnum.CONTACTS)
+        if (this.type === TaInputDropdownTableStringEnum.CONTACTS)
             this.mapContactsData(changes.data.currentValue);
     }
 
@@ -161,7 +160,7 @@ export class TaInputDropdownTableComponent
 
     public onPrefferedLoadCheck(event: { name: string }): void {
         switch (event.name) {
-            case ConstantStringTableDropdownEnum.RATING_CAPS:
+            case TaInputDropdownTableStringEnum.RATING_CAPS:
                 const filteredRating = this.filteredData.rating.filter(
                     (item) => item.liked || item.disliked
                 );
@@ -169,7 +168,7 @@ export class TaInputDropdownTableComponent
                 this.filteredData.rating = filteredRating;
                 break;
 
-            case ConstantStringTableDropdownEnum.REVIEW:
+            case TaInputDropdownTableStringEnum.REVIEW:
                 const filteredComment = this.filteredData.rating.filter(
                     (item) => !item.commentContent
                 );
@@ -177,7 +176,7 @@ export class TaInputDropdownTableComponent
                 this.filteredData.rating = filteredComment;
                 break;
 
-            case ConstantStringTableDropdownEnum.ALL:
+            case TaInputDropdownTableStringEnum.ALL:
                 this.filteredData.rating = this._data.rating;
                 break;
             default:
@@ -191,7 +190,7 @@ export class TaInputDropdownTableComponent
 
     public getUserLoggedUserFromLocalStorage(user: number): boolean {
         const userLocalStorage = JSON.parse(
-            localStorage.getItem(ConstantStringTableDropdownEnum.USER)
+            localStorage.getItem(TaInputDropdownTableStringEnum.USER)
         );
         return user === userLocalStorage.companyUserId;
     }
@@ -211,7 +210,7 @@ export class TaInputDropdownTableComponent
                 });
 
                 // Reset on every key press
-                if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                if (type === TaInputDropdownTableStringEnum.COMMENTS) {
                     this.filteredData.comments = this._data.comments;
                 } else {
                     this.filteredData.rating = this._data.rating;
@@ -222,21 +221,21 @@ export class TaInputDropdownTableComponent
                 // Filter function for title and comment
                 let filteredCommentTitle;
 
-                if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                if (type === TaInputDropdownTableStringEnum.COMMENTS) {
                     filteredCommentTitle = this.filterCommentsTitle(
                         searchParam,
-                        ConstantStringTableDropdownEnum.COMMENTS
+                        TaInputDropdownTableStringEnum.COMMENTS
                     );
                 } else {
                     filteredCommentTitle = this.filterCommentsTitle(
                         searchParam,
-                        ConstantStringTableDropdownEnum.RATING
+                        TaInputDropdownTableStringEnum.RATING
                     );
                 }
 
                 // If there is empty array in filteredComment set object value to default
                 if (!filteredCommentTitle.length) {
-                    if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                    if (type === TaInputDropdownTableStringEnum.COMMENTS) {
                         this.filteredData.comments = this._data.comments;
                     } else {
                         this.filteredData.rating = this._data.rating;
@@ -245,7 +244,7 @@ export class TaInputDropdownTableComponent
 
                 // If there is filtered value set value to filteredData
                 else {
-                    if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                    if (type === TaInputDropdownTableStringEnum.COMMENTS) {
                         this.filteredData.comments = filteredCommentTitle;
                     } else {
                         this.filteredData.rating = filteredCommentTitle;
@@ -257,7 +256,7 @@ export class TaInputDropdownTableComponent
             else {
                 this.lattersToHighlight = '';
 
-                if (type === ConstantStringTableDropdownEnum.COMMENTS) {
+                if (type === TaInputDropdownTableStringEnum.COMMENTS) {
                     this.filteredData.comments = this._data.comments;
                 } else {
                     this.filteredData.rating = this._data.rating;
@@ -271,7 +270,7 @@ export class TaInputDropdownTableComponent
         type: string
     ): Comment[] | Rating[] {
         switch (type) {
-            case ConstantStringTableDropdownEnum.COMMENTS:
+            case TaInputDropdownTableStringEnum.COMMENTS:
                 const filteredComments = this.filteredData.comments.filter(
                     (comment) =>
                         comment.companyUser.fullName
@@ -284,7 +283,7 @@ export class TaInputDropdownTableComponent
 
                 return filteredComments;
 
-            case ConstantStringTableDropdownEnum.RATING:
+            case TaInputDropdownTableStringEnum.RATING:
                 const filteredRating = this.filteredData.rating.filter(
                     (rating) =>
                         rating.companyUser.fullName
@@ -480,11 +479,11 @@ export class TaInputDropdownTableComponent
         toggle: boolean
     ): void {
         switch (truckOrTrailer) {
-            case ConstantStringTableDropdownEnum.TRUCK:
+            case TaInputDropdownTableStringEnum.TRUCK:
                 this.truckDropdown = toggle;
                 break;
 
-            case ConstantStringTableDropdownEnum.TRAILER:
+            case TaInputDropdownTableStringEnum.TRAILER:
                 this.trailerDropdown = toggle;
                 break;
             default:
