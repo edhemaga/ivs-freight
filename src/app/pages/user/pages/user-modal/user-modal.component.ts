@@ -62,12 +62,7 @@ import {
 } from '../../../../../../appcoretruckassist';
 
 //Utils
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 //Models
 import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
@@ -413,16 +408,24 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPayment.id
                             : null,
                         salary: salary
-                            ? convertThousanSepInNumber(salary)
+                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  salary
+                              )
                             : null,
                         startDate: startDate
-                            ? convertDateToBackend(startDate)
+                            ? MethodsCalculationsHelper.convertDateToBackend(
+                                  startDate
+                              )
                             : null,
                         is1099: this.selectedW21099
                             ? this.selectedW21099.name === '1099'
                             : false,
                         bankId: this.selectedBank ? this.selectedBank.id : null,
-                        base: base ? convertThousanSepInNumber(base) : null,
+                        base: base
+                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  base
+                              )
+                            : null,
                         commission: commission ? parseFloat(commission) : null,
                     };
                 }
@@ -731,13 +734,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 : false,
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
-            salary: salary ? convertThousanSepInNumber(salary) : null,
-            startDate: startDate ? convertDateToBackend(startDate) : null,
+            salary: salary
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                : null,
+            startDate: startDate
+                ? MethodsCalculationsHelper.convertDateToBackend(startDate)
+                : null,
             is1099: this.selectedW21099
                 ? this.selectedW21099.name === '1099'
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            base: base ? convertThousanSepInNumber(base) : null,
+            base: base
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                : null,
             commission: commission ? parseFloat(commission) : null,
         };
 
@@ -797,13 +806,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 : false,
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
-            salary: salary ? convertThousanSepInNumber(salary) : null,
-            startDate: startDate ? convertDateToBackend(startDate) : null,
+            salary: salary
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                : null,
+            startDate: startDate
+                ? MethodsCalculationsHelper.convertDateToBackend(startDate)
+                : null,
             is1099: this.selectedW21099
                 ? this.selectedW21099.name === '1099'
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            base: base ? convertThousanSepInNumber(base) : null,
+            base: base
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                : null,
             commission: commission ? parseFloat(commission) : null,
         };
 
@@ -879,17 +894,23 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             ? res.paymentType.name
                             : null,
                         salary: res.salary
-                            ? convertNumberInThousandSep(res.salary)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.salary
+                              )
                             : null,
                         startDate: res.startDate
-                            ? convertDateFromBackend(res.startDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.startDate
+                              )
                             : null,
                         is1099: res.is1099,
                         bankId: res.bank ? res.bank.name : null,
                         routingNumber: res.routingNumber,
                         accountNumber: res.accountNumber,
                         base: res.base
-                            ? convertNumberInThousandSep(res.base)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.base
+                              )
                             : null,
                         commission: res.commission,
                         note: res.note,
@@ -1046,12 +1067,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                 ? this.editData.data.paymentType.name
                                 : null,
                             salary: this.editData.data.salary
-                                ? convertNumberInThousandSep(
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                       this.editData.data.salary
                                   )
                                 : null,
                             startDate: this.editData.data.startDate
-                                ? convertDateFromBackend(
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
                                       this.editData.data.startDate
                                   )
                                 : null,
@@ -1062,7 +1083,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             routingNumber: this.editData.data.routingNumber,
                             accountNumber: this.editData.data.accountNumber,
                             base: this.editData.data.base
-                                ? convertNumberInThousandSep(
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                       this.editData.data.base
                                   )
                                 : null,

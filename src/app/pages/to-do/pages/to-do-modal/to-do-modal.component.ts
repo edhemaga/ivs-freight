@@ -25,10 +25,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from '../../../../shared/services/comments.service';
 import { FormService } from '../../../../shared/services/form.service';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -310,7 +307,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             ...form,
-            deadline: deadline ? convertDateToBackend(deadline) : null,
+            deadline: deadline
+                ? MethodsCalculationsHelper.convertDateToBackend(deadline)
+                : null,
             departmentIds: this.selectedDepartments
                 ? this.selectedDepartments.map((item) => item.id)
                 : [],
@@ -352,7 +351,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            deadline: deadline ? convertDateToBackend(deadline) : null,
+            deadline: deadline
+                ? MethodsCalculationsHelper.convertDateToBackend(deadline)
+                : null,
             departmentIds: this.selectedDepartments
                 ? this.selectedDepartments.map((item) => item.id)
                 : [],
@@ -431,7 +432,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                         description: res.description,
                         url: res.url,
                         deadline: res.deadline
-                            ? convertDateFromBackend(res.deadline)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.deadline
+                              )
                             : null,
                         departmentIds: null,
                         departmentIdsHelper: res.departments.length

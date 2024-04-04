@@ -17,10 +17,7 @@ import {
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../../../utils/helpers/applicant.helper';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { ApplicantService } from '../../../../services/applicant.service';
@@ -174,10 +171,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         reviewId: item.accidentItemReview?.id,
                         isEditingAccident: false,
                         location: item.location,
-                        date: convertDateFromBackend(item.date).replace(
-                            /-/g,
-                            '/'
-                        ),
+                        date: MethodsCalculationsHelper.convertDateFromBackend(
+                            item.date
+                        ).replace(/-/g, '/'),
                         hazmatSpill: item.hazmatSpill,
                         fatalities: item.fatalities,
                         injuries: item.injuries,
@@ -195,7 +191,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 reviewId: lastItemInAccidentArray.accidentItemReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
-                date: convertDateFromBackend(
+                date: MethodsCalculationsHelper.convertDateFromBackend(
                     lastItemInAccidentArray.date
                 ).replace(/-/g, '/'),
                 hazmatSpill: lastItemInAccidentArray.hazmatSpill,
@@ -765,9 +761,10 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         o[keyName] = this.stepValues[i][match];
 
                         if (keyName === 'date') {
-                            o['date'] = convertDateFromBackend(
-                                this.stepValues[i].date
-                            );
+                            o['date'] =
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    this.stepValues[i].date
+                                );
                         }
 
                         if (keyName === 'location') {
@@ -888,7 +885,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         : null,
                 }),
                 location: item.location,
-                date: convertDateToBackend(item.date),
+                date: MethodsCalculationsHelper.convertDateToBackend(item.date),
                 fatalities: item.fatalities,
                 injuries: item.injuries,
                 hazmatSpill: item.hazmatSpill,
@@ -918,7 +915,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         : null,
                 }),
                 location: this.lastAccidentCard.location,
-                date: convertDateToBackend(this.lastAccidentCard.date),
+                date: MethodsCalculationsHelper.convertDateToBackend(
+                    this.lastAccidentCard.date
+                ),
                 fatalities: this.lastAccidentCard.fatalities,
                 injuries: this.lastAccidentCard.injuries,
                 hazmatSpill: this.lastAccidentCard.hazmatSpill,

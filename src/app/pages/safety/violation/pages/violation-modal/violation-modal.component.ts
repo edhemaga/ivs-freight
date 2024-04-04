@@ -43,10 +43,7 @@ import { TaCustomCardComponent } from '../../../../../shared/components/ta-custo
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 
 // helpers
-import {
-    convertDateFromBackend,
-    convertTimeFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // models
 import {
@@ -515,13 +512,19 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             ? res.state.stateShortName
                             : null,
                         startTime: res.startTime
-                            ? convertTimeFromBackend(res.startTime)
+                            ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                  res.startTime
+                              )
                             : null,
                         endTime: res.endTime
-                            ? convertTimeFromBackend(res.endTime)
+                            ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                  res.endTime
+                              )
                             : null,
                         date: res.date
-                            ? convertDateFromBackend(res.date)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.date
+                              )
                             : null,
                         // Driver
                         driverName: res.driver
@@ -535,19 +538,23 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             : res.driver_State,
                         driverDOB: res.driver
                             ? res.driver?.dateOfBirth
-                                ? convertDateFromBackend(
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
                                       res.driver?.dateOfBirth
                                   )
                                 : null
                             : res.driver_DateOfBirth
-                            ? convertDateFromBackend(res.driver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.driver_DateOfBirth
+                              )
                             : null,
                         // Co Driver
                         coDriverName: res.coDriver_FullName,
                         coDriverLicenceNumber: res.coDriver_LicenceNo,
                         coDriverState: res.coDriver_State,
                         coDriverDOB: res.coDriver_DateOfBirth
-                            ? convertDateFromBackend(res.coDriver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.coDriver_DateOfBirth
+                              )
                             : null,
                         // Truck
                         truck_Unit: res.truck

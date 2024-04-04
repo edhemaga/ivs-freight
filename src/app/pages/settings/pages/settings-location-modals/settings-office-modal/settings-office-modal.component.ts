@@ -51,10 +51,7 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // utils
-import {
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // animations
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
@@ -343,7 +340,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         ? this.selectedDay.id
                         : null
                     : null,
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
         };
 
         for (let index = 0; index < departmentContacts.length; index++) {
@@ -399,7 +398,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         ? this.selectedDay.id
                         : null
                     : null,
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
         };
 
         for (let index = 0; index < departmentContacts.length; index++) {
@@ -492,7 +493,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         extensionPhone: res.extensionPhone,
                         email: res.email,
                         rent: res.rent
-                            ? convertNumberInThousandSep(res.rent)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name

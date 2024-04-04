@@ -17,10 +17,7 @@ import { AccountQuery } from '../../state/account.query';
 
 // utils
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // enums
 import { AccountStringEnum } from '../../enums/account-string.enum';
@@ -152,7 +149,10 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (res) {
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === ComponentsTableEnum.API) {
@@ -187,10 +187,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -215,10 +216,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -241,10 +243,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(accountIndex, 1);
                         clearInterval(inetval);
@@ -280,10 +283,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.updateDataCount();
 
                             const inetval = setInterval(() => {
-                                this.viewData = closeAnimationAction(
-                                    true,
-                                    this.viewData
-                                );
+                                this.viewData =
+                                    MethodsGlobalHelper.closeAnimationAction(
+                                        true,
+                                        this.viewData
+                                    );
 
                                 clearInterval(inetval);
                             }, 900);

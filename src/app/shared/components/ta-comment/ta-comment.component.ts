@@ -34,7 +34,7 @@ import { TaInputDropdownTableService } from '../ta-input-dropdown-table/services
 import { LoadService } from '../../services/load.service';
 
 // utils
-import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // enums
 import { CommentStringEnum } from 'src/app/shared/components/ta-comment/enums/comment-string.enum';
@@ -315,9 +315,10 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.isEditing = false;
                 }
 
-                const dateAndTimeNow = convertDateFromBackendToDateAndTime(
-                    new Date()
-                );
+                const dateAndTimeNow =
+                    MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
+                        new Date()
+                    );
                 const dateNow = moment().format(
                     CommentStringEnum.COMMENT_DATE_FORMAT
                 );

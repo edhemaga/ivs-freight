@@ -30,10 +30,7 @@ import {
 import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
-import {
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // Modals
 import { RepairOrderModalComponent } from '../../../repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
@@ -193,7 +190,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         true,
                         'assets/svg/common/repair-pm/ic_custom_pm.svg',
                         null,
-                        convertNumberInThousandSep(defaultValue),
+                        MethodsCalculationsHelper.convertNumberInThousandSep(
+                            defaultValue
+                        ),
                         null,
                         false
                     )
@@ -368,7 +367,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 item.status.name === 'Active' || index < 4,
                             svg: `assets/svg/common/repair-pm/${item.logoName}`,
                             title: item.title,
-                            mileage: convertNumberInThousandSep(item.mileage),
+                            mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.mileage
+                                ),
                             status: item.status,
                         };
 
@@ -395,7 +397,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 item.status.name === 'Active' || index < 4,
                             svg: `assets/svg/common/repair-pm/${item.logoName}`,
                             title: item.title,
-                            mileage: convertNumberInThousandSep(item.mileage),
+                            mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.mileage
+                                ),
                             status: item.status.name,
                         };
 
@@ -421,7 +426,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             isChecked: item.status.name === 'Active',
                             svg: `assets/svg/common/repair-pm/${item.logoName}`,
                             title: item.title,
-                            mileage: convertNumberInThousandSep(item.months),
+                            mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.months
+                                ),
                             status: item.status.name,
                         };
 
@@ -447,7 +455,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             isChecked: item.status.name === 'Active',
                             svg: `assets/svg/common/repair-pm/${item.logoName}`,
                             title: item.title,
-                            mileage: convertNumberInThousandSep(item.months),
+                            mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.months
+                                ),
                             status: item.status,
                         };
 
@@ -468,9 +479,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get('id').value,
                         title: item.get('title').value,
-                        mileage: convertThousanSepInNumber(
-                            item.get('mileage').value
-                        ),
+                        mileage:
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                item.get('mileage').value
+                            ),
                         status:
                             index < 4
                                 ? item.get('status').value.name
@@ -483,9 +495,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get('id').value,
                         title: item.get('value').value,
-                        mileage: convertThousanSepInNumber(
-                            item.get('mileage').value
-                        ),
+                        mileage:
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                item.get('mileage').value
+                            ),
                         status: item.get('isChecked').value
                             ? 'Active'
                             : 'Inactive',
@@ -544,7 +557,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get('id').value,
                         title: item.get('title').value,
-                        months: convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
                             item.get('mileage').value
                         ),
                         status:
@@ -559,7 +572,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get('id').value,
                         title: item.get('value').value,
-                        months: convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
                             item.get('mileage').value
                         ),
                         status: item.get('isChecked').value
@@ -620,9 +633,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
                         id: item.get('id').value,
-                        mileage: convertThousanSepInNumber(
-                            item.get('mileage').value
-                        ),
+                        mileage:
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                item.get('mileage').value
+                            ),
                         status:
                             index < 4
                                 ? item.get('status').value
@@ -634,9 +648,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.newPMs.controls.map((item) => {
                     return {
                         id: item.get('id').value,
-                        mileage: convertThousanSepInNumber(
-                            item.get('mileage').value
-                        ),
+                        mileage:
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                item.get('mileage').value
+                            ),
                         status: item.get('isChecked').value
                             ? 'Active'
                             : 'Inactive',
@@ -695,7 +710,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
                         id: item.get('id').value,
-                        months: convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
                             item.get('mileage').value
                         ),
                         status:
@@ -709,7 +724,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.newPMs.controls.map((item) => {
                     return {
                         id: item.get('id').value,
-                        months: convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
                             item.get('mileage').value
                         ),
                         status: item.get('isChecked').value

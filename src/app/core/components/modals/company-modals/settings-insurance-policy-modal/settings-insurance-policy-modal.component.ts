@@ -48,12 +48,7 @@ import {
 } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertThousanSepInNumber,
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from '../../../../utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -517,8 +512,8 @@ export class SettingsInsurancePolicyModalComponent
         let newData: any = {
             companyId: company.divisions.length ? null : company.id,
             ...form,
-            issued: convertDateToBackend(issued),
-            expires: convertDateToBackend(expires),
+            issued: MethodsCalculationsHelper.convertDateToBackend(issued),
+            expires: MethodsCalculationsHelper.convertDateToBackend(expires),
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
@@ -535,22 +530,34 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedCommericalRating.id
                       : null,
                   eachOccurrence: commericalOccurrence
-                      ? convertThousanSepInNumber(commericalOccurrence)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalOccurrence
+                        )
                       : null,
                   damageToRentedPremises: commericalDamage
-                      ? convertThousanSepInNumber(commericalDamage)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalDamage
+                        )
                       : null,
                   personalAndAdvertisingInjury: commericalInj
-                      ? convertThousanSepInNumber(commericalInj)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalInj
+                        )
                       : null,
                   medicalExpanses: commericalMedical
-                      ? convertThousanSepInNumber(commericalMedical)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalMedical
+                        )
                       : null,
                   generalAggregate: commericalGeneralAggregate
-                      ? convertThousanSepInNumber(commericalGeneralAggregate)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalGeneralAggregate
+                        )
                       : null,
                   productsCompOperAggregate: commericalProducts
-                      ? convertThousanSepInNumber(commericalProducts)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalProducts
+                        )
                       : null,
               }
             : null;
@@ -564,16 +571,24 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedAutomobileRating.id
                       : null,
                   bodilyInjuryAccident: automobileAccident
-                      ? convertThousanSepInNumber(automobileAccident)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileAccident
+                        )
                       : null,
                   bodilyInjuryPerson: automobileInjuryPerson
-                      ? convertThousanSepInNumber(automobileInjuryPerson)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileInjuryPerson
+                        )
                       : null,
                   combinedSingleLimit: automobileLimit
-                      ? convertThousanSepInNumber(automobileLimit)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileLimit
+                        )
                       : null,
                   propertyDamage: automobileDamage
-                      ? convertThousanSepInNumber(automobileDamage)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileDamage
+                        )
                       : null,
               }
             : null;
@@ -588,10 +603,14 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedMotorRating.id
                       : null,
                   singleConveyance: motorConveyance
-                      ? convertThousanSepInNumber(motorConveyance)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            motorConveyance
+                        )
                       : null,
                   deductable: motorDeductable
-                      ? convertThousanSepInNumber(motorDeductable)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            motorDeductable
+                        )
                       : null,
               }
             : null;
@@ -605,10 +624,14 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedPhysicalDamageRating.id
                       : null,
                   comprehensiveAndCollision: physicalCollision
-                      ? convertThousanSepInNumber(physicalCollision)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            physicalCollision
+                        )
                       : null,
                   deductable: physicalDeductable
-                      ? convertThousanSepInNumber(physicalDeductable)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            physicalDeductable
+                        )
                       : null,
               }
             : null;
@@ -622,7 +645,9 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedTrailerRating.id
                       : null,
                   value: trailerValue
-                      ? convertThousanSepInNumber(trailerValue)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            trailerValue
+                        )
                       : null,
               }
             : null;
@@ -742,8 +767,8 @@ export class SettingsInsurancePolicyModalComponent
         let newData: any = {
             id: id,
             ...form,
-            issued: convertDateToBackend(issued),
-            expires: convertDateToBackend(expires),
+            issued: MethodsCalculationsHelper.convertDateToBackend(issued),
+            expires: MethodsCalculationsHelper.convertDateToBackend(expires),
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
@@ -762,22 +787,34 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedCommericalRating.id
                       : null,
                   eachOccurrence: commericalOccurrence
-                      ? convertThousanSepInNumber(commericalOccurrence)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalOccurrence
+                        )
                       : null,
                   damageToRentedPremises: commericalDamage
-                      ? convertThousanSepInNumber(commericalDamage)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalDamage
+                        )
                       : null,
                   personalAndAdvertisingInjury: commericalInj
-                      ? convertThousanSepInNumber(commericalInj)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalInj
+                        )
                       : null,
                   medicalExpanses: commericalMedical
-                      ? convertThousanSepInNumber(commericalMedical)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalMedical
+                        )
                       : null,
                   generalAggregate: commericalGeneralAggregate
-                      ? convertThousanSepInNumber(commericalGeneralAggregate)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalGeneralAggregate
+                        )
                       : null,
                   productsCompOperAggregate: commericalProducts
-                      ? convertThousanSepInNumber(commericalProducts)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            commericalProducts
+                        )
                       : null,
               }
             : null;
@@ -792,16 +829,24 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedAutomobileRating.id
                       : null,
                   bodilyInjuryAccident: automobileAccident
-                      ? convertThousanSepInNumber(automobileAccident)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileAccident
+                        )
                       : null,
                   bodilyInjuryPerson: automobileInjuryPerson
-                      ? convertThousanSepInNumber(automobileInjuryPerson)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileInjuryPerson
+                        )
                       : null,
                   combinedSingleLimit: automobileLimit
-                      ? convertThousanSepInNumber(automobileLimit)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileLimit
+                        )
                       : null,
                   propertyDamage: automobileDamage
-                      ? convertThousanSepInNumber(automobileDamage)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            automobileDamage
+                        )
                       : null,
               }
             : null;
@@ -817,10 +862,14 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedMotorRating.id
                       : null,
                   singleConveyance: motorConveyance
-                      ? convertThousanSepInNumber(motorConveyance)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            motorConveyance
+                        )
                       : null,
                   deductable: motorDeductable
-                      ? convertThousanSepInNumber(motorDeductable)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            motorDeductable
+                        )
                       : null,
               }
             : null;
@@ -835,10 +884,14 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedPhysicalDamageRating.id
                       : null,
                   comprehensiveAndCollision: physicalCollision
-                      ? convertThousanSepInNumber(physicalCollision)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            physicalCollision
+                        )
                       : null,
                   deductable: physicalDeductable
-                      ? convertThousanSepInNumber(physicalDeductable)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            physicalDeductable
+                        )
                       : null,
               }
             : null;
@@ -853,7 +906,9 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedTrailerRating.id
                       : null,
                   value: trailerValue
-                      ? convertThousanSepInNumber(trailerValue)
+                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            trailerValue
+                        )
                       : null,
               }
             : null;
@@ -931,8 +986,12 @@ export class SettingsInsurancePolicyModalComponent
     private editInsurancePolicyById(insurance: any) {
         this.insurancePolicyForm.patchValue({
             producerName: insurance.producerName,
-            issued: convertDateFromBackend(insurance.issued),
-            expires: convertDateFromBackend(insurance.expires),
+            issued: MethodsCalculationsHelper.convertDateFromBackend(
+                insurance.issued
+            ),
+            expires: MethodsCalculationsHelper.convertDateFromBackend(
+                insurance.expires
+            ),
             phone: insurance.phone,
             email: insurance.email,
             address: insurance.address.address,
@@ -971,7 +1030,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('commericalOccurrence')
                             .patchValue(
                                 insur.eachOccurrence
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.eachOccurrence
                                       )
                                     : null
@@ -980,7 +1039,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('commericalDamage')
                             .patchValue(
                                 insur.damageToRentedPremises
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.damageToRentedPremises
                                       )
                                     : null
@@ -989,7 +1048,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('commericalInj')
                             .patchValue(
                                 insur.personalAndAdvertisingInjury
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.personalAndAdvertisingInjury
                                       )
                                     : null
@@ -998,7 +1057,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('commericalMedical')
                             .patchValue(
                                 insur.medicalExpanses
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.medicalExpanses
                                       )
                                     : null
@@ -1007,7 +1066,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('commericalGeneralAggregate')
                             .patchValue(
                                 insur.generalAggregate
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.generalAggregate
                                       )
                                     : null
@@ -1016,7 +1075,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('commericalProducts')
                             .patchValue(
                                 insur.productsCompOperAggregate
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.productsCompOperAggregate
                                       )
                                     : null
@@ -1045,7 +1104,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('automobileAccident')
                             .patchValue(
                                 insur.bodilyInjuryAccident
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.bodilyInjuryAccident
                                       )
                                     : null
@@ -1054,7 +1113,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('automobileInjuryPerson')
                             .patchValue(
                                 insur.bodilyInjuryPerson
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.bodilyInjuryPerson
                                       )
                                     : null
@@ -1063,7 +1122,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('automobileLimit')
                             .patchValue(
                                 insur.combinedSingleLimit
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.combinedSingleLimit
                                       )
                                     : null
@@ -1072,7 +1131,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('automobileDamage')
                             .patchValue(
                                 insur.propertyDamage
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.propertyDamage
                                       )
                                     : null
@@ -1105,7 +1164,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('motorConveyance')
                             .patchValue(
                                 insur.singleConveyance
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.singleConveyance
                                       )
                                     : null
@@ -1114,7 +1173,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('motorDeductable')
                             .patchValue(
                                 insur.deductable
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.deductable
                                       )
                                     : null
@@ -1143,7 +1202,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('physicalCollision')
                             .patchValue(
                                 insur.comprehensiveAndCollision
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.comprehensiveAndCollision
                                       )
                                     : null
@@ -1152,7 +1211,7 @@ export class SettingsInsurancePolicyModalComponent
                             .get('physicalDeductable')
                             .patchValue(
                                 insur.deductable
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           insur.deductable
                                       )
                                     : null
@@ -1181,7 +1240,9 @@ export class SettingsInsurancePolicyModalComponent
                             .get('trailerValue')
                             .patchValue(
                                 insur.value
-                                    ? convertNumberInThousandSep(insur.value)
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                          insur.value
+                                      )
                                     : null
                             );
 

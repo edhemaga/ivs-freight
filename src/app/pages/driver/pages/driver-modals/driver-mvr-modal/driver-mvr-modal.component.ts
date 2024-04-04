@@ -24,10 +24,7 @@ import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-i
 import { FormService } from 'src/app/shared/services/form.service';
 
 //Helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -234,7 +231,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             driverId: this.editData.id,
             id: this.editData.file_id,
-            issueDate: convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
             note: note,
             files: documents ? documents : this.mvrForm.value.files,
@@ -275,7 +273,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id
                 : this.editData.id,
-            issueDate: convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
             note: note,
             tableActiveTab: this.editData.tableActiveTab,
@@ -311,7 +310,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                 next: (res: MvrResponse) => {
                     this.mvrForm.patchValue({
                         cdlId: res.cdlNumber,
-                        issueDate: convertDateFromBackend(res.issueDate),
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
                         note: res.note,
                         files: res.files.length
                             ? JSON.stringify(res.files)

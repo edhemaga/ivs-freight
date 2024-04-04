@@ -9,7 +9,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // components
 import { ApplicantSphModalComponent } from './components/applicant-sph-modal/applicant-sph-modal.component';
@@ -102,7 +102,9 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
                     this.applicantCardInfo = {
                         name: personalInfo?.fullName,
                         ssn: personalInfo?.ssn,
-                        dob: convertDateFromBackend(personalInfo?.doB),
+                        dob: MethodsCalculationsHelper.convertDateFromBackend(
+                            personalInfo?.doB
+                        ),
                     };
 
                     this.applicantId = res.id;

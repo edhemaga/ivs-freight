@@ -9,10 +9,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 import { anyInputInLineIncorrect } from '../../utils/helpers/applicant.helper';
 
 // services
@@ -144,8 +141,11 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
         this.medicalCertificateId = id;
 
         this.medicalCertificateForm.patchValue({
-            fromDate: convertDateFromBackend(issueDate),
-            toDate: convertDateFromBackend(expireDate),
+            fromDate:
+                MethodsCalculationsHelper.convertDateFromBackend(issueDate),
+            toDate: MethodsCalculationsHelper.convertDateFromBackend(
+                expireDate
+            ),
             files: JSON.stringify(files),
         });
 
@@ -375,8 +375,8 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
 
         const saveData = {
             applicantId: this.applicantId,
-            issueDate: convertDateToBackend(fromDate),
-            expireDate: convertDateToBackend(toDate),
+            issueDate: MethodsCalculationsHelper.convertDateToBackend(fromDate),
+            expireDate: MethodsCalculationsHelper.convertDateToBackend(toDate),
             files: documents,
             ...((this.stepHasValues ||
                 this.selectedMode === SelectedMode.FEEDBACK) && {

@@ -35,10 +35,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 
 //Helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-driver-drugAlcohol-modal',
@@ -296,7 +293,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             id: this.editData.file_id,
-            testingDate: convertDateToBackend(testingDate),
+            testingDate:
+                MethodsCalculationsHelper.convertDateToBackend(testingDate),
             testReasonId: this.selectedReasonType.id,
             testType: this.selectedTestType.id,
             result: this.selectedTestResult ? this.selectedTestResult.id : null,
@@ -338,7 +336,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id
                 : this.editData.id,
-            testingDate: convertDateToBackend(testingDate),
+            testingDate:
+                MethodsCalculationsHelper.convertDateToBackend(testingDate),
             testReasonId: this.selectedReasonType.id,
             testType: this.selectedTestType.id,
             result: this.selectedTestResult ? this.selectedTestResult.id : null,
@@ -380,7 +379,10 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                             ? res.testReason.name
                             : null,
                         result: res.result ? res.result.name : null,
-                        testingDate: convertDateFromBackend(res.testingDate),
+                        testingDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.testingDate
+                            ),
                         files: res.files.length
                             ? JSON.stringify(res.files)
                             : null,

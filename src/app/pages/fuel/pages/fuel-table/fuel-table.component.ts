@@ -31,11 +31,8 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
-import {
-    convertDateFromBackend,
-    convertDateToTimeFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 //Models
 import { FuelStopListResponse } from 'appcoretruckassist';
@@ -221,10 +218,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             id: item.id,
                             data: {
                                 ...item.tableData,
-                                date: convertDateFromBackend(
+                                date: MethodsCalculationsHelper.convertDateFromBackend(
                                     item.tableData.transactionDate
                                 ),
-                                time: convertDateToTimeFromBackend(
+                                time: MethodsCalculationsHelper.convertDateToTimeFromBackend(
                                     item.tableData.transactionDate,
                                     true
                                 ),
@@ -310,7 +307,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
                     this.tableData[0].data = this.viewData;
 
                     clearInterval(interval);

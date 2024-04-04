@@ -37,10 +37,7 @@ import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-str
 
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
 
 // models
@@ -273,10 +270,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -298,10 +296,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -325,10 +324,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(truckIndex, 1);
                         clearInterval(inetval);
@@ -350,10 +350,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(truckIndex, 1);
                         clearInterval(inetval);
@@ -403,7 +404,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -1150,10 +1154,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -1180,7 +1185,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);

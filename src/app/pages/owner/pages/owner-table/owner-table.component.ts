@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-// Modules
 
 // Components
 import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
@@ -10,10 +9,6 @@ import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal
 
 // Models
 import { GetOwnerListResponse } from 'appcoretruckassist';
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
 import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import {
     CardDetails,
@@ -52,8 +47,9 @@ import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 import { OwnerConfiguration } from './utils/constants/owner-configuration.constants';
 
-//helpers
+// helpers
 import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-owner-table',
@@ -217,7 +213,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.sendOwnerData();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(interval);
                 }, 900);
@@ -251,7 +250,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -380,7 +382,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
                     this.tableData[0].data = this.viewData;
 
                     clearInterval(interval);
@@ -411,10 +416,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         });
 
                         const inetval = setInterval(() => {
-                            this.viewData = closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
+                            this.viewData =
+                                MethodsGlobalHelper.closeAnimationAction(
+                                    false,
+                                    this.viewData
+                                );
 
                             clearInterval(inetval);
                         }, 2300);
@@ -440,10 +446,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -467,10 +474,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
 
                         const inetval = setInterval(() => {
-                            this.viewData = closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
+                            this.viewData =
+                                MethodsGlobalHelper.closeAnimationAction(
+                                    false,
+                                    this.viewData
+                                );
 
                             this.viewData.splice(ownerIndex, 1);
                             clearInterval(inetval);

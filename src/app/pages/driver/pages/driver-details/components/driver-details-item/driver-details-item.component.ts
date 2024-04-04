@@ -42,9 +42,8 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
 
 //Helpers
 import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { Titles } from 'src/app/core/decorators/titles.decorator';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 @Titles()
 @Component({
@@ -648,12 +647,8 @@ export class DriverDetailsItemComponent
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
 
-    public onFileAction(action: string) {
-        onFileActionMethods(action);
-    }
-
     public formatDate(mod) {
-        return convertDateFromBackend(mod);
+        return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 
     ngOnDestroy(): void {

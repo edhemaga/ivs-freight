@@ -18,10 +18,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 import {
     filterUnceckedRadiosId,
     isAnyRadioInArrayUnChecked,
@@ -256,8 +253,9 @@ export class Step2Component
         this.accidentHistoryForm.patchValue({
             applicantWorkForCompany: workForCompany,
             applicantWorkForCompanyBeforeExplain:
-                convertDateFromBackend(workFrom),
-            applicantWorkForCompanyToExplain: convertDateFromBackend(workTo),
+                MethodsCalculationsHelper.convertDateFromBackend(workFrom),
+            applicantWorkForCompanyToExplain:
+                MethodsCalculationsHelper.convertDateFromBackend(workTo),
             motorVehicleForCompany: driveForCompany,
             vehicleType: this.vehicleType.find(
                 (item) => item.id === vehicleType
@@ -283,7 +281,10 @@ export class Step2Component
                 (item) => {
                     return {
                         isEditingAccident: false,
-                        accidentDate: convertDateFromBackend(item.date),
+                        accidentDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                item.date
+                            ),
                         accidentLocation: item.location,
                         accidentDescription: item.description,
                         hazmatSpill: item.hazmatSpill,
@@ -295,7 +296,7 @@ export class Step2Component
 
             const filteredLastItemInAccidentArray = {
                 isEditingAccident: false,
-                accidentDate: convertDateFromBackend(
+                accidentDate: MethodsCalculationsHelper.convertDateFromBackend(
                     lastItemInAccidentsArray.date
                 ),
                 accidentLocation: lastItemInAccidentsArray.location,
@@ -722,7 +723,9 @@ export class Step2Component
 
         const filteredAccidentArray = this.accidentArray.map((item) => {
             return {
-                date: convertDateToBackend(item.accidentDate),
+                date: MethodsCalculationsHelper.convertDateToBackend(
+                    item.accidentDate
+                ),
                 location: item.accidentLocation,
                 description: item.accidentDescription,
                 hazmatSpill: item.hazmatSpill,
@@ -732,7 +735,9 @@ export class Step2Component
         });
 
         const filteredLastAccidentCard = {
-            date: convertDateToBackend(this.lastAccidentCard.accidentDate),
+            date: MethodsCalculationsHelper.convertDateToBackend(
+                this.lastAccidentCard.accidentDate
+            ),
             location: this.lastAccidentCard.accidentLocation,
             description: this.lastAccidentCard.accidentDescription,
             hazmatSpill: this.lastAccidentCard.hazmatSpill,
@@ -743,10 +748,12 @@ export class Step2Component
         const saveData: CreatePreviousEmployerAccidentHistoryCommand = {
             previousEmployerProspectId: this.previousEmployerProspectId,
             workForCompany: applicantWorkForCompany,
-            workFrom: convertDateToBackend(
+            workFrom: MethodsCalculationsHelper.convertDateToBackend(
                 applicantWorkForCompanyBeforeExplain
             ),
-            workTo: convertDateToBackend(applicantWorkForCompanyToExplain),
+            workTo: MethodsCalculationsHelper.convertDateToBackend(
+                applicantWorkForCompanyToExplain
+            ),
             driveForCompany: motorVehicleForCompany,
             vehicleType: motorVehicleForCompany
                 ? this.selectedVehicleType.id

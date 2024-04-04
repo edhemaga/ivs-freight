@@ -23,7 +23,7 @@ import { ConfirmationService } from './state/state/services/confirmation.service
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // helpers
-import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
@@ -96,7 +96,7 @@ export class ConfirmationModalComponent implements OnInit {
     }
 
     public formatDate(mod) {
-        return convertDateFromBackend(mod);
+        return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 
     public trackByIdentity = (index: number, _: any): number => index;

@@ -12,6 +12,9 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
+// moment
+import moment from 'moment';
+
 //Pipes
 import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
@@ -20,9 +23,7 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
 
 //Helpers
 import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
-import moment from 'moment';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -772,9 +773,6 @@ export class DriverDetailsCardComponent
             default:
                 break;
         }
-    }
-    public onFileAction(action: string): void {
-        onFileActionMethods(action);
     }
 
     private chartDataSet(

@@ -48,7 +48,7 @@ import { RatingReviewTabsConstants } from './utils/constants/rating-review-tabs.
 
 // helpers
 import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
-import { removeDuplicateObjects } from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 // components
@@ -510,7 +510,8 @@ export class TaInputDropdownTableComponent
     }
 
     private mapContactsData(contactsData: DepartmentResponse[]): void {
-        let filteredDepartments = removeDuplicateObjects(contactsData);
+        let filteredDepartments =
+            MethodsGlobalHelper.removeDuplicateObjects(contactsData);
 
         filteredDepartments = filteredDepartments.map((department) => {
             this.isContactCardOpenArray = [

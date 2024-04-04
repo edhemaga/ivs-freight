@@ -55,12 +55,7 @@ import { TaInputNoteComponent } from '../../../../shared/components/ta-input-not
 import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -424,30 +419,30 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 ? this.selectedReeferType.id
                 : null,
             emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('emptyWeight').value
                   )
                 : null,
             mileage: this.trailerForm.get('mileage').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('mileage').value
                   )
                 : null,
             volume: this.trailerForm.get('volume').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('volume').value
                   )
                 : null,
             purchaseDate: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchaseDate').value
-                    ? convertDateToBackend(
+                    ? MethodsCalculationsHelper.convertDateToBackend(
                           this.trailerForm.get('purchaseDate').value
                       )
                     : null
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.trailerForm.get('purchasePrice').value
                       )
                     : null
@@ -607,30 +602,30 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     : null
                 : null,
             emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('emptyWeight').value
                   )
                 : null,
             mileage: this.trailerForm.get('mileage').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('mileage').value
                   )
                 : null,
             volume: this.trailerForm.get('volume').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('volume').value
                   )
                 : null,
             purchaseDate: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchaseDate').value
-                    ? convertDateToBackend(
+                    ? MethodsCalculationsHelper.convertDateToBackend(
                           this.trailerForm.get('purchaseDate').value
                       )
                     : null
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.trailerForm.get('purchasePrice').value
                       )
                     : null
@@ -750,20 +745,30 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         doorType: res.doorType ? res.doorType.name : null,
                         reeferUnit: res.reeferUnit ? res.reeferUnit.name : null,
                         emptyWeight: res.emptyWeight
-                            ? convertNumberInThousandSep(res.emptyWeight)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.emptyWeight
+                              )
                             : null,
                         mileage: res.mileage
-                            ? convertNumberInThousandSep(res.mileage)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.mileage
+                              )
                             : null,
                         volume: res.volume
-                            ? convertNumberInThousandSep(res.volume)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.volume
+                              )
                             : null,
                         insurancePolicy: res.insurancePolicy,
                         purchaseDate: res.purchaseDate
-                            ? convertDateFromBackend(res.purchaseDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.purchaseDate
+                              )
                             : null,
                         purchasePrice: res.purchasePrice
-                            ? convertNumberInThousandSep(res.purchasePrice)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.purchasePrice
+                              )
                             : null,
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
                     });

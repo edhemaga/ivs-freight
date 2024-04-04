@@ -48,10 +48,7 @@ import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-che
 import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
 
 // utils
-import {
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-repairshop-modal',
@@ -259,7 +256,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             id: id,
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -311,7 +310,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -393,7 +394,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                         phoneExt: res.phoneExt,
                         email: res.email,
                         rent: res.rent
-                            ? convertNumberInThousandSep(res.rent)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name

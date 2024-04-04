@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
 
@@ -99,9 +99,10 @@ export class ApplicantSphFormComponent implements OnInit, OnDestroy {
                 if (res) {
                     this.companyInfo = res?.companyInfo;
 
-                    this.dateOfApplication = convertDateFromBackend(
-                        res?.inviteDate
-                    );
+                    this.dateOfApplication =
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            res?.inviteDate
+                        );
                 }
             });
     }

@@ -23,14 +23,7 @@ import {
 import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
 
 // Helpers
-import {
-    convertDateToBackend,
-    convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import {
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // Components
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
@@ -248,10 +241,10 @@ export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
                             ? this.selectedTruck.id
                             : null
                         : null,
-                date: convertDateToBackend(
+                date: MethodsCalculationsHelper.convertDateToBackend(
                     this.payrollCreditForm.get('date').value
                 ),
-                amount: convertThousanSepInNumber(
+                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                     this.payrollCreditForm.get('amount').value
                 ),
             })
@@ -291,10 +284,10 @@ export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
                             ? this.selectedTruck.id
                             : null
                         : null,
-                date: convertDateToBackend(
+                date: MethodsCalculationsHelper.convertDateToBackend(
                     this.payrollCreditForm.get('date').value
                 ),
-                amount: convertThousanSepInNumber(
+                amount: MethodsCalculationsHelper.convertThousanSepInNumber(
                     this.payrollCreditForm.get('amount').value
                 ),
             })
@@ -343,9 +336,13 @@ export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
                               )
                             : null,
                         // truckId: res.truck ? res.truck.truckNumber : null,
-                        date: convertDateFromBackend(res.date),
+                        date: MethodsCalculationsHelper.convertDateFromBackend(
+                            res.date
+                        ),
                         description: res.description,
-                        amount: convertNumberInThousandSep(res.amount),
+                        amount: MethodsCalculationsHelper.convertNumberInThousandSep(
+                            res.amount
+                        ),
                     });
 
                     if (res.driver) {
