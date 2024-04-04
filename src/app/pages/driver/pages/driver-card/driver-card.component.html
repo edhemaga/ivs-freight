@@ -192,10 +192,10 @@
                                                     'CDL Expiration'
                                                 "
                                             >
-                                                <app-progres-bar
+                                                <app-ta-progres-bar
                                                     [percents]="row.secondKey"
                                                     [text]="row.key"
-                                                ></app-progres-bar>
+                                                ></app-ta-progres-bar>
                                             </ng-container>
 
                                             <!-- driver medical  -->
@@ -205,10 +205,10 @@
                                                     'Medical Expiration'
                                                 "
                                             >
-                                                <app-progres-bar
+                                                <app-ta-progres-bar
                                                     [percents]="row.secondKey"
                                                     [text]="row.key"
-                                                ></app-progres-bar>
+                                                ></app-ta-progres-bar>
                                             </ng-container>
                                         </div>
                                     </div>
@@ -271,10 +271,10 @@
                                                     row.title === 'Medical Exp.'
                                                 "
                                             >
-                                                <app-progres-bar
+                                                <app-ta-progres-bar
                                                     [percents]="row.secondKey"
                                                     [text]="row.key"
-                                                ></app-progres-bar>
+                                                ></app-ta-progres-bar>
                                             </ng-container>
 
                                             <!-- Driver Medical Progres Bar -->
@@ -282,10 +282,10 @@
                                             <ng-container
                                                 *ngIf="row.title === 'CDL Exp.'"
                                             >
-                                                <app-progres-bar
+                                                <app-ta-progres-bar
                                                     [percents]="row.secondKey"
                                                     [text]="row.key"
-                                                ></app-progres-bar>
+                                                ></app-ta-progres-bar>
                                             </ng-container>
 
                                             <!-- Driver MVR Progres Bar -->
@@ -293,10 +293,10 @@
                                             <ng-container
                                                 *ngIf="row.title === 'MVR Exp.'"
                                             >
-                                                <app-progres-bar
+                                                <app-ta-progres-bar
                                                     [percents]="row.secondKey"
                                                     [text]="row.key"
-                                                ></app-progres-bar>
+                                                ></app-ta-progres-bar>
                                             </ng-container>
 
                                             <ng-container
@@ -320,9 +320,9 @@
                     <div class="top-side">
                         <!-- Open dropdown element-->
 
-                        <app-table-card-dropdown-actions
+                        <app-ta-table-card-dropdown-actions
                             [card]="card"
-                        ></app-table-card-dropdown-actions>
+                        ></app-ta-table-card-dropdown-actions>
 
                         <!-- Note element -->
 

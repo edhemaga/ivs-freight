@@ -15,9 +15,9 @@ import { PayrollTableComponent } from './pages/payroll/payroll/payroll-table/pay
 import { PayrollReportComponent } from './pages/payroll/payroll/payroll-report/payroll-report.component';
 import { PayrollSmallTablesComponent } from './pages/payroll/payroll/payroll-small-tables/payroll-small-tables.component';
 import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 
 //Helpers
 import { PayrollTablePipe } from './pipes/payroll-table.pipe';
@@ -25,14 +25,14 @@ import { PayrollRowBorderTablePipe } from './pipes/payroll-row-border.pipe';
 
 @NgModule({
     declarations: [
-        AccountingIndexComponent, 
+        AccountingIndexComponent,
         PayrollComponent,
         AccountingPayrollComponent,
         PayrollTableComponent,
         PayrollRowBorderTablePipe,
         PayrollTablePipe,
         PayrollReportComponent,
-        PayrollSmallTablesComponent
+        PayrollSmallTablesComponent,
     ],
     imports: [
         CommonModule,
@@ -43,8 +43,8 @@ import { PayrollRowBorderTablePipe } from './pipes/payroll-row-border.pipe';
         TruckassistTableToolbarComponent,
         TaInputComponent,
         ProfileImagesComponent,
-        TaCustomCardComponent
+        TaCustomCardComponent,
     ],
-    exports: [AccountingIndexComponent, PayrollTableComponent]
+    exports: [AccountingIndexComponent, PayrollTableComponent],
 })
 export class AccountingModule {}

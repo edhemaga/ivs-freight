@@ -1,6 +1,6 @@
 <div class="table-container">
     <div class="toolbar-relative">
-        <app-map-toolbar
+        <app-ta-map-toolbar
             #mapToolbar
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
@@ -9,7 +9,7 @@
             [unassignedDevices]="gpsUnassignedData"
             [unassignedDevicesActive]="unassignedDevicesActive"
             [infoActive]="legendActive"
-        ></app-map-toolbar>
+        ></app-ta-map-toolbar>
     </div>
     <div class="telematic-map customer-map-container">
         <agm-map

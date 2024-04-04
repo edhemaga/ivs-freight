@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriverTService } from '../../services/driver.service';
+import { DriverService } from '../../services/driver.service';
 import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { DriversActiveState, DriversActiveStore } from './driver-active.store';
 })
 export class DriverActiveResolver implements Resolve<DriversActiveState> {
     constructor(
-        private driverService: DriverTService,
+        private driverService: DriverService,
         private store: DriversActiveStore,
         private tableService: TruckassistTableService
     ) {}

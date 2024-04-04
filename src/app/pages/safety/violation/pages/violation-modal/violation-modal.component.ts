@@ -15,8 +15,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // services
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { RoadsideService } from 'src/app/pages/safety/violation/services/roadside.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
@@ -32,14 +32,14 @@ import {
     fullNameValidation,
     phoneFaxRegex,
     vinNumberValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // components
-import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
+import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 
 // helpers
@@ -53,7 +53,7 @@ import {
     AccidentModalResponse,
     RoadsideInspectionResponse,
 } from 'appcoretruckassist';
-import { ITaInput } from '../../../../../core/components/shared/ta-input/ta-input.config';
+import { ITaInput } from '../../../../../shared/components/ta-input/ta-input.config';
 
 @Component({
     selector: 'app-violation-modal',

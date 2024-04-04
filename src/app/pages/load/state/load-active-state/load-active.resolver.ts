@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { LoadTService } from '../../services/load.service';
+import { LoadService } from '../../../../shared/services/load.service';
 import { LoadActiveState, LoadActiveStore } from './load-active.store';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { LoadActiveState, LoadActiveStore } from './load-active.store';
 })
 export class LoadActiveResolver implements Resolve<LoadActiveState> {
     constructor(
-        private loadService: LoadTService,
+        private loadService: LoadService,
         private loadActiveStore: LoadActiveStore,
         private tableService: TruckassistTableService
     ) {}

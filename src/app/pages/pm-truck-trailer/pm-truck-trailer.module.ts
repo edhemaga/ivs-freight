@@ -11,10 +11,10 @@ import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { PmCardComponent } from './pages/pm-card/pm-card.component';
-import { TaNoteComponent } from 'src/app/core/components/shared/ta-note/ta-note.component';
-import { ProgresBarComponent } from 'src/app/core/components/standalone-components/progres-bar/progres-bar.component';
-import { TableCardDropdownActionsComponent } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
+import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
+import { TaProgresBarComponent } from 'src/app/shared/components/ta-progres-bar/ta-progres-bar.component';
+import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 
 @NgModule({
     declarations: [PmTableComponent, PmCardComponent],
@@ -30,8 +30,8 @@ import { AppTooltipComponent } from 'src/app/core/components/standalone-componen
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         TaNoteComponent,
-        TableCardDropdownActionsComponent,
-        ProgresBarComponent,
+        TaTableCardDropdownActionsComponent,
+        TaProgresBarComponent,
         AppTooltipComponent,
     ],
 })

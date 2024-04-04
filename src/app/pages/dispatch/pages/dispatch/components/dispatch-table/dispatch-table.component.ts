@@ -27,12 +27,12 @@ import { ColorFinderPipe } from '../../../../pipes/color-finder.pipe';
 
 // Services
 import { DispatcherService } from '../../../../services/dispatcher.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 // Modals
+import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -388,7 +388,11 @@ export class DispatchTableComponent implements OnInit {
                     })
                 )
                 .subscribe(() => {
-                    this.dispatcherService.updateCountList(this.dData.id, key, value);
+                    this.dispatcherService.updateCountList(
+                        this.dData.id,
+                        key,
+                        value
+                    );
                     this.dispatcherService.updateModalList();
                     this.checkEmptySet = '';
                     this.__change_in_proggress = false;
@@ -409,7 +413,11 @@ export class DispatchTableComponent implements OnInit {
                 )
                 .subscribe(() => {
                     this.checkEmptySet = '';
-                    this.dispatcherService.updateCountList(this.dData.id, key, value);
+                    this.dispatcherService.updateCountList(
+                        this.dData.id,
+                        key,
+                        value
+                    );
                     this.dispatcherService.updateModalList();
                     this.__change_in_proggress = false;
                 });
@@ -547,13 +555,15 @@ export class DispatchTableComponent implements OnInit {
     changeDriverVacation(data) {
         this.__change_in_proggress = true;
 
-        this.dispatcherService.changeDriverVacation(data.driver.id).subscribe(() => {
-            this.dispatcherService
-                .updateDispatchboardRowById(data.id, this.dData.id)
-                .subscribe(() => {
-                    this.__change_in_proggress = false;
-                });
-        });
+        this.dispatcherService
+            .changeDriverVacation(data.driver.id)
+            .subscribe(() => {
+                this.dispatcherService
+                    .updateDispatchboardRowById(data.id, this.dData.id)
+                    .subscribe(() => {
+                        this.__change_in_proggress = false;
+                    });
+            });
     }
 
     removeTruck(indx) {

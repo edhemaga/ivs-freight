@@ -45,10 +45,10 @@ import {
     phoneFaxRegex,
     addressUnitValidation,
     businessNameValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 // store

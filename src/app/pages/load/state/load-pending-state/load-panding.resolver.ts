@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { LoadListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { LoadTService } from '../../services/load.service';
+import { LoadService } from '../../../../shared/services/load.service';
 import { LoadPandingState, LoadPandinStore } from './load-panding.store';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { LoadPandingState, LoadPandinStore } from './load-panding.store';
 })
 export class LoadPandingResolver implements Resolve<LoadPandingState> {
     constructor(
-        private loadService: LoadTService,
+        private loadService: LoadService,
         private loadPandingStore: LoadPandinStore
     ) {}
 

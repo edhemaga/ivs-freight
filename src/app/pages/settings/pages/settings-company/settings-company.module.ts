@@ -12,22 +12,22 @@ import { SettingsGeneralComponent } from './components/settings-general/settings
 import { SettingsPayrollComponent } from './components/settings-payroll/settings-payroll.component';
 import { SettingsInsurancepolicyComponent } from './components/settings-insurancepolicy/settings-insurancepolicy.component';
 import { SettingsFactoringComponent } from './components/settings-factoring/settings-factoring.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
-import { TaModalComponent } from 'src/app/core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from 'src/app/core/components/shared/ta-input/ta-input.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxCardComponent } from 'src/app/core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from 'src/app/core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
-import { TaUploadFilesComponent } from 'src/app/core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
-import { TaNoticeOfAsignmentComponent } from 'src/app/core/components/shared/ta-notice-of-asignment/ta-notice-of-asignment.component';
-import { TaLogoChangeComponent } from 'src/app/core/components/shared/ta-logo-change/ta-logo-change.component';
-import { TaReCardComponent } from 'src/app/core/components/shared/ta-common-card/ta-re-card.component';
-import { TaCounterComponent } from 'src/app/core/components/shared/ta-counter/ta-counter.component';
+import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaNoticeOfAsignmentComponent } from 'src/app/shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
+import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
+import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
+import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 // Pipes
@@ -64,7 +64,7 @@ import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
         FormatEinPipe,
         ThousandSeparatorPipe,
         FormatDatePipe,
-        TaReCardComponent,
+        TaCommonCardComponent,
         TaLogoChangeComponent,
         TaCounterComponent,
         TruckassistProgressExpirationComponent,

@@ -6,7 +6,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { OwnerInactiveState, OwnerInactiveStore } from './owner-inactive.store';
 
 //Services
-import { OwnerTService } from '../../services/owner.service';
+import { OwnerService } from '../../services/owner.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 //Enums
@@ -17,7 +17,7 @@ import { ComponentsTableEnum } from 'src/app/core/model/enums';
 })
 export class OwnerInactiveResolver implements Resolve<OwnerInactiveState> {
     constructor(
-        private ownerService: OwnerTService,
+        private ownerService: OwnerService,
         private ownerStore: OwnerInactiveStore,
         private tableService: TruckassistTableService
     ) {}

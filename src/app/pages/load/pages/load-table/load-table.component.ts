@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
-import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 
 // Services
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { LoadTService } from '../../services/load.service';
+import { LoadService } from '../../../../shared/services/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { TableCardDropdownActionsService } from 'src/app/core/components/standalone-components/table-card-dropdown-actions/table-card-dropdown-actions.service';
+import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
 
 // Models
@@ -110,7 +110,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
-        private loadServices: LoadTService,
+        private loadServices: LoadService,
         private tableDropdownService: TableCardDropdownActionsService,
         private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,

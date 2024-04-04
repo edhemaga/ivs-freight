@@ -3,7 +3,7 @@ import {
     FuelTransactionListResponse,
 } from 'appcoretruckassist';
 
-export interface FuelStateModal {
+export interface FuelState {
     fuelTransactions: FuelTransactionListResponse;
     fuelStops: FuelStopListResponse;
 }

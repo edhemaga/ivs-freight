@@ -17,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../model/map-route';
 
 import { CommonModule } from '@angular/common';
-import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { MapMarkerDropdownComponent } from '../map-marker-dropdown/map-marker-dropdown.component';
 import { AgmDirectionModule } from 'agm-direction';
@@ -28,8 +28,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropDownService } from '../../../services/details-page/drop-down.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { Confirmation } from '../../modals/confirmation-modal/state/models/confirmation.model';
+import { FuelService } from 'src/app/shared/services/fuel.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
-import { FuelTService } from 'src/app/pages/fuel/services/fuel.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/state/state/services/confirmation.service';
@@ -173,9 +173,9 @@ export class MapsComponent implements OnInit, OnDestroy {
     constructor(
         private ref: ChangeDetectorRef,
         private mapsService: MapsService,
+        private fuelStopService: FuelService,
         private repairShopService: RepairService,
         private shipperService: ShipperService,
-        private fuelStopService: FuelTService,
         private routingService: RoutingStateService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyOfficeService,

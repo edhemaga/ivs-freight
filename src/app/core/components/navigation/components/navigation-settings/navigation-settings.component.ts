@@ -19,7 +19,7 @@ import {
 } from '../../animations/navigation.animation';
 import { NavigationService } from '../../services/navigation.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TooltipSlideComponent } from 'src/app/core/components/standalone-components/tooltip-slide/tooltip-slide.component';
+import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 @Component({
     selector: 'app-navigation-settings',
     templateUrl: './navigation-settings.component.html',
@@ -30,7 +30,7 @@ import { TooltipSlideComponent } from 'src/app/core/components/standalone-compon
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
-        TooltipSlideComponent,
+        TaTooltipSlideComponent,
     ],
     animations: [
         navigation_route_animation('showHideDetails'),

@@ -1,23 +1,20 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-
-import { DropResult } from 'ngx-smooth-dnd';
 import { TodoQuery } from '../../state/to-do.query';
 
 // models
 import {
     SignInResponse,
-    TodoListResponse,
     TodoStatus,
     UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
 
 // services
-import { TodoTService } from '../../services/to-do.service';
+import { TodoService } from '../../services/to-do.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
@@ -27,7 +24,7 @@ import moment from 'moment';
 
 // components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { TaskModalComponent } from 'src/app/core/components/modals/task-modal/task-modal.component';
+import { TodoModalComponent } from 'src/app/pages/to-do/pages/to-do-modal/to-do-modal.component';
 
 // animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
@@ -176,7 +173,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     };
 
     constructor(
-        private todoTService: TodoTService,
+        private todoService: TodoService,
         private modalService: ModalService,
         private sharedService: SharedService,
         private commentsService: CommentsService,
@@ -224,7 +221,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         //   });
     }
 
-    dragStart = (e) => {
+    dragStart = () => {
         this.dragStarted = true;
     };
 
@@ -261,21 +258,21 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     public openModalTodo() {
-        this.modalService.openModal(TaskModalComponent, { size: 'small' });
+        this.modalService.openModal(TodoModalComponent, { size: 'small' });
     }
 
     public updateStatus(todo) {
-        this.todoTService
+        this.todoService
             .updateTodoItem(todo)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((resp: TodoListResponse) => {
+            .subscribe(() => {
                 this.startChangingStatus = false;
                 this.updateTodosList(this.cardData, true);
             });
     }
 
     updateTodosList(resp, noReplace?: boolean) {
-        this.toDoTasks = resp.filter((x, indx) => {
+        this.toDoTasks = resp.filter((x) => {
             if (x.status.name === TodoStatus.Todo) {
                 if (!noReplace) {
                     const newObject = {
@@ -316,7 +313,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.inProgressTasks = resp.filter((x, indx) => {
+        this.inProgressTasks = resp.filter((x) => {
             if (x.status.name === TodoStatus.InProgres) {
                 if (!noReplace) {
                     const newObject = {
@@ -358,7 +355,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.doneTasks = resp.filter((x, indx) => {
+        this.doneTasks = resp.filter((x) => {
             if (x.status.name === TodoStatus.Done) {
                 if (!noReplace) {
                     const newObject = {
@@ -428,7 +425,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
 
     //// NEW ANIMATION
 
-    onDrop(dropResult: DropResult) {
+    onDrop() {
         // update item list according to the @dropResult
         //this.items = applyDrag(this.items, dropResult);
     }
@@ -470,6 +467,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         this.DetailsDataService.setNewData(params[1]['payload']);
     }
 
+    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.sharedService.emitUpdateScrollHeight.emit(true);
@@ -583,7 +581,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
 
     dropAct(event) {
         if (event.type == 'delete') {
-            this.todoTService.deleteTodoById(event.id).subscribe();
+            this.todoService.deleteTodoById(event.id).subscribe();
             this.cardData = this.cardData.filter((item) => {
                 if (event.id == item.id) {
                     item.status.name = 'Deleted';
@@ -622,7 +620,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             window.open(url, '_blank');
         } else {
             this.modalService.openModal(
-                TaskModalComponent,
+                TodoModalComponent,
                 { size: 'small' },
                 {
                     ...event,
@@ -725,7 +723,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     toggleDropdownActions(data) {
         let newTitle = '';
         let newIcon = '';
-        let newName = '';
         let newIconName = '';
 
         let messageStatus = true;
@@ -744,12 +741,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         if (data.status.name == 'Todo') {
             newTitle = 'Mark as Ongoing';
             newIcon = 'assets/svg/detail-cards/refresh.svg';
-            newName = 'mark-as-ongoing';
             newIconName = 'mark-as-ongoing';
         } else {
             newTitle = 'Mark as To-Do';
             newIcon = 'assets/svg/common/ic_time.svg';
-            newName = 'mark-as-to-do';
             newIconName = 'mark-as-to-do';
         }
 

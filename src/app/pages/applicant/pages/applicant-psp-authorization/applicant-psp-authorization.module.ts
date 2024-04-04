@@ -9,7 +9,7 @@ import { ApplicantModule } from '../../applicant.module';
 // components
 import { ApplicantPspAuthorizationComponent } from './applicant-psp-authorization.component';
 
-import { TaCheckboxComponent } from 'src/app/core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 
 @NgModule({
     declarations: [ApplicantPspAuthorizationComponent],

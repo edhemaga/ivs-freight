@@ -156,13 +156,13 @@
 
                         <ng-container *ngIf="isShowingMore">
                             <div class="dashboard-by-state-body-up-list-search">
-                                <app-carrier-search-two
+                                <app-ta-carrier-search-two
                                     [placeHolderText]="byStateTitle"
                                     [clearSearchValue]="clearSearchValue"
                                     (searchValueEmitter)="
                                         handleSearchValue($event)
                                     "
-                                ></app-carrier-search-two>
+                                ></app-ta-carrier-search-two>
                             </div>
                         </ng-container>
 

@@ -12,7 +12,7 @@ import { FileEvent } from 'src/app/core/model/file-event.model';
 import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
 import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
 
-import { UploadFile } from 'src/app/core/components/shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { UploadFile } from 'src/app/shared/components/ta-upload-files/ta-upload-file/ta-upload-file.component';
 import {
     CreateWithUploadsResponse,
     FileResponse,

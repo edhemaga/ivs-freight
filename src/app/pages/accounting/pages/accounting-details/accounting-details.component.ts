@@ -1,4 +1,4 @@
-import { TableOptions } from '../../models/accounting-table.model';
+import { AccountingTableOptions } from '../../models/accounting-table-options.model';
 import {
     Component,
     HostListener,
@@ -16,7 +16,7 @@ import { GOOGLE_MAP_STYLES, NORTH_AMERICA_BOUNDS } from 'src/app/const';
     styleUrls: ['./accounting-details.component.scss'],
 })
 export class AccountingDetailsComponent implements OnInit {
-    public tableOptions: TableOptions;
+    public tableOptions: AccountingTableOptions;
     @ViewChild('t2') t2: any;
     @Input() selectedUser: any;
     agmMap: any;
@@ -242,6 +242,7 @@ export class AccountingDetailsComponent implements OnInit {
         // Object.assign(this.tableDetails[this.tableDetails.length-1], calc_data);
     }
 
+    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

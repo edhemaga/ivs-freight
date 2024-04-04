@@ -13,14 +13,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ShipperDetailsItemComponent } from './components/shipper-details-item/shipper-details-item.component';
 import { ShipperDetailsCardComponent } from './components/shipper-details-card/shipper-details-card.component';
 import { ShipperDetailsComponent } from './shipper-details.component';
-import { TaChartComponent } from 'src/app/core/components/standalone-components/ta-chart/ta-chart.component';
-import { AppTooltipComponent } from 'src/app/core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaDetailsHeaderCardComponent } from 'src/app/core/components/shared/ta-details-header-card/ta-details-header-card.component';
-import { TaCopyComponent } from 'src/app/core/components/shared/ta-copy/ta-copy.component';
-import { TaCustomCardComponent } from 'src/app/core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from 'src/app/core/components/shared/ta-input-note/ta-input-note.component';
-import { TaCommonHeaderComponent } from 'src/app/core/components/shared/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from 'src/app/core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // Pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
@@ -50,7 +50,7 @@ import { FormatTimePipe } from 'src/app/shared/pipes/format-time.pipe';
         TaCopyComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
-        TaCommonHeaderComponent,
+        TaDetailsHeaderComponent,
         TaTabSwitchComponent,
 
         // Pipes
