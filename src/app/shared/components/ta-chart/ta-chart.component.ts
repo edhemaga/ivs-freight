@@ -35,18 +35,17 @@ import { NFormatterPipe } from '../../../core/pipes/n-formatter.pipe';
 import { hexToRgbA } from '../../../../assets/utils/methods-global';
 
 //models
-import {
-    AnnotationConfig,
-    Axis,
-    BasicChartConfig,
-    ChartDataProperties,
-    LegendAttributes,
-    OnHoverProperties,
-} from './models/chart-models';
+import { AnnotationConfig } from './models/annotation-config.model';
+import { Axis } from './models/axis.model';
+import { BasicChartConfig } from './models/basic-chart-config.model';
+import { ChartDataProperties } from './models/chart-data-properties.model';
+import { LegendAttributes } from './models/legend-attributes.model';
+import { OnHoverProperties } from './models/on-hover-properties.model';
 
 //enums
-import { AnnotationPositionEnum, AxisPositionEnum } from './enums/chart-enums';
 
+import { ChartAxisPositionEnum } from './enums/chart-axis-position-string.enum';
+import { ChartAnnotationPositionStringEnum } from './enums/chart-annotation-position-string.enum';
 //Properties from dashboard
 import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { TopRatedListItem } from 'src/app/pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
@@ -248,13 +247,13 @@ export class TaChartComponent implements OnInit, OnChanges {
                         mode:
                             this.annotationConfig &&
                             [
-                                AnnotationPositionEnum.HORIZONTAL as string,
-                                AnnotationPositionEnum.VERTICAL,
+                                ChartAnnotationPositionStringEnum.HORIZONTAL as string,
+                                ChartAnnotationPositionStringEnum.VERTICAL,
                             ].includes(this.annotationConfig.type)
                                 ? (this.annotationConfig.type as
-                                      | AnnotationPositionEnum.HORIZONTAL
-                                      | AnnotationPositionEnum.VERTICAL)
-                                : AnnotationPositionEnum.VERTICAL,
+                                      | ChartAnnotationPositionStringEnum.HORIZONTAL
+                                      | ChartAnnotationPositionStringEnum.VERTICAL)
+                                : ChartAnnotationPositionStringEnum.VERTICAL,
                         scaleID: this.annotationConfig
                             ? this.annotationConfig.axis
                             : 'x-axis-0',
@@ -1221,7 +1220,7 @@ export class TaChartComponent implements OnInit, OnChanges {
             display: this.axesProperties['verticalLeftAxes']
                 ? this.axesProperties['verticalLeftAxes']['visible']
                 : false,
-            position: AxisPositionEnum.LEFT,
+            position: ChartAxisPositionEnum.LEFT,
             gridLines: {
                 display: this.chartConfig.showZeroLine ?? false,
                 drawBorder: false,
@@ -1293,7 +1292,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                     ? this.axesProperties['verticalRightAxes']['showGridLines']
                     : false,
             },
-            position: AxisPositionEnum.RIGHT,
+            position: ChartAxisPositionEnum.RIGHT,
             ticks: {
                 display: false,
                 beginAtZero: true,

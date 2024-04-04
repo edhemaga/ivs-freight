@@ -27,7 +27,7 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 // services
-import { TaInputService } from '../ta-input/ta-input.service';
+import { TaInputService } from '../ta-input/services/ta-input.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { RepairService } from '../../services/repair.service';
 
@@ -41,7 +41,7 @@ import { ConstantStringEnum } from 'src/app/core/utils/enums/ta-modal-table.enum
 import {
     phoneExtension,
     phoneFaxRegex,
-} from '../ta-input/ta-input.regex-validations';
+} from '../ta-input/validators/ta-input.regex-validations';
 
 // models
 import {

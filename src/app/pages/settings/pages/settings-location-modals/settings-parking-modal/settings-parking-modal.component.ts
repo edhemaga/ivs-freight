@@ -26,9 +26,9 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { rentValidation } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { rentValidation } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import { FormService } from '../../../../../core/services/form/form.service';
 
 // components
@@ -52,7 +52,7 @@ import {
     parkingNameValidation,
     parkingSlotValidation,
     fullParkingSlotValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // utils
 import {

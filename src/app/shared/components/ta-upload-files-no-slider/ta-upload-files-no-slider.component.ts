@@ -3,6 +3,8 @@ import {
     ElementRef,
     EventEmitter,
     Input,
+    OnChanges,
+    OnDestroy,
     OnInit,
     Output,
     SimpleChanges,
@@ -20,20 +22,19 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     TaUploadFileComponent,
     UploadFile,
-} from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { TaUploadDropzoneComponent } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFilesCarouselComponent } from '../ta-upload-files/ta-upload-files-carousel/ta-upload-files-carousel.component';
+} from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { TaUploadDropzoneComponent } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFilesCarouselComponent } from '../ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
 import { Tags } from '../../models/tags.model';
 
 //Services
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
 
 //Enums
-import { FileAction } from './enums/file-action-string.enum';
-import { FileTypes } from 'src/app/shared/components/ta-upload-files/enums/file-types.enum';
+import { FileActionEnum } from './enums/file-action-string.enum';
 
 @Component({
     selector: 'app-ta-upload-files-no-slider',
@@ -53,7 +54,9 @@ import { FileTypes } from 'src/app/shared/components/ta-upload-files/enums/file-
         TaUploadFileComponent,
     ],
 })
-export class TaUploadFilesNoSliderComponent implements OnInit {
+export class TaUploadFilesNoSliderComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @ViewChildren('uploadedFiles') public uploadedFiles: ElementRef;
 
     @Output() documentReviewInputEvent: EventEmitter<{
@@ -69,7 +72,7 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
         this._files = value;
     }
     @Input() customClassName: string;
-    @Input() type: FileTypes;
+    @Input() type;
     @Input() hasNumberOfPages: boolean = false;
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
@@ -114,14 +117,14 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
      */
     public onFileAction(data: { file: UploadFile; action: string }): void {
         switch (data.action) {
-            case FileAction.TAG:
+            case FileActionEnum.TAG:
                 this.onFileEvent.emit({
                     files: [data.file],
                     action: data.action,
                 });
                 break;
 
-            case FileAction.DELETE:
+            case FileActionEnum.DELETE:
                 if (data.file['fileId']) {
                     this.onFileEvent.emit({
                         files: this._files,
@@ -136,7 +139,7 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
                 }
                 break;
 
-            case FileAction.MARK_INCORRECT:
+            case FileActionEnum.MARK_INCORRECT:
                 let incorrectIndx: number;
                 this._files.map((item, index) => {
                     if (item.fileName === data.file.fileName) {
@@ -151,7 +154,7 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
                 });
                 break;
 
-            case FileAction.MARK_CORRECT:
+            case FileActionEnum.MARK_CORRECT:
                 let correctIndx: number;
                 this._files.map((item, index) => {
                     if (item.fileName === data.file.fileName) {
@@ -172,7 +175,7 @@ export class TaUploadFilesNoSliderComponent implements OnInit {
     }
 
     public onUploadFiles(data: { files: UploadFile[]; action: string }): void {
-        if (data.action !== FileAction.ADD) return;
+        if (data.action !== FileActionEnum.ADD) return;
 
         const uploadedFiles = [...data.files];
         this.onFileEvent.emit({ files: uploadedFiles, action: 'add' });

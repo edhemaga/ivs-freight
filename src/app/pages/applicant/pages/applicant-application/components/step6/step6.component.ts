@@ -40,7 +40,7 @@ import {
 import {
     name2_24Validation,
     phoneFaxRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 import {
     convertDateFromBackend,
@@ -48,7 +48,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantService } from '../../../../services/applicant.service';
 
 // store

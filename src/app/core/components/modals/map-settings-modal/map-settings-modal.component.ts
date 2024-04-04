@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
-import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
 import { UpdateMapCommand } from 'appcoretruckassist';
 import { CommonModule } from '@angular/common';

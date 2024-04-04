@@ -25,7 +25,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 //Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
 import { DriverMedicalService } from '../../../../services/driver-medical.service';
@@ -54,11 +54,8 @@ import { BrokerTabStringEnum } from 'src/app/pages/customer/pages/broker-details
 
 //Models
 import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import {
-    ChartApiCall,
-    LegendAttributes,
-} from 'src/app/shared/components/ta-chart/models/chart-models';
-
+import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
@@ -70,7 +67,7 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from 'src/app/shared/components/ta-tab-switch/state/models/tab-options.models';
+import { TabOptions } from 'src/app/shared/components/ta-tab-switch/models/tab-options.models';
 import { DriverDropdown } from './models/driver-dropdown.model';
 import { DriverDateInfo } from '../../../../models/driver-date-info.model';
 

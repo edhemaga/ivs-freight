@@ -22,13 +22,11 @@ import { BrokerService } from '../../../../services/broker.service';
 //Models
 import { BrokerResponse } from 'appcoretruckassist';
 import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import {
-    ChartApiCall,
-    LegendAttributes,
-} from 'src/app/shared/components/ta-chart/models/chart-models';
+import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import { BrokerDropdown } from '../../models/broker-dropdown.model';
-import { TabOptions } from 'src/app/shared/components/ta-tab-switch/state/models/tab-options.models';
+import { TabOptions } from 'src/app/shared/components/ta-tab-switch/models/tab-options.models';
 
 //Constants
 import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';

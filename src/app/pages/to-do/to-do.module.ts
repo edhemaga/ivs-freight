@@ -17,7 +17,7 @@ import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-file
 import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
+import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from 'src/app/shared/components/ta-filter/ta-filter.component';
 import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.component';
 
@@ -33,7 +33,7 @@ import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.c
         NgxSmoothDnDModule,
 
         //Components
-        TaCarrierSearchComponent,
+        TaSearchComponent,
         TaFilterComponent,
         AppTooltipComponent,
         TaUploadFilesComponent,

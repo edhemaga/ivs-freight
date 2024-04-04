@@ -2,7 +2,7 @@
 import { Options } from '@angular-slider/ngx-slider';
 import { CroppieOptions } from 'croppie';
 import { Tabs } from 'src/app/core/components/shared/model/modal-tabs';
-import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AnimationObject } from 'src/app/core/model/animation-object.model';
 
 export class SettingsModalConstants {

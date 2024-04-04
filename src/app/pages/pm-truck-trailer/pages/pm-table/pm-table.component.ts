@@ -21,7 +21,7 @@ import { DataForCardsAndTables } from 'src/app/core/components/shared/model/tabl
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { PmService } from '../../services/pm.service';
 

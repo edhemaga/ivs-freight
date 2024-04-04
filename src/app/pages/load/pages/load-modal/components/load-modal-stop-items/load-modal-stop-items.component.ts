@@ -27,7 +27,7 @@ import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.co
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // validations
-import { descriptionValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
 import { LoadStopItems } from '../../utils/constants/load-stop-items.constants';

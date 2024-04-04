@@ -17,10 +17,7 @@ const BUFFER = 500;
 
 @Injectable()
 export class ScrolllStrategy implements VirtualScrollStrategy {
-    constructor(
-        private startedHeight,
-        private FULL_SIZE
-    ) {}
+    constructor(private startedHeight, private FULL_SIZE) {}
 
     private index$ = new Subject<any>();
     scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
