@@ -30,8 +30,8 @@ import {
 import { convertThousanSepInNumber } from '../../../../core/utils/methods.calculations';
 
 // services
-import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
 import { FormService } from '../../../../core/services/form/form.service';
@@ -51,7 +51,7 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
-} from '../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
 import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';

@@ -6,10 +6,10 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ITaInput } from '../../../../../shared/components/ta-input/ta-input.config';
+import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-input.config';
 import { PayrollDeductionService } from 'src/app/pages/accounting/services/payroll-deduction.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { PayrollDeductionModalResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionModalResponse';

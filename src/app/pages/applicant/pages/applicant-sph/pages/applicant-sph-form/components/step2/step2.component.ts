@@ -28,7 +28,7 @@ import {
 } from 'src/app/pages/applicant/utils/helpers/applicant.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantSphService } from '../../services/applicant-sph.service';
 
 // store

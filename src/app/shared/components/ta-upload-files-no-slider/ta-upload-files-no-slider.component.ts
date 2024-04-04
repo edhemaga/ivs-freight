@@ -20,16 +20,16 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     TaUploadFileComponent,
     UploadFile,
-} from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { TaUploadDropzoneComponent } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFilesCarouselComponent } from '../ta-upload-files/ta-upload-files-carousel/ta-upload-files-carousel.component';
+} from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { TaUploadDropzoneComponent } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFilesCarouselComponent } from '../ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
 import { Tags } from '../../models/tags.model';
 
 //Services
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
 
 //Enums
 import { FileAction } from './enums/file-action-string.enum';

@@ -36,8 +36,8 @@ import { RepairTypes } from '../repair-order-modal/models/repair-types.model';
 
 // Services
 import { RepairService } from 'src/app/shared/services/repair.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
@@ -45,7 +45,7 @@ import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/revie
 import {
     TaLikeDislikeService,
     LikeDislikeModel,
-} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
+} from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 // Validators
 import {
     accountBankValidation,
@@ -56,7 +56,7 @@ import {
     phoneFaxRegex,
     repairShopValidation,
     routingBankValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';

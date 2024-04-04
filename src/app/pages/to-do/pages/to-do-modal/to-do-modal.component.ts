@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -11,7 +11,7 @@ import {
     TodoResponse,
     UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TodoService } from 'src/app/pages/to-do/services/to-do.service';
 import {
     ReviewCommentModal,
@@ -22,7 +22,7 @@ import {
     descriptionValidation,
     titleValidation,
     urlValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from '../../../../core/services/comments/comments.service';
 import { FormService } from '../../../../core/services/form/form.service';

@@ -29,7 +29,7 @@ import {
     phoneExtension,
     phoneFaxRegex,
     fullNameValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Models
 import {
@@ -43,12 +43,12 @@ import {
 } from 'appcoretruckassist';
 
 // Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
-} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
+} from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
 import { ReviewsRatingService } from '../../../../core/services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../../core/services/form/form.service';

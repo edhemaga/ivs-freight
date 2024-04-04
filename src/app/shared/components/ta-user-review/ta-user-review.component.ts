@@ -1,4 +1,4 @@
-import { ReviewsSortPipe } from './reviews-sort.pipe';
+import { ReviewsSortPipe } from './pipes/reviews-sort.pipe';
 import {
     Component,
     ElementRef,

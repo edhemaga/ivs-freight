@@ -27,7 +27,7 @@ import {
 } from '@angular/forms';
 
 //Config
-import { ITaInput } from '../../../../shared/components/ta-input/ta-input.config';
+import { ITaInput } from '../../../../shared/components/ta-input/config/ta-input.config';
 
 //Services
 import { AddressService } from 'src/app/core/services/shared/address.service';

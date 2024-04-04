@@ -17,19 +17,19 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { TaUploadDropzoneComponent } from './ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadDropzoneComponent } from './components/ta-upload-dropzone/ta-upload-dropzone.component';
 import {
     UploadFile,
     TaUploadFileComponent,
-} from './ta-upload-file/ta-upload-file.component';
-import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
+} from './components/ta-upload-file/ta-upload-file.component';
+import { TaUploadFilesCarouselComponent } from './components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
 import { Tags } from '../../models/tags.model';
 
 //Services
-import { TaUploadFileService } from './ta-upload-file.service';
+import { TaUploadFileService } from './services/ta-upload-file.service';
 
 //Enums
 import { FileTypes } from './enums/file-types.enum';

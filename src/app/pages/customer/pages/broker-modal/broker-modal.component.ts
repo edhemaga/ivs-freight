@@ -36,10 +36,10 @@ import { ReviewsRatingService } from '../../../../core/services/reviews-rating/r
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
-} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
+} from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { BrokerService } from 'src/app/pages/customer/services/broker.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // Models
 import {
@@ -66,7 +66,7 @@ import {
     mcFFValidation,
     phoneExtension,
     phoneFaxRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Components
 import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spinner.component';

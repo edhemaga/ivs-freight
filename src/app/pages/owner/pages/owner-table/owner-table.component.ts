@@ -28,7 +28,7 @@ import { OwnerData } from '../../models/owner-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { OwnerService } from '../../services/owner.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';

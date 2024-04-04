@@ -18,7 +18,7 @@ import {
     phoneFaxRegex,
     addressValidation,
     vinNumberValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
@@ -27,8 +27,8 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 import { convertDateFromBackend } from '../../../../../core/utils/methods.calculations';
 
 // services
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 

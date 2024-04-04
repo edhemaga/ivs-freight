@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng5SliderModule } from 'ng5-slider';
 
 //Enums
-import { SliderTemplate } from './state/enums/slider.enum';
+import { SliderTemplate } from './enums/slider-template.enum';
 
 @Component({
     selector: 'app-ta-ngx-slider',

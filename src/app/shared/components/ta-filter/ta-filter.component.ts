@@ -25,7 +25,7 @@ import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 
 // validators
-import { addressValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -40,25 +40,23 @@ import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // services
-import { FilterStateService } from './state/filter-state.service';
+import { FilterStateService } from './services/filter-state.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // constants
-import { DirectiveConstants } from './state/constants/filter.constants';
-import { filterConfig } from './state/constants/filter_config.constants';
+import { DirectiveConstants } from './constants/directive.constants';
+import { filterConfig } from './constants/filter_config.constants';
 
 // animations
-import {
-    area_left_side_animation,
-    area_right_side_animation,
-    close_form,
-    in_out_animation,
-    show_animation,
-    state_header,
-} from './state/animations/filter.animation';
 
+import { area_left_side_animation } from './animations/area-left-side.animation';
+import { area_right_side_animation } from './animations/area-right-side.animation';
+import { close_form } from './animations/close-form.animation';
+import { in_out_animation } from './animations/in-out.animation';
+import { show_animation } from './animations/show.animation';
+import { state_header } from './animations/state-header.animation';
 // models
-import { ArrayStatus } from './state/model/filter.models';
+import { ArrayStatus } from './model/array-status.model';
 @Component({
     selector: 'app-ta-filter',
     standalone: true,

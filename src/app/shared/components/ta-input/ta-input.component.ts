@@ -19,8 +19,8 @@ import {
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { ITaInput } from './ta-input.config';
-import { TaInputService } from './ta-input.service';
+import { ITaInput } from './config/ta-input.config';
+import { TaInputService } from './services/ta-input.service';
 import {
     NgbDropdownConfig,
     NgbPopover,
@@ -41,10 +41,10 @@ import { ImageBase64Service } from '../../../core/utils/base64.image';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
-import { InputTypePipe } from './input-type.pipe';
+import { InputTypePipe } from './pipes/input-type.pipe';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
-import { InputErrorPipe } from './input-error.pipe';
+import { InputErrorPipe } from './pipes/input-error.pipe';
 import { CustomDatetimePickersComponent } from '../../../core/components/shared/custom-datetime-pickers/custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
