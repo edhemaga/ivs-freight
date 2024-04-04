@@ -1,4 +1,4 @@
-export const DriverCommisionTableSettings = [
+export const PayrollDriverCommisionTableSettingsConstants = [
     {
         field: "NAME",
         template: "bold-image-template",

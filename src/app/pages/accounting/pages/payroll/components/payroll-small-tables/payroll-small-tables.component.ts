@@ -9,10 +9,8 @@ import { PayrollDeductionModalComponent } from 'src/app/pages/accounting/pages/p
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 // Constants
-import {
-    PayrollSmallTableConfig,
-    PayrollSmallTableConfigResize,
-} from './utils/constants/payroll-small-tables-config.constants';
+import { PayrollSmallTableConfigConstants } from './utils/constants/payroll-small-tables-config.constants';
+import { PayrollSmallTableConfigResizeConstants } from './utils/constants/payroll-small-tables-config-resize.constants';
 
 @Component({
     selector: 'app-payroll-small-tables',
@@ -25,8 +23,8 @@ export class PayrollSmallTablesComponent implements OnInit {
     @Input() reportMainData: any;
     @Input() data: any[] = [];
 
-    tableConfig: any = PayrollSmallTableConfig;
-    tableConfigResizable: any = PayrollSmallTableConfigResize;
+    tableConfig: any = PayrollSmallTableConfigConstants;
+    tableConfigResizable: any = PayrollSmallTableConfigResizeConstants;
 
     constructor(private modalService: ModalService) {}
 

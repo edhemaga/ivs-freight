@@ -1,6 +1,6 @@
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
-export class DisplayPMConfiguration {
+export class PmCardDataConfigConstants {
     static ROWS: number = 4;
 
     static PAGE: string = 'PM';

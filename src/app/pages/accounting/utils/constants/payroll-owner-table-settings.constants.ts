@@ -1,4 +1,4 @@
-export const OwnerTableSettings = [
+export const PayrollOwnerTableSettingsConstants = [
     {
         field: "TRUCK",
         data_field: "truck.truckNumber",

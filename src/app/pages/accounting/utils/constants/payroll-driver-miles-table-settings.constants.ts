@@ -1,4 +1,4 @@
-export const DriverMilesTableSettings = [
+export const PayrollDriverMilesTableSettingsConstants = [
     {
         field: "NAME",
         template: "bold-image-template",

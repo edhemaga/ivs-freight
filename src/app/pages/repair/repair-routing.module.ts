@@ -18,7 +18,7 @@ const routes: Routes = [
         path: ':id/shop-details',
         loadChildren: () =>
             import(
-                './pages/shop-repair-details/repair-shop-details.module'
+                './pages/repair-shop-details/repair-shop-details.module'
             ).then((m) => m.RepairShopDetailsModule),
         resolve: { repairShopResolve: RepairDetailsResolver },
         data: { title: 'Shop Repair Details' },

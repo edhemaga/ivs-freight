@@ -27,7 +27,7 @@ import { PmService } from '../../services/pm.service';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
-import { DisplayPMConfiguration } from './utils/constants/pm-card-data.constants';
+import { PmCardDataConfigConstants } from './utils/constants/pm-card-data-config.constants';
 
 // Enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -62,19 +62,19 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Data to display from model Broker
     public displayRowsFront: CardRows[] =
-        DisplayPMConfiguration.DISPLAY_ROWS_FRONT_ACTIVE;
+        PmCardDataConfigConstants.DISPLAY_ROWS_FRONT_ACTIVE;
     public displayRowsBack: CardRows[] =
-        DisplayPMConfiguration.DISPLAY_ROWS_BACK_ACTIVE;
+        PmCardDataConfigConstants.DISPLAY_ROWS_BACK_ACTIVE;
 
     //Data to display from model Shipper
     public displayRowsFrontInactive: CardRows[] =
-        DisplayPMConfiguration.DISPLAY_ROWS_FRONT_INACTIVE;
+        PmCardDataConfigConstants.DISPLAY_ROWS_FRONT_INACTIVE;
     public displayRowsBackInactive: CardRows[] =
-        DisplayPMConfiguration.DISPLAY_ROWS_BACK_INACTIVE;
+        PmCardDataConfigConstants.DISPLAY_ROWS_BACK_INACTIVE;
 
-    public cardTitle: string = DisplayPMConfiguration.CARD_TITLE;
-    public page: string = DisplayPMConfiguration.PAGE;
-    public rows: number = DisplayPMConfiguration.ROWS;
+    public cardTitle: string = PmCardDataConfigConstants.CARD_TITLE;
+    public page: string = PmCardDataConfigConstants.PAGE;
+    public rows: number = PmCardDataConfigConstants.ROWS;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];

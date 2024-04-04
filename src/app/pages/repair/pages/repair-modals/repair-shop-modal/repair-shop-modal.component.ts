@@ -87,7 +87,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Constants
-import { RepairOrder } from '../repair-order-modal/utils/constants/repair-order.constant';
+import { RepairOrderConstants } from '../repair-order-modal/utils/constants/repair-order.constant';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -184,7 +184,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public latitude: number;
     private destroy$ = new Subject<void>();
 
-    public repairTypes: RepairTypes[] = RepairOrder.REPAIR_TYPES;
+    public repairTypes: RepairTypes[] = RepairOrderConstants.REPAIR_TYPES;
     public isSelectedRepairType: RepairTypes = null;
 
     public repairShopName: string = null;

@@ -1,6 +1,6 @@
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 
-export class RepairCardConfig {
+export class RepairCardConfigConstants {
     static rows: number = 4;
 
     static page: string = 'Repair';

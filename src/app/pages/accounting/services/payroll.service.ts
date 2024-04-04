@@ -7,9 +7,9 @@ import { PayrollStore } from '../pages/payroll/state/payroll.store';
 import { PayrollService as PayrollMainService } from 'appcoretruckassist';
 
 // Constants
-import { DriverMilesTableSettings } from '../utils/constants/driver-miles-table-settings.constants';
-import { DriverCommisionTableSettings } from '../utils/constants/driver-commision-table-settings.constants';
-import { OwnerTableSettings } from '../utils/constants/owner-table-settings.constants';
+import { PayrollDriverMilesTableSettingsConstants } from '../utils/constants/payroll-driver-miles-table-settings.constants';
+import { PayrollDriverCommisionTableSettingsConstants } from '../utils/constants/payroll-driver-commision-table-settings.constants';
+import { PayrollOwnerTableSettingsConstants } from '../utils/constants/payroll-owner-table-settings.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
@@ -78,11 +78,11 @@ export class PayrollService {
     getTableDefinitions(title) {
         switch (title) {
             case 'Driver (Miles)':
-                return DriverMilesTableSettings;
+                return PayrollDriverMilesTableSettingsConstants;
             case 'Driver (Commission)':
-                return DriverCommisionTableSettings;
+                return PayrollDriverCommisionTableSettingsConstants;
             case 'Owner':
-                return OwnerTableSettings;
+                return PayrollOwnerTableSettingsConstants;
         }
     }
 }
