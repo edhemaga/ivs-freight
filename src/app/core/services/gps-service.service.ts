@@ -17,7 +17,7 @@ export class GpsService {
                 filter((route) => route instanceof NavigationEnd),
                 takeUntil(this.destroy$)
             )
-            .subscribe((route: NavigationEnd) => {});
+            .subscribe(() => {});
     }
 
     public startConnection = () => {
@@ -27,7 +27,6 @@ export class GpsService {
                 .withUrl(`${environment.GPS_ENDPOINT}/gpsHub`, {
                     accessTokenFactory: () => user?.token,
                 })
-                // .withAutomaticReconnect()
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 

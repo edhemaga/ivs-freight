@@ -34,8 +34,8 @@ import { TaInputService } from '../../ta-input/ta-input.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // pipes
-import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
-import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
+import { UrlExtensionPipe } from 'src/app/shared/components/ta-upload-files/pipes/url-extension.pipe';
+import { ByteConvertPipe } from 'src/app/shared/components/ta-upload-files/pipes/byte-convert.pipe';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';

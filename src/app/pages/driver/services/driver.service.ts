@@ -29,7 +29,7 @@ import { DriversDetailsListStore } from '../state/driver-details-list-state/driv
 
 //Services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Components
 import { DriverModal } from 'src/app/core/components/shared/model/table-components/driver-modal';

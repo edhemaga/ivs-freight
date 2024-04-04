@@ -17,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../../shared/services/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
+import { ResizeColumnDirective } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/directives/resize-column.directive';
 
 const rotate: { [key: string]: any } = {
     asc: '',

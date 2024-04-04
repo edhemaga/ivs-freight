@@ -29,7 +29,7 @@ import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.serv
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TaUploadFileService } from 'src/app/shared/components/ta-upload-files/ta-upload-file.service';
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
 import { FormService } from '../../../../../shared/services/form.service';
 

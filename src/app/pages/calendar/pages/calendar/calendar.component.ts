@@ -17,7 +17,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 // Services
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({

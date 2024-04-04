@@ -11,7 +11,7 @@ import {
 import { FormsModule, UntypedFormGroup } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import * as AppConst from 'src/app/const';
-import { MapsService } from '../../../services/shared/maps.service';
+import { MapsService } from '../../../../shared/services/maps.service';
 
 import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../model/map-route';

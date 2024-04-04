@@ -22,7 +22,7 @@ import { ShipperService } from '../../services/shipper.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { MapsService } from 'src/app/shared/services/maps.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/table-card-dropdown-actions.service';
 

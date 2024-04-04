@@ -12,7 +12,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { SharedService } from '../../../services/shared/shared.service';
+import { SharedService } from '../../../services/shared.service';
 import { AfterViewInit, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

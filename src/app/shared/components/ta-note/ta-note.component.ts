@@ -18,9 +18,9 @@ import moment from 'moment';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 //services
-import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
 import { DetailsDataService } from '../../services/details-data.service';
-import { SharedService } from '../../../core/services/shared/shared.service';
+import { SharedService } from '../../../core/services/shared.service';
 
 //popover
 import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';

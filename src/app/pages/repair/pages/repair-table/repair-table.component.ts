@@ -17,7 +17,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
+import { MapsService } from 'src/app/shared/services/maps.service';
 
 // Models
 import {

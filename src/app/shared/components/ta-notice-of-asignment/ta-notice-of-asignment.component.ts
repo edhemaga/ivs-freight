@@ -1,4 +1,3 @@
-import { NoticeService } from 'src/app/core/services/shared/notice.service';
 import {
     Component,
     ElementRef,
@@ -156,8 +155,6 @@ export class TaNoticeOfAsignmentComponent
 
     constructor(
         @Self() public superControl: NgControl,
-        private noticeService: NoticeService,
-        private elementRef: ElementRef,
         private formBuilder: UntypedFormBuilder,
         private formService: FormService
     ) {
@@ -166,9 +163,9 @@ export class TaNoticeOfAsignmentComponent
     writeValue(obj: any): void {
         this.noticeRef.nativeElement.value = obj;
     }
-    registerOnChange(fn: any): void {}
-    registerOnTouched(fn: any): void {}
-    setDisabledState?(isDisabled: boolean): void {}
+    registerOnChange(_: any): void {}
+    registerOnTouched(_: any): void {}
+    setDisabledState?(_: boolean): void {}
 
     ngOnInit(): void {
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };

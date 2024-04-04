@@ -42,7 +42,7 @@ import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.serv
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { FormService } from 'src/app/shared/services/form.service';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 
 // Models

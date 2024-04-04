@@ -23,7 +23,7 @@ import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-
 
 // Services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 import { ShipperService as ShipperMainService } from 'appcoretruckassist';
 
 @Injectable({

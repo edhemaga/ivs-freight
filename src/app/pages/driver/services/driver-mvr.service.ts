@@ -8,7 +8,7 @@ import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 //Services
 import { DriverService } from './driver.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Store
 import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';

@@ -12,19 +12,19 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
 
-//Components
+// components
 import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
 import { TaFilterComponent } from '../../../../../../shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from 'src/app/shared/components/ta-special-filter/ta-special-filter.component';
 
-//Enum
+// enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
 
-//Pipe
-import { MoneyFilterPipe } from 'src/app/core/pipes/money-filter.pipe';
+// pipes
+import { MoneyFilterPipe } from 'src/app/shared/pipes/money-filter.pipe';
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
-//Services
+// services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({

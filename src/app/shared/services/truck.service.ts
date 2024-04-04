@@ -15,7 +15,7 @@ import { TrucksDetailsListStore } from '../../pages/truck/state/truck-details-li
 
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 // models
 import {

@@ -35,9 +35,9 @@ import { TableStrategy } from './table_strategy';
 
 // services
 import { TruckassistTableService } from '../../../../../shared/services/truckassist-table.service';
-import { SharedService } from '../../../../services/shared/shared.service';
+import { SharedService } from '../../../../services/shared.service';
 import { DetailsDataService } from '../../../../../shared/services/details-data.service';
-import { FilesService } from 'src/app/core/services/shared/files.service';
+import { FilesService } from 'src/app/shared/services/files.service';
 
 // decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
@@ -60,9 +60,9 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 
 // pipes
-import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
-import { TableTextCountPipe } from 'src/app/core/pipes/table-text-count.pipe';
-import { ContactPhoneEmailIconPipe } from 'src/app/core/pipes/contact-phone-email-icon.pipe';
+import { TableHighlightSearchTextPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/table-highlight-search-text.pipe';
+import { TableTextCountPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/table-text-count.pipe';
+import { ContactPhoneEmailIconPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/contact-phone-email-icon.pipe';
 
 // enums
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

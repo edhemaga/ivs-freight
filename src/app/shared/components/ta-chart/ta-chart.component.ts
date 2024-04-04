@@ -31,7 +31,7 @@ import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 
 //helpers
-import { NFormatterPipe } from '../../../core/pipes/n-formatter.pipe';
+import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 import { hexToRgbA } from '../../../../assets/utils/methods-global';
 
 //models

@@ -24,7 +24,7 @@ import {
     urlValidation,
 } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { CommentsService } from '../../../../core/services/comments/comments.service';
+import { CommentsService } from '../../../../shared/services/comments.service';
 import { FormService } from '../../../../shared/services/form.service';
 import {
     convertDateToBackend,

@@ -32,8 +32,8 @@ import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-c
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
 // services
-import { SharedService } from '../../../core/services/shared/shared.service';
-import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
+import { SharedService } from '../../../core/services/shared.service';
+import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
 
 // models
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';

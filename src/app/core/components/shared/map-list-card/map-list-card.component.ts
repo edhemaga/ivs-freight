@@ -9,7 +9,7 @@ import {
     ElementRef,
     ViewChild,
 } from '@angular/core';
-import { MapsService } from '../../../services/shared/maps.service';
+import { MapsService } from '../../../../shared/services/maps.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ModalService } from '../../../../shared/components/ta-modal/modal.service';

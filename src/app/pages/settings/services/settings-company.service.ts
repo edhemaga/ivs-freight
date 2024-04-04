@@ -23,7 +23,7 @@ import { SettingsFactoringModalComponent } from 'src/app/core/components/modals/
 //Service
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Store
 import { CompanyStore } from '../state/company-state/company-settings.store';

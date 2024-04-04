@@ -13,7 +13,7 @@ import { OnDestroy } from '@angular/core';
 import { UpdateCommentCommand } from 'appcoretruckassist';
 
 //Services
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { CommentsService } from 'src/app/shared/services/comments.service';
 
 //Components
 import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';

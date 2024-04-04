@@ -26,7 +26,7 @@ import { TrailersMinimalListQuery } from '../../pages/trailer/state/trailer-mini
 
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {
