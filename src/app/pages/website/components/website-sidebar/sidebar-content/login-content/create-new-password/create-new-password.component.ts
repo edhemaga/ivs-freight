@@ -11,7 +11,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // validations
 import { passwordValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';

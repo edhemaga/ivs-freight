@@ -36,7 +36,7 @@ import { ModalService } from '../../../../../shared/components/ta-modal/services
 import { ConfirmationResetService } from '../../../modals/confirmation-modal/state/state/services/confirmation-reset.service';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // components
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';

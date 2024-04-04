@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
-import { StaticInjectorService } from './core/utils/application.decorators';
+import { StaticInjectorService } from './core/decorators/titles.decorator';
 
 import {
     slideLeft,

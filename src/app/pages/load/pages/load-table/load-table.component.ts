@@ -8,7 +8,7 @@ import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-mod
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { LoadService } from '../../../../shared/services/load.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
@@ -69,7 +69,7 @@ import { ConfirmationModalComponent } from 'src/app/core/components/modals/confi
 import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
 
 // Utils
-import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
+import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-load-table',
@@ -673,7 +673,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.mapingIndex++;
                     return {
                         ...comment,
-                        avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                        avatarColor: AvatarColorsHelper.getAvatarColors(
                             this.mapingIndex
                         ),
                         textShortName: this.nameInitialsPipe.transform(

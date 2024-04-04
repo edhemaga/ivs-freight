@@ -1,11 +1,9 @@
-import { Injectable, Injector, OnChanges } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-interface BodyClassRequireOnInitAndOnDestroy extends OnChanges {}
 
-interface TFunction {
-    new (...args: any[]): BodyClassRequireOnInitAndOnDestroy;
-}
+// models
+import { TFunction } from '../model/titles-decorator.model';
 
 @Injectable()
 export class StaticInjectorService {

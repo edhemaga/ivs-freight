@@ -15,7 +15,7 @@ import { ApplicantModalComponent } from 'src/app/core/components/modals/applican
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ApplicantService } from '../../../../shared/services/applicant.service';
 import { AddressService } from 'src/app/shared/services/address.service';

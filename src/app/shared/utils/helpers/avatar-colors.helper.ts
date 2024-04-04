@@ -1,8 +1,9 @@
-import { AvatarColors } from '../components/shared/model/table-components/driver-modal';
-import { TableDropdownComponentConstants } from '../../shared/utils/constants/table-dropdown-component.constants';
+import { AvatarColors } from '../../../core/components/shared/model/table-components/driver-modal';
 
-// Get Avatar Color
-export class MAKE_COLORS_FOR_AVATAR {
+// constants
+import { TableDropdownComponentConstants } from '../constants/table-dropdown-component.constants';
+
+export class AvatarColorsHelper {
     static getAvatarColors(mapingIndex: number): AvatarColors {
         const textColors: string[] =
             TableDropdownComponentConstants.TEXT_COLORS;

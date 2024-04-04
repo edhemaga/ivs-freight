@@ -23,7 +23,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // moment
 import moment from 'moment';
@@ -36,7 +36,7 @@ import { ConfirmationService } from 'src/app/core/components/modals/confirmation
 import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
 
 // helpers
-import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
@@ -286,7 +286,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
 
     public optionsEvent(file: any, data: any, action: string) {
         data = this.truck[0]?.data;
-        const name = dropActionNameTrailerTruck(file, action);
+        const name = DropActionNameHelper.dropActionNameTrailerTruck(
+            file,
+            action
+        );
         this.dropDownService.dropActions(
             file,
             name,

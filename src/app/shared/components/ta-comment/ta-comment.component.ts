@@ -26,7 +26,7 @@ import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 
 // services
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { CommentsService } from '../../services/comments.service';
 import { ModalService } from '../ta-modal/services/modal.service';
 import { ConfirmationService } from '../../../core/components/modals/confirmation-modal/state/state/services/confirmation.service';

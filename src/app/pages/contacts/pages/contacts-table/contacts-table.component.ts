@@ -9,7 +9,7 @@ import { ConfirmationModalComponent } from 'src/app/core/components/modals/confi
 // service
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ContactsService } from '../../../../shared/services/contacts.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
@@ -27,7 +27,7 @@ import {
 } from 'src/app/core/utils/methods.globals';
 import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
-import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
+import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 // enums
 import { ContactsStringEnum } from '../../enums/contacts-string.enum';
@@ -503,9 +503,7 @@ export class ContactsTableComponent
             company: data?.companyName,
             textAddress: data?.address?.address ?? null,
             textShortName: this.nameInitialsPipe.transform(data.name),
-            avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
-                this.mapingIndex
-            ),
+            avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
             avatarImg: data?.avatar
                 ? this.imageBase64Service.sanitizer(data.avatar)
                 : null,

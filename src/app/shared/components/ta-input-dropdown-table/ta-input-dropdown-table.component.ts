@@ -35,7 +35,7 @@ import { CardRows } from '../../../core/components/shared/model/card-data.model'
 
 // services
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // pipes
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
@@ -49,7 +49,7 @@ import { RatingReviewTabsConstants } from './utils/constants/rating-review-tabs.
 // helpers
 import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
 import { removeDuplicateObjects } from 'src/app/core/utils/methods.globals';
-import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
+import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
@@ -523,8 +523,7 @@ export class TaInputDropdownTableComponent
                 companyUsers: department.companyUsers.map((contact, index) => {
                     return {
                         ...contact,
-                        avatarColor:
-                            MAKE_COLORS_FOR_AVATAR.getAvatarColors(index),
+                        avatarColor: AvatarColorsHelper.getAvatarColors(index),
                     };
                 }),
             };

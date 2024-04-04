@@ -41,9 +41,9 @@ import {
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Helpers
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 @Titles()
@@ -481,7 +481,10 @@ export class DriverDetailsItemComponent
     }
 
     public optionsEvent(eventData: any, action: string) {
-        const name = dropActionNameDriver(eventData, action);
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            action
+        );
         let driverId = this.drivers[0].data.id;
         let dataCdls: any = [];
 
