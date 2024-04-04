@@ -17,7 +17,7 @@ import { TaCounterComponent } from '../../shared/components/ta-counter/ta-counte
 import { TaUploadFilesNoSliderComponent } from '../../shared/components/ta-upload-files-no-slider/ta-upload-files-no-slider.component';
 
 // pipe
-import { formatEinPipe } from '../../core/pipes/formatEin.pipe';
+import { FormatEinPipe } from '../../shared/pipes/format-ein.pipe';
 
 @NgModule({
     imports: [
@@ -28,7 +28,7 @@ import { formatEinPipe } from '../../core/pipes/formatEin.pipe';
         TaCustomCardComponent,
         TaUploadFilesComponent,
         AngularSvgIconModule,
-        formatEinPipe,
+        FormatEinPipe,
         RouterModule,
         TaCounterComponent,
         TaUploadFilesNoSliderComponent,

@@ -42,8 +42,8 @@ import {
 } from '../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // components
-import { OwnerModalComponent } from '../../../../core/components/modals/owner-modal/owner-modal.component';
-import { RepairOrderModalComponent } from '../../../../core/components/modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
+import { RepairOrderModalComponent } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';

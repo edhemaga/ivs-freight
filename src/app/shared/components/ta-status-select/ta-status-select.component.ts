@@ -6,14 +6,14 @@ import { FormsModule } from '@angular/forms';
 import * as AppConst from 'src/app/const';
 
 // pipes
-import { StatusPipePipe } from '../../../core/pipes/status-pipe.pipe';
-import { LoadStatusPipe } from '../../../core/pipes/load-status.pipe';
+import { StatusPipe } from '../../pipes/status-pipe.pipe';
+// import { LoadStatusPipe } from '../../../core/pipes/load-status.pipe';
 
 @Component({
     selector: 'app-ta-status-select',
     templateUrl: './ta-status-select.component.html',
     styleUrls: ['./ta-status-select.component.scss'],
-    providers: [StatusPipePipe, LoadStatusPipe],
+    providers: [StatusPipe],
     standalone: true,
     imports: [CommonModule, FormsModule],
 })
@@ -41,7 +41,7 @@ export class TaStatusSelectComponent implements OnInit {
     tonyRate: any;
     savedTonuStatus: any;
 
-    constructor(private statusPipe: StatusPipePipe) {}
+    constructor(private statusPipe: StatusPipe) {}
 
     ngOnInit(): void {
         //   this.items = this.statusPipe.transform(

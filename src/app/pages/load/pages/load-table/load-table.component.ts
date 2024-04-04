@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
-import { LoadModalComponent } from 'src/app/core/components/modals/load-modal/components/load-modal/load-modal.component';
+import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { LoadTService } from '../../services/load.service';
+import { LoadService } from '../../../../shared/services/load.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/table-card-dropdown-actions.service';
@@ -25,7 +25,7 @@ import {
     DropdownItem,
     GridColumn,
     ToolbarActions,
-} from 'src/app/core/components/shared/model/card-table-data.model';
+} from 'src/app/shared/models/card-table-data.model';
 import {
     CardRows,
     Search,
@@ -50,16 +50,16 @@ import { LoadPandingState } from '../../state/load-pending-state/load-panding.st
 import { LoadTemplateState } from '../../state/load-template-state/load-template.store';
 
 // Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
 
 //Helpers
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
@@ -75,7 +75,7 @@ import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.he
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
     styleUrls: ['./load-table.component.scss'],
-    providers: [TaThousandSeparatorPipe, NameInitialsPipe],
+    providers: [ThousandSeparatorPipe, NameInitialsPipe],
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -110,14 +110,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
-        private loadServices: LoadTService,
+        private loadServices: LoadService,
         private tableDropdownService: TableCardDropdownActionsService,
         private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
         private confiramtionService: ConfirmationService,
         private nameInitialsPipe: NameInitialsPipe,
@@ -571,12 +571,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: false,
                 gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
                 moneyCountSelected: false,
-                ltlArray: checkSpecialFilterArray(
+                ltlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadTemplateData,
                     ConstantStringTableComponentsEnum.LTL,
                     ConstantStringTableComponentsEnum.TYPE
                 ),
-                ftlArray: checkSpecialFilterArray(
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadTemplateData,
                     ConstantStringTableComponentsEnum.FTL,
                     ConstantStringTableComponentsEnum.TYPE
@@ -599,12 +599,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: false,
                 moneyCountSelected: false,
                 gridNameTitle: ConstantStringTableComponentsEnum.LOAD,
-                ltlArray: checkSpecialFilterArray(
+                ltlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadPendingData,
                     ConstantStringTableComponentsEnum.LTL,
                     ConstantStringTableComponentsEnum.TYPE
                 ),
-                ftlArray: checkSpecialFilterArray(
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadPendingData,
                     ConstantStringTableComponentsEnum.FTL,
                     ConstantStringTableComponentsEnum.TYPE
@@ -625,7 +625,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.activeCount,
                 data: loadActiveData,
                 moneyCountSelected: false,
-                ftlArray: checkSpecialFilterArray(
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     loadActiveData,
                     ConstantStringTableComponentsEnum.FTL,
                     ConstantStringTableComponentsEnum.TYPE
@@ -648,7 +648,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.closedCount,
                 moneyCountSelected: false,
                 data: repairClosedData,
-                ftlArray: checkSpecialFilterArray(
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
                     repairClosedData,
                     ConstantStringTableComponentsEnum.FTL,
                     ConstantStringTableComponentsEnum.TYPE

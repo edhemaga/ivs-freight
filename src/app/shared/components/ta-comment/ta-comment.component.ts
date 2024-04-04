@@ -31,7 +31,7 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
 import { ModalService } from '../ta-modal/modal.service';
 import { ConfirmationService } from '../../../core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { TaInputDropdownTableService } from '../ta-input-dropdown-table/utils/services/ta-input-dropdown-table.service';
-import { LoadTService } from 'src/app/pages/load/services/load.service';
+import { LoadService } from '../../services/load.service';
 
 // utils
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
@@ -40,28 +40,27 @@ import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.
 import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
 
 // pipes
-import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 
 // components
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { ConfirmationModalComponent } from '../../../core/components/modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
-import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
-import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
-
+import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
+import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
 // models
-import { CommentCompanyUser } from '../../../core/components/modals/load-modal/state/models/load-modal-model/comment-company-user';
+import { CommentCompanyUser } from '../../models/comment-company-user.model';
 import { CommentData } from 'src/app/core/model/comment-data';
-import { Comment } from '../../../core/components/shared/model/card-table-data.model';
+import { Comment } from '../../models/card-table-data.model';
 
 @Component({
     selector: 'app-ta-comment',
     templateUrl: './ta-comment.component.html',
     styleUrls: ['./ta-comment.component.scss'],
     standalone: true,
-    providers: [formatDatePipe],
+    providers: [FormatDatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         // modules
@@ -117,9 +116,9 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public loggedUserCommented: boolean;
     constructor(
         private imageBase64Service: ImageBase64Service,
-        private formatDatePipe: formatDatePipe,
+        private formatDatePipe: FormatDatePipe,
         private commentsService: CommentsService,
-        private loadService: LoadTService,
+        private loadService: LoadService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private taInputDropdownTableService: TaInputDropdownTableService,
@@ -241,7 +240,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        return higlihtComment.higlitsPartOfCommentSearchValue(
+        return CardDropdownHelper.higlitsPartOfCommentSearchValue(
             commentTitle,
             this.commentHighlight,
             this.sanitizer
@@ -389,7 +388,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onPaste(event: ClipboardEvent): void {
-        PasteHelper.onPaste(event);
+        CopyPasteHelper.onPaste(event);
     }
 
     private checkIfNewCommentOpen(): void {

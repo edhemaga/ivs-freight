@@ -10,12 +10,12 @@ import {
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from '../../../../shared/pipes/thousand-separator.pipe';
 import { Router } from '@angular/router';
 import { MapsService } from '../../../services/shared/maps.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
@@ -29,7 +29,7 @@ import { Subject, takeUntil } from 'rxjs';
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
     standalone: true,
     imports: [
         // Modules
@@ -44,8 +44,8 @@ import { Subject, takeUntil } from 'rxjs';
         GpsProgressbarComponent,
 
         // Pipes
-        formatDatePipe,
-        TaThousandSeparatorPipe,
+        FormatDatePipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {

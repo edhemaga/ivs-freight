@@ -3,7 +3,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 // pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
 
 @Component({
     selector: 'app-ta-counter',
@@ -17,7 +17,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
         FormsModule,
 
         // Pipe
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class TaCounterComponent {

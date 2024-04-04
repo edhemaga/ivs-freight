@@ -13,8 +13,8 @@ import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.componen
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipes
-import { HideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
-import { HidePasswordPipe } from '../../../core/pipes/hide-password.pipe';
+import { DriverHideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
+import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
 @Component({
     selector: 'app-ta-copy',
     templateUrl: './ta-copy.component.html',
@@ -26,7 +26,7 @@ import { HidePasswordPipe } from '../../../core/pipes/hide-password.pipe';
         TaAppTooltipComponent,
         NgbModule,
         AngularSvgIconModule,
-        HideAccountPipe,
+        DriverHideAccountPipe,
 
         // Pipes
 

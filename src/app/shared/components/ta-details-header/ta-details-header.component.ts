@@ -16,7 +16,7 @@ import { TaFilterComponent } from '../ta-filter/ta-filter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //pipes
-import { formatCurrency } from '../../../core/pipes/formatCurrency.pipe';
+import { FormatCurrency } from '../../pipes/format-currency.pipe';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -34,7 +34,7 @@ import { formatCurrency } from '../../../core/pipes/formatCurrency.pipe';
         TaFilterComponent,
         RouterModule,
         NgbPopoverModule,
-        formatCurrency,
+        FormatCurrency,
     ],
 })
 export class TaDetailsHeaderComponent implements OnInit {

@@ -21,8 +21,8 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 
 // pipes
-import { TaThousandSeparatorPipe } from '../../../core/pipes/taThousandSeparator.pipe';
-import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
+import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
+import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 
 // validators
 import { addressValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
@@ -85,7 +85,7 @@ import { ArrayStatus } from './state/model/filter.models';
     ],
     templateUrl: './ta-filter.component.html',
     styleUrls: ['./ta-filter.component.scss'],
-    providers: [NgbDropdownConfig, TaThousandSeparatorPipe, TaSvgPipe],
+    providers: [NgbDropdownConfig, ThousandSeparatorPipe, TaSvgPipe],
     encapsulation: ViewEncapsulation.None,
     animations: [
         close_form('closeForm'),
@@ -265,7 +265,7 @@ export class TaFilterComponent implements OnInit {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         private filterService: FilterStateService,
         private tableService: TruckassistTableService
     ) {}

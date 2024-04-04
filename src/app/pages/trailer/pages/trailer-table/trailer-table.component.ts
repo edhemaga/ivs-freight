@@ -23,10 +23,10 @@ import { TrailerInactiveState } from '../../state/trailer-inactive-state/trailer
 import { TrailerInactiveStore } from '../../state/trailer-inactive-state/trailer-inactive.store';
 
 // pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // helpers
-import { getLengthNumber } from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // animations
 import {
@@ -49,7 +49,7 @@ import {
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 import { TrailerMapped } from './models/trailer-mapped.model';
 import {
     CardRows,
@@ -69,7 +69,7 @@ import {
     selector: 'app-trailer-table',
     templateUrl: './trailer-table.component.html',
     styleUrls: ['./trailer-table.component.scss'],
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -115,7 +115,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerService: TrailerService,
         public datePipe: DatePipe,
         private router: Router,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
         private trailerInactiveStore: TrailerInactiveStore
     ) {}
@@ -609,7 +609,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? data.color.name
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tabelLength: data?.trailerLength?.name
-                ? getLengthNumber(data?.trailerLength?.name)
+                ? DataFilterHelper.getLengthNumber(data?.trailerLength?.name)
                 : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
             tableDriver: ConstantStringTableComponentsEnum.NA,
             tableTruck: ConstantStringTableComponentsEnum.NA,

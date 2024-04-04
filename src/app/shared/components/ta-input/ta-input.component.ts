@@ -31,7 +31,7 @@ import { CalendarScrollService } from '../../../core/components/shared/custom-da
 import moment from 'moment';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
-import { TaThousandSeparatorPipe } from '../../../core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
 import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,
@@ -43,14 +43,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
 import { InputTypePipe } from './input-type.pipe';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaSvgPipe } from '../../../core/pipes/ta-svg.pipe';
+import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './input-error.pipe';
 import { CustomDatetimePickersComponent } from '../../../core/components/shared/custom-datetime-pickers/custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
-import { LoadModalProgressBarComponent } from '../../../core/components/modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { HoverSvgDirective } from '../../../core/directives/hoverSvg.directive';
+import { HoverSvgDirective } from '../../directives/hover-svg.directive';
 
 @Component({
     selector: 'app-ta-input',
@@ -59,7 +59,7 @@ import { HoverSvgDirective } from '../../../core/directives/hoverSvg.directive';
     providers: [
         NgbDropdownConfig,
         CalendarScrollService,
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
         InputTypePipe,
     ],
     encapsulation: ViewEncapsulation.None,
@@ -233,7 +233,7 @@ export class TaInputComponent
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
         private calendarService: CalendarScrollService,
-        private thousandSeparatorPipe: TaThousandSeparatorPipe,
+        private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
         public imageBase64Service: ImageBase64Service,

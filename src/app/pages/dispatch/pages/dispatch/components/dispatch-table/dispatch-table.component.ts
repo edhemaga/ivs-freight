@@ -9,7 +9,7 @@ import {
 import { catchError, of } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Options } from 'ng5-slider';
 
@@ -20,19 +20,19 @@ import {
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { DispatchBoardLocalResponse } from '../../../../models/dispatcher.model';
+import { DispatchBoardLocalResponse } from './models/dispatcher.model';
 
 // Pipes
 import { ColorFinderPipe } from '../../../../pipes/color-finder.pipe';
 
 // Services
-import { DispatcherStoreService } from '../../../../services/dispatcher.service';
+import { DispatcherService } from '../../../../services/dispatcher.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 
 // Modals
+import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { DriverModalComponent } from 'src/app/core/components/modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -181,7 +181,7 @@ export class DispatchTableComponent implements OnInit {
         private colorPipe: ColorFinderPipe,
 
         // Services
-        private dss: DispatcherStoreService,
+        private dispatcherService: DispatcherService,
         private modalService: ModalService
     ) {}
 
@@ -266,7 +266,7 @@ export class DispatchTableComponent implements OnInit {
         this.openedTrailerDropdown = -1;
     }
 
-    addParking(e) {
+    addParking() {
         this.openParkingDropdown = -1;
     }
 
@@ -281,7 +281,7 @@ export class DispatchTableComponent implements OnInit {
         }
     }
 
-    onHideDropdown(e) {
+    onHideDropdown() {
         setTimeout(() => {
             if (this.showAddAddressField != -2)
                 this.dData.dispatches[this.showAddAddressField].truck =
@@ -378,18 +378,22 @@ export class DispatchTableComponent implements OnInit {
 
             if (!value && key == 'truckId') newData.location = null;
 
-            this.dss
+            this.dispatcherService
                 .updateDispatchBoard(newData, this.dData.id)
                 .pipe(
-                    catchError((error) => {
+                    catchError(() => {
                         this.checkEmptySet = '';
                         this.__change_in_proggress = false;
                         return of([]);
                     })
                 )
-                .subscribe((data) => {
-                    this.dss.updateCountList(this.dData.id, key, value);
-                    this.dss.updateModalList();
+                .subscribe(() => {
+                    this.dispatcherService.updateCountList(
+                        this.dData.id,
+                        key,
+                        value
+                    );
+                    this.dispatcherService.updateModalList();
                     this.checkEmptySet = '';
                     this.__change_in_proggress = false;
                 });
@@ -398,19 +402,23 @@ export class DispatchTableComponent implements OnInit {
 
             if (key == 'location') newData.truckId = this.savedTruckId.id;
 
-            this.dss
+            this.dispatcherService
                 .createDispatchBoard(newData, this.dData.id)
                 .pipe(
-                    catchError((error) => {
+                    catchError(() => {
                         this.checkEmptySet = '';
                         this.__change_in_proggress = false;
                         return of([]);
                     })
                 )
-                .subscribe((data) => {
+                .subscribe(() => {
                     this.checkEmptySet = '';
-                    this.dss.updateCountList(this.dData.id, key, value);
-                    this.dss.updateModalList();
+                    this.dispatcherService.updateCountList(
+                        this.dData.id,
+                        key,
+                        value
+                    );
+                    this.dispatcherService.updateModalList();
                     this.__change_in_proggress = false;
                 });
         }
@@ -461,7 +469,7 @@ export class DispatchTableComponent implements OnInit {
         };
     }
 
-    toggleHos(tooltip: NgbTooltip, data: any, id: number) {
+    toggleHos(tooltip: NgbTooltip, data: any) {
         this.hosHelper = [];
         if (!data || data.length === 0) {
             data = [
@@ -547,13 +555,15 @@ export class DispatchTableComponent implements OnInit {
     changeDriverVacation(data) {
         this.__change_in_proggress = true;
 
-        this.dss.changeDriverVacation(data.driver.id).subscribe((res) => {
-            this.dss
-                .updateDispatchboardRowById(data.id, this.dData.id)
-                .subscribe((res) => {
-                    this.__change_in_proggress = false;
-                });
-        });
+        this.dispatcherService
+            .changeDriverVacation(data.driver.id)
+            .subscribe(() => {
+                this.dispatcherService
+                    .updateDispatchboardRowById(data.id, this.dData.id)
+                    .subscribe(() => {
+                        this.__change_in_proggress = false;
+                    });
+            });
     }
 
     removeTruck(indx) {
@@ -571,12 +581,9 @@ export class DispatchTableComponent implements OnInit {
     // CDL DRAG AND DROP
 
     dropList(event) {
-        const firstOrder = this.dData.dispatches[event.previousIndex].order;
-        const secondOrder = this.dData.dispatches[event.currentIndex].order;
-
         this.__change_in_proggress = true;
 
-        this.dss
+        this.dispatcherService
             .reorderDispatchboard({
                 dispatchBoardId: this.dData.id,
                 dispatches: [
@@ -591,13 +598,13 @@ export class DispatchTableComponent implements OnInit {
                 ],
             })
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     this.checkEmptySet = '';
                     this.__change_in_proggress = false;
                     return of([]);
                 })
             )
-            .subscribe((res) => {
+            .subscribe(() => {
                 this.dData.dispatches[event.currentIndex].order =
                     this.dData.dispatches[event.previousIndex].order;
                 this.dData.dispatches[event.previousIndex].order =
@@ -624,7 +631,7 @@ export class DispatchTableComponent implements OnInit {
         );
 
         this.__change_in_proggress = true;
-        this.dss
+        this.dispatcherService
             .switchDispathboard({
                 dispatchBoardId: this.dData.id,
                 firstDispatch: {
@@ -640,21 +647,21 @@ export class DispatchTableComponent implements OnInit {
                             ?.id,
                 },
             })
-            .subscribe((res) => {
-                this.dss
+            .subscribe(() => {
+                this.dispatcherService
                     .updateDispatchboardRowById(
                         this.dData.dispatches[this.startIndexTrailer].id,
                         this.dData.id
                     )
-                    .subscribe((res) => {
+                    .subscribe(() => {
                         this.__change_in_proggress = false;
                     });
-                this.dss
+                this.dispatcherService
                     .updateDispatchboardRowById(
                         this.dData.dispatches[finalIndx].id,
                         this.dData.id
                     )
-                    .subscribe((res) => {
+                    .subscribe(() => {
                         this.__change_in_proggress = false;
                     });
             });
@@ -671,7 +678,7 @@ export class DispatchTableComponent implements OnInit {
         );
 
         this.__change_in_proggress = true;
-        this.dss
+        this.dispatcherService
             .switchDispathboard({
                 dispatchBoardId: this.dData.id,
                 firstDispatch: {
@@ -687,21 +694,21 @@ export class DispatchTableComponent implements OnInit {
                             ?.id,
                 },
             })
-            .subscribe((res) => {
-                this.dss
+            .subscribe(() => {
+                this.dispatcherService
                     .updateDispatchboardRowById(
                         this.dData.dispatches[this.startIndexDriver].id,
                         this.dData.id
                     )
-                    .subscribe((res) => {
+                    .subscribe(() => {
                         this.__change_in_proggress = false;
                     });
-                this.dss
+                this.dispatcherService
                     .updateDispatchboardRowById(
                         this.dData.dispatches[finalIndx].id,
                         this.dData.id
                     )
-                    .subscribe((res) => {
+                    .subscribe(() => {
                         this.__change_in_proggress = false;
                     });
             });
@@ -739,11 +746,7 @@ export class DispatchTableComponent implements OnInit {
     }
 
     // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
-    trailerPositionPrediction = (
-        index: number,
-        drag: CdkDrag,
-        drop: CdkDropList
-    ) => {
+    trailerPositionPrediction = () => {
         return true;
     };
 }

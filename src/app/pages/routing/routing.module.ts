@@ -17,7 +17,7 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 //Components
 import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/ta-map-toolbar.component';
@@ -47,7 +47,7 @@ import { DetailsDropdownComponent } from 'src/app/core/components/shared/details
         DetailsDropdownComponent,
 
         // Pipes
-        TaThousandSeparatorPipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class RoutingModule {}

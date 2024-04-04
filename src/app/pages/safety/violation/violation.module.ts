@@ -13,7 +13,7 @@ import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/tr
 import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [ViolationTableComponent],
@@ -25,7 +25,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         TruckassistTableHeadComponent,
         TruckassistTableBodyComponent,
         NgbModule,
-        formatDatePipe,
+        FormatDatePipe,
     ],
 })
 export class ViolationModule {}

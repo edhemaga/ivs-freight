@@ -13,11 +13,11 @@ import { UntypedFormControl } from '@angular/forms';
 
 //Store
 import { BrokerQuery } from '../../../../state/broker-state/broker.query';
-import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 //Services
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { BrokerTService } from '../../../../services/broker.service';
+import { BrokerService } from '../../../../services/broker.service';
 
 //Models
 import { BrokerResponse } from 'appcoretruckassist';
@@ -27,7 +27,7 @@ import {
     LegendAttributes,
 } from 'src/app/shared/components/ta-chart/models/chart-models';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
-import { BrokerDropdown } from '../../models/broker-model';
+import { BrokerDropdown } from '../../models/broker-dropdown.model';
 import { TabOptions } from 'src/app/shared/components/ta-tab-switch/state/models/tab-options.models';
 
 //Constants
@@ -38,18 +38,18 @@ import { BrokerConstants } from '../../utils/constants/broker.constants';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
 
 //Pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 //Enums
 import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
-import { BrokerTabEnum } from '../../enums/broker-enum';
+import { BrokerTabStringEnum } from '../../enums/broker-tab-string.enum';
 
 @Component({
     selector: 'app-broker-details-card',
     templateUrl: './broker-details-card.component.html',
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./broker-details-card.component.scss'],
-    providers: [formatDatePipe],
+    providers: [FormatDatePipe],
 })
 export class BrokerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
@@ -121,7 +121,7 @@ export class BrokerDetailsCardComponent
 
         // Services
         private detailsPageDriverSer: DetailsPageService,
-        private brokerService: BrokerTService
+        private brokerService: BrokerService
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -145,32 +145,32 @@ export class BrokerDetailsCardComponent
         this.tabsBroker = [
             {
                 id: 223,
-                name: BrokerTabEnum.ONE_MONTH,
+                name: BrokerTabStringEnum.ONE_MONTH,
                 checked: true,
             },
             {
                 id: 313,
-                name: BrokerTabEnum.THREE_MONTHS,
+                name: BrokerTabStringEnum.THREE_MONTHS,
                 checked: false,
             },
             {
                 id: 412,
-                name: BrokerTabEnum.SIX_MONTHS,
+                name: BrokerTabStringEnum.SIX_MONTHS,
                 checked: false,
             },
             {
                 id: 515,
-                name: BrokerTabEnum.ONE_YEAR,
+                name: BrokerTabStringEnum.ONE_YEAR,
                 checked: false,
             },
             {
                 id: 1210,
-                name: BrokerTabEnum.YEAR_TO_DATE,
+                name: BrokerTabStringEnum.YEAR_TO_DATE,
                 checked: false,
             },
             {
                 id: 1011,
-                name: BrokerTabEnum.ALL,
+                name: BrokerTabStringEnum.ALL,
                 checked: false,
             },
         ];

@@ -6,7 +6,7 @@ import { ViolationDetailsRoutes } from './violation-details.routing';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
@@ -42,7 +42,7 @@ import { ViolationDetailsCardComponent } from './components/violation-details-ca
         TaCustomCardComponent,
         TaCopyComponent,
         TaInputNoteComponent,
-        formatDatePipe,
+        FormatDatePipe,
         TaCounterComponent,
         TaUploadFilesComponent,
         TruckassistProgressExpirationComponent,

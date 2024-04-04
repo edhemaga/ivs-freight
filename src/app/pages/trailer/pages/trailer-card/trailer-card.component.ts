@@ -10,7 +10,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -20,13 +20,13 @@ import {
     CardRows,
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 
 @Component({
     selector: 'app-trailer-card',
     templateUrl: './trailer-card.component.html',
     styleUrls: ['./trailer-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class TrailerCardComponent implements OnInit, OnDestroy, OnChanges {
     @Input() viewData: CardDetails[];
@@ -46,7 +46,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -66,19 +66,19 @@ export class TrailerCardComponent implements OnInit, OnDestroy, OnChanges {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this.viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this.viewData,
             null,
             this.displayRowsBack
@@ -101,17 +101,14 @@ export class TrailerCardComponent implements OnInit, OnDestroy, OnChanges {
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }

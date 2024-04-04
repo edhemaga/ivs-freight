@@ -44,7 +44,7 @@ import { RoutingStateService } from '../../../../shared/services/routing-state.s
 import { RoutingStateQuery } from '../../state/routing-state/routing-state.query';
 
 //Pipes
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 //Validators
 import { addressValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
@@ -63,7 +63,7 @@ declare const geoXML3: any;
         '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
-    providers: [TaThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe],
 })
 export class RoutingMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -597,7 +597,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         private routingService: RoutingStateService,
         private DetailsDataService: DetailsDataService,
         private notificationService: NotificationService,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         private routingQuery: RoutingStateQuery
     ) {}
 

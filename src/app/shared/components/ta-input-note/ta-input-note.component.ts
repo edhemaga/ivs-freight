@@ -22,7 +22,7 @@ import moment from 'moment';
 import { card_modal_animation } from '../../../core/components/shared/animations/card-modal.animation';
 
 // pipes
-import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -39,7 +39,7 @@ import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 // helpers
-import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+import { CopyPasteHelper } from 'src/app/shared/utils/helpers/copy-paste.helper';
 @Component({
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',
@@ -246,6 +246,6 @@ export class TaInputNoteComponent implements ControlValueAccessor {
     }
 
     public onPaste(event: ClipboardEvent): void {
-        PasteHelper.onPaste(event);
+        CopyPasteHelper.onPaste(event);
     }
 }

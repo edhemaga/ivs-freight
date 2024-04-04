@@ -31,14 +31,14 @@ import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-coun
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 // Pipes
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
-import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { HidePasswordPipe } from 'src/app/core/pipes/hide-password.pipe';
-import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
-import { BankCardTypesPipe } from 'src/app/core/pipes/bank-card-type.pipe';
-import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
+import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
+import { FormatEinPipe } from 'src/app/shared/pipes/format-ein.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { HidePasswordPipe } from 'src/app/shared/pipes/hide-password.pipe';
+import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
+import { BankCardTypesPipe } from 'src/app/shared/pipes/bank-card-types.pipe';
+import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
 
 @NgModule({
     imports: [
@@ -61,9 +61,9 @@ import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
         TaInputNoteComponent,
         TaNoticeOfAsignmentComponent,
         DetailsActiveItemPipe,
-        formatEinPipe,
-        TaThousandSeparatorPipe,
-        formatDatePipe,
+        FormatEinPipe,
+        ThousandSeparatorPipe,
+        FormatDatePipe,
         TaCommonCardComponent,
         TaLogoChangeComponent,
         TaCounterComponent,

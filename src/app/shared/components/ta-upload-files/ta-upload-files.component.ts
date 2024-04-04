@@ -26,14 +26,14 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
 
 //Models
 import { FileEvent } from 'src/app/core/model/file-event.model';
-import { Tags } from '../../../core/components/modals/load-modal/state/models/load-modal-model/tags.model';
+import { Tags } from '../../models/tags.model';
 
 //Services
 import { TaUploadFileService } from './ta-upload-file.service';
 
 //Enums
-import { FilesSize } from './enums/files-size.enum';
 import { FileTypes } from './enums/file-types.enum';
+import { FilesSize } from './enums/files-size.enum';
 
 @Component({
     selector: 'app-ta-upload-files',

@@ -11,9 +11,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {
     Column,
     ColumnWidthData,
-} from '../../components/shared/model/card-table-data.model';
+} from '../../../shared/models/card-table-data.model';
 
-import { AllTableModal } from 'src/app/pages/customer/models/customer.model';
+import { AllTableAnimationModel } from 'src/app/shared/models/all-table-animation.model';
 
 @Injectable({
     providedIn: 'root',
@@ -73,7 +73,7 @@ export class TruckassistTableService {
     public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
 
     /* Table Action Animation */
-    private actionAnimation = new BehaviorSubject<AllTableModal>(null);
+    private actionAnimation = new BehaviorSubject<AllTableAnimationModel>(null);
     public currentActionAnimation = this.actionAnimation.asObservable();
 
     /* Reset Selected Columns  */

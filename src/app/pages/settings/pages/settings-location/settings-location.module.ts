@@ -12,8 +12,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SettingsLocationRoutes } from './settings-location.routing';
 
 // pipes
-import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
@@ -46,7 +46,7 @@ import { TruckassistProgressExpirationComponent } from 'src/app/core/components/
         TaCopyComponent,
         TaCustomCardComponent,
         TruckassistProgressExpirationComponent,
-        formatDatePipe,
+        FormatDatePipe,
     ],
     declarations: [
         SettingsLocationComponent,

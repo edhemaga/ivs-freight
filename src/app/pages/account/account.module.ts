@@ -9,7 +9,7 @@ import { AccountRoutingModule } from './account-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // directives
-import { TextToggleDirective } from 'src/app/core/directives/show-hide-pass.directive';
+import { TextToggleDirective } from 'src/app/pages/account/pages/account-card/directives/show-hide-pass.directive';
 
 // components
 import { AccountTableComponent } from './pages/account-table/account-table.component';

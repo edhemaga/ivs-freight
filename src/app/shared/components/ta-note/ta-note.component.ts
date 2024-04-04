@@ -26,7 +26,7 @@ import { SharedService } from '../../../core/services/shared/shared.service';
 import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 //pipes
-import { SafeHtmlPipe } from '../../../core/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 //modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -34,7 +34,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // helpers
-import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 
 //components
 import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
@@ -406,7 +406,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     public onPaste(event: ClipboardEvent): void {
-        PasteHelper.onPaste(event);
+        CopyPasteHelper.onPaste(event);
     }
 
     public ngOnDestroy(): void {

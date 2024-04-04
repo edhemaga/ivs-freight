@@ -26,7 +26,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
 
 // pipe
-import { SafeHtmlPipe } from '../../../core/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -35,7 +35,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 // helpers
-import { PasteHelper } from 'src/app/core/helpers/copy-paste.helper';
+import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 
 @Component({
     selector: 'app-ta-notice-of-asignment',
@@ -379,6 +379,6 @@ export class TaNoticeOfAsignmentComponent
     }
 
     public onPaste(event: ClipboardEvent): void {
-        PasteHelper.onPaste(event);
+        CopyPasteHelper.onPaste(event);
     }
 }

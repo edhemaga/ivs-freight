@@ -23,8 +23,8 @@ import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-h
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // Pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
-import { formatTimePipe } from 'src/app/core/pipes/formatTime.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { FormatTimePipe } from 'src/app/shared/pipes/format-time.pipe';
 
 @NgModule({
     declarations: [
@@ -54,9 +54,9 @@ import { formatTimePipe } from 'src/app/core/pipes/formatTime.pipe';
         TaTabSwitchComponent,
 
         // Pipes
-        formatDatePipe,
-        formatTimePipe,
+        FormatDatePipe,
+        FormatTimePipe,
     ],
-    providers: [formatDatePipe],
+    providers: [FormatDatePipe],
 })
 export class ShipperDetailsModule {}

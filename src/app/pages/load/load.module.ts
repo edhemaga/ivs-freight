@@ -22,7 +22,7 @@ import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/t
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 
 //pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [LoadTableComponent, LoadCardComponent],
@@ -44,7 +44,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         AppTooltipComponent,
 
         //pipes
-        formatDatePipe,
+        FormatDatePipe,
     ],
 })
 export class LoadModule {}

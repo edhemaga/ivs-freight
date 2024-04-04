@@ -29,7 +29,7 @@ import {
     Trucks,
     Comment,
     Rating,
-} from '../../../core/components/shared/model/card-table-data.model';
+} from '../../models/card-table-data.model';
 import { Tabs } from '../../../core/components/shared/model/modal-tabs';
 import { CardRows } from '../../../core/components/shared/model/card-data.model';
 
@@ -38,7 +38,7 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // pipes
-import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 // enums
 import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-input-dropdown-table';
@@ -47,7 +47,7 @@ import { ConstantStringTableDropdownEnum } from 'src/app/core/utils/enums/ta-inp
 import { RatingReviewTabsConstants } from './utils/constants/tabs.constants';
 
 // helpers
-import { higlihtComment } from 'src/app/core/helpers/card-dropdown-helper';
+import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
 import { removeDuplicateObjects } from 'src/app/core/utils/methods.globals';
 import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
 
@@ -398,7 +398,7 @@ export class TaInputDropdownTableComponent
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        return higlihtComment.higlitsPartOfCommentSearchValue(
+        return CardDropdownHelper.higlitsPartOfCommentSearchValue(
             commentTitle,
             this.commentHighlight,
             this.sanitizer
@@ -426,7 +426,7 @@ export class TaInputDropdownTableComponent
     }
 
     public highlightPartOfTheTextString(trailerTruckNumber: string): string {
-        return higlihtComment.higlitsPartOfCommentSearchValue(
+        return CardDropdownHelper.higlitsPartOfCommentSearchValue(
             trailerTruckNumber,
             this.commentHighlight,
             this.sanitizer

@@ -5,7 +5,7 @@ import {
     ViewEncapsulation,
     AfterViewInit,
 } from '@angular/core';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { getPayrollDriverMilesDefinition } from 'src/assets/utils/settings/payroll-columns';
 import { DriversActiveQuery } from '../../../../driver/state/driver-active-state/driver-active.query';
 import { DriversActiveState } from '../../../../driver/state/driver-active-state/driver-active.store';
@@ -74,17 +74,8 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
         this.payrollData = this.pquery.payrolldata$;
 
-        const driverCount = JSON.parse(
-            localStorage.getItem('driverTableCount')
-        );
-
-        const applicantsData = this.getTabData(null);
-
         const driverActiveData =
             this.selectedTab === 'open' ? this.getTabData('active') : [];
-
-        const driverInactiveData =
-            this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
 
         this.tableData = [
             {
@@ -161,6 +152,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
     public summaryControll() {}
 
+    // eslint-disable-next-line no-unused-vars
     onToolBarAction(event: any) {}
 
     initTableOptions(): void {
@@ -407,7 +399,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         };
     }
 
-    getGridColumns(activeTab: string, configType: string) {
+    getGridColumns() {
         // const tableColumnsConfig = JSON.parse(
         //   localStorage.getItem(`table-${configType}-Configuration`)
         // );

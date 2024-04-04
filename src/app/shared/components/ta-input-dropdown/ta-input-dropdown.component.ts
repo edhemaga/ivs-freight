@@ -40,23 +40,23 @@ import { ITaInput } from '../ta-input/ta-input.config';
 // components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
 import { TaInputComponent } from '../ta-input/ta-input.component';
-import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
-import { LoadModalProgressBarComponent } from '../../../core/components/modals/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
+import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 
 // utils
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 // pipes
 import { FormControlPipe } from '../ta-input/form-control.pipe';
 import { DropdownCountPipe } from './dropdown-count.pipe';
-import { HighlightSearchPipe } from 'src/app/core/pipes/highlight-search.pipe';
-import { TaSvgPipe } from '../../../core/pipes/ta-svg.pipe';
+import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
+import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // directive
-import { HoverSvgDirective } from '../../../core/directives/hoverSvg.directive';
+import { HoverSvgDirective } from '../../directives/hover-svg.directive';
 
 @Component({
     selector: 'app-ta-input-dropdown',

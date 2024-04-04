@@ -10,12 +10,9 @@ import { TableCardDropdownActionsService } from './table-card-dropdown-actions.s
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // models
-import {
-    CardDetails,
-    DropdownItem,
-    SendDataCard,
-} from '../../../core/components/shared/model/card-table-data.model';
-
+import { CardDetails } from '../../models/card-table-data.model';
+import { DropdownItem } from '../../models/card-table-data.model';
+import { SendDataCard } from '../../models/card-table-data.model';
 @Component({
     selector: 'app-ta-table-card-dropdown-actions',
     templateUrl: './ta-table-card-dropdown-actions.component.html',

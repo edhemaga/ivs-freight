@@ -14,7 +14,7 @@ import {
 import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
 import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ApplicantTService } from 'src/app/pages/driver/services/applicant.service';
+import { ApplicantService } from 'src/app/shared/services/applicant.service';
 import { FormService } from '../../../services/form/form.service';
 import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
 import { CommonModule } from '@angular/common';
@@ -56,7 +56,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private applicantService: ApplicantTService,
+        private applicantService: ApplicantService,
         private formService: FormService
     ) {}
 

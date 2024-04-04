@@ -7,8 +7,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
 
 //Pipe
-import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
-import { FilterClassPipe } from 'src/app/core/pipes/filterClass.pipe';
+import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
+import { FilterClassPipe } from 'src/app/core/pipes/filter-class.pipe';
 
 //Enum
 import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';

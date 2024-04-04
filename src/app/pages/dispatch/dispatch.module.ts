@@ -23,9 +23,9 @@ import { TaPickupDeliveryComponent } from 'src/app/shared/components/ta-pickup-d
 import { ColorFinderPipe } from './pipes/color-finder.pipe';
 import { HosFilterPipe } from './pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from './pipes/tooltip-width.pipe';
-import { CdkIdPipe } from 'src/app/core/pipes/cdkid.pipe';
-import { CdkConnectPipe } from 'src/app/core/pipes/cdkconnect.pipe';
-import { HosTimePipe } from 'src/app/core/pipes/hostime';
+import { CdkIdPipe } from 'src/app/pages/dispatch/pipes/cdk-id.pipe';
+import { CdkConnectPipe } from 'src/app/pages/dispatch/pipes/cdk-connect.pipe';
+import { HosTimePipe } from 'src/app/pages/dispatch/pipes/hos-time.pipe';
 
 @NgModule({
     declarations: [

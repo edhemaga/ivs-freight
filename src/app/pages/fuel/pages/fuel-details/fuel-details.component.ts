@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FuelStopResponse } from 'appcoretruckassist';
 import { ActivatedRoute } from '@angular/router';
+
+//Models
+import { FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-details',

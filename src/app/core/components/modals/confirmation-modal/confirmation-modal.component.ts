@@ -26,7 +26,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { convertDateFromBackend } from '../../../utils/methods.calculations';
 
 // pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // models
 import { Confirmation } from './state/models/confirmation.model';
@@ -49,7 +49,7 @@ import { Confirmation } from './state/models/confirmation.model';
         ProfileImagesComponent,
 
         // pipes
-        formatDatePipe,
+        FormatDatePipe,
     ],
 })
 export class ConfirmationModalComponent implements OnInit {

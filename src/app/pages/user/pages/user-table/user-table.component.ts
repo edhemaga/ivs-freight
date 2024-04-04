@@ -19,16 +19,16 @@ import {
     closeAnimationAction,
     tableSearch,
 } from 'src/app/core/utils/methods.globals';
-import { checkSpecialFilterArray } from 'src/app/core/helpers/dataFilter';
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // store
 import { UserQuery } from '../../state/user.query';
 import { UserState } from '../../state/user.store';
 
 // pipes
-import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 
 // constants
 import { UserConstants } from '../../utils/constants/user.constants';
@@ -38,7 +38,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 // models
-import { DropdownItem } from 'src/app/core/components/shared/model/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 import {
     CompanyUserResponse,
@@ -49,7 +49,7 @@ import {
     selector: 'app-user-table',
     templateUrl: './user-table.component.html',
     styleUrls: ['./user-table.component.scss'],
-    providers: [formatPhonePipe, NameInitialsPipe, TaThousandSeparatorPipe],
+    providers: [FormatPhonePipe, NameInitialsPipe, ThousandSeparatorPipe],
 })
 export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -92,12 +92,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private userQuery: UserQuery,
-        private phoneFormater: formatPhonePipe,
+        private phoneFormater: FormatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private imageBase64Service: ImageBase64Service,
         private userService: UserService,
         public datePipe: DatePipe,
-        private thousandSeparator: TaThousandSeparatorPipe,
+        private thousandSeparator: ThousandSeparatorPipe,
         private confirmationService: ConfirmationService
     ) {}
 
@@ -450,7 +450,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: userCount.users,
                 arhiveCount: 0,
                 data: userData,
-                deactivatedUserArray: checkSpecialFilterArray(
+                deactivatedUserArray: DataFilterHelper.checkSpecialFilterArray(
                     userData,
                     ConstantStringTableComponentsEnum.STATUS
                 ),

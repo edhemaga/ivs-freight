@@ -33,7 +33,7 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 // services
 import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
 import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { RepairTService } from 'src/app/pages/repair/services/repair.service';
+import { RepairService } from 'src/app/shared/services/repair.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 
 // components
@@ -45,7 +45,7 @@ import { InputAddressDropdownComponent } from '../../../../../core/components/sh
 import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
 
 // pipes
-import { ActiveItemsPipe } from '../../../../../core/pipes/activeItems.pipe';
+import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
 
 // utils
 import {
@@ -129,7 +129,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private repairService: RepairTService,
+        private repairService: RepairService,
         private formService: FormService
     ) {}
 

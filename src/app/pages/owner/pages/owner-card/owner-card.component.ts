@@ -11,15 +11,15 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { CardDetails } from 'src/app/core/components/shared/model/card-table-data.model';
+import { OwnerData } from '../../models/owner-data.model';
+import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 import {
     CardRows,
     DataResult,
 } from 'src/app/core/components/shared/model/card-data.model';
-import { OwnerBodyResponse } from '../../models/owner.model';
 
 // helpers
-import { ValueByStringPath } from 'src/app/core/helpers/cards-helper';
+import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -30,7 +30,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 
 // component
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { OwnerModalComponent } from 'src/app/core/components/modals/owner-modal/owner-modal.component';
+import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
@@ -38,7 +38,7 @@ import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal
     selector: 'app-owner-card',
     templateUrl: './owner-card.component.html',
     styleUrls: ['./owner-card.component.scss'],
-    providers: [ValueByStringPath],
+    providers: [CardHelper],
 })
 export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
@@ -73,7 +73,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private tableService: TruckassistTableService,
-        private valueByStringPath: ValueByStringPath,
+        private cardHelper: CardHelper,
         private modalService: ModalService
     ) {}
 
@@ -94,19 +94,19 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
         this.cardsBack = [];
         this.titleArray = [];
 
-        const cardTitles = this.valueByStringPath.renderCards(
+        const cardTitles = this.cardHelper.renderCards(
             this._viewData,
             this.cardTitle,
             null
         );
 
-        const frontOfCards = this.valueByStringPath.renderCards(
+        const frontOfCards = this.cardHelper.renderCards(
             this._viewData,
             null,
             this.displayRowsFront
         );
 
-        const backOfCards = this.valueByStringPath.renderCards(
+        const backOfCards = this.cardHelper.renderCards(
             this._viewData,
             null,
             this.displayRowsBack
@@ -131,24 +131,21 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
-        const checkedCard = this.valueByStringPath.onCheckboxSelect(
-            index,
-            card
-        );
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
 
     // Flip card based on card index
     public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.valueByStringPath.flipCard(index);
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public trackCard(item: number): number {
         return item;
     }
 
-    public onCardActions(event: OwnerBodyResponse): void {
+    public onCardActions(event: OwnerData): void {
         if (event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,

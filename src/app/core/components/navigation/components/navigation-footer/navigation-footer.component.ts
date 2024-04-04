@@ -109,8 +109,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
             }
         }
 
-        // ----------------------- DEVELOP MODE ----------------------------
-
         this.loggedUser = JSON.parse(localStorage.getItem('user'));
 
         this.loggedUser = {

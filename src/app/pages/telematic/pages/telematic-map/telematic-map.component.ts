@@ -8,27 +8,30 @@ import {
     ChangeDetectorRef,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
-
-import * as AppConst from '../../../../const';
 import {
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
-// services
+// Constants
+import * as AppConst from '../../../../const';
+
+// Services
 import { TruckService } from '../../../../shared/services/truck.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
-import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
-import { GpsServiceService } from 'src/app/global/services/gps-service.service';
+import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
 import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
 
-// store
+// Models
+import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
+
+// Store
 import { TelematicStateQuery } from '../../state/telematic-state.query';
 import { TelematicStateStore } from '../../state/telematic-state.store';
 
@@ -321,17 +324,26 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     hasTrailerDevices: boolean = false;
 
     constructor(
+        // Services
         private signalRService: SignalRService,
         private mapsService: MapsService,
         private telematicService: TelematicStateService,
         private gpsService: GpsServiceService,
-        private formBuilder: UntypedFormBuilder,
         private truckService: TruckService,
         private trailerService: TrailerService,
-        private sanitizer: DomSanitizer,
-        private ref: ChangeDetectorRef,
         private companyOfficeService: CompanyOfficeService,
         private detailsDataService: DetailsDataService,
+
+        // Form
+        private formBuilder: UntypedFormBuilder,
+
+        // Sanitizer
+        private sanitizer: DomSanitizer,
+
+        // Ref
+        private ref: ChangeDetectorRef,
+
+        // Store
         private telematicQuery: TelematicStateQuery,
         private telematicStore: TelematicStateStore
     ) {}
@@ -395,7 +407,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getGpsData() {
         this.telematicService
-            .getAllGpsData({})
+            .getAllGpsData()
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 gpsData.data.map((data, index) => {
@@ -693,7 +705,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDeviceToTruck({ deviceId: deviceId, truckId: truckId })
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe(() => {
                 this.getDataByDeviceId(deviceId, true);
             });
     }
@@ -702,7 +714,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDeviceToTrailer({ deviceId: deviceId, trailerId: trailerId })
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe(() => {
                 this.getDataByDeviceId(deviceId, true);
             });
     }
@@ -711,7 +723,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .assignDevicesToCompany(devices)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {});
+            .subscribe(() => {});
     }
 
     onToolBarAction(event: any) {
@@ -934,15 +946,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     trailer.id
                 );
         }
-    }
-
-    saveDeviceSelection(event, location, column) {
-        // if (event.action === 'cancel') {
-        //     this.selectedDeviceUnit = {};
-        //     this.searchForm.get('truckUnit').patchValue(null);
-        // } else {
-        //     this.assignDeviceToTruck(item.deviceId, event.data.id);
-        // }
     }
 
     initDeviceFields() {
@@ -1258,7 +1261,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService
             .getDeviceHistory(deviceId, date)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((gpsData: any) => {});
+            .subscribe(() => {});
     }
 
     showHideDevice(event, device) {

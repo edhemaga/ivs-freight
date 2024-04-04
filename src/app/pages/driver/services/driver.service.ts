@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 
 //Models
-import { DriverService } from 'appcoretruckassist';
+import { DriverService as DriverBackendService } from 'appcoretruckassist';
 import {
     CheckOwnerSsnEinResponse,
     DriverListResponse,
@@ -40,14 +40,14 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
 @Injectable({
     providedIn: 'root',
 })
-export class DriverTService {
+export class DriverService {
     public currentIndex: number;
     public driversList: any;
     public driverId: number;
     private destroy$ = new Subject<void>();
 
     constructor(
-        private driverService: DriverService,
+        private driverService: DriverBackendService,
         private driversActiveQuery: DriversActiveQuery,
         private driverActiveStore: DriversActiveStore,
         private driversInactiveQuery: DriversInactiveQuery,

@@ -35,7 +35,7 @@ import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/t
 import { TaProgresBarComponent } from 'src/app/shared/components/ta-progres-bar/ta-progres-bar.component';
 
 //pipes
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 
@@ -66,7 +66,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         TaProgresBarComponent,
 
         //pipes
-        formatDatePipe,
+        FormatDatePipe,
     ],
 })
 export class DriverModule {}

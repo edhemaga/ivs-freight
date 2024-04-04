@@ -17,7 +17,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class PmTService {
+export class PmService {
     constructor(private repairService: RepairService) {}
 
     // ------------------------  Truck --------------------------

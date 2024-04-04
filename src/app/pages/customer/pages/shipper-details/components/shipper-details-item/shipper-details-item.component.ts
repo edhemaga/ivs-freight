@@ -33,7 +33,9 @@ export class ShipperDetailsItemComponent implements OnChanges {
     public shipperDislike: number;
     public reviewsRepair: any = [];
     private destroy$ = new Subject<void>();
+
     constructor(private reviewRatingService: ReviewsRatingService) {}
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.shipper = changes.shipper.currentValue;

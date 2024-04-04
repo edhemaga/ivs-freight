@@ -7,7 +7,7 @@ import { SettingsCompanyService } from '../../services/settings-company.service'
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 // model
-import { File } from 'src/app/core/components/shared/model/card-table-data.model';
+import { File } from 'src/app/shared/models/card-table-data.model';
 import { FileEvent } from 'src/app/core/model/file-event.model';
 import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
 import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';

@@ -1,9 +1,9 @@
-import { DriverDetailsCardComponent } from '../../components/driver-details-card/driver-details-card.component';
+import { DriverDetailsCardComponent } from './components/driver-details-card/driver-details-card.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
-import { DriverDetailsItemComponent } from '../../components/driver-details-item/driver-details-item.component';
+import { DriverDetailsItemComponent } from './components/driver-details-item/driver-details-item.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
@@ -19,7 +19,7 @@ import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.compo
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
-import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
@@ -53,7 +53,7 @@ import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.co
         TaCommonCardComponent,
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
-        formatDatePipe,
+        FormatDatePipe,
         TaDetailsHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,

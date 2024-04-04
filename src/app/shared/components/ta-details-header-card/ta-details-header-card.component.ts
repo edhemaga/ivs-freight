@@ -19,7 +19,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // pipes
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
 
 // store
 import { DriversMinimalListQuery } from 'src/app/pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+
+//Models
 import { FuelStopResponse } from 'appcoretruckassist';
 
 export interface FuelItemState extends EntityState<FuelStopResponse, number> {}

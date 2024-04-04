@@ -28,7 +28,7 @@ import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.inter
 import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
 import { TaTooltipSlideComponent } from './shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
-import { BlockedContentPipe } from './core/pipes/blockedContent.pipe';
+import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
 import { LottieModule } from 'ngx-lottie';

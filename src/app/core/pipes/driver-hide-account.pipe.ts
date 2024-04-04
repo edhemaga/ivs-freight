@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'hideAccount',
-    standalone: true
+    standalone: true,
 })
-export class HideAccountPipe implements PipeTransform {
+export class DriverHideAccountPipe implements PipeTransform {
     transform(value: any, template: string, toogleVisibility: boolean): any {
         let hideNumber: string = '';
         switch (template) {

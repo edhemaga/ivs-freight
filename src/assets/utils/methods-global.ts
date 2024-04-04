@@ -1,8 +1,4 @@
 import { HttpParams } from '@angular/common/http';
-import {
-    dateFormat,
-    formatPhoneNumber,
-} from '../../app/core/helpers/formating';
 /// <reference types="@types/googlemaps" />
 declare var google: any;
 
@@ -25,57 +21,6 @@ export function imageMapType(rad: any) {
         opacity: 0.0,
         name: 'NEXRAD',
     });
-}
-
-/*User object maping*/
-
-// TODO: dodati type za user
-export function mapUserData(user: any): any {
-    if (user.firstName && user.lastName) {
-        user.firstName =
-            user.firstName && user.lastName
-                ? `${user.firstName} ${user.lastName}`
-                : user.firstName;
-    }
-
-    if (user.userType === 'master' || user.baseUserType === 'master') {
-        user.userType = `Owner`;
-    }
-
-    if (
-        user.userType === 'cmp_admin' ||
-        user.userType === 'pwd_admin' ||
-        user.userType === 'tmp_admin'
-    ) {
-        user.userType = user.userType ? `admin` : user.userType;
-    }
-
-    if (
-        user.userType === 'cmp_dispatcher' ||
-        user.userType === 'pwd_dispatcher' ||
-        user.userType === 'tmp_dispatcher'
-    ) {
-        user.userType = user.userType ? `dispatcher` : user.userType;
-    }
-
-    if (user.userType) {
-        user.userType = user.userType
-            ? user.userType.charAt(0).toUpperCase() + user.userType.slice(1)
-            : user.userType;
-    }
-
-    if (user.dateValue) {
-        user.dateValue = user.dateValue
-            ? dateFormat(user.dateValue)
-            : user.dateValue;
-    }
-
-    if (user.doc && user.doc.phone) {
-        user.doc.phone = user.doc.phone
-            ? formatPhoneNumber(user.doc.phone)
-            : user.doc.phone;
-    }
-    return user;
 }
 
 /* GPS Legend Data */
