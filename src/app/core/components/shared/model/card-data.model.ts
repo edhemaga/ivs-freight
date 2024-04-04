@@ -1,4 +1,4 @@
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 export interface DataResult {
     title?: string;
@@ -74,7 +74,7 @@ export interface Search {
 }
 
 interface ToolbarAction {
-    name: ConstantStringTableComponentsEnum;
+    name: TableStringEnum;
     active: boolean;
 }
 

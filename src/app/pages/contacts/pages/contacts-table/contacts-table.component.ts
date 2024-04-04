@@ -31,10 +31,10 @@ import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.he
 
 // enums
 import { ContactsStringEnum } from '../../enums/contacts-string.enum';
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 // data for cards
 import { ContactsCardData } from '../../utils/constants/contacts-card-data.constants';
@@ -73,8 +73,8 @@ export class ContactsTableComponent
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: any[] = [];
-    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab: string = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     public resizeObserver: ResizeObserver;
     public contacts: ContactState[] = [];
     public backFilterQuery = {
@@ -189,14 +189,10 @@ export class ContactsTableComponent
                     const searchEvent = tableSearch(res, this.backFilterQuery);
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             this.contactBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendContactData();
                         }
@@ -210,13 +206,12 @@ export class ContactsTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // Add Contact
-                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
+                if (res?.animation === TableStringEnum.ADD) {
                     this.viewData.push(this.mapContactData(res.data));
 
                     this.viewData = this.viewData.map((contact) => {
                         if (contact.id === res.id) {
-                            contact.actionAnimation =
-                                ConstantStringTableComponentsEnum.ADD;
+                            contact.actionAnimation = TableStringEnum.ADD;
                         }
 
                         return contact;
@@ -234,16 +229,13 @@ export class ContactsTableComponent
                     this.updateDataCount();
                 }
                 // Update Contact
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE) {
                     const updatedContact = this.mapContactData(res.data, true);
 
                     this.viewData = this.viewData.map((contact) => {
                         if (contact.id === res.id) {
                             contact = updatedContact;
-                            contact.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            contact.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return contact;
@@ -259,16 +251,14 @@ export class ContactsTableComponent
                     }, 1000);
                 }
                 // Delete Contact
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.DELETE
-                ) {
+                else if (res?.animation === TableStringEnum.DELETE) {
                     let contactIndex: number;
 
                     this.viewData = this.viewData.map(
                         (contact, index: number) => {
                             if (contact.id === res.id) {
                                 contact.actionAnimation =
-                                    ConstantStringTableComponentsEnum.DELETE;
+                                    TableStringEnum.DELETE;
                                 contactIndex = index;
                             }
 
@@ -307,12 +297,12 @@ export class ContactsTableComponent
 
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: ConstantStringTableComponentsEnum.CONTACT,
-                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            template: TableStringEnum.CONTACT,
+                            type: TableStringEnum.MULTIPLE_DELETE,
                             svg: true,
                         }
                     );
@@ -326,11 +316,11 @@ export class ContactsTableComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE:
+                        case TableStringEnum.DELETE:
                             this.deleteContactById(res.id);
 
                             break;
-                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
+                        case TableStringEnum.MULTIPLE_DELETE:
                             this.deleteContactList(res.array);
 
                             break;
@@ -357,7 +347,7 @@ export class ContactsTableComponent
                     contactIds.map((id) => {
                         if (contact.id === id) {
                             contact.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                                TableStringEnum.DELETE_MULTIPLE;
                         }
                     });
 
@@ -388,9 +378,7 @@ export class ContactsTableComponent
         });
 
         this.resizeObserver?.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -402,16 +390,12 @@ export class ContactsTableComponent
                 showLabelFilter: true,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -441,7 +425,7 @@ export class ContactsTableComponent
         this.tableData = [
             {
                 title: ContactsStringEnum.CONTACTS,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                field: TableStringEnum.ACTIVE,
                 length: contactCount.contact,
                 data: contactData,
                 extended: false,
@@ -646,13 +630,11 @@ export class ContactsTableComponent
     }
     // On Toolbar Actions
     onToolBarAction(event: TableToolBarActionActionsContract) {
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(ContactsModalComponent, {
-                size: ConstantStringTableComponentsEnum.SMALL,
+                size: TableStringEnum.SMALL,
             });
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
-        ) {
+        } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.mapingIndex = 0;
 
             this.selectedTab = event.tabData.field;
@@ -660,9 +642,7 @@ export class ContactsTableComponent
             this.backFilterQuery.pageIndex = 1;
 
             this.setContactData(event.tabData);
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;
@@ -671,7 +651,7 @@ export class ContactsTableComponent
 
     // On Head Actions
     public onTableHeadActions(event: TableHeadActionContract) {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
 
@@ -688,38 +668,32 @@ export class ContactsTableComponent
 
     // On Body Actions
     public onTableBodyActions(event: TableBodyActionsContract): void {
-        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
+        if (event.type === TableStringEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
         } else if (event.type === ContactsStringEnum.EDIT_CONTACT) {
             this.modalService.openModal(
                 ContactsModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    type: ConstantStringTableComponentsEnum.EDIT,
+                    type: TableStringEnum.EDIT,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.DELTETE_CONTACT
-        ) {
+        } else if (event.type === TableStringEnum.DELTETE_CONTACT) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.CONTACT,
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    template: TableStringEnum.CONTACT,
+                    type: TableStringEnum.DELETE,
                     svg: true,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.UPDATE_LABEL
-        ) {
+        } else if (event.type === TableStringEnum.UPDATE_LABEL) {
             this.saveContractLabel(event.data);
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.UPDATE_LABEL
-        ) {
+        } else if (event.type === TableStringEnum.UPDATE_LABEL) {
             this.updateCompanyContactLabel(event);
         }
     }

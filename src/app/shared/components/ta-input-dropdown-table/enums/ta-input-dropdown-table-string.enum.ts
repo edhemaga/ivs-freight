@@ -1,4 +1,4 @@
-export enum ConstantStringTableDropdownEnum {
+export enum TaInputDropdownTableStringEnum {
     TRUCK = 'Truck',
     TRAILER = 'Trailer',
     SEARCH = 'Search',

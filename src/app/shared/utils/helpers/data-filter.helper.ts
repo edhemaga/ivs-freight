@@ -1,4 +1,4 @@
-import { ConstantStringTableComponentsEnum } from '../../../core/utils/enums/table-components.enum';
+import { TableStringEnum } from '../../enums/table-string.enum';
 
 export class DataFilterHelper {
     static checkSpecialFilterArray(
@@ -7,7 +7,7 @@ export class DataFilterHelper {
         typeName?: string
     ) {
         const filteredArray = !typeName
-            ? event == ConstantStringTableComponentsEnum.STATUS
+            ? event == TableStringEnum.STATUS
                 ? data?.filter((dataItem) => dataItem[event] == 0)
                 : data?.filter((dataItem) => dataItem[event])
             : data?.filter(

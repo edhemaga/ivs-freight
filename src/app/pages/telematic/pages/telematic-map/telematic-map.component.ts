@@ -24,7 +24,7 @@ import { TrailerService } from '../../../../shared/services/trailer.service';
 import { TelematicStateService } from '../../services/telematic-state.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { MapsService } from 'src/app/shared/services/maps.service';
-import { GpsService } from 'src/app/core/services/gps-service.service';
+import { GpsService } from 'src/app/pages/telematic/services/gps-service.service';
 import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
 
 // Models

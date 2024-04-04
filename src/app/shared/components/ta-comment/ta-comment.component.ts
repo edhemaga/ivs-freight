@@ -37,7 +37,7 @@ import { LoadService } from '../../services/load.service';
 import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
 
 // enums
-import { ConstantStringCommentEnum } from 'src/app/core/utils/enums/comment.enum';
+import { CommentStringEnum } from 'src/app/shared/components/ta-comment/enums/comment-string.enum';
 
 // pipes
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
@@ -98,8 +98,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    private placeholder: string =
-        ConstantStringCommentEnum.WRITE_COMMENT_PLACEHOLDER;
+    private placeholder: string = CommentStringEnum.WRITE_COMMENT_PLACEHOLDER;
     public commentAvatar: SafeResourceUrl;
 
     public isCommenting: boolean = true;
@@ -163,12 +162,12 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public openEditComment(openClose: boolean): void {
         if (openClose) {
             this.taInputDropdownTableService.setDropdownCommentNewCommentState(
-                ConstantStringCommentEnum.OPEN_COMMENT
+                CommentStringEnum.OPEN_COMMENT
             );
             this.editingCardComment = openClose;
         } else {
             this.taInputDropdownTableService.setDropdownCommentNewCommentState(
-                ConstantStringCommentEnum.EMPTY_STRING_PLACEHOLDER
+                CommentStringEnum.EMPTY_STRING_PLACEHOLDER
             );
             this.editingCardComment = openClose;
         }
@@ -211,15 +210,15 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.modalService.openModal(
             ConfirmationModalComponent,
             {
-                size: ConstantStringCommentEnum.SMALL,
+                size: CommentStringEnum.SMALL,
             },
             {
-                type: ConstantStringCommentEnum.DELETE_SMALL,
+                type: CommentStringEnum.DELETE_SMALL,
             }
         );
 
         this.confirmationService.confirmationData$.subscribe((response) => {
-            if (response.type === ConstantStringCommentEnum.DELETE_SMALL)
+            if (response.type === CommentStringEnum.DELETE_SMALL)
                 this.commentsService
                     .deleteCommentById(commentId)
                     .pipe(takeUntil(this.destroy$))
@@ -234,7 +233,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public checkIfLoggedUserCommented(user: number): void {
         const userLocalStorage = JSON.parse(
-            localStorage.getItem(ConstantStringCommentEnum.USER)
+            localStorage.getItem(CommentStringEnum.USER)
         );
         this.loggedUserCommented = user === userLocalStorage.companyUserId;
     }
@@ -285,7 +284,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (commentInputDiv.textContent.trim() === this.placeholder)
             commentInputDiv.textContent =
-                ConstantStringCommentEnum.EMPTY_STRING_PLACEHOLDER;
+                CommentStringEnum.EMPTY_STRING_PLACEHOLDER;
 
         this.checkIfCommentIsEmpty();
     }
@@ -296,10 +295,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.commentInput.nativeElement.textContent.trim();
 
             return (this.isDisabled =
-                divContent ===
-                    ConstantStringCommentEnum.WRITE_COMMENT_PLACEHOLDER ||
-                divContent ===
-                    ConstantStringCommentEnum.EMPTY_STRING_PLACEHOLDER);
+                divContent === CommentStringEnum.WRITE_COMMENT_PLACEHOLDER ||
+                divContent === CommentStringEnum.EMPTY_STRING_PLACEHOLDER);
         }
 
         return (this.isDisabled = false);
@@ -307,7 +304,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public handleBtnActionClick(btnType: string): void {
         switch (btnType) {
-            case ConstantStringCommentEnum.CONFIRM:
+            case CommentStringEnum.CONFIRM:
                 if (this.isEditing) {
                     if (
                         this.commentInput.nativeElement.textContent.trim() !==
@@ -322,10 +319,10 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     new Date()
                 );
                 const dateNow = moment().format(
-                    ConstantStringCommentEnum.COMMENT_DATE_FORMAT
+                    CommentStringEnum.COMMENT_DATE_FORMAT
                 );
                 const timeNow = moment().format(
-                    ConstantStringCommentEnum.COMMENT_TIME_FORMAT
+                    CommentStringEnum.COMMENT_TIME_FORMAT
                 );
                 const commentData: CommentData = {
                     commentId: this.commentData.commentId,
@@ -344,8 +341,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.btnActionEmitter.emit(commentData);
 
                 break;
-            case ConstantStringCommentEnum.CANCEL:
-            case ConstantStringCommentEnum.DELETE:
+            case CommentStringEnum.CANCEL:
+            case CommentStringEnum.DELETE:
                 const emitData: CommentData = {
                     commentId: this.commentData.commentId,
                     commentContent: this.commentInput.nativeElement.textContent,
@@ -360,7 +357,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.isCommenting = false;
 
                 break;
-            case ConstantStringCommentEnum.EDIT:
+            case CommentStringEnum.EDIT:
                 this.commentBeforeEdit =
                     this.commentInput.nativeElement.textContent.trim();
 
@@ -396,7 +393,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             .getDropdownCommentNewCommentState()
             .pipe(takeUntil(this.destroy$))
             .subscribe((opened) => {
-                if (opened === ConstantStringCommentEnum.OPEN_NEW_COMMENT) {
+                if (opened === CommentStringEnum.OPEN_NEW_COMMENT) {
                     this.editingCardComment = false;
 
                     this.cdr.detectChanges();

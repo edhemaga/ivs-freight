@@ -2,13 +2,13 @@
 import { DropdownItem } from '../../models/card-table-data.model';
 
 // enums
-import { ConstantStringTableComponentsEnum } from '../../../core/utils/enums/table-components.enum';
+import { TableStringEnum } from '../../enums/table-string.enum';
 
 export class DropdownContentHelper {
     static getDropdownShipperContent(data): DropdownItem[] {
         return [
             {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
+                title: TableStringEnum.EDIT_2,
                 name: 'edit-cutomer-or-shipper',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
@@ -16,54 +16,54 @@ export class DropdownContentHelper {
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
             },
 
             {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+                title: TableStringEnum.VIEW_DETAILS_2,
+                name: TableStringEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
 
             {
-                title: ConstantStringTableComponentsEnum.ADD_CONTRACT_2,
-                name: ConstantStringTableComponentsEnum.ADD_CONTRACT,
+                title: TableStringEnum.ADD_CONTRACT_2,
+                name: TableStringEnum.ADD_CONTRACT,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
 
             {
-                title: ConstantStringTableComponentsEnum.WRITE_REVIEW_2,
-                name: ConstantStringTableComponentsEnum.WRITE_REVIEW,
+                title: TableStringEnum.WRITE_REVIEW_2,
+                name: TableStringEnum.WRITE_REVIEW,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
             },
             {
                 title:
                     data.status === 1
-                        ? ConstantStringTableComponentsEnum.CLOSE_BUSINESS_2
-                        : ConstantStringTableComponentsEnum.OPEN_BUSINESS,
-                name: ConstantStringTableComponentsEnum.CLOSE_BUSINESS,
+                        ? TableStringEnum.CLOSE_BUSINESS_2
+                        : TableStringEnum.OPEN_BUSINESS,
+                name: TableStringEnum.CLOSE_BUSINESS,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
@@ -72,18 +72,18 @@ export class DropdownContentHelper {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
 
             {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE,
+                title: TableStringEnum.DELETE_2,
+                name: TableStringEnum.DELETE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
         ];
     }
@@ -91,7 +91,7 @@ export class DropdownContentHelper {
     static getDropdownBrokerContent(data): DropdownItem[] {
         return [
             {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
+                title: TableStringEnum.EDIT_2,
                 name: 'edit-cutomer-or-shipper',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
@@ -99,60 +99,60 @@ export class DropdownContentHelper {
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
             },
 
             {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+                title: TableStringEnum.VIEW_DETAILS_2,
+                name: TableStringEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
 
             {
-                title: ConstantStringTableComponentsEnum.CREATE_LOAD_2,
-                name: ConstantStringTableComponentsEnum.CREATE_LOAD,
+                title: TableStringEnum.CREATE_LOAD_2,
+                name: TableStringEnum.CREATE_LOAD,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
 
             {
-                title: ConstantStringTableComponentsEnum.ADD_CONTRACT_2,
-                name: ConstantStringTableComponentsEnum.ADD_CONTRACT,
+                title: TableStringEnum.ADD_CONTRACT_2,
+                name: TableStringEnum.ADD_CONTRACT,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
 
             {
-                title: ConstantStringTableComponentsEnum.WRITE_REVIEW_2,
-                name: ConstantStringTableComponentsEnum.WRITE_REVIEW,
+                title: TableStringEnum.WRITE_REVIEW_2,
+                name: TableStringEnum.WRITE_REVIEW,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -160,15 +160,15 @@ export class DropdownContentHelper {
 
             {
                 title: !data.ban
-                    ? ConstantStringTableComponentsEnum.MOVE_TO_BAN_LIST_2
-                    : ConstantStringTableComponentsEnum.REMOVE_FROM_BAN_LIST,
-                name: ConstantStringTableComponentsEnum.MOVE_TO_BAN_LIST,
+                    ? TableStringEnum.MOVE_TO_BAN_LIST_2
+                    : TableStringEnum.REMOVE_FROM_BAN_LIST,
+                name: TableStringEnum.MOVE_TO_BAN_LIST,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -176,51 +176,51 @@ export class DropdownContentHelper {
 
             {
                 title: !data.dnu
-                    ? ConstantStringTableComponentsEnum.MOVE_TO_DNU_LIST_2
-                    : ConstantStringTableComponentsEnum.REMOVE_FROM_DNU_LIST,
-                name: ConstantStringTableComponentsEnum.MOVE_TO_DNU_LIST,
+                    ? TableStringEnum.MOVE_TO_DNU_LIST_2
+                    : TableStringEnum.REMOVE_FROM_DNU_LIST,
+                name: TableStringEnum.MOVE_TO_DNU_LIST,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
             },
 
             {
-                title: ConstantStringTableComponentsEnum.SHARE_2,
-                name: ConstantStringTableComponentsEnum.SHARE,
+                title: TableStringEnum.SHARE_2,
+                name: TableStringEnum.SHARE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
 
             {
-                title: ConstantStringTableComponentsEnum.PRINT_2,
-                name: ConstantStringTableComponentsEnum.PRINT,
+                title: TableStringEnum.PRINT_2,
+                name: TableStringEnum.PRINT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
 
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
             },
 
             {
                 title:
                     data.status === 1
-                        ? ConstantStringTableComponentsEnum.CLOSE_BUSINESS_2
-                        : ConstantStringTableComponentsEnum.OPEN_BUSINESS,
-                name: ConstantStringTableComponentsEnum.CLOSE_BUSINESS,
+                        ? TableStringEnum.CLOSE_BUSINESS_2
+                        : TableStringEnum.OPEN_BUSINESS,
+                name: TableStringEnum.CLOSE_BUSINESS,
                 svgUrl: '',
                 svgStyle: {
                     width: 18,
@@ -229,12 +229,12 @@ export class DropdownContentHelper {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
 
             {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE,
+                title: TableStringEnum.DELETE_2,
+                name: TableStringEnum.DELETE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
@@ -243,7 +243,7 @@ export class DropdownContentHelper {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
         ];
     }
@@ -251,25 +251,25 @@ export class DropdownContentHelper {
     static getDropdownOwnerContent(): DropdownItem[] {
         return [
             {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: ConstantStringTableComponentsEnum.EDIT,
+                title: TableStringEnum.EDIT_2,
+                name: TableStringEnum.EDIT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
             },
             // {
-            //     title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-            //     name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+            //     title: TableStringEnum.VIEW_DETAILS_2,
+            //     name: TableStringEnum.VIEW_DETAILS,
             //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
             //     svgStyle: {
             //         width: 18,
             //         height: 18,
             //     },
-            //     svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            //     svgClass: TableStringEnum.REGULAR,
             //     tableListDropdownContentStyle: {
             //         'margin-bottom.px': 4,
             //     },
@@ -283,7 +283,7 @@ export class DropdownContentHelper {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -296,63 +296,63 @@ export class DropdownContentHelper {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
             },
             // {
-            //     title: ConstantStringTableComponentsEnum.SHARE_2,
-            //     name: ConstantStringTableComponentsEnum.SHARE,
+            //     title: TableStringEnum.SHARE_2,
+            //     name: TableStringEnum.SHARE,
             //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
             //     svgStyle: {
             //         width: 18,
             //         height: 18,
             //     },
-            //     svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            //     svgClass: TableStringEnum.REGULAR,
             //     tableListDropdownContentStyle: {
             //         'margin-bottom.px': 4,
             //     },
             // },
             // {
-            //     title: ConstantStringTableComponentsEnum.PRINT_2,
-            //     name: ConstantStringTableComponentsEnum.PRINT,
+            //     title: TableStringEnum.PRINT_2,
+            //     name: TableStringEnum.PRINT,
             //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
             //     svgStyle: {
             //         width: 18,
             //         height: 18,
             //     },
-            //     svgClass: ConstantStringTableComponentsEnum.REGULAR,
+            //     svgClass: TableStringEnum.REGULAR,
             //     hasBorder: true,
             // },
             //leave this commented for now
             // {
             //     title:
-            //         data === ConstantStringTableComponentsEnum.ACTIVE
-            //             ? ConstantStringTableComponentsEnum.DEACTIVATE_2
-            //             : ConstantStringTableComponentsEnum.ACTIVATE_2,
-            //     name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+            //         data === TableStringEnum.ACTIVE
+            //             ? TableStringEnum.DEACTIVATE_2
+            //             : TableStringEnum.ACTIVATE_2,
+            //     name: TableStringEnum.ACTIVATE_ITEM,
             //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
             //     svgStyle: {
             //         width: 18,
             //         height: 18,
             //     },
             //     svgClass:
-            //         data === ConstantStringTableComponentsEnum.ACTIVE
-            //             ? ConstantStringTableComponentsEnum.DEACTIVATE
-            //             : ConstantStringTableComponentsEnum.ACTIVATE,
+            //         data === TableStringEnum.ACTIVE
+            //             ? TableStringEnum.DEACTIVATE
+            //             : TableStringEnum.ACTIVATE,
             //     tableListDropdownContentStyle: {
             //         'margin-bottom.px': 4,
             //     },
             // },
             //leave this commented for now
             {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
+                title: TableStringEnum.DELETE_2,
+                name: TableStringEnum.DELETE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
         ];
     }

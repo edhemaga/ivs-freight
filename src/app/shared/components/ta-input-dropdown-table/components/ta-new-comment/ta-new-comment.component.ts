@@ -20,7 +20,7 @@ import { UserModel } from 'src/app/core/model/user-localstorage.model';
 import moment from 'moment';
 
 // enums
-import { ConstantStringTableDropdownEnum } from '../../../../../core/utils/enums/ta-input-dropdown-table';
+import { TaInputDropdownTableStringEnum } from '../../enums/ta-input-dropdown-table-string.enum';
 
 // services
 import { CommentsService } from 'src/app/shared/services/comments.service';
@@ -46,7 +46,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
     public user: UserModel;
 
     public placeholder: string =
-        ConstantStringTableDropdownEnum.WRITE_COMMENT_PLACEHOLDER;
+        TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER;
 
     public commentAvatar: SafeResourceUrl;
 
@@ -66,7 +66,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
     public getUserFromLocalStorage(): void {
         const user = JSON.parse(
-            localStorage.getItem(ConstantStringTableDropdownEnum.USER)
+            localStorage.getItem(TaInputDropdownTableStringEnum.USER)
         );
 
         this.user = user;
@@ -76,11 +76,11 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
     public newComment(type: string, loadId: number): void {
         switch (type) {
-            case ConstantStringTableDropdownEnum.OPEN_NEW_COMMENT:
+            case TaInputDropdownTableStringEnum.OPEN_NEW_COMMENT:
                 this.openNewComment = true;
 
                 this.taInputDropdownTableService.setDropdownCommentNewCommentState(
-                    ConstantStringTableDropdownEnum.OPEN_NEW_COMMENT
+                    TaInputDropdownTableStringEnum.OPEN_NEW_COMMENT
                 );
 
                 setTimeout(() => {
@@ -90,7 +90,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                 this.getUserFromLocalStorage();
                 break;
 
-            case ConstantStringTableDropdownEnum.ADD_NEW_COMMENT:
+            case TaInputDropdownTableStringEnum.ADD_NEW_COMMENT:
                 const comment = {
                     entityTypeCommentId: 2,
                     entityTypeId: loadId,
@@ -148,7 +148,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
         if (commentInputDiv.textContent.trim() === this.placeholder)
             commentInputDiv.textContent =
-                ConstantStringTableDropdownEnum.EMPTY_STRING_PLACEHOLDER;
+                TaInputDropdownTableStringEnum.EMPTY_STRING_PLACEHOLDER;
 
         this.checkIfCommentIsEmpty();
     }
@@ -160,9 +160,9 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
             return (this.isDisabled =
                 divContent ===
-                    ConstantStringTableDropdownEnum.WRITE_COMMENT_PLACEHOLDER ||
+                    TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER ||
                 divContent ===
-                    ConstantStringTableDropdownEnum.EMPTY_STRING_PLACEHOLDER);
+                    TaInputDropdownTableStringEnum.EMPTY_STRING_PLACEHOLDER);
         }
 
         return (this.isDisabled = false);
@@ -179,7 +179,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
             .getDropdownCommentNewCommentState()
             .pipe(takeUntil(this.destroy$))
             .subscribe((opened) => {
-                if (opened === ConstantStringTableDropdownEnum.OPEN_COMMENT) {
+                if (opened === TaInputDropdownTableStringEnum.OPEN_COMMENT) {
                     this.openNewComment = false;
 
                     this.cdr.detectChanges();

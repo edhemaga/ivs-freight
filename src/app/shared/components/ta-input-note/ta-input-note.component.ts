@@ -32,7 +32,7 @@ import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-c
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
 // services
-import { SharedService } from '../../../core/services/shared.service';
+import { SharedService } from '../../services/shared.service';
 import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
 
 // models

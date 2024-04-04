@@ -17,7 +17,7 @@ import { ConfirmationService } from 'src/app/core/components/modals/confirmation
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { CommentsService } from 'src/app/shared/services/comments.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { SharedService } from 'src/app/core/services/shared.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 // moment
 import moment from 'moment';

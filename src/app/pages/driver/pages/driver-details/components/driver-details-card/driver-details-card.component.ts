@@ -47,7 +47,7 @@ import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.co
 import { DriversMinimalListQuery } from '../../../../state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
-import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from './enums/driver-details-card-string.enum';
 import { DriverImagesStringEnum } from './enums/driver-images-string.enum';
 import { BrokerTabStringEnum } from 'src/app/pages/customer/pages/broker-details/enums/broker-tab-string.enum';
@@ -736,7 +736,7 @@ export class DriverDetailsCardComponent
             (driver) => driver.id === this.driver.id
         );
         switch (action) {
-            case ArrowActionsEnum.PREVIOUS:
+            case ArrowActionsStringEnum.PREVIOUS:
                 currentIndex = --currentIndex;
                 if (currentIndex !== -1) {
                     this.detailsPageDriverSer.getDataDetailId(
@@ -749,7 +749,7 @@ export class DriverDetailsCardComponent
                     this.currentDriverIndex = currentIndex;
                 }
                 break;
-            case ArrowActionsEnum.NEXT:
+            case ArrowActionsStringEnum.NEXT:
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&

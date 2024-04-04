@@ -1,4 +1,4 @@
-export enum ConstantStringCommentEnum {
+export enum CommentStringEnum {
     WRITE_COMMENT_PLACEHOLDER = 'Write Comment...',
 
     EMPTY_STRING_PLACEHOLDER = '',

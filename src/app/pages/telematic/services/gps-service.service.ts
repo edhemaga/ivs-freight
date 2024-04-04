@@ -9,8 +9,10 @@ import { environment } from 'src/environments/environment';
 })
 export class GpsService {
     private hubConnection: signalR.HubConnection;
+
     private destroy$ = new Subject<void>();
     public gpsStatusChange = new Subject<any>();
+
     constructor(private router: Router) {
         this.router.events
             .pipe(

@@ -1,4 +1,4 @@
-export enum ConstantStringTableComponentsEnum {
+export enum TableStringEnum {
     // Number
     NUMBER_0 = '0',
     NUMBER_100 = '100%',

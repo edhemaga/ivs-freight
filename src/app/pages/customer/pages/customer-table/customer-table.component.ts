@@ -64,13 +64,13 @@ import {
 
 // Constants
 import { CustomerCardDataConfig } from './utils/constants/customer-card-data-config.constants';
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 // Pipes
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // Helpers
 import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
@@ -106,8 +106,8 @@ export class CustomerTableComponent
     public columns: TableColumnConfig[] = [];
     public brokers: BrokerState[] = [];
     public shipper: ShipperState[] = [];
-    public selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public activeTableData: DataForCardsAndTables;
@@ -199,21 +199,15 @@ export class CustomerTableComponent
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.type === ConstantStringTableComponentsEnum.INFO) {
-                    if (
-                        res.subType ===
-                        ConstantStringTableComponentsEnum.BAN_LIST
-                    ) {
+                if (res.type === TableStringEnum.INFO) {
+                    if (res.subType === TableStringEnum.BAN_LIST) {
                         this.changeBanStatus(res.data);
                     } else {
                         this.changeDnuStatus(res.data);
                     }
                 }
-                if (res.template === ConstantStringTableComponentsEnum.INFO) {
-                    if (
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                    ) {
+                if (res.template === TableStringEnum.INFO) {
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
                         this.changeBussinesStatusBroker(res.data);
                     } else {
                         this.changeBussinesStatusShipper(res.data);
@@ -281,13 +275,8 @@ export class CustomerTableComponent
                         this.sendCustomerData();
                     }
                 } else if (res?.filterType) {
-                    if (
-                        res.filterType ===
-                        ConstantStringTableComponentsEnum.STATE_FILTER
-                    ) {
-                        if (
-                            res.action === ConstantStringTableComponentsEnum.SET
-                        ) {
+                    if (res.filterType === TableStringEnum.STATE_FILTER) {
+                        if (res.action === TableStringEnum.SET) {
                             this.viewData = this.customerTableData.filter(
                                 (address) =>
                                     res.queryParams.canadaArray.some(
@@ -303,18 +292,12 @@ export class CustomerTableComponent
                             );
                         }
 
-                        if (
-                            res.action ===
-                            ConstantStringTableComponentsEnum.CLEAR
-                        )
+                        if (res.action === TableStringEnum.CLEAR)
                             this.viewData = this.customerTableData;
                     } else if (
-                        res.filterType ===
-                        ConstantStringTableComponentsEnum.LOCATION_FILTER
+                        res.filterType === TableStringEnum.LOCATION_FILTER
                     ) {
-                        if (
-                            res.action === ConstantStringTableComponentsEnum.SET
-                        ) {
+                        if (res.action === TableStringEnum.SET) {
                             this.viewData = this.customerTableData.filter(
                                 (address) => {
                                     const distance =
@@ -391,8 +374,8 @@ export class CustomerTableComponent
                 // <------------------ Broker ------------------->
                 // Add Broker
                 if (
-                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
-                    res.tab === ConstantStringTableComponentsEnum.BROKER
+                    res?.animation === TableStringEnum.ADD &&
+                    res.tab === TableStringEnum.BROKER
                 ) {
                     this.viewData.push(this.mapBrokerData(res.data));
 
@@ -400,9 +383,8 @@ export class CustomerTableComponent
                 }
                 // Update Broker
                 else if (
-                    res?.animation ===
-                        ConstantStringTableComponentsEnum.UPDATE &&
-                    res.tab === ConstantStringTableComponentsEnum.BROKER
+                    res?.animation === TableStringEnum.UPDATE &&
+                    res.tab === TableStringEnum.BROKER
                 ) {
                     const updatedBroker = this.mapBrokerData(res.data);
 
@@ -412,8 +394,8 @@ export class CustomerTableComponent
                 // <------------------ Shipper ------------------->
                 // Add Shipper
                 else if (
-                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
-                    res.tab === ConstantStringTableComponentsEnum.SHIPPER
+                    res?.animation === TableStringEnum.ADD &&
+                    res.tab === TableStringEnum.SHIPPER
                 ) {
                     this.viewData.push(this.mapShipperData(res.data));
 
@@ -421,9 +403,8 @@ export class CustomerTableComponent
                 }
                 // Update Shipper
                 else if (
-                    res?.animation ===
-                        ConstantStringTableComponentsEnum.UPDATE &&
-                    res.tab === ConstantStringTableComponentsEnum.SHIPPER
+                    res?.animation === TableStringEnum.UPDATE &&
+                    res.tab === TableStringEnum.SHIPPER
                 ) {
                     const updatedShipper = this.mapShipperData(res.data);
 
@@ -441,18 +422,13 @@ export class CustomerTableComponent
                 if (response.length) {
                     // Delete Broker List
 
-                    if (
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                    ) {
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
                         this.brokerService
                             .deleteBrokerList()
                             .pipe(takeUntil(this.destroy$))
                             .subscribe(() => {
-                                let brokerName:
-                                    | ConstantStringTableComponentsEnum
-                                    | string =
-                                    ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+                                let brokerName: TableStringEnum | string =
+                                    TableStringEnum.EMPTY_STRING_PLACEHOLDER;
 
                                 this.viewData.map((data: BrokerResponse) => {
                                     response.map((r: BrokerResponse) => {
@@ -462,7 +438,7 @@ export class CustomerTableComponent
                                             } else {
                                                 brokerName =
                                                     brokerName +
-                                                    ConstantStringTableComponentsEnum.COMA +
+                                                    TableStringEnum.COMA +
                                                     data.businessName;
                                             }
                                         }
@@ -474,10 +450,8 @@ export class CustomerTableComponent
                     }
                     // Delete Shipper List
                     else {
-                        let shipperName:
-                            | ConstantStringTableComponentsEnum
-                            | string =
-                            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+                        let shipperName: TableStringEnum | string =
+                            TableStringEnum.EMPTY_STRING_PLACEHOLDER;
 
                         this.viewData.map((data: ShipperResponse) => {
                             response.map((r: ShipperResponse) => {
@@ -487,7 +461,7 @@ export class CustomerTableComponent
                                     } else {
                                         shipperName =
                                             shipperName +
-                                            ConstantStringTableComponentsEnum.COMA +
+                                            TableStringEnum.COMA +
                                             data.businessName;
                                     }
                                 }
@@ -516,24 +490,18 @@ export class CustomerTableComponent
 
                     const searchEvent = tableSearch(
                         res,
-                        this.selectedTab ===
-                            ConstantStringTableComponentsEnum.ACTIVE
+                        this.selectedTab === TableStringEnum.ACTIVE
                             ? this.backBrokerFilterQuery
                             : this.backShipperFilterQuery
                     );
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
-                            this.selectedTab ===
-                            ConstantStringTableComponentsEnum.ACTIVE
+                        if (searchEvent.action === TableStringEnum.API) {
+                            this.selectedTab === TableStringEnum.ACTIVE
                                 ? this.brokerBackFilter(searchEvent.query)
                                 : this.shipperBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendCustomerData();
                         }
@@ -552,81 +520,59 @@ export class CustomerTableComponent
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showBrokerFilter:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
+                showBrokerFilter: this.selectedTab === TableStringEnum.ACTIVE,
                 showBrokerFilterClosed:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                showMoneyFilter:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
+                    this.selectedTab === TableStringEnum.INACTIVE,
+                showMoneyFilter: this.selectedTab === TableStringEnum.ACTIVE,
                 showLocationFilter:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                showStateFilter:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
+                    this.selectedTab === TableStringEnum.INACTIVE,
+                showStateFilter: this.selectedTab === TableStringEnum.INACTIVE,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
     }
 
     private getViewModeOptions(): {
-        name: ConstantStringTableComponentsEnum;
+        name: TableStringEnum;
         active: boolean;
     }[] {
-        return this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+        return this.selectedTab === TableStringEnum.ACTIVE
             ? [
                   {
-                      name: ConstantStringTableComponentsEnum.LIST,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.LIST,
+                      name: TableStringEnum.LIST,
+                      active: this.activeViewMode === TableStringEnum.LIST,
                   },
                   {
-                      name: ConstantStringTableComponentsEnum.CARD,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.CARD,
+                      name: TableStringEnum.CARD,
+                      active: this.activeViewMode === TableStringEnum.CARD,
                   },
               ]
             : [
                   {
-                      name: ConstantStringTableComponentsEnum.LIST,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.LIST,
+                      name: TableStringEnum.LIST,
+                      active: this.activeViewMode === TableStringEnum.LIST,
                   },
                   {
-                      name: ConstantStringTableComponentsEnum.CARD,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.CARD,
+                      name: TableStringEnum.CARD,
+                      active: this.activeViewMode === TableStringEnum.CARD,
                   },
                   {
-                      name: ConstantStringTableComponentsEnum.MAP,
-                      active:
-                          this.activeViewMode ===
-                          ConstantStringTableComponentsEnum.MAP,
+                      name: TableStringEnum.MAP,
+                      active: this.activeViewMode === TableStringEnum.MAP,
                   },
               ];
     }
 
     private sendCustomerData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.CUSTOMER_TABLE_VIEW
-            )
+            localStorage.getItem(TableStringEnum.CUSTOMER_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -639,55 +585,49 @@ export class CustomerTableComponent
         this.checkActiveViewMode();
 
         const brokerShipperCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.BROKER_SHIPPER_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
         );
 
         const brokerActiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
         const shipperActiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+            this.selectedTab === TableStringEnum.INACTIVE
+                ? this.getTabData(TableStringEnum.INACTIVE)
                 : [];
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.BROKER,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.BROKER,
+                field: TableStringEnum.ACTIVE,
                 length: brokerShipperCount.broker,
                 data: brokerActiveData,
                 extended: false,
                 moneyCountSelected: false,
                 isCustomer: true,
-                gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
-                stateName: ConstantStringTableComponentsEnum.BROKER_3,
-                tableConfiguration: ConstantStringTableComponentsEnum.BROKER,
+                gridNameTitle: TableStringEnum.CUSTOMER,
+                stateName: TableStringEnum.BROKER_3,
+                tableConfiguration: TableStringEnum.BROKER,
                 bannedArray: DataFilterHelper.checkSpecialFilterArray(
                     brokerActiveData,
-                    ConstantStringTableComponentsEnum.BAN
+                    TableStringEnum.BAN
                 ),
                 dnuArray: DataFilterHelper.checkSpecialFilterArray(
                     brokerActiveData,
-                    ConstantStringTableComponentsEnum.DNU
+                    TableStringEnum.DNU
                 ),
                 closedArray: DataFilterHelper.checkSpecialFilterArray(
                     brokerActiveData,
-                    ConstantStringTableComponentsEnum.STATUS
+                    TableStringEnum.STATUS
                 ),
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.BROKER
-                ),
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.BROKER),
             },
             {
-                title: ConstantStringTableComponentsEnum.SHIPPER,
-                field: ConstantStringTableComponentsEnum.INACTIVE,
+                title: TableStringEnum.SHIPPER,
+                field: TableStringEnum.INACTIVE,
                 length: brokerShipperCount.shipper,
                 data: shipperActiveData,
                 moneyCountSelected: false,
@@ -695,17 +635,13 @@ export class CustomerTableComponent
                 isCustomer: true,
                 closedArray: DataFilterHelper.checkSpecialFilterArray(
                     shipperActiveData,
-                    ConstantStringTableComponentsEnum.STATUS
+                    TableStringEnum.STATUS
                 ),
-                gridNameTitle: ConstantStringTableComponentsEnum.CUSTOMER,
-                stateName: ConstantStringTableComponentsEnum.SHIPPER_2,
-                tableConfiguration: ConstantStringTableComponentsEnum.SHIPPER,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.SHIPPER
-                ),
+                gridNameTitle: TableStringEnum.CUSTOMER,
+                stateName: TableStringEnum.SHIPPER_2,
+                tableConfiguration: TableStringEnum.SHIPPER,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.SHIPPER),
             },
         ];
 
@@ -715,11 +651,11 @@ export class CustomerTableComponent
     }
 
     private getTabData(dataType: string): BrokerResponse[] {
-        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (dataType === TableStringEnum.ACTIVE) {
             this.brokerActive = this.brokerQuery.getAll();
 
             return this.brokerActive?.length ? this.brokerActive : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
+        } else if (dataType === TableStringEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.shipperActive = this.shipperQuery.getAll();
@@ -730,20 +666,20 @@ export class CustomerTableComponent
 
     // Check If Selected Tab Has Active View Mode
     private checkActiveViewMode(): void {
-        if (this.activeViewMode === ConstantStringTableComponentsEnum.MAP) {
+        if (this.activeViewMode === TableStringEnum.MAP) {
             let hasMapView = false;
 
             let viewModeOptions =
                 this.tableOptions.toolbarActions.viewModeOptions;
 
             viewModeOptions.map((viewMode: { name: string }) => {
-                if (viewMode.name === ConstantStringTableComponentsEnum.MAP) {
+                if (viewMode.name === TableStringEnum.MAP) {
                     hasMapView = true;
                 }
             });
 
             if (!hasMapView) {
-                this.activeViewMode = ConstantStringTableComponentsEnum.LIST;
+                this.activeViewMode = TableStringEnum.LIST;
 
                 viewModeOptions = this.getViewModeOptions();
             }
@@ -759,7 +695,7 @@ export class CustomerTableComponent
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (configType === ConstantStringTableComponentsEnum.BROKER) {
+        if (configType === TableStringEnum.BROKER) {
             return tableColumnsConfig
                 ? tableColumnsConfig
                 : getBrokerColumnDefinition();
@@ -777,15 +713,14 @@ export class CustomerTableComponent
             this.viewData = td.data;
             this.viewData = this.viewData.map(
                 (data: ShipperResponse | BrokerResponse) => {
-                    return this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
+                    return this.selectedTab === TableStringEnum.ACTIVE
                         ? this.mapBrokerData(data)
                         : this.mapShipperData(data);
                 }
             );
 
             // Set data for cards based on tab active
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),
                   (this.sendDataToCardsBack = this.displayRowsBack))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontShipper),
@@ -813,7 +748,7 @@ export class CustomerTableComponent
                       isClosed: data?.status === 0 ?? false,
                       name: data?.businessName
                           ? data.businessName
-                          : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                   }
                 : data?.businessName,
             tableAddressPhysical: data?.mainAddress?.address
@@ -821,43 +756,43 @@ export class CustomerTableComponent
                 : data?.mainPoBox?.poBox
                 ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
                   'Treba da se postavo odgovarajuci redosled za po box address'
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
                 : data?.billingPoBox?.poBox
                 ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
                   'Treba da se postavo odgovarajuci redosled za po box address'
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaymentDetailAvailCredit: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tablePaymentDetailAvailCredit: TableStringEnum.NA,
             tablePaymentDetailCreditLimit: data?.creditLimit
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.creditLimit)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailTerm: data?.payTerm?.name
                 ? data.payTerm.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailDTP: data?.daysToPay
-                ? data.daysToPay + ConstantStringTableComponentsEnum.DAY
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.daysToPay + TableStringEnum.DAY
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailInvAgeing: {
-                bfb: ConstantStringTableComponentsEnum.NUMBER_0,
-                dnu: ConstantStringTableComponentsEnum.NUMBER_0,
+                bfb: TableStringEnum.NUMBER_0,
+                dnu: TableStringEnum.NUMBER_0,
                 amount: 'Template is changed',
             },
             tableLoads: data?.loadCount
                 ? this.thousandSeparator.transform(data.loadCount)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableMiles: data?.miles
                 ? this.thousandSeparator.transform(data.miles)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePPM: data?.pricePerMile
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.pricePerMile)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableRevenue: data?.revenue
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.revenue)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: null,
             tableContact: data?.brokerContacts?.length
                 ? data.brokerContacts.length
@@ -865,15 +800,15 @@ export class CustomerTableComponent
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownBrokerContent(data),
@@ -891,29 +826,29 @@ export class CustomerTableComponent
                       isClosed: data?.status === 0 ?? false,
                       name: data?.businessName
                           ? data.businessName
-                          : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                   }
                 : data?.businessName,
             isSelected: false,
             tableAddress: data?.address?.address
                 ? data.address.address
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLoads: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLoads: TableStringEnum.NA,
             tableAverageWatingTimePickup: data?.avgPickupTime
                 ? data.avgPickupTime
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAverageWatingTimeDelivery: data?.avgDeliveryTime
                 ? data.avgDeliveryTime
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAvailableHoursShipping:
                 data?.shippingFrom && data?.shippingTo
                     ? data?.shippingFrom + ' - ' + data?.shippingTo
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAvailableHoursReceiving:
                 data?.receivingFrom && data?.receivingTo
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: null,
             tableContact: data?.shipperContacts?.length
                 ? data.shipperContacts.length
@@ -921,10 +856,10 @@ export class CustomerTableComponent
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableEdited: TableStringEnum.NA,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownShipperContent(data),
@@ -943,9 +878,7 @@ export class CustomerTableComponent
     // Update Broker And Shipper Count
     private updateDataCount(): void {
         const brokerShipperCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.BROKER_SHIPPER_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -1074,39 +1007,34 @@ export class CustomerTableComponent
     public onToolBarAction(event: ToolbarActions): void {
         // Add Call
 
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             // Add Broker Call Modal
 
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(BrokerModalComponent, {
-                    size: ConstantStringTableComponentsEnum.MEDIUM,
+                    size: TableStringEnum.MEDIUM,
                 });
             }
             // Add Shipper Call Modal
             else {
                 this.modalService.openModal(ShipperModalComponent, {
-                    size: ConstantStringTableComponentsEnum.MEDIUM,
+                    size: TableStringEnum.MEDIUM,
                 });
             }
         }
         // Switch Tab Call
-        else if (
-            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
-        ) {
-            this.selectedTab = event.tabData
-                .field as ConstantStringTableComponentsEnum;
+        else if (event.action === TableStringEnum.TAB_SELECTED) {
+            this.selectedTab = event.tabData.field as TableStringEnum;
 
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
 
             this.sendCustomerData();
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
 
             this.tableOptions.toolbarActions.hideSearch =
-                event.mode == ConstantStringTableComponentsEnum.MAP;
+                event.mode == TableStringEnum.MAP;
 
             this.sendCustomerData();
         }
@@ -1117,12 +1045,9 @@ export class CustomerTableComponent
         action: string;
         direction: string;
     }): void {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
-                if (
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                ) {
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
                     this.backBrokerFilterQuery.sort = event.direction;
 
                     this.backBrokerFilterQuery.pageIndex = 1;
@@ -1158,8 +1083,8 @@ export class CustomerTableComponent
     }): void {
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
-        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (event.type === TableStringEnum.SHOW_MORE) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.backBrokerFilterQuery.pageIndex++;
 
                 this.brokerBackFilter(this.backBrokerFilterQuery, true);
@@ -1169,30 +1094,27 @@ export class CustomerTableComponent
                 this.shipperBackFilter(this.backShipperFilterQuery, true);
             }
         } else if (
-            event.type ===
-                ConstantStringTableComponentsEnum.EDIT_CUSTOMER_OR_SHIPPER ||
-            event.type === ConstantStringTableComponentsEnum.ADD_CONTRACT ||
-            event.type === ConstantStringTableComponentsEnum.WRITE_REVIEW
+            event.type === TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER ||
+            event.type === TableStringEnum.ADD_CONTRACT ||
+            event.type === TableStringEnum.WRITE_REVIEW
         ) {
             // Edit Broker Call Modal
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(
                     BrokerModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: ConstantStringTableComponentsEnum.EDIT,
+                        type: TableStringEnum.EDIT,
                         dnuButton: true,
                         bfbButton: true,
                         tab: 3,
                         openedTab:
-                            event.type ===
-                            ConstantStringTableComponentsEnum.ADD_CONTRACT
-                                ? ConstantStringTableComponentsEnum.CONTRACT
-                                : event.type ===
-                                  ConstantStringTableComponentsEnum.WRITE_REVIEW
-                                ? ConstantStringTableComponentsEnum.REVIEW
-                                : ConstantStringTableComponentsEnum.DETAILS,
+                            event.type === TableStringEnum.ADD_CONTRACT
+                                ? TableStringEnum.CONTRACT
+                                : event.type === TableStringEnum.WRITE_REVIEW
+                                ? TableStringEnum.REVIEW
+                                : TableStringEnum.DETAILS,
                     }
                 );
             }
@@ -1200,79 +1122,68 @@ export class CustomerTableComponent
             else {
                 this.modalService.openModal(
                     ShipperModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: ConstantStringTableComponentsEnum.EDIT,
+                        type: TableStringEnum.EDIT,
                         openedTab:
-                            event.type ===
-                            ConstantStringTableComponentsEnum.ADD_CONTRACT
-                                ? ConstantStringTableComponentsEnum.CONTRACT
-                                : event.type ===
-                                  ConstantStringTableComponentsEnum.WRITE_REVIEW
-                                ? ConstantStringTableComponentsEnum.REVIEW
-                                : ConstantStringTableComponentsEnum.DETAILS,
+                            event.type === TableStringEnum.ADD_CONTRACT
+                                ? TableStringEnum.CONTRACT
+                                : event.type === TableStringEnum.WRITE_REVIEW
+                                ? TableStringEnum.REVIEW
+                                : TableStringEnum.DETAILS,
                     }
                 );
             }
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.MOVE_TO_BAN_LIST
-        ) {
+        } else if (event.type === TableStringEnum.MOVE_TO_BAN_LIST) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    type: ConstantStringTableComponentsEnum.INFO,
-                    subType: ConstantStringTableComponentsEnum.BAN_LIST,
+                    type: TableStringEnum.INFO,
+                    subType: TableStringEnum.BAN_LIST,
                     subTypeStatus: !event.data.ban
-                        ? ConstantStringTableComponentsEnum.MOVE
-                        : ConstantStringTableComponentsEnum.REMOVE,
+                        ? TableStringEnum.MOVE
+                        : TableStringEnum.REMOVE,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.MOVE_TO_DNU_LIST
-        ) {
+        } else if (event.type === TableStringEnum.MOVE_TO_DNU_LIST) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    type: ConstantStringTableComponentsEnum.INFO,
-                    subType: ConstantStringTableComponentsEnum.DNU,
+                    type: TableStringEnum.INFO,
+                    subType: TableStringEnum.DNU,
                     subTypeStatus: !event.data.dnu
-                        ? ConstantStringTableComponentsEnum.MOVE
-                        : ConstantStringTableComponentsEnum.REMOVE,
+                        ? TableStringEnum.MOVE
+                        : TableStringEnum.REMOVE,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.CLOSE_BUSINESS
-        ) {
+        } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 ...event,
                 type:
                     event.data.status === 1
-                        ? ConstantStringTableComponentsEnum.CLOSE
-                        : ConstantStringTableComponentsEnum.OPEN,
+                        ? TableStringEnum.CLOSE
+                        : TableStringEnum.OPEN,
             };
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: ConstantStringTableComponentsEnum.INFO,
+                    template: TableStringEnum.INFO,
                     subType:
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                            ? ConstantStringTableComponentsEnum.BROKER
-                            : ConstantStringTableComponentsEnum.SHIPPER,
-                    subTypeStatus: ConstantStringTableComponentsEnum.BUSINESS,
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.BROKER
+                            : TableStringEnum.SHIPPER,
+                    subTypeStatus: TableStringEnum.BUSINESS,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.VIEW_DETAILS
-        ) {
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+        } else if (event.type === TableStringEnum.VIEW_DETAILS) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.router.navigate([
                     `/list/customer/${event.id}/broker-details`,
                 ]);
@@ -1283,21 +1194,18 @@ export class CustomerTableComponent
             }
         }
         // Delete Call
-        else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
+        else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.DELETE },
+                { size: TableStringEnum.DELETE },
                 {
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    type: TableStringEnum.DELETE,
                 }
             );
-            if (this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE) {
+            if (this.selectedTab === TableStringEnum.ACTIVE) {
                 this.confiramtionService.confirmationData$.subscribe(
                     (response) => {
-                        if (
-                            response.type ===
-                            ConstantStringTableComponentsEnum.DELETE
-                        ) {
+                        if (response.type === TableStringEnum.DELETE) {
                             this.brokerService
                                 .deleteBrokerById(event.id)
                                 .pipe(takeUntil(this.destroy$))
@@ -1306,7 +1214,7 @@ export class CustomerTableComponent
                                         (broker) => {
                                             if (broker.id === event.id)
                                                 broker.actionAnimation =
-                                                    ConstantStringTableComponentsEnum.DELETE;
+                                                    TableStringEnum.DELETE;
 
                                             return broker;
                                         }
@@ -1329,10 +1237,7 @@ export class CustomerTableComponent
             } else {
                 this.confiramtionService.confirmationData$.subscribe(
                     (response) => {
-                        if (
-                            response.type ===
-                            ConstantStringTableComponentsEnum.DELETE
-                        ) {
+                        if (response.type === TableStringEnum.DELETE) {
                             this.shipperService
                                 .deleteShipperById(event.id)
                                 .pipe(takeUntil(this.destroy$))
@@ -1344,18 +1249,12 @@ export class CustomerTableComponent
             }
         }
         // Raiting
-        else if (event.type === ConstantStringTableComponentsEnum.RATING) {
+        else if (event.type === TableStringEnum.RATING) {
             let raitingData = {
                 entityTypeRatingId:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 3,
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 3,
                 entityTypeId: event.data.id,
-                thumb:
-                    event.subType === ConstantStringTableComponentsEnum.LIKE
-                        ? 1
-                        : -1,
+                thumb: event.subType === TableStringEnum.LIKE ? 1 : -1,
                 tableData: event.data,
             };
 
@@ -1367,17 +1266,16 @@ export class CustomerTableComponent
 
                     newViewData.map((data: CustomerUpdateRating) => {
                         if (data.id === event.data.id) {
-                            data.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            data.actionAnimation = TableStringEnum.UPDATE;
                             data.tableRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
                                 likeCount: res?.upCount
                                     ? res.upCount
-                                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                                    : TableStringEnum.NUMBER_0,
                                 dislikeCount: res?.downCount
                                     ? res.downCount
-                                    : ConstantStringTableComponentsEnum.NUMBER_0,
+                                    : TableStringEnum.NUMBER_0,
                             };
                         }
                     });
@@ -1410,7 +1308,7 @@ export class CustomerTableComponent
     // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
-            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+            type: TableStringEnum.SHOW_MORE,
         });
     }
 
@@ -1423,9 +1321,7 @@ export class CustomerTableComponent
             return (businessName = event.data.businessName);
         } else {
             return (businessName =
-                businessName +
-                ConstantStringTableComponentsEnum.COMA +
-                event.data.businessName);
+                businessName + TableStringEnum.COMA + event.data.businessName);
         }
     }
 
@@ -1433,7 +1329,7 @@ export class CustomerTableComponent
     private addData(dataId: number): void {
         this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
             if (data.id === dataId) {
-                data.actionAnimation = ConstantStringTableComponentsEnum.ADD;
+                data.actionAnimation = TableStringEnum.ADD;
             }
             return data;
         });
@@ -1452,7 +1348,7 @@ export class CustomerTableComponent
         this.viewData = this.viewData.map((data) => {
             if (data.id === dataId) {
                 data = updatedData;
-                data.actionAnimation = ConstantStringTableComponentsEnum.UPDATE;
+                data.actionAnimation = TableStringEnum.UPDATE;
             }
 
             return data;
@@ -1471,7 +1367,7 @@ export class CustomerTableComponent
     private deleteDataById(dataId: number): void {
         this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
             if (data.id === dataId) {
-                data.actionAnimation = ConstantStringTableComponentsEnum.DELETE;
+                data.actionAnimation = TableStringEnum.DELETE;
             }
 
             return data;
@@ -1493,8 +1389,7 @@ export class CustomerTableComponent
         this.viewData = this.viewData.map((data: CustomerViewDataResponse) => {
             response.map((res: CustomerViewDataResponse) => {
                 if (data.id === res.id) {
-                    data.actionAnimation =
-                        ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                    data.actionAnimation = TableStringEnum.DELETE_MULTIPLE;
                 }
             });
 

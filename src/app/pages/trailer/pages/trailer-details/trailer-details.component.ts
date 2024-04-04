@@ -23,7 +23,7 @@ import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state
 import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state/trailer-details-list.query';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { TableOptions } from 'src/app/core/model/table.model';
@@ -377,13 +377,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE:
+                        case TableStringEnum.DELETE:
                             if (res.template === 'trailer')
                                 this.deleteTrailerById(res?.id);
                             break;
 
-                        case ConstantStringTableComponentsEnum.ACTIVATE:
-                        case ConstantStringTableComponentsEnum.DEACTIVATE:
+                        case TableStringEnum.ACTIVATE:
+                        case TableStringEnum.DEACTIVATE:
                             this.changeTrailerStatus(res?.id);
                             break;
 

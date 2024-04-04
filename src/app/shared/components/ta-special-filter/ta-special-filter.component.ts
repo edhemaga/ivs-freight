@@ -11,7 +11,7 @@ import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
 import { FilterClassPipe } from 'src/app/shared/components/ta-special-filter/pipes/filter-class.pipe';
 
 //Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-special-filter',
@@ -34,8 +34,8 @@ export class TaSpecialFilterComponent implements OnInit {
     public hoverClose: boolean = false;
     public hoverFilter: boolean = false;
 
-    @Input() type: string = ConstantStringTableComponentsEnum.USER_FILTER;
-    @Input() icon: string = ConstantStringTableComponentsEnum.USER_1;
+    @Input() type: string = TableStringEnum.USER_FILTER;
+    @Input() icon: string = TableStringEnum.USER_1;
     @Input() filterTitle: string = '';
     @Input() dataArray: any = [];
     @Input() selectedFilter: boolean;
