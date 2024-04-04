@@ -16,7 +16,7 @@ import { TaInputDropdownComponent } from '../../../../shared/components/ta-input
 import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
 
 // services
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { ImageBase64Service } from '../../../../shared/services/image-base64.service';
 import { ConfirmationService } from './state/state/services/confirmation.service';
 
 // bootstrap

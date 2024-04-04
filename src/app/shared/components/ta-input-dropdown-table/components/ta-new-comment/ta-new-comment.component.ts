@@ -24,7 +24,7 @@ import { TaInputDropdownTableStringEnum } from '../../enums/ta-input-dropdown-ta
 
 // services
 import { CommentsService } from 'src/app/shared/services/comments.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { TaInputDropdownTableService } from '../../services/ta-input-dropdown-table.service';
 import { LoadService } from 'src/app/shared/services/load.service';
 

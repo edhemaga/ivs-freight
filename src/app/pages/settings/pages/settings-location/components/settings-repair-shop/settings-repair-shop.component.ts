@@ -19,7 +19,7 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { RepairShopResponse } from 'appcoretruckassist';
 
 // utils
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -86,7 +86,10 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
     public repairDropActions(any: any, actions: string) {
         this.getRepairShopById(any.id);
         setTimeout(() => {
-            const name = dropActionNameDriver(any, actions);
+            const name = DropActionNameHelper.dropActionNameDriver(
+                any,
+                actions
+            );
             this.dropDownService.dropActionCompanyLocation(
                 any,
                 name,

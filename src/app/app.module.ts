@@ -26,7 +26,7 @@ import { EncryptionDecryptionService } from './shared/services/encryption-decryp
 
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
-import { StaticInjectorService } from './core/utils/application.decorators';
+import { StaticInjectorService } from './core/decorators/titles.decorator';
 import { TaTooltipSlideComponent } from './shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
 import { ReactiveFormsModule } from '@angular/forms';

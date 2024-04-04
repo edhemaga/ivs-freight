@@ -40,7 +40,7 @@ import { DetailsDataService } from '../../../../../shared/services/details-data.
 import { FilesService } from 'src/app/shared/services/files.service';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // components
 import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';

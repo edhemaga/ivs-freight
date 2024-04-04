@@ -17,7 +17,7 @@ import { ConfirmationService } from 'src/app/core/components/modals/confirmation
 import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
 
 // components
-import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 
 // animations
 import {
@@ -31,7 +31,7 @@ import {
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // helpers
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
@@ -292,7 +292,10 @@ export class TrailerDetailsItemComponent
 
     public optionsEvent(file: any, data: any, action: string): void {
         data = this.trailer[0]?.data;
-        const name = dropActionNameTrailerTruck(file, action);
+        const name = DropActionNameHelper.dropActionNameTrailerTruck(
+            file,
+            action
+        );
         this.dropDownService.dropActions(
             file,
             name,

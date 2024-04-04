@@ -19,9 +19,9 @@ import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Helpers
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 import moment from 'moment';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 
 //Services
@@ -353,7 +353,10 @@ export class DriverDetailsCardComponent
         );
     }
     public optionsEvent(eventData: Event, action: string): void {
-        const name = dropActionNameDriver(eventData, action);
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            action
+        );
         this.dropDownService.dropActions(
             eventData,
             name,

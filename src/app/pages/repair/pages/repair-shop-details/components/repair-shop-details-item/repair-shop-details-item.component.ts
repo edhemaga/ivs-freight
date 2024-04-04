@@ -21,7 +21,7 @@ import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.ser
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // Helpers
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 
 // Store
 import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
@@ -156,7 +156,10 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
             this.finishOrder(eventData.id, eventData.data, undefined, 'bill');
         }
 
-        const name = dropActionNameDriver(eventData, action);
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            action
+        );
         setTimeout(() => {
             this.dropDownService.dropActions(
                 eventData,

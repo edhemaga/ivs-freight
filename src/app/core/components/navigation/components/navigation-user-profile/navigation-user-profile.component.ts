@@ -1,4 +1,4 @@
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import {
     ChangeDetectionStrategy,
     Component,

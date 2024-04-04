@@ -37,7 +37,7 @@ import {
     convertNumberInThousandSep,
 } from '../../../core/utils/methods.calculations';
 import { FormService } from '../../services/form.service';
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';

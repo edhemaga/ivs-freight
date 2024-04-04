@@ -14,7 +14,7 @@ import {
     navigation_magic_line,
     navigation_route_animation,
 } from '../../animations/navigation.animation';
-import { StaticInjectorService } from 'src/app/core/utils/application.decorators';
+import { StaticInjectorService } from 'src/app/core/decorators/titles.decorator';
 import { NavigationService } from '../../services/navigation.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

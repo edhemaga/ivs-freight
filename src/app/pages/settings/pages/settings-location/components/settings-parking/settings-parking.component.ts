@@ -17,7 +17,7 @@ import { CompanyParkingService } from '../../../../services/company-parking.serv
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
 // utils
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-parking',
@@ -145,7 +145,10 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         this.getParkingById(eventData.id);
 
         setTimeout(() => {
-            const name = dropActionNameDriver(eventData, action);
+            const name = DropActionNameHelper.dropActionNameDriver(
+                eventData,
+                action
+            );
             this.dropDownService.dropActionCompanyLocation(
                 eventData,
                 name,

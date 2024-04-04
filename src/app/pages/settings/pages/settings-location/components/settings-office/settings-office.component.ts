@@ -14,7 +14,7 @@ import { CompanyOfficeService } from '../../../../../../shared/services/company-
 import { SettingsLocationService } from '../../services/settings-location.service';
 
 //Utils
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 @Component({
     selector: 'app-settings-office',
     templateUrl: './settings-office.component.html',
@@ -102,7 +102,10 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
     public officeDropActions(any: any, actions: string) {
         this.getOfficeById(any.id);
         setTimeout(() => {
-            const name = dropActionNameDriver(any, actions);
+            const name = DropActionNameHelper.dropActionNameDriver(
+                any,
+                actions
+            );
             this.dropDownService.dropActionCompanyLocation(
                 any,
                 name,

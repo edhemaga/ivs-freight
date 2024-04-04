@@ -13,7 +13,7 @@ import { anyInputInLineIncorrect } from '../../utils/helpers/applicant.helper';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 // services
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantService } from '../../services/applicant.service';
 

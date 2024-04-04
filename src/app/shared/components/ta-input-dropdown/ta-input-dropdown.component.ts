@@ -44,7 +44,7 @@ import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-i
 import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 
 // utils
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // pipes
 import { FormControlPipe } from '../ta-input/pipes/form-control.pipe';

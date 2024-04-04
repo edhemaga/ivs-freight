@@ -10,7 +10,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // services
 import { SharedService } from 'src/app/shared/services/shared.service';
