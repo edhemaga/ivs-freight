@@ -8,7 +8,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Modals
-import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
 // Decorators
 import { Titles } from 'src/app/core/utils/application.decorators';
@@ -37,7 +37,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     public stopsDataDelivery: any;
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
-    
+
     ngOnChanges(changes: SimpleChanges) {
         if (
             changes.brokerData?.currentValue !=

@@ -18,8 +18,8 @@ import {
 import { skip, Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { TrailerService } from 'src/app/shared/services/trailer.service';
 import { VinDecoderService } from '../../../../core/services/VIN-DECODER/vindecoder.service';
 import { FormService } from '../../../../core/services/form/form.service';
@@ -39,20 +39,20 @@ import {
     yearValidation,
     yearValidRegex,
     trailerVolumeValidation,
-} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // components
 import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../../core/components/shared/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
-import { TaCheckboxComponent } from '../../../../core/components/shared/ta-checkbox/ta-checkbox.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../../../shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
 
 // helpers
 import {

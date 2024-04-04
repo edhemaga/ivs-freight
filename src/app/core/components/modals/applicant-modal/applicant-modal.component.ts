@@ -2,7 +2,7 @@ import {
     firstNameValidation,
     lastNameValidation,
     phoneFaxRegex,
-} from '../../shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,
@@ -11,16 +11,16 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ApplicantService } from 'src/app/shared/services/applicant.service';
 import { FormService } from '../../../services/form/form.service';
 import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
-import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
+import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-applicant-modal',

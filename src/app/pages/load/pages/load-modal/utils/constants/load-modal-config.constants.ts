@@ -1,4 +1,4 @@
-import { ITaInput } from 'src/app/core/components/shared/ta-input/ta-input.config';
+import { ITaInput } from 'src/app/shared/components/ta-input/ta-input.config';
 
 export class LoadModalConfig {
     static LOAD_DISPATCHES_TTD_INPUT_CONFIG: ITaInput = {

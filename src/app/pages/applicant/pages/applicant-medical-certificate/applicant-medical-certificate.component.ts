@@ -16,7 +16,7 @@ import {
 import { anyInputInLineIncorrect } from '../../utils/helpers/applicant.helper';
 
 // services
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import { ApplicantService } from '../../services/applicant.service';
 
 // store

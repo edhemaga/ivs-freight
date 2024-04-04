@@ -17,7 +17,7 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 //Components
-import { ReviewCommentModal } from 'src/app/core/components/shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
 @Component({
     selector: 'app-load-details-item',

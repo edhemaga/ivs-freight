@@ -17,9 +17,9 @@ import {
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // services
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
 import { AccountService } from 'src/app/pages/account/services/account.service';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
 import { FormService } from '../../../../core/services/form/form.service';
 
 // validations
@@ -28,13 +28,13 @@ import {
     urlValidation,
     usernameValidation,
     passwordAccountValidation,
-} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/ta-input.regex-validations';
 
 // components
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownLabelComponent } from '../../../../core/components/shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaInputNoteComponent } from '../../../../core/components/shared/ta-input-note/ta-input-note.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
+import { TaInputDropdownLabelComponent } from '../../../../shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
 
 // models
 import {

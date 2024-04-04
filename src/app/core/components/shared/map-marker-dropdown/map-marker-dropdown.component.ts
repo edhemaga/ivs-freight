@@ -19,7 +19,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
-import { TaCounterComponent } from '../ta-counter/ta-counter.component';
+import { TaCounterComponent } from '../../../../shared/components/ta-counter/ta-counter.component';
 import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.component';
 import { Subject, takeUntil } from 'rxjs';
 

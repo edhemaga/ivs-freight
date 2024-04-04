@@ -1,4 +1,4 @@
-@import '../../pages/load-details/load-details.component.scss';
+@import '../../load-details.component.scss';
 app-load-details-item {
     .details-closed-items {
         display: grid;
@@ -226,14 +226,14 @@ app-load-details-item {
         }
     }
 
-    .divider{
+    .divider {
         width: calc(100% - 4px);
         margin: auto;
         //background-color: #ff0000;
     }
 }
 .biling-header {
-    padding: 0PX 4px;
+    padding: 0px 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;

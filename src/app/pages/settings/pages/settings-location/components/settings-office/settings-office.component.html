@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="settings-body">
-        <app-ta-re-card
+        <app-ta-common-card
             *ngFor="
                 let item of officeData?.data;
                 let i = index;
@@ -42,30 +42,33 @@
                         class="company-icons"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="item?.phone"
                         [textColor]="'#2f2f2f'"
-                    > </app-ta-copy>
+                    >
+                    </app-ta-copy>
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="item?.email"
-                        [textColor]="'#2f2f2f'"    
-                    > </app-ta-copy>
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
                 </div>
                 <div *ngIf="item.address.address" class="single-item">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/truckassist-table/location-icon.svg"
                     ></svg-icon>
-                    <app-ta-copy 
+                    <app-ta-copy
                         [copyValue]="item?.address?.address"
                         [textColor]="'#2f2f2f'"
-                    > </app-ta-copy>
+                    >
+                    </app-ta-copy>
                 </div>
             </div>
             <app-ta-custom-card
@@ -86,7 +89,11 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="dep?.phone" [textColor]="'#2f2f2f'"> </app-ta-copy>
+                        <app-ta-copy
+                            [copyValue]="dep?.phone"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
                     </div>
                     <div class="office-template-item">
                         <svg-icon
@@ -102,7 +109,11 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="dep?.email" [textColor]="'#2f2f2f'"> </app-ta-copy>
+                        <app-ta-copy
+                            [copyValue]="dep?.email"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -116,6 +127,6 @@
                     [darkText]="true"
                 ></app-truckassist-progress-expiration>
             </div>
-        </app-ta-re-card>
+        </app-ta-common-card>
     </div>
 </div>

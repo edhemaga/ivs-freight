@@ -12,7 +12,7 @@ import { ConfirmationModalComponent } from 'src/app/core/components/modals/confi
 import { ApplicantModalComponent } from 'src/app/core/components/modals/applicant-modal/applicant-modal.component';
 
 // Services
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { DriverService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';

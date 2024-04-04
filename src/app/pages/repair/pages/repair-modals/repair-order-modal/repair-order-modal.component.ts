@@ -38,8 +38,8 @@ import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
 import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone.pipe';
 
 // Services
-import { TaInputService } from '../../../../../core/components/shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../../core/components/shared/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
 import { FormService } from '../../../../../core/services/form/form.service';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
@@ -64,7 +64,7 @@ import {
     invoiceValidation,
     repairOdometerValidation,
     vehicleUnitValidation,
-} from '../../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 
 // constants
 import { RepairOrder } from './utils/constants/repair-order.constant';
@@ -73,16 +73,16 @@ import { RepairOrder } from './utils/constants/repair-order.constant';
 import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { AppTooltipComponent } from '../../../../../core/components/standalone-components/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from '../../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from '../../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '../../../../../core/components/shared/ta-input/ta-input.component';
-import { TaCustomCardComponent } from '../../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../../core/components/shared/ta-input-note/ta-input-note.component';
-import { TaCopyComponent } from '../../../../../core/components/shared/ta-copy/ta-copy.component';
-import { TaModalTableComponent } from '../../../../../core/components/standalone-components/ta-modal-table/ta-modal-table.component';
+import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
+import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/ta-modal-table.component';
 
 @Component({
     selector: 'app-repair-order-modal',

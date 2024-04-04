@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TaInputService } from '../../../../core/components/shared/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -11,18 +11,18 @@ import {
     TodoResponse,
     UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { ModalService } from '../../../../core/components/shared/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
 import { TodoService } from 'src/app/pages/to-do/services/to-do.service';
 import {
     ReviewCommentModal,
     TaUserReviewComponent,
-} from '../../../../core/components/shared/ta-user-review/ta-user-review.component';
+} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import {
     departmentValidation,
     descriptionValidation,
     titleValidation,
     urlValidation,
-} from '../../../../core/components/shared/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from '../../../../core/services/comments/comments.service';
 import { FormService } from '../../../../core/services/form/form.service';
@@ -31,12 +31,12 @@ import {
     convertDateFromBackend,
 } from '../../../../core/utils/methods.calculations';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from '../../../../core/components/shared/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../core/components/standalone-components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../core/components/shared/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../core/components/shared/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../../../core/components/shared/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../../../core/components/shared/ta-upload-files/ta-upload-files.component';
+import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-to-do-modal',
@@ -306,10 +306,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
-        const {
-            deadline,
-            ...form
-        } = this.taskForm.value;
+        const { deadline, ...form } = this.taskForm.value;
 
         const newData: any = {
             id: id,
@@ -345,10 +342,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     }
 
     private addTask() {
-        const {
-            deadline,
-            ...form
-        } = this.taskForm.value;
+        const { deadline, ...form } = this.taskForm.value;
 
         let documents = [];
         this.documents.map((item) => {
