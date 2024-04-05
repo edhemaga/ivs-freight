@@ -1,25 +1,4 @@
-import { Address } from './address';
-
-export interface ManageCompany {
-    id: number;
-    name: string;
-    parentId: number;
-    category: string;
-    startLoadNumber: number;
-    isOwner: number;
-    locked: number;
-    taxNumber: number | string;
-    companyDivision: any;
-    doc: ManageCompanyDoc;
-}
-
-export interface ManageCompanyDoc {
-    additional?: AdditionalData;
-    offices?: CompanyOffice[];
-    factoringCompany?: FactoringCompany[];
-    insurancePolicy?: any;
-    taxNumber: number | string;
-}
+import { Address } from 'src/app/core/model/address';
 
 export interface Avatar {
     id: number;
@@ -59,16 +38,6 @@ export interface AdditionalData {
 export interface TimeZoneData {
     id?: number;
     name?: string;
-}
-
-export interface CompanyOffice {
-    id?: number;
-    phone?: number;
-    email?: string;
-    address?: Address;
-    addressUnit?: string | number;
-    address_unit?: string | number;
-    note?: string;
 }
 
 export interface FactoringCompany {

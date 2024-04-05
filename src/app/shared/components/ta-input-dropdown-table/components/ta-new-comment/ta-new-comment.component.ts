@@ -8,13 +8,14 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
-// modules
+import { takeUntil } from 'rxjs/operators';
+
+// models
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { UserModel } from 'src/app/core/model/user-localstorage.model';
+import { User } from '../../models/user.model';
 
 //moment
 import moment from 'moment';
@@ -43,7 +44,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
     private destroy$ = new Subject<void>();
 
-    public user: UserModel;
+    public user: User;
 
     public placeholder: string =
         TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER;
