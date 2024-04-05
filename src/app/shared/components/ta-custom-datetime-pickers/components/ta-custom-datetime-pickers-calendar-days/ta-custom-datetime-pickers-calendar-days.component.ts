@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-custom-datetime-picker-calendar-days',
-    templateUrl: './ta-custom-datetime-picker-calendar-days.component.html',
-    styleUrls: ['./ta-custom-datetime-picker-calendar-days.component.scss'],
+    templateUrl: './ta-custom-datetime-pickers-calendar-days.component.html',
+    styleUrls: ['./ta-custom-datetime-pickers-calendar-days.component.scss'],
     standalone: true,
     imports: [CommonModule, FormsModule],
 })
-export class TaCustomDateTimePickerCalendarDaysComponent implements OnInit {
+export class TaCustomDateTimePickersCalendarDaysComponent implements OnInit {
     @Input() dateTime: Date;
     @Input() year: string;
     @Input() selectedMonth: string;

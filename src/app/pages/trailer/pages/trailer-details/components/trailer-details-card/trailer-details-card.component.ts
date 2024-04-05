@@ -22,7 +22,7 @@ import {
     trigger,
     state,
 } from '@angular/animations';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // store
 import { TrailersMinimalListQuery } from '../../../../state/trailer-minimal-list-state/trailer-minimal.query';
@@ -38,7 +38,7 @@ import { TrailerMinimalResponse } from 'appcoretruckassist';
     styleUrls: ['./trailer-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('ownerDetailsAnimation', [
             state(
                 'true',

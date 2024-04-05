@@ -22,7 +22,7 @@ import { HttpResponseBase } from '@angular/common/http';
 import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 
 //Animations
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 //Services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
@@ -80,7 +80,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
     selector: 'app-driver-modal',
     templateUrl: './driver-modal.component.html',
     styleUrls: ['./driver-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService, BankVerificationService],
     standalone: true,
     imports: [

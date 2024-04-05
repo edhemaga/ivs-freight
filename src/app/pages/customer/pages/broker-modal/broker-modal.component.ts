@@ -22,7 +22,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
 
 // Helpers
 import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
@@ -88,7 +88,7 @@ import { ReviewComment } from 'src/app/shared/models/review-comment.model';
     selector: 'app-broker-modal',
     templateUrl: './broker-modal.component.html',
     styleUrls: ['./broker-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaLikeDislikeService, FormService],
     standalone: true,

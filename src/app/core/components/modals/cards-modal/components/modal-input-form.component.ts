@@ -14,7 +14,7 @@ import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
 
 // model
-import { CardRows } from '../../../shared/model/card-data.model';
+import { CardRows } from '../../../../../shared/models/card-data.model';
 
 // store
 import { LoadQuery } from '../state/store/load-modal.query';

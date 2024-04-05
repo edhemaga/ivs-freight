@@ -17,7 +17,7 @@ import moment from 'moment';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 //animations
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '../../animations/card-component.animation';
 
 // services
 import { DetailsDataService } from '../../services/details-data.service';
@@ -44,7 +44,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         NgbPopoverModule,
     ],
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardOpenAnimation', [
             state(
                 'true',

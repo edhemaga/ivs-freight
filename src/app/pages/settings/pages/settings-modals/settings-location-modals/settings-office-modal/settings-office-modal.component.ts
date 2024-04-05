@@ -54,13 +54,13 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // animations
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from 'src/app/shared/animations/tabs-modal.animation';
 
 @Component({
     selector: 'app-settings-office-modal',
     templateUrl: './settings-office-modal.component.html',
     styleUrls: ['./settings-office-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [

@@ -28,8 +28,9 @@ import {
     CalendarStrategy,
     STARTING_YEAR,
 } from '../../strategy/calendar-strategy';
+
 // enums
-import { CalendarLeftEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
+import { CalendarLeftEnum } from '../../enums/calendar-left.enum';
 
 function factory(dir: TaCustomDateTimePickersCalendarLeftComponent) {
     return dir.scrollStrategy;

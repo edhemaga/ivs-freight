@@ -31,7 +31,7 @@ import { ModalService } from '../ta-modal/services/modal.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 
 // animations
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '../../animations/card-component.animation';
 
 // components
 import { MapSettingsModalComponent } from '../ta-shared-modals/map-modals/map-settings-modal/map-settings-modal.component';
@@ -47,7 +47,7 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
     selector: 'app-ta-map-toolbar',
     templateUrl: './ta-map-toolbar.component.html',
     styleUrls: ['./ta-map-toolbar.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
     standalone: true,
     imports: [
         TaFilterComponent,

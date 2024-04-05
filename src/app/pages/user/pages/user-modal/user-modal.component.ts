@@ -50,7 +50,7 @@ import { BankVerificationService } from 'src/app/shared/services/bank-verificati
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Animation
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from 'src/app/shared/animations/tabs-modal.animation';
 
 //Core
 import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
@@ -84,7 +84,7 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
     styleUrls: ['./user-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, BankVerificationService],
     standalone: true,
     imports: [

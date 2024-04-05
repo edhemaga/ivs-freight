@@ -36,7 +36,7 @@ import {
 } from 'appcoretruckassist';
 
 // animation
-import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
@@ -59,7 +59,7 @@ import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helper
     selector: 'app-settings-terminal-modal',
     templateUrl: './settings-terminal-modal.component.html',
     styleUrls: ['./settings-terminal-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [

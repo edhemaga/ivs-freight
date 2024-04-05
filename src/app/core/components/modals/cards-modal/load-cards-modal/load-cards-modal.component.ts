@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 
 // Models
 import { LoadCardsModuleData } from '../utils/constants/load-card.constants';
-import { CardRows } from '../../../shared/model/card-data.model';
+import { CardRows } from '../../../../../shared/models/card-data.model';
 import { ModalModelData } from '../models/modal-input.model';
 
 // Configuration for modals

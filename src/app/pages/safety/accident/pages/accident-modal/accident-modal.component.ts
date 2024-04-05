@@ -21,7 +21,7 @@ import {
 } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // helpers
 import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
@@ -54,7 +54,7 @@ import {
     selector: 'app-accident-modal',
     templateUrl: './accident-modal.component.html',
     styleUrls: ['./accident-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [

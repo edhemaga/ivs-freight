@@ -8,7 +8,13 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const left = [
+export const tabsModalAnimation = (type: string) =>
+    trigger(type, [
+        transition(':increment', right, { params: { height: '{{height}}' } }),
+        transition(':decrement', left, { params: { height: '{{height}}' } }),
+    ]);
+
+const left = [
     query(':leave', style({ position: 'absolute', width: '100%' }), {
         optional: true,
     }),
@@ -109,9 +115,3 @@ const right = [
         ),
     ]),
 ];
-
-export const tab_modal_animation = (type: string) =>
-    trigger(type, [
-        transition(':increment', right, { params: { height: '{{height}}' } }),
-        transition(':decrement', left, { params: { height: '{{height}}' } }),
-    ]);

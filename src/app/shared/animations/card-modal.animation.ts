@@ -6,7 +6,7 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const card_modal_animation = (type: string) =>
+export const cardModalAnimation = (type: string) =>
     trigger(type, [
         state(
             'true',
@@ -41,7 +41,7 @@ export const card_modal_animation = (type: string) =>
         transition('true <=> false', [animate('.3s ease-in-out')]),
     ]);
 
-export const card_modal_animation_false = (type: string) =>
+export const cardModalAnimationFalse = (type: string) =>
     trigger(type, [
         state(
             'false',

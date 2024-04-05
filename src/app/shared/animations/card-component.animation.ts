@@ -6,7 +6,7 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const card_component_animation = (
+export const cardComponentAnimation = (
     type: string,
     mt: string = '0px',
     mb: string = '0px'
@@ -40,6 +40,4 @@ export const card_component_animation = (
         ),
         transition('false <=> true', [animate('.3s ease-in-out')]),
         transition('true <=> false', [animate('.3s ease-in-out')]),
-        // transition('null <=> true', [animate('.3s ease-in-out')]),
-        // transition('null <=> false', [animate('.3s ease-in-out')]),
     ]);

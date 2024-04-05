@@ -12,7 +12,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // animations
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // services
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
@@ -56,7 +56,7 @@ import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-in
     selector: 'app-violation-modal',
     templateUrl: './violation-modal.component.html',
     styleUrls: ['./violation-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [

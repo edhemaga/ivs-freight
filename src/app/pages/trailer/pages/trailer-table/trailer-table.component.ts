@@ -49,7 +49,7 @@ import { TrailerMapped } from './models/trailer-mapped.model';
 import {
     CardRows,
     TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import { ToolbarActions } from 'src/app/core/model/table.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';

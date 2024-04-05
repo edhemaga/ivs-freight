@@ -55,7 +55,7 @@ import { ReviewsRatingService } from '../../../../shared/services/reviews-rating
 import { FormService } from '../../../../shared/services/form.service';
 
 // Animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
 
 // Components
 import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
@@ -78,7 +78,7 @@ import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/meth
     selector: 'app-shipper-modal',
     templateUrl: './shipper-modal.component.html',
     styleUrls: ['./shipper-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaLikeDislikeService, FormService],
     standalone: true,

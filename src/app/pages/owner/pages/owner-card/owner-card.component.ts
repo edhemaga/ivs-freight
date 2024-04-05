@@ -13,10 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 // models
 import { OwnerData } from '../../models/owner-data.model';
 import { CardDetails } from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
 
 // helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';

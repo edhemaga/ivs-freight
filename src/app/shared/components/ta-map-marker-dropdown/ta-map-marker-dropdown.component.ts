@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // animation
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '../../animations/card-component.animation';
 
 // services
 import { MapsService } from '../../services/maps.service';
@@ -37,7 +37,7 @@ import { TaGpsProgressbarComponent } from '../ta-gps-progressbar/ta-gps-progress
     selector: 'app-ta-map-marker-dropdown',
     templateUrl: './ta-map-marker-dropdown.component.html',
     styleUrls: ['./ta-map-marker-dropdown.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ThousandSeparatorPipe],
     standalone: true,

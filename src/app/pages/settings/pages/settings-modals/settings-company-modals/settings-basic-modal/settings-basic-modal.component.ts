@@ -35,7 +35,7 @@ import { TaCheckboxComponent } from '../../../../../../shared/components/ta-chec
 import { TaNgxSliderComponent } from '../../../../../../shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
 // animations
-import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
 
 // utils
 import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
@@ -101,7 +101,7 @@ import { AnimationOptions } from 'src/app/shared/models/animation-options.model'
     selector: 'app-settings-basic-modal',
     templateUrl: './settings-basic-modal.component.html',
     styleUrls: ['./settings-basic-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
     imports: [

@@ -22,7 +22,7 @@ import {
 } from 'appcoretruckassist';
 
 // animations
-import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
@@ -61,7 +61,7 @@ import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helper
     selector: 'app-settings-parking-modal',
     templateUrl: './settings-parking-modal.component.html',
     styleUrls: ['./settings-parking-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService],
     standalone: true,
     imports: [

@@ -45,7 +45,7 @@ import { TruckListResponse } from 'appcoretruckassist';
 import {
     CardRows,
     TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import {
     DataForCardsAndTables,
     TableColumnConfig,

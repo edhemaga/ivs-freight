@@ -34,7 +34,7 @@ import {
     TableToolBarActionActionsAccount,
 } from 'src/app/core/model/account';
 import { AccountCardData } from '../../utils/constants/account-card-data.constants';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-data.model';
 
 @Component({
     selector: 'app-account-table',

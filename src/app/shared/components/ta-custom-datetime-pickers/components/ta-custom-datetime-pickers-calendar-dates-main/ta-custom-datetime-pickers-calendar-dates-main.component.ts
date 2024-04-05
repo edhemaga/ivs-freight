@@ -25,7 +25,7 @@ import moment from 'moment';
 import { CalendarDateTimePickerService } from '../../services/calendar-datetime-picker.service';
 
 // components
-import { TaCustomDateTimePickerCalendarDaysComponent } from '../ta-custom-datetime-picker-calendar-days/ta-custom-datetime-picker-calendar-days.component';
+import { TaCustomDateTimePickersCalendarDaysComponent } from '../ta-custom-datetime-pickers-calendar-days/ta-custom-datetime-pickers-calendar-days.component';
 
 // strategy
 import {
@@ -34,7 +34,7 @@ import {
 } from '../../strategy/calendar-strategy';
 
 // enums
-import { CalendarMainEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
+import { CalendarMainEnum } from '../../enums/calendar-main.enum';
 
 function factory(dir: TaCustomDateTimePickerCalendarDatesMainComponent) {
     return dir.scrollStrategy;
@@ -67,7 +67,7 @@ const MONTHS = [
         CommonModule,
         FormsModule,
         ScrollingModule,
-        TaCustomDateTimePickerCalendarDaysComponent,
+        TaCustomDateTimePickersCalendarDaysComponent,
     ],
     providers: [
         {

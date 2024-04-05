@@ -9,10 +9,7 @@ import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
 import { CardDetails } from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { tableBodyColorLabel } from 'src/app/core/components/shared/model/tableBody';
 

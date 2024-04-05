@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 // animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // services
 import { SettingsCompanyService } from '../../../../services/settings-company.service';
@@ -31,7 +31,7 @@ import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-
     templateUrl: './settings-insurancepolicy.component.html',
     styleUrls: ['./settings-insurancepolicy.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
 })
 export class SettingsInsurancepolicyComponent
     implements OnChanges, OnDestroy, OnInit
