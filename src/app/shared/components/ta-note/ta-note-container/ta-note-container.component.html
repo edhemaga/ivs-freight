@@ -79,10 +79,12 @@
                 "
                 ngbTooltip
                 [mainTooltip]="
-                    indx == 0 && !showCollorPattern
+                    indx === 0 && !showCollorPattern
                         ? 'Color Picker'
-                        : indx != 0 && !showCollorPattern
+                        : indx !== 0 && !showCollorPattern
                         ? ''
+                        : indx === 0 && showCollorPattern
+                        ? 'Close'
                         : paternCol.name
                 "
                 position="bottom"
@@ -91,6 +93,10 @@
                 [ngStyle]="{
                     opacity: !showCollorPattern && indx != 0 ? 0 : 1
                 }"
+                (mouseenter)="
+                    hoveringArrow(showCollorPattern && indx == 0 ? true : false)
+                "
+                (mouseleave)="hoveringArrow(false)"
             >
                 <div
                     class="color_picker_arrow"
@@ -99,10 +105,18 @@
                         (popoverNote && !showCollorPattern)
                     "
                     [class.active]="showCollorPattern"
+                    [class.hovering_picker]="
+                        !hoveringArrowPicker && showCollorPattern
+                    "
                     *ngIf="indx == 0"
                 >
                     <svg-icon
-                        src="assets/svg/truckassist-table/arrow-columns-drop.svg"
+                        [src]="
+                            !hoveringArrowPicker && showCollorPattern
+                                ? 'assets/svg/applicant/check.svg
+                        '
+                                : 'assets/svg/truckassist-table/arrow-columns-drop.svg'
+                        "
                     ></svg-icon>
                 </div>
             </div>

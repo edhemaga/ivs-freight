@@ -77,6 +77,7 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
     lastSavedIndex: number = -1;
     defaultColorSet: boolean = false;
     closedPattern: boolean = false;
+    hoveringArrowPicker: boolean = false;
     private destroy$ = new Subject<void>();
 
     constructor() {}
@@ -191,6 +192,10 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
         } else {
             this.closedPattern = true;
         }
+    }
+
+    public hoveringArrow(value: boolean): void {
+        this.hoveringArrowPicker = value;
     }
 
     public ngOnDestroy(): void {
