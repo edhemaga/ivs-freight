@@ -14,7 +14,7 @@ import {
 import { DropdownItem } from '../../models/card-table-data.model';
 import { FilterOptionsLoad } from '../../../core/components/shared/model/table-components/load-modal';
 
-import { SortTypes } from '../../../core/model/fuel';
+import { SortTypes } from '../../models/sort-types.model';
 
 // enums
 import { TableStringEnum } from '../../enums/table-string.enum';

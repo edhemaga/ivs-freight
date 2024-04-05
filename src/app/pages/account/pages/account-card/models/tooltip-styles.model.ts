@@ -11,10 +11,3 @@ export interface TooltipStyles {
     display: string;
     'align-items': string;
 }
-
-export interface SvgStyles {
-    'margin-right': string;
-    height: string;
-    width: string;
-    cursor: string;
-}

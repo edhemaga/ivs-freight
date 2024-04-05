@@ -30,7 +30,7 @@ import {
     Comment,
     Rating,
 } from '../../models/card-table-data.model';
-import { Tabs } from '../../../core/components/shared/model/modal-tabs';
+import { Tabs } from '../../models/tabs.model';
 import { CardRows } from '../../../core/components/shared/model/card-data.model';
 
 // services

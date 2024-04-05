@@ -34,7 +34,6 @@ import { ModalService } from './services/modal.service';
 import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
 
 // components
-import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
@@ -46,6 +45,9 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 
 // guards
 import { AuthGuard } from '../../../core/guards/authentication.guard';
+
+// models
+import { UploadFile } from '../ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-ta-modal',

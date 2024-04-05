@@ -1,13 +1,4 @@
-export interface Enums {
-    id: any;
-    name: string;
-    image: string;
-    text?: string;
-    email?: string;
-    phone?: string;
-}
-
-export enum ComponentsTableEnum {
+export enum TableActionsStringEnum {
     SHOW_MORE = 'show-more',
     GO_TO_LINK = 'go-to-link',
     COPY_PASSWORD = 'copy-password',

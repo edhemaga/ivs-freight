@@ -29,7 +29,7 @@ import { TrailersMinimalListQuery } from '../../../../state/trailer-minimal-list
 
 // models
 import { TableOptions } from 'src/app/core/model/table.model';
-import { TrailerDropdown } from 'src/app/core/model/trailer.model';
+import { TrailerDropdown } from '../../models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
 
 @Component({

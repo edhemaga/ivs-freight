@@ -45,7 +45,7 @@ import { FuelQuery } from '../../state/fule-state/fuel-state.query';
 
 //Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { SortTypes } from 'src/app/core/model/fuel';
+import { SortTypes } from 'src/app/shared/models/sort-types.model';
 
 //Services
 import { FuelService } from '../../../../shared/services/fuel.service';

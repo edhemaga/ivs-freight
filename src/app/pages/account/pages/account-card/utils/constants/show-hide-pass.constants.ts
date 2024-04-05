@@ -1,7 +1,5 @@
-import {
-    SvgStyles,
-    TooltipStyles,
-} from '../../../../../../core/model/show-hide-directive.model';
+import { SvgStyles } from '../../models/svg-styles.model';
+import { TooltipStyles } from '../../models/tooltip-styles.model';
 
 export class ShowHidePassConstants {
     static TOOLTIP_STYLES: TooltipStyles = {

@@ -93,9 +93,9 @@ import {
     EnumValue,
 } from 'appcoretruckassist';
 import { CroppieOptions } from 'croppie';
-import { Tabs } from '../../../shared/model/modal-tabs';
+import { Tabs } from '../../../../../shared/models/tabs.model';
 import { EditData } from '../../../../../shared/models/edit-data.model';
-import { AnimationObject } from 'src/app/core/model/animation-object.model';
+import { AnimationOptions } from 'src/app/shared/models/animation-options.model';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -153,7 +153,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public dropZoneConfig: DropZoneConfig;
 
-    public animationObject: AnimationObject;
+    public animationObject: AnimationOptions;
 
     // basic tab
     public selectedAddress: AddressEntity;
