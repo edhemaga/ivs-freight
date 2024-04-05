@@ -20,10 +20,10 @@ import { RepairShopModalComponent } from '../../pages/repair/pages/repair-modals
 import { ShipperModalComponent } from '../../pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TrailerModalComponent } from '../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { TruckModalComponent } from '../../pages/truck/pages/truck-modal/truck-modal.component';
-import { SettingsOfficeModalComponent } from '../../pages/settings/pages/modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../pages/settings/pages/modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../pages/settings/pages/modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../pages/settings/pages/modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @Injectable({
     providedIn: 'root',
