@@ -20,9 +20,9 @@ import { TrucksMinimalListStore } from '../../state/truck-details-minima-list-st
 import { TruckItemStore } from '../../state/truck-details-state/truck.details.store';
 
 // components
-import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
     selector: 'app-truck-details',

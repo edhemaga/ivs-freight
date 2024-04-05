@@ -10,9 +10,9 @@ import { DriverDrugAlcoholModalComponent } from '../../pages/driver/pages/driver
 import { DriverMedicalModalComponent } from '../../pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { BrokerModalComponent } from '../../pages/customer/pages/broker-modal/broker-modal.component';
-import { TtFhwaInspectionModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtTitleModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TtFhwaInspectionModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtTitleModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 import { TaConfirmationModalComponent } from '../../core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 import { DriverModalComponent } from '../../pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { RepairOrderModalComponent } from '../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';

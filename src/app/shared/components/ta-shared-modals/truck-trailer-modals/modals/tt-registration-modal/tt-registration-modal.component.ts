@@ -1,39 +1,40 @@
-import {
-    FormsModule,
-    ReactiveFormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
+import {
+    RegistrationModalResponse,
+    RegistrationResponse,
+} from 'appcoretruckassist';
 
 // services
-import { TaInputService } from '../../../ta-input/services/ta-input.service';
-import { ModalService } from '../../../ta-modal/services/modal.service';
-import { TruckTrailerService } from '../services/truck-trailer.service';
-import { FormService } from '../../../../services/form.service';
+import { TaInputService } from '../../../../ta-input/services/ta-input.service';
+import { TruckTrailerService } from '../../services/truck-trailer.service';
+import { ModalService } from '../../../../ta-modal/services/modal.service';
+import { FormService } from 'src/app/shared/services/form.service';
+
+// validations
+import { licensePlateValidation } from '../../../../ta-input/validators/ta-input.regex-validations';
 
 // utils
-import { MethodsCalculationsHelper } from '../../../../utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '../../../../../utils/helpers/methods-calculations.helper';
 
 // components
-import { TaModalComponent } from '../../../ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../../ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../../ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from '../../../ta-upload-files/ta-upload-files.component';
+import { TaModalComponent } from '../../../../ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../../ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../../ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../../ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../../ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../../ta-upload-files/ta-upload-files.component';
 
 @Component({
-    selector: 'app-tt-title-modal',
-    templateUrl: './tt-title-modal.component.html',
-    styleUrls: ['./tt-title-modal.component.scss'],
-    providers: [FormService],
+    selector: 'app-tt-registration-modal',
+    templateUrl: './tt-registration-modal.component.html',
+    styleUrls: ['./tt-registration-modal.component.scss'],
+    providers: [ModalService, FormService],
     standalone: true,
     imports: [
         // Module
@@ -50,29 +51,31 @@ import { TaUploadFilesComponent } from '../../../ta-upload-files/ta-upload-files
         TaUploadFilesComponent,
     ],
 })
-export class TtTitleModalComponent implements OnInit, OnDestroy {
+export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
-    public ttTitleForm: UntypedFormGroup;
+    public registrationForm: UntypedFormGroup;
 
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public isFormDirty: boolean;
+
     public stateTypes: any[] = [];
     public selectedStateType: any = null;
 
-    public isFormDirty: boolean = false;
-
     public disableCardAnimation: boolean = false;
+
+    public registrationExpirationDate: boolean = false;
 
     private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private TruckTrailerService: TruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private TruckTrailerService: TruckTrailerService,
         private formService: FormService
     ) {}
 
@@ -82,11 +85,14 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     }
 
     private createForm() {
-        this.ttTitleForm = this.formBuilder.group({
-            number: [null, Validators.required],
+        this.registrationForm = this.formBuilder.group({
+            licensePlate: [
+                null,
+                [Validators.required, ...licensePlateValidation],
+            ],
             stateId: [null, Validators.required],
-            purchaseDate: [null, Validators.required],
             issueDate: [null, Validators.required],
+            expDate: [null],
             note: [null],
             files: [null],
         });
@@ -99,19 +105,19 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             }
             case 'save': {
                 // If Form not valid
-                if (this.ttTitleForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.ttTitleForm);
+                if (this.registrationForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.registrationForm);
                     return;
                 }
-                if (this.editData.type === 'edit-title') {
-                    this.updateTitle();
+                if (this.editData.type === 'edit-registration') {
+                    this.updateRegistration();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
                         close: false,
                     });
                 } else {
-                    this.addTitle();
+                    this.addRegistration();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -121,6 +127,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                 break;
             }
             default: {
+                break;
             }
         }
     }
@@ -141,13 +148,13 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.documents = event.files;
         switch (event.action) {
             case 'add': {
-                this.ttTitleForm
+                this.registrationForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case 'delete': {
-                this.ttTitleForm
+                this.registrationForm
                     .get('files')
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
@@ -165,54 +172,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private addTitle() {
-        const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
-
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        const newData: any = {
-            ...form,
-            issueDate:
-                MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            purchaseDate:
-                MethodsCalculationsHelper.convertDateToBackend(purchaseDate),
-            stateId: this.selectedStateType ? this.selectedStateType.id : null,
-            trailerId:
-                this.editData.modal === 'trailer'
-                    ? this.editData.id
-                    : undefined,
-            truckId:
-                this.editData.modal === 'truck' ? this.editData.id : undefined,
-            files: documents,
-        };
-
-        this.TruckTrailerService.addTitle(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private updateTitle() {
-        const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+    private updateRegistration() {
+        const { issueDate, expDate, ...form } = this.registrationForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -226,14 +187,13 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             ...form,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            purchaseDate:
-                MethodsCalculationsHelper.convertDateToBackend(purchaseDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
-            files: documents ? documents : this.ttTitleForm.value.files,
+            files: documents ? documents : this.registrationForm.value.files,
             filesForDeleteIds: this.filesForDelete,
         };
 
-        this.TruckTrailerService.updateTitle(newData)
+        this.TruckTrailerService.updateRegistration(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -253,34 +213,81 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editTitleById(id: number) {
-        this.TruckTrailerService.getTitleById(id)
+    private addRegistration() {
+        const { issueDate, expDate, ...form } = this.registrationForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const newData: any = {
+            ...form,
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
+            stateId: this.selectedStateType ? this.selectedStateType.id : null,
+            trailerId:
+                this.editData.modal === 'trailer'
+                    ? this.editData.id
+                    : undefined,
+            truckId:
+                this.editData.modal === 'truck' ? this.editData.id : undefined,
+            tabSelected: this.editData.tabSelected,
+            files: documents,
+        };
+
+        this.TruckTrailerService.addRegistration(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: TitleResponse) => {
-                    this.ttTitleForm.patchValue({
-                        number: res.number,
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
+    }
+
+    private editRegistrationById() {
+        this.TruckTrailerService.getRegistrationById(this.editData.file_id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: RegistrationResponse) => {
+                    this.registrationForm.patchValue({
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
+                        expDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.expDate
+                            ),
+                        licensePlate: res.licensePlate,
                         stateId: res.state ? res.state.stateShortName : null,
-                        purchaseDate: res.purchaseDate
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.purchaseDate
-                              )
-                            : null,
-                        issueDate: res.issueDate
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.issueDate
-                              )
-                            : null,
                         note: res.note,
                         files: res.files.length
                             ? JSON.stringify(res.files)
                             : null,
                     });
+
+                    this.registrationExpirationDate = !!res.expDate;
+
+                    this.documents = res.files;
                     this.selectedStateType = {
                         ...res.state,
                         name: res.state.stateShortName,
                     };
-                    this.documents = res.files;
                     setTimeout(() => {
                         this.disableCardAnimation = false;
                     }, 1000);
@@ -290,10 +297,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     }
 
     private getModalDropdowns() {
-        this.TruckTrailerService.getTitleModalDropdowns()
+        this.TruckTrailerService.getRegistrationModalDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: TitleModalResponse) => {
+                next: (res: RegistrationModalResponse) => {
                     this.stateTypes = res.states.map((item) => {
                         return {
                             id: item.id,
@@ -302,9 +309,9 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                         };
                     });
 
-                    if (this.editData.type === 'edit-title') {
+                    if (this.editData.type === 'edit-registration') {
                         this.disableCardAnimation = true;
-                        this.editTitleById(this.editData.file_id);
+                        this.editRegistrationById();
                     }
 
                     if (this.editData && this.editData?.data) {
@@ -314,14 +321,36 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                         };
                     }
 
+                    if (this.editData?.modal) {
+                        if (this.editData.modal === 'truck') {
+                            this.inputService.changeValidators(
+                                this.registrationForm.get('expDate')
+                            );
+                            this.registrationExpirationDate = true;
+                        } else {
+                            this.inputService.changeValidators(
+                                this.registrationForm.get('expDate'),
+                                false
+                            );
+                        }
+                    }
                     this.startFormChanges();
                 },
                 error: () => {},
             });
     }
 
+    public onAction() {
+        this.registrationExpirationDate = !this.registrationExpirationDate;
+
+        this.inputService.changeValidators(
+            this.registrationForm.get('expDate'),
+            this.registrationExpirationDate ? true : false
+        );
+    }
+
     private startFormChanges() {
-        this.formService.checkFormChange(this.ttTitleForm);
+        this.formService.checkFormChange(this.registrationForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
@@ -329,7 +358,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
     }
