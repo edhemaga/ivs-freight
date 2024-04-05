@@ -115,15 +115,15 @@
 
             <ng-container *ngIf="hasPayrollStatus">
                 <div class="payroll-status d-flex">
-                    <app-payroll-statuses
+                    <app-ta-payroll-statuses
                         [active]="_isCardOpen && _isCardOpen != 'null'"
                         [options]="{ value: '$4,146.92 DEBT', type: 'dept' }"
-                    ></app-payroll-statuses>
+                    ></app-ta-payroll-statuses>
 
-                    <app-payroll-statuses
+                    <app-ta-payroll-statuses
                         [active]="_isCardOpen && _isCardOpen != 'null'"
                         [options]="{ value: 'EVERY MONDAY', type: 'normal' }"
-                    ></app-payroll-statuses>
+                    ></app-ta-payroll-statuses>
                 </div>
             </ng-container>
 

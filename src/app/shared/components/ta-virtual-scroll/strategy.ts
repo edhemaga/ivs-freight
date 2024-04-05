@@ -6,13 +6,10 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-// POCETNA GODINA KALENDARA IDE UNAZAD 90 GODINA
 export const STARTING_YEAR = new Date().getFullYear() - 90;
 
-// RANGE JE UKUPNO 100 GODINA KOLIKO KALENDAR MOZE DA SADRZI x 12 MESECI
 export const RANGE = 100 * 12;
 
-// RANGE KOLIKO UKUPNO MOZE DA BUDE PRIKAZANO
 const BUFFER = 500;
 
 @Injectable()
@@ -75,7 +72,6 @@ export class ScrolllStrategy implements VirtualScrollStrategy {
         return Math.round(offset / this.FULL_SIZE);
     }
     private updateRenderedRange(viewport: CdkVirtualScrollViewport) {
-        // koliko je scrolovano
         const offset = viewport.measureScrollOffset();
 
         const { start, end } = viewport.getRenderedRange();
@@ -84,7 +80,6 @@ export class ScrolllStrategy implements VirtualScrollStrategy {
         const dataLength = viewport.getDataLength();
 
         const newRange = { start, end };
-        const firstVisibleIndex = this.getIndexForOffset(offset);
 
         const startOffsetIndex = this.FULL_SIZE * start;
 

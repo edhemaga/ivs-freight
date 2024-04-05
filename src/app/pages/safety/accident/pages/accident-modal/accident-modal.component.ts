@@ -37,7 +37,7 @@ import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
@@ -69,7 +69,7 @@ import {
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,

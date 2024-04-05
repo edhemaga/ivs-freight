@@ -205,7 +205,7 @@
                     'margin-right': isEditing ? '8px' : '12px'
                 }"
             >
-                <app-input-address-dropdown
+                <app-ta-input-address-dropdown
                     formControlName="employerAddress"
                     [inputConfig]="{
                         name: 'Address',
@@ -228,7 +228,7 @@
                     [incorrectValue]="openAnnotationArray[23].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 23)"
                     (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                ></app-input-address-dropdown>
+                ></app-ta-input-address-dropdown>
             </div>
 
             <div class="group address-unit-group">

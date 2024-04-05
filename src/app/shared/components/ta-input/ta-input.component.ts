@@ -27,7 +27,7 @@ import {
     NgbModule,
     NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarScrollService } from '../../../core/components/shared/custom-datetime-pickers/calendar-scroll.service';
+import { CalendarDateTimePickerService } from '../ta-custom-datetime-pickers/services/calendar-datetime-picker.service';
 import moment from 'moment';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
@@ -42,9 +42,9 @@ import { InputTypePipe } from './pipes/input-type.pipe';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './pipes/input-error.pipe';
-import { CustomDatetimePickersComponent } from '../../../core/components/shared/custom-datetime-pickers/custom-datetime-pickers.component';
+import { TaCustomDatetimePickersComponent } from '../ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
-import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HoverSvgDirective } from '../../directives/hover-svg.directive';
@@ -55,7 +55,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
     styleUrls: ['./ta-input.component.scss'],
     providers: [
         NgbDropdownConfig,
-        CalendarScrollService,
+        CalendarDateTimePickerService,
         ThousandSeparatorPipe,
         InputTypePipe,
     ],
@@ -74,9 +74,9 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
 
         // Component
         AppTooltipComponent,
-        CustomDatetimePickersComponent,
+        TaCustomDatetimePickersComponent,
         TaSpinnerComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         LoadModalProgressBarComponent,
 
         // Pipe
@@ -229,7 +229,7 @@ export class TaInputComponent
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
-        private calendarService: CalendarScrollService,
+        private calendarService: CalendarDateTimePickerService,
         private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,

@@ -27,7 +27,7 @@ import { ImageBase64Service } from 'src/app/shared/services/image-base64.service
 
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
 import { DriverMedicalService } from '../../../../services/driver-medical.service';
 import { DriverMvrService } from '../../../../services/driver-mvr.service';

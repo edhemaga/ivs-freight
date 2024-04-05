@@ -10,7 +10,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store
@@ -20,9 +20,9 @@ import { TrucksMinimalListStore } from '../../state/truck-details-minima-list-st
 import { TruckItemStore } from '../../state/truck-details-state/truck.details.store';
 
 // components
-import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
     selector: 'app-truck-details',

@@ -8,15 +8,15 @@ import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modal
 import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
-import { ApplicantModalComponent } from 'src/app/core/components/modals/applicant-modal/applicant-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ApplicantModalComponent } from 'src/app/pages/applicant/pages/applicant-modal/applicant-modal.component';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { ApplicantService } from '../../../../shared/services/applicant.service';
 import { AddressService } from 'src/app/shared/services/address.service';
 
@@ -380,7 +380,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -1366,7 +1366,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -1479,7 +1479,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -1493,7 +1493,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

@@ -19,13 +19,13 @@ import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 
-import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
-import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
-import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
+import { TaMapsComponent } from 'src/app/shared/components/ta-maps/ta-maps.component';
+import { TaMapListComponent } from 'src/app/shared/components/ta-map-list/ta-map-list.component';
+import { TaMapListCardComponent } from 'src/app/shared/components/ta-map-list-card/ta-map-list-card.component';
 
 import { CustomerCardComponent } from './pages/customer-table/components/customer-card/customer-card.component';
 
@@ -59,12 +59,12 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         AppTooltipComponent,
         TaCopyComponent,
         TaCustomCardComponent,
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
-        MapsComponent,
-        MapListComponent,
-        MapListCardComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
+        TaMapsComponent,
+        TaMapListComponent,
+        TaMapListCardComponent,
         TaInputDropdownTableComponent,
         TaTableCardDropdownActionsComponent,
         TaNoteComponent,

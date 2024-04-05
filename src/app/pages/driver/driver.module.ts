@@ -11,13 +11,13 @@ import { DriverCardComponent } from './pages/driver-card/driver-card.component';
 
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 
-import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from 'src/app/shared/components/ta-profile-images/ta-profile-images.component';
 
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
@@ -26,7 +26,7 @@ import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 
-import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
 
@@ -49,17 +49,17 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
         //components
         AppTooltipComponent,
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
         TaDetailsHeaderCardComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         TaCopyComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaCommonCardComponent,
-        TruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         TaCounterComponent,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,

@@ -155,13 +155,13 @@
                             </div>
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
-                                    <app-truckassist-progress-expiration
+                                    <app-ta-progress-expiration
                                         [expireDate]="formatDate(cdl?.expDate)"
                                         [startDate]="formatDate(cdl?.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
-                                    </app-truckassist-progress-expiration>
+                                    </app-ta-progress-expiration>
                                 </div>
                                 <div
                                     *ngIf="cdl.dateDeactivated"
@@ -438,13 +438,13 @@
                         <div class="card-body-cdl">
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
-                                    <app-truckassist-progress-expiration
+                                    <app-ta-progress-expiration
                                         [expireDate]="formatDate(med?.expDate)"
                                         [startDate]="formatDate(med?.issueDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
-                                    </app-truckassist-progress-expiration>
+                                    </app-ta-progress-expiration>
                                 </div>
                             </div>
                         </div>
@@ -564,13 +564,13 @@
                         <div class="card-body-cdl">
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
-                                    <app-truckassist-progress-expiration
+                                    <app-ta-progress-expiration
                                         [startDate]="formatDate(mvr?.issueDate)"
                                         [expireDate]="formatDate(mvr?.expDate)"
                                         [expiresSettings]="'details'"
                                         [darkText]="true"
                                     >
-                                    </app-truckassist-progress-expiration>
+                                    </app-ta-progress-expiration>
                                 </div>
                             </div>
                         </div>

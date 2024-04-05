@@ -4,33 +4,31 @@
     top: 0;
 }
 
-
-.multiple-tables{
-    .table-info{
-        background-color: #3074D333;
+.multiple-tables {
+    .table-info {
+        background-color: #3074d333;
         margin-bottom: 12px;
         border-radius: 3px;
     }
 
-    .dipsatch_groups:not(.dipsatch_groups:first-child){
-        table{
-            thead{
+    .dipsatch_groups:not(.dipsatch_groups:first-child) {
+        table {
+            thead {
                 display: none;
             }
         }
     }
 
-
-    .dispatcher-field{
+    .dispatcher-field {
         visibility: visible !important;
     }
 }
 
-.dispatch-board-main-table{
-    app-truckassist-table-toolbar{
-        app-ta-input-dropdown{
-            app-ta-input{
-                input{
+.dispatch-board-main-table {
+    app-ta-table-toolbar {
+        app-ta-input-dropdown {
+            app-ta-input {
+                input {
                     height: 28px !important;
                 }
             }
