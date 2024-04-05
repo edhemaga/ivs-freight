@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
 //Services
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
 import { DriverMedicalService } from '../../../../services/driver-medical.service';
@@ -24,7 +24,7 @@ import { DriverMvrService } from '../../../../services/driver-mvr.service';
 import { DriverTestService } from '../../../../services/driver-test.service';
 
 //Components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 //Models
 import { GetMvrModalResponse } from 'appcoretruckassist';
@@ -542,7 +542,7 @@ export class DriverDetailsItemComponent
         if (this.activeCdl.length) {
             let data = this.drivers;
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: 'small' },
                 {
                     data: {
@@ -566,7 +566,7 @@ export class DriverDetailsItemComponent
         } else {
             let data = this.drivers;
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: 'small' },
                 {
                     data: { ...cdl, state: cdl.state.stateShortName, data },

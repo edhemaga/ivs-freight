@@ -141,7 +141,7 @@
 
                 <div class="d-flex line-container">
                     <div class="group address-group">
-                        <app-input-address-dropdown
+                        <app-ta-input-address-dropdown
                             formControlName="address"
                             [inputConfig]="{
                                 name: 'Address',
@@ -168,7 +168,7 @@
                             (selectedAddress)="
                                 handleInputSelect($event, 'ADDRESS')
                             "
-                        ></app-input-address-dropdown>
+                        ></app-ta-input-address-dropdown>
                     </div>
                     <div class="group unit-group">
                         <app-ta-input
@@ -332,7 +332,7 @@
 
                 <div class="d-flex line-container">
                     <div class="group sap-address-group">
-                        <app-input-address-dropdown
+                        <app-ta-input-address-dropdown
                             formControlName="sapAddress"
                             [inputConfig]="{
                                 name: 'Address',
@@ -359,7 +359,7 @@
                             (selectedAddress)="
                                 handleInputSelect($event, 'ADDRESS', 'SAP')
                             "
-                        ></app-input-address-dropdown>
+                        ></app-ta-input-address-dropdown>
                     </div>
                     <div class="group sap-unit-group">
                         <app-ta-input

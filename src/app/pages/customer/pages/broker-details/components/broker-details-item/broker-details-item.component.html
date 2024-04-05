@@ -42,7 +42,8 @@
                         <div
                             class="t-body-broker"
                             *ngFor="
-                                let loads of broker?.data?.loadStops?.loads?.data;
+                                let loads of broker?.data?.loadStops?.loads
+                                    ?.data;
                                 trackBy: identity
                             "
                         >
@@ -122,35 +123,60 @@
                                     >
                                 </div>
                                 <div class="pickup-wrapper">
-                                    
-                                    <div *ngFor="let stopData of loads.stops; index as i;" >
-                                        <div class="pickup-item" *ngIf="stopData.stopType.name == 'Pickup'">
+                                    <div
+                                        *ngFor="
+                                            let stopData of loads.stops;
+                                            index as i
+                                        "
+                                    >
+                                        <div
+                                            class="pickup-item"
+                                            *ngIf="
+                                                stopData.stopType.name ==
+                                                'Pickup'
+                                            "
+                                        >
                                             <div class="counter-green">
-                                                {{i + 1}}
+                                                {{ i + 1 }}
                                             </div>
                                             <div class="pickup-text">
-                                                <span class="name"
-                                                >
-                                                {{stopData.shipper.address.city}}, 
-                                                {{stopData.shipper.address.stateShortName}}
-                                                </span
-                                                >
+                                                <span class="name">
+                                                    {{
+                                                        stopData.shipper.address
+                                                            .city
+                                                    }},
+                                                    {{
+                                                        stopData.shipper.address
+                                                            .stateShortName
+                                                    }}
+                                                </span>
                                                 <span class="date">{{
                                                     stopData?.dateFrom
                                                         | formatDateP
                                                 }}</span>
                                             </div>
                                         </div>
-                                        <div class="pickup-item" *ngIf="stopData.stopType.name == 'Delivery'">
+                                        <div
+                                            class="pickup-item"
+                                            *ngIf="
+                                                stopData.stopType.name ==
+                                                'Delivery'
+                                            "
+                                        >
                                             <div class="counter-red">
-                                                {{i + 1}}
+                                                {{ i + 1 }}
                                             </div>
                                             <div class="pickup-text">
                                                 <span class="name">
-                                                    {{stopData.shipper.address.city}}, 
-                                                    {{stopData.shipper.address.stateShortName}}    
-                                                </span
-                                                >
+                                                    {{
+                                                        stopData.shipper.address
+                                                            .city
+                                                    }},
+                                                    {{
+                                                        stopData.shipper.address
+                                                            .stateShortName
+                                                    }}
+                                                </span>
                                                 <span class="date">{{
                                                     stopData?.dateFrom
                                                         | formatDateP
@@ -171,12 +197,11 @@
                                     >
                                 </div>
                                 <div class="dots-vertical">
-                                    <app-details-page-dropdown
+                                    <app-ta-details-dropdown
                                         [options]="dotsData.actions"
-                                        
                                         [placement]="'right-top right-bottom'"
                                     >
-                                    </app-details-page-dropdown>
+                                    </app-ta-details-dropdown>
                                 </div>
                             </div>
                             <div class="divider"></div>
@@ -201,7 +226,7 @@
                             marginBottom: '10px'
                         }"
                         class="shipper-contact-container"
-                        [customClass]="'detailsPadding'" 
+                        [customClass]="'detailsPadding'"
                     >
                         <div
                             *ngIf="brokerContact"

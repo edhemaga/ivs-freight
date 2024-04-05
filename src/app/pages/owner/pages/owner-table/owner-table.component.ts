@@ -3,7 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Components
 import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
@@ -26,7 +26,7 @@ import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { OwnerService } from '../../services/owner.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 
 // Store
 import { OwnerActiveQuery } from '../../state/owner-active-state/owner-active.query';
@@ -347,7 +347,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -764,7 +764,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -806,7 +806,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.ownerBackFilter(this.backFilterQuery, true);
         } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -829,7 +829,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

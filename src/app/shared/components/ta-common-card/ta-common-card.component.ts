@@ -24,7 +24,7 @@ import { DetailsDataService } from '../../services/details-data.service';
 
 //components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { DetailsDropdownComponent } from '../../../core/components/shared/details-page-dropdown/details-dropdown';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -38,7 +38,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CommonModule,
         FormsModule,
         TaAppTooltipComponent,
-        DetailsDropdownComponent,
+        TaDetailsDropdownComponent,
         AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,

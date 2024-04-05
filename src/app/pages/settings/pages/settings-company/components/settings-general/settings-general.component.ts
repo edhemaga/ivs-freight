@@ -17,7 +17,7 @@ import { UntypedFormControl } from '@angular/forms';
 // services
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // pipes
@@ -28,7 +28,7 @@ import { SettingsGeneralStringEnum } from '../../../../enums/settings-general-st
 import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 
 //Components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 //Models
 import { SettingsCompanyProperties } from '../../../../models/settings-company-properties.model';
@@ -255,7 +255,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
 
     public onDeleteDivisionCompany(): void {
         this.modalService.openModal(
-            ConfirmationModalComponent,
+            TaConfirmationModalComponent,
             { size: 'small' },
             {
                 id: this.companyData.id,

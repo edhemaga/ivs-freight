@@ -53,7 +53,7 @@ import { RegisterUserHaveAccountHelperComponent } from './pages/website/componen
 import { VerifyUserHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
 import { RegisterCompanyHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
 import { ResetPasswordHelperComponent } from './pages/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
-import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
+import { TaUnderConstructionComponent } from './shared/components/ta-under-construction/ta-under-construction.component';
 
 const routes: Routes = [
     /* WEBSITE */
@@ -107,7 +107,7 @@ const routes: Routes = [
     },
     {
         path: 'under-construction',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
     },
     {
         path: 'dispatcher',
@@ -224,7 +224,7 @@ const routes: Routes = [
     },
     {
         path: 'list/rentor',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Rentor' },
     },
@@ -263,27 +263,27 @@ const routes: Routes = [
     },
     {
         path: 'report',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Report' },
     },
     {
         path: 'statistic',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Statistic' },
     },
     {
         path: 'chat',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Chat' },
     },
     {
         path: 'places',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Places' },
     },
     {
         path: 'file-manager',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'File Manager' },
     },
     {
@@ -314,31 +314,31 @@ const routes: Routes = [
     },
     {
         path: 'tools/1099',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: '1099' },
     },
     {
         path: 'tools/2290',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: '2290' },
     },
     {
         path: 'tools/factoring',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Factoring' },
     },
     {
         path: 'tools/fax',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Fax' },
     },
     {
         path: 'tools/sms',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Sms' },
     },
@@ -369,25 +369,25 @@ const routes: Routes = [
     },
     {
         path: 'safety/log',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Log' },
     },
     {
         path: 'safety/scheduled-insurance',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Scheduled Insurance' },
     },
     {
         path: 'safety/mvr',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Mvr' },
     },
     {
         path: 'safety/test',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         canActivate: [CompanySettingsGuard, AuthGuard],
         data: { title: 'Test' },
     },
@@ -523,17 +523,17 @@ const routes: Routes = [
     },
     {
         path: 'accounting/ifta',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Ifta' },
     },
     {
         path: 'accounting/ledger',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Ledger' },
     },
     {
         path: 'accounting/tax',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Tax' },
     },
     {
@@ -546,7 +546,7 @@ const routes: Routes = [
     },
     {
         path: 'notifications',
-        component: UnderConstructionComponent,
+        component: TaUnderConstructionComponent,
         data: { title: 'Notifications' },
     },
 

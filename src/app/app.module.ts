@@ -19,7 +19,7 @@ import { ChangeLogoPipe } from './core/components/navigation/pipes/change-logo.p
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
 
-import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
+import { TaCustomToastMessagesComponent } from './shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
 
 import { EncryptionDecryptionService } from './shared/services/encryption-decryption.service';
@@ -30,7 +30,7 @@ import { StaticInjectorService } from './core/decorators/titles.decorator';
 import { TaTooltipSlideComponent } from './shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
+import { TaCustomScrollbarComponent } from './shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { StoreModule } from '@ngrx/store';
@@ -60,13 +60,13 @@ function playerFactory() {
             preventDuplicates: true,
             enableHtml: true,
             timeOut: 5000,
-            toastComponent: CustomToastMessagesComponent, // added custom toast!
+            toastComponent: TaCustomToastMessagesComponent, // added custom toast!
         }),
         NgIdleModule.forRoot(),
         ApiModule,
         BlockedContentPipe,
         NavigationComponent,
-        CustomScrollbarComponent,
+        TaCustomScrollbarComponent,
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }),

@@ -6,17 +6,17 @@ import { SettingsIntegrationRoutes } from './settings-integration.routing';
 
 // components
 import { SettingsIntegrationComponent } from './settings-integration.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
 
 @NgModule({
     imports: [
         CommonModule,
         SettingsIntegrationRoutes,
-        TruckassistTableToolbarComponent,
-        TruckassistTableHeadComponent,
-        TruckassistTableBodyComponent,
+        TaTableToolbarComponent,
+        TaTableHeadComponent,
+        TaTableBodyComponent,
     ],
     declarations: [SettingsIntegrationComponent],
 })

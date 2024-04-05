@@ -10,9 +10,9 @@ import { LoadTableComponent } from './pages/load-table/load-table.component';
 import { LoadCardComponent } from './pages/load-card/load-card.component';
 import { LoadDetailsModule } from './pages/load-details/load-details.module';
 
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 
 import { TaInputDropdownTableComponent } from 'src/app/shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
@@ -35,9 +35,9 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         NgbTooltipModule,
 
         //components
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
         TaInputDropdownTableComponent,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,

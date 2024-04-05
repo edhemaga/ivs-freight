@@ -34,8 +34,8 @@ import { TruckService } from 'src/app/shared/services/truck.service';
 import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
 
 // components
-import { MapSettingsModalComponent } from '../../../core/components/modals/map-settings-modal/map-settings-modal.component';
-import { MapRouteModalComponent } from '../../../core/components/modals/map-route-modal/map-route-modal.component';
+import { MapSettingsModalComponent } from '../ta-shared-modals/map-modals/map-settings-modal/map-settings-modal.component';
+import { MapRouteModalComponent } from '../ta-shared-modals/map-modals/map-route-modal/map-route-modal.component';
 import { TaFilterComponent } from '../ta-filter/ta-filter.component';
 import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
 import { TaInputComponent } from '../ta-input/ta-input.component';

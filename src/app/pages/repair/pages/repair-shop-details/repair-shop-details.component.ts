@@ -12,7 +12,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 // Services
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { RepairService } from '../../../../shared/services/repair.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';

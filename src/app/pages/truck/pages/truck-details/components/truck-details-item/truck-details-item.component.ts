@@ -32,8 +32,8 @@ import moment from 'moment';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { TruckTrailerService } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 
 // helpers
 import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
@@ -98,7 +98,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private commonTruckService: CommonTruckTrailerService,
+        private commonTruckService: TruckTrailerService,
         private dropDownService: DropDownService
     ) {}
 

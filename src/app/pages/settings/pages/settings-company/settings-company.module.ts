@@ -18,7 +18,7 @@ import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.compo
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
@@ -28,7 +28,7 @@ import { TaNoticeOfAsignmentComponent } from 'src/app/shared/components/ta-notic
 import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
-import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 // Pipes
 import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
@@ -53,7 +53,7 @@ import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCheckboxCardComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,
@@ -67,7 +67,7 @@ import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
         TaCommonCardComponent,
         TaLogoChangeComponent,
         TaCounterComponent,
-        TruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
 
         // PIPES
         HidePasswordPipe,

@@ -270,7 +270,7 @@
                     ></app-ta-input>
                 </div>
                 <div class="group location-group">
-                    <app-input-address-dropdown
+                    <app-ta-input-address-dropdown
                         formControlName="address"
                         [inputConfig]="{
                             name: 'Address',
@@ -293,7 +293,7 @@
                         [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
                         (incorrectEvent)="incorrectInput($event, 1, 0)"
                         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                    ></app-input-address-dropdown>
+                    ></app-ta-input-address-dropdown>
                 </div>
 
                 <!-- REVIEW AND FEEDBACK -->

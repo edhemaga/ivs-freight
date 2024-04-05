@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 // Components
 import { BrokerModalComponent } from 'src/app/pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from 'src/app/pages/customer/pages/shipper-modal/shipper-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -23,7 +23,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 import { MapsService } from 'src/app/shared/services/maps.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 
 // Store
@@ -1134,7 +1134,7 @@ export class CustomerTableComponent
             }
         } else if (event.type === TableStringEnum.MOVE_TO_BAN_LIST) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -1147,7 +1147,7 @@ export class CustomerTableComponent
             );
         } else if (event.type === TableStringEnum.MOVE_TO_DNU_LIST) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -1167,7 +1167,7 @@ export class CustomerTableComponent
                         : TableStringEnum.OPEN,
             };
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -1193,7 +1193,7 @@ export class CustomerTableComponent
         // Delete Call
         else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.DELETE },
                 {
                     type: TableStringEnum.DELETE,

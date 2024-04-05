@@ -9,13 +9,13 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { TelematicMapComponent } from './pages/telematic-map/telematic-map.component';
-import { GpsProgressbarComponent } from 'src/app/core/components/shared/gps-progressbar/gps-progressbar.component';
-import { MapMarkerDropdownComponent } from 'src/app/core/components/shared/map-marker-dropdown/map-marker-dropdown.component';
+import { TaGpsProgressbarComponent } from 'src/app/shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
+import { TaMapMarkerDropdownComponent } from 'src/app/shared/components/ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/ta-map-toolbar.component';
 
 @NgModule({
@@ -33,13 +33,13 @@ import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/
 
         // Components
         TaMapToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,
-        MapMarkerDropdownComponent,
-        GpsProgressbarComponent,
+        TaMapMarkerDropdownComponent,
+        TaGpsProgressbarComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
