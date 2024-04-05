@@ -16,9 +16,9 @@ import {
 } from 'appcoretruckassist';
 
 //Component
-import { SettingsBasicModalComponent } from 'src/app/core/components/modals/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from 'src/app/core/components/modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from 'src/app/core/components/modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
+import { SettingsBasicModalComponent } from 'src/app/pages/settings/pages/modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from 'src/app/pages/settings/pages/modals/settings-company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from 'src/app/pages/settings/pages/modals/settings-company-modals/settings-factoring-modal/settings-factoring-modal.component';
 
 //Service
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';

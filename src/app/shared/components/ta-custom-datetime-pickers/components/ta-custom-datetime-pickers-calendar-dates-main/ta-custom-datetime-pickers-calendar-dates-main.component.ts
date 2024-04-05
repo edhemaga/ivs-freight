@@ -31,7 +31,7 @@ import { TaCustomDateTimePickerCalendarDaysComponent } from '../ta-custom-dateti
 import {
     CalendarStrategy,
     STARTING_YEAR,
-} from '../../calendar-strategy.ts/calendar_strategy';
+} from '../../strategy/calendar-strategy';
 
 // enums
 import { CalendarMainEnum } from 'src/app/core/utils/enums/datepicker-component.enum';

@@ -27,7 +27,7 @@ import { CalendarMonthsPipe } from 'src/app/shared/components/ta-custom-datetime
 import {
     CalendarStrategy,
     STARTING_YEAR,
-} from '../../calendar-strategy.ts/calendar_strategy';
+} from '../../strategy/calendar-strategy';
 // enums
 import { CalendarLeftEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
 

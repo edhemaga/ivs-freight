@@ -18,10 +18,7 @@ import moment from 'moment';
 import { CalendarDateTimePickerService } from '../../services/calendar-datetime-picker.service';
 
 // constants
-import {
-    RANGE,
-    STARTING_YEAR,
-} from '../../calendar-strategy.ts/calendar_strategy';
+import { RANGE, STARTING_YEAR } from '../../strategy/calendar-strategy';
 
 // components
 import { TaCustomDateTimePickerCalendarDatesMainComponent } from '../ta-custom-datetime-pickers-calendar-dates-main/ta-custom-datetime-pickers-calendar-dates-main.component';

@@ -29,10 +29,10 @@ import { CompanyTerminalService } from '../../../services/company-terminal.servi
 import { CompanyOfficeService } from '../../../../../shared/services/company-office.service';
 
 //Components
-import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 //Stores
 import { ParkingStore } from '../../../state/parking-state/company-parking.store';

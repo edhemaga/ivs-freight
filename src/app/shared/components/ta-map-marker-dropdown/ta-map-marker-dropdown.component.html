@@ -45,7 +45,7 @@
                         : 'table-dropdown-container'
                 "
             >
-                <app-ta-details-page-dropdown
+                <app-ta-details-dropdown
                     #detailsDropdown
                     [options]="dropdownActions"
                     [placement]="'right-top'"
@@ -55,7 +55,7 @@
                         'map-list-card-dropdown marker-dropdown-popover'
                     "
                     (dropDownActions)="callBodyAction($event)"
-                ></app-ta-details-page-dropdown>
+                ></app-ta-details-dropdown>
             </div>
         </div>
         <div class="marker-accident-container" *ngIf="type == 'accident'">

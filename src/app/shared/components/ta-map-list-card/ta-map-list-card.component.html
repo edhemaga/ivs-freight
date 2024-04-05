@@ -47,7 +47,7 @@
                     "
                     (click)="showMoreOptions()"
                 >
-                    <app-ta-details-page-dropdown
+                    <app-ta-details-dropdown
                         #detailsDropdown
                         [options]="dropdownActions"
                         [placement]="'right-top'"
@@ -57,7 +57,7 @@
                         [leftIcon]="true"
                         [customClassDropDown]="'map-list-card-dropdown'"
                         (dropDownActions)="callBodyAction($event)"
-                    ></app-ta-details-page-dropdown>
+                    ></app-ta-details-dropdown>
                 </div>
             </div>
         </div>

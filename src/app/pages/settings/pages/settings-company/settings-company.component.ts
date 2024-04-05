@@ -21,7 +21,7 @@ import { CompanyQuery } from '../../state/company-state/company-settings.query';
 import { CompanyStore } from '../../state/company-state/company-settings.store';
 
 // components
-import { SettingsBasicModalComponent } from 'src/app/core/components/modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsBasicModalComponent } from 'src/app/pages/settings/pages/modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
 
 // models
 import { CompanyResponse, SignInResponse } from 'appcoretruckassist';

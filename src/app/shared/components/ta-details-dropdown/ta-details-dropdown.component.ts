@@ -31,7 +31,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDataService } from '../../services/details-data.service';
 
 @Component({
-    selector: 'app-ta-details-page-dropdown',
+    selector: 'app-ta-details-dropdown',
     templateUrl: './ta-details-dropdown.component.html',
     styleUrls: ['./ta-details-dropdown.component.scss'],
     encapsulation: ViewEncapsulation.None,

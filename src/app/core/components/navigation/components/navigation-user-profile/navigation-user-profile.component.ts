@@ -27,7 +27,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Components
-import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/navigation/pages/navigation-profile-update-modal/navigation-profile-update-modal.component';
+import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 @Component({
     selector: 'app-navigation-user-profile',

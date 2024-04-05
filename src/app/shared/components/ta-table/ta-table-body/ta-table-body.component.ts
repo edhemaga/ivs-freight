@@ -31,7 +31,7 @@ import {
 import { CommonModule } from '@angular/common';
 
 // strategy
-import { TableStrategy } from './table-strategy/table_strategy';
+import { TableStrategy } from './strategy/table-strategy';
 
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';

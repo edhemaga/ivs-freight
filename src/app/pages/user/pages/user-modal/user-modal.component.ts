@@ -68,7 +68,7 @@ import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-
 import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 //Components
-import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
