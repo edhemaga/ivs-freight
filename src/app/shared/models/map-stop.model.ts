@@ -1,6 +1,6 @@
 import { AddressEntity } from 'appcoretruckassist';
 
-export interface MapStopModel {
+export interface MapStop {
     lat: number;
     long: number;
     id?: number;
@@ -14,5 +14,5 @@ export interface MapStopModel {
     stopColor?: string;
     stopNumber?: string;
     orderNumber?: number;
-    zIndex?: number
+    zIndex?: number;
 }

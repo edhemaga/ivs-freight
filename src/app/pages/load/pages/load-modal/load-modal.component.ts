@@ -96,7 +96,7 @@ import {
 import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
 import { LoadBilling } from './models/load-billing.model';
 import { LoadPayment } from './models/load-payment.model';
-import { MapRouteModel } from '../../../../core/components/shared/model/map-route';
+import { MapRoute } from '../../../../shared/models/map-route.model';
 import { LoadStopRoutes } from './models/load-stop-routes.model';
 import { LoadModalTab } from './models/load-modal-tab.model';
 import { Load } from '../../models/load.model';
@@ -292,7 +292,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isCommentEdited: boolean = false;
 
     // map routes
-    public loadStopRoutes: MapRouteModel[] = [];
+    public loadStopRoutes: MapRoute[] = [];
 
     // hazardous dropdown
     public isHazardousPicked: boolean = false;

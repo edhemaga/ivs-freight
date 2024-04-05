@@ -348,13 +348,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     }
 
     private updateUserProfile() {
-        const {
-            addressUnit,
-            createNewPassword,
-            oldPassword,
-            newPassword,
-            ...form
-        } = this.profileUserForm.value;
+        const { addressUnit, ...form } = this.profileUserForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {

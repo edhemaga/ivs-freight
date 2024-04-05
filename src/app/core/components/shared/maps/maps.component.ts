@@ -14,7 +14,7 @@ import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../../shared/services/maps.service';
 
 import { Subject, takeUntil } from 'rxjs';
-import { MapRouteModel } from '../model/map-route';
+import { MapRoute } from '../../../../shared/models/map-route.model';
 
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
@@ -91,7 +91,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         // });
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
-    @Input() routes: Array<MapRouteModel> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
+    @Input() routes: Array<MapRoute> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
     @Input() darkMode: boolean = false;
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();

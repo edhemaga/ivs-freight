@@ -30,11 +30,6 @@ export class AccountTableData {
     tableDropdownContent?: tableDropdownContent;
 }
 
-export interface ToolBarActionAccount {
-    action?: string;
-    mode?: string;
-}
-
 export interface accountLableData {
     name: string;
     color: string;

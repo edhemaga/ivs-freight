@@ -1,7 +1,7 @@
-import { MapStopModel } from './map-stop';
+import { MapStop } from './map-stop.model';
 
-export interface MapRouteModel {
-    stops?: Array<MapStopModel>;
+export interface MapRoute {
+    stops?: Array<MapStop>;
     routeColor?: string;
     shape?: string;
     id?: number;
