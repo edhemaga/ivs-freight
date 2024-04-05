@@ -68,12 +68,5 @@ export class AccountingPayrollComponent implements OnInit {
         }
     }
 
-    ngOnInit(): void {
-        /*  if (this.router.url.includes('/fuel')) {
-       this.selectedTab = 'fuel';
-     } */
-        /* this.shared.emitAccountingChange.subscribe(res => {
-      this.selectedTab = res;
-    }); */
-    }
+    ngOnInit(): void {}
 }

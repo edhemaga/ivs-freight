@@ -13,7 +13,7 @@ import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.componen
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipes
-import { DriverHideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
+import { DriverHideAccountPipe } from 'src/app/shared/components/ta-copy/pipes/driver-hide-account.pipe';
 import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
 @Component({
     selector: 'app-ta-copy',
@@ -29,7 +29,6 @@ import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
         DriverHideAccountPipe,
 
         // Pipes
-
         HidePasswordPipe,
     ],
 })

@@ -1,4 +1,4 @@
-@import '../load-details-item/load-details-item.component.scss';
+@import 'src/app/pages/load/pages/load-details/components/load-details-item/load-details-item.component.scss';
 
 .load-status-driver-container {
     display: grid;
@@ -95,7 +95,7 @@
     .note-body {
         //margin-left: 4px;
 
-        .note-textarea{
+        .note-textarea {
             padding-bottom: 12px !important;
         }
     }
@@ -185,7 +185,6 @@
             display: flex;
             align-items: center;
             .driver-name {
-               
                 font-size: 18px;
                 font-weight: 500;
                 color: #6c6c6c;

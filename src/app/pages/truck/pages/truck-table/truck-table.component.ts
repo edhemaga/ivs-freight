@@ -12,7 +12,7 @@ import { TtTitleModalComponent } from 'src/app/core/components/modals/common-tru
 // services
 import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // store
@@ -24,23 +24,20 @@ import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inact
 
 // constants
 import { TruckCardDataConstants } from './utils/constants/truck-card-data.constants';
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 // pipes
 import { DatePipe } from '@angular/common';
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import { TruckName } from 'src/app/core/utils/enums/truck-component.enum';
-import { TooltipColors } from 'src/app/core/utils/enums/trailer-component.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TruckNameStringEnum } from 'src/app/shared/enums/truck-name-string.enum';
+import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-string,enum';
 
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
 
 // models
@@ -73,8 +70,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
-    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab: string = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     public trucksActive: TruckActiveState[] = [];
     public trucksInactive: TruckInactiveState[] = [];
     public loadingPage: boolean = false;
@@ -151,11 +148,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE: {
+                        case TableStringEnum.DELETE: {
                             this.deleteTruckById(res.id);
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.ACTIVATE: {
+                        case TableStringEnum.ACTIVATE: {
                             if (res.array?.length) {
                                 res.array.map((e) => {
                                     this.changeTruckStatus(e.id);
@@ -165,7 +162,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             }
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
+                        case TableStringEnum.DEACTIVATE: {
                             if (res.array?.length) {
                                 res.array.map((e) => {
                                     this.changeTruckStatus(e.id);
@@ -175,7 +172,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             }
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
+                        case TableStringEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteTrucks(res.array);
                             break;
                         }
@@ -203,7 +200,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === ConstantStringTableComponentsEnum.SET) {
+                    if (res.action === TableStringEnum.SET) {
                         this.viewData = this.truckData?.filter((customerData) =>
                             res.queryParams.some(
                                 (filterData) => filterData === customerData.id
@@ -211,7 +208,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     }
 
-                    if (res.action === ConstantStringTableComponentsEnum.CLEAR)
+                    if (res.action === TableStringEnum.CLEAR)
                         this.viewData = this.truckData;
                 }
             });
@@ -259,13 +256,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
+                if (res?.animation === TableStringEnum.ADD) {
                     this.viewData.push(this.mapTruckData(res.data));
 
                     this.viewData = this.viewData.map((truck) => {
                         if (truck.id === res.id) {
-                            truck.actionAnimation =
-                                ConstantStringTableComponentsEnum.ADD;
+                            truck.actionAnimation = TableStringEnum.ADD;
                         }
 
                         return truck;
@@ -274,56 +270,50 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
                 } else if (
-                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
-                    this.selectedTab ===
-                        ConstantStringTableComponentsEnum.INACTIVE
+                    res?.animation === TableStringEnum.ADD &&
+                    this.selectedTab === TableStringEnum.INACTIVE
                 ) {
                     this.updateDataCount();
-                } else if (
-                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
-                ) {
+                } else if (res?.animation === TableStringEnum.UPDATE) {
                     const updatedTruck = this.mapTruckData(res.data);
 
                     this.viewData = this.viewData.map((truck) => {
                         if (truck.id === res.id) {
                             truck = updatedTruck;
-                            truck.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            truck.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return truck;
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
-                } else if (
-                    res?.animation ===
-                    ConstantStringTableComponentsEnum.UPDATE_STATUS
-                ) {
+                } else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
                     let truckIndex: number;
 
                     this.viewData = this.viewData.map(
                         (truck: any, index: number) => {
                             if (truck.id === res.id) {
                                 truck.actionAnimation =
-                                    this.selectedTab ===
-                                    ConstantStringTableComponentsEnum.ACTIVE
-                                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                                        : ConstantStringTableComponentsEnum.ACTIVATE;
+                                    this.selectedTab === TableStringEnum.ACTIVE
+                                        ? TableStringEnum.DEACTIVATE
+                                        : TableStringEnum.ACTIVATE;
                                 truckIndex = index;
                             }
 
@@ -334,24 +324,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(truckIndex, 1);
                         clearInterval(inetval);
                     }, 900);
-                } else if (
-                    res?.animation === ConstantStringTableComponentsEnum.DELETE
-                ) {
+                } else if (res?.animation === TableStringEnum.DELETE) {
                     let truckIndex: number;
 
                     this.viewData = this.viewData.map(
                         (truck: any, index: number) => {
                             if (truck.id === res.id) {
-                                truck.actionAnimation =
-                                    ConstantStringTableComponentsEnum.DELETE;
+                                truck.actionAnimation = TableStringEnum.DELETE;
                                 truckIndex = index;
                             }
 
@@ -362,10 +350,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(truckIndex, 1);
                         clearInterval(inetval);
@@ -392,12 +381,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: ConstantStringTableComponentsEnum.TRUCK,
-                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            template: TableStringEnum.TRUCK,
+                            type: TableStringEnum.MULTIPLE_DELETE,
                             svg: true,
                         }
                     );
@@ -412,23 +401,19 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                            ? 1
-                            : 0;
+                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             this.truckBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendTruckData();
                         }
@@ -447,9 +432,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -459,16 +442,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showTruckFilter: true,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -477,9 +456,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private sendTruckData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.TRUCK_TABLE_VIEW
-            )
+            localStorage.getItem(TableStringEnum.TRUCK_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -490,51 +467,41 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const truckCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.TRUCK_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.TRUCK_TABLE_COUNT)
         );
 
         const truckActiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
         const truckInactiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+            this.selectedTab === TableStringEnum.INACTIVE
+                ? this.getTabData(TableStringEnum.INACTIVE)
                 : [];
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.ACTIVE_2,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.ACTIVE_2,
+                field: TableStringEnum.ACTIVE,
                 length: truckCount.active,
                 data: truckActiveData,
-                gridNameTitle: ConstantStringTableComponentsEnum.TRUCK_2,
-                stateName: ConstantStringTableComponentsEnum.TRUCKS,
-                tableConfiguration: ConstantStringTableComponentsEnum.TRUCK_3,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.TRUCK_3
-                ),
+                gridNameTitle: TableStringEnum.TRUCK_2,
+                stateName: TableStringEnum.TRUCKS,
+                tableConfiguration: TableStringEnum.TRUCK_3,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.TRUCK_3),
             },
             {
-                title: ConstantStringTableComponentsEnum.INACTIVE_2,
-                field: ConstantStringTableComponentsEnum.INACTIVE,
+                title: TableStringEnum.INACTIVE_2,
+                field: TableStringEnum.INACTIVE,
                 length: truckCount.inactive,
                 data: truckInactiveData,
-                gridNameTitle: ConstantStringTableComponentsEnum.TRUCK_2,
-                stateName: ConstantStringTableComponentsEnum.TRUCKS,
-                tableConfiguration: ConstantStringTableComponentsEnum.TRUCK_3,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.TRUCK_3
-                ),
+                gridNameTitle: TableStringEnum.TRUCK_2,
+                stateName: TableStringEnum.TRUCKS,
+                tableConfiguration: TableStringEnum.TRUCK_3,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.TRUCK_3),
             },
         ];
 
@@ -565,7 +532,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             // Set data for cards based on tab active
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontActive),
                   (this.sendDataToCardsBack = this.displayRowsBackActive))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
@@ -579,20 +546,20 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTruckTooltipColor(truckName: string): string {
-        if (truckName === TruckName.SEMI_TRUCK) {
-            return TooltipColors.LIGHT_GREEN;
-        } else if (truckName === TruckName.SEMI_SLEEPER) {
-            return TooltipColors.YELLOW;
-        } else if (truckName === TruckName.BOX_TRUCK) {
-            return TooltipColors.RED;
-        } else if (truckName === TruckName.CARGO_VAN) {
-            return TooltipColors.BLUE;
-        } else if (truckName === TruckName.CAR_HAULER) {
-            return TooltipColors.PINK;
-        } else if (truckName === TruckName.TOW_TRUCK) {
-            return TooltipColors.PURPLE;
-        } else if (truckName === TruckName.SPOTTER) {
-            return TooltipColors.BROWN;
+        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
+            return TooltipColorsStringEnum.YELLOW;
+        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (truckName === TruckNameStringEnum.SPOTTER) {
+            return TooltipColorsStringEnum.BROWN;
         }
     }
 
@@ -606,126 +573,126 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 boldText: data?.vin
                     ? data.vin.substr(data.vin.length - 6)
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             truckTypeClass: data.truckType.logoName.replace(
-                ConstantStringTableComponentsEnum.SVG,
-                ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                TableStringEnum.SVG,
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER
             ),
             tabelLength: data?.truckLength?.name
                 ? DataFilterHelper.getLengthNumber(data?.truckLength?.name)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textMake: data?.truckMake?.name
                 ? data.truckMake.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textModel: data?.model
                 ? data.model
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textYear: data.year
                 ? data.year
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableColor: data?.color?.code
                 ? data.color.code
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             colorName: data?.color?.name
                 ? data.color.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriver: ConstantStringTableComponentsEnum.NA,
-            tableTrailer: ConstantStringTableComponentsEnum.NA,
-            tableTrailerType: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriver: TableStringEnum.NA,
+            tableTrailer: TableStringEnum.NA,
+            tableTrailerType: TableStringEnum.NA,
             tabelOwnerDetailsName: data?.owner?.name
                 ? data.owner.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelOwnerDetailsComm: data?.commission
-                ? data.commission + ConstantStringTableComponentsEnum.PERCENTS
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.commission + TableStringEnum.PERCENTS
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textWeightGross: data?.truckGrossWeight?.name
                 ? data.truckGrossWeight.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textWeightEmpty: data?.emptyWeight
                 ? this.thousandSeparator.transform(data.emptyWeight) +
-                  ConstantStringTableComponentsEnum.POUNDS_2
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                  TableStringEnum.POUNDS_2
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelEngineModel: data?.truckEngineModel?.name
                 ? data.truckEngineModel.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelEngineOilType: data?.engineOilType?.name
                 ? data.engineOilType.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelTransmissionModel: data?.transmissionModel
                 ? data.transmissionModel
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelTransmissionShifter: data?.shifter?.name
                 ? data.shifter.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelTransmissionRatio: data?.gearRatio?.name
                 ? data.gearRatio.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelFuelDetailsFuelType: data?.fuelType?.name
                 ? data.fuelType.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelFuelDetailsTank: data?.fuelTankSize
                 ? this.thousandSeparator.transform(data.fuelTankSize)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelAxle: data?.axles
                 ? data.axles
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelBrakes: data?.brakes?.name
                 ? data.brakes.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTireSize: data?.tireSize?.name
                 ? data.tireSize.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableWheelCompositionFront: data?.frontWheels?.name
                 ? data.frontWheels.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableWheelCompositionRear: data?.rearWheels?.name
                 ? data.rearWheels.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAPUnit: data?.apUnit?.name
                 ? data.apUnit.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableFeatures: `${
                 data?.doubleBunk
-                    ? ConstantStringTableComponentsEnum.DBUNK
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                    ? TableStringEnum.DBUNK
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
                 data?.refrigerator
-                    ? ConstantStringTableComponentsEnum.FRIDGE
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                    ? TableStringEnum.FRIDGE
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
                 data?.dcInverter
-                    ? ConstantStringTableComponentsEnum.DCI
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                    ? TableStringEnum.DCI
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
                 data?.blower
-                    ? ConstantStringTableComponentsEnum.BLOWER
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                    ? TableStringEnum.BLOWER
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
                 data?.pto
-                    ? ConstantStringTableComponentsEnum.PTO
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                    ? TableStringEnum.PTO
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }`,
             tableTollDeviceTransponder: data?.tollTransponder?.name
                 ? data.tollTransponder.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTollDeviceNo: data?.tollTransponderDeviceNo
                 ? data.tollTransponderDeviceNo
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableInsPolicy: data?.insurancePolicy
                 ? data.insurancePolicy
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage) +
-                  ConstantStringTableComponentsEnum.MILES_2
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                  TableStringEnum.MILES_2
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailST: TableStringEnum.NA,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays
@@ -742,8 +709,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : null,
             },
             tableFhwaInspectionTerm: data?.fhwaExp
-                ? data.fhwaExp + ConstantStringTableComponentsEnum.MONTHS
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.fhwaExp + TableStringEnum.MONTHS
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableFhwaInspectionExpiration: {
                 expirationDays: data?.inspectionExpirationDays
                     ? data.inspectionExpirationDays
@@ -759,34 +726,34 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber: ConstantStringTableComponentsEnum.NA,
-            tableTitleST: ConstantStringTableComponentsEnum.NA,
-            tableTitleIssued: ConstantStringTableComponentsEnum.NA,
-            tableTitlePurchase: ConstantStringTableComponentsEnum.NA,
+            tableTitleNumber: TableStringEnum.NA,
+            tableTitleST: TableStringEnum.NA,
+            tableTitleIssued: TableStringEnum.NA,
+            tableTitlePurchase: TableStringEnum.NA,
             tablePurchasePrice: data?.purchasePrice
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.purchasePrice)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePurchaseDate: data.purchaseDate
                 ? this.datePipe.transform(
                       data.purchaseDate,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
-            tableTerminated: ConstantStringTableComponentsEnum.NA,
+            tableTerminated: TableStringEnum.NA,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
@@ -799,94 +766,90 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private getDropdownTruckContent(): DropdownItem[] {
         return [
             {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: ConstantStringTableComponentsEnum.EDIT_TRUCK,
+                title: TableStringEnum.EDIT_2,
+                name: TableStringEnum.EDIT_TRUCK,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
             },
             {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+                title: TableStringEnum.VIEW_DETAILS_2,
+                name: TableStringEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: ConstantStringTableComponentsEnum.ADD_NEW_2,
-                name: ConstantStringTableComponentsEnum.ADD_NEW,
+                title: TableStringEnum.ADD_NEW_2,
+                name: TableStringEnum.ADD_NEW,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: ConstantStringTableComponentsEnum.REGISTRATION,
-                        name: ConstantStringTableComponentsEnum.ADD_REGISTRATION,
+                        title: TableStringEnum.REGISTRATION,
+                        name: TableStringEnum.ADD_REGISTRATION,
                     },
                     {
-                        title: ConstantStringTableComponentsEnum.INSPECTION,
-                        name: ConstantStringTableComponentsEnum.ADD_INSPECTION,
+                        title: TableStringEnum.INSPECTION,
+                        name: TableStringEnum.ADD_INSPECTION,
                     },
                     {
-                        title: ConstantStringTableComponentsEnum.TITLE,
-                        name: ConstantStringTableComponentsEnum.ADD_REPAIR,
+                        title: TableStringEnum.TITLE,
+                        name: TableStringEnum.ADD_REPAIR,
                     },
                 ],
                 hasBorder: true,
             },
             {
                 title:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE_2
-                        : ConstantStringTableComponentsEnum.ACTIVATE_2,
-                name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+                    this.selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE_2
+                        : TableStringEnum.ACTIVATE_2,
+                name: TableStringEnum.ACTIVATE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 svgClass:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    this.selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
+                title: TableStringEnum.DELETE_2,
+                name: TableStringEnum.DELETE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
         ];
     }
 
     private updateDataCount(): void {
         const truckCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.TRUCK_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.TRUCK_TABLE_COUNT)
         );
 
         const updatedTableData = [...this.tableData];
@@ -898,11 +861,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getTabData(dataType: string): TruckActiveState[] {
-        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (dataType === TableStringEnum.ACTIVE) {
             this.trucksActive = this.truckActiveQuery.getAll();
 
             return this.trucksActive?.length ? this.trucksActive : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
+        } else if (dataType === TableStringEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.trucksInactive = this.truckInactiveQuery.getAll();
@@ -957,27 +920,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onToolBarAction(event: ToolbarActions): void {
         // Open Modal
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TruckModalComponent, {
-                size: ConstantStringTableComponentsEnum.SMALL,
+                size: TableStringEnum.SMALL,
             });
         }
         // Select Tab
-        else if (
-            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
-        ) {
+        else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
 
             this.backFilterQuery.active =
-                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                    ? 1
-                    : 0;
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
             if (
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE &&
+                this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
                 this.truckService
@@ -995,11 +953,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
         // Change View Mode
-        else if (event.action === ConstantStringTableComponentsEnum.VIEW_MODE) {
+        else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
-        ) {
+        } else if (event.action === TableStringEnum.ACTIVATE_ITEM) {
             let status = false;
             let mappedEvent = [];
             this.viewData.map((data) => {
@@ -1019,14 +975,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
-                    template: ConstantStringTableComponentsEnum.TRUCK,
+                    template: TableStringEnum.TRUCK,
                     type: status
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     svg: true,
                 }
             );
@@ -1037,13 +993,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         action: string;
         direction: string;
     }): void {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.active =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 0;
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                 this.backFilterQuery.pageIndex = 1;
                 this.backFilterQuery.sort = event.direction;
 
@@ -1065,94 +1018,91 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         switch (event.type) {
-            case ConstantStringTableComponentsEnum.SHOW_MORE: {
+            case TableStringEnum.SHOW_MORE: {
                 this.backFilterQuery.active =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 0;
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                 this.backFilterQuery.pageIndex++;
                 this.truckBackFilter(this.backFilterQuery, true);
                 break;
             }
-            case ConstantStringTableComponentsEnum.EDIT_TRUCK: {
+            case TableStringEnum.EDIT_TRUCK: {
                 this.modalService.openModal(
                     TruckModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: ConstantStringTableComponentsEnum.EDIT,
+                        type: TableStringEnum.EDIT,
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.ADD_REGISTRATION: {
+            case TableStringEnum.ADD_REGISTRATION: {
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        modal: ConstantStringTableComponentsEnum.TRUCK,
+                        modal: TableStringEnum.TRUCK,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
 
-            case ConstantStringTableComponentsEnum.ADD_INSPECTION: {
+            case TableStringEnum.ADD_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        modal: ConstantStringTableComponentsEnum.TRUCK,
+                        modal: TableStringEnum.TRUCK,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+            case TableStringEnum.VIEW_DETAILS: {
                 this.router.navigate([`/list/truck/${event.id}/details`]);
                 break;
             }
-            case ConstantStringTableComponentsEnum.ADD_REPAIR: {
+            case TableStringEnum.ADD_REPAIR: {
                 this.modalService.openModal(
                     TtTitleModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        modal: ConstantStringTableComponentsEnum.TRUCK,
+                        modal: TableStringEnum.TRUCK,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.ACTIVATE_ITEM: {
+            case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: ConstantStringTableComponentsEnum.TRUCK,
+                        template: TableStringEnum.TRUCK,
                         type:
                             event.data.status === 1
-                                ? ConstantStringTableComponentsEnum.DEACTIVATE
-                                : ConstantStringTableComponentsEnum.ACTIVATE,
+                                ? TableStringEnum.DEACTIVATE
+                                : TableStringEnum.ACTIVATE,
                         svg: true,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.DELETE_ITEM: {
+            case TableStringEnum.DELETE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: ConstantStringTableComponentsEnum.TRUCK,
-                        type: ConstantStringTableComponentsEnum.DELETE,
+                        template: TableStringEnum.TRUCK,
+                        type: TableStringEnum.DELETE,
                         svg: true,
                     }
                 );
@@ -1176,7 +1126,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
-            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+            type: TableStringEnum.SHOW_MORE,
         });
     }
 
@@ -1195,8 +1145,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: () => {
                     this.viewData = this.viewData.map((truck) => {
                         if (truck.id === id) {
-                            truck.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE;
+                            truck.actionAnimation = TableStringEnum.DELETE;
                         }
 
                         return truck;
@@ -1205,10 +1154,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -1226,7 +1176,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     response.map((id) => {
                         if (truck.id === id) {
                             truck.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                                TableStringEnum.DELETE_MULTIPLE;
                         }
                     });
 
@@ -1235,7 +1185,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);
@@ -1250,7 +1203,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
+        //     document.querySelector(TableStringEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
     }

@@ -21,9 +21,9 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { TruckService } from '../../../../../../shared/services/truck.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';

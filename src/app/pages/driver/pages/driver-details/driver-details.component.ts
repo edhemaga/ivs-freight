@@ -12,12 +12,12 @@ import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modal
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverService } from '../../services/driver.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { DriverCdlService } from '../../services/driver-cdl.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 //Store
 import { DriversMinimalListStore } from '../../state/driver-details-minimal-list-state/driver-minimal-list.store';

@@ -1,0 +1,16 @@
+export enum TrailerNameStringEnum {
+    REEFER = 'Reefer',
+    DRY_VAN = 'Dry Van',
+    DUMPER = 'Dumper',
+    TANKER = 'Tanker',
+    PNEUMATIC_TANKER = 'Pneumatic Tanker',
+    CAR_HAULER = 'Car Hauler',
+    CAR_HAULER_STINGER = 'Car Hauler Stinger',
+    CHASSIS = 'Chassis',
+    LOW_BOY_RGN = 'Low Boy / RGN',
+    STEP_DECK = 'Step Deck',
+    FLAT_BED = 'Flat Bed',
+    SIDE_KIT = 'Side Kit',
+    CONESTOGA = 'Conestoga',
+    CONTAINER = 'Container',
+}

@@ -20,7 +20,7 @@ import { SignInResponse } from 'appcoretruckassist';
 import { ReviewComment } from '../../models/review-comment.model';
 
 // utils
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import { FormsModule } from '@angular/forms';
 
 // components

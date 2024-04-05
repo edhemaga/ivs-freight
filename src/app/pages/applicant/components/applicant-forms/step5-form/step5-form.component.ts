@@ -42,7 +42,7 @@ import {
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // sevices
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 
 // store

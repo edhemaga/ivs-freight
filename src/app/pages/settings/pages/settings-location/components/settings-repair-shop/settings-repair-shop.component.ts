@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
@@ -19,7 +19,7 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { RepairShopResponse } from 'appcoretruckassist';
 
 // utils
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -86,7 +86,10 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
     public repairDropActions(any: any, actions: string) {
         this.getRepairShopById(any.id);
         setTimeout(() => {
-            const name = dropActionNameDriver(any, actions);
+            const name = DropActionNameHelper.dropActionNameDriver(
+                any,
+                actions
+            );
             this.dropDownService.dropActionCompanyLocation(
                 any,
                 name,

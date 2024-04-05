@@ -29,9 +29,9 @@ import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-i
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TaUploadFileService } from 'src/app/shared/components/ta-upload-files/services/ta-upload-file.service';
 import { DriverService } from 'src/app/pages/driver/services/driver.service';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
-import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
+import { BankVerificationService } from '../../../../../shared/services/bank-verification.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 //Helpers
 import {
@@ -50,12 +50,7 @@ import {
     routingBankValidation,
     ssnNumberRegex,
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 //Components
 import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
@@ -79,7 +74,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-driver-modal',
@@ -261,10 +256,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (
-            data.action === ConstantStringTableComponentsEnum.DEACTIVATE &&
-            this.editData
-        ) {
+        if (data.action === TableStringEnum.DEACTIVATE && this.editData) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -275,13 +267,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.ngbActiveModal.close();
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: ConstantStringTableComponentsEnum.DRIVER,
+                    template: TableStringEnum.DRIVER,
                     type: data.bool
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     image: true,
                 }
             );
@@ -326,10 +318,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         }
         // Delete
-        else if (
-            data.action === ConstantStringTableComponentsEnum.DELETE &&
-            this.editData?.id
-        ) {
+        else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
@@ -340,11 +329,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.ngbActiveModal.close();
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: ConstantStringTableComponentsEnum.DRIVER,
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    template: TableStringEnum.DRIVER,
+                    type: TableStringEnum.DELETE,
                     image: true,
                 }
             );
@@ -1138,7 +1127,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .get('soloPerStop')
                             .patchValue(
                                 data.solo?.perStop
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           data.solo?.perStop
                                               ? data.solo.perStop
                                               : null
@@ -1150,7 +1139,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .get('soloFlatRate')
                             .patchValue(
                                 data.soloFlatRate
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           data.soloFlatRate
                                       )
                                     : null
@@ -1194,7 +1183,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .get('teamPerStop')
                             .patchValue(
                                 data.team?.perStop
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           data.team?.perStop
                                               ? data.team.perStop
                                               : null
@@ -1209,7 +1198,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .get('teamFlatRate')
                             .patchValue(
                                 data.teamFlatRate
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           data.teamFlatRate
                                       )
                                     : null,
@@ -1240,14 +1229,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 ? data.solo.loadedMile
                                 : null,
                             perStop: data.solo?.perStop
-                                ? convertNumberInThousandSep(data.solo.perStop)
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      data.solo.perStop
+                                  )
                                 : null,
                             perMileSolo: data.perMileSolo,
                             commissionSolo: data.defaultSoloDriverCommission
                                 ? data.defaultSoloDriverCommission
                                 : this.driverForm.get('commissionSolo').value,
                             soloFlatRate: data.soloFlatRate
-                                ? convertNumberInThousandSep(data.soloFlatRate)
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      data.soloFlatRate
+                                  )
                                 : null,
                         },
                         team: {
@@ -1258,14 +1251,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 ? data.team.loadedMile
                                 : null,
                             perStop: data.team?.perStop
-                                ? convertNumberInThousandSep(data.team.perStop)
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      data.team.perStop
+                                  )
                                 : null,
                             perMileTeam: data.perMileTeam,
                             commissionTeam: data.defaultTeamDriverCommission
                                 ? data.defaultTeamDriverCommission
                                 : this.driverForm.get('commissionTeam').value,
                             teamFlatRate: data.teamFlatRate
-                                ? convertNumberInThousandSep(data.teamFlatRate)
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      data.teamFlatRate
+                                  )
                                 : null,
                         },
                         mvrExpiration: data.mvrExpiration
@@ -1338,7 +1335,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            dateOfBirth: convertDateToBackend(
+            dateOfBirth: MethodsCalculationsHelper.convertDateToBackend(
                 this.driverForm.get('dateOfBirth').value
             ),
             mvrExpiration: mvrExpiration,
@@ -1404,13 +1401,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                   ? this.fleetType === 'Combined'
                                       ? soloDriver
                                           ? soloPerStop
-                                              ? convertThousanSepInNumber(
+                                              ? MethodsCalculationsHelper.convertThousanSepInNumber(
                                                     soloPerStop
                                                 )
                                               : null
                                           : null
                                       : soloPerStop
-                                      ? convertThousanSepInNumber(soloPerStop)
+                                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                            soloPerStop
+                                        )
                                       : null
                                   : null
                               : null,
@@ -1466,13 +1465,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                   ? this.fleetType === 'Combined'
                                       ? teamDriver
                                           ? teamPerStop
-                                              ? convertThousanSepInNumber(
+                                              ? MethodsCalculationsHelper.convertThousanSepInNumber(
                                                     teamPerStop
                                                 )
                                               : null
                                           : null
                                       : teamPerStop
-                                      ? convertThousanSepInNumber(teamPerStop)
+                                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                            teamPerStop
+                                        )
                                       : null
                                   : null
                               : null,
@@ -1525,13 +1526,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             soloFlatRate:
                 this.selectedPayType?.name === 'Flat Rate'
                     ? soloFlatRate
-                        ? convertThousanSepInNumber(soloFlatRate)
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                              soloFlatRate
+                          )
                         : null
                     : null,
             teamFlatRate:
                 this.selectedPayType?.name === 'Flat Rate'
                     ? teamFlatRate
-                        ? convertThousanSepInNumber(teamFlatRate)
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                              teamFlatRate
+                          )
                         : null
                     : null,
             general: {
@@ -1545,7 +1550,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 smsNotification: smsNotificationPayroll,
             },
             twicExpDate: this.driverForm.get('twic').value
-                ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      this.driverForm.get('twicExpDate').value
+                  )
                 : null,
             offDutyLocations: this.premmapedOffDutyLocation(),
             fleetType: this.fleetType,
@@ -1749,7 +1756,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             ...form,
-            dateOfBirth: convertDateToBackend(
+            dateOfBirth: MethodsCalculationsHelper.convertDateToBackend(
                 this.driverForm.get('dateOfBirth').value
             ),
             mvrExpiration: mvrExpiration,
@@ -1814,13 +1821,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 ? this.fleetType === 'Combined'
                                     ? soloDriver
                                         ? soloPerStop
-                                            ? convertThousanSepInNumber(
+                                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
                                                   soloPerStop
                                               )
                                             : null
                                         : null
                                     : soloPerStop
-                                    ? convertThousanSepInNumber(soloPerStop)
+                                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                          soloPerStop
+                                      )
                                     : null
                                 : null
                             : null
@@ -1882,13 +1891,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 ? this.fleetType === 'Combined'
                                     ? teamDriver
                                         ? teamPerStop
-                                            ? convertThousanSepInNumber(
+                                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
                                                   teamPerStop
                                               )
                                             : null
                                         : null
                                     : teamPerStop
-                                    ? convertThousanSepInNumber(teamPerStop)
+                                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                          teamPerStop
+                                      )
                                     : null
                                 : null
                             : null
@@ -1941,13 +1952,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             soloFlatRate:
                 this.selectedPayType?.name === 'Flat Rate'
                     ? soloFlatRate
-                        ? convertThousanSepInNumber(soloFlatRate)
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                              soloFlatRate
+                          )
                         : null
                     : null,
             teamFlatRate:
                 this.selectedPayType?.name === 'Flat Rate'
                     ? teamFlatRate
-                        ? convertThousanSepInNumber(teamFlatRate)
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                              teamFlatRate
+                          )
                         : null
                     : null,
             general: {
@@ -1961,7 +1976,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 smsNotification: smsNotificationPayroll,
             },
             twicExpDate: this.driverForm.get('twic').value
-                ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      this.driverForm.get('twicExpDate').value
+                  )
                 : null,
             offDutyLocations: this.premmapedOffDutyLocation(),
             fleetType: this.fleetType,
@@ -2019,7 +2036,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         addressUnit: res.address
                             ? res.address.addressUnit
                             : null,
-                        dateOfBirth: convertDateFromBackend(res.dateOfBirth),
+                        dateOfBirth:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.dateOfBirth
+                            ),
                         ssn: res.ssn,
                         mvrExpiration: res.mvrExpiration,
                         bankId: res.bank ? res.bank.name : null,
@@ -2027,11 +2047,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         routing: res.routing,
                         payType: res.payType ? res.payType.name : null,
                         soloPerStop: res.solo.perStop
-                            ? convertNumberInThousandSep(res.solo.perStop)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.solo.perStop
+                              )
                             : null,
                         soloDriver: res.soloDriver,
                         teamPerStop: res.team.perStop
-                            ? convertNumberInThousandSep(res.team.perStop)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.team.perStop
+                              )
                             : null,
                         teamDriver: res.teamDriver,
                         commissionSolo: res.commissionSolo,
@@ -2071,7 +2095,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                         twic: res.twic,
                         twicExpDate: res.twicExpDate
-                            ? convertDateFromBackend(res.twicExpDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.twicExpDate
+                              )
                             : null,
                         fuelCard: res.fuelCard,
 
@@ -2128,7 +2154,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .patchValue(
                             ['Solo', 'Combined'].includes(res.fleetType.name)
                                 ? res.soloFlatRate
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           res.soloFlatRate
                                       )
                                     : null
@@ -2141,7 +2167,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .patchValue(
                             ['Team', 'Combined'].includes(res.fleetType.name)
                                 ? res.teamFlatRate
-                                    ? convertNumberInThousandSep(
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           res.teamFlatRate
                                       )
                                     : null

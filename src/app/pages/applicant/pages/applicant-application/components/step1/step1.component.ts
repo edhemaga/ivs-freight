@@ -35,10 +35,7 @@ import {
 } from '../../../../utils/helpers/applicant.helper';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // validations
 import {
@@ -56,7 +53,7 @@ import {
 // services
 import { ApplicantService } from '../../../../services/applicant.service';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
 
 // store
 import { ApplicantStore } from '../../../../state/applicant.store';
@@ -688,7 +685,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
             this.personalInfoForm.patchValue({
                 isAgreement: isAgreed,
-                dateOfBirth: doB ? convertDateFromBackend(doB) : null,
+                dateOfBirth: doB
+                    ? MethodsCalculationsHelper.convertDateFromBackend(doB)
+                    : null,
                 ssn,
                 bankId: bankName ? bankName : null,
                 accountNumber,
@@ -1617,7 +1616,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             o[keyName] = this.stepValues[match];
 
                             if (keyName === 'dob') {
-                                o['dob'] = convertDateFromBackend(o['dob']);
+                                o['dob'] =
+                                    MethodsCalculationsHelper.convertDateFromBackend(
+                                        o['dob']
+                                    );
                             }
 
                             if (keyName === 'address') {
@@ -1941,7 +1943,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             ...personalInfoForm,
             applicantId: this.applicantId,
             isAgreed: isAgreement,
-            doB: convertDateToBackend(dateOfBirth),
+            doB: MethodsCalculationsHelper.convertDateToBackend(dateOfBirth),
             address: lastActiveAddress,
             previousAddresses:
                 this.selectedAddresses.length <= 1

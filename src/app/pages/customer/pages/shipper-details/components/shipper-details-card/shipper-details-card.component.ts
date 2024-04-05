@@ -18,7 +18,7 @@ import moment from 'moment';
 import { ShipperMinimalListQuery } from '../../../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 
 // Services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { ShipperService } from '../../../../services/shipper.service';
 
 @Component({
@@ -27,7 +27,9 @@ import { ShipperService } from '../../../../services/shipper.service';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./shipper-details-card.component.scss'],
 })
-export class ShipperDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
+export class ShipperDetailsCardComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     private destroy$ = new Subject<void>();
     @ViewChild('stackedBarChart', { static: false })
     public stackedBarChart: any;
@@ -162,7 +164,7 @@ export class ShipperDetailsCardComponent implements OnInit, OnChanges, OnDestroy
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery
     ) {}
-    
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.note.patchValue(changes?.shipper.currentValue.note);
@@ -344,37 +346,30 @@ export class ShipperDetailsCardComponent implements OnInit, OnChanges, OnDestroy
                     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
                 }
                 this.stackedBarChart.toolTipData = [];
-                item.shipperAverageWaitingTimeChartResponse.map(
-                    (data) => {
-                        let pickup = this.convertTimeSpanToMinutes(
-                            data.avgPickupTime
-                        );
-                        let delivery = this.convertTimeSpanToMinutes(
-                            data.avgDeliveryTime
-                        );
+                item.shipperAverageWaitingTimeChartResponse.map((data) => {
+                    let pickup = this.convertTimeSpanToMinutes(
+                        data.avgPickupTime
+                    );
+                    let delivery = this.convertTimeSpanToMinutes(
+                        data.avgDeliveryTime
+                    );
 
-                        this.stackedBarChart.toolTipData.push(data);
+                    this.stackedBarChart.toolTipData.push(data);
 
-                        if (delivery + pickup > maxValue) {
-                            maxValue =
-                                delivery +
-                                pickup +
-                                ((delivery + pickup) * 7) / 100;
-                        }
-                        if (data.day) {
-                            labels.push([
-                                data.day,
-                                this.monthList[data.month - 1],
-                            ]);
-                        } else {
-                            labels.push([this.monthList[data.month - 1]]);
-                        }
-
-                        delivery = delivery ? -delivery : 0;
-                        milesPerGallon.push(pickup);
-                        costPerGallon.push(delivery);
+                    if (delivery + pickup > maxValue) {
+                        maxValue =
+                            delivery + pickup + ((delivery + pickup) * 7) / 100;
                     }
-                );
+                    if (data.day) {
+                        labels.push([data.day, this.monthList[data.month - 1]]);
+                    } else {
+                        labels.push([this.monthList[data.month - 1]]);
+                    }
+
+                    delivery = delivery ? -delivery : 0;
+                    milesPerGallon.push(pickup);
+                    costPerGallon.push(delivery);
+                });
 
                 this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
                     maxValue / 2;

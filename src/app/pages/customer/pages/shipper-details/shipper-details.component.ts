@@ -4,11 +4,11 @@ import { Subject, take, takeUntil } from 'rxjs';
 
 // Services
 import { ShipperService } from '../../services/shipper.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Store

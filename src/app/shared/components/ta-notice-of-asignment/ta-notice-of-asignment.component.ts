@@ -1,4 +1,3 @@
-import { NoticeService } from 'src/app/core/services/shared/notice.service';
 import {
     Component,
     ElementRef,
@@ -23,7 +22,7 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { FormService } from 'src/app/core/services/form/form.service';
+import { FormService } from '../../services/form.service';
 
 // pipe
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
@@ -156,8 +155,6 @@ export class TaNoticeOfAsignmentComponent
 
     constructor(
         @Self() public superControl: NgControl,
-        private noticeService: NoticeService,
-        private elementRef: ElementRef,
         private formBuilder: UntypedFormBuilder,
         private formService: FormService
     ) {
@@ -166,9 +163,9 @@ export class TaNoticeOfAsignmentComponent
     writeValue(obj: any): void {
         this.noticeRef.nativeElement.value = obj;
     }
-    registerOnChange(fn: any): void {}
-    registerOnTouched(fn: any): void {}
-    setDisabledState?(isDisabled: boolean): void {}
+    registerOnChange(_: any): void {}
+    registerOnTouched(_: any): void {}
+    setDisabledState?(_: boolean): void {}
 
     ngOnInit(): void {
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };

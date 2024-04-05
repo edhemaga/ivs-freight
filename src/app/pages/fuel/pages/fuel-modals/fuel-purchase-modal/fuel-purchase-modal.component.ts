@@ -18,7 +18,7 @@ import { Subject, takeUntil, switchMap, of } from 'rxjs';
 //Services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { FuelService } from 'src/app/shared/services/fuel.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 
@@ -67,15 +67,7 @@ import {
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 //Methods
-import {
-    combineDateAndTimeToBackend,
-    convertDateToTimeFromBackend,
-    convertThousanSepInNumber,
-} from '../../../../../core/utils/methods.calculations';
-import {
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
@@ -382,10 +374,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     ? this.selectedFuelStop.storeId
                     : this.selectedFuelStop.id
                 : null,
-            transactionDate: combineDateAndTimeToBackend(
-                form.transactionDate,
-                form.transactionTime
-            ),
+            transactionDate:
+                MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                    form.transactionDate,
+                    form.transactionTime
+                ),
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
             total: this.sumArrays.transform(this.subtotal),
             fuelItems: this.premmapedItems(FuelValuesStringEnum.UPDATE) as any, //leave any for now
@@ -465,10 +458,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     ? this.selectedFuelStop.storeId
                     : this.selectedFuelStop.id
                 : null,
-            transactionDate: combineDateAndTimeToBackend(
-                form.transactionDate,
-                form.transactionTime
-            ),
+            transactionDate:
+                MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                    form.transactionDate,
+                    form.transactionTime
+                ),
             total: this.sumArrays.transform(this.subtotal),
             fuelItems: this.premmapedItems(FuelValuesStringEnum.CREATE) as any, //leave any for now
             files: [],
@@ -515,9 +509,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                   res.driver.lastName
                               )
                             : null,
-                        transactionDate: convertDateFromBackend(
-                            res.transactionDate
-                        ),
+                        transactionDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.transactionDate
+                            ),
                         transactionTime: this.getTransactionTime(
                             res.transactionDate
                         ),
@@ -588,12 +583,12 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                     itemId: res.fuelItems[i]?.itemFuel.name,
                                     qty: res.fuelItems[i]?.qty.toString(),
                                     price: res.fuelItems[i]?.price
-                                        ? convertNumberInThousandSep(
+                                        ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                               res.fuelItems[i].price
                                           )
                                         : null,
                                     subtotal: res.fuelItems[i]?.subtotal
-                                        ? convertNumberInThousandSep(
+                                        ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                               res.fuelItems[i].subtotal
                                           )
                                         : null,
@@ -779,7 +774,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 return {
                     itemfuel: item.get(FuelValuesStringEnum.ITEM_ID).value,
                     price: item.get(FuelValuesStringEnum.PRICE).value
-                        ? convertThousanSepInNumber(
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
                               item.get(FuelValuesStringEnum.PRICE).value
                           )
                         : null,
@@ -798,7 +793,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         ? this.selectedFuelItemDropFArray[index].id
                         : null,
                     price: item.get(FuelValuesStringEnum.PRICE).value
-                        ? convertThousanSepInNumber(
+                        ? MethodsCalculationsHelper.convertThousanSepInNumber(
                               item.get(FuelValuesStringEnum.PRICE).value
                           )
                         : null,
@@ -823,7 +818,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private getTransactionTime(date: string): string {
-        return convertDateToTimeFromBackend(date);
+        return MethodsCalculationsHelper.convertDateToTimeFromBackend(date);
     }
 
     ngOnDestroy(): void {

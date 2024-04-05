@@ -51,8 +51,8 @@ import {
     TaLikeDislikeService,
 } from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
-import { ReviewsRatingService } from '../../../../core/services/reviews-rating/reviewsRating.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { ReviewsRatingService } from '../../../../shared/services/reviews-rating.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 // Animations
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
@@ -72,7 +72,7 @@ import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // Helpers
-import { convertTimeFromBackend } from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -825,12 +825,16 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : convertTimeFromBackend(res.shippingFrom),
+                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                      res.shippingFrom
+                                  ),
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : convertTimeFromBackend(res.shippingTo),
+                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                      res.shippingTo
+                                  ),
                         note: res.note,
                         shipperContacts: [],
                     });

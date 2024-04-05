@@ -19,7 +19,7 @@ import {
     navigation_magic_line,
     navigation_route_animation,
 } from '../../animations/navigation.animation';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

@@ -28,7 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // service
-import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
+import { DetailsDataService } from '../../services/details-data.service';
 
 @Component({
     selector: 'app-ta-details-page-dropdown',

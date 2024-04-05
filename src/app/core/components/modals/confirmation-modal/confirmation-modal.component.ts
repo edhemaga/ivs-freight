@@ -16,14 +16,14 @@ import { TaInputDropdownComponent } from '../../../../shared/components/ta-input
 import { TaProfileImagesComponent } from '../../../../shared/components/ta-profile-images/ta-profile-images.component';
 
 // services
-import { ImageBase64Service } from '../../../utils/base64.image';
+import { ImageBase64Service } from '../../../../shared/services/image-base64.service';
 import { ConfirmationService } from './state/state/services/confirmation.service';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // helpers
-import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
@@ -96,7 +96,7 @@ export class ConfirmationModalComponent implements OnInit {
     }
 
     public formatDate(mod) {
-        return convertDateFromBackend(mod);
+        return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 
     public trackByIdentity = (index: number, _: any): number => index;

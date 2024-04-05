@@ -9,7 +9,7 @@ import { getIntegrationsColumnDefinition } from 'src/assets/utils/settings/integ
 import { IntegrationActiveQuery } from '../../state/settings-integration-state/integration-active.query';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',

@@ -22,11 +22,11 @@ import {
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // component
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
@@ -146,65 +146,61 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onCardActions(event: OwnerData): void {
-        if (event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM) {
+        if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    template: TableStringEnum.OWNER_3,
                     type: event.data.isSelected
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     svg: true,
                 }
             );
-        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        } else if (event.type === TableStringEnum.EDIT) {
             this.modalService.openModal(
                 OwnerModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    type: ConstantStringTableComponentsEnum.EDIT,
+                    type: TableStringEnum.EDIT,
                     selectedTab: this.selectedTab,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
-        ) {
+        } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.OWNER_3,
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    template: TableStringEnum.OWNER_3,
+                    type: TableStringEnum.DELETE,
                     svg: true,
                 }
             );
-        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRUCK) {
+        } else if (event.type === TableStringEnum.ADD_TRUCK) {
             this.modalService.setProjectionModal({
-                action: ConstantStringTableComponentsEnum.OPEN,
+                action: TableStringEnum.OPEN,
                 payload: {
                     key: null,
                     value: null,
                 },
                 component: TruckModalComponent,
-                size: ConstantStringTableComponentsEnum.SMALL,
-                closing: ConstantStringTableComponentsEnum.FASTEST,
+                size: TableStringEnum.SMALL,
+                closing: TableStringEnum.FASTEST,
             });
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.ADD_TRAILER
-        ) {
+        } else if (event.type === TableStringEnum.ADD_TRAILER) {
             this.modalService.setProjectionModal({
-                action: ConstantStringTableComponentsEnum.OPEN,
+                action: TableStringEnum.OPEN,
                 payload: {
                     key: null,
                     value: null,
                 },
                 component: TrailerModalComponent,
-                size: ConstantStringTableComponentsEnum.SMALL,
-                closing: ConstantStringTableComponentsEnum.FASTEST,
+                size: TableStringEnum.SMALL,
+                closing: TableStringEnum.FASTEST,
             });
         }
     }

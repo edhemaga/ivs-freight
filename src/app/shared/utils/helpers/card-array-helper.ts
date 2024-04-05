@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { CardDetails } from '../../models/card-table-data.model';
@@ -12,9 +12,10 @@ import { CardDetails } from '../../models/card-table-data.model';
 export class CardArrayHelper {
     static objectsWithDropDown(obj: CardDetails, ObjKey: string): string {
         if (ObjKey === 'items') {
-            const objWithItems = ObjKey.split(
-                ConstantStringTableComponentsEnum.DOT_1
-            ).reduce((acc, part) => acc && acc[part], obj);
+            const objWithItems = ObjKey.split(TableStringEnum.DOT_1).reduce(
+                (acc, part) => acc && acc[part],
+                obj
+            );
 
             if (Array.isArray(objWithItems)) {
                 const itemsHTML = objWithItems

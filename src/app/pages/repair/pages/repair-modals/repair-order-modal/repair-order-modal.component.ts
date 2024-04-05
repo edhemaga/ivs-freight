@@ -25,24 +25,19 @@ import { CommonModule } from '@angular/common';
 import moment from 'moment';
 
 // Helpers
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
 import { PriceCalculationArrayPipe } from './pipes/price-calculation-array.pipe';
 import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
-import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone.pipe';
+import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 
 // Services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DetailsDataService } from '../../../../../core/services/details-data/details-data.service';
-import { FormService } from '../../../../../core/services/form/form.service';
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { FormService } from 'src/app/shared/services/form.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 
 // Models
@@ -67,7 +62,7 @@ import {
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrder } from './utils/constants/repair-order.constant';
+import { RepairOrderConstants } from './utils/constants/repair-order.constant';
 
 // components
 import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
@@ -124,17 +119,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public selectedHeaderTab: number = 1;
 
     public headerTabs: RepairData[] = JSON.parse(
-        JSON.stringify(RepairOrder.HEADER_TABS)
+        JSON.stringify(RepairOrderConstants.HEADER_TABS)
     );
 
     public typeOfRepair: RepairData[] = JSON.parse(
-        JSON.stringify(RepairOrder.TYPE_OF_REPAIR)
+        JSON.stringify(RepairOrderConstants.TYPE_OF_REPAIR)
     );
 
     // Unit
     public labelsUnit: any[] = [];
     // Paid
-    public paid: { id: number; name: string }[] = RepairOrder.PAID;
+    public paid: { id: number; name: string }[] = RepairOrderConstants.PAID;
     public unitTrucks: any[] = [];
     public unitTrailers: any[] = [];
     public selectedUnit: any = null;
@@ -177,7 +172,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public selectedPayType: string;
     public descriptions: RepairSubtotal[] = [];
 
-    public repairTypes: RepairTypes[] = RepairOrder.REPAIR_TYPES;
+    public repairTypes: RepairTypes[] = RepairOrderConstants.REPAIR_TYPES;
     public isSelectedRepairType: RepairTypes = null;
 
     public total: number = 0;
@@ -915,7 +910,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             newData = {
                 ...form,
                 repairType: 'Bill',
-                date: convertDateToBackend(date),
+                date: MethodsCalculationsHelper.convertDateToBackend(date),
                 truckId:
                     this.repairOrderForm.get('unitType').value === 'Truck'
                         ? this.selectedUnit.id
@@ -927,7 +922,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 repairShopId: this.selectedRepairShop
                     ? this.selectedRepairShop.id
                     : null,
-                odometer: odometer ? convertThousanSepInNumber(odometer) : null,
+                odometer: odometer
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                          odometer
+                      )
+                    : null,
                 invoice: invoice,
                 serviceTypes: this.services.map((item) => {
                     return {
@@ -1074,7 +1073,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id: id,
                 ...form,
                 repairType: 'Bill',
-                date: convertDateToBackend(date),
+                date: MethodsCalculationsHelper.convertDateToBackend(date),
                 truckId:
                     this.repairOrderForm.get('unitType').value === 'Truck'
                         ? this.selectedUnit.id
@@ -1087,7 +1086,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     ? this.selectedRepairShop.id
                     : null,
                 odometer: odometer
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.repairOrderForm.get('odometer').value
                       )
                     : null,
@@ -1285,11 +1284,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             res.odometer &&
                             res.date &&
                             this.selectedHeaderTab === 2
-                                ? convertNumberInThousandSep(res.odometer)
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      res.odometer
+                                  )
                                 : null,
                         date:
                             res.date && this.selectedHeaderTab === 2
-                                ? convertDateFromBackend(res.date)
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
+                                      res.date
+                                  )
                                 : null,
                         invoice:
                             res.date && this.selectedHeaderTab === 2

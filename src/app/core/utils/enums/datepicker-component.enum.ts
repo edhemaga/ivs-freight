@@ -6,7 +6,6 @@ export enum CalendarLeftEnum {
 
 export enum CalendarMainEnum {
     FULL_SIZE = 182,
-    // UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
     CYCLE_HEIGHT = 100 * (12 * FULL_SIZE) + 50,
     CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 65,
 }

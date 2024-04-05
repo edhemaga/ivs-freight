@@ -32,8 +32,8 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // icon
-import { MapsService } from '../../../core/services/shared/maps.service';
-import { TruckassistTableService } from '../../../core/services/truckassist-table/truckassist-table.service';
+import { MapsService } from '../../services/maps.service';
+import { TruckassistTableService } from '../../services/truckassist-table.service';
 
 // component
 import { TaInputComponent } from '../ta-input/ta-input.component';

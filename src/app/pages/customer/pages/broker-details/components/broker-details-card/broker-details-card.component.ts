@@ -16,7 +16,7 @@ import { BrokerQuery } from '../../../../state/broker-state/broker.query';
 import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 //Services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { BrokerService } from '../../../../services/broker.service';
 
 //Models
@@ -39,7 +39,7 @@ import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.co
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 //Enums
-import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 import { BrokerTabStringEnum } from '../../enums/broker-tab-string.enum';
 
 @Component({
@@ -216,7 +216,7 @@ export class BrokerDetailsCardComponent
         );
 
         switch (action) {
-            case ArrowActionsEnum.PREVIOUS:
+            case ArrowActionsStringEnum.PREVIOUS:
                 currentIndex = --currentIndex;
 
                 if (currentIndex != -1) {
@@ -229,7 +229,7 @@ export class BrokerDetailsCardComponent
                     this.brokerIndex = currentIndex;
                 }
                 break;
-            case ArrowActionsEnum.NEXT:
+            case ArrowActionsStringEnum.NEXT:
                 currentIndex = ++currentIndex;
 
                 if (

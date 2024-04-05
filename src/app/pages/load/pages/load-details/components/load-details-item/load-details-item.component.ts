@@ -13,8 +13,7 @@ import { OnDestroy } from '@angular/core';
 import { UpdateCommentCommand } from 'appcoretruckassist';
 
 //Services
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { CommentsService } from 'src/app/shared/services/comments.service';
 
 //Components
 import { ReviewComment } from 'src/app/shared/models/review-comment.model';
@@ -34,10 +33,7 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     public totalLegTime: any;
     public status = null;
     public activePercntage: any;
-    constructor(
-        private commentsService: CommentsService,
-        private notificationService: NotificationService
-    ) {}
+    constructor(private commentsService: CommentsService) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.loadData.firstChange && changes.loadData.currentValue) {
             changes.loadData.currentValue[0].data;

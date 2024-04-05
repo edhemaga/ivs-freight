@@ -25,14 +25,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
 
 // Helpers
-import {
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // Services
-import { FormService } from '../../../../core/services/form/form.service';
-import { ReviewsRatingService } from '../../../../core/services/reviews-rating/reviewsRating.service';
+import { FormService } from '../../../../shared/services/form.service';
+import { ReviewsRatingService } from '../../../../shared/services/reviews-rating.service';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
@@ -1200,7 +1197,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         creditType: reasponse.creditType,
                         creditLimit:
                             reasponse.creditType.name === 'Custom'
-                                ? convertNumberInThousandSep(
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                       reasponse.creditLimit
                                   )
                                 : null,
@@ -1735,7 +1732,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         let limit = this.brokerForm.get('creditLimit').value;
 
         if (limit) {
-            limit = convertThousanSepInNumber(limit);
+            limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
             this.brokerService
                 .availableCreditBroker({
                     id: this.editData?.id ? this.editData.id : null,
@@ -1747,7 +1744,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.brokerForm
                             .get('creditLimit')
                             .patchValue(
-                                convertNumberInThousandSep(res.creditLimit)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    res.creditLimit
+                                )
                             );
 
                         this.brokerForm

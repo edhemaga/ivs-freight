@@ -1,12 +1,12 @@
-import { ConstantStringTableComponentsEnum } from "src/app/core/utils/enums/table-components.enum";
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 export interface CustomerUpdateRating {
-    actionAnimation: ConstantStringTableComponentsEnum;
+    actionAnimation: TableStringEnum;
     tableRaiting: {
         hasLiked: boolean;
         hasDislike: boolean;
-        likeCount: number | ConstantStringTableComponentsEnum;
-        dislikeCount: number | ConstantStringTableComponentsEnum;
+        likeCount: number | TableStringEnum;
+        dislikeCount: number | TableStringEnum;
     };
     id: number;
 }

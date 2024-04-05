@@ -32,12 +32,9 @@ import moment from 'moment';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
-import {
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { MethodsCalculationsHelper } from '../../utils/helpers/methods-calculations.helper';
+import { FormService } from '../../services/form.service';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
@@ -1616,30 +1613,41 @@ export class TaInputComponent
 
         switch (type) {
             case 'pm-increment-decrement': {
-                const value = convertThousanSepInNumber(
-                    this.getSuperControl.value
-                );
+                const value =
+                    MethodsCalculationsHelper.convertThousanSepInNumber(
+                        this.getSuperControl.value
+                    );
                 switch (action) {
                     case 'decrement': {
                         if (value >= 10000 && value < 20000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 1000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 1000
+                                )
                             );
                         } else if (value >= 20001 && value < 50000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 3000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 3000
+                                )
                             );
                         } else if (value >= 50001 && value < 100000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 5000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 5000
+                                )
                             );
                         } else if (value >= 10000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 10000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 10000
+                                )
                             );
                         } else if (value >= 1000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 500)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 500
+                                )
                             );
                         }
                         break;
@@ -1647,23 +1655,33 @@ export class TaInputComponent
                     case 'increment': {
                         if (value > 10000 && value < 20000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 1000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 1000
+                                )
                             );
                         } else if (value >= 20001 && value < 50000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 3000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 3000
+                                )
                             );
                         } else if (value >= 50001 && value < 100000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 5000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 5000
+                                )
                             );
                         } else if (value >= 10000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 10000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 10000
+                                )
                             );
                         } else {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 500)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 500
+                                )
                             );
                         }
                         break;

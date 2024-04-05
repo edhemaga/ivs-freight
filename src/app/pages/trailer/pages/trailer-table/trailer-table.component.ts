@@ -12,7 +12,7 @@ import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal
 // services
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
 
 // store
@@ -29,23 +29,18 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // animations
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 // configuration
 import { trailerCardDataConstants } from './utils/constants/trailer-card-data.constants';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
-import {
-    TooltipColors,
-    TrailerName,
-} from 'src/app/core/utils/enums/trailer-component.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TrailerNameStringEnum } from 'src/app/shared/enums/trailer-name-string.enum';
+import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-string,enum';
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
@@ -78,9 +73,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
-    public selectedTab: ConstantStringTableComponentsEnum | string =
-        ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab: TableStringEnum | string = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
@@ -151,7 +145,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === ConstantStringTableComponentsEnum.SET) {
+                    if (res.action === TableStringEnum.SET) {
                         this.viewData = this.trailerData?.filter(
                             (customerData) =>
                                 res.queryParams.some(
@@ -161,7 +155,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     }
 
-                    if (res.action === ConstantStringTableComponentsEnum.CLEAR)
+                    if (res.action === TableStringEnum.CLEAR)
                         this.viewData = this.trailerData;
                 }
             });
@@ -173,19 +167,19 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE: {
+                        case TableStringEnum.DELETE: {
                             this.deleteTrailerById(res.id);
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.ACTIVATE: {
+                        case TableStringEnum.ACTIVATE: {
                             this.changeTrailerStatus(res.id);
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
+                        case TableStringEnum.DEACTIVATE: {
                             this.changeTrailerStatus(res.id);
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
+                        case TableStringEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteTrailers(res.array);
                             break;
                         }
@@ -247,13 +241,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 // Add Trailer ACtive
-                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
+                if (res?.animation === TableStringEnum.ADD) {
                     this.viewData.push(this.mapTrailerData(res.data));
 
                     this.viewData = this.viewData.map((trailer: any) => {
                         if (trailer.id === res.id) {
-                            trailer.actionAnimation =
-                                ConstantStringTableComponentsEnum.ADD;
+                            trailer.actionAnimation = TableStringEnum.ADD;
                         }
 
                         return trailer;
@@ -262,60 +255,54 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
                 }
                 // Add Trailer Inactive
                 else if (
-                    res?.animation === ConstantStringTableComponentsEnum.ADD &&
-                    this.selectedTab ===
-                        ConstantStringTableComponentsEnum.INACTIVE
+                    res?.animation === TableStringEnum.ADD &&
+                    this.selectedTab === TableStringEnum.INACTIVE
                 ) {
                     this.updateDataCount();
                 }
                 // Update Trailer
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE) {
                     this.viewData = this.viewData.map((trailer: any) => {
                         if (trailer.id === res.id) {
                             trailer = this.mapTrailerData(res.data);
-                            trailer.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            trailer.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return trailer;
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
                 }
                 // Update Trailer Status
-                else if (
-                    res?.animation ===
-                    ConstantStringTableComponentsEnum.UPDATE_STATUS
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
                     let trailerIndex: number;
 
                     this.viewData = this.viewData.map(
                         (trailer: any, index: number) => {
                             if (trailer.id === res.id) {
                                 trailer.actionAnimation =
-                                    this.selectedTab ===
-                                    ConstantStringTableComponentsEnum.ACTIVE
-                                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                                        : ConstantStringTableComponentsEnum.ACTIVATE;
+                                    this.selectedTab === TableStringEnum.ACTIVE
+                                        ? TableStringEnum.DEACTIVATE
+                                        : TableStringEnum.ACTIVATE;
                                 trailerIndex = index;
                             }
 
@@ -326,10 +313,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(trailerIndex, 1);
                         clearInterval(inetval);
@@ -355,13 +343,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template:
-                                ConstantStringTableComponentsEnum.TRAILER_2,
-                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            template: TableStringEnum.TRAILER_2,
+                            type: TableStringEnum.MULTIPLE_DELETE,
                             svg: true,
                         }
                     );
@@ -375,24 +362,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res: any) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                            ? 1
-                            : 0;
+                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             this.trailerBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendTrailerData();
                         }
@@ -411,9 +394,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -423,16 +404,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showTrailerFilter: true,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -441,9 +418,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private sendTrailerData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.TRAILER_TAB_VIEW
-            )
+            localStorage.getItem(TableStringEnum.TRAILER_TAB_VIEW)
         );
 
         if (tableView) {
@@ -454,53 +429,43 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const trailerCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.TRAILER_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.TRAILER_TABLE_COUNT)
         );
 
         const truckActiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
         const truckInactiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+            this.selectedTab === TableStringEnum.INACTIVE
+                ? this.getTabData(TableStringEnum.INACTIVE)
                 : [];
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.ACTIVE_2,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.ACTIVE_2,
+                field: TableStringEnum.ACTIVE,
                 length: trailerCount.active,
                 data: truckActiveData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.TRAILER_3,
-                stateName: ConstantStringTableComponentsEnum.TRAILERS,
-                tableConfiguration: ConstantStringTableComponentsEnum.TRAILER_4,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.TRAILER_4
-                ),
+                gridNameTitle: TableStringEnum.TRAILER_3,
+                stateName: TableStringEnum.TRAILERS,
+                tableConfiguration: TableStringEnum.TRAILER_4,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.TRAILER_4),
             },
             {
-                title: ConstantStringTableComponentsEnum.INACTIVE_2,
-                field: ConstantStringTableComponentsEnum.INACTIVE,
+                title: TableStringEnum.INACTIVE_2,
+                field: TableStringEnum.INACTIVE,
                 length: trailerCount.inactive,
                 data: truckInactiveData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.TRAILER_3,
-                stateName: ConstantStringTableComponentsEnum.TRAILERS,
-                tableConfiguration: ConstantStringTableComponentsEnum.TRAILER_4,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.TRAILER_4
-                ),
+                gridNameTitle: TableStringEnum.TRAILER_3,
+                stateName: TableStringEnum.TRAILERS,
+                tableConfiguration: TableStringEnum.TRAILER_4,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.TRAILER_4),
             },
         ];
 
@@ -530,7 +495,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             // Set data for cards based on tab active
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFrontActive),
                   (this.sendDataToCardsBack = this.displayRowsBackActive))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
@@ -544,34 +509,34 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTrailerTooltipColor(trailerName: string): string {
-        if (trailerName === TrailerName.REEFER) {
-            return TooltipColors.BLUE;
-        } else if (trailerName === TrailerName.DRY_VAN) {
-            return TooltipColors.DARK_BLUE;
-        } else if (trailerName === TrailerName.DUMPER) {
-            return TooltipColors.PURPLE;
-        } else if (trailerName === TrailerName.TANKER) {
-            return TooltipColors.GREEN;
-        } else if (trailerName === TrailerName.PNEUMATIC_TANKER) {
-            return TooltipColors.LIGHT_GREEN;
-        } else if (trailerName === TrailerName.CAR_HAULER) {
-            return TooltipColors.PINK;
-        } else if (trailerName === TrailerName.CAR_HAULER_STINGER) {
-            return TooltipColors.PINK;
-        } else if (trailerName === TrailerName.CHASSIS) {
-            return TooltipColors.BROWN;
-        } else if (trailerName === TrailerName.LOW_BOY_RGN) {
-            return TooltipColors.RED;
-        } else if (trailerName === TrailerName.STEP_DECK) {
-            return TooltipColors.RED;
-        } else if (trailerName === TrailerName.FLAT_BED) {
-            return TooltipColors.RED;
-        } else if (trailerName === TrailerName.SIDE_KIT) {
-            return TooltipColors.ORANGE;
-        } else if (trailerName === TrailerName.CONESTOGA) {
-            return TooltipColors.GOLD;
-        } else if (trailerName === TrailerName.CONTAINER) {
-            return TooltipColors.YELLOW;
+        if (trailerName === TrailerNameStringEnum.REEFER) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
+            return TooltipColorsStringEnum.DARK_BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (trailerName === TrailerNameStringEnum.TANKER) {
+            return TooltipColorsStringEnum.GREEN;
+        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
+            return TooltipColorsStringEnum.BROWN;
+        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
+            return TooltipColorsStringEnum.ORANGE;
+        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
+            return TooltipColorsStringEnum.GOLD;
+        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
+            return TooltipColorsStringEnum.YELLOW;
         }
     }
 
@@ -587,67 +552,66 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableVin: {
                 regularText: data?.vin
                     ? data.vin.substr(0, data.vin.length - 6)
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 boldText: data?.vin
                     ? data.vin.substr(data.vin.length - 6)
-                    : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             tableTrailerTypeClass: data.trailerType.logoName.replace(
-                ConstantStringTableComponentsEnum.SVG,
-                ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                TableStringEnum.SVG,
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER
             ),
             tableMake: data?.trailerMake?.name
                 ? data.trailerMake.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableModel: data?.model
                 ? data?.model
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableColor: data?.color?.code
                 ? data.color.code
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             colorName: data?.color?.name
                 ? data.color.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelLength: data?.trailerLength?.name
                 ? DataFilterHelper.getLengthNumber(data?.trailerLength?.name)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriver: ConstantStringTableComponentsEnum.NA,
-            tableTruck: ConstantStringTableComponentsEnum.NA,
-            tableTruckType: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriver: TableStringEnum.NA,
+            tableTruck: TableStringEnum.NA,
+            tableTruckType: TableStringEnum.NA,
             tableOwner: data?.owner?.name
                 ? data.owner.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableWeightEmpty: data?.emptyWeight
                 ? this.thousandSeparator.transform(data.emptyWeight) +
-                  ConstantStringTableComponentsEnum.POUNDS_2
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWeightVolume:
-                data.volume ?? ConstantStringTableComponentsEnum.NA,
+                  TableStringEnum.POUNDS_2
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableWeightVolume: data.volume ?? TableStringEnum.NA,
             tableAxle: data?.axles
                 ? data?.axles
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableSuspension: data?.suspension?.name
                 ? data.suspension.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTireSize: data?.tireSize?.name
                 ? data.tireSize.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableReeferUnit: data?.reeferUnit?.name
                 ? data.reeferUnit.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableDoorType: data?.doorType?.name
                 ? data.doorType.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableInsPolicy: data?.insurancePolicy
                 ? data.insurancePolicy
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailST: TableStringEnum.NA,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays
@@ -664,8 +628,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : null,
             },
             tableFHWAInspectionTerm: data?.fhwaExp
-                ? data?.fhwaExp + ConstantStringTableComponentsEnum.MONTHS
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data?.fhwaExp + TableStringEnum.MONTHS
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableFHWAInspectionExpiration: {
                 expirationDays: data?.inspectionExpirationDays
                     ? data.inspectionExpirationDays
@@ -681,33 +645,33 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber: ConstantStringTableComponentsEnum.NA,
-            tableTitleST: ConstantStringTableComponentsEnum.NA,
-            tableTitlePurchase: ConstantStringTableComponentsEnum.NA,
-            tableTitleIssued: ConstantStringTableComponentsEnum.NA,
+            tableTitleNumber: TableStringEnum.NA,
+            tableTitleST: TableStringEnum.NA,
+            tableTitlePurchase: TableStringEnum.NA,
+            tableTitleIssued: TableStringEnum.NA,
             tablePurchaseDate: data.purchaseDate
                 ? this.datePipe.transform(
                       data.purchaseDate,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePurchasePrice: data?.purchasePrice
-                ? ConstantStringTableComponentsEnum.DOLLAR_SIGN +
+                ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.purchasePrice)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTerminated: ConstantStringTableComponentsEnum.NA,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTerminated: TableStringEnum.NA,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
                       data.updatedAt,
-                      ConstantStringTableComponentsEnum.DATE_FORMAT
+                      TableStringEnum.DATE_FORMAT
                   )
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
@@ -721,116 +685,112 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public getDropdownTrailerContent(): DropdownItem[] {
         return [
             {
-                title: ConstantStringTableComponentsEnum.EDIT_2,
-                name: ConstantStringTableComponentsEnum.EDIT_TRAILER,
+                title: TableStringEnum.EDIT_2,
+                name: TableStringEnum.EDIT_TRAILER,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 hasBorder: true,
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
             },
             {
-                title: ConstantStringTableComponentsEnum.VIEW_DETAILS_2,
-                name: ConstantStringTableComponentsEnum.VIEW_DETAILS,
+                title: TableStringEnum.VIEW_DETAILS_2,
+                name: TableStringEnum.VIEW_DETAILS,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: ConstantStringTableComponentsEnum.ADD_NEW_2,
-                name: ConstantStringTableComponentsEnum.ADD_NEW,
+                title: TableStringEnum.ADD_NEW_2,
+                name: TableStringEnum.ADD_NEW,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
                     width: 15,
                     height: 15,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: ConstantStringTableComponentsEnum.ADD_REGISTRATION_2,
-                        name: ConstantStringTableComponentsEnum.ADD_REGISTRATION,
+                        title: TableStringEnum.ADD_REGISTRATION_2,
+                        name: TableStringEnum.ADD_REGISTRATION,
                     },
 
                     {
-                        title: ConstantStringTableComponentsEnum.ADD_INSPECTION_2,
-                        name: ConstantStringTableComponentsEnum.ADD_INSPECTION,
+                        title: TableStringEnum.ADD_INSPECTION_2,
+                        name: TableStringEnum.ADD_INSPECTION,
                     },
                 ],
                 hasBorder: true,
             },
             {
-                title: ConstantStringTableComponentsEnum.SHARE_2,
-                name: ConstantStringTableComponentsEnum.SHARE,
+                title: TableStringEnum.SHARE_2,
+                name: TableStringEnum.SHARE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: ConstantStringTableComponentsEnum.PRINT_2,
-                name: ConstantStringTableComponentsEnum.PRINT,
+                title: TableStringEnum.PRINT_2,
+                name: TableStringEnum.PRINT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
 
-                svgClass: ConstantStringTableComponentsEnum.REGULAR,
+                svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
             },
             {
                 title:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE_2
-                        : ConstantStringTableComponentsEnum.ACTIVATE_2,
-                name: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+                    this.selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE_2
+                        : TableStringEnum.ACTIVATE_2,
+                name: TableStringEnum.ACTIVATE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
                 svgClass:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                    this.selectedTab === TableStringEnum.ACTIVE
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
             },
             {
-                title: ConstantStringTableComponentsEnum.DELETE_2,
-                name: ConstantStringTableComponentsEnum.DELETE_ITEM,
+                title: TableStringEnum.DELETE_2,
+                name: TableStringEnum.DELETE_ITEM,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: ConstantStringTableComponentsEnum.DELETE,
+                svgClass: TableStringEnum.DELETE,
             },
         ];
     }
 
     private updateDataCount(): void {
         const truckCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.TRAILER_TABLE_COUNT
-            )
+            localStorage.getItem(TableStringEnum.TRAILER_TABLE_COUNT)
         );
 
         this.tableData[0].length = truckCount.active;
@@ -845,11 +805,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getTabData(dataType: string): TrailerActiveState[] {
-        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (dataType === TableStringEnum.ACTIVE) {
             this.trailerActive = this.trailerActiveQuery.getAll();
 
             return this.trailerActive?.length ? this.trailerActive : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
+        } else if (dataType === TableStringEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.trailerInactive = this.trailerInactiveQuery.getAll();
@@ -904,26 +864,21 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onToolBarAction(event: ToolbarActions): void {
         // Open Modal
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TrailerModalComponent, {
-                size: ConstantStringTableComponentsEnum.SMALL,
+                size: TableStringEnum.SMALL,
             });
         }
         // Select Tab
-        else if (
-            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
-        ) {
+        else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
             this.backFilterQuery.active =
-                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                    ? 1
-                    : 0;
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
             if (
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE &&
+                this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
                 this.trailerService
@@ -940,11 +895,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
         // View Mode
-        else if (event.action === ConstantStringTableComponentsEnum.VIEW_MODE) {
+        else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
-        ) {
+        } else if (event.action === TableStringEnum.ACTIVATE_ITEM) {
             let status = false;
             let mappedEvent = [];
             this.viewData.map((data) => {
@@ -964,14 +917,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
-                    template: ConstantStringTableComponentsEnum.TRAILER_2,
+                    template: TableStringEnum.TRAILER_2,
                     type: status
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     svg: true,
                 }
             );
@@ -982,13 +935,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         action: string;
         direction: string;
     }): void {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.active =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 0;
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                 this.backFilterQuery.sort = event.direction;
                 this.backFilterQuery.pageIndex = 1;
 
@@ -1010,82 +960,79 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         switch (event.type) {
-            case ConstantStringTableComponentsEnum.SHOW_MORE: {
+            case TableStringEnum.SHOW_MORE: {
                 this.backFilterQuery.active =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 0;
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                 this.backFilterQuery.pageIndex++;
 
                 this.trailerBackFilter(this.backFilterQuery, true);
                 break;
             }
-            case ConstantStringTableComponentsEnum.VIEW_DETAILS: {
+            case TableStringEnum.VIEW_DETAILS: {
                 this.router.navigate([`/list/trailer/${event.id}/details`]);
                 break;
             }
-            case ConstantStringTableComponentsEnum.EDIT_TRAILER: {
+            case TableStringEnum.EDIT_TRAILER: {
                 this.modalService.openModal(
                     TrailerModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: ConstantStringTableComponentsEnum.EDIT,
+                        type: TableStringEnum.EDIT,
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.ADD_REGISTRATION: {
+            case TableStringEnum.ADD_REGISTRATION: {
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        modal: ConstantStringTableComponentsEnum.TRAILER_2,
+                        modal: TableStringEnum.TRAILER_2,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.ADD_INSPECTION: {
+            case TableStringEnum.ADD_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        modal: ConstantStringTableComponentsEnum.TRAILER_2,
+                        modal: TableStringEnum.TRAILER_2,
                         tabSelected: this.selectedTab,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.ACTIVATE_ITEM: {
+            case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: ConstantStringTableComponentsEnum.TRAILER_2,
+                        template: TableStringEnum.TRAILER_2,
                         type:
                             event.data.status === 1
-                                ? ConstantStringTableComponentsEnum.DEACTIVATE
-                                : ConstantStringTableComponentsEnum.ACTIVATE,
+                                ? TableStringEnum.DEACTIVATE
+                                : TableStringEnum.ACTIVATE,
                         svg: true,
                     }
                 );
                 break;
             }
-            case ConstantStringTableComponentsEnum.DELETE_ITEM: {
+            case TableStringEnum.DELETE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: ConstantStringTableComponentsEnum.SMALL },
+                    { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: ConstantStringTableComponentsEnum.TRAILER_2,
-                        type: ConstantStringTableComponentsEnum.DELETE,
+                        template: TableStringEnum.TRAILER_2,
+                        type: TableStringEnum.DELETE,
                         svg: true,
                     }
                 );
@@ -1109,7 +1056,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Show More Data
     public onShowMore(): void {
         this.onTableBodyActions({
-            type: ConstantStringTableComponentsEnum.SHOW_MORE,
+            type: TableStringEnum.SHOW_MORE,
         });
     }
 
@@ -1128,8 +1075,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: () => {
                     this.viewData = this.viewData.map((trailer) => {
                         if (trailer.id === id) {
-                            trailer.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE;
+                            trailer.actionAnimation = TableStringEnum.DELETE;
                         }
 
                         return trailer;
@@ -1138,10 +1084,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -1156,28 +1103,26 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 let trailerNumber: string =
-                    ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
-                let trailersText: string =
-                    ConstantStringTableComponentsEnum.TRAILER;
+                    TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+                let trailersText: string = TableStringEnum.TRAILER;
 
                 this.viewData = this.viewData.map((trailer) => {
                     response.map((id) => {
                         if (trailer.id === id) {
                             trailer.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                                TableStringEnum.DELETE_MULTIPLE;
 
                             if (
                                 trailerNumber ==
-                                ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER
+                                TableStringEnum.EMPTY_STRING_PLACEHOLDER
                             ) {
                                 trailerNumber = trailer.trailerNumber;
                             } else {
                                 trailerNumber =
                                     trailerNumber +
-                                    ConstantStringTableComponentsEnum.COMA +
+                                    TableStringEnum.COMA +
                                     trailer.trailerNumber;
-                                trailersText =
-                                    ConstantStringTableComponentsEnum.TRAILER;
+                                trailersText = TableStringEnum.TRAILER;
                             }
                         }
                     });
@@ -1187,10 +1132,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
 
-                trailerNumber =
-                    ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+                trailerNumber = TableStringEnum.EMPTY_STRING_PLACEHOLDER;
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);
@@ -1202,9 +1149,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
-        // );
+
         this.resizeObserver.disconnect();
         this.destroy$.next();
         this.destroy$.complete();

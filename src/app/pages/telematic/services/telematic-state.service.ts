@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { takeUntil, Subject, tap, of } from 'rxjs';
 
 // Services
-import { GpsServiceService } from 'src/app/core/services/gps/gps-service.service';
+import { GpsService } from 'src/app/pages/telematic/services/gps-service.service';
 
 // Models
 import {
@@ -18,7 +18,7 @@ export class TelematicStateService implements OnDestroy {
 
     constructor(
         // Services
-        private gpsService: GpsServiceService,
+        private gpsService: GpsService,
         private telematicsService: TelematicsService
     ) {}
 

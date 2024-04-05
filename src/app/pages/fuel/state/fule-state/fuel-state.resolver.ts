@@ -4,7 +4,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { FuelService } from '../../../../shared/services/fuel.service';
 
 //Store
@@ -59,37 +59,49 @@ export class FuelResolver implements Resolve<FuelState> {
             this.tableService.getTableConfig(15),
             this.tableService.getTableConfig(16),
         ]).pipe(
-            tap(([fuelTransactions, fuelStops, tableConfigTransactions, tableConfigStops]) => {
-                localStorage.setItem(
-                    'fuelTableCount',
-                    JSON.stringify({
-                        fuelTransactions: fuelTransactions.fuelTransactionCount,
-                        fuelStops: fuelStops.fuelStopCount,
-                        fuelCard: fuelStops.fuelCardCount
-                    })
-                );
-
-                if (tableConfigTransactions) {
-                    const config = JSON.parse(tableConfigTransactions.config);
-
+            tap(
+                ([
+                    fuelTransactions,
+                    fuelStops,
+                    tableConfigTransactions,
+                    tableConfigStops,
+                ]) => {
                     localStorage.setItem(
-                        `table-${tableConfigTransactions.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'fuelTableCount',
+                        JSON.stringify({
+                            fuelTransactions:
+                                fuelTransactions.fuelTransactionCount,
+                            fuelStops: fuelStops.fuelStopCount,
+                            fuelCard: fuelStops.fuelCardCount,
+                        })
                     );
+
+                    if (tableConfigTransactions) {
+                        const config = JSON.parse(
+                            tableConfigTransactions.config
+                        );
+
+                        localStorage.setItem(
+                            `table-${tableConfigTransactions.tableType}-Configuration`,
+                            JSON.stringify(config)
+                        );
+                    }
+
+                    if (tableConfigStops) {
+                        const config = JSON.parse(tableConfigStops.config);
+
+                        localStorage.setItem(
+                            `table-${tableConfigStops.tableType}-Configuration`,
+                            JSON.stringify(config)
+                        );
+                    }
+
+                    this.fuelService.updateStoreFuelTransactionsList =
+                        fuelTransactions.pagination.data;
+                    this.fuelService.updateStoreFuelStopList =
+                        fuelStops.pagination.data;
                 }
-
-                if (tableConfigStops) {
-                    const config = JSON.parse(tableConfigStops.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfigStops.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
-
-                this.fuelService.updateStoreFuelTransactionsList = fuelTransactions.pagination.data;
-                this.fuelService.updateStoreFuelStopList = fuelStops.pagination.data;
-            })
+            )
         );
     }
 }

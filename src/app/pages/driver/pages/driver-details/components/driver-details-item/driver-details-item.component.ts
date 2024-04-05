@@ -14,8 +14,8 @@ import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
 //Services
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
@@ -41,10 +41,9 @@ import {
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Helpers
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { Titles } from 'src/app/core/utils/application.decorators';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 @Titles()
 @Component({
@@ -481,7 +480,10 @@ export class DriverDetailsItemComponent
     }
 
     public optionsEvent(eventData: any, action: string) {
-        const name = dropActionNameDriver(eventData, action);
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            action
+        );
         let driverId = this.drivers[0].data.id;
         let dataCdls: any = [];
 
@@ -645,12 +647,8 @@ export class DriverDetailsItemComponent
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
 
-    public onFileAction(action: string) {
-        onFileActionMethods(action);
-    }
-
     public formatDate(mod) {
-        return convertDateFromBackend(mod);
+        return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 
     ngOnDestroy(): void {

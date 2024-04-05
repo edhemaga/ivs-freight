@@ -16,7 +16,7 @@ import { DriverService } from 'src/app/pages/driver/services/driver.service';
 import { DriverMedicalService } from 'src/app/pages/driver/services/driver-medical.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -31,10 +31,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 
 //Helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-driver-medical-modal',
@@ -203,8 +200,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         });
         const newData: any = {
             id: this.editData.file_id,
-            issueDate: convertDateToBackend(issueDate),
-            expDate: convertDateToBackend(expDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             note: note,
             files: documents ? documents : this.medicalForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -244,8 +242,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id
                 : this.editData.id,
-            issueDate: convertDateToBackend(issueDate),
-            expDate: convertDateToBackend(expDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             note: note,
             tableActiveTab: this.editData.tableActiveTab,
             files: documents,
@@ -279,8 +278,14 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: MedicalResponse) => {
                     this.medicalForm.patchValue({
-                        issueDate: convertDateFromBackend(res.issueDate),
-                        expDate: convertDateFromBackend(res.expDate),
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
+                        expDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.expDate
+                            ),
                         note: res.note,
                         files: res.files.length
                             ? JSON.stringify(res.files)

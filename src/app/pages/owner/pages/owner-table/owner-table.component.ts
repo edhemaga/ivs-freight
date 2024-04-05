@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-// Modules
 
 // Components
 import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
@@ -10,10 +9,6 @@ import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal
 
 // Models
 import { GetOwnerListResponse } from 'appcoretruckassist';
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
 import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import {
     CardDetails,
@@ -30,7 +25,7 @@ import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { OwnerService } from '../../services/owner.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 
 // Store
@@ -43,17 +38,18 @@ import {
 } from '../../state/owner-inactive-state/owner-inactive.store';
 
 //Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // Pipes
 import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
 
 //Constants
-import { TableDropdownComponentConstants } from 'src/app/core/utils/constants/table-components.constants';
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 import { OwnerConfiguration } from './utils/constants/owner-configuration.constants';
 
-//helpers
+// helpers
 import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-owner-table',
@@ -68,8 +64,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     private viewData: any[] = [];
     public columns: GridColumn[] = [];
-    public selectedTab: string = ConstantStringTableComponentsEnum.ACTIVE;
-    public activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    public selectedTab: string = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
     private resizeObserver: ResizeObserver;
     private ownerActive: OwnerActiveState[] = [];
     private ownerInactive: OwnerInactiveState[] = [];
@@ -169,20 +165,20 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res.type) {
-                    case ConstantStringTableComponentsEnum.DELETE:
+                    case TableStringEnum.DELETE:
                         this.deleteOwnerById(res.id ?? res.array[0].id);
                         break;
 
-                    case ConstantStringTableComponentsEnum.ACTIVATE:
+                    case TableStringEnum.ACTIVATE:
                         if (res.id) this.changeOwnerStatus(res.id);
                         else this.changeOwnerStatusList(res.array);
                         break;
 
-                    case ConstantStringTableComponentsEnum.DEACTIVATE:
+                    case TableStringEnum.DEACTIVATE:
                         if (res.id) this.changeOwnerStatus(res.id);
                         else this.changeOwnerStatusList(res.array);
                         break;
-                    case ConstantStringTableComponentsEnum.MULTIPLE_DELETE:
+                    case TableStringEnum.MULTIPLE_DELETE:
                         this.deleteOwnerList(res.array);
                         break;
                     default:
@@ -209,8 +205,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(() => {
                 this.viewData = this.viewData.map((owner) => {
                     if (owner.id === id)
-                        owner.actionAnimation =
-                            ConstantStringTableComponentsEnum.DELETE;
+                        owner.actionAnimation = TableStringEnum.DELETE;
 
                     return owner;
                 });
@@ -218,7 +213,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.sendOwnerData();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(interval);
                 }, 900);
@@ -249,23 +247,19 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                            ? 1
-                            : 0;
+                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             this.ownerBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendOwnerData();
                         }
@@ -281,57 +275,44 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     this.backFilterQuery.active =
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.ACTIVE
-                            ? 1
-                            : 0;
+                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.backFilterQuery.pageIndex = 1;
                     // TruckTypeFilter
                     if (
-                        res?.filterType ===
-                            ConstantStringTableComponentsEnum.TRUCK_TYPE_FILTER ||
-                        res?.type ===
-                            ConstantStringTableComponentsEnum.TRUCK_TYPE_FILTER
+                        res?.filterType === TableStringEnum.TRUCK_TYPE_FILTER ||
+                        res?.type === TableStringEnum.TRUCK_TYPE_FILTER
                     ) {
                         this.backFilterQuery.truckTypeIds =
-                            res?.action ===
-                            ConstantStringTableComponentsEnum.SET
+                            res?.action === TableStringEnum.SET
                                 ? res?.queryParams
                                 : undefined;
                     }
                     // TrailerTypeFilter
                     else if (
                         res?.filterType ===
-                            ConstantStringTableComponentsEnum.TRAILER_TYPE_FILTER ||
-                        res?.type ===
-                            ConstantStringTableComponentsEnum.TRAILER_TYPE_FILTER
+                            TableStringEnum.TRAILER_TYPE_FILTER ||
+                        res?.type === TableStringEnum.TRAILER_TYPE_FILTER
                     ) {
                         this.backFilterQuery.trailerTypeIds =
-                            res?.action ===
-                            ConstantStringTableComponentsEnum.SET
+                            res?.action === TableStringEnum.SET
                                 ? res?.queryParams
                                 : undefined;
                     }
                     // LocationFilter
                     else if (
-                        res?.filterType ===
-                            ConstantStringTableComponentsEnum.LOCATION_FILTER ||
-                        res?.type ===
-                            ConstantStringTableComponentsEnum.LOCATION_FILTER
+                        res?.filterType === TableStringEnum.LOCATION_FILTER ||
+                        res?.type === TableStringEnum.LOCATION_FILTER
                     ) {
                         this.backFilterQuery.lat =
-                            res?.action ===
-                            ConstantStringTableComponentsEnum.SET
+                            res?.action === TableStringEnum.SET
                                 ? res.queryParams.latValue
                                 : undefined;
                         this.backFilterQuery.long =
-                            res?.action ===
-                            ConstantStringTableComponentsEnum.SET
+                            res?.action === TableStringEnum.SET
                                 ? res?.queryParams.longValue
                                 : undefined;
                         this.backFilterQuery.distance =
-                            res?.action ===
-                            ConstantStringTableComponentsEnum.SET
+                            res?.action === TableStringEnum.SET
                                 ? res?.queryParams.rangeValue
                                 : undefined;
                     }
@@ -367,15 +348,15 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: ConstantStringTableComponentsEnum.OWNER_3,
+                            template: TableStringEnum.OWNER_3,
                             type:
                                 mappedRes?.length > 1
-                                    ? ConstantStringTableComponentsEnum.MULTIPLE_DELETE
-                                    : ConstantStringTableComponentsEnum.DELETE,
+                                    ? TableStringEnum.MULTIPLE_DELETE
+                                    : TableStringEnum.DELETE,
                             svg: true,
                         }
                     );
@@ -392,7 +373,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ids.map((id) => {
                         if (fuel.id === id)
                             fuel.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                                TableStringEnum.DELETE_MULTIPLE;
                     });
 
                     return fuel;
@@ -401,7 +382,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
                     this.tableData[0].data = this.viewData;
 
                     clearInterval(interval);
@@ -419,27 +403,24 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 // Add Owner
 
-                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
-                    if (
-                        this.selectedTab ===
-                        ConstantStringTableComponentsEnum.INACTIVE
-                    ) {
+                if (res?.animation === TableStringEnum.ADD) {
+                    if (this.selectedTab === TableStringEnum.INACTIVE) {
                         this.viewData.push(this.mapOwnerData(res.data));
 
                         this.viewData = this.viewData.map((owner) => {
                             if (owner.id === res.id) {
-                                owner.actionAnimation =
-                                    ConstantStringTableComponentsEnum.ADD;
+                                owner.actionAnimation = TableStringEnum.ADD;
                             }
 
                             return owner;
                         });
 
                         const inetval = setInterval(() => {
-                            this.viewData = closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
+                            this.viewData =
+                                MethodsGlobalHelper.closeAnimationAction(
+                                    false,
+                                    this.viewData
+                                );
 
                             clearInterval(inetval);
                         }, 2300);
@@ -450,8 +431,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // Update Owner
                 else if (
-                    res?.animation ===
-                        ConstantStringTableComponentsEnum.UPDATE &&
+                    res?.animation === TableStringEnum.UPDATE &&
                     this.selectedTab === res.tab
                 ) {
                     const updatedOwner = this.mapOwnerData(res.data);
@@ -459,27 +439,25 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((owner) => {
                         if (owner.id === res.id) {
                             owner = updatedOwner;
-                            owner.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            owner.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return owner;
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
                 }
 
                 // Delete Owner
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.DELETE
-                ) {
+                else if (res?.animation === TableStringEnum.DELETE) {
                     if (this.selectedTab === res.tab) {
                         let ownerIndex: number;
 
@@ -487,7 +465,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             (owner: any, index: number) => {
                                 if (owner.id === res.id) {
                                     owner.actionAnimation =
-                                        ConstantStringTableComponentsEnum.DELETE;
+                                        TableStringEnum.DELETE;
                                     ownerIndex = index;
                                 }
 
@@ -496,10 +474,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
 
                         const inetval = setInterval(() => {
-                            this.viewData = closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
+                            this.viewData =
+                                MethodsGlobalHelper.closeAnimationAction(
+                                    false,
+                                    this.viewData
+                                );
 
                             this.viewData.splice(ownerIndex, 1);
                             clearInterval(inetval);
@@ -521,9 +500,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver.observe(
-            document.querySelector(
-                ConstantStringTableComponentsEnum.TABLE_CONTAINER
-            )
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -534,16 +511,12 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hideActivationButton: true,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -552,9 +525,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private sendOwnerData(): void {
         const tableView = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.OWNER_TABLE_VIEW
-            )
+            localStorage.getItem(TableStringEnum.OWNER_TABLE_VIEW)
         );
 
         if (tableView) {
@@ -565,53 +536,43 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initTableOptions();
 
         const ownerCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.OWNER_TABLE_COUNTE
-            )
+            localStorage.getItem(TableStringEnum.OWNER_TABLE_COUNTE)
         );
 
         const ownerActiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.ACTIVE)
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
         const ownerInactiveData =
-            this.selectedTab === ConstantStringTableComponentsEnum.INACTIVE
-                ? this.getTabData(ConstantStringTableComponentsEnum.INACTIVE)
+            this.selectedTab === TableStringEnum.INACTIVE
+                ? this.getTabData(TableStringEnum.INACTIVE)
                 : [];
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.ACTIVE_2,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.ACTIVE_2,
+                field: TableStringEnum.ACTIVE,
                 length: ownerCount.active,
                 data: ownerActiveData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.OWNER,
-                stateName: ConstantStringTableComponentsEnum.OWNERS,
-                tableConfiguration: ConstantStringTableComponentsEnum.OWNER_2,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.OWNER_2
-                ),
+                gridNameTitle: TableStringEnum.OWNER,
+                stateName: TableStringEnum.OWNERS,
+                tableConfiguration: TableStringEnum.OWNER_2,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.OWNER_2),
             },
             {
-                title: ConstantStringTableComponentsEnum.INACTIVE_2,
-                field: ConstantStringTableComponentsEnum.INACTIVE,
+                title: TableStringEnum.INACTIVE_2,
+                field: TableStringEnum.INACTIVE,
                 length: ownerCount.inactive,
                 data: ownerInactiveData,
                 extended: false,
-                gridNameTitle: ConstantStringTableComponentsEnum.OWNER,
-                stateName: ConstantStringTableComponentsEnum.OWNERS,
-                tableConfiguration: ConstantStringTableComponentsEnum.OWNER_2,
-                isActive:
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.OWNER_2
-                ),
+                gridNameTitle: TableStringEnum.OWNER,
+                stateName: TableStringEnum.OWNERS,
+                tableConfiguration: TableStringEnum.OWNER_2,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.OWNER_2),
             },
         ];
 
@@ -622,9 +583,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private updateDataCount(): void {
         const ownerCount = JSON.parse(
-            localStorage.getItem(
-                ConstantStringTableComponentsEnum.OWNER_TABLE_COUNTE
-            )
+            localStorage.getItem(TableStringEnum.OWNER_TABLE_COUNTE)
         );
 
         const updatedTableData = [...this.tableData];
@@ -656,7 +615,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             // Set data for cards based on tab active
-            this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
+            this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),
                   (this.sendDataToCardsBack = this.displayRowsBack))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
@@ -672,16 +631,16 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isSelected: false,
             textType: data?.ownerType?.name
                 ? data.ownerType.name
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textPhone: data?.phone
                 ? this.phonePipe.transform(data.phone)
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textAddress: data?.address
                 ? data.address
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textBankName: data?.bankName
                 ? data.bankName
-                : ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
@@ -695,11 +654,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getTabData(dataType: string) {
-        if (dataType === ConstantStringTableComponentsEnum.ACTIVE) {
+        if (dataType === TableStringEnum.ACTIVE) {
             this.ownerActive = this.ownerActiveQuery.getAll();
 
             return this.ownerActive?.length ? this.ownerActive : [];
-        } else if (dataType === ConstantStringTableComponentsEnum.INACTIVE) {
+        } else if (dataType === TableStringEnum.INACTIVE) {
             this.inactiveTabClicked = true;
 
             this.ownerInactive = this.ownerInactiveQuery.getAll();
@@ -748,24 +707,19 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onToolBarAction(event: ToolbarActions): void {
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(OwnerModalComponent, {
-                size: ConstantStringTableComponentsEnum.SMALL,
+                size: TableStringEnum.SMALL,
             });
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.TAB_SELECTED
-        ) {
+        } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
             this.backFilterQuery.active =
-                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                    ? 1
-                    : 0;
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
             if (
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.INACTIVE &&
+                this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
                 this.ownerService
@@ -791,13 +745,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendOwnerData();
             }
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
-        ) {
+        } else if (event.action === TableStringEnum.ACTIVATE_ITEM) {
             let status = false;
             const mappedEvent = [];
             this.viewData.map((data) => {
@@ -815,14 +765,14 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
-                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    template: TableStringEnum.OWNER_3,
                     type: status
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     svg: true,
                 }
             );
@@ -833,13 +783,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         action: string;
         direction: string;
     }): void {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.active =
-                    this.selectedTab ===
-                    ConstantStringTableComponentsEnum.ACTIVE
-                        ? 1
-                        : 0;
+                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                 this.backFilterQuery.pageIndex = 1;
                 this.backFilterQuery.sort = event.direction;
 
@@ -851,75 +798,67 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onTableBodyActions(event: OwnerData): void {
-        if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
+        if (event.type === TableStringEnum.SHOW_MORE) {
             this.backFilterQuery.active =
-                this.selectedTab === ConstantStringTableComponentsEnum.ACTIVE
-                    ? 1
-                    : 0;
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.backFilterQuery.pageIndex++;
 
             this.ownerBackFilter(this.backFilterQuery, true);
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.ACTIVATE_ITEM
-        ) {
+        } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.OWNER_3,
+                    template: TableStringEnum.OWNER_3,
                     type: event.data.isSelected
-                        ? ConstantStringTableComponentsEnum.DEACTIVATE
-                        : ConstantStringTableComponentsEnum.ACTIVATE,
+                        ? TableStringEnum.DEACTIVATE
+                        : TableStringEnum.ACTIVATE,
                     svg: true,
                 }
             );
-        } else if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        } else if (event.type === TableStringEnum.EDIT) {
             this.modalService.openModal(
                 OwnerModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    type: ConstantStringTableComponentsEnum.EDIT,
+                    type: TableStringEnum.EDIT,
                     selectedTab: this.selectedTab,
                 }
             );
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.DELETE_ITEM
-        ) {
+        } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    template: ConstantStringTableComponentsEnum.OWNER_3,
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    template: TableStringEnum.OWNER_3,
+                    type: TableStringEnum.DELETE,
                     svg: true,
                 }
             );
-        } else if (event.type === ConstantStringTableComponentsEnum.ADD_TRUCK) {
+        } else if (event.type === TableStringEnum.ADD_TRUCK) {
             this.modalService.setProjectionModal({
-                action: ConstantStringTableComponentsEnum.OPEN,
+                action: TableStringEnum.OPEN,
                 payload: {
                     key: null,
                     value: null,
                 },
                 component: TruckModalComponent,
-                size: ConstantStringTableComponentsEnum.SMALL,
-                closing: ConstantStringTableComponentsEnum.FASTEST,
+                size: TableStringEnum.SMALL,
+                closing: TableStringEnum.FASTEST,
             });
-        } else if (
-            event.type === ConstantStringTableComponentsEnum.ADD_TRAILER
-        ) {
+        } else if (event.type === TableStringEnum.ADD_TRAILER) {
             this.modalService.setProjectionModal({
-                action: ConstantStringTableComponentsEnum.OPEN,
+                action: TableStringEnum.OPEN,
                 payload: {
                     key: null,
                     value: null,
                 },
                 component: TrailerModalComponent,
-                size: ConstantStringTableComponentsEnum.SMALL,
-                closing: ConstantStringTableComponentsEnum.FASTEST,
+                size: TableStringEnum.SMALL,
+                closing: TableStringEnum.FASTEST,
             });
         }
     }
@@ -945,7 +884,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
         // this.resizeObserver.unobserve(
-        //     document.querySelector(ConstantStringTableComponentsEnum.TABLE_CONTAINER)
+        //     document.querySelector(TableStringEnum.TABLE_CONTAINER)
         // );
         this.resizeObserver.disconnect();
     }

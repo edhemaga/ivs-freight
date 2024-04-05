@@ -9,9 +9,9 @@ import {
     ElementRef,
     ViewChild,
 } from '@angular/core';
-import { MapsService } from '../../../core/services/shared/maps.service';
+import { MapsService } from '../../services/maps.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
+import { DetailsDataService } from '../../services/details-data.service';
 import { ModalService } from '../ta-modal/services/modal.service';
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dr
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DropDownService } from '../../services/drop-down.service';
 
 @Component({
     selector: 'app-ta-map-list-card',

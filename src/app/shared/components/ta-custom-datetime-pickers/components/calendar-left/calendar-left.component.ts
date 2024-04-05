@@ -21,14 +21,13 @@ import {
 } from '@angular/cdk/scrolling';
 
 // pipes
-import { CalendarMonthsPipe } from '../../../../../core/pipes/calendar-months.pipe';
+import { CalendarMonthsPipe } from 'src/app/core/components/shared/custom-datetime-pickers/pipes/calendar-months.pipe';
 
 // strategy
 import {
     CalendarStrategy,
     STARTING_YEAR,
 } from '../date-calendars/strategys/calendar_strategy';
-
 // enums
 import { CalendarLeftEnum } from 'src/app/core/utils/enums/datepicker-component.enum';
 

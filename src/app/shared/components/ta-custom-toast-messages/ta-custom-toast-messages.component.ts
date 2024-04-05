@@ -16,8 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 
 // services
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
+import { NotificationService } from '../../services/notification.service';
+import { DetailsDataService } from '../../services/details-data.service';
 
 // components
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';

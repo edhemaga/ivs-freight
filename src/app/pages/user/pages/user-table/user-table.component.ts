@@ -3,8 +3,8 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { UserService } from '../../services/user.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -15,10 +15,7 @@ import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-mod
 
 // helpers
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // store
@@ -34,7 +31,7 @@ import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { UserConstants } from '../../utils/constants/user.constants';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 // models
@@ -58,8 +55,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     tableData: any[] = [];
     viewData: any[] = [];
     columns: any[] = [];
-    selectedTab = ConstantStringTableComponentsEnum.ACTIVE;
-    activeViewMode: string = ConstantStringTableComponentsEnum.LIST;
+    selectedTab = TableStringEnum.ACTIVE;
+    activeViewMode: string = TableStringEnum.LIST;
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
     users: UserState[] = [];
@@ -134,24 +131,21 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE: {
-                            if (
-                                res.template ===
-                                ConstantStringTableComponentsEnum.USER_1
-                            ) {
+                        case TableStringEnum.DELETE: {
+                            if (res.template === TableStringEnum.USER_1) {
                                 this.deleteUserById(res.id);
                             }
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.ACTIVATE: {
+                        case TableStringEnum.ACTIVATE: {
                             this.changeUserStatus(res.id);
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.DEACTIVATE: {
+                        case TableStringEnum.DEACTIVATE: {
                             this.changeUserStatus(res.id);
                             break;
                         }
-                        case ConstantStringTableComponentsEnum.MULTIPLE_DELETE: {
+                        case TableStringEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteUsers(res.array);
                             break;
                         }
@@ -183,12 +177,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: ConstantStringTableComponentsEnum.SMALL },
+                        { size: TableStringEnum.SMALL },
                         {
                             data: null,
                             array: mappedRes,
-                            template: ConstantStringTableComponentsEnum.USER_1,
-                            type: ConstantStringTableComponentsEnum.MULTIPLE_DELETE,
+                            template: TableStringEnum.USER_1,
+                            type: TableStringEnum.MULTIPLE_DELETE,
                             image: true,
                         }
                     );
@@ -201,15 +195,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // On Add Driver Active
-                if (res?.animation === ConstantStringTableComponentsEnum.ADD) {
+                if (res?.animation === TableStringEnum.ADD) {
                     this.mapingIndex = 0;
 
                     this.viewData.push(this.mapUserData(res.data));
 
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === res.id) {
-                            user.actionAnimation =
-                                ConstantStringTableComponentsEnum.ADD;
+                            user.actionAnimation = TableStringEnum.ADD;
                         }
 
                         return user;
@@ -218,18 +211,17 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
                 }
                 // On Update User
-                else if (
-                    res?.animation === ConstantStringTableComponentsEnum.UPDATE
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE) {
                     this.mapingIndex = 0;
 
                     const updatedDriver = this.mapUserData(res.data);
@@ -237,27 +229,24 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === res.id) {
                             user = updatedDriver;
-                            user.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            user.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return user;
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
                 }
                 // On Update User Status
-                else if (
-                    res?.animation ===
-                    ConstantStringTableComponentsEnum.UPDATE_STATUS
-                ) {
+                else if (res?.animation === TableStringEnum.UPDATE_STATUS) {
                     this.mapingIndex = 0;
 
                     const updatedUser = this.mapUserData(res.data);
@@ -265,8 +254,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === res.id) {
                             user = updatedUser;
-                            user.actionAnimation =
-                                ConstantStringTableComponentsEnum.UPDATE;
+                            user.actionAnimation = TableStringEnum.UPDATE;
                         }
 
                         return user;
@@ -279,10 +267,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = [...sortedUserData];
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -299,17 +288,16 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
-                        if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.API
-                        ) {
+                        if (searchEvent.action === TableStringEnum.API) {
                             this.userBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action ===
-                            ConstantStringTableComponentsEnum.STORE
+                            searchEvent.action === TableStringEnum.STORE
                         ) {
                             this.sendUserData();
                         }
@@ -401,16 +389,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showCountSelectedInList: false,
                 viewModeOptions: [
                     {
-                        name: ConstantStringTableComponentsEnum.LIST,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.LIST,
+                        name: TableStringEnum.LIST,
+                        active: this.activeViewMode === TableStringEnum.LIST,
                     },
                     {
-                        name: ConstantStringTableComponentsEnum.CARD,
-                        active:
-                            this.activeViewMode ===
-                            ConstantStringTableComponentsEnum.CARD,
+                        name: TableStringEnum.CARD,
+                        active: this.activeViewMode === TableStringEnum.CARD,
                     },
                 ],
             },
@@ -445,22 +429,20 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData = [
             {
-                title: ConstantStringTableComponentsEnum.USER,
-                field: ConstantStringTableComponentsEnum.ACTIVE,
+                title: TableStringEnum.USER,
+                field: TableStringEnum.ACTIVE,
                 length: userCount.users,
                 arhiveCount: 0,
                 data: userData,
                 deactivatedUserArray: DataFilterHelper.checkSpecialFilterArray(
                     userData,
-                    ConstantStringTableComponentsEnum.STATUS
+                    TableStringEnum.STATUS
                 ),
-                gridNameTitle: ConstantStringTableComponentsEnum.USER,
-                stateName: ConstantStringTableComponentsEnum.USERS,
-                tableConfiguration: ConstantStringTableComponentsEnum.USER_2,
+                gridNameTitle: TableStringEnum.USER,
+                stateName: TableStringEnum.USERS,
+                tableConfiguration: TableStringEnum.USER_2,
                 isActive: true,
-                gridColumns: this.getGridColumns(
-                    ConstantStringTableComponentsEnum.USER_2
-                ),
+                gridColumns: this.getGridColumns(TableStringEnum.USER_2),
             },
         ];
 
@@ -647,8 +629,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: () => {
                     this.viewData = this.viewData.map((user: any) => {
                         if (user.id === id) {
-                            user.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE;
+                            user.actionAnimation = TableStringEnum.DELETE;
                         }
 
                         return user;
@@ -657,10 +638,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -723,20 +705,18 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On ToolBar Actions
     onToolBarAction(event: any) {
-        if (event.action === ConstantStringTableComponentsEnum.OPEN_MODAL) {
+        if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(UserModalComponent, {
-                size: ConstantStringTableComponentsEnum.SMALL,
+                size: TableStringEnum.SMALL,
             });
-        } else if (
-            event.action === ConstantStringTableComponentsEnum.VIEW_MODE
-        ) {
+        } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
         }
     }
 
     // On Head Actions
     onTableHeadActions(event: any) {
-        if (event.action === ConstantStringTableComponentsEnum.SORT) {
+        if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
 
@@ -762,57 +742,52 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         // Edit
-        if (event.type === ConstantStringTableComponentsEnum.EDIT) {
+        if (event.type === TableStringEnum.EDIT) {
             this.modalService.openModal(
                 UserModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
-                    type: ConstantStringTableComponentsEnum.EDIT,
+                    type: TableStringEnum.EDIT,
                     disableButton:
-                        event.data?.userType?.name !==
-                        ConstantStringTableComponentsEnum.OWNER,
+                        event.data?.userType?.name !== TableStringEnum.OWNER,
                 }
             );
         }
         // Show More (Pagination)
-        else if (event.type === ConstantStringTableComponentsEnum.SHOW_MORE) {
+        else if (event.type === TableStringEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
 
             this.userBackFilter(this.backFilterQuery, true);
         }
         // Activate Or Deactivate User
         else if (
-            event.type === ConstantStringTableComponentsEnum.DEACTIVATE ||
-            event.type === ConstantStringTableComponentsEnum.ACTIVATE
+            event.type === TableStringEnum.DEACTIVATE ||
+            event.type === TableStringEnum.ACTIVATE
         ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...confirmationModalData,
-                    template: ConstantStringTableComponentsEnum.USER_1,
+                    template: TableStringEnum.USER_1,
                     type:
                         event.data.status === 1
-                            ? ConstantStringTableComponentsEnum.DEACTIVATE
-                            : ConstantStringTableComponentsEnum.ACTIVATE,
+                            ? TableStringEnum.DEACTIVATE
+                            : TableStringEnum.ACTIVATE,
                     image: true,
                 }
             );
         }
         // User Reset Password
-        else if (
-            event.type === ConstantStringTableComponentsEnum.RESET_PASSWORD
-        ) {
+        else if (event.type === TableStringEnum.RESET_PASSWORD) {
             this.userService
                 .userResetPassword(event.data.email)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {});
         }
         // User Resend Ivitation
-        else if (
-            event.type === ConstantStringTableComponentsEnum.RESEND_INVITATION
-        ) {
+        else if (event.type === TableStringEnum.RESEND_INVITATION) {
             this.userService
                 .userResendIvitation({
                     email: event.data.email,
@@ -822,14 +797,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 .subscribe(() => {});
         }
         // User Delete
-        else if (event.type === ConstantStringTableComponentsEnum.DELETE) {
+        else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
                     ...confirmationModalData,
-                    template: ConstantStringTableComponentsEnum.USER_1,
-                    type: ConstantStringTableComponentsEnum.DELETE,
+                    template: TableStringEnum.USER_1,
+                    type: TableStringEnum.DELETE,
                     image: true,
                 }
             );
@@ -846,7 +821,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     users.map((userId: any) => {
                         if (tableData.id === userId) {
                             tableData.actionAnimation =
-                                ConstantStringTableComponentsEnum.DELETE_MULTIPLE;
+                                TableStringEnum.DELETE_MULTIPLE;
                         }
                     });
 
@@ -856,7 +831,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);

@@ -11,7 +11,7 @@ import {
 import { FormsModule, UntypedFormGroup } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import * as AppConst from 'src/app/const';
-import { MapsService } from '../../../core/services/shared/maps.service';
+import { MapsService } from '../../services/maps.service';
 
 import { Subject, takeUntil } from 'rxjs';
 import { MapRouteModel } from '../../../core/components/shared/model/map-route';
@@ -23,10 +23,10 @@ import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-m
 import { AgmDirectionModule } from 'agm-direction';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../services/truckassist-table.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DropDownService } from '../../../core/services/details-page/drop-down.service';
-import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
+import { DropDownService } from '../../services/drop-down.service';
+import { DetailsDataService } from '../../services/details-data.service';
 import { Confirmation } from '../../../core/components/modals/confirmation-modal/state/models/confirmation.model';
 import { FuelService } from 'src/app/shared/services/fuel.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';

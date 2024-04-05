@@ -1,5 +1,5 @@
 import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import {
     AfterViewInit,
     Component,

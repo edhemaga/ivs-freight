@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { convertThousanSepInNumber } from '../../../../../core/utils/methods.calculations';
+
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Pipe({
     name: 'financialCalculation',
@@ -11,7 +12,12 @@ export class FinancialCalculationPipe implements PipeTransform {
         if (type === 'billing') {
             Object.values(item).map((val: string) => {
                 if (val) {
-                    sum += val == '0' ? 0 : convertThousanSepInNumber(val);
+                    sum +=
+                        val == '0'
+                            ? 0
+                            : MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  val
+                              );
                 }
             });
         }
@@ -26,7 +32,11 @@ export class FinancialCalculationPipe implements PipeTransform {
                     }
                 } else {
                     sum +=
-                        key1[1] == '0' ? 0 : convertThousanSepInNumber(key1[1]);
+                        key1[1] == '0'
+                            ? 0
+                            : MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  key1[1]
+                              );
                 }
             });
         }

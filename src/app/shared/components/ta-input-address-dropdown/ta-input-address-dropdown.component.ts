@@ -30,7 +30,7 @@ import {
 import { ITaInput } from '../ta-input/config/ta-input.config';
 
 //Services
-import { AddressService } from 'src/app/core/services/shared/address.service';
+import { AddressService } from '../../services/address.service';
 
 //Components
 import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
@@ -44,7 +44,7 @@ import { CommonModule } from '@angular/common';
 
 //Models
 
-import { InputAddressCommandsEnum } from './enum/input-address-commands.enum';
+import { InputAddressCommandsStringEnum } from './enum/input-address-commands-string.enum';
 import { InputAddressStopTypesStringEnum } from './enum/input-address-stop-types-string.enum';
 import { InputAddressTypeStringEnum } from './enum/input-address-type-string.enum';
 import { InputAddressLayersStringEnum } from './enum/input-address-layers-string.enum';
@@ -110,11 +110,14 @@ export class TaInputAddressDropdownComponent
     handleKeyboardEvent(event: KeyboardEvent) {
         const key = event.key;
         if (this.inputConfig.name == 'RoutingAddress') {
-            if (key === InputAddressCommandsEnum.ENTER) {
+            if (key === InputAddressCommandsStringEnum.ENTER) {
                 if (this.currentAddressData) {
-                    this.onCommands(event, InputAddressCommandsEnum.CONFIRM);
+                    this.onCommands(
+                        event,
+                        InputAddressCommandsStringEnum.CONFIRM
+                    );
                 }
-            } else if (key === InputAddressCommandsEnum.ESCAPE) {
+            } else if (key === InputAddressCommandsStringEnum.ESCAPE) {
                 this.clearInput(event);
             }
         }
@@ -331,14 +334,17 @@ export class TaInputAddressDropdownComponent
         }
     }
 
-    public onCommands(e: KeyboardEvent, type: InputAddressCommandsEnum): void {
+    public onCommands(
+        e: KeyboardEvent,
+        type: InputAddressCommandsStringEnum
+    ): void {
         e.preventDefault();
         e.stopPropagation();
 
         if (
-            (type === InputAddressCommandsEnum.CONFIRM &&
+            (type === InputAddressCommandsStringEnum.CONFIRM &&
                 this.currentAddressData) ||
-            type === InputAddressCommandsEnum.CANCEL
+            type === InputAddressCommandsStringEnum.CANCEL
         ) {
             this.currentAddressData.type = type;
             this.commandEvent.emit(this.currentAddressData ?? {});

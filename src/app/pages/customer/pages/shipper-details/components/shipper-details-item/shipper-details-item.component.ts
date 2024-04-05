@@ -12,10 +12,10 @@ import { ShipperResponse, UpdateReviewCommand } from 'appcoretruckassist';
 import { ReviewComment } from 'src/app/shared/models/review-comment.model';
 
 // Decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // Services
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 
 @Titles()
 @Component({
